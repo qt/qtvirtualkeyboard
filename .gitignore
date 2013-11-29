@@ -1,0 +1,18 @@
+# This file is used to ignore files which are generated in the Qt build system
+# ----------------------------------------------------------------------------
+
+demo/virtualkeyboard
+!qtvkb/hunspell/config.h
+!qtvkb/hunspell/hunspell.pro
+qtvkb/hunspell/*
+qtvkb/doc/html
+
+*.pro.user
+*.a
+*.so
+*.moc
+*.o
+*.obj
+*.rcc
+Makefile*
+
