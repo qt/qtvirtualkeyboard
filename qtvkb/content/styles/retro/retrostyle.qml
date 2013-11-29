@@ -55,7 +55,9 @@ KeyboardStyle {
             states: [
                 State {
                     name: "key154px_colorB"
-                    when: ['q', 'r', 'y', 'p', 's', 'd', 'j', 'l', 'v', 'b'].indexOf(control.displayText.toLowerCase()) >= 0
+                    when: ['q', 'r', 'y', 'p', 's', 'd', 'j', 'l', 'v', 'b', '\'',
+                        '1', '4', '6', '0', '#', '%', '+', ')', '>',
+                        '~', '·', '÷', '}', '€', '£', '§', ']', '«', '»'].indexOf(control.displayText.toLowerCase()) >= 0
                     PropertyChanges {
                         target: keyBackground
                         source: "qrc:/images/key154px_colorB.png"
@@ -176,7 +178,7 @@ KeyboardStyle {
     languageKeyPanel: KeyPanel {
         Image {
             id: languageKeyBackground
-            source: "qrc:/images/key154px_black.png"
+            source: "qrc:/images/key154px_colorB.png"
             fillMode: Image.PreserveAspectFit
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
@@ -184,7 +186,7 @@ KeyboardStyle {
         KeyIcon {
             id: languageKeyIcon
             source: "qrc:/images/globe.png"
-            color: "#c5a96f"
+            color: "#110b05"
             anchors.fill: parent
             anchors.margins: keyContentMargin
         }
@@ -475,6 +477,7 @@ KeyboardStyle {
             text: control.displayText
             color: "#c5a96f"
             anchors.centerIn: parent
+            anchors.verticalCenterOffset: 12 * scaleHint
             font {
                 family: fontFamily
                 weight: Font.DemiBold
