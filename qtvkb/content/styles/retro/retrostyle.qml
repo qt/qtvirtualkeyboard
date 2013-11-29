@@ -1,0 +1,663 @@
+/****************************************************************************
+**
+** Copyright (C) 2013 Digia Plc
+** All rights reserved.
+** For any questions to Digia, please use contact form at http://qt.digia.com
+**
+** This file is part of the Qt Quick Enterprise Controls add-on.
+**
+** Licensees holding valid Qt Enterprise licenses may use this file in
+** accordance with the Qt Enterprise License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and Digia.
+**
+** If you have questions regarding the use of this file, please use
+** contact form at http://qt.digia.com
+**
+****************************************************************************/
+
+import QtQuick 2.0
+import QtVkb.Styles 1.0
+
+KeyboardStyle {
+    readonly property string fontFamily: courierPrimeRegular.name
+    readonly property real keyBackgroundMargin: 9 * scaleHint
+    readonly property real keyContentMargin: 50 * scaleHint
+
+    property var courierPrimeRegular: FontLoader {
+        source: "qrc:/fonts/Courier Prime.ttf"
+    }
+    property var courierPrimeBold: FontLoader {
+        source: "qrc:/fonts/Courier Prime Bold.ttf"
+    }
+
+    keyboardDesignWidth: 2560
+    keyboardDesignHeight: 800
+    keyboardRelativeLeftMargin: 114 / keyboardDesignWidth
+    keyboardRelativeRightMargin: 114 / keyboardDesignWidth
+    keyboardRelativeTopMargin: 9 / keyboardDesignHeight
+    keyboardRelativeBottomMargin: 88 / keyboardDesignHeight
+
+    keyboardBackground: Rectangle {
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#272727" }
+            GradientStop { position: 1.0; color: "black" }
+        }
+    }
+
+    keyPanel: KeyPanel {
+        Image {
+            id: keyBackground
+            source: "qrc:/images/key154px_colorA.png"
+            fillMode: Image.PreserveAspectFit
+            anchors.fill: parent
+            anchors.margins: keyBackgroundMargin
+            states: [
+                State {
+                    name: "key154px_colorB"
+                    when: ['q', 'r', 'y', 'p', 's', 'd', 'j', 'l', 'v', 'b'].indexOf(control.displayText.toLowerCase()) >= 0
+                    PropertyChanges {
+                        target: keyBackground
+                        source: "qrc:/images/key154px_colorB.png"
+                    }
+                },
+                State {
+                    name: "key154px_black"
+                    when: control.displayText.length > 1
+                    PropertyChanges {
+                        target: keyBackground
+                        source: "qrc:/images/key154px_black.png"
+                    }
+                }
+            ]
+        }
+        Text {
+            id: keyText
+            text: control.displayText
+            color: "#110b05"
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: 18 * scaleHint
+            font {
+                family: fontFamily
+                weight: Font.Bold
+                pixelSize: 82 * scaleHint
+                capitalization: control.uppercased ? Font.AllUppercase : Font.MixedCase
+            }
+            states: [
+                State {
+                    name: "fontB"
+                    when: control.displayText.length > 1
+                    PropertyChanges {
+                        target: keyText
+                        color: "#c5a96f"
+                        font.pixelSize: 74 * scaleHint
+                        font.letterSpacing: -10 * scaleHint
+                    }
+                }
+            ]
+        }
+        states: [
+            State {
+                name: "pressed"
+                when: control.pressed
+                PropertyChanges {
+                    target: keyBackground
+                    opacity: 0.70
+                }
+                PropertyChanges {
+                    target: keyText
+                    opacity: 0.75
+                }
+            },
+            State {
+                name: "disabled"
+                when: !control.enabled
+                PropertyChanges {
+                    target: keyBackground
+                    opacity: 0.30
+                }
+                PropertyChanges {
+                    target: keyText
+                    opacity: 0.50
+                }
+            }
+        ]
+    }
+
+    backspaceKeyPanel: KeyPanel {
+        BorderImage {
+            id: backspaceKeyBackground
+            source: "qrc:/images/key154px_black.png"
+            width: (parent.width - 2 * keyBackgroundMargin) / scale
+            height: sourceSize.height
+            anchors.centerIn: parent
+            border.left: 76
+            border.top: 76
+            border.right: 76
+            border.bottom: 76
+            horizontalTileMode: BorderImage.Stretch
+            scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
+        }
+        KeyIcon {
+            id: backspaceKeyIcon
+            source: "qrc:/images/backspace.png"
+            color: "#c5a96f"
+            anchors.fill: parent
+            anchors.margins: keyContentMargin * 1.2
+        }
+        states: [
+            State {
+                name: "pressed"
+                when: control.pressed
+                PropertyChanges {
+                    target: backspaceKeyBackground
+                    opacity: 0.70
+                }
+                PropertyChanges {
+                    target: backspaceKeyIcon
+                    opacity: 0.70
+                }
+            },
+            State {
+                name: "disabled"
+                when: !control.enabled
+                PropertyChanges {
+                    target: backspaceKeyBackground
+                    opacity: 0.20
+                }
+                PropertyChanges {
+                    target: backspaceKeyIcon
+                    opacity: 0.20
+                }
+            }
+        ]
+    }
+
+    languageKeyPanel: KeyPanel {
+        Image {
+            id: languageKeyBackground
+            source: "qrc:/images/key154px_black.png"
+            fillMode: Image.PreserveAspectFit
+            anchors.fill: parent
+            anchors.margins: keyBackgroundMargin
+        }
+        KeyIcon {
+            id: languageKeyIcon
+            source: "qrc:/images/globe.png"
+            color: "#c5a96f"
+            anchors.fill: parent
+            anchors.margins: keyContentMargin
+        }
+        states: [
+            State {
+                name: "pressed"
+                when: control.pressed
+                PropertyChanges {
+                    target: languageKeyBackground
+                    opacity: 0.70
+                }
+                PropertyChanges {
+                    target: languageKeyIcon
+                    opacity: 0.30
+                }
+            },
+            State {
+                name: "disabled"
+                when: !control.enabled
+                PropertyChanges {
+                    target: languageKeyBackground
+                    opacity: 0.75
+                }
+                PropertyChanges {
+                    target: languageKeyIcon
+                    opacity: 0.50
+                }
+            }
+        ]
+    }
+
+    enterKeyPanel: KeyPanel {
+        BorderImage {
+            id: enterKeyBackground
+            source: "qrc:/images/key154px_black.png"
+            width: (parent.width - 2 * keyBackgroundMargin) / scale
+            height: sourceSize.height
+            anchors.centerIn: parent
+            border.left: 76
+            border.top: 76
+            border.right: 76
+            border.bottom: 76
+            horizontalTileMode: BorderImage.Stretch
+            scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
+        }
+        KeyIcon {
+            id: enterKeyIcon
+            visible: control.displayText.length === 0
+            source: "qrc:/images/enter.png"
+            color: "#c5a96f"
+            anchors.fill: parent
+            anchors.topMargin: 59 * scaleHint
+            anchors.bottomMargin: 59 * scaleHint
+            anchors.leftMargin: 142 * scaleHint
+            anchors.rightMargin: 59 * scaleHint
+        }
+        Text {
+            id: enterKeyText
+            visible: control.displayText.length !== 0
+            text: control.displayText
+            clip: true
+            fontSizeMode: Text.HorizontalFit
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            anchors.fill: parent
+            anchors.leftMargin: keyContentMargin
+            anchors.topMargin: 60 * scaleHint
+            anchors.rightMargin: keyContentMargin
+            anchors.bottomMargin: 30 * scaleHint
+            color: "#c5a96f"
+            font {
+                family: fontFamily
+                weight: Font.Bold
+                pixelSize: 74 * scaleHint
+                capitalization: Font.AllUppercase
+            }
+        }
+        states: [
+            State {
+                name: "pressed"
+                when: control.pressed
+                PropertyChanges {
+                    target: enterKeyBackground
+                    opacity: 0.70
+                }
+                PropertyChanges {
+                    target: enterKeyIcon
+                    opacity: 0.70
+                }
+                PropertyChanges {
+                    target: enterKeyText
+                    opacity: 0.70
+                }
+            },
+            State {
+                name: "disabled"
+                when: !control.enabled
+                PropertyChanges {
+                    target: enterKeyBackground
+                    opacity: 0.20
+                }
+                PropertyChanges {
+                    target: enterKeyIcon
+                    opacity: 0.20
+                }
+                PropertyChanges {
+                    target: enterKeyText
+                    opacity: 0.20
+                }
+            }
+        ]
+    }
+
+    hideKeyPanel: KeyPanel {
+        BorderImage {
+            id: hideKeyBackground
+            source: "qrc:/images/key154px_black.png"
+            width: (parent.width - 2 * keyBackgroundMargin) / scale
+            height: sourceSize.height
+            anchors.centerIn: parent
+            border.left: 76
+            border.top: 76
+            border.right: 76
+            border.bottom: 76
+            horizontalTileMode: BorderImage.Stretch
+            scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
+        }
+        KeyIcon {
+            id: hideKeyIcon
+            source: "qrc:/images/hidekeyboard.png"
+            color: "#c5a96f"
+            anchors.fill: parent
+            anchors.margins: keyContentMargin
+        }
+        states: [
+            State {
+                name: "pressed"
+                when: control.pressed
+                PropertyChanges {
+                    target: hideKeyBackground
+                    opacity: 0.70
+                }
+                PropertyChanges {
+                    target: hideKeyIcon
+                    opacity: 0.70
+                }
+            },
+            State {
+                name: "disabled"
+                when: !control.enabled
+                PropertyChanges {
+                    target: hideKeyBackground
+                    opacity: 0.20
+                }
+                PropertyChanges {
+                    target: hideKeyIcon
+                    opacity: 0.20
+                }
+            }
+        ]
+    }
+
+    shiftKeyPanel: KeyPanel {
+        BorderImage {
+            id: shiftKeyBackground
+            source: "qrc:/images/key154px_black.png"
+            width: (parent.width - 2 * keyBackgroundMargin) / scale
+            height: sourceSize.height
+            anchors.centerIn: parent
+            border.left: 76
+            border.top: 76
+            border.right: 76
+            border.bottom: 76
+            horizontalTileMode: BorderImage.Stretch
+            scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
+            states: [
+                State {
+                    name: "capslock"
+                    when: control.capsLock
+                    PropertyChanges {
+                        target: shiftKeyBackground
+                        source: "qrc:/images/key154px_capslock.png"
+                    }
+                    PropertyChanges {
+                        target: shiftKeyIcon
+                        color: "#cd8865"
+                    }
+                },
+                State {
+                    name: "shift"
+                    when: control.shift
+                    PropertyChanges {
+                        target: shiftKeyBackground
+                        source: "qrc:/images/key154px_shiftcase.png"
+                    }
+                    PropertyChanges {
+                        target: shiftKeyIcon
+                        color: "#dc4f28"
+                    }
+                }
+            ]
+        }
+        KeyIcon {
+            id: shiftKeyIcon
+            source: "qrc:/images/shift.png"
+            color: "#c5a96f"
+            anchors.fill: parent
+            anchors.margins: keyContentMargin
+        }
+        states: [
+            State {
+                name: "pressed"
+                when: control.pressed
+                PropertyChanges {
+                    target: shiftKeyBackground
+                    opacity: 0.70
+                }
+                PropertyChanges {
+                    target: shiftKeyIcon
+                    opacity: 0.70
+                }
+            },
+            State {
+                name: "disabled"
+                when: !control.enabled
+                PropertyChanges {
+                    target: shiftKeyBackground
+                    opacity: 0.20
+                }
+                PropertyChanges {
+                    target: shiftKeyIcon
+                    opacity: 0.20
+                }
+            }
+        ]
+    }
+
+    spaceKeyPanel: KeyPanel {
+        BorderImage {
+            id: spaceKeyBackground
+            source: "qrc:/images/key154px_colorA.png"
+            width: (parent.width - 2 * keyBackgroundMargin) / scale
+            height: sourceSize.height
+            anchors.centerIn: parent
+            border.left: 76
+            border.top: 76
+            border.right: 76
+            border.bottom: 76
+            horizontalTileMode: BorderImage.Stretch
+            scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
+        }
+        states: [
+            State {
+                name: "pressed"
+                when: control.pressed
+                PropertyChanges {
+                    target: spaceKeyBackground
+                    opacity: 0.70
+                }
+            },
+            State {
+                name: "disabled"
+                when: !control.enabled
+                PropertyChanges {
+                    target: spaceKeyBackground
+                    opacity: 0.30
+                }
+            }
+        ]
+    }
+
+    symbolKeyPanel: KeyPanel {
+        BorderImage {
+            id: symbolKeyBackground
+            source: "qrc:/images/key154px_black.png"
+            width: (parent.width - 2 * keyBackgroundMargin) / scale
+            height: sourceSize.height
+            anchors.centerIn: parent
+            border.left: 76
+            border.top: 76
+            border.right: 76
+            border.bottom: 76
+            horizontalTileMode: BorderImage.Stretch
+            scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
+        }
+        Text {
+            id: symbolKeyText
+            text: control.displayText
+            color: "#c5a96f"
+            anchors.centerIn: parent
+            font {
+                family: fontFamily
+                weight: Font.DemiBold
+                pixelSize: 74 * scaleHint
+                letterSpacing: -5 * scaleHint
+                capitalization: Font.AllUppercase
+            }
+        }
+        states: [
+            State {
+                name: "pressed"
+                when: control.pressed
+                PropertyChanges {
+                    target: symbolKeyBackground
+                    opacity: 0.70
+                }
+                PropertyChanges {
+                    target: symbolKeyText
+                    opacity: 0.70
+                }
+            },
+            State {
+                name: "disabled"
+                when: !control.enabled
+                PropertyChanges {
+                    target: symbolKeyBackground
+                    opacity: 0.20
+                }
+                PropertyChanges {
+                    target: symbolKeyText
+                    opacity: 0.20
+                }
+            }
+        ]
+    }
+
+    characterPreviewMargin: 20 * scaleHint
+    characterPreviewDelegate: Item {
+        property string text
+        property real horizontalOffset
+        id: characterPreview
+        Image {
+            id: characterPreviewBackground
+            source: "qrc:/images/key_preview.png"
+            fillMode: Image.PreserveAspectFit
+            anchors.fill: parent
+        }
+        Text {
+            id: characterPreviewText
+            color: "#c5a96f"
+            text: characterPreview.text
+            anchors.centerIn: characterPreviewBackground
+            anchors.verticalCenterOffset: 18 * scaleHint
+            font {
+                family: fontFamily
+                weight: Font.Bold
+                pixelSize: 88 * scaleHint
+                letterSpacing: -10 * scaleHint
+            }
+        }
+    }
+
+    alternateKeysListItemWidth: 111 * scaleHint
+    alternateKeysListItemHeight: 154 * scaleHint
+    alternateKeysListBottomMargin: 15 * scaleHint
+    alternateKeysListLeftMargin: 79 * scaleHint
+    alternateKeysListRightMargin: 79 * scaleHint
+    alternateKeysListDelegate: Item {
+        id: alternateKeysListItem
+        width: alternateKeysListItemWidth
+        height: alternateKeysListItemHeight
+        Text {
+            id: listItemText
+            text: model.text
+            color: "#868482"
+            font {
+                family: fontFamily
+                weight: Font.DemiBold
+                pixelSize: 52 * scaleHint
+                letterSpacing: -6 * scaleHint
+            }
+            anchors.centerIn: parent
+        }
+        states: State {
+            name: "current"
+            when: alternateKeysListItem.ListView.isCurrentItem
+            PropertyChanges {
+                target: listItemText
+                color: "white"
+            }
+        }
+    }
+    alternateKeysListHighlight: Item {
+        Rectangle {
+            anchors.fill: parent
+            anchors.topMargin: 8 * scaleHint
+            anchors.bottomMargin: 8 * scaleHint
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#64462a" }
+                GradientStop { position: 0.18; color: "#a37648" }
+                GradientStop { position: 0.5; color: "#c4a47c" }
+                GradientStop { position: 0.82; color: "#a37648" }
+                GradientStop { position: 1.0; color: "#64462a" }
+            }
+        }
+    }
+    alternateKeysListBackground: Item {
+        property real currentItemOffset
+        property bool currentItemHighlight: false
+        BorderImage {
+            cache: false
+            source: "qrc:/images/key160px_black.png"
+            width: sourceSize.width + parent.width / scale
+            height: sourceSize.height
+            anchors.centerIn: parent
+            border.left: 79
+            border.top: 79
+            border.right: 79
+            border.bottom: 79
+            horizontalTileMode: BorderImage.Stretch
+            scale: parent.height / sourceSize.height
+        }
+        Image {
+            visible: currentItemOffset !== undefined
+            source: currentItemHighlight ? "qrc:/images/triangle_highlight.png" : "qrc:/images/triangle_black.png"
+            fillMode: Image.PreserveAspectFit
+            width: sourceSize.width * scaleHint
+            height: sourceSize.height * scaleHint
+            anchors.top: parent.bottom
+            anchors.topMargin: -8 * scaleHint
+            anchors.left: parent.left
+            anchors.leftMargin: currentItemOffset - width / 2
+        }
+    }
+
+    selectionListHeight: 85 * scaleHint
+    selectionListDelegate: Item {
+        id: selectionListItem
+        width: Math.round(selectionListLabel.width + selectionListLabel.anchors.leftMargin * 2)
+        height: parent.height
+        Text {
+            id: selectionListLabel
+            anchors.left: parent.left
+            anchors.leftMargin: 140 * scaleHint
+            anchors.verticalCenter: parent.verticalCenter
+            text: decorateText(display, wordCompletionLength)
+            color: "white"
+            font {
+                family: fontFamily
+                weight: Font.Bold
+                pixelSize: 44 * scaleHint
+            }
+            function decorateText(text, wordCompletionLength) {
+                if (wordCompletionLength > 0) {
+                    return text.slice(0, -wordCompletionLength) + '<u>' + text.slice(-wordCompletionLength) + '</u>'
+                }
+                return text
+            }
+        }
+        Rectangle {
+            id: selectionListSeparator
+            width: 4 * scaleHint
+            height: 36 * scaleHint
+            color: "#35322f"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.left
+        }
+        states: State {
+            name: "current"
+            when: selectionListItem.ListView.isCurrentItem
+            PropertyChanges {
+                target: selectionListLabel
+                color: "#c5a96f"
+            }
+        }
+        MouseArea {
+            id: mouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: selectionListItem.ListView.view.model.itemSelected(index)
+        }
+    }
+    selectionListBackground: Rectangle {
+        color: "#222222"
+    }
+}

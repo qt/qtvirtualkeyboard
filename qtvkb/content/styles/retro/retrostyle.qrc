@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/">
+        <file>retrostyle.qml</file>
+        <file>fonts/Courier Prime.ttf</file>
+        <file>fonts/Courier Prime Bold.ttf</file>
+        <file>images/key154px_black.png</file>
+        <file>images/key154px_black_long.png</file>
+        <file>images/key154px_capslock_long.png</file>
+        <file>images/key154px_capslock.png</file>
+        <file>images/key154px_colorA_long.png</file>
+        <file>images/key154px_colorA.png</file>
+        <file>images/key154px_colorB.png</file>
+        <file>images/key154px_shiftcase_long.png</file>
+        <file>images/key154px_shiftcase.png</file>
+        <file>images/key156px_black_long.png</file>
+        <file>images/key156px_black_medium_long.png</file>
+        <file>images/key156px_colorA.png</file>
+        <file>images/key156px_colorB.png</file>
+        <file>images/key160px_black.png</file>
+        <file>images/key160px_colorA.png</file>
+        <file>images/key160px_colorB.png</file>
+        <file>images/key_preview.png</file>
+        <file>images/triangle_black.png</file>
+        <file>images/triangle_highlight.png</file>
+        <file>images/backspace.png</file>
+        <file>images/enter.png</file>
+        <file>images/hidekeyboard.png</file>
+        <file>images/shift.png</file>
+        <file>images/globe.png</file>
+    </qresource>
+</RCC>

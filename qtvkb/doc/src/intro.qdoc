@@ -1,0 +1,240 @@
+/****************************************************************************
+**
+** Copyright (C) 2013 Digia Plc
+** All rights reserved.
+** For any questions to Digia, please use contact form at http://qt.digia.com
+**
+** This file is part of the Qt Quick Enterprise Controls add-on.
+**
+** Licensees holding valid Qt Enterprise licenses may use this file in
+** accordance with the Qt Enterprise License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and Digia.
+**
+** If you have questions regarding the use of this file, please use
+** contact form at http://qt.digia.com
+**
+****************************************************************************/
+
+/*!
+
+\page intro.html
+\contentspage {Introduction} {Contents}
+
+\title Introduction
+
+\section1 Basic Concepts
+
+The QtVKB project provides an input context plugin which
+implements QPlatformInputContextPlugin and QPlatformInputContext interfaces.
+These interfaces makes it possible to use it as an input context plugin for
+Qt5 application.
+
+In addition to standard interfaces, it also provides an additional
+interfaces for QML which support the implementation of the virtual keyboard.
+
+These interfaces consists of the following:
+
+\list
+    \li InputContext : provides contextual information for virtual keyboard
+        and other input components.
+    \li InputEngine : exposes an API to integrate user input events (key
+        press etc.) and acts as a host for input method.
+    \li InputMethod : a base type for QML based input method.
+    \li AbstractInputMethod : a base type for C++ based input method.
+\endlist
+
+\section1 The input context
+
+The input context is used by keyboard as well as concrete input methods.
+
+\section2 Contextual information
+
+The input context provides access to contextual information that originates
+from application. This information includes, but is not limited to:
+
+\list
+    \li InputContext::cursorPosition
+    \li InputContext::cursorRectangle
+    \li InputContext::inputMethodHints
+    \li InputContext::preeditText
+    \li InputContext::selectedText
+    \li InputContext::surroundingText
+\endlist
+
+\section2 Locale
+
+When keyboard layout is activated, the keyboard should set matching locale
+for input context. This can be done with InputContext::locale property. Once
+the locale is set it is reflected to current input method as well as to the
+underlying application (through QPlatformInputContext).
+
+\section2 UI animations
+
+During UI transitions and animations, the keyboard should notify the input
+context about it. The InputContext::animating property sets the animating
+property of the input context.
+
+\section1 The input engine
+
+The input engine object is owned by InputContext. The input engine contains
+API functions which the keyboard can use to map user interactions such as key
+press and key release events.
+
+The input events are mapped through following methods:
+
+\list
+    \li InputEngine::virtualKeyPress
+    \li InputEngine::virtualKeyRelease
+\endlist
+
+The above-mentioned methods are intended for the integration of the virtual
+keyboard, hence the word "virtual" in the methods name. This also means that
+the methods are not suitable for mapping the physical keystrokes. This is a
+consequence of the fact that the actual action is performed only when the key
+is released.
+
+If the user releases the key without having to perform the actual action, the
+key can be interrupted by using the InputEngine::virtualKeyCancel method.
+
+\section2 Activating input method
+
+Activating an input method is straight forward. The required steps are:
+
+\list
+    \li Instantiate a concrete implementation of InputMethod or
+        AbstractInputMethod
+    \li Assign the instance to InputEngine::inputMethod
+    \li Set proper input mode with InputEngine::inputMode
+\endlist
+
+When the input method is active, it receives key events from the input engine
+and can produce text.
+
+\section1 Implementing a custom input method
+
+The implementation of input method starts by deciding which interface is used;
+QML or C++. In this example the QML interface is used.
+
+The following example shows the minimum functionality that is required
+from an input method:
+
+\quotefile examples/CustomInputMethod.qml
+
+The InputMethod::inputModes() method is called by the input engine before
+input mode is set. The method returns list of input modes available in
+locale.
+
+Input method is initialized in InputMethod::setInputMode() method with
+locale and input mode. After setting the locale and input mode, the input
+method should be ready for use.
+
+The InputMethod::reset() is called when input method needs reset. The reset
+must only reset the internal state of input method, and not the user text.
+
+The InputMethod::update() is called when the input context is updated and
+the input state is possibly out-of-sync. The input method should commit
+the current text.
+
+The keystorke events are handled in InputMethod::keyEvent(). This method handles
+single keystroke event and returns true if the event was processed. Otherwise
+the keystroke is handled by the default input method.
+
+\section2 Selection lists
+
+The selection lists are an optional feature that can be integrated into the input
+method. The input framework supports various types of lists, such as the word
+candidate list. Responsibilities in implementing the lists are handled in such
+that the input method is responsible for the content and activities, such as the
+click behavior. The input framework is responsible for maintaining the list model
+and the delivery to the user interface.
+
+\section3 Allocating the selection lists
+
+The selection lists are allocated when the input method is activated. The input
+method returns list of required selection list types in response to
+InputMethod::selectionLists()
+method query:
+
+\code
+function selectionLists() {
+    return [SelectionListModel.WordCandidateList];
+}
+\endcode
+
+In above example the input method allocates the word candidate list for its use.
+
+\section3 Updating the selection lists
+
+When the input method requires the UI to update the contents of selection list, it
+will emit the InputMethod::selectionListChanged signal. Likewise if the input
+method requires the UI to highlight an item in the list, it will emit the
+InputMethod::selectionListActiveItemChanged signal.
+
+\code
+selectionListChanged(SelectionListModel.WordCandidateList)
+selectionListActiveItemChanged(SelectionListModel.WordCandidateList, wordIndex)
+\endcode
+
+\section3 Populating items in the selection lists
+
+The items are populated with method callbacks which will provide the number of
+items in a list as well as the data for individual items.
+
+The InputMethod::selectionListItemCount method callback requests the number of
+items in the list identified by type.
+
+\code
+function selectionListItemCount(type) {
+    if (type == SelectionListModel.WordCandidateList) {
+        return wordList.length
+    }
+    return 0
+}
+\endcode
+
+The InputMethod::selectionListData method callback requests the data for items.
+
+\code
+function selectionListData(type, index, role) {
+    var result = null
+    if (type == SelectionListModel.WordCandidateList) {
+        switch (role) {
+        case SelectionListModel.DisplayRole:
+            result = wordList[index]
+            break
+        default:
+            break
+        }
+    }
+    return result
+}
+\endcode
+
+The \a role parameter identifies which data is requested for item. For example,
+the SelectionListModel.DisplayRole requests the display text data.
+
+\section3 Responding to user actions
+
+When the user selects an item in the list, the input method responds to event
+in the InputMethod::selectionListItemSelected method callback.
+
+\code
+function selectionListItemSelected(type, index) {
+    if (type == SelectionListModel.WordCandidateList) {
+        inputContext.commit(wordlist[index])
+        update()
+    }
+}
+\endcode
+
+\section1 Integrating the selection lists in the UI
+
+The input engine provides a list model for each selection list type.
+The model is null while the list is not allocated. This way the UI
+can hide the list if necessary.
+
+The list model word candidate list is provided by the
+InputEngine::wordCandidateListModel property.
+
+*/

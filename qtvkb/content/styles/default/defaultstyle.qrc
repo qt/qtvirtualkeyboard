@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>defaultstyle.qml</file>
+        <file>fonts/OpenSans-Regular.ttf</file>
+        <file>fonts/OpenSans-Semibold.ttf</file>
+        <file>images/backspace.png</file>
+        <file>images/enter.png</file>
+        <file>images/hidekeyboard.png</file>
+        <file>images/shift.png</file>
+        <file>images/globe.png</file>
+    </qresource>
+</RCC>
