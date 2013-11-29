@@ -1,7 +1,4 @@
 TEMPLATE = lib
-MOC_DIR = .moc
-RCC_DIR = .rcc
-OBJECTS_DIR = .obj
 TARGET = qtvkbstylesplugin
 android-no-sdk {
     TARGETPATH = /system/qml/QtVkb/Styles

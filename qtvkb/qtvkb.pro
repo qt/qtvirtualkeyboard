@@ -1,7 +1,4 @@
 TEMPLATE = lib
-MOC_DIR = .moc
-RCC_DIR = .rcc
-OBJECTS_DIR = .obj
 TARGET  = qtvkbplugin
 android-no-sdk {
     TARGETPATH = /system/plugins/platforminputcontexts

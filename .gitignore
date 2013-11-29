@@ -11,6 +11,8 @@ qtvkb/doc/html
 *.a
 *.so
 *.moc
+moc_*.cpp
+qrc_*.cpp
 *.o
 *.obj
 *.rcc

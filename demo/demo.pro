@@ -1,7 +1,4 @@
 TEMPLATE = app
-MOC_DIR = .moc
-RCC_DIR = .rcc
-OBJECTS_DIR = .obj
 TARGET = virtualkeyboard
 QT += qml quick
 SOURCES += main.cpp
