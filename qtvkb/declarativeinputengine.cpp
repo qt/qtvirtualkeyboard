@@ -470,7 +470,7 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent* timerEvent)
     if (timerEvent->timerId() == d->repeatTimer) {
         d->repeatTimer = 0;
         virtualKeyClick(d->activeKey, d->activeKeyText, d->activeKeyModifiers);
-        d->repeatTimer = startTimer(150);
+        d->repeatTimer = startTimer(50);
         d->repeatCount++;
     }
 }
