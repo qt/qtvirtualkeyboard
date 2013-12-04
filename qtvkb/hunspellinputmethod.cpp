@@ -17,6 +17,7 @@
 ****************************************************************************/
 
 #include "hunspellinputmethod.h"
+#include "hunspellworker.h"
 #include "declarativeinputcontext.h"
 #include <hunspell/hunspell.h>
 #include <QStringList>
@@ -24,10 +25,13 @@
 
 class HunspellInputMethodPrivate : public AbstractInputMethodPrivate
 {
+    Q_DECLARE_PUBLIC(HunspellInputMethod)
+
 public:
-    HunspellInputMethodPrivate() :
+    HunspellInputMethodPrivate(HunspellInputMethod* q_ptr) :
         AbstractInputMethodPrivate(),
-        hunspell(0),
+        q_ptr(q_ptr),
+        hunspellWorker(0),
         locale(),
         word(),
         wordCandidates(),
@@ -38,85 +42,76 @@ public:
 
     ~HunspellInputMethodPrivate()
     {
-        freeHunspell();
     }
 
     bool createHunspell(const QString& locale)
     {
         if (this->locale != locale) {
-            freeHunspell();
+            hunspellWorker.reset(0);
             QByteArray affpath(QString("%1/%2.aff").arg(QT_VKB_HUNSPELL_DATA_PATH).arg(locale).toUtf8());
             QByteArray dpath(QString("%1/%2.dic").arg(QT_VKB_HUNSPELL_DATA_PATH).arg(locale).toUtf8());
-            hunspell = Hunspell_create(affpath.constData(), dpath.constData());
+            Hunhandle* hunspell = Hunspell_create(affpath.constData(), dpath.constData());
             if (!hunspell) {
                 qWarning() << "Hunspell initialization failed; dictionary =" << dpath;
                 this->locale.clear();
                 return false;
             }
             this->locale = locale;
+            hunspellWorker.reset(new HunspellWorker(hunspell));
+            if (!hunspellWorker) {
+                Hunspell_destroy(hunspell);
+                this->locale.clear();
+                return false;
+            }
+            hunspellWorker->start();
         }
         return true;
     }
 
-    void freeHunspell()
-    {
-        if (hunspell) {
-            Hunspell_destroy(hunspell);
-            hunspell = 0;
-        }
-    }
-
     bool updateSuggestions()
     {
-        bool wordCandidateListChanged = clearSuggestions();
+        bool wordCandidateListChanged = false;
         if (!word.isEmpty()) {
-            wordCandidates.append(word);
-            activeWordIndex = 0;
-            if (word.length() >= wordCompletionPoint) {
-                if (hunspell) {
-                    char** slst = 0;
-                    int n = Hunspell_suggest(hunspell, &slst, word.toUtf8().constData());
-                    if (n > 0) {
-                        /*  Collect word candidates from the Hunspell suggestions.
-                            Insert word completions in the beginning of the list.
-                        */
-                        const int firstWordCompletionIndex = wordCandidates.length();
-                        int lastWordCompletionIndex = firstWordCompletionIndex;
-                        for (int i = 0; i < n; i++) {
-                            QString wordCandidate(QString::fromUtf8(slst[i]));
-                            wordCandidate.replace(QChar(0x2019), '\'');
-                            if (wordCandidate.compare(word) != 0) {
-                                if (wordCandidate.startsWith(word) ||
-                                    wordCandidate.contains(QChar('\''))) {
-                                    wordCandidates.insert(lastWordCompletionIndex++, wordCandidate);
-                                } else {
-                                    wordCandidates.append(wordCandidate);
-                                }
-                            }
-                        }
-                        /*  Do spell checking and suggest the first candidate, if:
-                            - the word matches partly the suggested word; or
-                            - the quality of the suggested word is good enough.
-
-                            The quality is measured here using the Levenshtein Distance,
-                            which may be suboptimal for the purpose, but gives some clue
-                            how much the suggested word differs from the given word.
-                        */
-                        if (wordCandidates.length() > 0 && !spellCheck(word)) {
-                            if (lastWordCompletionIndex > firstWordCompletionIndex || levenshteinDistance(word, wordCandidates.at(1)) < 3)
-                                activeWordIndex = 1;
-                        }
-                    }
-                    Hunspell_free_list(hunspell, &slst, n);
-                }
+            if (hunspellWorker)
+                hunspellWorker->removeAllTasks();
+            if (wordCandidates.isEmpty()) {
+                wordCandidates.append(word);
+                activeWordIndex = 0;
+                wordCandidateListChanged = true;
+            } else if (wordCandidates.at(0) != word) {
+                wordCandidates.replace(0, word);
+                activeWordIndex = 0;
+                wordCandidateListChanged = true;
             }
-            wordCandidateListChanged = true;
+            if (word.length() >= wordCompletionPoint) {
+                if (hunspellWorker) {
+                    QSharedPointer<HunspellWordList> wordList(new HunspellWordList());
+                    QSharedPointer<HunspellBuildSuggestionsTask> buildSuggestionsTask(new HunspellBuildSuggestionsTask());
+                    buildSuggestionsTask->word = word;
+                    buildSuggestionsTask->wordList = wordList;
+                    hunspellWorker->addTask(buildSuggestionsTask);
+                    QSharedPointer<HunspellUpdateSuggestionsTask> updateSuggestionsTask(new HunspellUpdateSuggestionsTask());
+                    updateSuggestionsTask->wordList = wordList;
+                    Q_Q(HunspellInputMethod);
+                    q->connect(updateSuggestionsTask.data(), SIGNAL(updateSuggestions(QStringList, int)), SLOT(updateSuggestions(QStringList, int)));
+                    hunspellWorker->addTask(updateSuggestionsTask);
+                }
+            } else if (wordCandidates.length() > 1) {
+                wordCandidates.clear();
+                wordCandidates.append(word);
+                activeWordIndex = 0;
+                wordCandidateListChanged = true;
+            }
+        } else {
+            wordCandidateListChanged = clearSuggestions();
         }
         return wordCandidateListChanged;
     }
 
     bool clearSuggestions()
     {
+        if (hunspellWorker)
+            hunspellWorker->removeAllTasks();
         if (wordCandidates.isEmpty())
             return false;
         wordCandidates.clear();
@@ -129,51 +124,17 @@ public:
         return !wordCandidates.isEmpty();
     }
 
-    bool spellCheck(const QString& word)
-    {
-        if (!hunspell)
-            return false;
-        if (word.contains(QRegExp("[0-9]")))
-            return true;
-        return Hunspell_spell(hunspell, word.toUtf8().constData()) != 0;
-    }
-
-    // source: http://en.wikipedia.org/wiki/Levenshtein_distance
-    int levenshteinDistance(const QString& s, const QString& t)
-    {
-        if (s == t)
-            return 0;
-        if (s.length() == 0)
-            return t.length();
-        if (t.length() == 0)
-            return s.length();
-        QVector<int> v0(t.length() + 1);
-        QVector<int> v1(t.length() + 1);
-        for (int i = 0; i < v0.size(); i++)
-            v0[i] = i;
-        for (int i = 0; i < s.size(); i++) {
-            v1[0] = i + 1;
-            for (int j = 0; j < t.length(); j++) {
-                int cost = (s[i].toLower() == t[j].toLower()) ? 0 : 1;
-                v1[j + 1] = qMin(qMin(v1[j] + 1, v0[j + 1] + 1), v0[j] + cost);
-            }
-            for (int j = 0; j < v0.size(); j++)
-                v0[j] = v1[j];
-        }
-        return v1[t.length()];
-    }
-
-    Hunhandle* hunspell;
+    HunspellInputMethod* q_ptr;
+    QScopedPointer<HunspellWorker> hunspellWorker;
     QString locale;
     QString word;
     QStringList wordCandidates;
-    QList<int> wordDistances;
     int activeWordIndex;
     int wordCompletionPoint;
 };
 
 HunspellInputMethod::HunspellInputMethod(QObject *parent) :
-    AbstractInputMethod(new HunspellInputMethodPrivate(), parent)
+    AbstractInputMethod(new HunspellInputMethodPrivate(this), parent)
 {
 }
 
@@ -319,4 +280,14 @@ void HunspellInputMethod::update()
             inputContext()->commit(d->word);
     }
     reset();
+}
+
+void HunspellInputMethod::updateSuggestions(const QStringList& wordList, int activeWordIndex)
+{
+    Q_D(HunspellInputMethod);
+    d->wordCandidates.clear();
+    d->wordCandidates.append(wordList);
+    d->activeWordIndex = activeWordIndex;
+    emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
+    emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
 }

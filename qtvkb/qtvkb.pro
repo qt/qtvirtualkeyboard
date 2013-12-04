@@ -74,8 +74,8 @@ INSTALLS += qml
 !disable-hunspell {
     exists(hunspell/src/hunspell/hunspell.h) {
         message(Found Hunspell library!)
-        SOURCES += hunspellinputmethod.cpp
-        HEADERS += hunspellinputmethod.h
+        SOURCES += hunspellinputmethod.cpp hunspellworker.cpp
+        HEADERS += hunspellinputmethod.h hunspellworker.h
         DEFINES += HAVE_HUNSPELL
         depends += hunspell
         INCLUDEPATH += hunspell/src

@@ -44,6 +44,9 @@ public:
 
     void reset();
     void update();
+
+protected slots:
+    void updateSuggestions(const QStringList& wordList, int activeWordIndex);
 };
 
 #endif // HUNSPELLINPUTMETHOD_H

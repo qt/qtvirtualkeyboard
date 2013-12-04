@@ -1,7 +1,4 @@
 TEMPLATE = lib
-MOC_DIR = .moc
-RCC_DIR = .rcc
-OBJECTS_DIR = .obj
 QT -= core gui
 TARGET = hunspell
 VERSION = 1.3.2
