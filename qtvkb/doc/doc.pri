@@ -5,6 +5,6 @@ OTHER_FILES += \
             $$PWD/src/examples/CustomInputMethod.qml
 
 docs_target.target = docs
-docs_target.commands = qdoc $$PWD/qtvkb.qdocconf
+docs_target.commands = $$[QT_HOST_BINS]/qdoc $$PWD/qtvkb.qdocconf
 
 QMAKE_EXTRA_TARGETS = docs_target
