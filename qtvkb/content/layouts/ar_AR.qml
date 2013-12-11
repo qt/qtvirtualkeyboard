@@ -22,7 +22,7 @@ import "../components"
 
 KeyboardLayout {
     keyWeight: 160
-    property var keys: ["ضصقفغعهخحج", "شسيبلاتنمك", "ظطذدزوةث"]
+    property var keys: ["ضصثقفغعهخحجد", "شسيبلاتنمكط", "ئءؤرلىةوزظ"]
     KeyboardRow {
         Repeater {
             model: keys[0].length
@@ -48,7 +48,7 @@ KeyboardLayout {
     }
     KeyboardRow {
         keyWeight: 156
-        ShiftKey {}
+        FillerKey {}
         Repeater {
             model: keys[2].length
             Key {
@@ -63,7 +63,7 @@ KeyboardLayout {
             key: Qt.Key_Period
             text: "."
         }
-        ShiftKey {
+        FillerKey {
             weight: 204
         }
     }
