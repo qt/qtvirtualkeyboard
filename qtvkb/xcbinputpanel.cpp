@@ -100,6 +100,10 @@ void XcbInputPanel::createView()
 {
     Q_D(XcbInputPanel);
     if (!d->view) {
+        if (qGuiApp) {
+            connect(qGuiApp, SIGNAL(focusWindowChanged(QWindow*)), SLOT(focusWindowChanged(QWindow*)));
+            focusWindowChanged(qGuiApp->focusWindow());
+        }
         d->view.reset(new InputView());
         d->view->setFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::WindowDoesNotAcceptFocus | Qt::BypassWindowManagerHint);
         d->view->setColor(QColor(Qt::transparent));
@@ -131,5 +135,21 @@ void XcbInputPanel::repositionView(const QRect& rect)
         d->view->setResizeMode(QQuickView::SizeRootObjectToView);
         if (inputContext)
             inputContext->setAnimating(false);
+    }
+}
+
+void XcbInputPanel::focusWindowChanged(QWindow *focusWindow)
+{
+    disconnect(this, SLOT(focusWindowVisibleChanged(bool)));
+    if (focusWindow)
+        connect(focusWindow, SIGNAL(visibleChanged(bool)), SLOT(focusWindowVisibleChanged(bool)));
+}
+
+void XcbInputPanel::focusWindowVisibleChanged(bool visible)
+{
+    if(!visible) {
+        DeclarativeInputContext* inputContext = qobject_cast<PlatformInputContext*>(parent())->declarativeInputContext();
+        if (inputContext)
+            inputContext->hideInputPanel();
     }
 }

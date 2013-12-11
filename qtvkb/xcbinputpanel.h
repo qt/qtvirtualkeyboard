@@ -21,6 +21,7 @@
 
 #include "abstractinputpanel.h"
 
+class QWindow;
 class XcbInputPanelPrivate;
 
 class XcbInputPanel : public AbstractInputPanel
@@ -40,7 +41,11 @@ public:
 public slots:
     void createView();
     void destroyView();
+
+protected slots:
     void repositionView(const QRect& rect);
+    void focusWindowChanged(QWindow* focusWindow);
+    void focusWindowVisibleChanged(bool visible);
 
 private:
     QScopedPointer<XcbInputPanelPrivate> d_ptr;
