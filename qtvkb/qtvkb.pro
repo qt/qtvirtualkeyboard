@@ -91,8 +91,8 @@ INSTALLS += qml
         }
     } else:packagesExist(hunspell) {
         message(Found Hunspell package from pkg-config!)
-        SOURCES += hunspellinputmethod.cpp
-        HEADERS += hunspellinputmethod.h
+        SOURCES += hunspellinputmethod.cpp hunspellworker.cpp
+        HEADERS += hunspellinputmethod.h hunspellworker.h
         DEFINES += HAVE_HUNSPELL
         PKGCONFIG += hunspell
         DEFINES += QT_VKB_HUNSPELL_DATA_PATH=\\\"/usr/share/hunspell\\\"
