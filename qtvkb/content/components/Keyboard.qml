@@ -29,7 +29,7 @@ Item {
     property var activeKey: undefined
     property int localeIndex: 1
     property string locale: layoutsModel.count > 0 ? layoutsModel.get(localeIndex, "fileBaseName") : "en_GB"
-    property string layout: keyboard.symbolMode && !keyboard.numberMode ? "symbols" : (keyboard.numberMode ? "numbers" : keyboard.locale)
+    property string layout: keyboard.symbolMode && !keyboard.numberMode ? "symbols_"+keyboard.locale : (keyboard.numberMode ? "numbers" : keyboard.locale)
     property bool active: Qt.inputMethod.visible
     property bool uppercased: uppercaseOnly ? true : (lowercaseOnly ? false : InputContext.shift || InputContext.capsLock)
     property bool uppercaseOnly: InputContext.inputMethodHints & Qt.ImhUppercaseOnly
@@ -76,7 +76,7 @@ Item {
     FolderListModel {
         id: layoutsModel
         folder: "../layouts"
-        nameFilters: ["*_*.qml"]
+        nameFilters: ["??_??.qml"]
     }
     AlternativeKeys { id: alternativeKeys }
     Timer {
