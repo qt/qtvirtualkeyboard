@@ -534,9 +534,18 @@ KeyboardStyle {
             font {
                 family: fontFamily
                 weight: Font.Bold
-                pixelSize: 88 * scaleHint
-                letterSpacing: -10 * scaleHint
+                pixelSize: 85 * scaleHint
             }
+            states: [
+                State {
+                    name: "fit"
+                    when: text.length > 1
+                    PropertyChanges {
+                        target: characterPreviewText
+                        font.letterSpacing: -10 * scaleHint
+                    }
+                }
+            ]
         }
     }
 
