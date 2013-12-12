@@ -389,7 +389,8 @@ void DeclarativeInputEngine::setInputMode(DeclarativeInputEngine::InputMode inpu
     if (d->inputMethod) {
         const QString locale(d->inputContext->locale());
         QList<DeclarativeInputEngine::InputMode> inputModeList(d->inputMethod->inputModes(locale));
-        if (inputModeList.contains(inputMode) && d->inputMethod->setInputMode(locale, d->inputMode)) {
+        if (inputModeList.contains(inputMode)) {
+            d->inputMethod->setInputMode(locale, d->inputMode);
             d->inputMode = inputMode;
             emit inputModeChanged();
         } else {
