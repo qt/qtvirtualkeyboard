@@ -95,7 +95,7 @@ INSTALLS += qml
         HEADERS += hunspellinputmethod.h hunspellworker.h
         DEFINES += HAVE_HUNSPELL
         PKGCONFIG += hunspell
-        DEFINES += QT_VKB_HUNSPELL_DATA_PATH=\\\"/usr/share/hunspell\\\"
+        DEFINES += QT_VKB_HUNSPELL_DATA_PATH=\\\"/usr/share/hunspell\;/usr/share/myspell\\\"
     } else {
         message(Hunspell not found! Spell correction will not be available.)
     }

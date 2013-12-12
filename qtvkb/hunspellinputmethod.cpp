@@ -21,6 +21,7 @@
 #include "declarativeinputcontext.h"
 #include <hunspell/hunspell.h>
 #include <QStringList>
+#include <QFileInfo>
 #include "vkbdebug.h"
 
 class HunspellInputMethodPrivate : public AbstractInputMethodPrivate
@@ -48,11 +49,19 @@ public:
     {
         if (this->locale != locale) {
             hunspellWorker.reset(0);
-            QByteArray affpath(QString("%1/%2.aff").arg(QT_VKB_HUNSPELL_DATA_PATH).arg(locale).toUtf8());
-            QByteArray dpath(QString("%1/%2.dic").arg(QT_VKB_HUNSPELL_DATA_PATH).arg(locale).toUtf8());
-            Hunhandle* hunspell = Hunspell_create(affpath.constData(), dpath.constData());
+            Hunhandle* hunspell = 0;
+            QStringList searchPaths(QString(QT_VKB_HUNSPELL_DATA_PATH).split(";"));
+            foreach (const QString& searchPath, searchPaths) {
+                QByteArray affpath(QString("%1/%2.aff").arg(searchPath).arg(locale).toUtf8());
+                QByteArray dpath(QString("%1/%2.dic").arg(searchPath).arg(locale).toUtf8());
+                if (QFileInfo(dpath).exists()) {
+                    hunspell = Hunspell_create(affpath.constData(), dpath.constData());
+                    if (hunspell)
+                        break;
+                }
+            }
             if (!hunspell) {
-                qWarning() << "Hunspell initialization failed; dictionary =" << dpath;
+                qWarning() << "Missing Hunspell dictionary for locale" << locale << "in" << searchPaths;
                 this->locale.clear();
                 return false;
             }
