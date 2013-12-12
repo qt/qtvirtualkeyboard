@@ -442,7 +442,6 @@ KeyboardStyle {
     characterPreviewMargin: 0
     characterPreviewDelegate: Item {
         property string text
-        property real horizontalOffset
         id: characterPreview
         Rectangle {
             id: characterPreviewBackground

@@ -517,7 +517,6 @@ KeyboardStyle {
     characterPreviewMargin: 20 * scaleHint
     characterPreviewDelegate: Item {
         property string text
-        property real horizontalOffset
         id: characterPreview
         Image {
             id: characterPreviewBackground
