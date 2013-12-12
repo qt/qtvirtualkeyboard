@@ -47,6 +47,7 @@ public:
 
     ~DeclarativeSelectionListModel();
     void setDataSource(AbstractInputMethod* dataSource, Type type);
+    AbstractInputMethod* dataSource() const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QHash<int,QByteArray> roleNames() const;

@@ -40,6 +40,7 @@ class DeclarativeInputEngine : public QObject
     Q_PROPERTY(QList<int> inputModes READ inputModes NOTIFY inputModesChanged)
     Q_PROPERTY(InputMode inputMode READ inputMode WRITE setInputMode NOTIFY inputModeChanged)
     Q_PROPERTY(DeclarativeSelectionListModel* wordCandidateListModel READ wordCandidateListModel NOTIFY wordCandidateListModelChanged)
+    Q_PROPERTY(bool wordCandidateListVisibleHint READ wordCandidateListVisibleHint NOTIFY wordCandidateListVisibleHintChanged)
 
     explicit DeclarativeInputEngine(DeclarativeInputContext* parent = 0);
 
@@ -75,6 +76,7 @@ public:
     void setInputMode(InputMode inputMode);
 
     DeclarativeSelectionListModel* wordCandidateListModel() const;
+    bool wordCandidateListVisibleHint() const;
 
 signals:
     void virtualKeyClicked(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers);
@@ -86,6 +88,7 @@ signals:
     void inputModesChanged();
     void inputModeChanged();
     void wordCandidateListModelChanged();
+    void wordCandidateListVisibleHintChanged();
 
 private slots:
     void reset();

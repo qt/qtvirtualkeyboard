@@ -126,6 +126,15 @@ void DeclarativeSelectionListModel::setDataSource(AbstractInputMethod* dataSourc
 /*!
     \internal
 */
+AbstractInputMethod* DeclarativeSelectionListModel::dataSource() const
+{
+    Q_D(const DeclarativeSelectionListModel);
+    return d->dataSource;
+}
+
+/*!
+    \internal
+*/
 int DeclarativeSelectionListModel::rowCount(const QModelIndex &parent) const
 {
     Q_D(const DeclarativeSelectionListModel);

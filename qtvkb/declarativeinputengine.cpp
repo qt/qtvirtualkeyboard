@@ -337,16 +337,18 @@ void DeclarativeInputEngine::setInputMethod(AbstractInputMethod* inputMethod)
                     }
                 }
                 d->selectionListModels[selectionListType]->setDataSource(inputMethod, selectionListType);
+                if (selectionListType == DeclarativeSelectionListModel::WordCandidateList) {
+                    emit wordCandidateListVisibleHintChanged();
+                }
                 inactiveSelectionLists.removeAll(selectionListType);
             }
 
             // Deallocate inactive selection lists
             foreach (const DeclarativeSelectionListModel::Type& selectionListType, inactiveSelectionLists) {
                 if (d->selectionListModels.contains(selectionListType)) {
-                    delete d->selectionListModels[selectionListType];
-                    d->selectionListModels.remove(selectionListType);
+                    d->selectionListModels[selectionListType]->setDataSource(0, selectionListType);
                     if (selectionListType == DeclarativeSelectionListModel::WordCandidateList) {
-                        emit wordCandidateListModelChanged();
+                        emit wordCandidateListVisibleHintChanged();
                     }
                 }
             }
@@ -403,6 +405,14 @@ DeclarativeSelectionListModel* DeclarativeInputEngine::wordCandidateListModel() 
 {
     Q_D(const DeclarativeInputEngine);
     return d->selectionListModels[DeclarativeSelectionListModel::WordCandidateList];
+}
+
+bool DeclarativeInputEngine::wordCandidateListVisibleHint() const
+{
+    Q_D(const DeclarativeInputEngine);
+    if (!d->selectionListModels.contains(DeclarativeSelectionListModel::WordCandidateList))
+        return false;
+    return d->selectionListModels[DeclarativeSelectionListModel::WordCandidateList]->dataSource() != 0;
 }
 
 /*!
@@ -560,8 +570,7 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent* timerEvent)
     \qmlproperty SelectionListModel InputEngine::wordCandidateListModel
 
     Use this property to access the list model for the word candidate
-    list. The property is set to null if it is not used by the current
-    input method.
+    list.
 */
 
 /*!
@@ -569,8 +578,22 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent* timerEvent)
     \brief list model for the word candidate list.
 
     Use this property to access the list model for the word candidate
-    list. The property is set to null if it is not used by the current
-    input method.
+    list.
+*/
+
+/*!
+    \qmlproperty SelectionListModel InputEngine::wordCandidateListVisibleHint
+
+    This property is true if the word candidate list should be visible
+    in the UI.
+*/
+
+/*!
+    \property DeclarativeInputEngine::wordCandidateListVisibleHint
+    \brief active status of of the word candidate list.
+
+    This property is true if the word candidate list should be visible
+    in the UI.
 */
 
 /*!
