@@ -54,13 +54,6 @@ TextBase {
         selectionColor: Qt.rgba(1.0, 1.0, 1.0, 0.5)
         selectedTextColor: Qt.rgba(0.0, 0.0, 0.0, 0.8)
         anchors { left: parent.left; right: parent.right; margins: 12 }
-        cursorDelegate: Rectangle {
-            width: 2
-            opacity: 0.7
-            color: "#EEEEEE"
-            visible: textEdit.activeFocus
-        }
-
         onActiveFocusChanged: if (!activeFocus) deselect()
     }
 }

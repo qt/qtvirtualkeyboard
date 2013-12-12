@@ -59,12 +59,6 @@ TextBase {
             selectionColor: Qt.rgba(1.0, 1.0, 1.0, 0.5)
             selectedTextColor: Qt.rgba(0.0, 0.0, 0.0, 0.8)
             width: Math.max(flickable.width, implicitWidth)-2
-            cursorDelegate: Rectangle {
-                width: 2
-                opacity: 0.7
-                color: "#EEEEEE"
-                visible: textInput.activeFocus
-            }
             onActiveFocusChanged: if (!activeFocus) deselect()
         }
     }
