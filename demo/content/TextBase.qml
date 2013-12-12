@@ -26,7 +26,7 @@ FocusScope {
     property int fontPixelSize: 32
     property string previewText
     property string enterKeyText
-    property bool enterKeyEnabled: true
+    property bool enterKeyEnabled: enterKeyText.length === 0 || editor.text.length > 0 || editor.inputMethodComposing
     property alias mouseParent: mouseArea.parent
 
     implicitHeight: editor.height + 12

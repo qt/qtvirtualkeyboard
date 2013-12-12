@@ -58,7 +58,6 @@ Image {
                     width: parent.width
                     previewText: "One line field"
                     enterKeyText: "Next"
-                    enterKeyEnabled: text.length > 0
                     onEnterKeyClicked: passwordField.focus = true
                 }
                 TextField {
@@ -69,7 +68,6 @@ Image {
                     previewText: "Password field"
                     inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText
                     enterKeyText: "Next"
-                    enterKeyEnabled: text.length > 0
                     onEnterKeyClicked: numberField.focus = true
                 }
                 TextField {
@@ -80,7 +78,6 @@ Image {
                     previewText: "Phone number field"
                     inputMethodHints: Qt.ImhDialableCharactersOnly
                     enterKeyText: "Next"
-                    enterKeyEnabled: text.length > 0
                     onEnterKeyClicked: textArea.focus = true
                 }
                 TextArea {
