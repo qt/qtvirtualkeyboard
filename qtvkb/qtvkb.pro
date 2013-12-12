@@ -81,7 +81,8 @@ INSTALLS += qml
         INCLUDEPATH += hunspell/src
         LIBS += -Lhunspell -lhunspell
         POST_TARGETDEPS += hunspell
-        DEFINES += QT_VKB_HUNSPELL_DATA_PATH=\\\"$$QMLPATH/hunspell\\\"
+        isEmpty(hunspell_search_paths) hunspell_search_paths=$$QMLPATH/hunspell
+        DEFINES += QT_VKB_HUNSPELL_DATA_PATH=\\\"$$join(hunspell_search_paths, :)\\\"
         exists(hunspell/data) {
             hunspell_data.files = hunspell/data/*
             hunspell_data.path = $$QMLPATH/hunspell
@@ -95,7 +96,8 @@ INSTALLS += qml
         HEADERS += hunspellinputmethod.h hunspellworker.h
         DEFINES += HAVE_HUNSPELL
         PKGCONFIG += hunspell
-        DEFINES += QT_VKB_HUNSPELL_DATA_PATH=\\\"/usr/share/hunspell\;/usr/share/myspell\\\"
+        isEmpty(hunspell_search_paths) hunspell_search_paths=/usr/share/hunspell /usr/share/myspell
+        DEFINES += QT_VKB_HUNSPELL_DATA_PATH=\\\"$$join(hunspell_search_paths, :)\\\"
     } else {
         message(Hunspell not found! Spell correction will not be available.)
     }
