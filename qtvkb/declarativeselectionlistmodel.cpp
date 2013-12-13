@@ -25,6 +25,7 @@ public:
     QHash<int, QByteArray> roles;
     AbstractInputMethod* dataSource;
     DeclarativeSelectionListModel::Type type;
+    int rowCount;
 };
 
 /*!
@@ -139,7 +140,7 @@ int DeclarativeSelectionListModel::rowCount(const QModelIndex &parent) const
 {
     Q_D(const DeclarativeSelectionListModel);
     Q_UNUSED(parent)
-    return d->dataSource ? d->dataSource->selectionListItemCount(d->type) : 0;
+    return d->rowCount;
 }
 
 /*!
@@ -179,8 +180,26 @@ void DeclarativeSelectionListModel::selectionListChanged(int type)
 {
     Q_D(DeclarativeSelectionListModel);
     if (static_cast<Type>(type) == d->type) {
-        beginResetModel();
-        endResetModel();
+        int oldCount = d->rowCount;
+        int newCount = d->dataSource ? d->dataSource->selectionListItemCount(d->type) : 0;
+        if (newCount) {
+            int changedCount = qMin(oldCount, newCount);
+            if (changedCount)
+                dataChanged(index(0), index(changedCount - 1));
+            if (oldCount > newCount) {
+                beginRemoveRows(QModelIndex(), newCount, oldCount - 1);
+                d->rowCount = newCount;
+                endRemoveRows();
+            } else if (oldCount < newCount) {
+                beginInsertRows(QModelIndex(), oldCount, newCount - 1);
+                d->rowCount = newCount;
+                endInsertRows();
+            }
+        } else {
+            beginResetModel();
+            d->rowCount = 0;
+            endResetModel();
+        }
     }
 }
 
