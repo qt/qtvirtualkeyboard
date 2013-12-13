@@ -23,20 +23,21 @@
 
     \inmodule InputFramework
 
-    \brief Base class for input panel.
+    \brief Base class for an input panel.
 
     Input panel is a container for InputPanel qml view.
 
-    The virtual keyboard supports currently the following input panels:
+    The virtual keyboard currently supports the following input panels:
     \list
-        \li AppInputPanel Input panel type that is integrated directly into application.
+        \li AppInputPanel Input panel type that is integrated directly into the
+            application.
         \li XcbInputPanel Input panel type for X-windowing system.
     \endlist
 */
 
 /*!
-    Creates input panel container with \a parent but does not construct
-    view. The view is explicitly constructed by
+    Creates an input panel container with \a parent but does not construct
+    the view. The view is explicitly constructed by the
     AbstractInputPanel::createView() method.
 */
 AbstractInputPanel::AbstractInputPanel(QObject *parent) :
@@ -66,13 +67,12 @@ AbstractInputPanel::~AbstractInputPanel()
 /*!
     \fn bool AbstractInputPanel::isVisible() const = 0
 
-    Returns true if the input panel is currently visible.
+    Returns \c true if the input panel is currently visible.
 */
 
 /*!
     This method adjusts the input rectangle of the input panel.
-    The \a inputRect specifies the area in which the mouse input
-    is accepted.
+    The \a inputRect specifies the area in which mouse input is accepted.
 */
 void AbstractInputPanel::setInputRect(const QRect& inputRect)
 {
@@ -80,8 +80,8 @@ void AbstractInputPanel::setInputRect(const QRect& inputRect)
 }
 
 /*!
-    Creates view for the input panel. If the view is already created,
-    the method does nothing.
+    Creates the view of the input panel. If the view is already created,
+    this method does nothing.
 */
 void AbstractInputPanel::createView()
 {
@@ -90,7 +90,7 @@ void AbstractInputPanel::createView()
 /*!
     \fn void AbstractInputPanel::destroyView()
 
-    Destroys the view from the input panel.
+    Destroys the view of the input panel.
 */
 void AbstractInputPanel::destroyView()
 {

@@ -138,7 +138,7 @@ bool DeclarativeShiftHandler::isEnabled() const
     will cause shift state change.
 
     By default, the property is initialized to sentence
-    ending characters found in ASCII range (i.e. ".!?")
+    ending characters found in the ASCII range (i.e. ".!?").
 */
 
 /*!
@@ -148,5 +148,5 @@ bool DeclarativeShiftHandler::isEnabled() const
     will cause shift state change.
 
     By default, the property is initialized to sentence
-    ending characters found in ASCII range (i.e. ".!?")
+    ending characters found in the ASCII range (i.e. ".!?").
 */

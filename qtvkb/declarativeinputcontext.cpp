@@ -29,7 +29,7 @@
 /*!
     \qmlmodule QtVkb 1.0
 
-    This module provides a collection of QML components for virtual keyboard.
+    This module provides a collection of QML components for Qt Virtual Keyboard.
 */
 
 /*!
@@ -63,7 +63,7 @@ public:
     \qmltype InputContext
     \instantiates DeclarativeInputContext
     \inqmlmodule QtVkb 1.0
-    \brief Provides access to input context.
+    \brief Provides access to an input context.
 
     The InputContext can be accessed as singleton instance.
 */
@@ -71,12 +71,13 @@ public:
 /*!
     \class DeclarativeInputContext
     \inmodule InputFramework
-    \brief Provides access to input context.
+    \brief Provides access to an input context.
 */
 
 /*!
     \internal
-    Constructs the declarative input context with \a parent as platform input context.
+    Constructs a declarative input context with \a parent as the platform input
+    context.
 */
 DeclarativeInputContext::DeclarativeInputContext(PlatformInputContext *parent) :
     QObject(parent),
@@ -256,12 +257,12 @@ DeclarativeInputEngine* DeclarativeInputContext::inputEngine() const
 
     This method hides the input panel. This method should only be called
     when the user initiates the hide, e.g. by pressing a dedicated button
-    in keyboard.
+    on the keyboard.
 */
 /*!
     This method hides the input panel. This method should only be called
     when the user initiates the hide, e.g. by pressing a dedicated button
-    in keyboard.
+    on the keyboard.
 */
 void DeclarativeInputContext::hideInputPanel()
 {
@@ -272,10 +273,12 @@ void DeclarativeInputContext::hideInputPanel()
 /*!
     \qmlmethod void InputContext::sendKeyClick(int key, string text, int modifiers = 0)
 
-    Sends key click event to focused input item with \a key, \a text and \a modifiers.
+    Sends a key click event with the given \a key, \a text and \a modifiers to
+    the input item that currently has focus.
 */
 /*!
-    Sends key click event to focused input item with \a key, \a text and \a modifiers.
+    Sends a key click event with the given \a key, \a text and \a modifiers to
+    the input item that currently has focus.
 */
 void DeclarativeInputContext::sendKeyClick(int key, const QString &text, int modifiers)
 {
@@ -310,18 +313,18 @@ void DeclarativeInputContext::commit()
 /*!
     \qmlmethod void InputContext::commit(string text, int replacementStart = 0, int replacementEnd = 0)
 
-    Commits the final \a text to input item and optionally
-    modifies the text relative to start of the pre-edit text.
-    If \a replacementStart is non-zero the \a text replaces the
-    contents relative to replacementStart with length of \a
-    replacementLength.
+    Commits the final \a text to the input item and optionally
+    modifies the text relative to the start of the pre-edit text.
+    If \a replacementStart is non-zero, the \a text replaces the
+    contents relative to \a replacementStart with length of
+    \a replacementLength.
 */
 /*!
-    Commits the final \a text to input item and optionally
-    modifies the text relative to start of the pre-edit text.
-    If \a replacementStart is non-zero the \a text replaces the
-    contents relative to replacementStart with length of \a
-    replacementLength.
+    Commits the final \a text to the input item and optionally
+    modifies the text relative to the start of the pre-edit text.
+    If \a replacementStart is non-zero, the \a text replaces the
+    contents relative to \a replacementStart with length of
+    \a replacementLength.
 */
 void DeclarativeInputContext::commit(const QString &text, int replacementStart, int replacementLength)
 {
@@ -343,10 +346,10 @@ void DeclarativeInputContext::commit(const QString &text, int replacementStart, 
 /*!
     \qmlmethod void InputContext::clear()
 
-    Clears pre-edit text.
+    Clears the pre-edit text.
 */
 /*!
-    Clears pre-edit text.
+    Clears the pre-edit text.
 */
 void DeclarativeInputContext::clear()
 {
@@ -526,14 +529,14 @@ void DeclarativeInputContext::update(Qt::InputMethodQueries queries)
 /*!
     \qmlproperty string InputContext::preeditText
 
-    Use this property to modify the pre-edit text.
+    This property sets the pre-edit text.
 */
 
 /*!
     \property DeclarativeInputContext::preeditText
     \brief the pre-edit text.
 
-    Use this property to modify the pre-edit text.
+    This property sets the pre-edit text.
 */
 
 /*!
@@ -578,14 +581,14 @@ void DeclarativeInputContext::update(Qt::InputMethodQueries queries)
 /*!
     \qmlproperty rect InputContext::keyboardRectangle
 
-    Use this property to set keyboard rectangle.
+    Use this property to set the keyboard rectangle.
 */
 
 /*!
     \property DeclarativeInputContext::keyboardRectangle
     \brief the keyboard rectangle.
 
-    Use this property to set keyboard rectangle.
+    Use this property to set the keyboard rectangle.
 */
 
 /*!
@@ -606,14 +609,14 @@ void DeclarativeInputContext::update(Qt::InputMethodQueries queries)
 /*!
     \qmlproperty string InputContext::locale
 
-    Use this property to set the locale.
+    Sets the locale for this input context.
 */
 
 /*!
     \property DeclarativeInputContext::locale
     \brief the locale.
 
-    Use this property to set the locale.
+    Sets the locale for this input context.
 */
 
 /*!
@@ -632,27 +635,27 @@ void DeclarativeInputContext::update(Qt::InputMethodQueries queries)
 /*!
     \qmlproperty ShiftHandler InputContext::shiftHandler
 
-    Use this property to access the shift handler.
+    This property stores the shift handler.
 */
 
 /*!
     \property DeclarativeInputContext::shiftHandler
     \brief the shift handler instance.
 
-    Use this property to access the auto shift handler.
+    This property stores the shift handler.
 */
 
 /*!
     \qmlproperty InputEngine InputContext::inputEngine
 
-    Use this property to access the input engine.
+    This property stores the input engine.
 */
 
 /*!
     \property DeclarativeInputContext::inputEngine
     \brief the input engine.
 
-    Use this property to access the input engine.
+    This property stores the input engine.
 */
 
 /*!

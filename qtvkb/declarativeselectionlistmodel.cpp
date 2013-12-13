@@ -32,7 +32,7 @@ public:
     \qmltype SelectionListModel
     \instantiates DeclarativeSelectionListModel
     \inqmlmodule QtVkb 1.0
-    \brief Provides list model for the selection lists.
+    \brief Provides a list model for the selection lists.
 
     This type acts as a bridge between the UI and the
     input method that provides the data for selection
@@ -48,10 +48,10 @@ public:
         \li \c "wordCompletionLength" Word completion length for item
     \endlist
 
-    The UI must bind to SelectionListModel::activeItemChanged
+    The UI must bind to the SelectionListModel::activeItemChanged
     signal and update the highlighted item in the view.
 
-    When the user selects an item from list the UI must invoke the
+    When the user selects an item from the list, the UI must invoke the
     SelectionListModel::itemSelected() method.
 */
 
@@ -84,8 +84,8 @@ public:
     \value DisplayRole
            The data to be rendered in form of text.
     \value WordCompletionLengthRole
-           An integer specifying the length of word
-           the completion part expressed as
+           An integer specifying the length of the word
+           the completion part expressed as the
            number of characters counted from the
            end of the string.
 */
@@ -163,7 +163,7 @@ QHash<int,QByteArray> DeclarativeSelectionListModel::roleNames() const
 
 /*!
     The UI invokes this method when user selects an item
-    identified by \a index from selection list.
+    identified by \a index from the selection list.
 */
 void DeclarativeSelectionListModel::itemSelected(int index)
 {
