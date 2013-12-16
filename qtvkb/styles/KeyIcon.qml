@@ -19,8 +19,18 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
 
+/*!
+    \qmltype KeyIcon
+    \inqmlmodule QtVkb.Styles
+    \brief Key icon with adjustable color.
+
+    The KeyIcon item displays an icon with adjustable color.
+*/
+
 Item {
+    /*! The icon color. */
     property alias color: overlay.color
+    /*! The source image. */
     property alias source: icon.source
     Image {
         id: icon
