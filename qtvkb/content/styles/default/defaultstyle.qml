@@ -505,7 +505,6 @@ KeyboardStyle {
     selectionListDelegate: SelectionListItem {
         id: selectionListItem
         width: Math.round(selectionListLabel.width + selectionListLabel.anchors.leftMargin * 2)
-        height: parent.height
         Text {
             id: selectionListLabel
             anchors.left: parent.left

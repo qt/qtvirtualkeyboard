@@ -11,6 +11,7 @@ import QtQuick 2.0
 
 Item {
     id: selectionListItem
+    height: parent.height
     MouseArea {
         id: mouseArea
         anchors.fill: parent
