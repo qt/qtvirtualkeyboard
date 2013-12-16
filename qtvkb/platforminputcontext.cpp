@@ -152,7 +152,7 @@ QObject* PlatformInputContext::focusObject()
 void PlatformInputContext::setFocusObject(QObject *object)
 {
     VKB_DEBUG() << "PlatformInputContext::setFocusObject():" << object;
-    if(m_focusObject == object)
+    if (m_focusObject == object)
         return;
     m_focusObject = object;
     emit focusObjectChanged();

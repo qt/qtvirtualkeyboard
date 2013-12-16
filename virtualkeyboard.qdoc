@@ -24,5 +24,5 @@
 
     The example shows how to build a virtual keyboard UI with support for
     multiple keyboard layouts using QML, and a QPlatformInputContext bridge
-    for communicating between the keyboard and focused text editor in C++. 
+    for communicating between the keyboard and focused text editor in C++.
 */

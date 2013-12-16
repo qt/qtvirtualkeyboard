@@ -30,7 +30,7 @@ class HunspellInputMethod : public AbstractInputMethod
 public:
     explicit HunspellInputMethod(QObject *parent = 0);
     ~HunspellInputMethod();
-    
+
     QList<DeclarativeInputEngine::InputMode> inputModes(const QString& locale);
     bool setInputMode(const QString& locale, DeclarativeInputEngine::InputMode inputMode);
     bool setTextCase(DeclarativeInputEngine::TextCase textCase);

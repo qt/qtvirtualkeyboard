@@ -37,7 +37,7 @@ public:
     bool isVisible() const;
 
     void setInputRect(const QRect& inputRect);
-    
+
 public slots:
     void createView();
     void destroyView();

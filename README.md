@@ -38,7 +38,7 @@ By default, HunspellInputMethod will not be available unless the Hunspell librar
 development headers are found. For Linux/X11 target the Hunspell library can be provided
 by installing libhunspell-dev package. Alternatively the Hunspell sources can be extracted into
 qtvkb/hunspell directory. If Hunspell sources are used, then the dictionary
-files must also be copied into qtvkb/hunspell/data directory. Futhermore,
+files must also be copied into qtvkb/hunspell/data directory. Furthermore,
 if Hunspell sources are used, the hunspell.pro will be used for all targets.
 
 ## Deployment instructions

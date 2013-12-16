@@ -136,7 +136,7 @@ QVariant AbstractInputMethod::selectionListData(DeclarativeSelectionListModel::T
 {
     Q_UNUSED(type)
     Q_UNUSED(index)
-    switch(role) {
+    switch (role) {
     case DeclarativeSelectionListModel::DisplayRole:
         return QVariant("");
     case DeclarativeSelectionListModel::WordCompletionLengthRole:
