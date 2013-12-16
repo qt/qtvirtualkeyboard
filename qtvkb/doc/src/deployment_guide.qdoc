@@ -1,0 +1,127 @@
+/****************************************************************************
+**
+** Copyright (C) 2013 Digia Plc
+** All rights reserved.
+** For any questions to Digia, please use contact form at http://qt.digia.com
+**
+** This file is part of the Qt Quick Enterprise Controls add-on.
+**
+** Licensees holding valid Qt Enterprise licenses may use this file in
+** accordance with the Qt Enterprise License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and Digia.
+**
+** If you have questions regarding the use of this file, please use
+** contact form at http://qt.digia.com
+**
+****************************************************************************/
+
+/*!
+
+\page deployment_guide.html
+\contentspage {Deployment Guide} {Contents}
+
+\title Deployment Guide
+
+\section1 Overview
+
+This document describes how to deploy and use the QtVKB plugin in
+Qt5 applications.
+
+\section1 Deployment
+
+The QtVKB plugin must be properly deployed before it can be used.
+The easiest way to do the deployment is to add a deployment step
+in QtCreator that executes make install command.
+
+The make install deploys the files in the following locations:
+
+\table
+\header
+    \li Item
+    \li Desktop install path
+    \li Boot2Qt install path
+\row
+    \li qtvkbplugin
+    \li \c $$[QT_INSTALL_PLUGINS]/platforminputcontexts
+    \li \c /system/plugins/platforminputcontexts
+\row
+    \li qtvkbplugin QML files
+    \li \c $$[QT_INSTALL_QML]/QtVkb
+    \li \c /system/qml/QtVkb
+\row
+    \li qtvkbstylesplugin
+    \li \c $$[QT_INSTALL_QML]/QtVkb/Styles
+    \li \c /system/qml/QtVkb/Styles
+\endtable
+
+\section1 Integration method
+
+The QtVKB currently supports two alternative integration methods
+to use the plugin:
+
+\list
+    \li \c Desktop: The QtVKB is integrated into Qt5 and requires no
+        changes to existing applications. The plugin is available for all applications
+        system wide.
+    \li \c Application: The QtVKB is integrated into Qt5, but requires
+        changes to particular application using the keyboard. This method is currently
+        used in Boot2Qt environment, but is available for desktop too.
+\endlist
+
+The integration method is automatically selected by the project files.
+However, in desktop environment, it is possible to disable the desktop
+integration method and use the application integration method instead.
+This happens by adding \c CONFIG+=disable-xcb into the qmake command line.
+
+\note The desktop integration is not currently available for Boot2Qt.
+
+\section1 Activating the plugin
+
+In both integration methods the application must use the QT_IM_MODULE
+environment variable to activate the plugin. For example:
+
+\code
+$ QT_IM_MODULE=qtvkb myapp
+\endcode
+
+or in the main() function:
+
+\code
+qputenv("QT_IM_MODULE", QByteArray("qtvkb"));
+\endcode
+
+Once the QGuiApplication loads the plugin the InputPanel becomes available.
+The entity which instantiates the InputPanel depends on the chosen integration
+method; in desktop method the entity is plugin, and in application method the
+entity is application.
+
+\section1 Creating the InputPanel
+
+The following example shows how to create the InputPanel.
+
+\note This applies only to application integration method.
+
+\code
+Item {
+    id: appContainer
+    ...
+    InputPanel {
+        id: inputPanel
+        z: 99
+        y: Qt.inputMethod.visible ? appContainer.height - inputPanel.height : appContainer.height
+        anchors.left: parent.left
+        anchors.right: parent.right
+    }
+}
+\endcode
+
+The application should give the input panel width and vertical position.
+The keyboard height is adjusted automatically by the input panel and should
+not be set directly.
+
+The visible status is received from \c Qt.inputMethod.visible property. In
+this example, the application adjusts the vertical offset of the input
+panel to either show or hide the keyboard.
+
+*/

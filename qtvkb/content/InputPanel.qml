@@ -19,6 +19,18 @@
 import QtQuick 2.0
 import "components"
 
+/*!
+    \qmltype InputPanel
+    \inqmlmodule QtVkb
+
+    \brief Provides the virtual keyboard UI.
+
+    The keyboard size is automatically calculated from the available
+    width, i.e. the keyboard maintains the aspect ratio specified by the current
+    style. Therefore the application should only set the \c width and \c y
+    coordinates of the InputPanel, and not the height.
+*/
+
 Item {
     height: keyboard.height
     Keyboard {

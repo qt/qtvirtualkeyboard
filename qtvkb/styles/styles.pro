@@ -21,7 +21,9 @@ OTHER_FILES += \
     KeyboardStyle.qml \
     KeyPanel.qml \
     KeyIcon.qml \
-    qmldir
+    SelectionListItem.qml \
+    qmldir \
+    plugins.qmltypes
 
 other.files = $$OTHER_FILES
 other.path = $$TARGETPATH

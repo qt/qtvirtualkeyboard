@@ -1,7 +1,8 @@
 OTHER_FILES += \
             $$PWD/qtvkb.qdocconf \
             $$PWD/src/index.qdoc \
-            $$PWD/src/intro.qdoc \
+            $$PWD/src/deployment_guide.qdoc \
+            $$PWD/src/technical_guide.qdoc \
             $$PWD/src/examples/CustomInputMethod.qml
 
 docs_target.target = docs

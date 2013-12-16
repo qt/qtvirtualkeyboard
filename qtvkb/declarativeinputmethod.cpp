@@ -23,8 +23,7 @@
     \qmltype InputMethod
     \instantiates DeclarativeInputMethod
     \inqmlmodule QtVkb 1.0
-    \brief The InputMethod component provides a way to implement an input method
-    in QML.
+    \brief Base type for creating input method in QML.
 
     The InputMethod type lets you create a custom input method
     which can be assigned to InputEngine.

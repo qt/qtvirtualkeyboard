@@ -502,7 +502,7 @@ KeyboardStyle {
     }
 
     selectionListHeight: 85 * scaleHint
-    selectionListDelegate: Item {
+    selectionListDelegate: SelectionListItem {
         id: selectionListItem
         width: Math.round(selectionListLabel.width + selectionListLabel.anchors.leftMargin * 2)
         height: parent.height
@@ -541,12 +541,6 @@ KeyboardStyle {
                 target: selectionListLabel
                 color: "white"
             }
-        }
-        MouseArea {
-            id: mouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-            onClicked: selectionListItem.ListView.view.model.itemSelected(index)
         }
     }
     selectionListBackground: Rectangle {

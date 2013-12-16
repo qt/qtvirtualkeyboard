@@ -20,6 +20,12 @@
 
 #include <qqml.h>
 
+/*!
+    \qmlmodule QtVkb.Styles 1.0
+
+    This module provides styling components for the Qt Virtual Keyboard.
+*/
+
 void StylesPlugin::registerTypes(const char *uri)
 {
     Q_UNUSED(uri)

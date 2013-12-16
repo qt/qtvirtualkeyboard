@@ -65,7 +65,7 @@ private:
     \qmltype InputEngine
     \inqmlmodule QtVkb 1.0
     \instantiates DeclarativeInputEngine
-    \brief The InputEngine provides access to input methods.
+    \brief Maps the user input to the input methods.
 
     The input engine is responsible for routing input events to input
     methods. The actual input logic is implemented by the input methods.

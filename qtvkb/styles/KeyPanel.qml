@@ -18,7 +18,29 @@
 
 import QtQuick 2.0
 
+/*!
+    \qmltype KeyPanel
+    \inqmlmodule QtVkb.Styles
+    \brief A base type of the styled keys.
+
+    All the key delegates provided by the style should be based on this type.
+*/
+
 Item {
+    /*! Provides access to properties in key control.
+
+        A list of available properties in control:
+        \list
+            \li \c control.key Unicode code of the key.
+            \li \c control.text Unicode text of the key.
+            \li \c control.displayText Display text of the key.
+            \li \c control.alternativeKeys List of alternative key sequences.
+            \li \c control.enabled Set to true when the key is enabled.
+            \li \c control.pressed Set to true when the key is currently pressed.
+            \li \c control.uppercased Set to true when the key is uppercased.
+            \li \c control.capsLock Set to true when caps lock is enabled.
+        \endlist
+    */
     property Item control
     // Uncomment the following to reveal the key sizes
     /*

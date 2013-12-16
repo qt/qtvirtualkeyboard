@@ -18,22 +18,26 @@
 
 /*!
 
-\page intro.html
-\contentspage {Introduction} {Contents}
+\page technical_guide.html
+\contentspage {Technical Guide} {Contents}
 
-\title Introduction
+\title Technical Guide
+
+\section1 Overview
+
+This document provides a technical overview of the QtVKB plugin.
 
 \section1 Basic Concepts
 
-The QtVKB project provides an input context plugin which
-implements QPlatformInputContextPlugin and QPlatformInputContext interfaces.
-These interfaces makes it possible to use it as an input context plugin for
-Qt5 application.
+The QtVKB project is a Qt5 input context plugin which implements
+QPlatformInputContextPlugin and QPlatformInputContext interfaces.
+These interfaces allows the plugin to be used as a platform input
+context plugin in Qt5 applications.
 
-In addition to standard interfaces, it also provides an additional
-interfaces for QML which support the implementation of the virtual keyboard.
+The plugin itself provides an input framework supporting multiple
+input methods as well as QML UI for the virtual keyboard.
 
-These interfaces consists of the following:
+The input framework provides the following main interfaces:
 
 \list
     \li InputContext : provides contextual information for virtual keyboard

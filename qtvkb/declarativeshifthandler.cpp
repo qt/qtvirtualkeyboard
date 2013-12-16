@@ -30,13 +30,13 @@ public:
     \qmltype ShiftHandler
     \inqmlmodule QtVkb 1.0
     \instantiates DeclarativeShiftHandler
-    \brief Monitors shift state for InputContext.
+    \brief Manages the shift state.
 */
 
 /*!
     \class DeclarativeShiftHandler
     \inmodule InputFramework
-    \brief Monitors shift state for DeclarativeInputContext.
+    \brief Manages the shift state.
 */
 
 DeclarativeShiftHandler::DeclarativeShiftHandler(DeclarativeInputContext* parent) :

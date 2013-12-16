@@ -32,7 +32,7 @@ public:
     \qmltype SelectionListModel
     \instantiates DeclarativeSelectionListModel
     \inqmlmodule QtVkb 1.0
-    \brief Provides a list model for the selection lists.
+    \brief Provides a data model for the selection lists.
 
     This type acts as a bridge between the UI and the
     input method that provides the data for selection
