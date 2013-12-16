@@ -38,9 +38,29 @@ Item {
         InputPanel {
             id: inputPanel
             z: 99
-            y: Qt.inputMethod.visible ? appContainer.height - inputPanel.height : appContainer.height
+            y: appContainer.height
             anchors.left: parent.left
             anchors.right: parent.right
+            states: State {
+                name: "visible"
+                when: Qt.inputMethod.visible
+                PropertyChanges {
+                    target: inputPanel
+                    y: appContainer.height - inputPanel.height
+                }
+            }
+            transitions: Transition {
+                from: ""
+                to: "visible"
+                reversible: true
+                ParallelAnimation {
+                    NumberAnimation {
+                        properties: "y"
+                        duration: 250
+                        easing.type: Easing.InOutQuad
+                    }
+                }
+            }
         }
     }
 }
