@@ -11,25 +11,20 @@ android-no-sdk|!isEmpty(CROSS_COMPILE) {
 target.path = $$TARGETPATH
 INSTALLS += target
 
+RESOURCES += \
+    demo.qrc
+
 OTHER_FILES += \
     VirtualKeyboard.qml \
+    VirtualKeyboard-b2qt.qml \
     content/ScrollBar.qml \
     content/TextArea.qml \
     content/TextBase.qml \
     content/TextField.qml \
     content/images/background.png
-disable-xcb|android-no-sdk|!isEmpty(CROSS_COMPILE) {
-    OTHER_FILES += VirtualKeyboard-b2qt.qml
-}
 
-qml.files = \
-    VirtualKeyboard.qml \
-    content
 disable-xcb|android-no-sdk|!isEmpty(CROSS_COMPILE) {
-    qml.files += VirtualKeyboard-b2qt.qml
     DEFINES += MAIN_QML=\\\"VirtualKeyboard-b2qt.qml\\\"
 } else {
     DEFINES += MAIN_QML=\\\"VirtualKeyboard.qml\\\"
 }
-qml.path = $$TARGETPATH
-INSTALLS += qml

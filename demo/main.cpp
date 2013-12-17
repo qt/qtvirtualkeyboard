@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     qputenv("QT_IM_MODULE", QByteArray("qtvkb"));
 
     QGuiApplication app(argc, argv);
-    QQuickView view(QUrl::fromLocalFile(QString("%1/%2").arg(QCoreApplication::applicationDirPath()).arg(MAIN_QML)));
+    QQuickView view(QString("qrc:/%2").arg(MAIN_QML));
     view.setResizeMode(QQuickView::SizeRootObjectToView);
 
     view.show();
