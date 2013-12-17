@@ -147,7 +147,7 @@ void XcbInputPanel::focusWindowChanged(QWindow *focusWindow)
 
 void XcbInputPanel::focusWindowVisibleChanged(bool visible)
 {
-    if(!visible) {
+    if (!visible) {
         DeclarativeInputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->declarativeInputContext();
         if (inputContext)
             inputContext->hideInputPanel();
