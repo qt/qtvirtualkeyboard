@@ -3,6 +3,9 @@ TARGET  = qtvkbplugin
 android-no-sdk {
     TARGETPATH = /system/plugins/platforminputcontexts
     QMLPATH = /system/qml/QtVkb
+} else:!isEmpty(CROSS_COMPILE) {
+    TARGETPATH = /usr/local/Qt-$$[QT_VERSION]/plugins/platforminputcontexts
+    QMLPATH = /usr/local/Qt-$$[QT_VERSION]/qml/QtVkb
 } else {
     TARGETPATH = $$[QT_INSTALL_PLUGINS]/platforminputcontexts
     QMLPATH = $$[QT_INSTALL_QML]/QtVkb
@@ -53,7 +56,7 @@ OTHER_FILES += content/InputPanel.qml \
 
 OTHER += qtvkb.json
 
-!disable-xcb:packagesExist(xcb) {
+!disable-xcb:isEmpty(CROSS_COMPILE):packagesExist(xcb) {
     PKGCONFIG += xcb xcb-xfixes
     SOURCES += xcbinputpanel.cpp inputview.cpp
     HEADERS += xcbinputpanel.h inputview.h
@@ -90,7 +93,7 @@ INSTALLS += qml
         } else {
             error(Hunspell dictionaries are missing! Please copy .dic and .aff files to qtvkb/hunspell/data directory.)
         }
-    } else:packagesExist(hunspell) {
+    } else:isEmpty(CROSS_COMPILE):packagesExist(hunspell) {
         message(Found Hunspell package from pkg-config!)
         SOURCES += hunspellinputmethod.cpp hunspellworker.cpp
         HEADERS += hunspellinputmethod.h hunspellworker.h

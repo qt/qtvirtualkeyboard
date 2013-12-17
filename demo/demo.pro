@@ -3,8 +3,7 @@ TARGET = virtualkeyboard
 QT += qml quick
 SOURCES += main.cpp
 CONFIG += link_pkgconfig
-
-android-no-sdk {
+android-no-sdk|!isEmpty(CROSS_COMPILE) {
     TARGETPATH = /data/user/qt/virtualkeyboard
 } else {
     TARGETPATH = $$[QT_INSTALL_EXAMPLES]/virtualkeyboard
@@ -19,14 +18,14 @@ OTHER_FILES += \
     content/TextBase.qml \
     content/TextField.qml \
     content/images/background.png
-disable-xcb|!packagesExist(xcb) {
+disable-xcb|android-no-sdk|!isEmpty(CROSS_COMPILE) {
     OTHER_FILES += VirtualKeyboard-b2qt.qml
 }
 
 qml.files = \
     VirtualKeyboard.qml \
     content
-disable-xcb|!packagesExist(xcb) {
+disable-xcb|android-no-sdk|!isEmpty(CROSS_COMPILE) {
     qml.files += VirtualKeyboard-b2qt.qml
     DEFINES += MAIN_QML=\\\"VirtualKeyboard-b2qt.qml\\\"
 } else {

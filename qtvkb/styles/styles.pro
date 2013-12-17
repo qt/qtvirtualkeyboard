@@ -2,6 +2,8 @@ TEMPLATE = lib
 TARGET = qtvkbstylesplugin
 android-no-sdk {
     TARGETPATH = /system/qml/QtVkb/Styles
+} else:!isEmpty(CROSS_COMPILE) {
+    TARGETPATH = /usr/local/Qt-$$[QT_VERSION]/qml/QtVkb/Styles
 } else {
     TARGETPATH = $$[QT_INSTALL_QML]/QtVkb/Styles
 }
