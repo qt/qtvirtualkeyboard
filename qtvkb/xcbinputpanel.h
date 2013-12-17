@@ -36,15 +36,15 @@ public:
     void hide();
     bool isVisible() const;
 
-    void setInputRect(const QRect& inputRect);
+    void setInputRect(const QRect &inputRect);
 
 public slots:
     void createView();
     void destroyView();
 
 protected slots:
-    void repositionView(const QRect& rect);
-    void focusWindowChanged(QWindow* focusWindow);
+    void repositionView(const QRect &rect);
+    void focusWindowChanged(QWindow *focusWindow);
     void focusWindowVisibleChanged(bool visible);
 
 private:

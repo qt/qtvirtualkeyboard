@@ -43,9 +43,9 @@
 class DeclarativeInputContextPrivate
 {
 public:
-    PlatformInputContext* inputContext;
-    DeclarativeInputEngine* inputEngine;
-    DeclarativeShiftHandler* shiftHandler;
+    PlatformInputContext *inputContext;
+    DeclarativeInputEngine *inputEngine;
+    DeclarativeShiftHandler *shiftHandler;
     QRectF keyboardRect;
     bool animating;
     bool focus;
@@ -222,7 +222,7 @@ QString DeclarativeInputContext::locale() const
     return d->inputContext->locale().name();
 }
 
-void DeclarativeInputContext::setLocale(const QString& locale)
+void DeclarativeInputContext::setLocale(const QString &locale)
 {
     Q_D(DeclarativeInputContext);
     VKB_DEBUG() << "DeclarativeInputContext::setLocale():" << locale;
@@ -234,19 +234,19 @@ void DeclarativeInputContext::setLocale(const QString& locale)
     }
 }
 
-QObject* DeclarativeInputContext::inputItem() const
+QObject *DeclarativeInputContext::inputItem() const
 {
     Q_D(const DeclarativeInputContext);
     return d->inputContext ? d->inputContext->focusObject() : 0;
 }
 
-DeclarativeShiftHandler* DeclarativeInputContext::shiftHandler() const
+DeclarativeShiftHandler *DeclarativeInputContext::shiftHandler() const
 {
     Q_D(const DeclarativeInputContext);
     return d->shiftHandler;
 }
 
-DeclarativeInputEngine* DeclarativeInputContext::inputEngine() const
+DeclarativeInputEngine *DeclarativeInputContext::inputEngine() const
 {
     Q_D(const DeclarativeInputContext);
     return d->inputEngine;

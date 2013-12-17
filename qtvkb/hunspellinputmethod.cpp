@@ -29,7 +29,7 @@ class HunspellInputMethodPrivate : public AbstractInputMethodPrivate
     Q_DECLARE_PUBLIC(HunspellInputMethod)
 
 public:
-    HunspellInputMethodPrivate(HunspellInputMethod* q_ptr) :
+    HunspellInputMethodPrivate(HunspellInputMethod *q_ptr) :
         AbstractInputMethodPrivate(),
         q_ptr(q_ptr),
         hunspellWorker(0),
@@ -45,16 +45,16 @@ public:
     {
     }
 
-    bool createHunspell(const QString& locale)
+    bool createHunspell(const QString &locale)
     {
         if (this->locale != locale) {
             hunspellWorker.reset(0);
-            Hunhandle* hunspell = 0;
+            Hunhandle *hunspell = 0;
             QString hunspellDataPath(QString::fromLatin1(qgetenv("QT_VKB_HUNSPELL_DATA_PATH").constData()));
             if (hunspellDataPath.isEmpty())
                 hunspellDataPath = QT_VKB_HUNSPELL_DATA_PATH;
             QStringList searchPaths(hunspellDataPath.split(":"));
-            foreach (const QString& searchPath, searchPaths) {
+            foreach (const QString &searchPath, searchPaths) {
                 QByteArray affpath(QString("%1/%2.aff").arg(searchPath).arg(locale).toUtf8());
                 QByteArray dpath(QString("%1/%2.dic").arg(searchPath).arg(locale).toUtf8());
                 if (QFileInfo(dpath).exists()) {
@@ -136,7 +136,7 @@ public:
         return !wordCandidates.isEmpty();
     }
 
-    HunspellInputMethod* q_ptr;
+    HunspellInputMethod *q_ptr;
     QScopedPointer<HunspellWorker> hunspellWorker;
     QString locale;
     QString word;
@@ -154,13 +154,13 @@ HunspellInputMethod::~HunspellInputMethod()
 {
 }
 
-QList<DeclarativeInputEngine::InputMode> HunspellInputMethod::inputModes(const QString& locale)
+QList<DeclarativeInputEngine::InputMode> HunspellInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
     return QList<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::Latin << DeclarativeInputEngine::Numeric;
 }
 
-bool HunspellInputMethod::setInputMode(const QString& locale, DeclarativeInputEngine::InputMode inputMode)
+bool HunspellInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
 {
     Q_UNUSED(inputMode)
     Q_D(HunspellInputMethod);
@@ -173,7 +173,7 @@ bool HunspellInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
     return true;
 }
 
-bool HunspellInputMethod::keyEvent(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers)
+bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
     Q_UNUSED(modifiers)
     Q_D(HunspellInputMethod);
@@ -294,7 +294,7 @@ void HunspellInputMethod::update()
     reset();
 }
 
-void HunspellInputMethod::updateSuggestions(const QStringList& wordList, int activeWordIndex)
+void HunspellInputMethod::updateSuggestions(const QStringList &wordList, int activeWordIndex)
 {
     Q_D(HunspellInputMethod);
     d->wordCandidates.clear();

@@ -36,13 +36,13 @@ class DeclarativeInputEngine : public QObject
     Q_ENUMS(InputMode)
     Q_PROPERTY(Qt::Key activeKey READ activeKey NOTIFY activeKeyChanged)
     Q_PROPERTY(Qt::Key previousKey READ previousKey NOTIFY previousKeyChanged)
-    Q_PROPERTY(AbstractInputMethod* inputMethod READ inputMethod WRITE setInputMethod NOTIFY inputMethodChanged)
+    Q_PROPERTY(AbstractInputMethod *inputMethod READ inputMethod WRITE setInputMethod NOTIFY inputMethodChanged)
     Q_PROPERTY(QList<int> inputModes READ inputModes NOTIFY inputModesChanged)
     Q_PROPERTY(InputMode inputMode READ inputMode WRITE setInputMode NOTIFY inputModeChanged)
-    Q_PROPERTY(DeclarativeSelectionListModel* wordCandidateListModel READ wordCandidateListModel NOTIFY wordCandidateListModelChanged)
+    Q_PROPERTY(DeclarativeSelectionListModel *wordCandidateListModel READ wordCandidateListModel NOTIFY wordCandidateListModelChanged)
     Q_PROPERTY(bool wordCandidateListVisibleHint READ wordCandidateListVisibleHint NOTIFY wordCandidateListVisibleHintChanged)
 
-    explicit DeclarativeInputEngine(DeclarativeInputContext* parent = 0);
+    explicit DeclarativeInputEngine(DeclarativeInputContext *parent = 0);
 
 public:
     enum TextCase {
@@ -58,28 +58,28 @@ public:
 public:
     ~DeclarativeInputEngine();
 
-    Q_INVOKABLE bool virtualKeyPress(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers, bool repeat);
+    Q_INVOKABLE bool virtualKeyPress(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool repeat);
     Q_INVOKABLE void virtualKeyCancel();
-    Q_INVOKABLE bool virtualKeyRelease(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers);
-    Q_INVOKABLE bool virtualKeyClick(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers);
+    Q_INVOKABLE bool virtualKeyRelease(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
+    Q_INVOKABLE bool virtualKeyClick(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 
-    DeclarativeInputContext* inputContext() const;
+    DeclarativeInputContext *inputContext() const;
     Qt::Key activeKey() const;
     Qt::Key previousKey() const;
 
-    AbstractInputMethod* inputMethod() const;
-    void setInputMethod(AbstractInputMethod* inputMethod);
+    AbstractInputMethod *inputMethod() const;
+    void setInputMethod(AbstractInputMethod *inputMethod);
 
     QList<int> inputModes() const;
 
     InputMode inputMode() const;
     void setInputMode(InputMode inputMode);
 
-    DeclarativeSelectionListModel* wordCandidateListModel() const;
+    DeclarativeSelectionListModel *wordCandidateListModel() const;
     bool wordCandidateListVisibleHint() const;
 
 signals:
-    void virtualKeyClicked(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers);
+    void virtualKeyClicked(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
     void activeKeyChanged(Qt::Key key);
     void previousKeyChanged(Qt::Key key);
     void inputMethodChanged();
@@ -97,7 +97,7 @@ private slots:
     void localeChanged();
 
 protected:
-    void timerEvent(QTimerEvent* timerEvent);
+    void timerEvent(QTimerEvent *timerEvent);
 
 private:
     friend class DeclarativeInputContext;

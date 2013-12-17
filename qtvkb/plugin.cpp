@@ -55,7 +55,7 @@ QStringList PlatformInputContextPlugin::keys() const
     return QStringList(QStringLiteral("qtvkb"));
 }
 
-QPlatformInputContext *PlatformInputContextPlugin::create(const QString& system, const QStringList& paramList)
+QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system, const QStringList &paramList)
 {
     Q_UNUSED(paramList);
 

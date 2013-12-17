@@ -30,14 +30,14 @@ class HunspellTask : public QObject
 {
     Q_OBJECT
 public:
-    explicit HunspellTask(QObject* parent = 0) :
+    explicit HunspellTask(QObject *parent = 0) :
         QObject(parent),
         hunspell(0)
     {}
 
     virtual void run() = 0;
 
-    Hunhandle* hunspell;
+    Hunhandle *hunspell;
 };
 
 class HunspellWordList
@@ -60,8 +60,8 @@ public:
     QSharedPointer<HunspellWordList> wordList;
 
     void run();
-    bool spellCheck(const QString& word);
-    int levenshteinDistance(const QString& s, const QString& t);
+    bool spellCheck(const QString &word);
+    int levenshteinDistance(const QString &s, const QString &t);
 };
 
 class HunspellUpdateSuggestionsTask : public HunspellTask
@@ -73,14 +73,14 @@ public:
     void run();
 
 signals:
-    void updateSuggestions(const QStringList& wordList, int activeWordIndex);
+    void updateSuggestions(const QStringList &wordList, int activeWordIndex);
 };
 
 class HunspellWorker : public QThread
 {
     Q_OBJECT
 public:
-    explicit HunspellWorker(Hunhandle* hunspell, QObject *parent = 0);
+    explicit HunspellWorker(Hunhandle *hunspell, QObject *parent = 0);
     ~HunspellWorker();
 
     void addTask(QSharedPointer<HunspellTask> task);
@@ -93,7 +93,7 @@ private:
     QList<QSharedPointer<HunspellTask> > taskList;
     QSemaphore taskSema;
     QMutex taskLock;
-    Hunhandle* hunspell;
+    Hunhandle *hunspell;
     bool abort;
 };
 

@@ -53,10 +53,10 @@ public:
     virtual Qt::LayoutDirection inputDirection() const;
     void setInputDirection(Qt::LayoutDirection direction);
 
-    QObject* focusObject();
+    QObject *focusObject();
     virtual void setFocusObject(QObject *object);
 
-    DeclarativeInputContext* declarativeInputContext() const;
+    DeclarativeInputContext *declarativeInputContext() const;
 
 signals:
     void focusObjectChanged();
@@ -73,7 +73,7 @@ private slots:
 private:
     friend class DeclarativeInputContext;
     DeclarativeInputContext *m_declarativeContext;
-    AbstractInputPanel* m_inputPanel;
+    AbstractInputPanel *m_inputPanel;
     bool m_inputPanelCreated;
     QPointer<QObject> m_focusObject;
     QLocale m_locale;

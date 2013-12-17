@@ -162,20 +162,20 @@ DeclarativeInputMethod::~DeclarativeInputMethod()
 {
 }
 
-QList<DeclarativeInputEngine::InputMode> DeclarativeInputMethod::inputModes(const QString& locale)
+QList<DeclarativeInputEngine::InputMode> DeclarativeInputMethod::inputModes(const QString &locale)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "inputModes",
                               Q_RETURN_ARG(QVariant, result),
                               Q_ARG(QVariant, locale));
     QList<DeclarativeInputEngine::InputMode> inputModeList;
-    foreach (const QVariant& inputMode, result.toList()) {
+    foreach (const QVariant &inputMode, result.toList()) {
         inputModeList.append(static_cast<DeclarativeInputEngine::InputMode>(inputMode.toInt()));
     }
     return inputModeList;
 }
 
-bool DeclarativeInputMethod::setInputMode(const QString& locale, DeclarativeInputEngine::InputMode inputMode)
+bool DeclarativeInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "setInputMode",
@@ -194,7 +194,7 @@ bool DeclarativeInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCa
     return result.toBool();
 }
 
-bool DeclarativeInputMethod::keyEvent(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers)
+bool DeclarativeInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "keyEvent",
@@ -211,7 +211,7 @@ QList<DeclarativeSelectionListModel::Type> DeclarativeInputMethod::selectionList
     QMetaObject::invokeMethod(this, "selectionLists",
                               Q_RETURN_ARG(QVariant, result));
     QList<DeclarativeSelectionListModel::Type> selectionListsList;
-    foreach (const QVariant& selectionListType, result.toList()) {
+    foreach (const QVariant &selectionListType, result.toList()) {
         selectionListsList.append(static_cast<DeclarativeSelectionListModel::Type>(selectionListType.toInt()));
     }
     return selectionListsList;

@@ -24,18 +24,18 @@
 class DeclarativeInputMethod : public AbstractInputMethod
 {
     Q_OBJECT
-    Q_PROPERTY(DeclarativeInputContext* inputContext READ inputContext CONSTANT)
-    Q_PROPERTY(DeclarativeInputEngine* inputEngine READ inputEngine CONSTANT)
+    Q_PROPERTY(DeclarativeInputContext *inputContext READ inputContext CONSTANT)
+    Q_PROPERTY(DeclarativeInputEngine *inputEngine READ inputEngine CONSTANT)
 
 public:
     explicit DeclarativeInputMethod(QObject *parent = 0);
     ~DeclarativeInputMethod();
 
-    QList<DeclarativeInputEngine::InputMode> inputModes(const QString& locale);
-    bool setInputMode(const QString& locale, DeclarativeInputEngine::InputMode inputMode);
+    QList<DeclarativeInputEngine::InputMode> inputModes(const QString &locale);
+    bool setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode);
     bool setTextCase(DeclarativeInputEngine::TextCase textCase);
 
-    bool keyEvent(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers);
+    bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 
     QList<DeclarativeSelectionListModel::Type> selectionLists();
     int selectionListItemCount(DeclarativeSelectionListModel::Type type);

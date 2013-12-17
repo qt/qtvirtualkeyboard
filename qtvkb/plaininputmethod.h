@@ -26,14 +26,14 @@ class PlainInputMethod : public AbstractInputMethod
     Q_OBJECT
 
 public:
-    explicit PlainInputMethod(QObject* parent = 0);
+    explicit PlainInputMethod(QObject *parent = 0);
     ~PlainInputMethod();
 
-    QList<DeclarativeInputEngine::InputMode> inputModes(const QString& locale);
-    bool setInputMode(const QString& locale, DeclarativeInputEngine::InputMode inputMode);
+    QList<DeclarativeInputEngine::InputMode> inputModes(const QString &locale);
+    bool setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode);
     bool setTextCase(DeclarativeInputEngine::TextCase textCase);
 
-    bool keyEvent(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers);
+    bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 
     void reset();
     void update();

@@ -144,7 +144,7 @@ void PlatformInputContext::setInputDirection(Qt::LayoutDirection direction)
     }
 }
 
-QObject* PlatformInputContext::focusObject()
+QObject *PlatformInputContext::focusObject()
 {
     return m_focusObject;
 }
@@ -174,7 +174,7 @@ void PlatformInputContext::setFocusObject(QObject *object)
     }
 }
 
-DeclarativeInputContext* PlatformInputContext::declarativeInputContext() const
+DeclarativeInputContext *PlatformInputContext::declarativeInputContext() const
 {
     return m_declarativeContext;
 }
@@ -187,8 +187,8 @@ void PlatformInputContext::sendEvent(QEvent *event)
 
 void PlatformInputContext::sendKeyEvent(QKeyEvent *event)
 {
-    const QGuiApplication* app = qApp;
-    QWindow* focusWindow = app ? app->focusWindow() : 0;
+    const QGuiApplication *app = qApp;
+    QWindow *focusWindow = app ? app->focusWindow() : 0;
     if (focusWindow)
         QGuiApplication::sendEvent(focusWindow, event);
 }

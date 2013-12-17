@@ -45,9 +45,9 @@ class DeclarativeInputContext : public QObject
     Q_PROPERTY(QRectF keyboardRectangle READ keyboardRectangle WRITE setKeyboardRectangle NOTIFY keyboardRectangleChanged)
     Q_PROPERTY(bool animating READ animating WRITE setAnimating NOTIFY animatingChanged)
     Q_PROPERTY(QString locale READ locale WRITE setLocale NOTIFY localeChanged)
-    Q_PROPERTY(QObject* inputItem READ inputItem NOTIFY inputItemChanged)
-    Q_PROPERTY(DeclarativeShiftHandler* shiftHandler READ shiftHandler CONSTANT)
-    Q_PROPERTY(DeclarativeInputEngine* inputEngine READ inputEngine CONSTANT)
+    Q_PROPERTY(QObject *inputItem READ inputItem NOTIFY inputItemChanged)
+    Q_PROPERTY(DeclarativeShiftHandler *shiftHandler READ shiftHandler CONSTANT)
+    Q_PROPERTY(DeclarativeInputEngine *inputEngine READ inputEngine CONSTANT)
 
 public:
     explicit DeclarativeInputContext(PlatformInputContext *parent = 0);
@@ -70,10 +70,10 @@ public:
     bool animating() const;
     void setAnimating(bool animating);
     QString locale() const;
-    void setLocale(const QString& locale);
-    QObject* inputItem() const;
-    DeclarativeShiftHandler* shiftHandler() const;
-    DeclarativeInputEngine* inputEngine() const;
+    void setLocale(const QString &locale);
+    QObject *inputItem() const;
+    DeclarativeShiftHandler *shiftHandler() const;
+    DeclarativeInputEngine *inputEngine() const;
 
     Q_INVOKABLE void hideInputPanel();
     Q_INVOKABLE void sendKeyClick(int key, const QString &text, int modifiers = 0);

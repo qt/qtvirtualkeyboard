@@ -27,12 +27,12 @@ class DeclarativeInputEnginePrivate
 {
 public:
     virtual ~DeclarativeInputEnginePrivate() { }
-    DeclarativeInputContext* inputContext;
+    DeclarativeInputContext *inputContext;
     QPointer<AbstractInputMethod> inputMethod;
-    AbstractInputMethod* defaultInputMethod;
+    AbstractInputMethod *defaultInputMethod;
     DeclarativeInputEngine::TextCase textCase;
     DeclarativeInputEngine::InputMode inputMode;
-    QMap<DeclarativeSelectionListModel::Type, DeclarativeSelectionListModel*> selectionListModels;
+    QMap<DeclarativeSelectionListModel::Type, DeclarativeSelectionListModel *> selectionListModels;
     Qt::Key activeKey;
     QString activeKeyText;
     Qt::KeyboardModifiers activeKeyModifiers;
@@ -45,7 +45,7 @@ public:
 class RecursiveMethodGuard
 {
 public:
-    explicit RecursiveMethodGuard(int& ref) : m_ref(ref)
+    explicit RecursiveMethodGuard(int &ref) : m_ref(ref)
     {
         m_ref++;
     }
@@ -58,7 +58,7 @@ public:
         return m_ref > 1;
     }
 private:
-    int& m_ref;
+    int &m_ref;
 };
 
 /*!
@@ -93,7 +93,7 @@ private:
     \internal
     Constructs an input engine with input context as \a parent.
 */
-DeclarativeInputEngine::DeclarativeInputEngine(DeclarativeInputContext* parent) :
+DeclarativeInputEngine::DeclarativeInputEngine(DeclarativeInputContext *parent) :
     QObject(parent),
     d_ptr(new DeclarativeInputEnginePrivate())
 {
@@ -150,7 +150,7 @@ DeclarativeInputEngine::~DeclarativeInputEngine()
 
     \sa virtualKeyCancel(), virtualKeyRelease()
 */
-bool DeclarativeInputEngine::virtualKeyPress(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers, bool repeat)
+bool DeclarativeInputEngine::virtualKeyPress(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool repeat)
 {
     Q_D(DeclarativeInputEngine);
     VKB_DEBUG() << "DeclarativeInputEngine::virtualKeyPress():" << key << text << modifiers << repeat;
@@ -215,7 +215,7 @@ void DeclarativeInputEngine::virtualKeyCancel()
 
     Returns \c true if the key was accepted by the input engine.
 */
-bool DeclarativeInputEngine::virtualKeyRelease(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers)
+bool DeclarativeInputEngine::virtualKeyRelease(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
     Q_D(DeclarativeInputEngine);
     VKB_DEBUG() << "DeclarativeInputEngine::virtualKeyRelease():" << key << text << modifiers;
@@ -255,7 +255,7 @@ bool DeclarativeInputEngine::virtualKeyRelease(Qt::Key key, const QString& text,
     Emits a key click event for the given \a key, \a text and \a modifiers.
     Returns \c true if the key event was accepted by the input engine.
 */
-bool DeclarativeInputEngine::virtualKeyClick(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers)
+bool DeclarativeInputEngine::virtualKeyClick(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
     Q_D(DeclarativeInputEngine);
     bool accept = false;
@@ -278,7 +278,7 @@ bool DeclarativeInputEngine::virtualKeyClick(Qt::Key key, const QString& text, Q
     Returns the \c DeclarativeInputContext instance associated with the input
     engine.
 */
-DeclarativeInputContext* DeclarativeInputEngine::inputContext() const
+DeclarativeInputContext *DeclarativeInputEngine::inputContext() const
 {
     Q_D(const DeclarativeInputEngine);
     return d->inputContext;
@@ -306,7 +306,7 @@ Qt::Key DeclarativeInputEngine::previousKey() const
 /*!
     Returns the active input method.
 */
-AbstractInputMethod* DeclarativeInputEngine::inputMethod() const
+AbstractInputMethod *DeclarativeInputEngine::inputMethod() const
 {
     Q_D(const DeclarativeInputEngine);
     return d->inputMethod;
@@ -315,7 +315,7 @@ AbstractInputMethod* DeclarativeInputEngine::inputMethod() const
 /*!
     Sets \a inputMethod as the active input method.
 */
-void DeclarativeInputEngine::setInputMethod(AbstractInputMethod* inputMethod)
+void DeclarativeInputEngine::setInputMethod(AbstractInputMethod *inputMethod)
 {
     Q_D(DeclarativeInputEngine);
     VKB_DEBUG() << "DeclarativeInputEngine::setInputMethod():" << inputMethod;
@@ -331,7 +331,7 @@ void DeclarativeInputEngine::setInputMethod(AbstractInputMethod* inputMethod)
             // Allocate selection lists for the input method
             QList<DeclarativeSelectionListModel::Type> activeSelectionLists = d->inputMethod->selectionLists();
             QList<DeclarativeSelectionListModel::Type> inactiveSelectionLists = d->selectionListModels.keys();
-            foreach (const DeclarativeSelectionListModel::Type& selectionListType, activeSelectionLists) {
+            foreach (const DeclarativeSelectionListModel::Type &selectionListType, activeSelectionLists) {
                 if (!d->selectionListModels.contains(selectionListType)) {
                     d->selectionListModels[selectionListType] = new DeclarativeSelectionListModel(this);
                     if (selectionListType == DeclarativeSelectionListModel::WordCandidateList) {
@@ -346,7 +346,7 @@ void DeclarativeInputEngine::setInputMethod(AbstractInputMethod* inputMethod)
             }
 
             // Deallocate inactive selection lists
-            foreach (const DeclarativeSelectionListModel::Type& selectionListType, inactiveSelectionLists) {
+            foreach (const DeclarativeSelectionListModel::Type &selectionListType, inactiveSelectionLists) {
                 if (d->selectionListModels.contains(selectionListType)) {
                     d->selectionListModels[selectionListType]->setDataSource(0, selectionListType);
                     if (selectionListType == DeclarativeSelectionListModel::WordCandidateList) {
@@ -374,7 +374,7 @@ QList<int> DeclarativeInputEngine::inputModes() const
         return QList<int>();
     }
     QList<int> resultList;
-    foreach (const InputMode& inputMode, inputModeList) {
+    foreach (const InputMode &inputMode, inputModeList) {
         resultList.append(inputMode);
     }
     return resultList;
@@ -403,7 +403,7 @@ void DeclarativeInputEngine::setInputMode(DeclarativeInputEngine::InputMode inpu
     }
 }
 
-DeclarativeSelectionListModel* DeclarativeInputEngine::wordCandidateListModel() const
+DeclarativeSelectionListModel *DeclarativeInputEngine::wordCandidateListModel() const
 {
     Q_D(const DeclarativeInputEngine);
     return d->selectionListModels[DeclarativeSelectionListModel::WordCandidateList];
@@ -478,7 +478,7 @@ void DeclarativeInputEngine::localeChanged()
 /*!
     \internal
 */
-void DeclarativeInputEngine::timerEvent(QTimerEvent* timerEvent)
+void DeclarativeInputEngine::timerEvent(QTimerEvent *timerEvent)
 {
     Q_D(DeclarativeInputEngine);
     if (timerEvent->timerId() == d->repeatTimer) {
@@ -632,7 +632,7 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent* timerEvent)
 */
 
 /*!
-    \fn void DeclarativeInputEngine::virtualKeyClicked(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers)
+    \fn void DeclarativeInputEngine::virtualKeyClicked(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 
     Indicates that the virtual \a key was clicked with the given \a text and
     \a modifiers.

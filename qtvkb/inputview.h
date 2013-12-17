@@ -31,7 +31,7 @@ signals:
     void sizeChanged();
 
 protected:
-    void resizeEvent(QResizeEvent* event);
+    void resizeEvent(QResizeEvent *event);
 };
 
 #endif // INPUTVIEW_H

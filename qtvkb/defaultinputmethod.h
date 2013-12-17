@@ -28,11 +28,11 @@ class DefaultInputMethod : public AbstractInputMethod
 public:
     explicit DefaultInputMethod(QObject *parent = 0);
 
-    QList<DeclarativeInputEngine::InputMode> inputModes(const QString& locale);
-    bool setInputMode(const QString& locale, DeclarativeInputEngine::InputMode inputMode);
+    QList<DeclarativeInputEngine::InputMode> inputModes(const QString &locale);
+    bool setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode);
     bool setTextCase(DeclarativeInputEngine::TextCase textCase);
 
-    bool keyEvent(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers);
+    bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 
     void reset();
     void update();

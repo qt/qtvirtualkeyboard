@@ -23,7 +23,7 @@ class DeclarativeSelectionListModelPrivate
 {
 public:
     QHash<int, QByteArray> roles;
-    AbstractInputMethod* dataSource;
+    AbstractInputMethod *dataSource;
     DeclarativeSelectionListModel::Type type;
     int rowCount;
 };
@@ -109,7 +109,7 @@ DeclarativeSelectionListModel::~DeclarativeSelectionListModel()
 /*!
     \internal
 */
-void DeclarativeSelectionListModel::setDataSource(AbstractInputMethod* dataSource, Type type)
+void DeclarativeSelectionListModel::setDataSource(AbstractInputMethod *dataSource, Type type)
 {
     Q_D(DeclarativeSelectionListModel);
     if (d->dataSource) {
@@ -127,7 +127,7 @@ void DeclarativeSelectionListModel::setDataSource(AbstractInputMethod* dataSourc
 /*!
     \internal
 */
-AbstractInputMethod* DeclarativeSelectionListModel::dataSource() const
+AbstractInputMethod *DeclarativeSelectionListModel::dataSource() const
 {
     Q_D(const DeclarativeSelectionListModel);
     return d->dataSource;

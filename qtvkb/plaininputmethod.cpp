@@ -20,7 +20,7 @@
 #include "declarativeinputengine.h"
 #include "declarativeinputcontext.h"
 
-PlainInputMethod::PlainInputMethod(QObject* parent) :
+PlainInputMethod::PlainInputMethod(QObject *parent) :
     AbstractInputMethod(parent)
 {
 }
@@ -29,13 +29,13 @@ PlainInputMethod::~PlainInputMethod()
 {
 }
 
-QList<DeclarativeInputEngine::InputMode> PlainInputMethod::inputModes(const QString& locale)
+QList<DeclarativeInputEngine::InputMode> PlainInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
     return QList<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::Latin << DeclarativeInputEngine::Numeric;
 }
 
-bool PlainInputMethod::setInputMode(const QString& locale, DeclarativeInputEngine::InputMode inputMode)
+bool PlainInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_UNUSED(inputMode)
@@ -48,7 +48,7 @@ bool PlainInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
     return true;
 }
 
-bool PlainInputMethod::keyEvent(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers)
+bool PlainInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
     Q_UNUSED(key)
     Q_UNUSED(text)

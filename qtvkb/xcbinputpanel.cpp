@@ -41,7 +41,7 @@ XcbInputPanel::XcbInputPanel(QObject *parent) :
     /*  Activate the alpha buffer for this application.
     */
     QQuickWindow::setDefaultAlphaBuffer(true);
-    QScreen* screen = QGuiApplication::primaryScreen();
+    QScreen *screen = QGuiApplication::primaryScreen();
     connect(screen, SIGNAL(virtualGeometryChanged(QRect)), SLOT(repositionView(QRect)));
 }
 
@@ -70,7 +70,7 @@ bool XcbInputPanel::isVisible() const
     return d->view && d->view->isVisible();
 }
 
-void XcbInputPanel::setInputRect(const QRect& inputRect)
+void XcbInputPanel::setInputRect(const QRect &inputRect)
 {
     VKB_DEBUG() << "XcbInputPanel::setInputRect():" << inputRect;
     /*  Set input region using platform specific code.
@@ -78,12 +78,12 @@ void XcbInputPanel::setInputRect(const QRect& inputRect)
         do this, but currenly none is available.
     */
     Q_D(XcbInputPanel);
-    QWindow* window = d->view.data();
+    QWindow *window = d->view.data();
     if (!window) {
         return;
     }
-    QPlatformNativeInterface* platformNativeInterface = QGuiApplication::platformNativeInterface();
-    xcb_connection_t* xbcConnection = static_cast<xcb_connection_t*>(platformNativeInterface->nativeResourceForWindow("connection", window));
+    QPlatformNativeInterface *platformNativeInterface = QGuiApplication::platformNativeInterface();
+    xcb_connection_t *xbcConnection = static_cast<xcb_connection_t *>(platformNativeInterface->nativeResourceForWindow("connection", window));
     xcb_xfixes_region_t xbcRegion = xcb_generate_id(xbcConnection);
     const xcb_rectangle_t xbcInputRect = {
         static_cast<int16_t>(inputRect.x()),
@@ -121,12 +121,12 @@ void XcbInputPanel::destroyView()
     d->view.reset();
 }
 
-void XcbInputPanel::repositionView(const QRect& rect)
+void XcbInputPanel::repositionView(const QRect &rect)
 {
     Q_D(XcbInputPanel);
     VKB_DEBUG() << "XcbInputPanel::repositionView():" << rect;
     if (d->view && d->view->geometry() != rect) {
-        DeclarativeInputContext* inputContext = qobject_cast<PlatformInputContext*>(parent())->declarativeInputContext();
+        DeclarativeInputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->declarativeInputContext();
         if (inputContext)
             inputContext->setAnimating(true);
         d->view->setResizeMode(QQuickView::SizeViewToRootObject);
@@ -148,7 +148,7 @@ void XcbInputPanel::focusWindowChanged(QWindow *focusWindow)
 void XcbInputPanel::focusWindowVisibleChanged(bool visible)
 {
     if(!visible) {
-        DeclarativeInputContext* inputContext = qobject_cast<PlatformInputContext*>(parent())->declarativeInputContext();
+        DeclarativeInputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->declarativeInputContext();
         if (inputContext)
             inputContext->hideInputPanel();
     }

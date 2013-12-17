@@ -31,11 +31,11 @@ public:
     explicit HunspellInputMethod(QObject *parent = 0);
     ~HunspellInputMethod();
 
-    QList<DeclarativeInputEngine::InputMode> inputModes(const QString& locale);
-    bool setInputMode(const QString& locale, DeclarativeInputEngine::InputMode inputMode);
+    QList<DeclarativeInputEngine::InputMode> inputModes(const QString &locale);
+    bool setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode);
     bool setTextCase(DeclarativeInputEngine::TextCase textCase);
 
-    bool keyEvent(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers);
+    bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 
     QList<DeclarativeSelectionListModel::Type> selectionLists();
     int selectionListItemCount(DeclarativeSelectionListModel::Type type);
@@ -46,7 +46,7 @@ public:
     void update();
 
 protected slots:
-    void updateSuggestions(const QStringList& wordList, int activeWordIndex);
+    void updateSuggestions(const QStringList &wordList, int activeWordIndex);
 };
 
 #endif // HUNSPELLINPUTMETHOD_H

@@ -74,7 +74,7 @@ AbstractInputPanel::~AbstractInputPanel()
     This method adjusts the input rectangle of the input panel.
     The \a inputRect specifies the area in which mouse input is accepted.
 */
-void AbstractInputPanel::setInputRect(const QRect& inputRect)
+void AbstractInputPanel::setInputRect(const QRect &inputRect)
 {
     Q_UNUSED(inputRect);
 }

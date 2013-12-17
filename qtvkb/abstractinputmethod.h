@@ -26,7 +26,7 @@ class AbstractInputMethodPrivate
 {
 public:
     virtual ~AbstractInputMethodPrivate() {}
-    DeclarativeInputEngine* inputEngine;
+    DeclarativeInputEngine *inputEngine;
 };
 
 class AbstractInputMethod : public QObject
@@ -36,20 +36,20 @@ class AbstractInputMethod : public QObject
     Q_PROPERTY(QString className READ className CONSTANT)
 
 protected:
-    AbstractInputMethod(AbstractInputMethodPrivate* d_ptr, QObject* parent = 0);
+    AbstractInputMethod(AbstractInputMethodPrivate *d_ptr, QObject *parent = 0);
 public:
-    explicit AbstractInputMethod(QObject* parent = 0);
+    explicit AbstractInputMethod(QObject *parent = 0);
     ~AbstractInputMethod();
 
     QString className() const;
-    DeclarativeInputContext* inputContext() const;
-    DeclarativeInputEngine* inputEngine() const;
+    DeclarativeInputContext *inputContext() const;
+    DeclarativeInputEngine *inputEngine() const;
 
-    virtual QList<DeclarativeInputEngine::InputMode> inputModes(const QString& locale) = 0;
-    virtual bool setInputMode(const QString& locale, DeclarativeInputEngine::InputMode inputMode) = 0;
+    virtual QList<DeclarativeInputEngine::InputMode> inputModes(const QString &locale) = 0;
+    virtual bool setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode) = 0;
     virtual bool setTextCase(DeclarativeInputEngine::TextCase textCase) = 0;
 
-    virtual bool keyEvent(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers) = 0;
+    virtual bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers) = 0;
 
     virtual QList<DeclarativeSelectionListModel::Type> selectionLists();
     virtual int selectionListItemCount(DeclarativeSelectionListModel::Type type);
@@ -65,7 +65,7 @@ public slots:
     virtual void update();
 
 private:
-    void setInputEngine(DeclarativeInputEngine* inputEngine);
+    void setInputEngine(DeclarativeInputEngine *inputEngine);
 
     friend class DeclarativeInputEngine;
 

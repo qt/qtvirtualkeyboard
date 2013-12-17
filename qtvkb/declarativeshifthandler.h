@@ -32,13 +32,13 @@ class DeclarativeShiftHandler : public QObject
     Q_DECLARE_PRIVATE(DeclarativeShiftHandler)
     Q_PROPERTY(QString sentenceEndingCharacters READ sentenceEndingCharacters WRITE setSentenceEndingCharacters NOTIFY sentenceEndingCharactersChanged)
 
-    explicit DeclarativeShiftHandler(DeclarativeInputContext* parent = 0);
+    explicit DeclarativeShiftHandler(DeclarativeInputContext *parent = 0);
 
 public:
     ~DeclarativeShiftHandler();
 
     QString sentenceEndingCharacters() const;
-    void setSentenceEndingCharacters(const QString& value);
+    void setSentenceEndingCharacters(const QString &value);
 
 signals:
     void sentenceEndingCharactersChanged();

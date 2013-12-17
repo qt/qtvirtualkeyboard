@@ -22,7 +22,7 @@
 class DeclarativeShiftHandlerPrivate
 {
 public:
-    DeclarativeInputContext* inputContext;
+    DeclarativeInputContext *inputContext;
     QString sentenceEndingCharacters;
 };
 
@@ -39,7 +39,7 @@ public:
     \brief Manages the shift state.
 */
 
-DeclarativeShiftHandler::DeclarativeShiftHandler(DeclarativeInputContext* parent) :
+DeclarativeShiftHandler::DeclarativeShiftHandler(DeclarativeInputContext *parent) :
     QObject(parent),
     d_ptr(new DeclarativeShiftHandlerPrivate())
 {
@@ -68,7 +68,7 @@ QString DeclarativeShiftHandler::sentenceEndingCharacters() const
     return d->sentenceEndingCharacters;
 }
 
-void DeclarativeShiftHandler::setSentenceEndingCharacters(const QString& value)
+void DeclarativeShiftHandler::setSentenceEndingCharacters(const QString &value)
 {
     Q_D(DeclarativeShiftHandler);
     if (d->sentenceEndingCharacters != value) {

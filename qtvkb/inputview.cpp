@@ -23,7 +23,7 @@ InputView::InputView(QWindow *parent) :
 {
 }
 
-void InputView::resizeEvent(QResizeEvent* event)
+void InputView::resizeEvent(QResizeEvent *event)
 {
     QQuickWindow::resizeEvent(event);
     emit sizeChanged();

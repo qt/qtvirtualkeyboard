@@ -24,13 +24,13 @@ DefaultInputMethod::DefaultInputMethod(QObject *parent) :
 {
 }
 
-QList<DeclarativeInputEngine::InputMode> DefaultInputMethod::inputModes(const QString& locale)
+QList<DeclarativeInputEngine::InputMode> DefaultInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
     return QList<DeclarativeInputEngine::InputMode>();
 }
 
-bool DefaultInputMethod::setInputMode(const QString& locale, DeclarativeInputEngine::InputMode inputMode)
+bool DefaultInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_UNUSED(inputMode)
@@ -43,7 +43,7 @@ bool DefaultInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
     return true;
 }
 
-bool DefaultInputMethod::keyEvent(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers)
+bool DefaultInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
     inputContext()->sendKeyClick(key, text, modifiers);
     return true;

@@ -23,7 +23,7 @@ void HunspellBuildSuggestionsTask::run()
 {
     wordList->list.append(word);
     wordList->index = 0;
-    char** slst = 0;
+    char **slst = 0;
     int n = Hunspell_suggest(hunspell, &slst, word.toUtf8().constData());
     if (n > 0) {
         /*  Collect word candidates from the Hunspell suggestions.
@@ -68,7 +68,7 @@ void HunspellBuildSuggestionsTask::run()
     Hunspell_free_list(hunspell, &slst, n);
 }
 
-bool HunspellBuildSuggestionsTask::spellCheck(const QString& word)
+bool HunspellBuildSuggestionsTask::spellCheck(const QString &word)
 {
     if (!hunspell)
         return false;
@@ -78,7 +78,7 @@ bool HunspellBuildSuggestionsTask::spellCheck(const QString& word)
 }
 
 // source: http://en.wikipedia.org/wiki/Levenshtein_distance
-int HunspellBuildSuggestionsTask::levenshteinDistance(const QString& s, const QString& t)
+int HunspellBuildSuggestionsTask::levenshteinDistance(const QString &s, const QString &t)
 {
     if (s == t)
         return 0;
@@ -107,7 +107,7 @@ void HunspellUpdateSuggestionsTask::run()
     emit updateSuggestions(wordList->list, wordList->index);
 }
 
-HunspellWorker::HunspellWorker(Hunhandle* hunspell, QObject *parent) :
+HunspellWorker::HunspellWorker(Hunhandle *hunspell, QObject *parent) :
     QThread(parent),
     taskSema(),
     taskLock(),

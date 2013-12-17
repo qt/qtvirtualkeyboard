@@ -32,7 +32,7 @@ public:
     virtual void hide() = 0;
     virtual bool isVisible() const = 0;
 
-    virtual void setInputRect(const QRect& inputRect);
+    virtual void setInputRect(const QRect &inputRect);
 
 public slots:
     virtual void createView();

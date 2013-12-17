@@ -33,7 +33,7 @@
     Constructs an input method with \a d_ptr as the private data
     from the derived class and \a parent as the parent.
 */
-AbstractInputMethod::AbstractInputMethod(AbstractInputMethodPrivate* d_ptr, QObject* parent) :
+AbstractInputMethod::AbstractInputMethod(AbstractInputMethodPrivate *d_ptr, QObject *parent) :
     QObject(parent),
     d_ptr(d_ptr)
 {
@@ -42,7 +42,7 @@ AbstractInputMethod::AbstractInputMethod(AbstractInputMethodPrivate* d_ptr, QObj
 /*!
     Constructs an input method with \a parent.
 */
-AbstractInputMethod::AbstractInputMethod(QObject* parent) :
+AbstractInputMethod::AbstractInputMethod(QObject *parent) :
     QObject(parent),
     d_ptr(new AbstractInputMethodPrivate())
 {
@@ -67,7 +67,7 @@ QString AbstractInputMethod::className() const
     Returns the input context associated with the input method.
     This method returns \c NULL if the input method is not active.
 */
-DeclarativeInputContext* AbstractInputMethod::inputContext() const
+DeclarativeInputContext *AbstractInputMethod::inputContext() const
 {
     Q_D(const AbstractInputMethod);
     return d->inputEngine ? d->inputEngine->inputContext() : 0;
@@ -77,7 +77,7 @@ DeclarativeInputContext* AbstractInputMethod::inputContext() const
     Returns the input engine associated with the input method.
     This method returns \c NULL if the input method is not active.
 */
-DeclarativeInputEngine* AbstractInputMethod::inputEngine() const
+DeclarativeInputEngine *AbstractInputMethod::inputEngine() const
 {
     Q_D(const AbstractInputMethod);
     return d->inputEngine;
@@ -107,7 +107,7 @@ void AbstractInputMethod::update()
     Called by the input engine when the input method is activated and
     deactivated.
 */
-void AbstractInputMethod::setInputEngine(DeclarativeInputEngine* inputEngine)
+void AbstractInputMethod::setInputEngine(DeclarativeInputEngine *inputEngine)
 {
     Q_D(AbstractInputMethod);
     if (d->inputEngine) {
