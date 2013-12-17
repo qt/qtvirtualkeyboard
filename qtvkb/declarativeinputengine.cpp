@@ -108,6 +108,7 @@ DeclarativeInputEngine::DeclarativeInputEngine(DeclarativeInputContext *parent) 
         d->defaultInputMethod->setInputEngine(this);
     d->textCase = Lower;
     d->inputMode = Latin;
+    d->selectionListModels[DeclarativeSelectionListModel::WordCandidateList] = new DeclarativeSelectionListModel(this);
     d->activeKey = Qt::Key_unknown;
     d->previousKey = Qt::Key_unknown;
 }
