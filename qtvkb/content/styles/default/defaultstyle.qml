@@ -21,8 +21,8 @@ import QtVkb.Styles 1.0
 
 KeyboardStyle {
     readonly property string fontFamily: openSansRegular.name
-    readonly property real keyBackgroundMargin: 13 * scaleHint
-    readonly property real keyContentMargin: 45 * scaleHint
+    readonly property real keyBackgroundMargin: Math.round(13 * scaleHint)
+    readonly property real keyContentMargin: Math.round(45 * scaleHint)
 
     property var openSansRegular: FontLoader {
         source: "qrc:/fonts/OpenSans-Regular.ttf"
@@ -192,10 +192,10 @@ KeyboardStyle {
                 source: "qrc:/images/enter.png"
                 color: "#868482"
                 anchors.fill: parent
-                anchors.topMargin: 50 * scaleHint
-                anchors.bottomMargin: 50 * scaleHint
-                anchors.leftMargin: 150 * scaleHint
-                anchors.rightMargin: 85 * scaleHint
+                anchors.topMargin: Math.round(50 * scaleHint)
+                anchors.bottomMargin: Math.round(50 * scaleHint)
+                anchors.leftMargin: Math.round(150 * scaleHint)
+                anchors.rightMargin: Math.round(85 * scaleHint)
             }
             Text {
                 id: enterKeyText
@@ -213,7 +213,7 @@ KeyboardStyle {
                     capitalization: Font.AllUppercase
                 }
                 anchors.fill: parent
-                anchors.margins: 42 * scaleHint
+                anchors.margins: Math.round(42 * scaleHint)
             }
         }
         states: [
@@ -456,7 +456,7 @@ KeyboardStyle {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 anchors.fill: parent
-                anchors.margins: 48 * scaleHint
+                anchors.margins: Math.round(48 * scaleHint)
                 font {
                     family: fontFamily
                     weight: Font.DemiBold
@@ -508,7 +508,7 @@ KeyboardStyle {
         Text {
             id: selectionListLabel
             anchors.left: parent.left
-            anchors.leftMargin: 140 * scaleHint
+            anchors.leftMargin: Math.round(140 * scaleHint)
             anchors.verticalCenter: parent.verticalCenter
             text: decorateText(display, wordCompletionLength)
             color: "#80c342"

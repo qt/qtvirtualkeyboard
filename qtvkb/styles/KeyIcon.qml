@@ -17,7 +17,6 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtGraphicalEffects 1.0
 
 /*!
     \qmltype KeyIcon
@@ -34,14 +33,24 @@ Item {
     property alias source: icon.source
     Image {
         id: icon
-        width: sourceSize.width * parent.height / sourceSize.height
-        height: parent.height
+        sourceSize.height: parent.height
         anchors.horizontalCenter: parent.horizontalCenter
         visible: false
     }
-    ColorOverlay {
+    ShaderEffect {
         id: overlay
+        property color color
+        property variant texture: icon
         anchors.fill: icon
-        source: icon
+        fragmentShader: "
+            uniform lowp vec4 color;
+            uniform lowp float qt_Opacity;
+            uniform lowp sampler2D texture;
+            varying highp vec2 qt_TexCoord0;
+            void main() {
+                highp vec4 sample = texture2D(texture, qt_TexCoord0) * qt_Opacity;
+                gl_FragColor = vec4(color.rgb, 1.0) * sample.a;
+            }
+            "
     }
 }

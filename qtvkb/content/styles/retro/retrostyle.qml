@@ -21,8 +21,8 @@ import QtVkb.Styles 1.0
 
 KeyboardStyle {
     readonly property string fontFamily: courierPrimeRegular.name
-    readonly property real keyBackgroundMargin: 9 * scaleHint
-    readonly property real keyContentMargin: 50 * scaleHint
+    readonly property real keyBackgroundMargin: Math.round(9 * scaleHint)
+    readonly property real keyContentMargin: Math.round(50 * scaleHint)
 
     property var courierPrimeRegular: FontLoader {
         source: "qrc:/fonts/Courier Prime.ttf"
@@ -145,7 +145,7 @@ KeyboardStyle {
             source: "qrc:/images/backspace.png"
             color: "#c5a96f"
             anchors.fill: parent
-            anchors.margins: keyContentMargin * 1.2
+            anchors.margins: Math.round(keyContentMargin * 1.2)
         }
         states: [
             State {
@@ -238,10 +238,10 @@ KeyboardStyle {
             source: "qrc:/images/enter.png"
             color: "#c5a96f"
             anchors.fill: parent
-            anchors.topMargin: 59 * scaleHint
-            anchors.bottomMargin: 59 * scaleHint
-            anchors.leftMargin: 142 * scaleHint
-            anchors.rightMargin: 59 * scaleHint
+            anchors.topMargin: Math.round(59 * scaleHint)
+            anchors.bottomMargin: Math.round(59 * scaleHint)
+            anchors.leftMargin: Math.round(142 * scaleHint)
+            anchors.rightMargin: Math.round(59 * scaleHint)
         }
         Text {
             id: enterKeyText
@@ -253,9 +253,9 @@ KeyboardStyle {
             verticalAlignment: Text.AlignVCenter
             anchors.fill: parent
             anchors.leftMargin: keyContentMargin
-            anchors.topMargin: 60 * scaleHint
+            anchors.topMargin: Math.round(60 * scaleHint)
             anchors.rightMargin: keyContentMargin
-            anchors.bottomMargin: 30 * scaleHint
+            anchors.bottomMargin: Math.round(30 * scaleHint)
             color: "#c5a96f"
             font {
                 family: fontFamily
@@ -514,7 +514,7 @@ KeyboardStyle {
         ]
     }
 
-    characterPreviewMargin: 20 * scaleHint
+    characterPreviewMargin: Math.round(20 * scaleHint)
     characterPreviewDelegate: Item {
         property string text
         id: characterPreview
@@ -548,11 +548,11 @@ KeyboardStyle {
         }
     }
 
-    alternateKeysListItemWidth: 111 * scaleHint
-    alternateKeysListItemHeight: 154 * scaleHint
-    alternateKeysListBottomMargin: 15 * scaleHint
-    alternateKeysListLeftMargin: 79 * scaleHint
-    alternateKeysListRightMargin: 79 * scaleHint
+    alternateKeysListItemWidth: Math.round(111 * scaleHint)
+    alternateKeysListItemHeight: Math.round(154 * scaleHint)
+    alternateKeysListBottomMargin: Math.round(15 * scaleHint)
+    alternateKeysListLeftMargin: Math.round(79 * scaleHint)
+    alternateKeysListRightMargin: Math.round(79 * scaleHint)
     alternateKeysListDelegate: Item {
         id: alternateKeysListItem
         width: alternateKeysListItemWidth
@@ -581,8 +581,8 @@ KeyboardStyle {
     alternateKeysListHighlight: Item {
         Rectangle {
             anchors.fill: parent
-            anchors.topMargin: 8 * scaleHint
-            anchors.bottomMargin: 8 * scaleHint
+            anchors.topMargin: Math.round(8 * scaleHint)
+            anchors.bottomMargin: Math.round(8 * scaleHint)
             gradient: Gradient {
                 GradientStop { position: 0.0; color: "#64462a" }
                 GradientStop { position: 0.18; color: "#a37648" }
@@ -615,9 +615,9 @@ KeyboardStyle {
             width: sourceSize.width * scaleHint
             height: sourceSize.height * scaleHint
             anchors.top: parent.bottom
-            anchors.topMargin: -8 * scaleHint
+            anchors.topMargin: Math.round(-8 * scaleHint)
             anchors.left: parent.left
-            anchors.leftMargin: currentItemOffset - width / 2
+            anchors.leftMargin: Math.round(currentItemOffset - width / 2)
         }
     }
 
@@ -628,7 +628,7 @@ KeyboardStyle {
         Text {
             id: selectionListLabel
             anchors.left: parent.left
-            anchors.leftMargin: 140 * scaleHint
+            anchors.leftMargin: Math.round(140 * scaleHint)
             anchors.verticalCenter: parent.verticalCenter
             text: decorateText(display, wordCompletionLength)
             color: "white"
