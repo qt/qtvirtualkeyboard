@@ -25,7 +25,7 @@
 
 \section1 Overview
 
-This document describes how to deploy and use the QtVKB plugin in
+This document describes how to deploy and use the QtVKB plugin with
 Qt5 applications.
 
 \section1 Deployment
@@ -58,28 +58,31 @@ The make install deploys the files in the following locations:
 \section1 Integration method
 
 The QtVKB currently supports two alternative integration methods
-to use the plugin:
+for using the plugin:
 
 \list
-    \li \c Desktop: The QtVKB is integrated into Qt5 and requires no
-        changes to existing applications. The plugin is available for all applications
-        system wide.
-    \li \c Application: The QtVKB is integrated into Qt5, but requires
-        changes to particular application using the keyboard. This method is currently
-        used in Boot2Qt environment, but is available for desktop too.
+    \li \c Desktop: The QtVKB is integrated to the Qt5 and requires no
+        changes to the existing applications. The QtVKB input method
+        is available for all the Qt5 applications in the system.
+    \li \c Application: The QtVKB is integrated to the Qt5, but requires
+        changes to particular application using the QtVKB. This method is
+        mandatory in Boot2Qt environment, but can be used in desktop
+        applications too.
 \endlist
 
 The integration method is automatically selected by the project files.
-However, in desktop environment, it is possible to disable the desktop
+However, in desktop environment, it is possible to override the desktop
 integration method and use the application integration method instead.
-This happens by adding \c CONFIG+=disable-xcb into the qmake command line.
+This happens by adding \c CONFIG+=disable-xcb option to the qmake command
+line.
 
-\note The desktop integration is not currently available for Boot2Qt.
+\note The desktop integration method is not currently available in Boot2Qt
+environment.
 
-\section1 Activating the plugin
+\section1 Loading the plugin
 
 In both integration methods the application must use the QT_IM_MODULE
-environment variable to activate the plugin. For example:
+environment variable to load the plugin. For example:
 
 \code
 $ QT_IM_MODULE=qtvkb myapp
@@ -91,37 +94,47 @@ or in the main() function:
 qputenv("QT_IM_MODULE", QByteArray("qtvkb"));
 \endcode
 
-Once the QGuiApplication loads the plugin the InputPanel becomes available.
-The entity which instantiates the InputPanel depends on the chosen integration
-method; in desktop method the entity is plugin, and in application method the
-entity is application.
+In desktop integration method, this step is all that is required to
+use the QtVKB. In application integration method, the application is
+required to create an instance of InputPanel as explained in the
+following chapter.
 
-\section1 Creating the InputPanel
+\section1 Creating InputPanel
 
-The following example shows how to create the InputPanel.
-
-\note This applies only to application integration method.
+The following example shows how to create InputPanel and how to
+divide the screen area with the application container.
 
 \code
+import QtQuick 2.0
+import QtVkb 1.0
+
 Item {
-    id: appContainer
-    ...
+    id: root
+    Item {
+        id: appContainer
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.bottom: inputPanel.top
+        ...
+    }
     InputPanel {
         id: inputPanel
-        z: 99
         y: Qt.inputMethod.visible ? appContainer.height - inputPanel.height : appContainer.height
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.bottom: parent.bottom
     }
 }
 \endcode
 
-The application should give the input panel width and vertical position.
-The keyboard height is adjusted automatically by the input panel and should
-not be set directly.
+The input panel must be a sibling element next to application container.
+It is important not to put the input panel within the application container,
+since then it would overlap with the contents of the application. Also, the
+input panel height will be automatically updated according to available width,
+i.e. the aspect ratio of the input panel is constant.
 
-The visible status is received from \c Qt.inputMethod.visible property. In
-this example, the application adjusts the vertical offset of the input
-panel to either show or hide the keyboard.
+If the application contains Flickable elements they will be automatically
+scrolled to focused element.
 
 */
