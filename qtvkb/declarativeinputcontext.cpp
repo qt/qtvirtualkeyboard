@@ -391,9 +391,11 @@ void DeclarativeInputContext::sendPreedit(const QString &text, int cursor)
             attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Cursor, cursor, text.length(), QVariant()));
         }
 
-        QTextCharFormat textFormat;
-        textFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
-        attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, 0, text.length(), textFormat));
+        if (!d->preeditText.isEmpty()) {
+            QTextCharFormat textFormat;
+            textFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
+            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, 0, text.length(), textFormat));
+        }
 
         QInputMethodEvent event(text, attributes);
         d->inputContext->sendEvent(&event);
