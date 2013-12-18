@@ -25,8 +25,9 @@ shadow build and rapidly switch between build targets.
 
 ### Configuration options
 
-- *CONFIG += disable-xcb* Disables X11 integration
-- *CONFIG += disable-hunspell* Disables Hunspell integration
+- *CONFIG+=disable-xcb* Disables X11 integration
+- *CONFIG+=disable-hunspell* Disables Hunspell integration
+- *CONFIG+=retro-style* Enables Retro style
 
 ### Extra targets
 

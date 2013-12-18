@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>retrostyle.qml</file>
+        <file>style.qml</file>
         <file>fonts/Courier Prime.ttf</file>
         <file>fonts/Courier Prime Bold.ttf</file>
         <file>images/key154px_black.png</file>

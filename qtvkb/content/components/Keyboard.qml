@@ -102,8 +102,7 @@ Item {
     }
     Loader {
         id: styleLoader
-        source: "qrc:/defaultstyle.qml"
-        //source: "qrc:/retrostyle.qml"
+        source: "qrc:/style.qml"
         Binding {
             target: styleLoader.item
             property: "keyboardHeight"

@@ -43,9 +43,11 @@ HEADERS += platforminputcontext.h \
     abstractinputpanel.h \
     vkbdebug.h
 
-RESOURCES += \
-    content/styles/default/defaultstyle.qrc \
-    content/styles/retro/retrostyle.qrc
+retro-style {
+    RESOURCES += content/styles/retro/style.qrc
+} else {
+    RESOURCES += content/styles/default/style.qrc
+}
 
 OTHER_FILES += content/InputPanel.qml \
     content/qmldir \

@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>defaultstyle.qml</file>
+        <file>style.qml</file>
         <file>fonts/OpenSans-Regular.ttf</file>
         <file>fonts/OpenSans-Semibold.ttf</file>
         <file>images/backspace.png</file>
