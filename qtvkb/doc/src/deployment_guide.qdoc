@@ -26,15 +26,15 @@
 \section1 Overview
 
 This document describes how to deploy and use the QtVKB plugin with
-Qt5 applications.
+Qt 5 applications.
 
 \section1 Deployment
 
 The QtVKB plugin must be properly deployed before it can be used.
-The easiest way to do the deployment is to add a deployment step
-in QtCreator that executes make install command.
+The easiest approach to deployment is to add a deployment step
+in Qt Creator that executes the \c {make install} command.
 
-The make install deploys the files in the following locations:
+\c {make install} deploys the files in the following locations:
 
 \table
 \header
@@ -55,33 +55,33 @@ The make install deploys the files in the following locations:
     \li \c /system/qml/QtVkb/Styles
 \endtable
 
-\section1 Integration method
+\section1 Integration Method
 
-The QtVKB currently supports two alternative integration methods
+QtVKB currently supports two alternative integration methods
 for using the plugin:
 
 \list
-    \li \c Desktop: The QtVKB is integrated to the Qt5 and requires no
-        changes to the existing applications. The QtVKB input method
-        is available for all the Qt5 applications in the system.
-    \li \c Application: The QtVKB is integrated to the Qt5, but requires
-        changes to particular application using the QtVKB. This method is
-        mandatory in Boot2Qt environment, but can be used in desktop
+    \li \c Desktop: QtVKB is integrated with Qt 5 and requires no
+        changes to existing applications. The QtVKB input method
+        is available to all of the Qt 5 applications in the system.
+    \li \c Application: QtVKB is integrated with Qt 5, but requires
+        changes to particular applications using QtVKB. This method is
+        mandatory in a Boot2Qt environment, but can be used in desktop
         applications too.
 \endlist
 
 The integration method is automatically selected by the project files.
-However, in desktop environment, it is possible to override the desktop
+However, in desktop environments, it is possible to override the desktop
 integration method and use the application integration method instead.
-This happens by adding \c CONFIG+=disable-xcb option to the qmake command
+This happens by adding the \c CONFIG+=disable-xcb option to the \c qmake command
 line.
 
 \note The desktop integration method is not currently available in Boot2Qt
-environment.
+environments.
 
-\section1 Loading the plugin
+\section1 Loading the Plugin
 
-In both integration methods the application must use the QT_IM_MODULE
+In both integration methods, the application must use the \c QT_IM_MODULE
 environment variable to load the plugin. For example:
 
 \code
@@ -94,14 +94,14 @@ or in the main() function:
 qputenv("QT_IM_MODULE", QByteArray("qtvkb"));
 \endcode
 
-In desktop integration method, this step is all that is required to
-use the QtVKB. In application integration method, the application is
+In the desktop integration method, this step is all that is required to
+use QtVKB. In the application integration method, the application is
 required to create an instance of InputPanel as explained in the
 following chapter.
 
 \section1 Creating InputPanel
 
-The following example shows how to create InputPanel and how to
+The following example shows how to create an InputPanel and how to
 divide the screen area with the application container.
 
 \code
@@ -128,13 +128,13 @@ Item {
 }
 \endcode
 
-The input panel must be a sibling element next to application container.
+The input panel must be a sibling element next to the application container.
 It is important not to put the input panel within the application container,
-since then it would overlap with the contents of the application. Also, the
-input panel height will be automatically updated according to available width,
-i.e. the aspect ratio of the input panel is constant.
+as it would then overlap with the contents of the application. Also, the
+input panel height will be automatically updated according to the available
+width; the aspect ratio of the input panel is constant.
 
-If the application contains Flickable elements they will be automatically
-scrolled to focused element.
+If the application contains Flickable elements, they will be automatically
+scrolled to the focused element.
 
 */
