@@ -1,0 +1,90 @@
+/****************************************************************************
+**
+** Copyright (C) 2014 Digia Plc
+** All rights reserved.
+** For any questions to Digia, please use contact form at http://qt.digia.com
+**
+** This file is part of the Qt Quick Enterprise Controls add-on.
+**
+** Licensees holding valid Qt Enterprise licenses may use this file in
+** accordance with the Qt Enterprise License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and Digia.
+**
+** If you have questions regarding the use of this file, please use
+** contact form at http://qt.digia.com
+**
+****************************************************************************/
+
+/*!
+
+\page build.html
+\contentspage {Building Qt Virtual Keyboard} {Contents}
+
+\title Building Qt Virtual Keyboard
+
+\section1 Overview
+
+This document describes how to build the Qt Virtual Keyboard plugin.
+
+The project is split into the following subprojects:
+- \e examples/quick/enterprise/virtualkeyboard/virtualkeyboard/virtualkeyboard.pro
+    Qt Virtual Keyboard Demo application
+- \e src/virtualkeyboard/virtualkeyboard.pro Qt Virtual Keyboard C++ backend
+    for input engine and QPlatformInputContext integration
+- \e src/virtualkeyboard/styles/styles.pro Qt Virtual Keyboard Style plugin
+    that enables style decorations for the keyboard
+
+The input methods are implemented either in C++ or QML.
+Qt Virtual Keyboard provides implementations of PlainInputMethod,
+MultitapInputMethod and HunspellInputMethod.
+The MultitapInputMethod is implemented in QML while the others are implemented
+in C++.
+
+\section1 Build instructions
+
+The Qt Virtual Keyboard can be built for Linux Desktop/X11 or Boot2Qt targets.
+The target is automatically detected by QMAKE and requires no special
+configuration parameters.
+
+QtCreator is the preferred build environment for Qt Virtual Keyboard as you can
+then leverage the shadow build functionality and rapidly switch between build
+targets.
+
+\section2 Configuration options
+
+- \e CONFIG+=disable-xcb Disables X11 integration
+- \e CONFIG+=disable-hunspell Disables Hunspell integration
+- \e CONFIG+=retro-style Enables Retro style
+
+\section2 Extra targets
+
+- \e docs Generates documentation
+
+\section2 Hunspell integration
+
+By default, HunspellInputMethod will not be available unless the Hunspell
+library and development headers are found. For Linux/X11 targets, the Hunspell
+library can be provided by installing the libhunspell-dev package.
+Alternatively, the Hunspell sources can be extracted into the
+\e src/virtualkeyboard/hunspell directory. If Hunspell sources are used,
+then the dictionary files must also be copied into the
+\e src/virtualkeyboard/hunspell/data directory. Furthermore, if Hunspell
+sources are used, \e hunspell.pro will be used for all targets.
+
+\section1 Deployment instructions
+
+\section2 Linux/X11
+
+Add a Deploy Step that executes the \e {make install} command, then deploy using
+the \e {Deploy All} command.
+
+\section2 Boot2Qt
+
+Remount target file system as read-write before deployment.
+
+    \e {adb -s <deviceid> remount}
+
+Deploy using the \e {Deploy All} command.
+
+*/

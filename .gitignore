@@ -1,11 +1,11 @@
-# This file is used to ignore files which are generated in the Qt build system
-# ----------------------------------------------------------------------------
+# This file is used to ignore files that should not be committed
+# --------------------------------------------------------------
 
-demo/virtualkeyboard
-!qtvkb/hunspell/config.h
-!qtvkb/hunspell/hunspell.pro
-qtvkb/hunspell/*
-qtvkb/doc/html
+qtvirtualkeyboard/examples/quick/enterprise/virtualkeyboard/virtualkeyboard/virtualkeyboard
+!qtvirtualkeyboard/src/virtualkeyboard/hunspell/config.h
+!qtvirtualkeyboard/src/virtualkeyboard/hunspell/hunspell.pro
+qtvirtualkeyboard/src/virtualkeyboard/hunspell/*
+qtvirtualkeyboard/src/virtualkeyboard/hunspell/doc/html
 
 *.pro.user
 *.a
@@ -17,4 +17,5 @@ qrc_*.cpp
 *.obj
 *.rcc
 Makefile*
-
+*.html
+*~

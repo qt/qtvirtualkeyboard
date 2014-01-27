@@ -1,0 +1,2 @@
+module QtQuick.Enterprise.VirtualKeyboard
+InputPanel 1.0 InputPanel.qml

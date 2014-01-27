@@ -1,0 +1,140 @@
+/****************************************************************************
+**
+** Copyright (C) 2013 Digia Plc
+** All rights reserved.
+** For any questions to Digia, please use contact form at http://qt.digia.com
+**
+** This file is part of the Qt Quick Enterprise Controls add-on.
+**
+** Licensees holding valid Qt Enterprise licenses may use this file in
+** accordance with the Qt Enterprise License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and Digia.
+**
+** If you have questions regarding the use of this file, please use
+** contact form at http://qt.digia.com
+**
+****************************************************************************/
+
+/*!
+
+\page deployment-guide.html
+\contentspage {Deployment Guide} {Contents}
+
+\title Deployment Guide
+
+\section1 Overview
+
+This document describes how to deploy and use the Qt Virtual Keyboard plugin
+with Qt 5 applications.
+
+\section1 Deployment
+
+The Qt Virtual Keyboard plugin must be properly deployed before it can be used.
+The easiest approach to deployment is to add a deployment step
+in Qt Creator that executes the \c {make install} command.
+
+\c {make install} deploys the files in the following locations:
+
+\table
+\header
+    \li Item
+    \li Desktop install path
+    \li Boot2Qt install path
+\row
+    \li qtvirtualkeyboardplugin
+    \li \c $$[QT_INSTALL_PLUGINS]/platforminputcontexts
+    \li \c /system/plugins/platforminputcontexts
+\row
+    \li qtvirtualkeyboardplugin QML files
+    \li \c $$[QT_INSTALL_QML]/QtQuick/Enterprise/VirtualKeyboard
+    \li \c /system/qml/QtQuick/Enterprise/VirtualKeyboard
+\row
+    \li qtvirtualkeyboardstylesplugin
+    \li \c $$[QT_INSTALL_QML]/QtQuick/Enterprise/VirtualKeyboard/Styles
+    \li \c /system/qml/QtQuick/Enterprise/VirtualKeyboard/Styles
+\endtable
+
+\section1 Integration Method
+
+Qt Virtual Keyboard currently supports two alternative integration methods
+for using the plugin:
+
+\list
+    \li \c Desktop: Qt Virtual Keyboard is integrated with Qt 5 and requires no
+        changes to existing applications. The Qt Virtual Keyboard input method
+        is available to all of the Qt 5 applications in the system.
+    \li \c Application: Qt Virtual Keyboard is integrated with Qt 5, but
+        requires changes to particular applications using Qt Virtual Keyboard.
+        This method is mandatory in a Boot2Qt environment, but can be used in
+        desktop applications too.
+\endlist
+
+The integration method is automatically selected by the project files.
+However, in desktop environments, it is possible to override the desktop
+integration method and use the application integration method instead.
+This happens by adding the \c CONFIG+=disable-xcb option to the \c qmake
+command line.
+
+\note The desktop integration method is not currently available in Boot2Qt
+environments.
+
+\section1 Loading the Plugin
+
+In both integration methods, the application must use the \c QT_IM_MODULE
+environment variable to load the plugin. For example:
+
+\code
+$ QT_IM_MODULE=qtvirtualkeyboard myapp
+\endcode
+
+or in the main() function:
+
+\code
+qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+\endcode
+
+In the desktop integration method, this step is all that is required to
+use Qt Virtual Keyboard. In the application integration method, the application
+is required to create an instance of InputPanel as explained in the
+following chapter.
+
+\section1 Creating InputPanel
+
+The following example shows how to create an InputPanel and how to
+divide the screen area with the application container.
+
+\code
+import QtQuick 2.0
+import QtQuick.Enterprise.VirtualKeyboard 1.0
+
+Item {
+    id: root
+    Item {
+        id: appContainer
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.bottom: inputPanel.top
+        ...
+    }
+    InputPanel {
+        id: inputPanel
+        y: Qt.inputMethod.visible ? appContainer.height - inputPanel.height : appContainer.height
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+    }
+}
+\endcode
+
+The input panel must be a sibling element next to the application container.
+It is important not to put the input panel within the application container,
+as it would then overlap with the contents of the application. Also, the
+input panel height will be automatically updated according to the available
+width; the aspect ratio of the input panel is constant.
+
+If the application contains Flickable elements, they will be automatically
+scrolled to the focused element.
+
+*/
