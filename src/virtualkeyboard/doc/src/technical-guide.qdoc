@@ -241,4 +241,165 @@ to hide the list if necessary.
 The list model's word candidate list is provided by the
 InputEngine::wordCandidateListModel property.
 
+\section1 Keyboard Layouts
+
+\section2 Adding New Keyboard Layouts
+
+Keyboard layouts are located in the \e src/virtualkeyboard/content/layouts
+directory. Qt Virtual Keyboard scans this directory for the available layouts.
+The keyboard layouts must be named after the locale. Each keyboard layout
+consists of two files: the main layout and the symbol layout. To add a new
+layout, first make a copy of an existing layout, say \e en_GB.qml and
+\e symbols_en_GB.qml, and rename them according to the locale. Now the new
+layouts should appear in Qt Creator after running qmake again.
+
+The keyboard layout element must be based on the KeyboardLayout QML type.
+This type defines the root item of the layout. The root item has the following
+optional properties which can be set if necessary:
+
+\table
+    \row
+        \li \c {property var inputMethod}
+        \li Specifies an input method for this layout. If the input method is
+            not defined, then the current input method is used.
+    \row
+        \li \c {property int inputMode}
+        \li Specifies an input mode for this layout.
+    \row
+        \li \c {property real keyWeight}
+        \li Specifies the default key weight used for all keys in this keyboard
+            layout. The key weight is a proportional value which affects the size
+            of individual keys in relation to each other.
+\endtable
+
+New rows are added to the keyboard layout by using the KeyboardRow type. The
+KeyboardRow can also specify the default key weight for its child elements.
+Otherwise, the key weight is inherited from its parent element.
+
+New keys are added to the keyboard row using the Key type or one of the
+specialized key types. Below is the list of all key types:
+
+\list
+    \li Key
+    \li BackspaceKey
+    \li ChangeLanguageKey
+    \li EnterKey
+    \li FillerKey
+    \li HideKeyboardKey
+    \li NumberKey
+    \li ShiftKey
+    \li SpaceKey
+    \li SymbolModeKey
+\endlist
+
+For example, to add a regular key which sends a key event to the input method:
+
+\code
+    KeyboardLayout {
+        keyWeight: 160
+        KeyboardRow {
+            Key {
+                key: Qt.Key_Q
+                text: "q"
+            }
+        }
+    }
+\endcode
+
+\section2 Key Size Calculation
+
+The keyboard layouts are scalable, which means that there cannot be any fixed
+sizes set for any items in the layout. Instead, the key widths are calculated
+from key weight in relation to each other and the height by dividing the space
+equally among the keyboard rows.
+
+In the above example, the key size is inherited from parent elements in this
+order:
+
+Key > KeyboardRow > KeyboardLayout
+
+The effective value for the key weight will be 160. For the sake of the
+example, we add another key which specifies a custom key weight:
+
+\code
+    KeyboardLayout {
+        keyWeight: 160
+        KeyboardRow {
+            Key {
+                key: Qt.Key_Q
+                text: "q"
+            }
+            Key {
+                key: Qt.Key_W
+                text: "w"
+                keyWeight: 200
+            }
+        }
+    }
+\endcode
+
+Now the total key weight of a row is \e {160 + 200 = 360}. When the keyboard
+layout is activated, the width of an individual key is calculated as follows:
+
+\e {key width in pixels = key weight / SUM(key weights in a row) * row width in pixels}
+
+This means that the keyboard can be scaled to any size, while the relative key
+sizes remain the same.
+
+\section2 Alternative Keys
+
+Key can specify an alternativeKeys property, which results in a popup that
+lists alternative keys when the user presses and holds the key.
+The alternativeKeys can specify either a string, or a list of strings.
+If alternativeKeys is a string, the user can select between the characters in
+the string.
+
+\section2 Themes and Layouts
+
+The keyboard layouts cannot specify any visual elements. Instead, the layout is
+visualized by the keyboard theme. On the other hand, the keyboard theme cannot
+affect the size of the keyboard layout.
+
+\section2 Symbol Layout
+
+Symbol layouts follow the same semantics as the main layout. However, there
+are some differences in the construction of symbol layouts to allow multiple
+layouts to be embedded inside the layout.
+
+In essence, the symbol layouts use the KeyboardColumn type to embed multiple
+pages of keys within the same layout. The usage is demonstrated in the
+following example:
+
+\code
+    KeyboardLayout {
+        property bool secondPage
+        onVisibleChanged: if (!visible) secondPage = false
+        KeyboardColumn {
+            anchors.fill: parent
+            visible: !secondPage
+            KeyboardRow {
+                Key {
+                    displayText: "1/2"
+                    functionKey: true
+                    onClicked: secondPage = !secondPage
+                }
+            }
+        }
+        KeyboardColumn {
+            anchors.fill: parent
+            visible: secondPage
+            KeyboardRow {
+                Key {
+                    displayText: "2/2"
+                    functionKey: true
+                    onClicked: secondPage = !secondPage
+                }
+            }
+        }
+    }
+\endcode
+
+In this example, the layout has two pages constructed using the KeyboardColumn
+type, and their visibility is determined by the secondPage property.
+
 */
