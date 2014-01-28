@@ -1,10 +1,12 @@
+include($QT_INSTALL_DOCS/global/qt-module-defaults.qdocconf)
+
 project = QtVirtualKeyboard
 description = Qt Virtual Keyboard
 
-headerdirs  += .. \
-               ../content
-sourcedirs  += .. \
-               ../content
+version = $QT_VERSION
+
+headerdirs  += ..
+sourcedirs  += ..
 
 # Specify the install path under QT_INSTALL_EXAMPLES
 # Examples will be installed under quick/enterprise/virtualkeyboard -
@@ -14,38 +16,12 @@ exampledirs += ../../../examples/quick/enterprise/virtualkeyboard \
 examplesinstallpath = quick/enterprise/virtualkeyboard
 imagedirs += images
 
-Cpp.ignoredirectives = Q_DECLARE_PRIVATE \
-                       Q_DISABLE_COPY \
-                       Q_ENUMS
-Cpp.ignoretokens = Q_INVOKABLE
-
 spurious = "Can't link to 'All Modules'"
 
 sources.fileextensions = "*.cpp *.qdoc *.mm *.qml"
 headers.fileextensions = "*.h *.ch *.h++ *.hh *.hpp *.hxx"
 examples.fileextensions = "*.cpp *.h *.js *.xq *.svg *.xml *.ui *.qhp *.qhcp *.qml"
 examples.imageextensions = "*.png *.jpeg *.jpg *.gif *.mng"
-
-outputdir = html
-outputformats = HTML
-
-HTML.nobreadcrumbs = "true"
-HTML.nonavigationbar = "true"
-
-HTML.stylesheets = style/style.css
-
-HTML.headerstyles = "  <link rel=\"stylesheet\" type=\"text/css\" href=\"style/style.css\" />\n"
-
-HTML.postheader = \
-  " <div class=\"header\">\n" \
-  "   <div id=\"nav-logo\">\n" \
-  "     <a href=\"index.html\">Qt Virtual Keyboard Reference</a>" \
-  "   </div>\n" \
-  " </div>\n" \
-  " <ul>\n"
-
-HTML.postpostheader = \
-  " </ul>\n"
 
 qhp.projects = QtVirtualKeyboard
 
