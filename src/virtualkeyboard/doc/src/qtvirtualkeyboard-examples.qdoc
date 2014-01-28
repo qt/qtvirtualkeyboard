@@ -23,7 +23,7 @@
 */
 
 /*!
-    \title QML Demo - Virtual Keyboard
+    \title Qt Quick Virtual Keyboard Example
     \example virtualkeyboard
     \brief This is an example virtual keyboard written in QML.
     \ingroup qtvirtualkeyboard-examples
