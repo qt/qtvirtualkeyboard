@@ -64,6 +64,7 @@ private:
 /*!
     \qmltype InputEngine
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard 1.0
+    \ingroup qtvirtualkeyboard-qml
     \instantiates DeclarativeInputEngine
     \brief Maps the user input to the input methods.
 

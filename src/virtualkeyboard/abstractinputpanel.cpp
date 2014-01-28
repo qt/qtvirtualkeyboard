@@ -21,7 +21,7 @@
 /*!
     \class AbstractInputPanel
 
-    \inmodule InputFramework
+    \inmodule qtvirtualkeyboard
 
     \brief Base class for an input panel.
 

@@ -63,6 +63,7 @@ public:
     \qmltype InputContext
     \instantiates DeclarativeInputContext
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard 1.0
+    \ingroup qtvirtualkeyboard-qml
     \brief Provides access to an input context.
 
     The InputContext can be accessed as singleton instance.
@@ -71,6 +72,7 @@ public:
 /*!
     \class DeclarativeInputContext
     \inmodule InputFramework
+    \ingroup qtvirtualkeyboard-qml
     \brief Provides access to an input context.
 */
 

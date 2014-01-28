@@ -17,7 +17,7 @@
 ****************************************************************************/
 
 /*!
-    \title QtVKB Reference
+    \title Qt Virtual Keyboard
     \page index.html
 
     The QtVKB project provides an input framework and reference
@@ -35,21 +35,33 @@
     \li \l {Technical Guide}
     \endlist
 
-    \section1 Modules
-
-    \generatelist module
-
     \section1 C++ Classes
 
-    \generatelist annotatedclasses
+    \generatelist {classesbymodule qtvirtualkeyboard}
 
     \section1 QML Elements
 
-    \generatelist qmltypes
+    \annotatedlist qtvirtualkeyboard-qml
 
     \section1 Examples
 
      \list
       \li \l{Qt Virtual Keyboard Examples}
      \endlist
+*/
+
+/*!
+\page qt-virtual-keyboard-classes.html
+\title Qt Virtual Keyboard C++ Classes
+\inmodule qtvirtualkeyboard
+
+\generatelist {classesbymodule qtvirtualkeyboard}
+*/
+
+/*!
+\page qt-virtual-keyboard-qmltypes.html
+\title Qt Virtual Keyboard QML Types
+\inmodule qtvirtualkeyboard
+
+\annotatedlist qtvirtualkeyboard-qml
 */

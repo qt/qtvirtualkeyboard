@@ -16,7 +16,9 @@ exampledirs += ../../../examples/quick/enterprise/virtualkeyboard \
 examplesinstallpath = quick/enterprise/virtualkeyboard
 imagedirs += images
 
-spurious = "Can't link to 'All Modules'"
+depends += qtcore qtgui qtquick
+
+# spurious = "Can't link to 'All Modules'"
 
 sources.fileextensions = "*.cpp *.qdoc *.mm *.qml"
 headers.fileextensions = "*.h *.ch *.h++ *.hh *.hpp *.hxx"
@@ -36,9 +38,19 @@ qhp.QtVirtualKeyboard.filterAttributes                  = qtvirtualkeyboard 1.0 
 qhp.QtVirtualKeyboard.customFilters.Qt.name             = QtVirtualKeyboard 1.0
 qhp.QtVirtualKeyboard.customFilters.Qt.filterAttributes = qtvirtualkeyboard 1.0
 
-#qhp.QtVirtualKeyboard.subprojects = qtvirtualkeyboardqmltypes
+qhp.QtVirtualKeyboard.subprojects = classes qmltypes examples
 
-#qhp.QtVirtualKeyboard.subprojects.qtvirtualkeyboardqmltypes.title      = Controls QML Types
-#qhp.QtVirtualKeyboard.subprojects.qtvirtualkeyboardqmltypes.indexTitle = Qt Virtual Keyboard QML Types
-#qhp.QtVirtualKeyboard.subprojects.qtvirtualkeyboardqmltypes.selectors  = fake:qmlclass # cannot choose qmltypes from a specific group QTBUG-32985
-#qhp.QtVirtualKeyboard.subprojects.qtvirtualkeyboardqmltypes.sortPages  = true
+qhp.QtVirtualKeyboard.subprojects.classes.title = C++ Classes
+qhp.QtVirtualKeyboard.subprojects.classes.indexTitle = Qt Virtual Keyboard C++ Classes
+qhp.QtVirtualKeyboard.subprojects.classes.selectors = class
+qhp.QtVirtualKeyboard.subprojects.classes.sortPages = true
+
+qhp.QtVirtualKeyboard.subprojects.qmltypes.title      = QML Types
+qhp.QtVirtualKeyboard.subprojects.qmltypes.indexTitle = Qt Virtual Keyboard QML Types
+qhp.QtVirtualKeyboard.subprojects.qmltypes.selectors  = fake:qmlclass
+qhp.QtVirtualKeyboard.subprojects.qmltypes.sortPages  = true
+
+qhp.QtVirtualKeyboard.subprojects.examples.title = Examples
+qhp.QtVirtualKeyboard.subprojects.examples.indexTitle = Qt Virtual Keyboard Examples
+qhp.QtVirtualKeyboard.subprojects.examples.selectors = fake:example
+qhp.QtVirtualKeyboard.subprojects.examples.sortPages = true

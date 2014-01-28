@@ -32,6 +32,7 @@ public:
     \qmltype SelectionListModel
     \instantiates DeclarativeSelectionListModel
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard 1.0
+    \ingroup qtvirtualkeyboard-qml
     \brief Provides a data model for the selection lists.
 
     This type acts as a bridge between the UI and the

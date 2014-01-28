@@ -21,7 +21,7 @@
 /*!
     \class AbstractInputMethod
 
-    \inmodule InputFramework
+    \inmodule qtvirtualkeyboard
 
     \brief The base class for input methods.
 

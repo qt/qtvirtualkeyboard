@@ -23,6 +23,7 @@
     \qmltype InputMethod
     \instantiates DeclarativeInputMethod
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard 1.0
+    \ingroup qtvirtualkeyboard-qml
     \brief Base type for creating input method in QML.
 
     The InputMethod type lets you create a custom input method
