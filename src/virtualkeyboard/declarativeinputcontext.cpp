@@ -74,6 +74,7 @@ public:
     \inmodule InputFramework
     \ingroup qtvirtualkeyboard-qml
     \brief Provides access to an input context.
+    \internal
 */
 
 /*!

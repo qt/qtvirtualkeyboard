@@ -21,7 +21,7 @@
     \page index.html
 
     The Qt Virtual Keyboard project provides an input framework and reference
-    keyboard frontend for Qt 5.
+    keyboard frontend for Qt 5 on Linux Desktop/X11 or Boot2Qt targets.
 
     The input framework makes it easy to write custom input methods or to
     integrate 3rd party input engines. The input methods can be implemented
