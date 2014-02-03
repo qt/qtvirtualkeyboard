@@ -17,6 +17,7 @@
 ****************************************************************************/
 
 #include "abstractinputpanel.h"
+#include <QtCore/QRect>
 
 /*!
     \class AbstractInputPanel
