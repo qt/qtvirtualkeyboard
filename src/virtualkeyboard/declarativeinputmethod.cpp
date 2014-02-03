@@ -22,7 +22,7 @@
 /*!
     \qmltype InputMethod
     \instantiates DeclarativeInputMethod
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard 1.0
+    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \brief Base type for creating input method in QML.
 

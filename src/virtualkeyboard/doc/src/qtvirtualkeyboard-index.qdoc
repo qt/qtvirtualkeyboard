@@ -20,7 +20,7 @@
     \title Qt Virtual Keyboard
     \page index.html
 
-    The QtVKB project provides an input framework and reference
+    The Qt Virtual Keyboard project provides an input framework and reference
     keyboard frontend for Qt 5.
 
     The input framework makes it easy to write custom input methods or to

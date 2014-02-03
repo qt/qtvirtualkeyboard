@@ -28,7 +28,7 @@ public:
 
 /*!
     \qmltype ShiftHandler
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard 1.0
+    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \instantiates DeclarativeShiftHandler
     \brief Manages the shift state.

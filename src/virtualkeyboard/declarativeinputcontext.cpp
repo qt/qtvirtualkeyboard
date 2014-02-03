@@ -62,7 +62,7 @@ public:
 /*!
     \qmltype InputContext
     \instantiates DeclarativeInputContext
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard 1.0
+    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \brief Provides access to an input context.
 
