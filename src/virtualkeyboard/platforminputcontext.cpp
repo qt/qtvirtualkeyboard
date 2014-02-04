@@ -152,22 +152,18 @@ QObject *PlatformInputContext::focusObject()
 void PlatformInputContext::setFocusObject(QObject *object)
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::setFocusObject():" << object;
-    if (m_focusObject == object)
-        return;
-    m_focusObject = object;
-    emit focusObjectChanged();
-    bool enabled;
-    if (m_focusObject) {
-        QInputMethodQueryEvent event(Qt::ImEnabled);
-        sendEvent(&event);
-        enabled = event.value(Qt::ImEnabled).toBool();
-    } else {
-        enabled = false;
+    if (m_focusObject != object) {
+        m_focusObject = object;
+        emit focusObjectChanged();
     }
+
+    QInputMethodQueryEvent event(Qt::ImEnabled);
+    sendEvent(&event);
+    bool enabled = event.value(Qt::ImEnabled).toBool();
+
     if (m_declarativeContext) {
-        bool focus = (object != 0 && enabled);
-        m_declarativeContext->setFocus(focus);
-        if (focus)
+        m_declarativeContext->setFocus(true);
+        if (enabled)
             m_declarativeContext->update(Qt::ImQueryAll);
         else
             hideInputPanel();
