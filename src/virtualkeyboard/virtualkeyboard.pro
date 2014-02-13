@@ -98,7 +98,7 @@ INSTALLS += qml
         } else {
             error(Hunspell dictionaries are missing! Please copy .dic and .aff files to src/virtualkeyboard/hunspell/data directory.)
         }
-    } else:isEmpty(CROSS_COMPILE):packagesExist(hunspell) {
+    } else:packagesExist(hunspell) {
         message(Found Hunspell package from pkg-config!)
         SOURCES += hunspellinputmethod.cpp hunspellworker.cpp
         HEADERS += hunspellinputmethod.h hunspellworker.h
