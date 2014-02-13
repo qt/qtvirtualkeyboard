@@ -38,7 +38,7 @@ KeyboardLayout {
             }
             Key {
                 key: 0x0663
-                text: "\u0664"
+                text: "\u0663"
             }
             Key {
                 key: 0x0664
