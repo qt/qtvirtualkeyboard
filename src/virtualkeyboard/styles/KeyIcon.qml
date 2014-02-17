@@ -22,6 +22,7 @@ import QtQuick 2.0
     \qmltype KeyIcon
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles
     \brief Key icon with adjustable color.
+    \ingroup qtvirtualkeyboard-styles-qml
 
     The KeyIcon item displays an icon with adjustable color.
 */

@@ -24,6 +24,7 @@ import "components"
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
 
     \brief Provides the virtual keyboard UI.
+    \ingroup qtvirtualkeyboard-qml
 
     The keyboard size is automatically calculated from the available
     width, i.e. the keyboard maintains the aspect ratio specified by the current

@@ -22,6 +22,7 @@ import QtQuick 2.0
     \qmltype KeyPanel
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles
     \brief A base type of the styled keys.
+    \ingroup qtvirtualkeyboard-styles-qml
 
     All the key delegates provided by the style should be based on this type.
 */

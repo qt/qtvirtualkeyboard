@@ -22,6 +22,7 @@ import QtQuick 2.0
     \qmltype KeyboardStyle
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles
     \brief Provides the style definitions for the Virtual Keyboard.
+    \ingroup qtvirtualkeyboard-styles-qml
 
     The style type provides the style definitions which are used by
     the InputPanel to decorate the virtual keyboard.

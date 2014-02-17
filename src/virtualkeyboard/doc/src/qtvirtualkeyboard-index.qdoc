@@ -39,9 +39,13 @@
 
     \generatelist {classesbymodule qtvirtualkeyboard}
 
-    \section1 QML Elements
+    \section1 QML Types
 
     \annotatedlist qtvirtualkeyboard-qml
+
+    Styling components:
+
+    \annotatedlist qtvirtualkeyboard-styles-qml
 
     \section1 Examples
 
@@ -64,4 +68,8 @@
 \inmodule qtvirtualkeyboard
 
 \annotatedlist qtvirtualkeyboard-qml
+
+Styling components:
+
+\annotatedlist qtvirtualkeyboard-styles-qml
 */
