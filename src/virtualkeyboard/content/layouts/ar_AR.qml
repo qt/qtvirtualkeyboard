@@ -22,7 +22,7 @@ import "../components"
 
 KeyboardLayout {
     keyWeight: 160
-    property var keys: ["ضصثقفغعهخحجد", "شسيبلاتنمكط", "ئءؤرلىةوزظ"]
+    property var keys: ["ضصثقفغعهخحجد", "شسيبلاتنمكط"]
     KeyboardRow {
         Repeater {
             model: keys[0].length
@@ -49,11 +49,35 @@ KeyboardLayout {
     KeyboardRow {
         keyWeight: 156
         FillerKey {}
-        Repeater {
-            model: keys[2].length
-            Key {
-                text: keys[2][index]
-            }
+        Key {
+            text: "ئ"
+        }
+        Key {
+            text: "ء"
+        }
+        Key {
+            text: "ؤ"
+        }
+        Key {
+            text: "ر"
+        }
+        Key {
+            text: "لا"
+        }
+        Key {
+            text: "ى"
+        }
+        Key {
+            text: "ة"
+        }
+        Key {
+            text: "و"
+        }
+        Key {
+            text: "ز"
+        }
+        Key {
+            text: "ظ"
         }
         Key {
             key: Qt.Key_Comma
