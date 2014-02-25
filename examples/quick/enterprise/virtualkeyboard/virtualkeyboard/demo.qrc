@@ -6,6 +6,5 @@
         <file>content/TextArea.qml</file>
         <file>content/TextBase.qml</file>
         <file>content/TextField.qml</file>
-        <file>content/images/background.png</file>
     </qresource>
 </RCC>

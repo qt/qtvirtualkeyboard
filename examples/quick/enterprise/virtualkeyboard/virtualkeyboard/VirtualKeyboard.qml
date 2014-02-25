@@ -19,8 +19,10 @@
 import QtQuick 2.0
 import "content"
 
-Image {
-    source: "content/images/background.png"
+Rectangle {
+    width: 1280
+    height: 720
+    color: "#999"
 
     Flickable {
         id: flickable

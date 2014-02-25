@@ -21,7 +21,6 @@ OTHER_FILES += \
     content/TextArea.qml \
     content/TextBase.qml \
     content/TextField.qml \
-    content/images/background.png
 
 disable-xcb|android-no-sdk|!isEmpty(CROSS_COMPILE) {
     DEFINES += MAIN_QML=\\\"VirtualKeyboard-b2qt.qml\\\"
