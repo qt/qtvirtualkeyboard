@@ -20,15 +20,12 @@ import QtQuick 2.0
 import QtQuick.Enterprise.VirtualKeyboard.Styles 1.0
 
 KeyboardStyle {
-    readonly property string fontFamily: openSansRegular.name
+    readonly property string fontFamily: dejaVuSans.name
     readonly property real keyBackgroundMargin: Math.round(13 * scaleHint)
     readonly property real keyContentMargin: Math.round(45 * scaleHint)
 
-    property var openSansRegular: FontLoader {
-        source: "qrc:/fonts/OpenSans-Regular.ttf"
-    }
-    property var openSansSemibold: FontLoader {
-        source: "qrc:/fonts/OpenSans-Semibold.ttf"
+    property var dejaVuSans: FontLoader {
+        source: "qrc:/fonts/DejaVuSans.ttf"
     }
 
     keyboardDesignWidth: 2560
