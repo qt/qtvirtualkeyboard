@@ -66,7 +66,7 @@ Rectangle {
                     id: passwordField
 
                     width: parent.width
-                    echoMode: TextInput.PasswordEchoOnEdit
+                    echoMode: TextInput.Password
                     previewText: "Password field"
                     inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText
                     enterKeyText: "Next"
