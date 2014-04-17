@@ -52,9 +52,12 @@ public:
     int index;
 };
 
+class QTextCodec;
+
 class HunspellBuildSuggestionsTask : public HunspellTask
 {
     Q_OBJECT
+    const QTextCodec *textCodec;
 public:
     QString word;
     QSharedPointer<HunspellWordList> wordList;

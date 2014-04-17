@@ -18,13 +18,23 @@
 
 #include "hunspellworker.h"
 #include <QVector>
+#include <QTextCodec>
 
 void HunspellBuildSuggestionsTask::run()
 {
     wordList->list.append(word);
     wordList->index = 0;
+
+    /*  Select text codec based on the dictionary encoding.
+        Hunspell_get_dic_encoding() should always return at least
+        "ISO8859-1", but you can never be too sure.
+     */
+    textCodec = QTextCodec::codecForName(Hunspell_get_dic_encoding(hunspell));
+    if (!textCodec)
+        return;
+
     char **slst = 0;
-    int n = Hunspell_suggest(hunspell, &slst, word.toUtf8().constData());
+    int n = Hunspell_suggest(hunspell, &slst, textCodec->fromUnicode(word).constData());
     if (n > 0) {
         /*  Collect word candidates from the Hunspell suggestions.
             Insert word completions in the beginning of the list.
@@ -33,7 +43,7 @@ void HunspellBuildSuggestionsTask::run()
         int lastWordCompletionIndex = firstWordCompletionIndex;
         bool suggestCapitalization = false;
         for (int i = 0; i < n; i++) {
-            QString wordCandidate(QString::fromUtf8(slst[i]));
+            QString wordCandidate(textCodec->toUnicode(slst[i]));
             wordCandidate.replace(QChar(0x2019), '\'');
             if (wordCandidate.compare(word) != 0) {
                 /*  Prioritize word Capitalization */
@@ -82,7 +92,7 @@ bool HunspellBuildSuggestionsTask::spellCheck(const QString &word)
         return false;
     if (word.contains(QRegExp("[0-9]")))
         return true;
-    return Hunspell_spell(hunspell, word.toUtf8().constData()) != 0;
+    return Hunspell_spell(hunspell, textCodec->fromUnicode(word).constData()) != 0;
 }
 
 // source: http://en.wikipedia.org/wiki/Levenshtein_distance

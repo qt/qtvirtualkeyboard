@@ -23,6 +23,7 @@
 #include <QStringList>
 #include <QFileInfo>
 #include "virtualkeyboarddebug.h"
+#include <QTextCodec>
 
 class HunspellInputMethodPrivate : public AbstractInputMethodPrivate
 {
@@ -59,8 +60,18 @@ public:
                 QByteArray dpath(QString("%1/%2.dic").arg(searchPath).arg(locale).toUtf8());
                 if (QFileInfo(dpath).exists()) {
                     hunspell = Hunspell_create(affpath.constData(), dpath.constData());
-                    if (hunspell)
-                        break;
+                    if (hunspell) {
+                        /*  Make sure the encoding used by the dictionary is supported
+                            by the QTextCodec.
+                        */
+                        if (QTextCodec::codecForName(Hunspell_get_dic_encoding(hunspell))) {
+                            break;
+                        } else {
+                            qWarning() << "The Hunspell dictionary" << QString("%1/%2.dic").arg(searchPath).arg(locale) << "cannot be used because it uses an unknown text codec" << QString(Hunspell_get_dic_encoding(hunspell));
+                            Hunspell_destroy(hunspell);
+                            hunspell = 0;
+                        }
+                    }
                 }
             }
             if (!hunspell) {
