@@ -31,12 +31,6 @@
 */
 
 /*!
-    \qmlproperty string InputMethod::className
-
-    See AbstractInputMethod::className.
-*/
-
-/*!
     \qmlproperty InputContext InputMethod::inputContext
 
     The input context.

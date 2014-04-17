@@ -54,14 +54,6 @@ AbstractInputMethod::~AbstractInputMethod()
 }
 
 /*!
-    Returns the meta class name of this instance.
-*/
-QString AbstractInputMethod::className() const
-{
-    return metaObject()->className();
-}
-
-/*!
     Returns the input context associated with the input method.
     This method returns \c NULL if the input method is not active.
 */
@@ -148,14 +140,6 @@ void AbstractInputMethod::selectionListItemSelected(DeclarativeSelectionListMode
     Q_UNUSED(type)
     Q_UNUSED(index)
 }
-
-/*!
-    \property AbstractInputMethod::className
-    \brief Class name of this input method.
-
-    This property is used to distinguish different input method classes.
-    The class name is taken from the Qt meta class object.
-*/
 
 /*!
     \fn QList<DeclarativeInputEngine::InputMode> AbstractInputMethod::inputModes(const QString& locale)

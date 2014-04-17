@@ -321,7 +321,7 @@ void DeclarativeInputEngine::setInputMethod(AbstractInputMethod *inputMethod)
 {
     Q_D(DeclarativeInputEngine);
     VIRTUALKEYBOARD_DEBUG() << "DeclarativeInputEngine::setInputMethod():" << inputMethod;
-    if (!d->inputMethod || !inputMethod || d->inputMethod->className() != inputMethod->className()) {
+    if (d->inputMethod != inputMethod) {
         update();
         if (d->inputMethod) {
             d->inputMethod->setInputEngine(0);

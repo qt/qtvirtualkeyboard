@@ -33,7 +33,6 @@ class AbstractInputMethod : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(AbstractInputMethod)
-    Q_PROPERTY(QString className READ className CONSTANT)
 
 protected:
     AbstractInputMethod(AbstractInputMethodPrivate &dd, QObject *parent = 0);
@@ -41,7 +40,6 @@ public:
     explicit AbstractInputMethod(QObject *parent = 0);
     ~AbstractInputMethod();
 
-    QString className() const;
     DeclarativeInputContext *inputContext() const;
     DeclarativeInputEngine *inputEngine() const;
 
