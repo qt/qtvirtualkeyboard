@@ -17,16 +17,16 @@
 ****************************************************************************/
 
 #include "appinputpanel.h"
+#include <QtCore/private/qobject_p.h>
 
-class AppInputPanelPrivate
+class AppInputPanelPrivate : public QObjectPrivate
 {
 public:
     bool visible;
 };
 
 AppInputPanel::AppInputPanel(QObject *parent) :
-    AbstractInputPanel(parent),
-    d_ptr(new AppInputPanelPrivate())
+    AbstractInputPanel(*new AppInputPanelPrivate(), parent)
 {
 }
 

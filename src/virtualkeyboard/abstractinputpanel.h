@@ -24,6 +24,8 @@
 class AbstractInputPanel : public QObject
 {
     Q_OBJECT
+protected:
+    AbstractInputPanel(QObjectPrivate &dd, QObject *parent = 0);
 public:
     explicit AbstractInputPanel(QObject *parent = 0);
     ~AbstractInputPanel();

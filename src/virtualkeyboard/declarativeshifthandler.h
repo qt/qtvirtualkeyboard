@@ -20,7 +20,6 @@
 #define AUTOSHIFTHANDLER_H
 
 #include <QObject>
-#include <QScopedPointer>
 
 class DeclarativeInputContext;
 class DeclarativeShiftHandlerPrivate;
@@ -53,7 +52,6 @@ private:
 
 private:
     friend class DeclarativeInputContext;
-    QScopedPointer<DeclarativeShiftHandlerPrivate> d_ptr;
 };
 
 #endif // AUTOSHIFTHANDLER_H

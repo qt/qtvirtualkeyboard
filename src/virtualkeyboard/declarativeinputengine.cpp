@@ -22,8 +22,9 @@
 #include "virtualkeyboarddebug.h"
 
 #include <QTimerEvent>
+#include <QtCore/private/qobject_p.h>
 
-class DeclarativeInputEnginePrivate
+class DeclarativeInputEnginePrivate : public QObjectPrivate
 {
 public:
     virtual ~DeclarativeInputEnginePrivate() { }
@@ -95,8 +96,7 @@ private:
     Constructs an input engine with input context as \a parent.
 */
 DeclarativeInputEngine::DeclarativeInputEngine(DeclarativeInputContext *parent) :
-    QObject(parent),
-    d_ptr(new DeclarativeInputEnginePrivate())
+    QObject(*new DeclarativeInputEnginePrivate(), parent)
 {
     Q_D(DeclarativeInputEngine);
     d->inputContext = parent;

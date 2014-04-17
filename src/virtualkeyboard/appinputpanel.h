@@ -34,9 +34,6 @@ public:
     void show();
     void hide();
     bool isVisible() const;
-
-private:
-    QScopedPointer<AppInputPanelPrivate> d_ptr;
 };
 
 #endif // APPINPUTPANEL_H

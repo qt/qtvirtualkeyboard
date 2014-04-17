@@ -63,7 +63,6 @@ protected slots:
 
 private:
     friend class DeclarativeInputEngine;
-    QScopedPointer<DeclarativeSelectionListModelPrivate> d_ptr;
 };
 
 Q_DECLARE_METATYPE(DeclarativeSelectionListModel::Type)

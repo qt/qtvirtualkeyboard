@@ -18,8 +18,9 @@
 
 #include "declarativeshifthandler.h"
 #include "declarativeinputcontext.h"
+#include <QtCore/private/qobject_p.h>
 
-class DeclarativeShiftHandlerPrivate
+class DeclarativeShiftHandlerPrivate : public QObjectPrivate
 {
 public:
     DeclarativeInputContext *inputContext;
@@ -41,8 +42,7 @@ public:
 */
 
 DeclarativeShiftHandler::DeclarativeShiftHandler(DeclarativeInputContext *parent) :
-    QObject(parent),
-    d_ptr(new DeclarativeShiftHandlerPrivate())
+    QObject(*new DeclarativeShiftHandlerPrivate(), parent)
 {
     Q_D(DeclarativeShiftHandler);
     d->inputContext = parent;

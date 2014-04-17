@@ -18,8 +18,9 @@
 
 #include "declarativeselectionlistmodel.h"
 #include "abstractinputmethod.h"
+#include <QtCore/private/qabstractitemmodel_p.h>
 
-class DeclarativeSelectionListModelPrivate
+class DeclarativeSelectionListModelPrivate : public QAbstractItemModelPrivate
 {
 public:
     QHash<int, QByteArray> roles;
@@ -92,8 +93,7 @@ public:
 */
 
 DeclarativeSelectionListModel::DeclarativeSelectionListModel(QObject *parent) :
-    QAbstractListModel(parent),
-    d_ptr(new DeclarativeSelectionListModelPrivate())
+    QAbstractListModel(*new DeclarativeSelectionListModelPrivate(), parent)
 {
     Q_D(DeclarativeSelectionListModel);
     d->roles[DisplayRole] = "display";

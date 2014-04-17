@@ -37,6 +37,16 @@
 */
 
 /*!
+    Creates an input panel container with \a dd as private data and
+    \a parent but does not construct the view. The view is explicitly
+    constructed by the AbstractInputPanel::createView() method.
+*/
+AbstractInputPanel::AbstractInputPanel(QObjectPrivate &dd, QObject *parent) :
+    QObject(dd, parent)
+{
+}
+
+/*!
     Creates an input panel container with \a parent but does not construct
     the view. The view is explicitly constructed by the
     AbstractInputPanel::createView() method.

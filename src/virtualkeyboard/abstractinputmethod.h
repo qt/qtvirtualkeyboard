@@ -21,11 +21,11 @@
 
 #include "declarativeinputengine.h"
 #include "declarativeselectionlistmodel.h"
+#include <QtCore/private/qobject_p.h>
 
-class AbstractInputMethodPrivate
+class AbstractInputMethodPrivate : public QObjectPrivate
 {
 public:
-    virtual ~AbstractInputMethodPrivate() {}
     DeclarativeInputEngine *inputEngine;
 };
 
@@ -36,7 +36,7 @@ class AbstractInputMethod : public QObject
     Q_PROPERTY(QString className READ className CONSTANT)
 
 protected:
-    AbstractInputMethod(AbstractInputMethodPrivate *d_ptr, QObject *parent = 0);
+    AbstractInputMethod(AbstractInputMethodPrivate &dd, QObject *parent = 0);
 public:
     explicit AbstractInputMethod(QObject *parent = 0);
     ~AbstractInputMethod();
@@ -68,9 +68,6 @@ private:
     void setInputEngine(DeclarativeInputEngine *inputEngine);
 
     friend class DeclarativeInputEngine;
-
-protected:
-    QScopedPointer<AbstractInputMethodPrivate> d_ptr;
 };
 
 #endif

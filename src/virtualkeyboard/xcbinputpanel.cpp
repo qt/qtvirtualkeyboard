@@ -27,16 +27,16 @@
 #include <xcb/xcb.h>
 #include <xcb/xfixes.h>
 #include <qpa/qplatformnativeinterface.h>
+#include <QtCore/private/qobject_p.h>
 
-class XcbInputPanelPrivate
+class XcbInputPanelPrivate : public QObjectPrivate
 {
 public:
     QScopedPointer<InputView> view;
 };
 
 XcbInputPanel::XcbInputPanel(QObject *parent) :
-    AbstractInputPanel(parent),
-    d_ptr(new XcbInputPanelPrivate())
+    AbstractInputPanel(*new XcbInputPanelPrivate(), parent)
 {
     /*  Activate the alpha buffer for this application.
     */

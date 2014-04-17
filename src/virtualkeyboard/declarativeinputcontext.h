@@ -106,7 +106,6 @@ private:
 
 private:
     friend class PlatformInputContext;
-    QScopedPointer<DeclarativeInputContextPrivate> d_ptr;
 };
 
 #endif

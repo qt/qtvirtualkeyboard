@@ -25,6 +25,7 @@
 #include <QEvent>
 #include <QTextFormat>
 #include <QGuiApplication>
+#include <QtCore/private/qobject_p.h>
 
 /*!
     \qmlmodule QtQuick.Enterprise.VirtualKeyboard 1.0
@@ -40,7 +41,7 @@
     \brief Contains classes for integrating input methods.
 */
 
-class DeclarativeInputContextPrivate
+class DeclarativeInputContextPrivate : public QObjectPrivate
 {
 public:
     PlatformInputContext *inputContext;
@@ -83,8 +84,7 @@ public:
     context.
 */
 DeclarativeInputContext::DeclarativeInputContext(PlatformInputContext *parent) :
-    QObject(parent),
-    d_ptr(new DeclarativeInputContextPrivate())
+    QObject(*new DeclarativeInputContextPrivate(), parent)
 {
     Q_D(DeclarativeInputContext);
     d->inputContext = parent;

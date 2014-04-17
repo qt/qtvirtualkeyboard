@@ -17,7 +17,7 @@ include(doc/doc.pri)
 target.path = $$TARGETPATH
 INSTALLS += target
 
-QT += quick gui gui-private
+QT += quick gui gui-private core-private
 
 CONFIG += plugin
 CONFIG += link_pkgconfig

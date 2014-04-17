@@ -146,7 +146,7 @@ public:
 };
 
 HunspellInputMethod::HunspellInputMethod(QObject *parent) :
-    AbstractInputMethod(new HunspellInputMethodPrivate(this), parent)
+    AbstractInputMethod(*new HunspellInputMethodPrivate(this), parent)
 {
 }
 

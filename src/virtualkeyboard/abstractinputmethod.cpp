@@ -30,12 +30,11 @@
 */
 
 /*!
-    Constructs an input method with \a d_ptr as the private data
+    Constructs an input method with \a dd as the private data
     from the derived class and \a parent as the parent.
 */
-AbstractInputMethod::AbstractInputMethod(AbstractInputMethodPrivate *d_ptr, QObject *parent) :
-    QObject(parent),
-    d_ptr(d_ptr)
+AbstractInputMethod::AbstractInputMethod(AbstractInputMethodPrivate &dd, QObject *parent) :
+    QObject(dd, parent)
 {
 }
 
@@ -43,8 +42,7 @@ AbstractInputMethod::AbstractInputMethod(AbstractInputMethodPrivate *d_ptr, QObj
     Constructs an input method with \a parent.
 */
 AbstractInputMethod::AbstractInputMethod(QObject *parent) :
-    QObject(parent),
-    d_ptr(new AbstractInputMethodPrivate())
+    QObject(*new AbstractInputMethodPrivate(), parent)
 {
 }
 

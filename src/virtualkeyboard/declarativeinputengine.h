@@ -101,7 +101,6 @@ protected:
 
 private:
     friend class DeclarativeInputContext;
-    const QScopedPointer<DeclarativeInputEnginePrivate> d_ptr;
 };
 
 Q_DECLARE_METATYPE(DeclarativeInputEngine::TextCase)

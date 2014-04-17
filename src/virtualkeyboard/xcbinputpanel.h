@@ -46,9 +46,6 @@ protected slots:
     void repositionView(const QRect &rect);
     void focusWindowChanged(QWindow *focusWindow);
     void focusWindowVisibleChanged(bool visible);
-
-private:
-    QScopedPointer<XcbInputPanelPrivate> d_ptr;
 };
 
 #endif // INPUTPANEL_H
