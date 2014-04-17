@@ -1,11 +1,11 @@
 # This file is used to ignore files that should not be committed
 # --------------------------------------------------------------
 
-qtvirtualkeyboard/examples/quick/enterprise/virtualkeyboard/virtualkeyboard/virtualkeyboard
-!qtvirtualkeyboard/src/virtualkeyboard/hunspell/config.h
-!qtvirtualkeyboard/src/virtualkeyboard/hunspell/hunspell.pro
-qtvirtualkeyboard/src/virtualkeyboard/hunspell/*
-qtvirtualkeyboard/src/virtualkeyboard/hunspell/doc/html
+examples/quick/enterprise/virtualkeyboard/virtualkeyboard/virtualkeyboard
+!src/virtualkeyboard/hunspell/config.h
+!src/virtualkeyboard/hunspell/hunspell.pro
+src/virtualkeyboard/hunspell/*
+src/virtualkeyboard/hunspell/doc/html
 
 *.pro.user
 *.a
