@@ -1,2 +1,17 @@
 module QtQuick.Enterprise.VirtualKeyboard
 InputPanel 1.0 InputPanel.qml
+BackspaceKey 1.0 components/BackspaceKey.qml
+BaseKey 1.0 components/BaseKey.qml
+ChangeLanguageKey 1.0 components/ChangeLanguageKey.qml
+EnterKey 1.0 components/EnterKey.qml
+FillerKey 1.0 components/FillerKey.qml
+HideKeyboardKey 1.0 components/HideKeyboardKey.qml
+Key 1.0 components/Key.qml
+NumberKey 1.0 components/NumberKey.qml
+ShiftKey 1.0 components/ShiftKey.qml
+SpaceKey 1.0 components/SpaceKey.qml
+SymbolModeKey 1.0 components/SymbolModeKey.qml
+KeyboardColumn 1.0 components/KeyboardColumn.qml
+KeyboardLayout 1.0 components/KeyboardLayout.qml
+KeyboardRow 1.0 components/KeyboardRow.qml
+MultitapInputMethod 1.0 components/MultitapInputMethod.qml

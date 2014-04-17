@@ -81,6 +81,9 @@ public:
     Q_INVOKABLE void commit(const QString &text, int replacementStart = 0, int replacementEnd = 0);
     Q_INVOKABLE void clear();
 
+    // Helper functions
+    Q_INVOKABLE bool fileExists(const QUrl& fileUrl);
+
 signals:
     void focusChanged();
     void focusEditorChanged();

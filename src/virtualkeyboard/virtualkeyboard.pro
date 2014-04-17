@@ -55,7 +55,7 @@ retro-style {
 OTHER_FILES += content/InputPanel.qml \
     content/qmldir \
     content/components/*.qml \
-    content/layouts/*.qml \
+    content/layouts \
     content/styles/default/*.qml \
     content/styles/retro/*.qml
 

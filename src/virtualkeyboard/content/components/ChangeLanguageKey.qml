@@ -31,8 +31,19 @@ import QtQuick 2.0
 */
 
 BaseKey {
+    /*! If this property is true, the input language is only
+        changed between the languages providing custom layout.
+
+        For example, if only the English and Arabic languages
+        provide digits layout, then other locales using the
+        shared default layout are ignored.
+
+        The default is false.
+    */
+    property bool customLayoutsOnly: false
+
     functionKey: true
     displayText: keyboard.locale.split("_")[0]
     keyPanelDelegate: keyboard.style ? keyboard.style.languageKeyPanel : undefined
-    onClicked: keyboard.changeInputLanguage()
+    onClicked: keyboard.changeInputLanguage(customLayoutsOnly)
 }

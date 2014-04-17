@@ -68,10 +68,33 @@ from the application. This information includes, but is not limited to:
 
 \section2 Locale
 
-When a keyboard layout is activated, the keyboard should set a matching locale
-for the input context. This can be done with the InputContext::locale property.
-Once the locale is set, it is reflected to the current input method and the
-underlying application (through QPlatformInputContext).
+The list of supported locales is specified by the existence of a locale specific
+layout directory in "layouts/*". Each layout directory may contain one
+or more layouts, for example fi_FI/main.qml or symbols.qml.
+
+The application can specify the initial layout by changing the default locale.
+However, this needs to be done before the application is initialized and the
+input method plugin is loaded. If no changes are made to the default locale, the
+current system locale is used.
+
+The keyboard locale matching is performed in the following sequence:
+
+\list
+    \li layouts/language_country
+    \li layouts/language_*
+    \li layouts/en_GB
+\endlist
+
+The locale is first matched against the full locale name. If a full match is
+not found, then only the locale language is matched. If a partial match is
+not found, then the "en_GB" locale is used as a fallback.
+
+After the locale selection is done, the keyboard updates the input locale and
+input direction to match the current layout. The application can receive this
+information through the QInputMethod interface.
+
+Internally, the current input locale is also updated to the DeclarativeInputEngine
+and the current InputMethod instances.
 
 \section2 UI Animations
 
@@ -243,15 +266,30 @@ InputEngine::wordCandidateListModel property.
 
 \section1 Keyboard Layouts
 
-\section2 Adding New Keyboard Layouts
-
 Keyboard layouts are located in the \e src/virtualkeyboard/content/layouts
-directory. Qt Virtual Keyboard scans this directory for the available layouts.
-The keyboard layouts must be named after the locale. Each keyboard layout
-consists of two files: the main layout and the symbol layout. To add a new
-layout, first make a copy of an existing layout, say \e en_GB.qml and
-\e symbols_en_GB.qml, and rename them according to the locale. Now the new
-layouts should appear in Qt Creator after running qmake again.
+directory. Each subdirectory of the layout directory represents a locale.
+The locale directory is a string of the form "language_country", where
+language is a lowercase, two-letter ISO 639 language code, and country is an
+uppercase, two or three-letter ISO 3166 country code.
+
+\section2 Layout Types
+
+Different keyboard layout types are used in different input modes. The default
+layout which is used for reqular text input, is called the "main" layout.
+The layout type is determined by the layout file name. Therefore, the "main" layout
+file is called the "main.qml".
+
+List of supported layout types:
+
+\list
+    \li \c main The main layout for normal text input
+    \li \c symbols Symbol layout for special characters etc. (activated from main layout)
+    \li \c numbers Numeric layout for formatted numbers (activated by Qt::ImhFormattedNumbersOnly)
+    \li \c digits Digits only layout (activated by Qt::ImhDigitsOnly)
+    \li \c dialpad Dialpad layout for phone number input (activated by Qt::ImhDialableCharactersOnly)
+\endlist
+
+\section2 Adding New Keyboard Layouts
 
 The keyboard layout element must be based on the KeyboardLayout QML type.
 This type defines the root item of the layout. The root item has the following
@@ -280,21 +318,27 @@ New keys are added to the keyboard row using the Key type or one of the
 specialized key types. Below is the list of all key types:
 
 \list
-    \li Key
-    \li BackspaceKey
-    \li ChangeLanguageKey
-    \li EnterKey
-    \li FillerKey
-    \li HideKeyboardKey
-    \li NumberKey
-    \li ShiftKey
-    \li SpaceKey
-    \li SymbolModeKey
+    \li \l Key
+    \li \l BackspaceKey
+    \li \l ChangeLanguageKey
+    \li \l EnterKey
+    \li \l FillerKey
+    \li \l HideKeyboardKey
+    \li \l NumberKey
+    \li \l ShiftKey
+    \li \l SpaceKey
+    \li \l SymbolModeKey
 \endlist
 
 For example, to add a regular key which sends a key event to the input method:
 
 \code
+    import QtQuick 2.0
+    import QtQuick.Layouts 1.0
+    import QtQuick.Enterprise.VirtualKeyboard 1.0
+
+    // file: layouts/en_GB/main.qml
+
     KeyboardLayout {
         keyWeight: 160
         KeyboardRow {
@@ -322,6 +366,12 @@ The effective value for the key weight will be 160. For the sake of the
 example, we add another key which specifies a custom key weight:
 
 \code
+    import QtQuick 2.0
+    import QtQuick.Layouts 1.0
+    import QtQuick.Enterprise.VirtualKeyboard 1.0
+
+    // file: layouts/en_GB/main.qml
+
     KeyboardLayout {
         keyWeight: 160
         KeyboardRow {
@@ -371,6 +421,12 @@ pages of keys within the same layout. The usage is demonstrated in the
 following example:
 
 \code
+    import QtQuick 2.0
+    import QtQuick.Layouts 1.0
+    import QtQuick.Enterprise.VirtualKeyboard 1.0
+
+    // file: layouts/en_GB/symbols.qml
+
     KeyboardLayout {
         property bool secondPage
         onVisibleChanged: if (!visible) secondPage = false

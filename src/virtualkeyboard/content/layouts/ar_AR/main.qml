@@ -18,7 +18,6 @@
 
 import QtQuick 2.0
 import QtQuick.Enterprise.VirtualKeyboard 1.0
-import "../components"
 
 KeyboardLayout {
     keyWeight: 160

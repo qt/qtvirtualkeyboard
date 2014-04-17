@@ -18,7 +18,6 @@
 
 import QtQuick 2.0
 import QtQuick.Enterprise.VirtualKeyboard 1.0
-import "../components"
 
 KeyboardLayout {
     keyWeight: 160
@@ -34,56 +33,62 @@ KeyboardLayout {
         Key {
             key: Qt.Key_E
             text: "e"
+            alternativeKeys: "êeëèé"
         }
         Key {
             key: Qt.Key_R
             text: "r"
+            alternativeKeys: "ŕrř"
         }
         Key {
             key: Qt.Key_T
             text: "t"
+            alternativeKeys: "ţtŧť"
         }
         Key {
             key: Qt.Key_Y
             text: "y"
+            alternativeKeys: "ÿyýŷ"
         }
         Key {
             key: Qt.Key_U
             text: "u"
+            alternativeKeys: "űūũûüuùú"
         }
         Key {
             key: Qt.Key_I
             text: "i"
+            alternativeKeys: "îïīĩiìí"
         }
         Key {
             key: Qt.Key_O
             text: "o"
+            alternativeKeys: "œøõôöòóo"
         }
         Key {
             key: Qt.Key_P
             text: "p"
         }
-        Key {
-            key: Qt.Key_Adiaeresis
-            text: "å"
-        }
         BackspaceKey {}
     }
     KeyboardRow {
         FillerKey {
-            weight: 66
+            weight: 56
         }
         Key {
             key: Qt.Key_A
             text: "a"
+            alternativeKeys: "aäåãâàá"
         }
         Key {
             key: Qt.Key_S
             text: "s"
+            alternativeKeys: "šsşś"
         }
         Key {
             key: Qt.Key_D
             text: "d"
+            alternativeKeys: "dđď"
         }
         Key {
             key: Qt.Key_F
@@ -92,6 +97,7 @@ KeyboardLayout {
         Key {
             key: Qt.Key_G
             text: "g"
+            alternativeKeys: "ġgģĝğ"
         }
         Key {
             key: Qt.Key_H
@@ -108,14 +114,7 @@ KeyboardLayout {
         Key {
             key: Qt.Key_L
             text: "l"
-        }
-        Key {
-            key: Qt.Key_Odiaeresis
-            text: "ö"
-        }
-        Key {
-            key: Qt.Key_Adiaeresis
-            text: "ä"
+            alternativeKeys: "ĺŀłļľl"
         }
         EnterKey {
             weight: 283
@@ -123,10 +122,11 @@ KeyboardLayout {
     }
     KeyboardRow {
         keyWeight: 156
-        ShiftKey { }
+        ShiftKey {}
         Key {
             key: Qt.Key_Z
             text: "z"
+            alternativeKeys: "zžż"
         }
         Key {
             key: Qt.Key_X
@@ -135,6 +135,7 @@ KeyboardLayout {
         Key {
             key: Qt.Key_C
             text: "c"
+            alternativeKeys: "çcċčć"
         }
         Key {
             key: Qt.Key_V
@@ -147,6 +148,7 @@ KeyboardLayout {
         Key {
             key: Qt.Key_N
             text: "n"
+            alternativeKeys: "ņńnň"
         }
         Key {
             key: Qt.Key_M
@@ -160,12 +162,8 @@ KeyboardLayout {
             key: Qt.Key_Period
             text: "."
         }
-        Key {
-            key: Qt.Key_Minus
-            text: "-"
-        }
         ShiftKey {
-            weight: 264
+            weight: 204
         }
     }
     KeyboardRow {

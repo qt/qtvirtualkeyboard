@@ -369,6 +369,11 @@ void DeclarativeInputContext::clear()
         emit preeditTextChanged();
 }
 
+bool DeclarativeInputContext::fileExists(const QUrl& fileUrl)
+{
+    return QFile(fileUrl.toLocalFile()).exists();
+}
+
 void DeclarativeInputContext::setFocus(bool enable)
 {
     Q_D(DeclarativeInputContext);

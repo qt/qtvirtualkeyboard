@@ -27,14 +27,25 @@ Item {
 
     property alias style: styleLoader.item
     property var activeKey: undefined
-    property int localeIndex: 1
-    property string locale: layoutsModel.count > 0 ? layoutsModel.get(localeIndex, "fileBaseName") : "en_GB"
-    property string layout: keyboard.symbolMode && !keyboard.numberMode ? "symbols_"+keyboard.locale : (keyboard.numberMode ? "numbers" : keyboard.locale)
+    property int localeIndex: -1
+    property string locale: localeIndex >= 0 && localeIndex < layoutsModel.count ? layoutsModel.get(localeIndex, "fileName") : ""
+    property int defaultLocaleIndex: -1
+    property string defaultLocale: defaultLocaleIndex >= 0 && defaultLocaleIndex < layoutsModel.count ? layoutsModel.get(defaultLocaleIndex, "fileName") : ""
+    property string layout
+    property string layoutType: {
+        if (keyboard.dialpadMode) return "dialpad"
+        if (keyboard.numberMode) return "numbers"
+        if (keyboard.digitMode) return "digits"
+        if (keyboard.symbolMode) return "symbols"
+        return "main"
+    }
     property bool active: Qt.inputMethod.visible
     property bool uppercased: uppercaseOnly ? true : (lowercaseOnly ? false : InputContext.shift || InputContext.capsLock)
     property bool uppercaseOnly: InputContext.inputMethodHints & Qt.ImhUppercaseOnly
     property bool lowercaseOnly: InputContext.inputMethodHints & Qt.ImhLowercaseOnly
-    property bool numberMode: InputContext.inputMethodHints & (Qt.ImhDialableCharactersOnly | Qt.ImhFormattedNumbersOnly | Qt.ImhDigitsOnly)
+    property bool dialpadMode: InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly
+    property bool numberMode: InputContext.inputMethodHints & Qt.ImhFormattedNumbersOnly
+    property bool digitMode: InputContext.inputMethodHints & Qt.ImhDigitsOnly
     property bool symbolMode
     property bool shiftChanged: true
     property var defaultInputMethod: initDefaultInputMethod()
@@ -50,17 +61,26 @@ Item {
 
     width: keyboardBackground.width
     height: wordCandidateView.height + keyboardBackground.height
-    onLocaleChanged: InputContext.locale = locale
-    onUppercasedChanged: shiftChanged = true
-
-    function changeInputLanguage() {
-        localeIndex = (localeIndex+1) % layoutsModel.count
+    onLocaleChanged: {
+        if (localeIndex >= 0 && localeIndex < layoutsModel.count)
+            InputContext.locale = locale
+        updateLayout()
     }
+    onLayoutTypeChanged: updateLayout()
+    onUppercasedChanged: shiftChanged = true
 
     Connections {
         target: InputContext
         onFocusEditorChanged: {
             keyboard.symbolMode = false
+        }
+        onInputMethodHintsChanged: {
+            if (InputContext.inputMethodHints & Qt.ImhPreferNumbers) {
+                symbolMode = true
+            } else {
+                updateLayout()
+            }
+            updateInputMethod()
         }
     }
     Connections {
@@ -76,7 +96,25 @@ Item {
     FolderListModel {
         id: layoutsModel
         folder: "../layouts"
-        nameFilters: ["??_??.qml"]
+        nameFilters: ["$"]
+    }
+    Connections {
+        target: layoutsModel
+        onCountChanged: {
+            if (layoutsModel.count > 0) {
+                defaultLocaleIndex = findLocale("en_GB", -1)
+                if (localeIndex == -1) {
+                    // Find an initial layout which matches the current input locale
+                    localeIndex = findLocale(InputContext.locale, defaultLocaleIndex)
+                } else {
+                    // Make sure the index matches to current locale
+                    localeIndex = findLocale(keyboard.locale, defaultLocaleIndex)
+                }
+            } else {
+                defaultLocaleIndex = -1
+                localeIndex = -1
+            }
+        }
     }
     AlternativeKeys { id: alternativeKeys }
     Timer {
@@ -107,7 +145,6 @@ Item {
             target: styleLoader.item
             property: "keyboardHeight"
             value: keyboardInnerContainer.height
-            when: keyboardLayoutLoader.item !== null
         }
     }
     ListView {
@@ -159,7 +196,12 @@ Item {
                 anchors.topMargin: Math.round(style.keyboardRelativeTopMargin * parent.height)
                 anchors.bottomMargin: Math.round(style.keyboardRelativeBottomMargin * parent.height)
 
-                source: layoutsModel.folder + "/" + keyboard.layout +".qml"
+                Binding {
+                    target: keyboardLayoutLoader
+                    property: "source"
+                    value: keyboard.layout
+                    when: keyboard.layout.length > 0
+                }
                 onItemChanged: if (keyboardLayoutLoader.item) keyboard.updateInputMethod()
 
                 MouseArea {
@@ -287,10 +329,7 @@ Item {
             }
         }
     }
-    Connections {
-        target: InputContext
-        onInputMethodHintsChanged: updateInputMethod()
-    }
+
     function updateInputMethod() {
         var inputMethod = keyboard.defaultInputMethod
         var inputMode = keyboard.defaultInputMode
@@ -309,5 +348,61 @@ Item {
             InputContext.inputEngine.inputMethod = inputMethod
             InputContext.inputEngine.inputMode = inputMode
         }
+    }
+
+    function updateLayout() {
+        var newLayout = findLayout(keyboard.locale, keyboard.layoutType)
+        if (!newLayout.length)
+            newLayout = findLayout(keyboard.locale, "main")
+        layout = newLayout
+    }
+
+    function changeInputLanguage(customLayoutsOnly) {
+        var newLocaleIndex = localeIndex
+        for (var i = 0; i < layoutsModel.count; i++) {
+            newLocaleIndex = (newLocaleIndex + 1) % layoutsModel.count
+            if (isValidLocale(newLocaleIndex)) {
+                if (customLayoutsOnly) {
+                    var newLayout = findLayout(layoutsModel.get(newLocaleIndex, "fileName"), layoutType)
+                    if (newLayout.length > 0 && newLayout !== layout)
+                        break
+                } else {
+                    break
+                }
+            }
+        }
+        if (i < layoutsModel.count)
+            localeIndex = newLocaleIndex
+    }
+
+    function findLocale(localeName, defaultValue) {
+        var languageCode = localeName.substring(0, 3) // Including the '_' delimiter
+        var languageMatch = -1
+        for (var i = 0; i < layoutsModel.count; i++) {
+            if (!layoutsModel.isFolder(i))
+                continue
+            var layoutFolder = layoutsModel.get(i, "fileName")
+            if (layoutFolder === localeName)
+                return i
+            if (languageMatch == -1 && layoutFolder.substring(0, 3) === languageCode)
+                languageMatch = i
+        }
+        return (languageMatch != -1) ? languageMatch : defaultValue
+    }
+
+    function isValidLocale(index) {
+        if (index < 0 || index >= layoutsModel.count)
+            return false
+        return Qt.locale(layoutsModel.get(index, "fileName")).name !== "C"
+    }
+
+    function findLayout(localeName, layoutType) {
+        var layoutFile = layoutsModel.folder + "/" + localeName + "/" + layoutType + ".qml"
+        if (InputContext.fileExists(layoutFile))
+            return layoutFile
+        layoutFile = layoutsModel.folder + "/" + keyboard.defaultLocale + "/" + layoutType + ".qml"
+        if (InputContext.fileExists(layoutFile))
+            return layoutFile
+        return ""
     }
 }

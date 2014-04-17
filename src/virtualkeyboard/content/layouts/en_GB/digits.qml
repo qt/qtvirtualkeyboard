@@ -18,7 +18,6 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
-import "../components"
 import QtQuick.Enterprise.VirtualKeyboard 1.0
 
 KeyboardLayout {
@@ -32,19 +31,18 @@ KeyboardLayout {
         Layout.preferredWidth: height
         KeyboardRow {
             Key {
-                id: keyOne
-                key: Qt.Key_1
-                text: "1"
+                key: Qt.Key_7
+                text: "7"
             }
             Key {
-                key: Qt.Key_2
-                text: "2"
+                key: Qt.Key_8
+                text: "8"
             }
             Key {
-                key: Qt.Key_3
-                text: "3"
+                key: Qt.Key_9
+                text: "9"
             }
-            BackspaceKey {  }
+            BackspaceKey {}
         }
         KeyboardRow {
             Key {
@@ -69,48 +67,32 @@ KeyboardLayout {
         }
         KeyboardRow {
             Key {
-                key: Qt.Key_7
-                text: "7"
+                key: Qt.Key_1
+                text: "1"
             }
             Key {
-                key: Qt.Key_8
-                text: "8"
+                key: Qt.Key_2
+                text: "2"
             }
             Key {
-                key: Qt.Key_9
-                text: "9"
+                key: Qt.Key_3
+                text: "3"
             }
-            HideKeyboardKey {  }
+            HideKeyboardKey {}
         }
         KeyboardRow {
-            Key {
-                key: Qt.Key_Asterisk
-                displayText: "*+"
-                text: "*"
-                alternativeKeys: "*+"
-                visible: InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly
+            ChangeLanguageKey {
+                customLayoutsOnly: true
             }
             Key {
                 key: Qt.Key_0
                 text: "0"
             }
             Key {
-                id: signKey
-                text: "#"
-                key: Qt.Key_NumberSign
-                visible: !(InputContext.inputMethodHints & Qt.ImhDigitsOnly)
-                states: State {
-                    when: InputContext.inputMethodHints & Qt.ImhFormattedNumbersOnly
-                    PropertyChanges {
-                        target: signKey
-
-                        text: "."
-                        key: Qt.Key_Period
-                        enabled: InputContext.surroundingText.indexOf(".") === -1
-                    }
-                }
+                key: Qt.Key_Period
+                text: "."
             }
-            EnterKey {  }
+            EnterKey {}
         }
     }
 }

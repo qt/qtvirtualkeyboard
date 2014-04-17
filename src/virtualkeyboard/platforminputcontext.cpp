@@ -38,8 +38,8 @@ PlatformInputContext::PlatformInputContext() :
 #endif
     m_inputPanelCreated(false),
     m_focusObject(0),
-    m_locale("en_GB"),
-    m_inputDirection(Qt::LeftToRight)
+    m_locale(),
+    m_inputDirection(m_locale.textDirection())
 {
 }
 
@@ -128,6 +128,7 @@ QLocale PlatformInputContext::locale() const
 void PlatformInputContext::setLocale(QLocale locale)
 {
     if (m_locale != locale) {
+        VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::setLocale():" << locale;
         m_locale = locale;
         emitLocaleChanged();
     }
@@ -141,6 +142,7 @@ Qt::LayoutDirection PlatformInputContext::inputDirection() const
 void PlatformInputContext::setInputDirection(Qt::LayoutDirection direction)
 {
     if (m_inputDirection != direction) {
+        VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::setInputDirection():" << direction;
         m_inputDirection = direction;
         emitInputDirectionChanged(m_inputDirection);
     }

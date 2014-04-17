@@ -34,7 +34,6 @@ BaseKey {
     id: shiftKey
     key: Qt.Key_Shift
     enabled: !keyboard.uppercaseOnly && !keyboard.lowercaseOnly
-    visible: enabled
     highlighted: InputContext.capsLock
     functionKey: true
     keyPanelDelegate: keyboard.style ? keyboard.style.shiftKeyPanel : undefined
