@@ -78,7 +78,7 @@ KeyboardStyle {
             text: control.displayText
             color: "#110b05"
             anchors.centerIn: parent
-            anchors.verticalCenterOffset: 18 * scaleHint
+            anchors.verticalCenterOffset: 8 * scaleHint
             font {
                 family: fontFamily
                 weight: Font.Bold
@@ -529,7 +529,7 @@ KeyboardStyle {
             color: "#c5a96f"
             text: characterPreview.text
             anchors.centerIn: characterPreviewBackground
-            anchors.verticalCenterOffset: 18 * scaleHint
+            anchors.verticalCenterOffset: 8 * scaleHint
             font {
                 family: fontFamily
                 weight: Font.Bold
