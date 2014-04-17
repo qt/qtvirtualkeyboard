@@ -45,11 +45,12 @@ void HunspellBuildSuggestionsTask::run()
         }
         /*  Prioritize words with missing spaces next to word completions.
         */
-        for (int i = lastWordCompletionIndex + 1; i < wordList->list.length();) {
+        for (int i = lastWordCompletionIndex; i < wordList->list.length(); i++) {
             if (QString(wordList->list.at(i)).replace(" ", "").compare(word) == 0) {
-                wordList->list.move(i, lastWordCompletionIndex++);
-            } else {
-                i++;
+                if (i != lastWordCompletionIndex) {
+                    wordList->list.move(i, lastWordCompletionIndex);
+                }
+                lastWordCompletionIndex++;
             }
         }
         /*  Do spell checking and suggest the first candidate, if:
