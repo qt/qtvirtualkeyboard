@@ -98,6 +98,8 @@ void PlatformInputContext::showInputPanel()
     if (!m_inputPanelCreated) {
         m_inputPanel->createView();
         m_inputPanelCreated = true;
+        if (m_declarativeContext)
+            m_declarativeContext->update(Qt::ImQueryAll);
     }
     if (m_inputPanel->isVisible())
         return;
@@ -157,9 +159,11 @@ void PlatformInputContext::setFocusObject(QObject *object)
         emit focusObjectChanged();
     }
 
-    QInputMethodQueryEvent event(Qt::ImEnabled);
-    sendEvent(&event);
-    bool enabled = event.value(Qt::ImEnabled).toBool();
+    bool enabled = inputMethodQuery(Qt::ImEnabled).toBool();
+    if (enabled && !m_inputPanelCreated) {
+        m_inputPanel->createView();
+        m_inputPanelCreated = true;
+    }
 
     if (m_declarativeContext) {
         m_declarativeContext->setFocus(enabled);
