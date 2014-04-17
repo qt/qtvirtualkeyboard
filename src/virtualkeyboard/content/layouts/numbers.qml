@@ -60,7 +60,8 @@ KeyboardLayout {
                 text: "6"
             }
             Key {
-                text: "_"
+                text: " "
+                displayText: "_"
                 repeat: true
                 showPreview: false
                 key: Qt.Key_Space
