@@ -22,7 +22,7 @@ import "../components"
 import QtQuick.Enterprise.VirtualKeyboard 1.0
 
 KeyboardLayout {
-    inputMethod: MultitapInputMethod {}
+    inputMethod: PlainInputMethod {}
     inputMode: InputEngine.Numeric
 
     KeyboardColumn {
@@ -85,7 +85,8 @@ KeyboardLayout {
             Key {
                 key: Qt.Key_Asterisk
                 displayText: "*+"
-                text: "*+"
+                text: "*"
+                alternativeKeys: "*+"
                 visible: InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly
             }
             Key {
