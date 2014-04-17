@@ -162,7 +162,7 @@ void PlatformInputContext::setFocusObject(QObject *object)
     bool enabled = event.value(Qt::ImEnabled).toBool();
 
     if (m_declarativeContext) {
-        m_declarativeContext->setFocus(true);
+        m_declarativeContext->setFocus(enabled);
         if (enabled)
             m_declarativeContext->update(Qt::ImQueryAll);
         else
