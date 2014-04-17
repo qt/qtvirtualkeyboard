@@ -18,6 +18,17 @@
 
 import QtQuick 2.0
 
+/*!
+    \qmltype SpaceKey
+    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \ingroup qtvirtualkeyboard-qml
+    \inherits Key
+
+    \brief Space key for keyboard layouts.
+
+    This key emits a space for input method processing.
+*/
+
 Key {
     text: " "
     displayText: ""

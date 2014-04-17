@@ -19,6 +19,17 @@
 import QtQuick 2.0
 import QtQuick.Enterprise.VirtualKeyboard 1.0
 
+/*!
+    \qmltype HideKeyboardKey
+    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \ingroup qtvirtualkeyboard-qml
+    \inherits BaseKey
+
+    \brief Hide keyboard key for keyboard layouts.
+
+    This key hides the keyboard from the user when pressed.
+*/
+
 BaseKey {
     functionKey: true
     onClicked: InputContext.hideInputPanel()

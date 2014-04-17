@@ -18,6 +18,18 @@
 
 import QtQuick 2.0
 
+/*!
+    \qmltype ChangeLanguageKey
+    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \ingroup qtvirtualkeyboard-qml
+    \inherits BaseKey
+
+    \brief Change language key for keyboard layouts.
+
+    Changes the current input language to the next one in the list of supported
+    languages.
+*/
+
 BaseKey {
     functionKey: true
     displayText: keyboard.locale.split("_")[0]

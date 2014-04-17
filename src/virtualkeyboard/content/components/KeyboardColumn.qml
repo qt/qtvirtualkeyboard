@@ -19,7 +19,25 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
 
+/*!
+    \qmltype KeyboardColumn
+    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \ingroup qtvirtualkeyboard-qml
+    \inherits ColumnLayout
+
+    \brief Keyboard column for keyboard layouts.
+
+    This type can be used in special cases where multiple columns
+    are added to a single keyboard layout.
+*/
+
 ColumnLayout {
+    /*! Sets the key weight for all children keys.
+
+        The default value is inherited from the parent element
+        in the layout hierarchy.
+    */
     property real keyWeight: parent ? parent.keyWeight : undefined
+
     spacing: 0
 }

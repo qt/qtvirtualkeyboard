@@ -19,6 +19,17 @@
 import QtQuick 2.0
 import QtQuick.Enterprise.VirtualKeyboard 1.0
 
+/*!
+    \qmltype ShiftKey
+    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \ingroup qtvirtualkeyboard-qml
+    \inherits BaseKey
+
+    \brief Shift key for keyboard layouts.
+
+    This key changes the shift state of the keyboard.
+*/
+
 BaseKey {
     id: shiftKey
     key: Qt.Key_Shift
@@ -27,7 +38,9 @@ BaseKey {
     highlighted: InputContext.capsLock
     functionKey: true
     keyPanelDelegate: keyboard.style ? keyboard.style.shiftKeyPanel : undefined
+    /*! \internal */
     property bool capsLock: InputContext.capsLock
+    /*! \internal */
     property bool shift: InputContext.shift
     onClicked: {
         if (InputContext.inputMethodHints & Qt.ImhNoAutoUppercase) {

@@ -18,6 +18,17 @@
 
 import QtQuick 2.0
 
+/*!
+    \qmltype FillerKey
+    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \ingroup qtvirtualkeyboard-qml
+    \inherits BaseKey
+
+    \brief Filler key for keyboard layouts.
+
+    This key can be used as a filler in the keyboard layout.
+*/
+
 BaseKey {
     showPreview: false
 }

@@ -28,7 +28,7 @@ import QtQuick 2.0
 */
 
 Item {
-    /*! Provides access to properties in key control.
+    /*! Provides access to properties in BaseKey.
 
         A list of available properties in control:
         \list

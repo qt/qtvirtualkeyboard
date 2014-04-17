@@ -18,6 +18,17 @@
 
 import QtQuick 2.0
 
+/*!
+    \qmltype SymbolModeKey
+    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \ingroup qtvirtualkeyboard-qml
+    \inherits Key
+
+    \brief Symbol mode key for keyboard layouts.
+
+    This key toggles between the symbol mode layout and the main layout.
+*/
+
 Key {
     key: Qt.Key_Context1
     displayText: "&123"

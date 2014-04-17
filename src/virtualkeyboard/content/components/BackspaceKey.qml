@@ -18,6 +18,18 @@
 
 import QtQuick 2.0
 
+/*!
+    \qmltype BackspaceKey
+    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \ingroup qtvirtualkeyboard-qml
+    \inherits BaseKey
+
+    \brief Backspace key for keyboard layouts.
+
+    Sends a backspace key for input method processing.
+    This key is repeatable.
+*/
+
 BaseKey {
     key: Qt.Key_Backspace
     repeat: true

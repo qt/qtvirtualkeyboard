@@ -19,6 +19,17 @@
 import QtQuick 2.0
 import QtQuick.Enterprise.VirtualKeyboard 1.0
 
+/*!
+    \qmltype EnterKey
+    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \ingroup qtvirtualkeyboard-qml
+    \inherits BaseKey
+
+    \brief Enter key for keyboard layouts.
+
+    Sends an enter key for input method processing.
+*/
+
 BaseKey {
     text: "\n"
     displayText: InputContext.inputItem && InputContext.inputItem.enterKeyText !== undefined ? InputContext.inputItem.enterKeyText : ""

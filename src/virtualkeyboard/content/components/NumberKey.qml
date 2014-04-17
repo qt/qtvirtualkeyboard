@@ -18,6 +18,19 @@
 
 import QtQuick 2.0
 
+/*!
+    \qmltype NumberKey
+    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \ingroup qtvirtualkeyboard-qml
+    \inherits Key
+
+    \brief Specialized number key for keyboard layouts.
+
+    This key emits the key code and key text for input method processing.
+    A NumberKey differs from a normal \l Key in that it does not show a
+    character preview.
+*/
+
 Key {
     showPreview: false
 }

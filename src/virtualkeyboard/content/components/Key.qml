@@ -18,6 +18,17 @@
 
 import QtQuick 2.0
 
+/*!
+    \qmltype Key
+    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \ingroup qtvirtualkeyboard-qml
+    \inherits BaseKey
+
+    \brief Regular character key for keyboard layouts.
+
+    This key emits the key code and key text for input method processing.
+*/
+
 BaseKey {
     id: keyItem
     keyPanelDelegate: keyboard.style ? keyboard.style.keyPanel : undefined
