@@ -30,6 +30,8 @@
 #endif
 #include "declarativeinputmethod.h"
 #include "declarativeselectionlistmodel.h"
+#include "enterkeyaction.h"
+#include "enterkeyactionattachedtype.h"
 
 static QPointer<PlatformInputContext> platformInputContext;
 
@@ -69,6 +71,8 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
 #ifdef HAVE_HUNSPELL
     qmlRegisterType<HunspellInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "HunspellInputMethod");
 #endif
+    qmlRegisterType<EnterKeyActionAttachedType>();
+    qmlRegisterType<EnterKeyAction>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "EnterKeyAction");
 
     if (system.compare(system, QStringLiteral("qtvirtualkeyboard"), Qt::CaseInsensitive) == 0) {
         platformInputContext = new PlatformInputContext();

@@ -83,6 +83,7 @@ public:
 
     // Helper functions
     Q_INVOKABLE bool fileExists(const QUrl& fileUrl);
+    Q_INVOKABLE bool hasEnterKeyAction(QObject *item) const;
 
 signals:
     void focusChanged();

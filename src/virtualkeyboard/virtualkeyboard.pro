@@ -32,7 +32,9 @@ SOURCES += platforminputcontext.cpp \
     declarativeinputmethod.cpp \
     declarativeselectionlistmodel.cpp \
     defaultinputmethod.cpp \
-    abstractinputpanel.cpp
+    abstractinputpanel.cpp \
+    enterkeyaction.cpp \
+    enterkeyactionattachedtype.cpp
 
 HEADERS += platforminputcontext.h \
     declarativeinputcontext.h \
@@ -44,7 +46,9 @@ HEADERS += platforminputcontext.h \
     declarativeselectionlistmodel.h \
     defaultinputmethod.h \
     abstractinputpanel.h \
-    virtualkeyboarddebug.h
+    virtualkeyboarddebug.h \
+    enterkeyaction.h \
+    enterkeyactionattachedtype.h
 
 retro-style {
     RESOURCES += content/styles/retro/style.qrc

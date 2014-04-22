@@ -21,6 +21,7 @@
 #include "declarativeshifthandler.h"
 #include "platforminputcontext.h"
 #include "virtualkeyboarddebug.h"
+#include "enterkeyaction.h"
 
 #include <QEvent>
 #include <QTextFormat>
@@ -372,6 +373,11 @@ void DeclarativeInputContext::clear()
 bool DeclarativeInputContext::fileExists(const QUrl& fileUrl)
 {
     return QFile(fileUrl.toLocalFile()).exists();
+}
+
+bool DeclarativeInputContext::hasEnterKeyAction(QObject *item) const
+{
+    return item != 0 && qmlAttachedPropertiesObject<EnterKeyAction>(item, false);
 }
 
 void DeclarativeInputContext::setFocus(bool enable)

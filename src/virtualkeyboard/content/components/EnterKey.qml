@@ -32,10 +32,10 @@ import QtQuick.Enterprise.VirtualKeyboard 1.0
 
 BaseKey {
     text: "\n"
-    displayText: InputContext.inputItem && InputContext.inputItem.enterKeyText !== undefined ? InputContext.inputItem.enterKeyText : ""
+    displayText: InputContext.hasEnterKeyAction(InputContext.inputItem) ? InputContext.inputItem.EnterKeyAction.label : ""
     key: Qt.Key_Return
     functionKey: true
     highlighted: enabled && displayText.length > 0
-    enabled: InputContext.inputItem && InputContext.inputItem.enterKeyEnabled !== undefined ? InputContext.inputItem.enterKeyEnabled : true
+    enabled: InputContext.hasEnterKeyAction(InputContext.inputItem) ? InputContext.inputItem.EnterKeyAction.enabled : true
     keyPanelDelegate: keyboard.style ? keyboard.style.enterKeyPanel : undefined
 }

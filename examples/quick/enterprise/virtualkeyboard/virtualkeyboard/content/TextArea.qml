@@ -17,6 +17,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtQuick.Enterprise.VirtualKeyboard 1.0
 
 TextBase {
     id: textArea
@@ -41,8 +42,8 @@ TextBase {
     TextEdit {
         id: textEdit
 
-        property alias enterKeyText: textArea.enterKeyText
-        property alias enterKeyEnabled: textArea.enterKeyEnabled
+        EnterKeyAction.label: textArea.enterKeyText
+        EnterKeyAction.enabled: textArea.enterKeyEnabled
 
         y: 6
         focus: true
