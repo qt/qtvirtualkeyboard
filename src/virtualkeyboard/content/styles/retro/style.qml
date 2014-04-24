@@ -145,7 +145,10 @@ KeyboardStyle {
             source: "qrc:/images/backspace.png"
             color: "#c5a96f"
             anchors.fill: parent
-            anchors.margins: Math.round(keyContentMargin * 1.2)
+            anchors.topMargin: keyContentMargin
+            anchors.bottomMargin: keyContentMargin
+            anchors.leftMargin: Math.round(29 * scaleHint)
+            anchors.rightMargin: Math.round(29 * scaleHint)
         }
         states: [
             State {
@@ -188,7 +191,8 @@ KeyboardStyle {
             source: "qrc:/images/globe.png"
             color: "#110b05"
             anchors.fill: parent
-            anchors.margins: keyContentMargin
+            anchors.topMargin: keyContentMargin
+            anchors.bottomMargin: keyContentMargin
         }
         states: [
             State {
@@ -238,10 +242,8 @@ KeyboardStyle {
             source: "qrc:/images/enter.png"
             color: "#c5a96f"
             anchors.fill: parent
-            anchors.topMargin: Math.round(59 * scaleHint)
-            anchors.bottomMargin: Math.round(59 * scaleHint)
-            anchors.leftMargin: Math.round(142 * scaleHint)
-            anchors.rightMargin: Math.round(59 * scaleHint)
+            anchors.margins: keyContentMargin
+            anchors.leftMargin: enterKeyBackground.width > enterKeyBackground.height * 1.5 ? Math.round(142 * scaleHint) : anchors.margins
         }
         Text {
             id: enterKeyText
@@ -253,7 +255,7 @@ KeyboardStyle {
             verticalAlignment: Text.AlignVCenter
             anchors.fill: parent
             anchors.leftMargin: keyContentMargin
-            anchors.topMargin: Math.round(60 * scaleHint)
+            anchors.topMargin: Math.round(50 * scaleHint)
             anchors.rightMargin: keyContentMargin
             anchors.bottomMargin: Math.round(30 * scaleHint)
             color: "#c5a96f"
@@ -319,7 +321,8 @@ KeyboardStyle {
             source: "qrc:/images/hidekeyboard.png"
             color: "#c5a96f"
             anchors.fill: parent
-            anchors.margins: keyContentMargin
+            anchors.topMargin: keyContentMargin
+            anchors.bottomMargin: keyContentMargin
         }
         states: [
             State {
@@ -394,7 +397,8 @@ KeyboardStyle {
             source: "qrc:/images/shift.png"
             color: "#c5a96f"
             anchors.fill: parent
-            anchors.margins: keyContentMargin
+            anchors.topMargin: keyContentMargin
+            anchors.bottomMargin: keyContentMargin
         }
         states: [
             State {

@@ -102,7 +102,8 @@ KeyboardStyle {
                 source: "qrc:/images/backspace.png"
                 color: "#868482"
                 anchors.fill: parent
-                anchors.margins: keyContentMargin
+                anchors.topMargin: keyContentMargin
+                anchors.bottomMargin: keyContentMargin
             }
         }
         states: [
@@ -145,7 +146,8 @@ KeyboardStyle {
                 source: "qrc:/images/globe.png"
                 color: "#868482"
                 anchors.fill: parent
-                anchors.margins: keyContentMargin
+                anchors.topMargin: keyContentMargin
+                anchors.bottomMargin: keyContentMargin
             }
         }
         states: [
@@ -189,10 +191,8 @@ KeyboardStyle {
                 source: "qrc:/images/enter.png"
                 color: "#868482"
                 anchors.fill: parent
-                anchors.topMargin: Math.round(50 * scaleHint)
-                anchors.bottomMargin: Math.round(50 * scaleHint)
-                anchors.leftMargin: Math.round(150 * scaleHint)
-                anchors.rightMargin: Math.round(85 * scaleHint)
+                anchors.margins: keyContentMargin
+                anchors.leftMargin: enterKeyBackground.width > enterKeyBackground.height * 1.5 ? Math.round(150 * scaleHint) : keyContentMargin
             }
             Text {
                 id: enterKeyText
@@ -261,7 +261,8 @@ KeyboardStyle {
                 source: "qrc:/images/hidekeyboard.png"
                 color: "#868482"
                 anchors.fill: parent
-                anchors.margins: keyContentMargin
+                anchors.topMargin: keyContentMargin
+                anchors.bottomMargin: keyContentMargin
             }
         }
         states: [
@@ -304,7 +305,8 @@ KeyboardStyle {
                 source: "qrc:/images/shift.png"
                 color: "#868482"
                 anchors.fill: parent
-                anchors.margins: keyContentMargin
+                anchors.topMargin: keyContentMargin
+                anchors.bottomMargin: keyContentMargin
             }
             states: [
                 State {

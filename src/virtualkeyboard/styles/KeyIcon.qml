@@ -35,7 +35,9 @@ Item {
     Image {
         id: icon
         sourceSize.height: parent.height
+        sourceSize.width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
         visible: false
     }
     ShaderEffect {
