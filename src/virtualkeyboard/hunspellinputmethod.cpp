@@ -208,7 +208,7 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
         }
         break;
     default:
-        if (text.length() == 1) {
+        if (text.length() > 0) {
             QChar c = text.at(0);
             bool addToWord = !c.isPunct() && !c.isSymbol();
             if (!addToWord) {
@@ -225,13 +225,16 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
                     emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
                 }
                 accept = true;
+            } else if (text.length() > 1) {
+                bool addSpace = !d->word.isEmpty();
+                update();
+                if (addSpace)
+                    inputContext()->commit(" ");
+                inputContext()->commit(text);
+                accept = true;
             } else {
                 update();
             }
-        } else if (text.length() > 1) {
-            update();
-            inputContext()->commit(text);
-            accept = true;
         }
         break;
     }
