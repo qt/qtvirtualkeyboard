@@ -31,11 +31,18 @@ void HunspellBuildSuggestionsTask::run()
         */
         const int firstWordCompletionIndex = wordList->list.length();
         int lastWordCompletionIndex = firstWordCompletionIndex;
+        bool suggestCapitalization = false;
         for (int i = 0; i < n; i++) {
             QString wordCandidate(QString::fromUtf8(slst[i]));
             wordCandidate.replace(QChar(0x2019), '\'');
             if (wordCandidate.compare(word) != 0) {
-                if (wordCandidate.startsWith(word) ||
+                /*  Prioritize word Capitalization */
+                if (!suggestCapitalization && !wordCandidate.compare(word, Qt::CaseInsensitive)) {
+                    wordList->list.insert(1, wordCandidate);
+                    lastWordCompletionIndex++;
+                    suggestCapitalization = true;
+                /*  Prioritize word completions or missing punctuation */
+                } else if (wordCandidate.startsWith(word) ||
                     wordCandidate.contains(QChar('\''))) {
                     wordList->list.insert(lastWordCompletionIndex++, wordCandidate);
                 } else {
@@ -61,7 +68,7 @@ void HunspellBuildSuggestionsTask::run()
             which may be suboptimal for the purpose, but gives some clue
             how much the suggested word differs from the given word.
         */
-        if (wordList->list.length() > 1 && !spellCheck(word)) {
+        if (wordList->list.length() > 1 && (!spellCheck(word) || suggestCapitalization)) {
             if (lastWordCompletionIndex > firstWordCompletionIndex || levenshteinDistance(word, wordList->list.at(firstWordCompletionIndex)) < 3)
                 wordList->index = firstWordCompletionIndex;
         }
