@@ -65,6 +65,7 @@ public:
     void run();
     bool spellCheck(const QString &word);
     int levenshteinDistance(const QString &s, const QString &t);
+    QString removeAccentsAndDiacritics(const QString& s);
 };
 
 class HunspellUpdateSuggestionsTask : public HunspellTask

@@ -46,13 +46,14 @@ void HunspellBuildSuggestionsTask::run()
             QString wordCandidate(textCodec->toUnicode(slst[i]));
             wordCandidate.replace(QChar(0x2019), '\'');
             if (wordCandidate.compare(word) != 0) {
+                QString normalizedWordCandidate = removeAccentsAndDiacritics(wordCandidate);
                 /*  Prioritize word Capitalization */
                 if (!suggestCapitalization && !wordCandidate.compare(word, Qt::CaseInsensitive)) {
                     wordList->list.insert(1, wordCandidate);
                     lastWordCompletionIndex++;
                     suggestCapitalization = true;
-                /*  Prioritize word completions or missing punctuation */
-                } else if (wordCandidate.startsWith(word) ||
+                /*  Prioritize word completions, missing punctuation or missing accents */
+                } else if (normalizedWordCandidate.startsWith(word) ||
                     wordCandidate.contains(QChar('\''))) {
                     wordList->list.insert(lastWordCompletionIndex++, wordCandidate);
                 } else {
@@ -118,6 +119,20 @@ int HunspellBuildSuggestionsTask::levenshteinDistance(const QString &s, const QS
             v0[j] = v1[j];
     }
     return v1[t.length()];
+}
+
+QString HunspellBuildSuggestionsTask::removeAccentsAndDiacritics(const QString& s)
+{
+    QString normalized = s.normalized(QString::NormalizationForm_D);
+    for (int i = 0; i < normalized.length();) {
+        QChar::Category category = normalized[i].category();
+        if (category <= QChar::Mark_Enclosing) {
+            normalized.remove(i, 1);
+        } else {
+            i++;
+        }
+    }
+    return normalized;
 }
 
 void HunspellUpdateSuggestionsTask::run()
