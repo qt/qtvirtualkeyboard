@@ -52,7 +52,7 @@ DeclarativeShiftHandler::DeclarativeShiftHandler(DeclarativeInputContext *parent
         connect(d->inputContext, SIGNAL(preeditTextChanged()), SLOT(autoCapitalize()));
         connect(d->inputContext, SIGNAL(cursorPositionChanged()), SLOT(autoCapitalize()));
     }
-    d->sentenceEndingCharacters = ".!?";
+    d->sentenceEndingCharacters = QString(".!?") + QChar(Qt::Key_exclamdown) + QChar(Qt::Key_questiondown);
 }
 
 /*!
