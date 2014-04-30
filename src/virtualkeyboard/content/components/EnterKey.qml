@@ -31,6 +31,11 @@ import QtQuick.Enterprise.VirtualKeyboard 1.0
 */
 
 BaseKey {
+    /*! This property holds the action id for the enter key.
+
+    */
+    readonly property int actionId: InputContext.hasEnterKeyAction(InputContext.inputItem) ? InputContext.inputItem.EnterKeyAction.actionId : EnterKeyAction.None
+
     text: "\n"
     displayText: InputContext.hasEnterKeyAction(InputContext.inputItem) ? InputContext.inputItem.EnterKeyAction.label : ""
     key: Qt.Key_Return

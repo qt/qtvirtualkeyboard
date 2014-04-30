@@ -47,12 +47,37 @@
 */
 
 /*!
+    \class EnterKeyAction
+    \internal
+*/
+
+/*!
     \internal
 */
 EnterKeyActionAttachedType *EnterKeyAction::qmlAttachedProperties(QObject *object)
 {
     return new EnterKeyActionAttachedType(object);
 }
+
+/*!
+    \qmlattachedproperty int EnterKeyAction::actionId
+
+    Sets the action id for the enter key in virtual keyboard.
+    When the action id is set, it takes preference over the label
+    and sets the icon for the enter key.
+
+    \list
+        \li \c EnterKeyAction.None No action defined.
+        \li \c EnterKeyAction.Go Action performs go operation.
+               For example taking user to the entered url.
+        \li \c EnterKeyAction.Search Action performs search operation.
+        \li \c EnterKeyAction.Send Action sends the entered text.
+        \li \c EnterKeyAction.Next Action moves the input focus to
+               the next field accepting text input.
+        \li \c EnterKeyAction.Done Same as \c EnterKeyAction.Next,
+               except all the text input is done.
+    \endlist
+*/
 
 /*!
     \qmlattachedproperty string EnterKeyAction::label

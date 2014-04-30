@@ -20,9 +20,23 @@
 
 EnterKeyActionAttachedType::EnterKeyActionAttachedType(QObject *parent) :
     QObject(parent),
+    m_actionId(EnterKeyAction::None),
     m_label(),
     m_enabled(true)
 {
+}
+
+EnterKeyAction::Id EnterKeyActionAttachedType::actionId() const
+{
+    return m_actionId;
+}
+
+void EnterKeyActionAttachedType::setActionId(EnterKeyAction::Id actionId)
+{
+    if (m_actionId != actionId) {
+        m_actionId = actionId;
+        emit actionIdChanged();
+    }
 }
 
 QString EnterKeyActionAttachedType::label() const

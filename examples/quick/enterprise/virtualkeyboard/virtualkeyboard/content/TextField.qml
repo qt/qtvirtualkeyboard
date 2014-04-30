@@ -49,6 +49,7 @@ TextBase {
         TextInput {
             id: textInput
 
+            EnterKeyAction.actionId: textField.enterKeyAction
             EnterKeyAction.label: textField.enterKeyText
             EnterKeyAction.enabled: textField.enterKeyEnabled
 

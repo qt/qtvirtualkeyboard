@@ -26,10 +26,23 @@ class EnterKeyActionAttachedType;
 class EnterKeyAction : public QObject
 {
     Q_OBJECT
+    Q_ENUMS(Id)
+
+public:
+    enum Id {
+        None,
+        Go,
+        Search,
+        Send,
+        Next,
+        Done
+    };
+
 public:
     static EnterKeyActionAttachedType *qmlAttachedProperties(QObject *object);
 };
 
+Q_DECLARE_METATYPE(EnterKeyAction::Id)
 QML_DECLARE_TYPEINFO(EnterKeyAction, QML_HAS_ATTACHED_PROPERTIES)
 
 #endif

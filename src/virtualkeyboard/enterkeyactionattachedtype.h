@@ -20,26 +20,32 @@
 #define ENTERKEYACTIONATTACHEDTYPE_H
 
 #include <QObject>
+#include "enterkeyaction.h"
 
 class EnterKeyActionAttachedType : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(EnterKeyAction::Id actionId READ actionId WRITE setActionId NOTIFY actionIdChanged)
     Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY labelChanged)
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
 
 public:
     explicit EnterKeyActionAttachedType(QObject *parent);
 
+    EnterKeyAction::Id actionId() const;
+    void setActionId(EnterKeyAction::Id actionId);
     QString label() const;
     void setLabel(const QString& label);
     bool enabled() const;
     void setEnabled(bool enabled);
 
 signals:
+    void actionIdChanged();
     void labelChanged();
     void enabledChanged();
 
 private:
+    EnterKeyAction::Id m_actionId;
     QString m_label;
     bool m_enabled;
 };

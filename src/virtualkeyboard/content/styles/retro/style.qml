@@ -17,12 +17,14 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtQuick.Enterprise.VirtualKeyboard 1.0
 import QtQuick.Enterprise.VirtualKeyboard.Styles 1.0
 
 KeyboardStyle {
     readonly property string fontFamily: courierPrimeRegular.name
     readonly property real keyBackgroundMargin: Math.round(9 * scaleHint)
     readonly property real keyContentMargin: Math.round(50 * scaleHint)
+    readonly property real keyIconMargin: Math.round(40 * scaleHint)
 
     property var courierPrimeRegular: FontLoader {
         source: "qrc:/fonts/Courier Prime.ttf"
@@ -145,10 +147,8 @@ KeyboardStyle {
             source: "qrc:/images/backspace.png"
             color: "#c5a96f"
             anchors.fill: parent
-            anchors.topMargin: keyContentMargin
-            anchors.bottomMargin: keyContentMargin
-            anchors.leftMargin: Math.round(29 * scaleHint)
-            anchors.rightMargin: Math.round(29 * scaleHint)
+            anchors.topMargin: keyIconMargin
+            anchors.bottomMargin: keyIconMargin
         }
         states: [
             State {
@@ -191,8 +191,8 @@ KeyboardStyle {
             source: "qrc:/images/globe.png"
             color: "#110b05"
             anchors.fill: parent
-            anchors.topMargin: keyContentMargin
-            anchors.bottomMargin: keyContentMargin
+            anchors.topMargin: keyIconMargin
+            anchors.bottomMargin: keyIconMargin
         }
         states: [
             State {
@@ -238,17 +238,29 @@ KeyboardStyle {
         }
         KeyIcon {
             id: enterKeyIcon
-            visible: control.displayText.length === 0
-            source: "qrc:/images/enter.png"
+            visible: enterKeyText.text.length === 0
+            source: {
+                switch (control.actionId) {
+                case EnterKeyAction.Go:
+                case EnterKeyAction.Send:
+                case EnterKeyAction.Next:
+                case EnterKeyAction.Done:
+                    return "qrc:/images/check.png"
+                case EnterKeyAction.Search:
+                    return "qrc:/images/search.png"
+                default:
+                    return "qrc:/images/enter.png"
+                }
+            }
             color: "#c5a96f"
             anchors.fill: parent
-            anchors.margins: keyContentMargin
-            anchors.leftMargin: enterKeyBackground.width > enterKeyBackground.height * 1.5 ? Math.round(142 * scaleHint) : anchors.margins
+            anchors.topMargin: keyIconMargin
+            anchors.bottomMargin: keyIconMargin
         }
         Text {
             id: enterKeyText
-            visible: control.displayText.length !== 0
-            text: control.displayText
+            visible: text.length !== 0
+            text: control.actionId !== EnterKeyAction.None ? "" : control.displayText
             clip: true
             fontSizeMode: Text.HorizontalFit
             horizontalAlignment: Text.AlignHCenter
@@ -321,8 +333,8 @@ KeyboardStyle {
             source: "qrc:/images/hidekeyboard.png"
             color: "#c5a96f"
             anchors.fill: parent
-            anchors.topMargin: keyContentMargin
-            anchors.bottomMargin: keyContentMargin
+            anchors.topMargin: keyIconMargin
+            anchors.bottomMargin: keyIconMargin
         }
         states: [
             State {
@@ -397,8 +409,8 @@ KeyboardStyle {
             source: "qrc:/images/shift.png"
             color: "#c5a96f"
             anchors.fill: parent
-            anchors.topMargin: keyContentMargin
-            anchors.bottomMargin: keyContentMargin
+            anchors.topMargin: keyIconMargin
+            anchors.bottomMargin: keyIconMargin
         }
         states: [
             State {

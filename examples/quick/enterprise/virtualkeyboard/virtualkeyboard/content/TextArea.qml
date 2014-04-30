@@ -42,6 +42,7 @@ TextBase {
     TextEdit {
         id: textEdit
 
+        EnterKeyAction.actionId: textArea.enterKeyAction
         EnterKeyAction.label: textArea.enterKeyText
         EnterKeyAction.enabled: textArea.enterKeyEnabled
 

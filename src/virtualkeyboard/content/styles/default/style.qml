@@ -17,12 +17,14 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtQuick.Enterprise.VirtualKeyboard 1.0
 import QtQuick.Enterprise.VirtualKeyboard.Styles 1.0
 
 KeyboardStyle {
     readonly property string fontFamily: dejaVuSans.name
     readonly property real keyBackgroundMargin: Math.round(13 * scaleHint)
     readonly property real keyContentMargin: Math.round(45 * scaleHint)
+    readonly property real keyIconMargin: Math.round(35 * scaleHint)
 
     property var dejaVuSans: FontLoader {
         source: "qrc:/fonts/DejaVuSans.ttf"
@@ -102,8 +104,8 @@ KeyboardStyle {
                 source: "qrc:/images/backspace.png"
                 color: "#868482"
                 anchors.fill: parent
-                anchors.topMargin: keyContentMargin
-                anchors.bottomMargin: keyContentMargin
+                anchors.topMargin: keyIconMargin
+                anchors.bottomMargin: keyIconMargin
             }
         }
         states: [
@@ -146,8 +148,8 @@ KeyboardStyle {
                 source: "qrc:/images/globe.png"
                 color: "#868482"
                 anchors.fill: parent
-                anchors.topMargin: keyContentMargin
-                anchors.bottomMargin: keyContentMargin
+                anchors.topMargin: keyIconMargin
+                anchors.bottomMargin: keyIconMargin
             }
         }
         states: [
@@ -187,17 +189,29 @@ KeyboardStyle {
             anchors.margins: keyBackgroundMargin
             KeyIcon {
                 id: enterKeyIcon
-                visible: control.displayText.length === 0
-                source: "qrc:/images/enter.png"
+                visible: enterKeyText.text.length === 0
+                source: {
+                    switch (control.actionId) {
+                    case EnterKeyAction.Go:
+                    case EnterKeyAction.Send:
+                    case EnterKeyAction.Next:
+                    case EnterKeyAction.Done:
+                        return "qrc:/images/check.png"
+                    case EnterKeyAction.Search:
+                        return "qrc:/images/search.png"
+                    default:
+                        return "qrc:/images/enter.png"
+                    }
+                }
                 color: "#868482"
                 anchors.fill: parent
-                anchors.margins: keyContentMargin
-                anchors.leftMargin: enterKeyBackground.width > enterKeyBackground.height * 1.5 ? Math.round(150 * scaleHint) : keyContentMargin
+                anchors.topMargin: keyIconMargin
+                anchors.bottomMargin: keyIconMargin
             }
             Text {
                 id: enterKeyText
-                visible: control.displayText.length !== 0
-                text: control.displayText
+                visible: text.length !== 0
+                text: control.actionId !== EnterKeyAction.None ? "" : control.displayText
                 clip: true
                 fontSizeMode: Text.HorizontalFit
                 horizontalAlignment: Text.AlignHCenter
@@ -261,8 +275,8 @@ KeyboardStyle {
                 source: "qrc:/images/hidekeyboard.png"
                 color: "#868482"
                 anchors.fill: parent
-                anchors.topMargin: keyContentMargin
-                anchors.bottomMargin: keyContentMargin
+                anchors.topMargin: keyIconMargin
+                anchors.bottomMargin: keyIconMargin
             }
         }
         states: [
@@ -305,8 +319,8 @@ KeyboardStyle {
                 source: "qrc:/images/shift.png"
                 color: "#868482"
                 anchors.fill: parent
-                anchors.topMargin: keyContentMargin
-                anchors.bottomMargin: keyContentMargin
+                anchors.topMargin: keyIconMargin
+                anchors.bottomMargin: keyIconMargin
             }
             states: [
                 State {

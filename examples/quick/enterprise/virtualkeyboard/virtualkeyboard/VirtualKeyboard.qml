@@ -17,6 +17,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtQuick.Enterprise.VirtualKeyboard 1.0
 import "content"
 
 Rectangle {
@@ -59,7 +60,7 @@ Rectangle {
                 TextField {
                     width: parent.width
                     previewText: "One line field"
-                    enterKeyText: "Next"
+                    enterKeyAction: EnterKeyAction.Next
                     onEnterKeyClicked: passwordField.focus = true
                 }
                 TextField {
@@ -69,7 +70,7 @@ Rectangle {
                     echoMode: TextInput.Password
                     previewText: "Password field"
                     inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText
-                    enterKeyText: "Next"
+                    enterKeyAction: EnterKeyAction.Next
                     onEnterKeyClicked: numberField.focus = true
                 }
                 TextField {
@@ -79,7 +80,7 @@ Rectangle {
                     width: parent.width
                     previewText: "Phone number field"
                     inputMethodHints: Qt.ImhDialableCharactersOnly
-                    enterKeyText: "Next"
+                    enterKeyAction: EnterKeyAction.Next
                     onEnterKeyClicked: textArea.focus = true
                 }
                 TextArea {

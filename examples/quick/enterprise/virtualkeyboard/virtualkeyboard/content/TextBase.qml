@@ -17,6 +17,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtQuick.Enterprise.VirtualKeyboard 1.0
 
 FocusScope {
     id: textBase
@@ -25,8 +26,9 @@ FocusScope {
     property bool previewTextActive: !editor.activeFocus && text.length === 0
     property int fontPixelSize: 32
     property string previewText
+    property int enterKeyAction: EnterKeyAction.None
     property string enterKeyText
-    property bool enterKeyEnabled: enterKeyText.length === 0 || editor.text.length > 0 || editor.inputMethodComposing
+    property bool enterKeyEnabled: enterKeyAction === EnterKeyAction.None || editor.text.length > 0 || editor.inputMethodComposing
     property alias mouseParent: mouseArea.parent
 
     implicitHeight: editor.height + 12
