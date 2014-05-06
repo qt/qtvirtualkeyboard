@@ -71,15 +71,51 @@ Rectangle {
                     previewText: "Password field"
                     inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText
                     enterKeyAction: EnterKeyAction.Next
-                    onEnterKeyClicked: numberField.focus = true
+                    onEnterKeyClicked: upperCaseField.focus = true
                 }
                 TextField {
-                    id: numberField
+                    id: upperCaseField
+
+                    width: parent.width
+                    previewText: "Upper case field"
+                    inputMethodHints: Qt.ImhUppercaseOnly
+                    enterKeyAction: EnterKeyAction.Next
+                    onEnterKeyClicked: lowerCaseField.focus = true
+                }
+                TextField {
+                    id: lowerCaseField
+
+                    width: parent.width
+                    previewText: "Lower case field"
+                    inputMethodHints: Qt.ImhLowercaseOnly
+                    enterKeyAction: EnterKeyAction.Next
+                    onEnterKeyClicked: phoneNumberField.focus = true
+                }
+                TextField {
+                    id: phoneNumberField
 
                     validator: RegExpValidator { regExp: /^[0-9\+\-\#\*\ ]{6,}$/ }
                     width: parent.width
                     previewText: "Phone number field"
                     inputMethodHints: Qt.ImhDialableCharactersOnly
+                    enterKeyAction: EnterKeyAction.Next
+                    onEnterKeyClicked: formattedNumberField.focus = true
+                }
+                TextField {
+                    id: formattedNumberField
+
+                    width: parent.width
+                    previewText: "Formatted number field"
+                    inputMethodHints: Qt.ImhFormattedNumbersOnly
+                    enterKeyAction: EnterKeyAction.Next
+                    onEnterKeyClicked: digitsField.focus = true
+                }
+                TextField {
+                    id: digitsField
+
+                    width: parent.width
+                    previewText: "Digits only field"
+                    inputMethodHints: Qt.ImhDigitsOnly
                     enterKeyAction: EnterKeyAction.Next
                     onEnterKeyClicked: textArea.focus = true
                 }
