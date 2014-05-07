@@ -177,8 +177,9 @@ KeyboardLayout {
                 weight: 864
             }
             Key {
-                key: Qt.Key_Apostrophe
-                text: "'"
+                key: Qt.Key_Period
+                text: "."
+                alternativeKeys: ".,"
             }
             Key {
                 key: 0xE000
@@ -225,6 +226,7 @@ KeyboardLayout {
             Key {
                 key: Qt.Key_onehalf
                 text: "½"
+                alternativeKeys: "¼⅓½¾⅞"
             }
             Key {
                 key: Qt.Key_BraceLeft
@@ -253,12 +255,12 @@ KeyboardLayout {
                 text: "£"
             }
             Key {
-                key: Qt.Key_AsciiCircum
-                text: "^"
+                key: 0xA2
+                text: "¢"
             }
             Key {
-                key: Qt.Key_Underscore
-                text: "_"
+                key: 0xA5
+                text: "¥"
             }
             Key {
                 key: Qt.Key_Equal
@@ -288,8 +290,8 @@ KeyboardLayout {
                 onClicked: secondPage = !secondPage
             }
             Key {
-                key: Qt.Key_exclamdown
-                text: "¡"
+                key: Qt.Key_Underscore
+                text: "_"
             }
             Key {
                 key: 0x2122
@@ -320,8 +322,8 @@ KeyboardLayout {
                 text: "\\"
             }
             Key {
-                key: Qt.Key_questiondown
-                text: "¿"
+                key: Qt.Key_AsciiCircum
+                text: "^"
             }
             Key {
                 weight: 204
@@ -343,8 +345,8 @@ KeyboardLayout {
                 weight: 864
             }
             Key {
-                key: Qt.Key_Apostrophe
-                text: "'"
+                key: 0x2026
+                text: "\u2026"
             }
             Key {
                 key: 0xE000
