@@ -31,42 +31,52 @@ KeyboardLayout {
             Key {
                 key: 0x0661
                 text: "\u0661"
+                alternativeKeys: "\u06611"
             }
             Key {
                 key: 0x0662
                 text: "\u0662"
+                alternativeKeys: "\u06622"
             }
             Key {
                 key: 0x0663
                 text: "\u0663"
+                alternativeKeys: "\u06633"
             }
             Key {
                 key: 0x0664
                 text: "\u0664"
+                alternativeKeys: "\u06644"
             }
             Key {
                 key: 0x0665
                 text: "\u0665"
+                alternativeKeys: "\u06655"
             }
             Key {
                 key: 0x0666
                 text: "\u0666"
+                alternativeKeys: "\u06666"
             }
             Key {
                 key: 0x0667
                 text: "\u0667"
+                alternativeKeys: "\u06677"
             }
             Key {
                 key: 0x0668
                 text: "\u0668"
+                alternativeKeys: "\u06688"
             }
             Key {
                 key: 0x0669
                 text: "\u0669"
+                alternativeKeys: "\u06699"
             }
             Key {
                 key: 0x0660
                 text: "\u0660"
+                alternativeKeys: "\u06600"
             }
             BackspaceKey {}
         }
@@ -146,16 +156,18 @@ KeyboardLayout {
                 text: ":"
             }
             Key {
-                key: Qt.Key_Semicolon
-                text: ";"
+                key: 0x061B
+                text: "\u061B"
+                alternativeKeys: "\u061B;"
             }
             Key {
                 key: Qt.Key_Slash
                 text: "/"
             }
             Key {
-                key: Qt.Key_Question
-                text: "?"
+                key: 0x061F
+                text: "\u061F"
+                alternativeKeys: "\u061F?"
             }
             Key {
                 weight: 204
@@ -168,7 +180,7 @@ KeyboardLayout {
             keyWeight: 154
             SymbolModeKey {
                 weight: 217
-                displayText: "ABC"
+                displayText: "ا\u2009ب\u2009ج"
             }
             ChangeLanguageKey {
                 weight: 154
@@ -177,8 +189,9 @@ KeyboardLayout {
                 weight: 864
             }
             Key {
-                key: Qt.Key_Apostrophe
-                text: "'"
+                key: Qt.Key_Period
+                text: "."
+                alternativeKeys: ".\u060C,"
             }
             Key {
                 key: 0xE000
@@ -225,6 +238,7 @@ KeyboardLayout {
             Key {
                 key: Qt.Key_onehalf
                 text: "½"
+                alternativeKeys: "¼⅓½¾⅞"
             }
             Key {
                 key: Qt.Key_BraceLeft
@@ -253,12 +267,12 @@ KeyboardLayout {
                 text: "£"
             }
             Key {
-                key: Qt.Key_AsciiCircum
-                text: "^"
+                key: 0xA2
+                text: "¢"
             }
             Key {
-                key: Qt.Key_Underscore
-                text: "_"
+                key: 0xA5
+                text: "¥"
             }
             Key {
                 key: Qt.Key_Equal
@@ -288,8 +302,8 @@ KeyboardLayout {
                 onClicked: secondPage = !secondPage
             }
             Key {
-                key: Qt.Key_exclamdown
-                text: "¡"
+                key: Qt.Key_Underscore
+                text: "_"
             }
             Key {
                 key: 0x2122
@@ -320,8 +334,8 @@ KeyboardLayout {
                 text: "\\"
             }
             Key {
-                key: Qt.Key_questiondown
-                text: "¿"
+                key: Qt.Key_AsciiCircum
+                text: "^"
             }
             Key {
                 weight: 204
@@ -334,7 +348,7 @@ KeyboardLayout {
             keyWeight: 154
             SymbolModeKey {
                 weight: 217
-                displayText: "ABC"
+                displayText: "ا\u2009ب\u2009ج"
             }
             ChangeLanguageKey {
                 weight: 154
@@ -343,8 +357,8 @@ KeyboardLayout {
                 weight: 864
             }
             Key {
-                key: Qt.Key_Apostrophe
-                text: "'"
+                key: 0x2026
+                text: "\u2026"
             }
             Key {
                 key: 0xE000

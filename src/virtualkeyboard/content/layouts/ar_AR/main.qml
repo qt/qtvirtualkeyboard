@@ -79,8 +79,9 @@ KeyboardLayout {
             text: "ظ"
         }
         Key {
-            key: Qt.Key_Comma
-            text: ","
+            key: 0x060C
+            text: "\u060C"
+            alternativeKeys: "\u060C,"
         }
         Key {
             key: Qt.Key_Period
@@ -94,6 +95,7 @@ KeyboardLayout {
         keyWeight: 154
         SymbolModeKey {
             weight: 217
+            displayText: "\u061F\u0663\u0662\u0661"
         }
         ChangeLanguageKey {
             weight: 154
@@ -102,8 +104,9 @@ KeyboardLayout {
             weight: 864
         }
         Key {
-            key: Qt.Key_Apostrophe
-            text: "'"
+            key: 0x064B
+            text: "\u064B"
+            alternativeKeys: "\u0656\u0670\u0653\u0650\u064F\u064E\u0640\u0655\u0654\u0652\u064D\u064C\u064B\u0651"
         }
         Key {
             key: 0xE000
