@@ -25,15 +25,15 @@
 class EnterKeyActionAttachedType : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(EnterKeyAction::Id actionId READ actionId WRITE setActionId NOTIFY actionIdChanged)
+    Q_PROPERTY(int actionId READ actionId WRITE setActionId NOTIFY actionIdChanged)
     Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY labelChanged)
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
 
 public:
     explicit EnterKeyActionAttachedType(QObject *parent);
 
-    EnterKeyAction::Id actionId() const;
-    void setActionId(EnterKeyAction::Id actionId);
+    int actionId() const;
+    void setActionId(int actionId);
     QString label() const;
     void setLabel(const QString& label);
     bool enabled() const;
@@ -45,7 +45,7 @@ signals:
     void enabledChanged();
 
 private:
-    EnterKeyAction::Id m_actionId;
+    int m_actionId;
     QString m_label;
     bool m_enabled;
 };

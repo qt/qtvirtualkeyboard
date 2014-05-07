@@ -26,12 +26,12 @@ EnterKeyActionAttachedType::EnterKeyActionAttachedType(QObject *parent) :
 {
 }
 
-EnterKeyAction::Id EnterKeyActionAttachedType::actionId() const
+int EnterKeyActionAttachedType::actionId() const
 {
     return m_actionId;
 }
 
-void EnterKeyActionAttachedType::setActionId(EnterKeyAction::Id actionId)
+void EnterKeyActionAttachedType::setActionId(int actionId)
 {
     if (m_actionId != actionId) {
         m_actionId = actionId;
