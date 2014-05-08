@@ -89,10 +89,9 @@ INSTALLS += qml
         SOURCES += hunspellinputmethod.cpp hunspellworker.cpp
         HEADERS += hunspellinputmethod.h hunspellworker.h
         DEFINES += HAVE_HUNSPELL
-        depends += hunspell
         INCLUDEPATH += hunspell/src
-        LIBS += -Lhunspell -lhunspell
-        POST_TARGETDEPS += hunspell
+        DEPENDPATH += hunspell/src
+        LIBS += -L$$OUT_PWD/hunspell/ -lhunspell
         isEmpty(hunspell_search_paths) hunspell_search_paths=$$QMLPATH/hunspell
         DEFINES += QT_VIRTUALKEYBOARD_HUNSPELL_DATA_PATH=\\\"$$join(hunspell_search_paths, :)\\\"
         exists(hunspell/data) {
