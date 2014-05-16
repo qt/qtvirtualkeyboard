@@ -99,8 +99,9 @@ KeyboardLayout {
                 alternativeKeys: "\u06600"
             }
             Key {
-                key: Qt.Key_Period
-                text: "."
+                key: Qt.Key_Comma
+                text: "\u066B"
+                alternativeKeys: "\u066B,."
             }
             EnterKey {}
         }

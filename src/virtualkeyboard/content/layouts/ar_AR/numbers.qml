@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc
+** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
 ** For any questions to Digia, please use contact form at http://qt.digia.com
 **
@@ -42,8 +42,8 @@ KeyboardLayout {
                     text: ")"
                 }
                 Key {
-                    key: Qt.Key_Comma
-                    text: ","
+                    key: Qt.Key_Period
+                    text: "."
                 }
             }
             KeyboardRow {
@@ -103,31 +103,37 @@ KeyboardLayout {
             Layout.preferredWidth: parent.height
             KeyboardRow {
                 Key {
-                    key: Qt.Key_7
-                    text: "7"
+                    key: 0x0667
+                    text: "\u0667"
+                    alternativeKeys: "\u06677"
                 }
                 Key {
-                    key: Qt.Key_8
-                    text: "8"
+                    key: 0x0668
+                    text: "\u0668"
+                    alternativeKeys: "\u06688"
                 }
                 Key {
-                    key: Qt.Key_9
-                    text: "9"
+                    key: 0x0669
+                    text: "\u0669"
+                    alternativeKeys: "\u06699"
                 }
                 BackspaceKey {}
             }
             KeyboardRow {
                 Key {
-                    key: Qt.Key_4
-                    text: "4"
+                    key: 0x0664
+                    text: "\u0664"
+                    alternativeKeys: "\u06644"
                 }
                 Key {
-                    key: Qt.Key_5
-                    text: "5"
+                    key: 0x0665
+                    text: "\u0665"
+                    alternativeKeys: "\u06655"
                 }
                 Key {
-                    key: Qt.Key_6
-                    text: "6"
+                    key: 0x0666
+                    text: "\u0666"
+                    alternativeKeys: "\u06666"
                 }
                 Key {
                     text: " "
@@ -139,16 +145,19 @@ KeyboardLayout {
             }
             KeyboardRow {
                 Key {
-                    key: Qt.Key_1
-                    text: "1"
+                    key: 0x0661
+                    text: "\u0661"
+                    alternativeKeys: "\u06611"
                 }
                 Key {
-                    key: Qt.Key_2
-                    text: "2"
+                    key: 0x0662
+                    text: "\u0662"
+                    alternativeKeys: "\u06622"
                 }
                 Key {
-                    key: Qt.Key_3
-                    text: "3"
+                    key: 0x0663
+                    text: "\u0663"
+                    alternativeKeys: "\u06633"
                 }
                 HideKeyboardKey {}
             }
@@ -157,13 +166,14 @@ KeyboardLayout {
                     customLayoutsOnly: true
                 }
                 Key {
-                    key: Qt.Key_0
-                    text: "0"
+                    key: 0x0660
+                    text: "\u0660"
+                    alternativeKeys: "\u06600"
                 }
                 Key {
-                    key: Qt.Key_Period
-                    text: "."
-                    alternativeKeys: ".,"
+                    key: Qt.Key_Comma
+                    text: "\u066B"
+                    alternativeKeys: "\u066B,."
                 }
                 EnterKey {}
             }
