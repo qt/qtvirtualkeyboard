@@ -28,7 +28,9 @@ Item {
     property alias style: styleLoader.item
     property var activeKey: undefined
     property int localeIndex: -1
+    property var availableLocaleIndices: []
     property string locale: localeIndex >= 0 && localeIndex < layoutsModel.count ? layoutsModel.get(localeIndex, "fileName") : ""
+    property string inputLocale: layoutExists(locale, layoutType) ? locale : defaultLocale
     property int defaultLocaleIndex: -1
     property string defaultLocale: defaultLocaleIndex >= 0 && defaultLocaleIndex < layoutsModel.count ? layoutsModel.get(defaultLocaleIndex, "fileName") : ""
     property string layout
@@ -62,11 +64,16 @@ Item {
     width: keyboardBackground.width
     height: wordCandidateView.height + keyboardBackground.height
     onLocaleChanged: {
-        if (localeIndex >= 0 && localeIndex < layoutsModel.count)
-            InputContext.locale = locale
         updateLayout()
     }
-    onLayoutTypeChanged: updateLayout()
+    onInputLocaleChanged: {
+        if (Qt.locale(inputLocale).name !== "C")
+            InputContext.locale = inputLocale
+    }
+    onLayoutTypeChanged: {
+        updateAvailableLocaleIndices()
+        updateLayout()
+    }
     onUppercasedChanged: shiftChanged = true
 
     Connections {
@@ -114,6 +121,7 @@ Item {
                 defaultLocaleIndex = -1
                 localeIndex = -1
             }
+            updateAvailableLocaleIndices()
         }
     }
     AlternativeKeys { id: alternativeKeys }
@@ -357,21 +365,46 @@ Item {
         layout = newLayout
     }
 
-    function nextLocaleIndex(customLayoutsOnly) {
-        var newLocaleIndex = localeIndex
+    function updateAvailableLocaleIndices() {
+        var newIndices = []
+        // Keep the current locale in the list of available locales
+        if (localeIndex !== -1) {
+            newIndices.push(localeIndex)
+        }
         for (var i = 0; i < layoutsModel.count; i++) {
-            newLocaleIndex = (newLocaleIndex + 1) % layoutsModel.count
-            if (isValidLocale(newLocaleIndex)) {
-                if (customLayoutsOnly) {
-                    var newLayout = findLayout(layoutsModel.get(newLocaleIndex, "fileName"), layoutType)
-                    if (newLayout.length > 0 && newLayout !== layout)
-                        break
-                } else {
-                    break
+            if (isValidLocale(i)) {
+                if (newIndices.indexOf(i) === -1) {
+                    // Add other locales, which resolve into actual layout file, excluding the default layout
+                    if (layoutExists(layoutsModel.get(i, "fileName"), layoutType) && i !== defaultLocaleIndex) {
+                        newIndices.push(i)
+                    }
                 }
             }
         }
-        return (i < layoutsModel.count) ? newLocaleIndex : -1
+        // Add default layout if any of the available locales do not resolve into it
+        var addDefault = true
+        var defaultLayout = getLayoutFile(keyboard.defaultLocale, layoutType)
+        for (i = 0; i < newIndices.length; i++) {
+            if (newIndices[i] === defaultLocaleIndex || findLayout(layoutsModel.get(newIndices[i], "fileName"), layoutType) === defaultLayout) {
+                addDefault = false
+                break
+            }
+        }
+        if (addDefault) {
+            newIndices.push(defaultLocaleIndex)
+        }
+        newIndices.sort()
+        availableLocaleIndices = newIndices
+    }
+
+    function nextLocaleIndex(customLayoutsOnly) {
+        var newLocaleIndex = localeIndex
+        var i = availableLocaleIndices.indexOf(localeIndex)
+        if (i !== -1) {
+            i = (i + 1) % availableLocaleIndices.length
+            newLocaleIndex = availableLocaleIndices[i]
+        }
+        return newLocaleIndex
     }
 
     function changeInputLanguage(customLayoutsOnly) {
@@ -381,8 +414,7 @@ Item {
     }
 
     function canChangeInputLanguage(customLayoutsOnly) {
-        var newLocaleIndex = nextLocaleIndex(customLayoutsOnly)
-        return (newLocaleIndex !== -1 && newLocaleIndex !== localeIndex)
+        return availableLocaleIndices.length > 1
     }
 
     function findLocale(localeName, defaultValue) {
@@ -406,11 +438,19 @@ Item {
         return Qt.locale(layoutsModel.get(index, "fileName")).name !== "C"
     }
 
+    function getLayoutFile(localeName, layoutType) {
+        return layoutsModel.folder + "/" + localeName + "/" + layoutType + ".qml"
+    }
+
+    function layoutExists(localeName, layoutType) {
+        return InputContext.fileExists(getLayoutFile(localeName, layoutType))
+    }
+
     function findLayout(localeName, layoutType) {
-        var layoutFile = layoutsModel.folder + "/" + localeName + "/" + layoutType + ".qml"
+        var layoutFile = getLayoutFile(localeName, layoutType)
         if (InputContext.fileExists(layoutFile))
             return layoutFile
-        layoutFile = layoutsModel.folder + "/" + keyboard.defaultLocale + "/" + layoutType + ".qml"
+        layoutFile = getLayoutFile(keyboard.defaultLocale, layoutType)
         if (InputContext.fileExists(layoutFile))
             return layoutFile
         return ""
