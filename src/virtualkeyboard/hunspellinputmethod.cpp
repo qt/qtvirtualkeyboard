@@ -213,13 +213,33 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
             bool addToWord = !c.isPunct() && !c.isSymbol();
             if (!addToWord) {
                 if (!d->word.isEmpty()) {
-                    if (c == Qt::Key_Apostrophe || c == Qt::Key_hyphen)
+                    if (c == Qt::Key_Apostrophe || c == Qt::Key_Minus)
                         addToWord = true;
                 }
             }
             if (addToWord) {
+                DeclarativeInputContext *ic = inputContext();
+                /*  Automatic space insertion. */
+                if (d->word.isEmpty()) {
+                    QString surroundingText = ic->surroundingText();
+                    int cursorPosition = ic->cursorPosition();
+                    /*  Rules for automatic space insertion:
+                        - Surrounding text is not empty
+                        - Cursor is at the end of the line
+                        - No space before the cursor
+                        - No spefic characters before the cursor; minus and apostrophe
+                    */
+                    if (!surroundingText.isEmpty() && cursorPosition == surroundingText.length()) {
+                        QChar lastChar = surroundingText.at(cursorPosition - 1);
+                        if (!lastChar.isSpace() &&
+                            lastChar != Qt::Key_Minus &&
+                            lastChar != Qt::Key_Apostrophe) {
+                            inputContext()->commit(" ");
+                        }
+                    }
+                }
                 d->word.append(text);
-                inputContext()->setPreeditText(d->word);
+                ic->setPreeditText(d->word);
                 if (d->updateSuggestions()) {
                     emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
                     emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
@@ -283,7 +303,6 @@ void HunspellInputMethod::selectionListItemSelected(DeclarativeSelectionListMode
     QString finalWord = d->wordCandidates.at(index);
     reset();
     inputContext()->commit(finalWord);
-    inputContext()->commit(" ");
 }
 
 void HunspellInputMethod::reset()
