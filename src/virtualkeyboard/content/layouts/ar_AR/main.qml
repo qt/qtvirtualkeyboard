@@ -95,7 +95,7 @@ KeyboardLayout {
         keyWeight: 154
         SymbolModeKey {
             weight: 217
-            displayText: "\u061F\u0663\u0662\u0661"
+            displayText: "\u0661\u0662\u0663\u061F"
         }
         ChangeLanguageKey {
             weight: 154
