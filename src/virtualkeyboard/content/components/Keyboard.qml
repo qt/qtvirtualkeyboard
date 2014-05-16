@@ -357,7 +357,7 @@ Item {
         layout = newLayout
     }
 
-    function changeInputLanguage(customLayoutsOnly) {
+    function nextLocaleIndex(customLayoutsOnly) {
         var newLocaleIndex = localeIndex
         for (var i = 0; i < layoutsModel.count; i++) {
             newLocaleIndex = (newLocaleIndex + 1) % layoutsModel.count
@@ -371,8 +371,18 @@ Item {
                 }
             }
         }
-        if (i < layoutsModel.count)
+        return (i < layoutsModel.count) ? newLocaleIndex : -1
+    }
+
+    function changeInputLanguage(customLayoutsOnly) {
+        var newLocaleIndex = nextLocaleIndex(customLayoutsOnly)
+        if (newLocaleIndex !== -1 && newLocaleIndex !== localeIndex)
             localeIndex = newLocaleIndex
+    }
+
+    function canChangeInputLanguage(customLayoutsOnly) {
+        var newLocaleIndex = nextLocaleIndex(customLayoutsOnly)
+        return (newLocaleIndex !== -1 && newLocaleIndex !== localeIndex)
     }
 
     function findLocale(localeName, defaultValue) {

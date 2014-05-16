@@ -46,4 +46,5 @@ BaseKey {
     displayText: keyboard.locale.split("_")[0]
     keyPanelDelegate: keyboard.style ? keyboard.style.languageKeyPanel : undefined
     onClicked: keyboard.changeInputLanguage(customLayoutsOnly)
+    enabled: keyboard.canChangeInputLanguage(customLayoutsOnly)
 }
