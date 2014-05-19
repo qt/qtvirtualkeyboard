@@ -98,7 +98,7 @@ INSTALLS += qml
         isEmpty(hunspell_search_paths) hunspell_search_paths=$$DATAPATH/hunspell
         DEFINES += QT_VIRTUALKEYBOARD_HUNSPELL_DATA_PATH=\\\"$$join(hunspell_search_paths, :)\\\"
         exists(hunspell/data) {
-            hunspell_data.files = hunspell/data/*
+            hunspell_data.files = hunspell/data/*.dic hunspell/data/*.aff
             hunspell_data.path = $$DATAPATH/hunspell
             INSTALLS += hunspell_data
         } else {
@@ -110,7 +110,7 @@ INSTALLS += qml
         HEADERS += hunspellinputmethod.h hunspellworker.h
         DEFINES += HAVE_HUNSPELL
         PKGCONFIG += hunspell
-        isEmpty(hunspell_search_paths) hunspell_search_paths=/usr/share/hunspell /usr/share/myspell
+        isEmpty(hunspell_search_paths) hunspell_search_paths=/usr/share/hunspell /usr/share/myspell/dicts
         DEFINES += QT_VIRTUALKEYBOARD_HUNSPELL_DATA_PATH=\\\"$$join(hunspell_search_paths, :)\\\"
     } else {
         message(Hunspell not found! Spell correction will not be available.)
