@@ -27,6 +27,7 @@ Item {
 
     property alias style: styleLoader.item
     property var activeKey: undefined
+    property TouchPoint activeTouchPoint
     property int localeIndex: -1
     property var availableLocaleIndices: []
     property string locale: localeIndex >= 0 && localeIndex < layoutsModel.count ? layoutsModel.get(localeIndex, "fileName") : ""
@@ -126,20 +127,36 @@ Item {
     }
     AlternativeKeys { id: alternativeKeys }
     Timer {
-        id: releaseInaccuracyTimer
-        interval: 500
+        id: pressAndHoldTimer
+        interval: 800
         onTriggered: {
-            if (keyboardMouse.pressed && !alternativeKeys.active && !keyboardMouse.dragSymbolMode) {
-                var key = keyboardMouse.keyOnMouse(keyboardMouse.mouseX, keyboardMouse.mouseY)
-                if (key !== keyboard.activeKey) {
+            if (keyboard.activeKey && keyboard.activeKey === keyboardInputArea.initialKey) {
+                var origin = keyboard.mapFromItem(activeKey, activeKey.width / 2, 0)
+                if (alternativeKeys.open(keyboard.activeKey, origin.x, origin.y)) {
                     InputContext.inputEngine.virtualKeyCancel()
-                    keyboardMouse.setActiveKey(key)
-                    keyboardMouse.press(key)
+                } else if (keyboard.activeKey.key === Qt.Key_Context1) {
+                    InputContext.inputEngine.virtualKeyCancel()
+                    keyboardInputArea.dragSymbolMode = true
+                    keyboard.symbolMode = true
                 }
             }
         }
     }
-    CharacterPreviewBubble { active: keyboardMouse.pressed && !alternativeKeys.active }
+    Timer {
+        id: releaseInaccuracyTimer
+        interval: 500
+        onTriggered: {
+            if (keyboardInputArea.pressed && !alternativeKeys.active && !keyboardInputArea.dragSymbolMode) {
+                var key = keyboardInputArea.keyOnPoint(activeTouchPoint.x, activeTouchPoint.y)
+                if (key !== keyboard.activeKey) {
+                    InputContext.inputEngine.virtualKeyCancel()
+                    keyboardInputArea.setActiveKey(key)
+                    keyboardInputArea.press(key)
+                }
+            }
+        }
+    }
+    CharacterPreviewBubble { active: keyboardInputArea.pressed && !alternativeKeys.active }
     Binding {
         target: InputContext
         property: "keyboardRectangle"
@@ -212,8 +229,8 @@ Item {
                 }
                 onItemChanged: if (keyboardLayoutLoader.item) keyboard.updateInputMethod()
 
-                MouseArea {
-                    id: keyboardMouse
+                MultiPointTouchArea {
+                    id: keyboardInputArea
 
                     property var initialKey
                     property bool dragSymbolMode
@@ -250,32 +267,50 @@ Item {
                             keyboard.activeKey.active = true
                         }
                     }
-                    function keyOnMouse(mx, my) {
+                    function keyOnPoint(px, py) {
                         var parentItem = keyboardLayoutLoader
-                        var child = parentItem.childAt(mx, my)
+                        var child = parentItem.childAt(px, py)
                         while (child !== null) {
-                            var position = parentItem.mapToItem(child, mx, my)
-                            mx = position.x; my = position.y
+                            var position = parentItem.mapToItem(child, px, py)
+                            px = position.x; py = position.y
                             parentItem = child
-                            child = parentItem.childAt(mx, my)
+                            child = parentItem.childAt(px, py)
                             if (child && child.key !== undefined)
                                 return child
                         }
                         return undefined
                     }
-                    function hitInitialKey(mouseX, mouseY, margin) {
+                    function hitInitialKey(x, y, margin) {
                         if (!initialKey)
                             return false
-                        var position = initialKey.mapFromItem(keyboardMouse, mouseX, mouseY)
+                        var position = initialKey.mapFromItem(keyboardInputArea, x, y)
                         return (position.x > -margin
                                 && position.y > -margin
                                 && position.x < initialKey.width + margin
                                 && position.y < initialKey.height + margin)
                     }
+                    function containsPoint(touchPoints, point) {
+                        if (!point)
+                            return false
+                        for (var i in touchPoints)
+                            if (touchPoints[i].pointId == point.pointId)
+                                return true
+                        return false
+                    }
+                    function releaseActiveKey() {
+                        if (alternativeKeys.active) {
+                            alternativeKeys.clicked()
+                        } else if (keyboard.activeKey) {
+                            release(keyboard.activeKey)
+                        }
+                        reset()
+                    }
                     function reset() {
                         releaseInaccuracyTimer.stop()
+                        pressAndHoldTimer.stop()
                         alternativeKeys.close()
                         setActiveKey(undefined)
+                        activeTouchPoint = null
                         if (dragSymbolMode) {
                             keyboard.symbolMode = false
                             dragSymbolMode = false
@@ -283,18 +318,34 @@ Item {
                     }
 
                     onPressed: {
-                        releaseInaccuracyTimer.start()
-                        initialKey = keyOnMouse(mouseX, mouseY)
-                        setActiveKey(initialKey)
-                        press(initialKey)
+                        // Immediately release any pending key that the user might be
+                        // holding (and about to release) when a second key is pressed.
+                        if (activeTouchPoint)
+                            releaseActiveKey();
+
+                        for (var i in touchPoints) {
+                            // Release any key pressed by a previous iteration of the loop.
+                            if (containsPoint(touchPoints, activeTouchPoint))
+                                releaseActiveKey();
+
+                            releaseInaccuracyTimer.start()
+                            pressAndHoldTimer.start()
+                            initialKey = keyOnPoint(touchPoints[i].x, touchPoints[i].y)
+                            activeTouchPoint = touchPoints[i]
+                            setActiveKey(initialKey)
+                            press(initialKey)
+                        }
                     }
-                    onPositionChanged: {
+                    onUpdated: {
+                        if (!containsPoint(touchPoints, activeTouchPoint))
+                            return
+
                         if (alternativeKeys.active) {
-                            alternativeKeys.move(mapToItem(alternativeKeys, mouseX, 0).x)
+                            alternativeKeys.move(mapToItem(alternativeKeys, activeTouchPoint.x, 0).x)
                         } else {
                             var key
                             if (releaseInaccuracyTimer.running) {
-                                if (hitInitialKey(mouseX, mouseY, releaseMargin)) {
+                                if (hitInitialKey(activeTouchPoint.x, activeTouchPoint.y, releaseMargin)) {
                                     key = initialKey
                                 } else if (initialKey) {
                                     releaseInaccuracyTimer.stop()
@@ -302,7 +353,7 @@ Item {
                                 }
                             }
                             if (key === undefined) {
-                                key = keyOnMouse(mouseX, mouseY)
+                                key = keyOnPoint(activeTouchPoint.x, activeTouchPoint.y)
                             }
                             if (key !== keyboard.activeKey) {
                                 InputContext.inputEngine.virtualKeyCancel()
@@ -311,28 +362,14 @@ Item {
                             }
                         }
                     }
-                    onPressAndHold: {
-                        if (keyboard.activeKey && keyboard.activeKey === initialKey) {
-                            var origin = keyboard.mapFromItem(activeKey, activeKey.width / 2, 0)
-                            if (alternativeKeys.open(keyboard.activeKey, origin.x, origin.y)) {
-                                InputContext.inputEngine.virtualKeyCancel()
-                            } else if (keyboard.activeKey.key === Qt.Key_Context1) {
-                                InputContext.inputEngine.virtualKeyCancel()
-                                dragSymbolMode = true
-                                keyboard.symbolMode = true
-                            }
-                        }
-                    }
-                    onClicked: {}
                     onReleased: {
-                        if (alternativeKeys.active) {
-                            alternativeKeys.clicked()
-                        } else {
-                            release(keyboard.activeKey)
-                        }
-                        reset()
+                        if (containsPoint(touchPoints, activeTouchPoint))
+                            releaseActiveKey();
                     }
-                    onCanceled: reset()
+                    onCanceled: {
+                        if (containsPoint(touchPoints, activeTouchPoint))
+                            reset()
+                    }
                 }
             }
         }
