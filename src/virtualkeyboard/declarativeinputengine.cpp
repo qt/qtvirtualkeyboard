@@ -102,7 +102,7 @@ DeclarativeInputEngine::DeclarativeInputEngine(DeclarativeInputContext *parent) 
     d->inputContext = parent;
     if (d->inputContext) {
         connect(d->inputContext, SIGNAL(shiftChanged()), SLOT(shiftChanged()));
-        connect(d->inputContext, SIGNAL(localeChanged()), SLOT(localeChanged()));
+        connect(d->inputContext, SIGNAL(localeChanged()), SLOT(update()));
     }
     d->defaultInputMethod = new DefaultInputMethod(this);
     if (d->defaultInputMethod)
@@ -464,17 +464,6 @@ void DeclarativeInputEngine::shiftChanged()
             d->inputMethod->setTextCase(d->textCase);
         }
     }
-}
-
-/*!
-    \internal
-    Updates the input mode when the locale has changed.
-*/
-void DeclarativeInputEngine::localeChanged()
-{
-    Q_D(DeclarativeInputEngine);
-    update();
-    setInputMode(d->inputMode);
 }
 
 /*!

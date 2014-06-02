@@ -20,6 +20,7 @@ import QtQuick 2.0
 import QtQuick.Enterprise.VirtualKeyboard 1.0
 
 KeyboardLayout {
+    inputMode: InputEngine.Latin
     keyWeight: 160
     KeyboardRow {
         Key {

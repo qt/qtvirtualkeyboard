@@ -31,7 +31,7 @@ Item {
     property int localeIndex: -1
     property var availableLocaleIndices: []
     property string locale: localeIndex >= 0 && localeIndex < layoutsModel.count ? layoutsModel.get(localeIndex, "fileName") : ""
-    property string inputLocale: layoutExists(locale, layoutType) ? locale : defaultLocale
+    property string inputLocale
     property int defaultLocaleIndex: -1
     property string defaultLocale: defaultLocaleIndex >= 0 && defaultLocaleIndex < layoutsModel.count ? layoutsModel.get(defaultLocaleIndex, "fileName") : ""
     property string layout
@@ -49,11 +49,13 @@ Item {
     property bool dialpadMode: InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly
     property bool numberMode: InputContext.inputMethodHints & Qt.ImhFormattedNumbersOnly
     property bool digitMode: InputContext.inputMethodHints & Qt.ImhDigitsOnly
+    property bool latinOnly: InputContext.inputMethodHints & (Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText | Qt.ImhLatinOnly)
     property bool symbolMode
     property bool shiftChanged: true
     property var defaultInputMethod: initDefaultInputMethod()
     property var plainInputMethod: PlainInputMethod {}
     property int defaultInputMode: InputEngine.Latin
+    property bool inputModeNeedsReset: true
 
     function initDefaultInputMethod() {
         try {
@@ -65,6 +67,7 @@ Item {
     width: keyboardBackground.width
     height: wordCandidateView.height + keyboardBackground.height
     onLocaleChanged: {
+        inputModeNeedsReset = true
         updateLayout()
     }
     onInputLocaleChanged: {
@@ -76,6 +79,10 @@ Item {
         updateLayout()
     }
     onUppercasedChanged: shiftChanged = true
+    onLatinOnlyChanged: {
+        updateLayout()
+        updateInputMethod()
+    }
 
     Connections {
         target: InputContext
@@ -85,10 +92,10 @@ Item {
         onInputMethodHintsChanged: {
             if (InputContext.inputMethodHints & Qt.ImhPreferNumbers) {
                 symbolMode = true
-            } else {
-                updateLayout()
             }
-            updateInputMethod()
+        }
+        onInputItemChanged: {
+            inputModeNeedsReset = true
         }
     }
     Connections {
@@ -376,29 +383,49 @@ Item {
     }
 
     function updateInputMethod() {
-        var inputMethod = keyboard.defaultInputMethod
-        var inputMode = keyboard.defaultInputMode
-        if (keyboardLayoutLoader.item) {
+        var inputMethod = null
+        var inputMode = InputContext.inputEngine.inputMode
+        // Force plain input method in password mode
+        if (latinOnly) {
+            inputMethod = keyboard.plainInputMethod
+            inputMode = InputEngine.Latin
+        } else if (keyboardLayoutLoader.item) {
+            // Use input method from keyboard layout
             if (keyboardLayoutLoader.item.inputMethod) {
                 inputMethod = keyboardLayoutLoader.item.inputMethod
+            } else {
+                inputMethod = keyboard.defaultInputMethod
             }
-            if (keyboardLayoutLoader.item.inputMode) {
+            if (keyboardLayoutLoader.item.inputMode !== -1) {
                 inputMode = keyboardLayoutLoader.item.inputMode
             }
         }
-        if (InputContext.inputMethodHints & (Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText)) {
-            inputMethod = keyboard.plainInputMethod
-        }
-        if (inputMethod !== undefined) {
+        var inputMethodChanged = InputContext.inputEngine.inputMethod !== inputMethod
+        if (inputMethodChanged) {
             InputContext.inputEngine.inputMethod = inputMethod
-            InputContext.inputEngine.inputMode = inputMode
+        }
+        if (InputContext.inputEngine.inputMethod) {
+            var inputModes = InputContext.inputEngine.inputModes
+            if (inputModes.length > 0) {
+                // Reset to default input mode if the input locale has changed
+                if (inputModeNeedsReset || inputModes.indexOf(inputMode) === -1) {
+                    inputMode = inputModes[0]
+                }
+                if (InputContext.inputEngine.inputMode !== inputMode || inputMethodChanged || inputModeNeedsReset) {
+                    InputContext.inputEngine.inputMode = inputMode
+                }
+                inputModeNeedsReset = false
+            }
         }
     }
 
     function updateLayout() {
-        var newLayout = findLayout(keyboard.locale, keyboard.layoutType)
-        if (!newLayout.length)
-            newLayout = findLayout(keyboard.locale, "main")
+        var newLayout
+        newLayout = findLayout(latinOnly ? defaultLocale : locale, layoutType)
+        if (!newLayout.length) {
+            newLayout = findLayout(latinOnly ? defaultLocale : locale, "main")
+        }
+        inputLocale = !latinOnly && layoutExists(locale, layoutType) ? locale : defaultLocale
         layout = newLayout
     }
 
@@ -451,7 +478,7 @@ Item {
     }
 
     function canChangeInputLanguage(customLayoutsOnly) {
-        return availableLocaleIndices.length > 1
+        return !latinOnly && availableLocaleIndices.length > 1
     }
 
     function findLocale(localeName, defaultValue) {

@@ -81,9 +81,15 @@ ColumnLayout {
 
     /*! Sets the input mode to be used in this layout.
 
-        The default is InputEngine.Latin.
+        By default, the virtual keyboard attempts to preserve
+        the current input mode when switching to a different
+        keyboard layout.
+
+        If the current input mode is not valid in the current
+        context, the default input mode is specified by the
+        input method.
     */
-    property int inputMode: InputEngine.Latin
+    property int inputMode: -1
 
     /*! Sets the key weight for all children keys.
 

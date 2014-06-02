@@ -94,7 +94,6 @@ private slots:
     void reset();
     void update();
     void shiftChanged();
-    void localeChanged();
 
 protected:
     void timerEvent(QTimerEvent *timerEvent);
