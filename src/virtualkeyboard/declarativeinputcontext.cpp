@@ -457,7 +457,10 @@ void DeclarativeInputContext::update(Qt::InputMethodQueries queries)
     d->cursorPosition = cursorPosition;
     d->cursorRectangle = cursorRectangle;
 
-    d->inputEngine->update();
+    // update input engine
+    if (newSurroundingText || newCursorPosition) {
+        d->inputEngine->update();
+    }
 
     // notify
     if (newInputMethodHints) {

@@ -319,12 +319,10 @@ void HunspellInputMethod::update()
 {
     Q_D(HunspellInputMethod);
     if (!d->word.isEmpty()) {
-        if (d->hasSuggestions())
-            inputContext()->commit(d->wordCandidates.at(d->activeWordIndex));
-        else if (!d->word.isEmpty())
-            inputContext()->commit(d->word);
+        QString finalWord = d->hasSuggestions() ? d->wordCandidates.at(d->activeWordIndex) : d->word;
+        reset();
+        inputContext()->commit(finalWord);
     }
-    reset();
 }
 
 void HunspellInputMethod::updateSuggestions(const QStringList &wordList, int activeWordIndex)

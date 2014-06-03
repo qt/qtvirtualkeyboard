@@ -262,14 +262,11 @@ bool DeclarativeInputEngine::virtualKeyClick(Qt::Key key, const QString &text, Q
     Q_D(DeclarativeInputEngine);
     bool accept = false;
     if (d->inputMethod) {
-        RecursiveMethodGuard guard(d->recursiveMethodLock);
-        if (!guard.locked()) {
-            accept = d->inputMethod->keyEvent(key, text, modifiers);
-            if (!accept) {
-                accept = d->defaultInputMethod->keyEvent(key, text, modifiers);
-            }
-            emit virtualKeyClicked(key, text, modifiers);
+        accept = d->inputMethod->keyEvent(key, text, modifiers);
+        if (!accept) {
+            accept = d->defaultInputMethod->keyEvent(key, text, modifiers);
         }
+        emit virtualKeyClicked(key, text, modifiers);
     } else {
         qWarning() << "input method is not set";
     }
