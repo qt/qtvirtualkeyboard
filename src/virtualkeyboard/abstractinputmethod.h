@@ -26,6 +26,8 @@
 class AbstractInputMethodPrivate : public QObjectPrivate
 {
 public:
+    AbstractInputMethodPrivate();
+
     DeclarativeInputEngine *inputEngine;
 };
 

@@ -18,6 +18,12 @@
 
 #include "abstractinputmethod.h"
 
+AbstractInputMethodPrivate::AbstractInputMethodPrivate() :
+    QObjectPrivate(),
+    inputEngine(0)
+{
+}
+
 /*!
     \class AbstractInputMethod
 
