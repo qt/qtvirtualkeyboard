@@ -117,8 +117,13 @@ void DeclarativeSelectionListModel::setDataSource(AbstractInputMethod *dataSourc
         disconnect(this, SLOT(selectionListChanged(int)));
         disconnect(this, SLOT(selectionListActiveItemChanged(int, int)));
     }
-    d->dataSource = dataSource;
     d->type = type;
+    if (d->dataSource) {
+        d->dataSource = 0;
+        selectionListChanged(type);
+        selectionListActiveItemChanged(type, -1);
+    }
+    d->dataSource = dataSource;
     if (d->dataSource) {
         connect(d->dataSource, SIGNAL(selectionListChanged(int)), SLOT(selectionListChanged(int)));
         connect(d->dataSource, SIGNAL(selectionListActiveItemChanged(int, int)), SLOT(selectionListActiveItemChanged(int, int)));
