@@ -11,7 +11,8 @@ version = 1.0
 
 headerdirs  += ..
 sourcedirs  += ..
-excludedirs += ../content/layouts
+excludedirs += ../content/layouts \
+    ../3rdparty
 
 # Specify the install path under QT_INSTALL_EXAMPLES
 # Examples will be installed under quick/enterprise/virtualkeyboard -

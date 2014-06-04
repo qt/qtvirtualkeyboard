@@ -86,9 +86,9 @@ By default, \e HunspellInputMethod will not be available unless the Hunspell
 library and development headers are found. For Linux/X11 targets, the Hunspell
 library can be provided by installing the libhunspell-dev package.
 Alternatively, the Hunspell sources can be extracted into the
-\e src/virtualkeyboard/hunspell directory. If Hunspell sources are used,
+\e src/virtualkeyboard/3rdparty/hunspell directory. If Hunspell sources are used,
 then the dictionary files must also be copied into the
-\e src/virtualkeyboard/hunspell/data directory. Furthermore, if Hunspell
+\e src/virtualkeyboard/3rdparty/hunspell/data directory. Furthermore, if Hunspell
 sources are used, \e hunspell.pro will be used for all targets.
 
 \section1 Deployment

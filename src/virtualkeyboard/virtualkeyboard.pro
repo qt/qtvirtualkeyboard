@@ -87,22 +87,22 @@ qml.path = $$QMLPATH
 INSTALLS += qml
 
 !disable-hunspell {
-    exists(hunspell/src/hunspell/hunspell.h) {
+    exists(3rdparty/hunspell/src/hunspell/hunspell.h) {
         message(Found Hunspell library!)
         SOURCES += hunspellinputmethod.cpp hunspellworker.cpp
         HEADERS += hunspellinputmethod.h hunspellworker.h
         DEFINES += HAVE_HUNSPELL
-        INCLUDEPATH += hunspell/src
-        DEPENDPATH += hunspell/src
-        LIBS += -L$$OUT_PWD/hunspell/ -lhunspell
+        INCLUDEPATH += 3rdparty/hunspell/src
+        DEPENDPATH += 3rdparty/hunspell/src
+        LIBS += -L$$OUT_PWD/3rdparty/hunspell/ -lhunspell
         isEmpty(hunspell_search_paths) hunspell_search_paths=$$DATAPATH/hunspell
         DEFINES += QT_VIRTUALKEYBOARD_HUNSPELL_DATA_PATH=\\\"$$join(hunspell_search_paths, :)\\\"
-        exists(hunspell/data) {
-            hunspell_data.files = hunspell/data/*.dic hunspell/data/*.aff
+        exists(3rdparty/hunspell/data) {
+            hunspell_data.files = 3rdparty/hunspell/data/*.dic 3rdparty/hunspell/data/*.aff
             hunspell_data.path = $$DATAPATH/hunspell
             INSTALLS += hunspell_data
         } else {
-            error(Hunspell dictionaries are missing! Please copy .dic and .aff files to src/virtualkeyboard/hunspell/data directory.)
+            error(Hunspell dictionaries are missing! Please copy .dic and .aff files to src/virtualkeyboard/3rdparty/hunspell/data directory.)
         }
     } else:packagesExist(hunspell) {
         message(Found Hunspell package from pkg-config!)
