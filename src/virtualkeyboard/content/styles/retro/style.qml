@@ -21,17 +21,10 @@ import QtQuick.Enterprise.VirtualKeyboard 1.0
 import QtQuick.Enterprise.VirtualKeyboard.Styles 1.0
 
 KeyboardStyle {
-    readonly property string fontFamily: courierPrimeRegular.name
+    readonly property string fontFamily: "Courier"
     readonly property real keyBackgroundMargin: Math.round(9 * scaleHint)
     readonly property real keyContentMargin: Math.round(50 * scaleHint)
     readonly property real keyIconMargin: Math.round(40 * scaleHint)
-
-    property var courierPrimeRegular: FontLoader {
-        source: "qrc:/fonts/Courier Prime.ttf"
-    }
-    property var courierPrimeBold: FontLoader {
-        source: "qrc:/fonts/Courier Prime Bold.ttf"
-    }
 
     keyboardDesignWidth: 2560
     keyboardDesignHeight: 800
@@ -80,7 +73,6 @@ KeyboardStyle {
             text: control.displayText
             color: "#110b05"
             anchors.centerIn: parent
-            anchors.verticalCenterOffset: 8 * scaleHint
             font {
                 family: fontFamily
                 weight: Font.Bold
@@ -95,7 +87,7 @@ KeyboardStyle {
                         target: keyText
                         color: "#c5a96f"
                         font.pixelSize: 74 * scaleHint
-                        font.letterSpacing: -10 * scaleHint
+                        font.letterSpacing: -5 * scaleHint
                     }
                 }
             ]
@@ -493,7 +485,6 @@ KeyboardStyle {
             text: control.displayText
             color: "#c5a96f"
             anchors.centerIn: parent
-            anchors.verticalCenterOffset: 12 * scaleHint
             font {
                 family: fontFamily
                 weight: Font.DemiBold
@@ -545,7 +536,6 @@ KeyboardStyle {
             color: "#c5a96f"
             text: characterPreview.text
             anchors.centerIn: characterPreviewBackground
-            anchors.verticalCenterOffset: 8 * scaleHint
             font {
                 family: fontFamily
                 weight: Font.Bold
@@ -557,7 +547,7 @@ KeyboardStyle {
                     when: text.length > 1
                     PropertyChanges {
                         target: characterPreviewText
-                        font.letterSpacing: -10 * scaleHint
+                        font.letterSpacing: -5 * scaleHint
                     }
                 }
             ]

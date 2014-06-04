@@ -21,14 +21,10 @@ import QtQuick.Enterprise.VirtualKeyboard 1.0
 import QtQuick.Enterprise.VirtualKeyboard.Styles 1.0
 
 KeyboardStyle {
-    readonly property string fontFamily: dejaVuSans.name
+    readonly property string fontFamily: "Sans"
     readonly property real keyBackgroundMargin: Math.round(13 * scaleHint)
     readonly property real keyContentMargin: Math.round(45 * scaleHint)
     readonly property real keyIconMargin: Math.round(35 * scaleHint)
-
-    property var dejaVuSans: FontLoader {
-        source: "qrc:/fonts/DejaVuSans.ttf"
-    }
 
     keyboardDesignWidth: 2560
     keyboardDesignHeight: 800
@@ -58,7 +54,7 @@ KeyboardStyle {
                 anchors.margins: keyContentMargin
                 font {
                     family: fontFamily
-                    weight: Font.DemiBold
+                    weight: Font.Normal
                     pixelSize: 52 * scaleHint
                     capitalization: control.uppercased ? Font.AllUppercase : Font.MixedCase
                 }
@@ -219,7 +215,7 @@ KeyboardStyle {
                 color: "#80c342"
                 font {
                     family: fontFamily
-                    weight: Font.DemiBold
+                    weight: Font.Normal
                     pixelSize: 44 * scaleHint
                     capitalization: Font.AllUppercase
                 }
@@ -418,7 +414,7 @@ KeyboardStyle {
                 anchors.margins: keyContentMargin
                 font {
                     family: fontFamily
-                    weight: Font.DemiBold
+                    weight: Font.Normal
                     pixelSize: 44 * scaleHint
                     capitalization: Font.AllUppercase
                 }
@@ -472,7 +468,7 @@ KeyboardStyle {
                 anchors.margins: Math.round(48 * scaleHint)
                 font {
                     family: fontFamily
-                    weight: Font.DemiBold
+                    weight: Font.Normal
                     pixelSize: 82 * scaleHint
                 }
             }
@@ -491,7 +487,7 @@ KeyboardStyle {
             color: "#868482"
             font {
                 family: fontFamily
-                weight: Font.DemiBold
+                weight: Font.Normal
                 pixelSize: 52 * scaleHint
             }
             anchors.centerIn: parent

@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>style.qml</file>
-        <file>fonts/DejaVuSans.ttf</file>
         <file>images/backspace.png</file>
         <file>images/enter.png</file>
         <file>images/hidekeyboard.png</file>
