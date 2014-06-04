@@ -62,7 +62,7 @@ KeyboardStyle {
                 },
                 State {
                     name: "key154px_black"
-                    when: control.displayText.length > 1
+                    when: control.displayText.length > 2
                     PropertyChanges {
                         target: keyBackground
                         source: "qrc:/images/key154px_black.png"
@@ -84,7 +84,7 @@ KeyboardStyle {
             states: [
                 State {
                     name: "fontB"
-                    when: control.displayText.length > 1
+                    when: control.displayText.length > 2
                     PropertyChanges {
                         target: keyText
                         color: "#c5a96f"
