@@ -598,6 +598,8 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent *timerEvent)
            Only numeric input is allowed.
     \value Dialable
            Only dialable input is allowed.
+    \value Pinyin
+           Pinyin input mode for Chinese.
 */
 
 /*!

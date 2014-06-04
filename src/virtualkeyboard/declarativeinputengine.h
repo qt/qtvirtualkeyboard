@@ -52,7 +52,8 @@ public:
     enum InputMode {
         Latin,
         Numeric,
-        Dialable
+        Dialable,
+        Pinyin
     };
 
 public:

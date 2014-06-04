@@ -8,3 +8,8 @@ SUBDIRS += \
     SUBDIRS += virtualkeyboard/3rdparty/hunspell
     virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-hunspell
 }
+
+pinyin {
+    SUBDIRS += virtualkeyboard/3rdparty/pinyin
+    virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-pinyin
+}

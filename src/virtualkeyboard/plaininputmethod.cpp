@@ -32,7 +32,12 @@ PlainInputMethod::~PlainInputMethod()
 QList<DeclarativeInputEngine::InputMode> PlainInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::Latin << DeclarativeInputEngine::Numeric;
+    // Supports all input modes
+    return QList<DeclarativeInputEngine::InputMode>()
+            << DeclarativeInputEngine::Latin
+            << DeclarativeInputEngine::Numeric
+            << DeclarativeInputEngine::Dialable
+            << DeclarativeInputEngine::Pinyin;
 }
 
 bool PlainInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)

@@ -28,6 +28,9 @@
 #ifdef HAVE_HUNSPELL
 #include "hunspellinputmethod.h"
 #endif
+#ifdef HAVE_PINYIN
+#include "pinyininputmethod.h"
+#endif
 #include "declarativeinputmethod.h"
 #include "declarativeselectionlistmodel.h"
 #include "enterkeyaction.h"
@@ -70,6 +73,9 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     qmlRegisterType<DeclarativeInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "InputMethod");
 #ifdef HAVE_HUNSPELL
     qmlRegisterType<HunspellInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "HunspellInputMethod");
+#endif
+#ifdef HAVE_PINYIN
+    qmlRegisterType<PinyinInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "PinyinInputMethod");
 #endif
     qmlRegisterType<EnterKeyActionAttachedType>();
     qmlRegisterType<EnterKeyAction>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "EnterKeyAction");

@@ -21,6 +21,7 @@ import QtQuick.Enterprise.VirtualKeyboard 1.0
 import QtQuick.Enterprise.VirtualKeyboard.Styles 1.0
 
 KeyboardStyle {
+    readonly property bool pinyinMode: InputContext.inputEngine.inputMode === InputEngine.Pinyin
     readonly property string fontFamily: "Courier"
     readonly property real keyBackgroundMargin: Math.round(9 * scaleHint)
     readonly property real keyContentMargin: Math.round(50 * scaleHint)
@@ -634,7 +635,7 @@ KeyboardStyle {
         Text {
             id: selectionListLabel
             anchors.left: parent.left
-            anchors.leftMargin: Math.round(140 * scaleHint)
+            anchors.leftMargin: Math.round((pinyinMode ? 50 : 140) * scaleHint)
             anchors.verticalCenter: parent.verticalCenter
             text: decorateText(display, wordCompletionLength)
             color: "white"

@@ -81,10 +81,24 @@ OTHER += qtvirtualkeyboard.json
 DEFINES += QT_VIRTUALKEYBOARD_IMPORT_PATH=\\\"$$QMLPATH\\\"
 qml.files = content/*.qml \
     content/qmldir \
-    content/components \
-    content/layouts
+    content/components
 qml.path = $$QMLPATH
 INSTALLS += qml
+pinyin: qml_layouts.files = \
+    content/layouts/en_GB \
+    content/layouts/zh_CN
+else: qml_layouts.files = \
+    content/layouts/ar_AR \
+    content/layouts/de_DE \
+    content/layouts/en_GB \
+    content/layouts/es_ES \
+    content/layouts/fi_FI \
+    content/layouts/fr_FR \
+    content/layouts/it_IT \
+    content/layouts/pt_PT \
+    content/layouts/ru_RU
+qml_layouts.path = $$QMLPATH/layouts
+INSTALLS += qml_layouts
 
 !disable-hunspell {
     exists(3rdparty/hunspell/src/hunspell/hunspell.h) {
@@ -115,4 +129,21 @@ INSTALLS += qml
     } else {
         message(Hunspell not found! Spell correction will not be available.)
     }
+}
+
+pinyin {
+    SOURCES += \
+        pinyininputmethod.cpp \
+        pinyindecoderservice.cpp
+    HEADERS += \
+        pinyininputmethod.h \
+        pinyindecoderservice.h
+    DEFINES += HAVE_PINYIN
+    INCLUDEPATH += 3rdparty/pinyin/include
+    DEPENDPATH += 3rdparty/pinyin/include
+    LIBS += -L$$OUT_PWD/3rdparty/pinyin/ -lpinyin
+    DEFINES += QT_VIRTUALKEYBOARD_PINYIN_DICTIONARY=\\\"$$DATAPATH/pinyin/dict_pinyin.dat\\\"
+    pinyin_data.files = $$PWD/3rdparty/pinyin/data/dict_pinyin.dat
+    pinyin_data.path = $$DATAPATH/pinyin
+    INSTALLS += pinyin_data
 }
