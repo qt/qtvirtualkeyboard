@@ -31,5 +31,6 @@ import QtQuick 2.0
 
 BaseKey {
     id: keyItem
+    key: !functionKey && text.length > 0 ? text.charCodeAt(0) : Qt.Key_unknown
     keyPanelDelegate: keyboard.style ? keyboard.style.keyPanel : undefined
 }
