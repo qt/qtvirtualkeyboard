@@ -20,7 +20,7 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.Enterprise.VirtualKeyboard 1.0
 
-KeyboardLayout {
+KeyboardLayoutLoader {
     inputMethod: PlainInputMethod {}
     property int page
     readonly property int numPages: 3
@@ -39,229 +39,241 @@ KeyboardLayout {
         "→←↑↓↔■□●○",
         "＼『』「」★☆◆◇"
     ]
-    keyWeight: 160
-    KeyboardColumn {
-        anchors.fill: parent
-        visible: page == 0
-        KeyboardRow {
-            Repeater {
-                model: keysPage1[0].length
-                Key {
-                    key: keysPage1[0][index].charCodeAt(0)
-                    text: keysPage1[0][index]
+    sourceComponent: {
+        switch (page) {
+        case 2: return page3
+        case 1: return page2
+        default: return page1
+        }
+    }
+    Component {
+        id: page1
+        KeyboardLayout {
+            keyWeight: 160
+            KeyboardRow {
+                Repeater {
+                    model: keysPage1[0].length
+                    Key {
+                        key: keysPage1[0][index].charCodeAt(0)
+                        text: keysPage1[0][index]
+                    }
+                }
+                BackspaceKey {}
+            }
+            KeyboardRow {
+                FillerKey {
+                    weight: 56
+                }
+                Repeater {
+                    model: keysPage1[1].length
+                    Key {
+                        key: keysPage1[1][index].charCodeAt(0)
+                        text: keysPage1[1][index]
+                    }
+                }
+                EnterKey {
+                    weight: 283
                 }
             }
-            BackspaceKey {}
-        }
-        KeyboardRow {
-            FillerKey {
-                weight: 56
-            }
-            Repeater {
-                model: keysPage1[1].length
+            KeyboardRow {
+                keyWeight: 156
                 Key {
-                    key: keysPage1[1][index].charCodeAt(0)
-                    text: keysPage1[1][index]
+                    displayText: (page + 1) + "/" + numPages
+                    functionKey: true
+                    onClicked: page = (page + 1) % numPages
+                }
+                Repeater {
+                    model: keysPage1[2].length
+                    Key {
+                        key: keysPage1[2][index].charCodeAt(0)
+                        text: keysPage1[2][index]
+                    }
+                }
+                Key {
+                    weight: 204
+                    displayText: (page + 1) + "/" + numPages
+                    functionKey: true
+                    onClicked: page = (page + 1) % numPages
                 }
             }
-            EnterKey {
-                weight: 283
-            }
-        }
-        KeyboardRow {
-            keyWeight: 156
-            Key {
-                displayText: (page + 1) + "/" + numPages
-                functionKey: true
-                onClicked: page = (page + 1) % numPages
-            }
-            Repeater {
-                model: keysPage1[2].length
-                Key {
-                    key: keysPage1[2][index].charCodeAt(0)
-                    text: keysPage1[2][index]
+            KeyboardRow {
+                keyWeight: 154
+                SymbolModeKey {
+                    weight: 217
+                    displayText: "ABC"
                 }
-            }
-            Key {
-                weight: 204
-                displayText: (page + 1) + "/" + numPages
-                functionKey: true
-                onClicked: page = (page + 1) % numPages
-            }
-        }
-        KeyboardRow {
-            keyWeight: 154
-            SymbolModeKey {
-                weight: 217
-                displayText: "ABC"
-            }
-            ChangeLanguageKey {
-                weight: 154
-            }
-            SpaceKey {
-                weight: 864
-            }
-            Key {
-                key: 0x2014
-                text: "—"
-            }
-            Key {
-                key: 0xE000
-                text: ":-)"
-                alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-            }
-            HideKeyboardKey {
-                weight: 204
+                ChangeLanguageKey {
+                    weight: 154
+                }
+                SpaceKey {
+                    weight: 864
+                }
+                Key {
+                    key: 0x2014
+                    text: "—"
+                }
+                Key {
+                    key: 0xE000
+                    text: ":-)"
+                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
+                }
+                HideKeyboardKey {
+                    weight: 204
+                }
             }
         }
     }
-    KeyboardColumn {
-        anchors.fill: parent
-        visible: page == 1
-        KeyboardRow {
-            Repeater {
-                model: keysPage2[0].length
-                Key {
-                    key: keysPage2[0][index].charCodeAt(0)
-                    text: keysPage2[0][index]
+    Component {
+        id: page2
+        KeyboardLayout {
+            keyWeight: 160
+            KeyboardRow {
+                Repeater {
+                    model: keysPage2[0].length
+                    Key {
+                        key: keysPage2[0][index].charCodeAt(0)
+                        text: keysPage2[0][index]
+                    }
+                }
+                BackspaceKey {}
+            }
+            KeyboardRow {
+                FillerKey {
+                    weight: 56
+                }
+                Repeater {
+                    model: keysPage2[1].length
+                    Key {
+                        key: keysPage2[1][index].charCodeAt(0)
+                        text: keysPage2[1][index]
+                    }
+                }
+                EnterKey {
+                    weight: 283
                 }
             }
-            BackspaceKey {}
-        }
-        KeyboardRow {
-            FillerKey {
-                weight: 56
-            }
-            Repeater {
-                model: keysPage2[1].length
+            KeyboardRow {
+                keyWeight: 156
                 Key {
-                    key: keysPage2[1][index].charCodeAt(0)
-                    text: keysPage2[1][index]
+                    displayText: (page + 1) + "/" + numPages
+                    functionKey: true
+                    onClicked: page = (page + 1) % numPages
+                }
+                Repeater {
+                    model: keysPage2[2].length
+                    Key {
+                        key: keysPage2[2][index].charCodeAt(0)
+                        text: keysPage2[2][index]
+                    }
+                }
+                Key {
+                    weight: 204
+                    displayText: (page + 1) + "/" + numPages
+                    functionKey: true
+                    onClicked: page = (page + 1) % numPages
                 }
             }
-            EnterKey {
-                weight: 283
-            }
-        }
-        KeyboardRow {
-            keyWeight: 156
-            Key {
-                displayText: (page + 1) + "/" + numPages
-                functionKey: true
-                onClicked: page = (page + 1) % numPages
-            }
-            Repeater {
-                model: keysPage2[2].length
-                Key {
-                    key: keysPage2[2][index].charCodeAt(0)
-                    text: keysPage2[2][index]
+            KeyboardRow {
+                keyWeight: 154
+                SymbolModeKey {
+                    weight: 217
+                    displayText: "ABC"
                 }
-            }
-            Key {
-                weight: 204
-                displayText: (page + 1) + "/" + numPages
-                functionKey: true
-                onClicked: page = (page + 1) % numPages
-            }
-        }
-        KeyboardRow {
-            keyWeight: 154
-            SymbolModeKey {
-                weight: 217
-                displayText: "ABC"
-            }
-            ChangeLanguageKey {
-                weight: 154
-            }
-            SpaceKey {
-                weight: 864
-            }
-            Key {
-                key: 0x3002
-                text: "。"
-            }
-            Key {
-                key: 0xE000
-                text: ":-)"
-                alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-            }
-            HideKeyboardKey {
-                weight: 204
+                ChangeLanguageKey {
+                    weight: 154
+                }
+                SpaceKey {
+                    weight: 864
+                }
+                Key {
+                    key: 0x3002
+                    text: "。"
+                }
+                Key {
+                    key: 0xE000
+                    text: ":-)"
+                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
+                }
+                HideKeyboardKey {
+                    weight: 204
+                }
             }
         }
     }
-    KeyboardColumn {
-        anchors.fill: parent
-        visible: page == 2
-        KeyboardRow {
-            Repeater {
-                model: keysPage3[0].length
-                Key {
-                    key: keysPage3[0][index].charCodeAt(0)
-                    text: keysPage3[0][index]
+    Component {
+        id: page3
+        KeyboardLayout {
+            keyWeight: 160
+            KeyboardRow {
+                Repeater {
+                    model: keysPage3[0].length
+                    Key {
+                        key: keysPage3[0][index].charCodeAt(0)
+                        text: keysPage3[0][index]
+                    }
+                }
+                BackspaceKey {}
+            }
+            KeyboardRow {
+                FillerKey {
+                    weight: 56
+                }
+                Repeater {
+                    model: keysPage3[1].length
+                    Key {
+                        key: keysPage3[1][index].charCodeAt(0)
+                        text: keysPage3[1][index]
+                    }
+                }
+                EnterKey {
+                    weight: 283
                 }
             }
-            BackspaceKey {}
-        }
-        KeyboardRow {
-            FillerKey {
-                weight: 56
-            }
-            Repeater {
-                model: keysPage3[1].length
+            KeyboardRow {
+                keyWeight: 156
                 Key {
-                    key: keysPage3[1][index].charCodeAt(0)
-                    text: keysPage3[1][index]
+                    displayText: (page + 1) + "/" + numPages
+                    functionKey: true
+                    onClicked: page = (page + 1) % numPages
+                }
+                Repeater {
+                    model: keysPage3[2].length
+                    Key {
+                        key: keysPage3[2][index].charCodeAt(0)
+                        text: keysPage3[2][index]
+                    }
+                }
+                Key {
+                    weight: 204
+                    displayText: (page + 1) + "/" + numPages
+                    functionKey: true
+                    onClicked: page = (page + 1) % numPages
                 }
             }
-            EnterKey {
-                weight: 283
-            }
-        }
-        KeyboardRow {
-            keyWeight: 156
-            Key {
-                displayText: (page + 1) + "/" + numPages
-                functionKey: true
-                onClicked: page = (page + 1) % numPages
-            }
-            Repeater {
-                model: keysPage3[2].length
-                Key {
-                    key: keysPage3[2][index].charCodeAt(0)
-                    text: keysPage3[2][index]
+            KeyboardRow {
+                keyWeight: 154
+                SymbolModeKey {
+                    weight: 217
+                    displayText: "ABC"
                 }
-            }
-            Key {
-                weight: 204
-                displayText: (page + 1) + "/" + numPages
-                functionKey: true
-                onClicked: page = (page + 1) % numPages
-            }
-        }
-        KeyboardRow {
-            keyWeight: 154
-            SymbolModeKey {
-                weight: 217
-                displayText: "ABC"
-            }
-            ChangeLanguageKey {
-                weight: 154
-            }
-            SpaceKey {
-                weight: 864
-            }
-            Key {
-                key: 0x2026
-                text: "…"
-            }
-            Key {
-                key: 0xE000
-                text: ":-)"
-                alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-            }
-            HideKeyboardKey {
-                weight: 204
+                ChangeLanguageKey {
+                    weight: 154
+                }
+                SpaceKey {
+                    weight: 864
+                }
+                Key {
+                    key: 0x2026
+                    text: "…"
+                }
+                Key {
+                    key: 0xE000
+                    text: ":-)"
+                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
+                }
+                HideKeyboardKey {
+                    weight: 204
+                }
             }
         }
     }

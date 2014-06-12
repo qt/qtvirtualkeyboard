@@ -410,15 +410,18 @@ The keyboard layouts cannot specify any visual elements. Instead, the layout is
 visualized by the keyboard theme. On the other hand, the keyboard theme cannot
 affect the size of the keyboard layout.
 
-\section2 Symbol Layout
+\section2 Keyboard Layouts with Multiple Pages of Keys
 
-Symbol layouts follow the same semantics as the main layout. However, there
-are some differences in the construction of symbol layouts to allow multiple
-layouts to be embedded inside the layout.
+Some keyboard layouts, such as symbol layouts, may contain more keys than it is
+feasible to present on a single keyboard layout. A solution is to embed multiple
+keyboard layouts into the same context by using the KeyboardLayoutLoader.
 
-In essence, the symbol layouts use the KeyboardColumn type to embed multiple
-pages of keys within the same layout. The usage is demonstrated in the
-following example:
+When the KeyboardLayoutLoader is used as a root item of a keyboard layout, the
+actual keyboard layouts are wrapped inside Component elements. The keyboard
+layout is activated by assigning the id of an active component to the
+sourceComponent property.
+
+For example:
 
 \code
     import QtQuick 2.0
@@ -427,35 +430,35 @@ following example:
 
     // file: layouts/en_GB/symbols.qml
 
-    KeyboardLayout {
+    KeyboardLayoutLoader {
         property bool secondPage
         onVisibleChanged: if (!visible) secondPage = false
-        KeyboardColumn {
-            anchors.fill: parent
-            visible: !secondPage
-            KeyboardRow {
-                Key {
-                    displayText: "1/2"
-                    functionKey: true
-                    onClicked: secondPage = !secondPage
+        sourceComponent: secondPage ? page2 : page1
+        Component {
+            id: page1
+            KeyboardLayout {
+                KeyboardRow {
+                    Key {
+                        displayText: "1/2"
+                        functionKey: true
+                        onClicked: secondPage = !secondPage
+                    }
                 }
             }
         }
-        KeyboardColumn {
-            anchors.fill: parent
-            visible: secondPage
-            KeyboardRow {
-                Key {
-                    displayText: "2/2"
-                    functionKey: true
-                    onClicked: secondPage = !secondPage
+        Component {
+            id: page2
+            KeyboardLayout {
+                KeyboardRow {
+                    Key {
+                        displayText: "2/2"
+                        functionKey: true
+                        onClicked: secondPage = !secondPage
+                    }
                 }
             }
         }
     }
 \endcode
-
-In this example, the layout has two pages constructed using the KeyboardColumn
-type, and their visibility is determined by the secondPage property.
 
 */
