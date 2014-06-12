@@ -66,6 +66,9 @@ Item {
 
     width: keyboardBackground.width
     height: wordCandidateView.height + keyboardBackground.height
+    onActiveChanged: {
+        keyboardInputArea.reset()
+    }
     onLocaleChanged: {
         inputModeNeedsReset = true
         updateLayout()
@@ -101,7 +104,10 @@ Item {
     Connections {
         target: InputContext.inputEngine
         onVirtualKeyClicked: {
-            if (key === Qt.Key_Space) {
+            if (key !== Qt.Key_unknown && keyboardInputArea.dragSymbolMode) {
+                keyboardInputArea.dragSymbolMode = false
+                keyboard.symbolMode = false
+            } else if (key === Qt.Key_Space) {
                 var surroundingText = InputContext.surroundingText.trim()
                 if (InputContext.shiftHandler.sentenceEndingCharacters.indexOf(surroundingText.charAt(surroundingText.length-1)) >= 0)
                     keyboard.symbolMode = false
@@ -146,6 +152,12 @@ Item {
                     keyboardInputArea.dragSymbolMode = true
                     keyboard.symbolMode = true
                 }
+            } else if (keyboardInputArea.dragSymbolMode &&
+                       keyboard.activeKey &&
+                       keyboard.activeKey.functionKey &&
+                       !keyboard.activeKey.repeat) {
+                InputContext.inputEngine.virtualKeyCancel()
+                keyboardInputArea.click(keyboard.activeKey)
             }
         }
     }
@@ -248,7 +260,7 @@ Item {
                     function press(key) {
                         if (key && key.enabled) {
                             if (key.key !== Qt.Key_unknown || key.text.length > 0)
-                                InputContext.inputEngine.virtualKeyPress(key.key, keyboard.uppercased ? key.text.toUpperCase() : key.text, keyboard.uppercased ? Qt.ShiftModifier : 0, key.repeat)
+                                InputContext.inputEngine.virtualKeyPress(key.key, keyboard.uppercased ? key.text.toUpperCase() : key.text, keyboard.uppercased ? Qt.ShiftModifier : 0, key.repeat && !dragSymbolMode)
                         }
                     }
                     function release(key) {
@@ -368,6 +380,8 @@ Item {
                                 InputContext.inputEngine.virtualKeyCancel()
                                 setActiveKey(key)
                                 press(key)
+                                if (dragSymbolMode)
+                                    pressAndHoldTimer.restart()
                             }
                         }
                     }
@@ -385,13 +399,15 @@ Item {
     }
 
     function updateInputMethod() {
+        if (!keyboardLayoutLoader.item)
+            return
         var inputMethod = null
         var inputMode = InputContext.inputEngine.inputMode
         // Force plain input method in password mode
         if (latinOnly) {
             inputMethod = keyboard.plainInputMethod
             inputMode = InputEngine.Latin
-        } else if (keyboardLayoutLoader.item) {
+        } else {
             // Use input method from keyboard layout
             if (keyboardLayoutLoader.item.inputMethod) {
                 inputMethod = keyboardLayoutLoader.item.inputMethod

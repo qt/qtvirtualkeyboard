@@ -39,7 +39,7 @@ BaseKey {
     text: "\n"
     displayText: InputContext.hasEnterKeyAction(InputContext.inputItem) ? InputContext.inputItem.EnterKeyAction.label : ""
     key: Qt.Key_Return
-    functionKey: true
+    showPreview: false
     highlighted: enabled && displayText.length > 0
     enabled: InputContext.hasEnterKeyAction(InputContext.inputItem) ? InputContext.inputItem.EnterKeyAction.enabled : true
     keyPanelDelegate: keyboard.style ? keyboard.style.enterKeyPanel : undefined
