@@ -26,7 +26,7 @@ Item {
     id: keyboard
 
     property alias style: styleLoader.item
-    property var activeKey: undefined
+    property var activeKey: null
     property TouchPoint activeTouchPoint
     property int localeIndex: -1
     property var availableLocaleIndices: []
@@ -239,7 +239,7 @@ Item {
                 MultiPointTouchArea {
                     id: keyboardInputArea
 
-                    property var initialKey
+                    property var initialKey: null
                     property bool dragSymbolMode
                     property real releaseMargin: 18
 
@@ -266,6 +266,8 @@ Item {
                         }
                     }
                     function setActiveKey(activeKey) {
+                        if (keyboard.activeKey === activeKey)
+                            return
                         if (keyboard.activeKey) {
                             keyboard.activeKey.active = false
                         }
@@ -285,7 +287,7 @@ Item {
                             if (child && child.key !== undefined)
                                 return child
                         }
-                        return undefined
+                        return null
                     }
                     function hitInitialKey(x, y, margin) {
                         if (!initialKey)
@@ -316,7 +318,7 @@ Item {
                         releaseInaccuracyTimer.stop()
                         pressAndHoldTimer.stop()
                         alternativeKeys.close()
-                        setActiveKey(undefined)
+                        setActiveKey(null)
                         activeTouchPoint = null
                         if (dragSymbolMode) {
                             keyboard.symbolMode = false
@@ -350,16 +352,16 @@ Item {
                         if (alternativeKeys.active) {
                             alternativeKeys.move(mapToItem(alternativeKeys, activeTouchPoint.x, 0).x)
                         } else {
-                            var key
+                            var key = null
                             if (releaseInaccuracyTimer.running) {
                                 if (hitInitialKey(activeTouchPoint.x, activeTouchPoint.y, releaseMargin)) {
                                     key = initialKey
                                 } else if (initialKey) {
                                     releaseInaccuracyTimer.stop()
-                                    initialKey = undefined
+                                    initialKey = null
                                 }
                             }
-                            if (key === undefined) {
+                            if (key === null) {
                                 key = keyOnPoint(activeTouchPoint.x, activeTouchPoint.y)
                             }
                             if (key !== keyboard.activeKey) {
