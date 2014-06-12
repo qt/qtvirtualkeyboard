@@ -147,3 +147,5 @@ pinyin {
     pinyin_data.path = $$DATAPATH/pinyin
     INSTALLS += pinyin_data
 }
+
+arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION

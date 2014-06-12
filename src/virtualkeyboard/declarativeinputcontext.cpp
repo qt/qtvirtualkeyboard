@@ -59,6 +59,9 @@ public:
     QString surroundingText;
     QString selectedText;
     QRectF cursorRectangle;
+#ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
+    QSet<int> activeNavigationKeys;
+#endif
 };
 
 /*!
@@ -478,6 +481,31 @@ void DeclarativeInputContext::update(Qt::InputMethodQueries queries)
     if (newCursorRectangle) {
         emit cursorRectangleChanged();
     }
+}
+
+bool DeclarativeInputContext::filterEvent(const QEvent *event)
+{
+#ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
+    if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease) {
+        Q_D(DeclarativeInputContext);
+        const QKeyEvent *keyEvent = static_cast<const QKeyEvent *>(event);
+        int key = keyEvent->key();
+        if ((key >= Qt::Key_Left && key <= Qt::Key_Down) || key == Qt::Key_Return) {
+            if (event->type() == QEvent::KeyPress && d->inputContext->isInputPanelVisible()) {
+                d->activeNavigationKeys += key;
+                emit navigationKeyPressed(key, keyEvent->isAutoRepeat());
+                return true;
+            } else if (event->type() == QEvent::KeyRelease && d->activeNavigationKeys.contains(key)) {
+                d->activeNavigationKeys -= key;
+                emit navigationKeyReleased(key, keyEvent->isAutoRepeat());
+                return true;
+            }
+        }
+    }
+#else
+    Q_UNUSED(event)
+#endif
+    return false;
 }
 
 /*!

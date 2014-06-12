@@ -231,4 +231,14 @@ QtObject {
 
     /*! Template for the selection list background. */
     property Component selectionListBackground: null
+
+    /*! Template for navigation highlight item.
+
+        This item is used in arrow-key-navigation mode to
+        highlight the navigation focus on the keyboard.
+
+        The item is typically a transparent rectangle with a
+        high contrast border.
+    */
+    property Component navigationHighlight: null
 }

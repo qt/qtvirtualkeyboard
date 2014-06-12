@@ -73,6 +73,9 @@ build targets.
 \row
     \li \e CONFIG += pinyin
     \li Enables the pinyin input method for Simplified Chinese.
+\row
+    \li \e CONFIG += arrow-key-navigation
+    \li Enables arrow key navigation for the keyboard
 \endtable
 
 \section2 Building Documentation

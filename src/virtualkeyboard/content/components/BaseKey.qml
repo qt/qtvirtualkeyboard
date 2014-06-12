@@ -111,7 +111,7 @@ Item {
 
         By default, the character preview popup is not shown for function keys.
     */
-    property bool showPreview: !functionKey
+    property bool showPreview: !functionKey && !keyboard.navigationModeActive
 
     /*! Sets the enabled attribute.
 

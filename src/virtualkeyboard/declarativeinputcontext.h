@@ -100,6 +100,8 @@ signals:
     void animatingChanged();
     void localeChanged();
     void inputItemChanged();
+    void navigationKeyPressed(int key, bool isAutoRepeat);
+    void navigationKeyReleased(int key, bool isAutoRepeat);
 
 private:
     void setFocus(bool enable);
@@ -107,6 +109,7 @@ private:
     void reset();
     void externalCommit();
     void update(Qt::InputMethodQueries queries);
+    bool filterEvent(const QEvent *event);
 
 private:
     friend class PlatformInputContext;

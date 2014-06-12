@@ -671,4 +671,10 @@ KeyboardStyle {
     selectionListBackground: Rectangle {
         color: "#222222"
     }
+
+    navigationHighlight: Rectangle {
+        color: "transparent"
+        border.color: "yellow"
+        border.width: 5
+    }
 }

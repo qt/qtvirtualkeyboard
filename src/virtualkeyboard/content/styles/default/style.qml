@@ -555,4 +555,10 @@ KeyboardStyle {
     selectionListBackground: Rectangle {
         color: "#1e1b18"
     }
+
+    navigationHighlight: Rectangle {
+        color: "transparent"
+        border.color: "yellow"
+        border.width: 5
+    }
 }

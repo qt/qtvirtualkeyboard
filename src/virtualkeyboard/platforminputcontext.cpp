@@ -80,7 +80,7 @@ void PlatformInputContext::invokeAction(QInputMethod::Action action, int cursorP
 
 bool PlatformInputContext::filterEvent(const QEvent *event)
 {
-    return QPlatformInputContext::filterEvent(event);
+    return m_declarativeContext ? m_declarativeContext->filterEvent(event) : QPlatformInputContext::filterEvent(event);
 }
 
 QRectF PlatformInputContext::keyboardRect() const

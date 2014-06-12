@@ -56,6 +56,7 @@ Item {
     property var plainInputMethod: PlainInputMethod {}
     property int defaultInputMode: InputEngine.Latin
     property bool inputModeNeedsReset: true
+    property bool navigationModeActive: false
 
     function initDefaultInputMethod() {
         try {
@@ -99,6 +100,97 @@ Item {
         }
         onInputItemChanged: {
             inputModeNeedsReset = true
+        }
+        onNavigationKeyPressed: {
+            switch (key) {
+            case Qt.Key_Left:
+                if (keyboard.navigationModeActive && !keyboardInputArea.initialKey) {
+                    if (alternativeKeys.active) {
+                        alternativeKeys.listView.decrementCurrentIndex()
+                        break
+                    }
+                    if (wordCandidateView.count) {
+                        wordCandidateView.decrementCurrentIndex()
+                        break
+                    }
+                }
+                keyboardInputArea.navigateToNextKey(-1, 0, true)
+                break
+            case Qt.Key_Up:
+                if (alternativeKeys.active) {
+                    alternativeKeys.close()
+                    keyboardInputArea.setActiveKey(null)
+                    keyboardInputArea.navigateToNextKey(0, 0, false)
+                } else if (!keyboardInputArea.navigateToNextKey(0, -1, !keyboard.navigationModeActive || !keyboardInputArea.initialKey || wordCandidateView.count == 0)) {
+                    if (wordCandidateView.currentIndex === -1)
+                        wordCandidateView.incrementCurrentIndex()
+                }
+                break
+            case Qt.Key_Right:
+                if (keyboard.navigationModeActive && !keyboardInputArea.initialKey) {
+                    if (alternativeKeys.active) {
+                        alternativeKeys.listView.incrementCurrentIndex()
+                        break
+                    }
+                    if (wordCandidateView.count) {
+                        wordCandidateView.incrementCurrentIndex()
+                        break
+                    }
+                }
+                keyboardInputArea.navigateToNextKey(1, 0, true)
+                break
+            case Qt.Key_Down:
+                if (alternativeKeys.active) {
+                    alternativeKeys.close()
+                    keyboardInputArea.setActiveKey(null)
+                    keyboardInputArea.navigateToNextKey(0, 0, false)
+                } else if (!keyboardInputArea.navigateToNextKey(0, 1, !keyboard.navigationModeActive || !keyboardInputArea.initialKey || wordCandidateView.count == 0)) {
+                    if (wordCandidateView.currentIndex === -1)
+                        wordCandidateView.incrementCurrentIndex()
+                }
+                break
+            case Qt.Key_Return:
+                if (!keyboard.navigationModeActive)
+                    break
+                if (alternativeKeys.active) {
+                    if (!isAutoRepeat) {
+                        alternativeKeys.clicked()
+                        keyboardInputArea.reset()
+                        keyboardInputArea.navigateToNextKey(0, 0, false)
+                    }
+                } else if (keyboardInputArea.initialKey) {
+                    if (!isAutoRepeat) {
+                        pressAndHoldTimer.restart()
+                        keyboardInputArea.setActiveKey(keyboardInputArea.initialKey)
+                        keyboardInputArea.press(keyboardInputArea.initialKey)
+                    }
+                } else if (wordCandidateView.count > 0) {
+                    wordCandidateView.model.itemSelected(wordCandidateView.currentIndex)
+                    if (!InputContext.preeditText.length)
+                        keyboardInputArea.navigateToNextKey(0, 1, true)
+                }
+                break
+            default:
+                break
+            }
+        }
+        onNavigationKeyReleased: {
+            switch (key) {
+            case Qt.Key_Return:
+                if (!keyboard.navigationModeActive)
+                    break
+                if (!alternativeKeys.active && keyboard.activeKey && !isAutoRepeat) {
+                    keyboardInputArea.release(keyboard.activeKey)
+                    pressAndHoldTimer.stop()
+                    alternativeKeys.close()
+                    keyboardInputArea.setActiveKey(null)
+                    if (keyboardInputArea.navigationCursor !== Qt.point(-1, -1))
+                        keyboardInputArea.navigateToNextKey(0, 0, false)
+                }
+                break
+            default:
+                break
+            }
         }
     }
     Connections {
@@ -147,10 +239,14 @@ Item {
                 var origin = keyboard.mapFromItem(activeKey, activeKey.width / 2, 0)
                 if (alternativeKeys.open(keyboard.activeKey, origin.x, origin.y)) {
                     InputContext.inputEngine.virtualKeyCancel()
+                    keyboardInputArea.initialKey = null
                 } else if (keyboard.activeKey.key === Qt.Key_Context1) {
                     InputContext.inputEngine.virtualKeyCancel()
                     keyboardInputArea.dragSymbolMode = true
                     keyboard.symbolMode = true
+                    keyboardInputArea.initialKey = null
+                    if (keyboardInputArea.navigationCursor !== Qt.point(-1, -1))
+                        keyboardInputArea.navigateToNextKey(0, 0, false)
                 }
             } else if (keyboardInputArea.dragSymbolMode &&
                        keyboard.activeKey &&
@@ -158,6 +254,9 @@ Item {
                        !keyboard.activeKey.repeat) {
                 InputContext.inputEngine.virtualKeyCancel()
                 keyboardInputArea.click(keyboard.activeKey)
+                keyboardInputArea.initialKey = null
+                if (keyboardInputArea.navigationCursor !== Qt.point(-1, -1))
+                    keyboardInputArea.navigateToNextKey(0, 0, false)
             }
         }
     }
@@ -191,6 +290,45 @@ Item {
             value: keyboardInnerContainer.height
         }
     }
+    Loader {
+        id: naviationHighlight
+        property var highlightItem: {
+            if (keyboard.navigationModeActive) {
+                if (keyboardInputArea.initialKey) {
+                    return keyboardInputArea.initialKey
+                } else if (alternativeKeys.listView.count > 0) {
+                    return alternativeKeys.listView.highlightItem
+                } else if (wordCandidateView.count > 0) {
+                    return wordCandidateView.highlightItem
+                }
+            }
+            return keyboard
+        }
+        // Note: without "highlightItem.x - highlightItem.x" the binding does not work for alternativeKeys
+        property var highlightItemOffset: highlightItem ? keyboard.mapFromItem(highlightItem, highlightItem.x - highlightItem.x, highlightItem.y - highlightItem.y) : ({x:0, y:0})
+        property int moveDuration: 200
+        property int resizeDuration: 200
+        z: 2
+        x: highlightItemOffset.x
+        y: highlightItemOffset.y
+        width: highlightItem ? highlightItem.width : 0
+        height: highlightItem ? highlightItem.height : 0
+        visible: keyboard.navigationModeActive && highlightItem !== null && highlightItem !== keyboard
+        sourceComponent: keyboard.style.navigationHighlight
+        Behavior on x {
+            NumberAnimation { duration: naviationHighlight.moveDuration; easing.type: Easing.OutCubic }
+        }
+        Behavior on y {
+            NumberAnimation { duration: naviationHighlight.moveDuration; easing.type: Easing.OutCubic }
+        }
+        Behavior on width {
+            NumberAnimation { duration: naviationHighlight.resizeDuration; easing.type: Easing.OutCubic }
+        }
+        Behavior on height {
+            NumberAnimation { duration: naviationHighlight.resizeDuration; easing.type: Easing.OutCubic }
+        }
+    }
+
     ListView {
         id: wordCandidateView
         clip: true
@@ -201,8 +339,10 @@ Item {
         spacing: 0
         orientation: ListView.Horizontal
         delegate: style.selectionListDelegate
-        highlight: style.selectionListHighlight
+        highlight: style.selectionListHighlight ? style.selectionListHighlight : defaultHighlight
         highlightMoveDuration: 0
+        highlightResizeDuration: 0
+        keyNavigationWraps: true
         model: InputContext.inputEngine.wordCandidateListModel
         Connections {
             target: wordCandidateView.model ? wordCandidateView.model : null
@@ -212,6 +352,10 @@ Item {
             sourceComponent: style.selectionListBackground
             anchors.fill: parent
             z: -1
+        }
+        Component {
+            id: defaultHighlight
+            Item {}
         }
     }
 
@@ -254,8 +398,28 @@ Item {
                     property var initialKey: null
                     property bool dragSymbolMode
                     property real releaseMargin: 18
+                    property point navigationCursor: Qt.point(-1, -1)
 
                     anchors.fill: keyboardLayoutLoader
+
+                    Connections {
+                        target: keyboardLayoutLoader
+                        onStatusChanged: {
+                            if (keyboardLayoutLoader.status == Loader.Ready &&
+                                    keyboard.navigationModeActive &&
+                                    keyboardInputArea.navigationCursor !== Qt.point(-1, -1))
+                                keyboard.navigationModeActive = keyboardInputArea.navigateToNextKey(0, 0, false)
+                        }
+                    }
+                    Connections {
+                        target: keyboard
+                        onNavigationModeActiveChanged: {
+                            if (!keyboard.navigationModeActive) {
+                                keyboardInputArea.navigationCursor = Qt.point(-1, -1)
+                                keyboardInputArea.reset()
+                            }
+                        }
+                    }
 
                     function press(key) {
                         if (key && key.enabled) {
@@ -337,8 +501,90 @@ Item {
                             dragSymbolMode = false
                         }
                     }
+                    function nextKeyInNavigation(dX, dY, wrapEnabled) {
+                        var nextKey = null, x, y, itemOffset
+                        if (dX !== 0 || dY !== 0) {
+                            var offsetX, offsetY
+                            for (offsetX = dX, offsetY = dY;
+                                 Math.abs(offsetX) < width && Math.abs(offsetY) < height;
+                                 offsetX += dX, offsetY += dY) {
+                                x = navigationCursor.x + offsetX
+                                if (x < 0) {
+                                    if (!wrapEnabled)
+                                        break
+                                    x += width
+                                } else if (x >= width) {
+                                    if (!wrapEnabled)
+                                        break
+                                    x -= width
+                                }
+                                y = navigationCursor.y + offsetY
+                                if (y < 0) {
+                                    if (!wrapEnabled)
+                                        break
+                                    y += height
+                                } else if (y >= height) {
+                                    if (!wrapEnabled)
+                                        break
+                                    y -= height
+                                }
+                                nextKey = keyOnPoint(x, y)
+                                if (nextKey) {
+                                    // Check if key is visible. Only the visible keys have keyPanelDelegate set.
+                                    if (nextKey != initialKey && nextKey.hasOwnProperty("keyPanelDelegate") && nextKey.keyPanelDelegate)
+                                        break
+                                    // Jump over the item to reduce the number of iterations in this loop
+                                    itemOffset = mapToItem(nextKey, x, y)
+                                    if (dX > 0)
+                                        offsetX += nextKey.width - itemOffset.x
+                                    else if (dX < 0)
+                                        offsetX -= itemOffset.x
+                                    else if (dY > 0)
+                                        offsetY += nextKey.height - itemOffset.y
+                                    else if (dY < 0)
+                                        offsetY -= itemOffset.y
+                                }
+                                nextKey = null
+                            }
+                        } else {
+                            nextKey = keyOnPoint(navigationCursor.x, navigationCursor.y)
+                        }
+                        if (nextKey) {
+                            itemOffset = mapFromItem(nextKey, nextKey.width / 2, nextKey.height / 2)
+                            if (dX) {
+                                x = itemOffset.x
+                            } else if (dY) {
+                                y = itemOffset.y
+                            } else {
+                                x = itemOffset.x
+                                y = itemOffset.y
+                            }
+                            navigationCursor = Qt.point(x, y)
+                        }
+                        return nextKey
+                    }
+                    function navigateToNextKey(dX, dY, wrapEnabled) {
+                        // Resolve initial landing point of the navigation cursor
+                        if (!keyboard.navigationModeActive || keyboard.navigationCursor === Qt.point(-1, -1)) {
+                            if (dX > 0)
+                                navigationCursor = Qt.point(0, height / 2)
+                            else if (dX < 0)
+                                navigationCursor = Qt.point(width, height / 2)
+                            else if (dY > 0)
+                                navigationCursor = Qt.point(width / 2, 0)
+                            else if (dY < 0)
+                                navigationCursor = Qt.point(width / 2, height)
+                            else
+                                navigationCursor = Qt.point(width / 2, height / 2)
+                            keyboard.navigationModeActive = true
+                        }
+                        initialKey = nextKeyInNavigation(dX, dY, wrapEnabled)
+                        return initialKey !== null
+                    }
 
                     onPressed: {
+                        keyboard.navigationModeActive = false
+
                         // Immediately release any pending key that the user might be
                         // holding (and about to release) when a second key is pressed.
                         if (activeTouchPoint)

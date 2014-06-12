@@ -22,6 +22,7 @@ import QtQuick.Enterprise.VirtualKeyboard 1.0
 Item {
     property bool active: listView.currentIndex != -1
     property int highlightIndex: -1
+    property alias listView: listView
     property int keyCode
     property point origin
     property bool uppercased: keyboard.uppercased
@@ -40,12 +41,18 @@ Item {
         spacing: 0
         model: listModel
         delegate: keyboard.style.alternateKeysListDelegate
-        highlight: keyboard.style.alternateKeysListHighlight
+        highlight: keyboard.style.alternateKeysListHighlight ? keyboard.style.alternateKeysListHighlight : defaultHighlight
         highlightMoveDuration: 0
+        highlightResizeDuration: 0
+        keyNavigationWraps: true
         orientation: ListView.Horizontal
         height: keyboard.style.alternateKeysListItemHeight
         x: origin.x
         y: origin.y - height - keyboard.style.alternateKeysListBottomMargin
+        Component {
+            id: defaultHighlight
+            Item {}
+        }
     }
 
     Loader {
