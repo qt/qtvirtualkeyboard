@@ -52,10 +52,11 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QHash<int,QByteArray> roleNames() const;
 
-    Q_INVOKABLE void itemSelected(int index);
+    Q_INVOKABLE void selectItem(int index);
 
 signals:
     void activeItemChanged(int index);
+    void itemSelected(int index);
 
 protected slots:
     void selectionListChanged(int type);

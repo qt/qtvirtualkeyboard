@@ -36,25 +36,27 @@ public:
     \ingroup qtvirtualkeyboard-qml
     \brief Provides a data model for the selection lists.
 
-    This type acts as a bridge between the UI and the
-    input method that provides the data for selection
-    lists.
+    The SelectionListModel is a data model for word candidates
+    provided by the input method.
 
-    An instance of this type can be assigned to a
-    ListView::model.
+    An instance of SelectionListModel cannot be created directly.
+    Instead, the InputEngine manages the instances and provides
+    access to the model by InputEngine::wordCandidateListModel
+    property.
 
-    The following data is made available for the list
-    delegate:
+    The model exposes the following data roles for the list delegate:
     \list
-        \li \c "display" Display text for item
-        \li \c "wordCompletionLength" Word completion length for item
+        \li \c display Display text for item
+        \li \c wordCompletionLength Word completion length for item
     \endlist
 
-    The UI must bind to the SelectionListModel::activeItemChanged
-    signal and update the highlighted item in the view.
+    The activeItemChanged signal indicates which item is currently
+    highlighted by the input method. The view should respond to this
+    signal by highlighting the corresponding item in the list.
 
-    When the user selects an item from the list, the UI must invoke the
-    SelectionListModel::itemSelected() method.
+    The user selection is handled by the selectItem() method. The view
+    should be invoke this method when the user selects an item from the
+    list.
 */
 
 /*!
@@ -167,14 +169,22 @@ QHash<int,QByteArray> DeclarativeSelectionListModel::roleNames() const
     return d->roles;
 }
 
-/*!
-    The UI invokes this method when user selects an item
-    identified by \a index from the selection list.
+/*! \qmlmethod void SelectionListModel::selectItem(int index)
+
+    This method should be called when the user selects an item at position
+    \a index from the list.
+    The selection is forwarded to the input method for further processing.
 */
-void DeclarativeSelectionListModel::itemSelected(int index)
+/*!
+    This method should be called when the user selects an item at position
+    \a index from the list.
+    The selection is forwarded to the input method for further processing.
+*/
+void DeclarativeSelectionListModel::selectItem(int index)
 {
     Q_D(DeclarativeSelectionListModel);
     if (d->dataSource) {
+        emit itemSelected(index);
         d->dataSource->selectionListItemSelected(d->type, index);
     }
 }
@@ -221,9 +231,27 @@ void DeclarativeSelectionListModel::selectionListActiveItemChanged(int type, int
 }
 
 /*!
+    \qmlsignal void SelectionListModel::activeItemChanged(int index)
+
+    This signal is emitted when the active item in the list changes. The
+    UI should react to this signal by highlighting the item at \a index in
+    the list.
+*/
+/*!
     \fn void DeclarativeSelectionListModel::activeItemChanged(int index)
 
     This signal is emitted when the active item in the list changes. The
     UI should react to this signal by highlighting the item at \a index in
     the list.
+*/
+
+/*!
+    \qmlsignal void SelectionListModel::itemSelected(int index)
+
+    This signal is emitted when an item at \a index is selected by the user.
+*/
+/*!
+    \fn void DeclarativeSelectionListModel::itemSelected(int index)
+
+    This signal is emitted when an item at \a index is selected by the user.
 */

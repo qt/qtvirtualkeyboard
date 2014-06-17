@@ -165,7 +165,7 @@ Item {
                         keyboardInputArea.press(keyboardInputArea.initialKey)
                     }
                 } else if (wordCandidateView.count > 0) {
-                    wordCandidateView.model.itemSelected(wordCandidateView.currentIndex)
+                    wordCandidateView.model.selectItem(wordCandidateView.currentIndex)
                     if (!InputContext.preeditText.length)
                         keyboardInputArea.navigateToNextKey(0, 1, true)
                 }

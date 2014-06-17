@@ -35,6 +35,9 @@ Item {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        onClicked: selectionListItem.ListView.view.model.itemSelected(index)
+        onClicked: {
+            selectionListItem.ListView.view.currentIndex = index
+            selectionListItem.ListView.view.model.selectItem(index)
+        }
     }
 }
