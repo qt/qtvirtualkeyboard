@@ -97,7 +97,8 @@ else: qml_layouts.files = \
     content/layouts/it_IT \
     content/layouts/pl_PL \
     content/layouts/pt_PT \
-    content/layouts/ru_RU
+    content/layouts/ru_RU \
+    content/layouts/sv_SE
 qml_layouts.path = $$QMLPATH/layouts
 INSTALLS += qml_layouts
 
