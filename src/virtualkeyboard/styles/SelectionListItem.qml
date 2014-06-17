@@ -31,6 +31,12 @@ import QtQuick 2.0
 Item {
     id: selectionListItem
     height: parent.height
+
+    /*! A sound effect to play on touch event.
+
+    */
+    property url soundEffect
+
     MouseArea {
         id: mouseArea
         anchors.fill: parent

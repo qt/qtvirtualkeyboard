@@ -43,6 +43,12 @@ Item {
         \endlist
     */
     property Item control
+
+    /*! Sets the sound effect to be played on key press.
+
+    */
+    property url soundEffect
+
     // Uncomment the following to reveal the key sizes
     /*
     Rectangle {

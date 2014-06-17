@@ -140,6 +140,14 @@ Item {
     */
     property alias keyPanelDelegate: keyPanel.sourceComponent
 
+    /*! This property holds the sound effect to be played on key press.
+
+        This property is read-only since the sound effects are defined in the keyboard style.
+    */
+    readonly property url soundEffect: keyPanel.item ? keyPanel.item.soundEffect : ""
+
+    onSoundEffectChanged: keyboard.soundEffect.register(soundEffect)
+
     Layout.minimumWidth: keyPanel.implicitWidth
     Layout.minimumHeight: keyPanel.implicitHeight
     Layout.preferredWidth: weight

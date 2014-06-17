@@ -57,6 +57,7 @@ Item {
     property int defaultInputMode: InputEngine.Latin
     property bool inputModeNeedsReset: true
     property bool navigationModeActive: false
+    property alias soundEffect: soundEffect
 
     function initDefaultInputMethod() {
         try {
@@ -162,7 +163,7 @@ Item {
                     if (!isAutoRepeat) {
                         pressAndHoldTimer.restart()
                         keyboardInputArea.setActiveKey(keyboardInputArea.initialKey)
-                        keyboardInputArea.press(keyboardInputArea.initialKey)
+                        keyboardInputArea.press(keyboardInputArea.initialKey, true)
                     }
                 } else if (wordCandidateView.count > 0) {
                     wordCandidateView.model.selectItem(wordCandidateView.currentIndex)
@@ -196,6 +197,8 @@ Item {
     Connections {
         target: InputContext.inputEngine
         onVirtualKeyClicked: {
+            if (isAutoRepeat && keyboard.activeKey)
+                soundEffect.play(keyboard.activeKey.soundEffect)
             if (key !== Qt.Key_unknown && keyboardInputArea.dragSymbolMode) {
                 keyboardInputArea.dragSymbolMode = false
                 keyboard.symbolMode = false
@@ -269,7 +272,7 @@ Item {
                 if (key !== keyboard.activeKey) {
                     InputContext.inputEngine.virtualKeyCancel()
                     keyboardInputArea.setActiveKey(key)
-                    keyboardInputArea.press(key)
+                    keyboardInputArea.press(key, false)
                 }
             }
         }
@@ -344,9 +347,11 @@ Item {
         highlightResizeDuration: 0
         keyNavigationWraps: true
         model: InputContext.inputEngine.wordCandidateListModel
+        onCurrentItemChanged: if (currentItem) soundEffect.register(currentItem.soundEffect)
         Connections {
             target: wordCandidateView.model ? wordCandidateView.model : null
             onActiveItemChanged: wordCandidateView.currentIndex = index
+            onItemSelected: soundEffect.play(wordCandidateView.currentItem.soundEffect)
         }
         Loader {
             sourceComponent: style.selectionListBackground
@@ -356,6 +361,38 @@ Item {
         Component {
             id: defaultHighlight
             Item {}
+        }
+    }
+
+    Item {
+        id: soundEffect
+        property var __sounds: ({})
+
+        function play(sound) {
+            if (enabled && sound != Qt.resolvedUrl("")) {
+                var soundId = Qt.md5(sound)
+                var multiSoundEffect = __sounds[soundId]
+                if (!multiSoundEffect)
+                    multiSoundEffect = register(sound)
+                if (multiSoundEffect)
+                    multiSoundEffect.play()
+            }
+        }
+
+        function register(sound) {
+            var multiSoundEffect = null
+            if (enabled && sound != Qt.resolvedUrl("")) {
+                var soundId = Qt.md5(sound)
+                multiSoundEffect = __sounds[soundId]
+                if (!multiSoundEffect) {
+                    multiSoundEffect = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 1.0; MultiSoundEffect {}', soundEffect)
+                    if (multiSoundEffect) {
+                        multiSoundEffect.source = sound
+                        __sounds[soundId] = multiSoundEffect
+                    }
+                }
+            }
+            return multiSoundEffect
         }
     }
 
@@ -421,10 +458,12 @@ Item {
                         }
                     }
 
-                    function press(key) {
+                    function press(key, isRealPress) {
                         if (key && key.enabled) {
                             if (key.key !== Qt.Key_unknown || key.text.length > 0)
                                 InputContext.inputEngine.virtualKeyPress(key.key, keyboard.uppercased ? key.text.toUpperCase() : key.text, keyboard.uppercased ? Qt.ShiftModifier : 0, key.repeat && !dragSymbolMode)
+                            if (isRealPress)
+                                soundEffect.play(key.soundEffect)
                         }
                     }
                     function release(key) {
@@ -600,7 +639,7 @@ Item {
                             initialKey = keyOnPoint(touchPoints[i].x, touchPoints[i].y)
                             activeTouchPoint = touchPoints[i]
                             setActiveKey(initialKey)
-                            press(initialKey)
+                            press(initialKey, true)
                         }
                     }
                     onUpdated: {
@@ -625,7 +664,7 @@ Item {
                             if (key !== keyboard.activeKey) {
                                 InputContext.inputEngine.virtualKeyCancel()
                                 setActiveKey(key)
-                                press(key)
+                                press(key, false)
                                 if (dragSymbolMode)
                                     pressAndHoldTimer.restart()
                             }
