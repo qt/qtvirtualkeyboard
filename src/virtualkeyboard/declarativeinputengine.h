@@ -80,7 +80,7 @@ public:
     bool wordCandidateListVisibleHint() const;
 
 signals:
-    void virtualKeyClicked(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
+    void virtualKeyClicked(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool isAutoRepeat);
     void activeKeyChanged(Qt::Key key);
     void previousKeyChanged(Qt::Key key);
     void inputMethodChanged();

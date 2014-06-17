@@ -26,8 +26,49 @@
 
 class DeclarativeInputEnginePrivate : public QObjectPrivate
 {
+    Q_DECLARE_PUBLIC(DeclarativeInputEngine)
+
 public:
-    virtual ~DeclarativeInputEnginePrivate() { }
+    DeclarativeInputEnginePrivate(DeclarativeInputEngine *q_ptr) :
+        QObjectPrivate(),
+        q_ptr(q_ptr),
+        inputContext(0),
+        inputMethod(),
+        defaultInputMethod(),
+        textCase(DeclarativeInputEngine::Lower),
+        inputMode(DeclarativeInputEngine::Latin),
+        selectionListModels(),
+        activeKey(Qt::Key_unknown),
+        activeKeyText(),
+        activeKeyModifiers(),
+        previousKey(Qt::Key_unknown),
+        repeatTimer(),
+        repeatCount(0),
+        recursiveMethodLock(0)
+    {
+    }
+
+    virtual ~DeclarativeInputEnginePrivate()
+    {
+    }
+
+    bool virtualKeyClick(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool isAutoRepeat)
+    {
+        Q_Q(DeclarativeInputEngine);
+        bool accept = false;
+        if (inputMethod) {
+            accept = inputMethod->keyEvent(key, text, modifiers);
+            if (!accept) {
+                accept = defaultInputMethod->keyEvent(key, text, modifiers);
+            }
+            emit q->virtualKeyClicked(key, text, modifiers, isAutoRepeat);
+        } else {
+            qWarning() << "input method is not set";
+        }
+        return accept;
+    }
+
+    DeclarativeInputEngine* q_ptr;
     DeclarativeInputContext *inputContext;
     QPointer<AbstractInputMethod> inputMethod;
     AbstractInputMethod *defaultInputMethod;
@@ -96,7 +137,7 @@ private:
     Constructs an input engine with input context as \a parent.
 */
 DeclarativeInputEngine::DeclarativeInputEngine(DeclarativeInputContext *parent) :
-    QObject(*new DeclarativeInputEnginePrivate(), parent)
+    QObject(*new DeclarativeInputEnginePrivate(this), parent)
 {
     Q_D(DeclarativeInputEngine);
     d->inputContext = parent;
@@ -224,7 +265,7 @@ bool DeclarativeInputEngine::virtualKeyRelease(Qt::Key key, const QString &text,
     bool accept = false;
     if (d->activeKey == key) {
         if (!d->repeatCount) {
-            accept = virtualKeyClick(key, text, modifiers);
+            accept = d->virtualKeyClick(key, text, modifiers, false);
         } else {
             accept = true;
         }
@@ -260,17 +301,7 @@ bool DeclarativeInputEngine::virtualKeyRelease(Qt::Key key, const QString &text,
 bool DeclarativeInputEngine::virtualKeyClick(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
     Q_D(DeclarativeInputEngine);
-    bool accept = false;
-    if (d->inputMethod) {
-        accept = d->inputMethod->keyEvent(key, text, modifiers);
-        if (!accept) {
-            accept = d->defaultInputMethod->keyEvent(key, text, modifiers);
-        }
-        emit virtualKeyClicked(key, text, modifiers);
-    } else {
-        qWarning() << "input method is not set";
-    }
-    return accept;
+    return d->virtualKeyClick(key, text, modifiers, false);
 }
 
 /*!
@@ -471,7 +502,7 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent *timerEvent)
     Q_D(DeclarativeInputEngine);
     if (timerEvent->timerId() == d->repeatTimer) {
         d->repeatTimer = 0;
-        virtualKeyClick(d->activeKey, d->activeKeyText, d->activeKeyModifiers);
+        d->virtualKeyClick(d->activeKey, d->activeKeyText, d->activeKeyModifiers, true);
         d->repeatTimer = startTimer(50);
         d->repeatCount++;
     }
@@ -622,10 +653,11 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \fn void DeclarativeInputEngine::virtualKeyClicked(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
+    \fn void DeclarativeInputEngine::virtualKeyClicked(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool isAutoRepeat)
 
     Indicates that the virtual \a key was clicked with the given \a text and
-    \a modifiers.
+    \a modifiers. The \a isAutoRepeat indicates if the event is automatically
+    repeated while the key is being pressed.
     This signal is emitted after the input method has processed the key event.
 */
 
