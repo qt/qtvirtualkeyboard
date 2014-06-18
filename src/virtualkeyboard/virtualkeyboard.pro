@@ -68,7 +68,7 @@ OTHER_FILES += content/InputPanel.qml \
 
 OTHER += qtvirtualkeyboard.json
 
-!disable-xcb:isEmpty(CROSS_COMPILE):packagesExist(xcb) {
+!disable-xcb:isEmpty(CROSS_COMPILE):!android-no-sdk {
     PKGCONFIG += xcb xcb-xfixes
     SOURCES += xcbinputpanel.cpp inputview.cpp
     HEADERS += xcbinputpanel.h inputview.h
