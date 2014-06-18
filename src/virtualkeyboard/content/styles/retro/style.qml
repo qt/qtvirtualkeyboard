@@ -42,6 +42,7 @@ KeyboardStyle {
     }
 
     keyPanel: KeyPanel {
+        soundEffect: "qrc:/sounds/key.wav"
         Image {
             id: keyBackground
             source: "qrc:/images/key154px_colorA.png"
@@ -122,6 +123,7 @@ KeyboardStyle {
     }
 
     backspaceKeyPanel: KeyPanel {
+        soundEffect: "qrc:/sounds/backspace.wav"
         BorderImage {
             id: backspaceKeyBackground
             source: "qrc:/images/key154px_black.png"
@@ -172,6 +174,7 @@ KeyboardStyle {
     }
 
     languageKeyPanel: KeyPanel {
+        soundEffect: "qrc:/sounds/space.wav"
         Image {
             id: languageKeyBackground
             source: "qrc:/images/key154px_colorB.png"
@@ -216,6 +219,7 @@ KeyboardStyle {
     }
 
     enterKeyPanel: KeyPanel {
+        soundEffect: "qrc:/sounds/return.wav"
         BorderImage {
             id: enterKeyBackground
             source: "qrc:/images/key154px_black.png"
@@ -308,6 +312,7 @@ KeyboardStyle {
     }
 
     hideKeyPanel: KeyPanel {
+        soundEffect: "qrc:/sounds/space.wav"
         BorderImage {
             id: hideKeyBackground
             source: "qrc:/images/key154px_black.png"
@@ -358,6 +363,7 @@ KeyboardStyle {
     }
 
     shiftKeyPanel: KeyPanel {
+        soundEffect: "qrc:/sounds/shift.wav"
         BorderImage {
             id: shiftKeyBackground
             source: "qrc:/images/key154px_black.png"
@@ -434,6 +440,7 @@ KeyboardStyle {
     }
 
     spaceKeyPanel: KeyPanel {
+        soundEffect: "qrc:/sounds/space.wav"
         BorderImage {
             id: spaceKeyBackground
             source: "qrc:/images/key154px_colorA.png"
@@ -468,6 +475,7 @@ KeyboardStyle {
     }
 
     symbolKeyPanel: KeyPanel {
+        soundEffect: "qrc:/sounds/space.wav"
         BorderImage {
             id: symbolKeyBackground
             source: "qrc:/images/key154px_black.png"
@@ -630,6 +638,7 @@ KeyboardStyle {
 
     selectionListHeight: 85 * scaleHint
     selectionListDelegate: SelectionListItem {
+        soundEffect: "qrc:/sounds/return.wav"
         id: selectionListItem
         width: Math.round(selectionListLabel.width + selectionListLabel.anchors.leftMargin * 2)
         Text {
