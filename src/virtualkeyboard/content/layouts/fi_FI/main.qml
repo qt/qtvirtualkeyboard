@@ -64,7 +64,7 @@ KeyboardLayout {
             text: "p"
         }
         Key {
-            key: Qt.Key_Adiaeresis
+            key: Qt.Key_Aring
             text: "å"
         }
         BackspaceKey {}
