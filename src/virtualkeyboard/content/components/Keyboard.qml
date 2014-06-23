@@ -20,6 +20,7 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.Enterprise.VirtualKeyboard 1.1
 import QtQuick.Enterprise.VirtualKeyboard.Styles 1.1
+import QtQuick.Enterprise.VirtualKeyboard.Settings 1.0
 import Qt.labs.folderlistmodel 2.0
 
 Item {
@@ -357,7 +358,7 @@ Item {
     }
     Loader {
         id: styleLoader
-        source: "qrc:/style.qml"
+        source: VirtualKeyboardSettings.style
         Binding {
             target: styleLoader.item
             property: "keyboardHeight"

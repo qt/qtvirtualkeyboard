@@ -37,7 +37,9 @@ SOURCES += platforminputcontext.cpp \
     defaultinputmethod.cpp \
     abstractinputpanel.cpp \
     enterkeyaction.cpp \
-    enterkeyactionattachedtype.cpp
+    enterkeyactionattachedtype.cpp \
+    settings.cpp \
+    declarativesettings.cpp
 
 HEADERS += platforminputcontext.h \
     declarativeinputcontext.h \
@@ -51,12 +53,17 @@ HEADERS += platforminputcontext.h \
     abstractinputpanel.h \
     virtualkeyboarddebug.h \
     enterkeyaction.h \
-    enterkeyactionattachedtype.h
+    enterkeyactionattachedtype.h \
+    settings.h \
+    declarativesettings.h
 
+RESOURCES += \
+    content/styles/default/default_style.qrc \
+    content/styles/retro/retro_style.qrc
 retro-style {
-    RESOURCES += content/styles/retro/style.qrc
+    DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"retro\\\"
 } else {
-    RESOURCES += content/styles/default/style.qrc
+    DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"default\\\"
 }
 
 OTHER_FILES += content/InputPanel.qml \

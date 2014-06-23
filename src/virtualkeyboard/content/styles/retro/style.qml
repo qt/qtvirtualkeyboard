@@ -26,6 +26,7 @@ KeyboardStyle {
     readonly property real keyBackgroundMargin: Math.round(9 * scaleHint)
     readonly property real keyContentMargin: Math.round(50 * scaleHint)
     readonly property real keyIconMargin: Math.round(40 * scaleHint)
+    readonly property string resourcePrefix: "qrc:/content/styles/retro/"
 
     keyboardDesignWidth: 2560
     keyboardDesignHeight: 800
@@ -44,7 +45,7 @@ KeyboardStyle {
     keyPanel: KeyPanel {
         Image {
             id: keyBackground
-            source: "qrc:/images/key154px_colorA.png"
+            source: resourcePrefix + "images/key154px_colorA.png"
             fillMode: Image.PreserveAspectFit
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
@@ -56,7 +57,7 @@ KeyboardStyle {
                         '~', '·', '÷', '}', '€', '£', '§', ']', '«', '»'].indexOf(control.displayText.toLowerCase()) >= 0
                     PropertyChanges {
                         target: keyBackground
-                        source: "qrc:/images/key154px_colorB.png"
+                        source: resourcePrefix + "images/key154px_colorB.png"
                     }
                 },
                 State {
@@ -64,7 +65,7 @@ KeyboardStyle {
                     when: control.displayText.length > 2
                     PropertyChanges {
                         target: keyBackground
-                        source: "qrc:/images/key154px_black.png"
+                        source: resourcePrefix + "images/key154px_black.png"
                     }
                 }
             ]
@@ -124,7 +125,7 @@ KeyboardStyle {
     backspaceKeyPanel: KeyPanel {
         BorderImage {
             id: backspaceKeyBackground
-            source: "qrc:/images/key154px_black.png"
+            source: resourcePrefix + "images/key154px_black.png"
             width: (parent.width - 2 * keyBackgroundMargin) / scale
             height: sourceSize.height
             anchors.centerIn: parent
@@ -137,7 +138,7 @@ KeyboardStyle {
         }
         KeyIcon {
             id: backspaceKeyIcon
-            source: "qrc:/images/backspace.png"
+            source: resourcePrefix + "images/backspace.png"
             color: "#c5a96f"
             anchors.fill: parent
             anchors.topMargin: keyIconMargin
@@ -174,14 +175,14 @@ KeyboardStyle {
     languageKeyPanel: KeyPanel {
         Image {
             id: languageKeyBackground
-            source: "qrc:/images/key154px_colorB.png"
+            source: resourcePrefix + "images/key154px_colorB.png"
             fillMode: Image.PreserveAspectFit
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
         }
         KeyIcon {
             id: languageKeyIcon
-            source: "qrc:/images/globe.png"
+            source: resourcePrefix + "images/globe.png"
             color: "#110b05"
             anchors.fill: parent
             anchors.topMargin: keyIconMargin
@@ -218,7 +219,7 @@ KeyboardStyle {
     enterKeyPanel: KeyPanel {
         BorderImage {
             id: enterKeyBackground
-            source: "qrc:/images/key154px_black.png"
+            source: resourcePrefix + "images/key154px_black.png"
             width: (parent.width - 2 * keyBackgroundMargin) / scale
             height: sourceSize.height
             anchors.centerIn: parent
@@ -238,11 +239,11 @@ KeyboardStyle {
                 case EnterKeyAction.Send:
                 case EnterKeyAction.Next:
                 case EnterKeyAction.Done:
-                    return "qrc:/images/check.png"
+                    return resourcePrefix + "images/check.png"
                 case EnterKeyAction.Search:
-                    return "qrc:/images/search.png"
+                    return resourcePrefix + "images/search.png"
                 default:
-                    return "qrc:/images/enter.png"
+                    return resourcePrefix + "images/enter.png"
                 }
             }
             color: "#c5a96f"
@@ -310,7 +311,7 @@ KeyboardStyle {
     hideKeyPanel: KeyPanel {
         BorderImage {
             id: hideKeyBackground
-            source: "qrc:/images/key154px_black.png"
+            source: resourcePrefix + "images/key154px_black.png"
             width: (parent.width - 2 * keyBackgroundMargin) / scale
             height: sourceSize.height
             anchors.centerIn: parent
@@ -323,7 +324,7 @@ KeyboardStyle {
         }
         KeyIcon {
             id: hideKeyIcon
-            source: "qrc:/images/hidekeyboard.png"
+            source: resourcePrefix + "images/hidekeyboard.png"
             color: "#c5a96f"
             anchors.fill: parent
             anchors.topMargin: keyIconMargin
@@ -360,7 +361,7 @@ KeyboardStyle {
     shiftKeyPanel: KeyPanel {
         BorderImage {
             id: shiftKeyBackground
-            source: "qrc:/images/key154px_black.png"
+            source: resourcePrefix + "images/key154px_black.png"
             width: (parent.width - 2 * keyBackgroundMargin) / scale
             height: sourceSize.height
             anchors.centerIn: parent
@@ -376,7 +377,7 @@ KeyboardStyle {
                     when: InputContext.capsLock
                     PropertyChanges {
                         target: shiftKeyBackground
-                        source: "qrc:/images/key154px_capslock.png"
+                        source: resourcePrefix + "images/key154px_capslock.png"
                     }
                     PropertyChanges {
                         target: shiftKeyIcon
@@ -388,7 +389,7 @@ KeyboardStyle {
                     when: InputContext.shift
                     PropertyChanges {
                         target: shiftKeyBackground
-                        source: "qrc:/images/key154px_shiftcase.png"
+                        source: resourcePrefix + "images/key154px_shiftcase.png"
                     }
                     PropertyChanges {
                         target: shiftKeyIcon
@@ -399,7 +400,7 @@ KeyboardStyle {
         }
         KeyIcon {
             id: shiftKeyIcon
-            source: "qrc:/images/shift.png"
+            source: resourcePrefix + "images/shift.png"
             color: "#c5a96f"
             anchors.fill: parent
             anchors.topMargin: keyIconMargin
@@ -436,7 +437,7 @@ KeyboardStyle {
     spaceKeyPanel: KeyPanel {
         BorderImage {
             id: spaceKeyBackground
-            source: "qrc:/images/key154px_colorA.png"
+            source: resourcePrefix + "images/key154px_colorA.png"
             width: (parent.width - 2 * keyBackgroundMargin) / scale
             height: sourceSize.height
             anchors.centerIn: parent
@@ -470,7 +471,7 @@ KeyboardStyle {
     symbolKeyPanel: KeyPanel {
         BorderImage {
             id: symbolKeyBackground
-            source: "qrc:/images/key154px_black.png"
+            source: resourcePrefix + "images/key154px_black.png"
             width: (parent.width - 2 * keyBackgroundMargin) / scale
             height: sourceSize.height
             anchors.centerIn: parent
@@ -528,7 +529,7 @@ KeyboardStyle {
         id: characterPreview
         Image {
             id: characterPreviewBackground
-            source: "qrc:/images/key_preview.png"
+            source: resourcePrefix + "images/key_preview.png"
             fillMode: Image.PreserveAspectFit
             anchors.fill: parent
         }
@@ -604,7 +605,7 @@ KeyboardStyle {
         property bool currentItemHighlight: false
         BorderImage {
             cache: false
-            source: "qrc:/images/key160px_black.png"
+            source: resourcePrefix + "images/key160px_black.png"
             width: sourceSize.width + parent.width / scale
             height: sourceSize.height
             anchors.centerIn: parent
@@ -617,7 +618,7 @@ KeyboardStyle {
         }
         Image {
             visible: currentItemOffset !== undefined
-            source: currentItemHighlight ? "qrc:/images/triangle_highlight.png" : "qrc:/images/triangle_black.png"
+            source: currentItemHighlight ? resourcePrefix + "images/triangle_highlight.png" : resourcePrefix + "images/triangle_black.png"
             fillMode: Image.PreserveAspectFit
             width: sourceSize.width * scaleHint
             height: sourceSize.height * scaleHint

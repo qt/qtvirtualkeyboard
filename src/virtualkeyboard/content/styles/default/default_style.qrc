@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/content/styles/default">
         <file>style.qml</file>
         <file>images/backspace.png</file>
         <file>images/enter.png</file>

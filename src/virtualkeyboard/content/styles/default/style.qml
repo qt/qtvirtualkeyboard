@@ -26,6 +26,7 @@ KeyboardStyle {
     readonly property real keyBackgroundMargin: Math.round(13 * scaleHint)
     readonly property real keyContentMargin: Math.round(45 * scaleHint)
     readonly property real keyIconMargin: Math.round(35 * scaleHint)
+    readonly property string resourcePrefix: "qrc:/content/styles/default/"
 
     keyboardDesignWidth: 2560
     keyboardDesignHeight: 800
@@ -98,7 +99,7 @@ KeyboardStyle {
             anchors.margins: keyBackgroundMargin
             KeyIcon {
                 id: backspaceKeyIcon
-                source: "qrc:/images/backspace.png"
+                source: resourcePrefix + "images/backspace.png"
                 color: "#868482"
                 anchors.fill: parent
                 anchors.topMargin: keyIconMargin
@@ -142,7 +143,7 @@ KeyboardStyle {
             anchors.margins: keyBackgroundMargin
             KeyIcon {
                 id: languageKeyIcon
-                source: "qrc:/images/globe.png"
+                source: resourcePrefix + "images/globe.png"
                 color: "#868482"
                 anchors.fill: parent
                 anchors.topMargin: keyIconMargin
@@ -193,11 +194,11 @@ KeyboardStyle {
                     case EnterKeyAction.Send:
                     case EnterKeyAction.Next:
                     case EnterKeyAction.Done:
-                        return "qrc:/images/check.png"
+                        return resourcePrefix + "images/check.png"
                     case EnterKeyAction.Search:
-                        return "qrc:/images/search.png"
+                        return resourcePrefix + "images/search.png"
                     default:
-                        return "qrc:/images/enter.png"
+                        return resourcePrefix + "images/enter.png"
                     }
                 }
                 color: "#868482"
@@ -269,7 +270,7 @@ KeyboardStyle {
             anchors.margins: keyBackgroundMargin
             KeyIcon {
                 id: hideKeyIcon
-                source: "qrc:/images/hidekeyboard.png"
+                source: resourcePrefix + "images/hidekeyboard.png"
                 color: "#868482"
                 anchors.fill: parent
                 anchors.topMargin: keyIconMargin
@@ -313,7 +314,7 @@ KeyboardStyle {
             anchors.margins: keyBackgroundMargin
             KeyIcon {
                 id: shiftKeyIcon
-                source: "qrc:/images/shift.png"
+                source: resourcePrefix + "images/shift.png"
                 color: "#868482"
                 anchors.fill: parent
                 anchors.topMargin: keyIconMargin

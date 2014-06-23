@@ -404,10 +404,10 @@ The alternativeKeys can specify either a string, or a list of strings.
 If alternativeKeys is a string, the user can select between the characters in
 the string.
 
-\section2 Themes and Layouts
+\section2 Styles and Layouts
 
 The keyboard layouts cannot specify any visual elements. Instead, the layout is
-visualized by the keyboard theme. On the other hand, the keyboard theme cannot
+visualized by the keyboard style. On the other hand, the keyboard style cannot
 affect the size of the keyboard layout.
 
 \section2 Keyboard Layouts with Multiple Pages of Keys
@@ -459,6 +459,79 @@ For example:
             }
         }
     }
+\endcode
+
+\section1 Keyboard Styles
+
+The virtual keyboard styling system supports built-in styles as well
+as custom styles. The built-in styles are embedded as Qt Resources
+into the plugin binary and the custom styles are located in the file system
+and can be installed without recompiling the virtual keyboard itself.
+
+The selection of the runtime style is affected by an environment
+variable QT_VIRTUALKEYBOARD_STYLE, which can be set to the name of
+the built-in style, e.g. "retro", or any of the custom styles installed
+into the Styles directory:
+
+\code
+$$[QT_INSTALL_QML]/QtQuick/Enterprise/VirtualKeyboard/Styles
+\endcode
+
+In case the environment variable is not set, or contains an invalid
+style name, the virtual keyboard falls back in the default built-in style.
+
+\section2 Adding Custom Styles
+
+The process of creating a new style begins by creating a new subdirectory
+for the style in the virtual keyboard \e Styles directory. The directory
+name can not contain spaces or special characters other than underscore.
+Also, the directory name can not be the same as one of the built-in style,
+which currently includes "default" and "retro".
+
+A good starting point for creating a new style is to use an existing
+built-in style as a template and edit it. You can find the built-in
+styles from the virtual keyboard sources directory
+src/virtualkeyboard/content/styles. Copy one of the directories containing
+a built-in style into the \e Styles directory and rename it to "test".
+The directory structure should now be as follows:
+
+\code
+test/default_style.qrc
+test/style.qml
+test/images
+test/images/backspace.png
+test/images/check.png
+test/images/enter.png
+test/images/globe.png
+test/images/hidekeyboard.png
+test/images/search.png
+test/images/shift.png
+\endcode
+
+The QRC configuration file, which is unnecessary in this case, can
+be safely removed.
+
+\note The style.qml file should not be renamed, or otherwise the virtual
+      keyboard cannot load the style.
+
+Next, open the style.qml in your favorite editor and set the
+resourcePrefix property to an empty string. The resource prefix
+is not needed as the resources are contained in the same directory
+as the style.qml file.
+
+Also, to make it more obvious to see that the custom style is actually
+being loaded and used, set the keyboard background to a different color:
+
+\code
+keyboardBackground: Rectangle {
+    color: "gray"
+}
+\endcode
+
+The final step is to run the example application with your custom style:
+
+\code
+QT_VIRTUALKEYBOARD_STYLE=test virtualkeyboard
 \endcode
 
 */
