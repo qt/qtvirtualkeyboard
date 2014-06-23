@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc
+** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
 ** For any questions to Digia, please use contact form at http://qt.digia.com
 **
@@ -23,6 +23,14 @@
 class DeclarativeSelectionListModelPrivate : public QAbstractItemModelPrivate
 {
 public:
+    DeclarativeSelectionListModelPrivate() :
+        QAbstractItemModelPrivate(),
+        dataSource(0),
+        type(DeclarativeSelectionListModel::WordCandidateList),
+        rowCount(0)
+    {
+    }
+
     QHash<int, QByteArray> roles;
     AbstractInputMethod *dataSource;
     DeclarativeSelectionListModel::Type type;

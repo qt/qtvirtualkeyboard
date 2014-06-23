@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc
+** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
 ** For any questions to Digia, please use contact form at http://qt.digia.com
 **
@@ -33,16 +33,13 @@ public:
         QObjectPrivate(),
         q_ptr(q_ptr),
         inputContext(0),
-        inputMethod(),
-        defaultInputMethod(),
+        defaultInputMethod(0),
         textCase(DeclarativeInputEngine::Lower),
         inputMode(DeclarativeInputEngine::Latin),
-        selectionListModels(),
         activeKey(Qt::Key_unknown),
-        activeKeyText(),
-        activeKeyModifiers(),
+        activeKeyModifiers(Qt::NoModifier),
         previousKey(Qt::Key_unknown),
-        repeatTimer(),
+        repeatTimer(0),
         repeatCount(0),
         recursiveMethodLock(0)
     {
@@ -148,11 +145,7 @@ DeclarativeInputEngine::DeclarativeInputEngine(DeclarativeInputContext *parent) 
     d->defaultInputMethod = new DefaultInputMethod(this);
     if (d->defaultInputMethod)
         d->defaultInputMethod->setInputEngine(this);
-    d->textCase = Lower;
-    d->inputMode = Latin;
     d->selectionListModels[DeclarativeSelectionListModel::WordCandidateList] = new DeclarativeSelectionListModel(this);
-    d->activeKey = Qt::Key_unknown;
-    d->previousKey = Qt::Key_unknown;
 }
 
 /*!

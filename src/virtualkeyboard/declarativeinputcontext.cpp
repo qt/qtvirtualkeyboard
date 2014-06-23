@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc
+** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
 ** For any questions to Digia, please use contact form at http://qt.digia.com
 **
@@ -45,6 +45,28 @@
 class DeclarativeInputContextPrivate : public QObjectPrivate
 {
 public:
+    DeclarativeInputContextPrivate() :
+        QObjectPrivate(),
+        inputContext(0),
+        inputEngine(0),
+        shiftHandler(0),
+        keyboardRect(),
+        animating(false),
+        focus(false),
+        shift(false),
+        capsLock(false),
+        cursorPosition(0),
+        inputMethodHints(Qt::ImhNone),
+        preeditText(),
+        surroundingText(),
+        selectedText(),
+        cursorRectangle()
+#ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
+        , activeNavigationKeys()
+#endif
+    {
+    }
+
     PlatformInputContext *inputContext;
     DeclarativeInputEngine *inputEngine;
     DeclarativeShiftHandler *shiftHandler;
