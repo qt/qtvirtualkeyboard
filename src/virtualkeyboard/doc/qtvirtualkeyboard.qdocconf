@@ -7,7 +7,7 @@ include($QT_INSTALL_DOCS/global/qt-cpp-defines.qdocconf)
 project = QtVirtualKeyboard
 description = Qt Virtual Keyboard
 
-version = 1.0
+version = 1.1
 
 headerdirs  += ..
 sourcedirs  += ..
@@ -27,14 +27,14 @@ depends += qtcore qtgui qtquick
 qhp.projects = QtVirtualKeyboard
 
 qhp.QtVirtualKeyboard.file          = qtvirtualkeyboard.qhp
-qhp.QtVirtualKeyboard.namespace     = com.digia.qtvirtualkeyboard.100
+qhp.QtVirtualKeyboard.namespace     = com.digia.qtvirtualkeyboard.110
 qhp.QtVirtualKeyboard.virtualFolder = qtvirtualkeyboard
 qhp.QtVirtualKeyboard.indexTitle    = Qt Virtual Keyboard
 qhp.QtVirtualKeyboard.indexRoot     =
 
-qhp.QtVirtualKeyboard.filterAttributes                  = qtvirtualkeyboard 1.0 qtrefdoc
-qhp.QtVirtualKeyboard.customFilters.Qt.name             = QtVirtualKeyboard 1.0
-qhp.QtVirtualKeyboard.customFilters.Qt.filterAttributes = qtvirtualkeyboard 1.0
+qhp.QtVirtualKeyboard.filterAttributes                  = qtvirtualkeyboard 1.1 qtrefdoc
+qhp.QtVirtualKeyboard.customFilters.Qt.name             = QtVirtualKeyboard 1.1
+qhp.QtVirtualKeyboard.customFilters.Qt.filterAttributes = qtvirtualkeyboard 1.1
 
 qhp.QtVirtualKeyboard.subprojects = classes qmltypes examples
 

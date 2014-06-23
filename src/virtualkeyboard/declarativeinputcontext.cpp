@@ -29,7 +29,7 @@
 #include <QtCore/private/qobject_p.h>
 
 /*!
-    \qmlmodule QtQuick.Enterprise.VirtualKeyboard 1.0
+    \qmlmodule QtQuick.Enterprise.VirtualKeyboard 1.1
 
     This module provides a collection of QML components for Qt Virtual Keyboard.
 */

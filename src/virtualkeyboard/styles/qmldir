@@ -1,6 +1,9 @@
 module QtQuick.Enterprise.VirtualKeyboard.Styles
 plugin qtvirtualkeyboardstylesplugin
 KeyboardStyle 1.0 KeyboardStyle.qml
+KeyboardStyle 1.1 KeyboardStyle.qml
 KeyPanel 1.0 KeyPanel.qml
+KeyPanel 1.1 KeyPanel.qml
 KeyIcon 1.0 KeyIcon.qml
 SelectionListItem 1.0 SelectionListItem.qml
+SelectionListItem 1.1 SelectionListItem.qml

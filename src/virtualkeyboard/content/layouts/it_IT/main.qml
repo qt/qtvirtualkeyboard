@@ -17,7 +17,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.Enterprise.VirtualKeyboard 1.0
+import QtQuick.Enterprise.VirtualKeyboard 1.1
 
 KeyboardLayout {
     inputMode: InputEngine.Latin

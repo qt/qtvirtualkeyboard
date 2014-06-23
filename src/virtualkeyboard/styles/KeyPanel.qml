@@ -44,8 +44,10 @@ Item {
     */
     property Item control
 
-    /*! Sets the sound effect to be played on key press.
+    /*!
+        \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.1
 
+        Sets the sound effect to be played on key press.
     */
     property url soundEffect
 

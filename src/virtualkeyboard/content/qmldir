@@ -13,7 +13,7 @@ SpaceKey 1.0 components/SpaceKey.qml
 SymbolModeKey 1.0 components/SymbolModeKey.qml
 KeyboardColumn 1.0 components/KeyboardColumn.qml
 KeyboardLayout 1.0 components/KeyboardLayout.qml
-KeyboardLayoutLoader 1.0 components/KeyboardLayoutLoader.qml
+KeyboardLayoutLoader 1.1 components/KeyboardLayoutLoader.qml
 KeyboardRow 1.0 components/KeyboardRow.qml
-MultiSoundEffect 1.0 components/MultiSoundEffect.qml
+MultiSoundEffect 1.1 components/MultiSoundEffect.qml
 MultitapInputMethod 1.0 components/MultitapInputMethod.qml

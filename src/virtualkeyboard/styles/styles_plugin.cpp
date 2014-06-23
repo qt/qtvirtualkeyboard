@@ -21,7 +21,7 @@
 #include <qqml.h>
 
 /*!
-    \qmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles 1.0
+    \qmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles 1.1
 
     This module provides styling components for the Qt Virtual Keyboard.
 */

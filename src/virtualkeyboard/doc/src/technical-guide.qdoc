@@ -335,7 +335,7 @@ For example, to add a regular key which sends a key event to the input method:
 \code
     import QtQuick 2.0
     import QtQuick.Layouts 1.0
-    import QtQuick.Enterprise.VirtualKeyboard 1.0
+    import QtQuick.Enterprise.VirtualKeyboard 1.1
 
     // file: layouts/en_GB/main.qml
 
@@ -368,7 +368,7 @@ example, we add another key which specifies a custom key weight:
 \code
     import QtQuick 2.0
     import QtQuick.Layouts 1.0
-    import QtQuick.Enterprise.VirtualKeyboard 1.0
+    import QtQuick.Enterprise.VirtualKeyboard 1.1
 
     // file: layouts/en_GB/main.qml
 
@@ -426,7 +426,7 @@ For example:
 \code
     import QtQuick 2.0
     import QtQuick.Layouts 1.0
-    import QtQuick.Enterprise.VirtualKeyboard 1.0
+    import QtQuick.Enterprise.VirtualKeyboard 1.1
 
     // file: layouts/en_GB/symbols.qml
 

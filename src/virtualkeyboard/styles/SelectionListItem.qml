@@ -32,8 +32,10 @@ Item {
     id: selectionListItem
     height: parent.height
 
-    /*! A sound effect to play on touch event.
+    /*!
+        \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.1
 
+        Sets the sound effect to be played on touch event.
     */
     property url soundEffect
 

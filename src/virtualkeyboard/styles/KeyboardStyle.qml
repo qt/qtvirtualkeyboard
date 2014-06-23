@@ -232,7 +232,10 @@ QtObject {
     /*! Template for the selection list background. */
     property Component selectionListBackground: null
 
-    /*! Template for navigation highlight item.
+    /*!
+        \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.1
+
+        Template for navigation highlight item.
 
         This item is used in arrow-key-navigation mode to
         highlight the navigation focus on the keyboard.
