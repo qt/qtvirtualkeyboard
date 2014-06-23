@@ -33,7 +33,7 @@ import "components"
 */
 
 Item {
-    height: keyboard.height
+    implicitHeight: keyboard.height
     Keyboard {
         id: keyboard
         anchors.left: parent.left
