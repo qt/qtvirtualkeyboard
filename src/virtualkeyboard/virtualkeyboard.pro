@@ -89,6 +89,7 @@ pinyin: qml_layouts.files = \
     content/layouts/zh_CN
 else: qml_layouts.files = \
     content/layouts/ar_AR \
+    content/layouts/da_DK \
     content/layouts/de_DE \
     content/layouts/en_GB \
     content/layouts/es_ES \
