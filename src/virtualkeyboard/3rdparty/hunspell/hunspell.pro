@@ -1,7 +1,7 @@
 TEMPLATE = lib
 QT -= core gui
 TARGET = hunspell
-VERSION = 1.3.2
+VERSION = 1.3.3
 DEFINES += BUILDING_LIBHUNSPELL
 CONFIG += dll
 #CONFIG += staticlib
@@ -20,6 +20,9 @@ dll {
     INSTALLS += target
 }
 
+config_file = "/* Version number of package */" "$${LITERAL_HASH}define VERSION \"$$VERSION\""
+write_file($$PWD/config.h, config_file)
+
 INCLUDEPATH += \
     ./ \
     src/hunspell \
@@ -36,13 +39,9 @@ SOURCES += \
     src/hunspell/hunzip.cxx \
     src/hunspell/phonet.cxx \
     src/hunspell/replist.cxx \
-    src/hunspell/suggestmgr.cxx \
-    src/parsers/firstparser.cxx \
-    src/parsers/htmlparser.cxx \
-    src/parsers/latexparser.cxx \
-    src/parsers/manparser.cxx \
-    src/parsers/testparser.cxx \
-    src/parsers/textparser.cxx
+    src/hunspell/suggestmgr.cxx
+SOURCES += \
+    $$PWD/src/parsers/*.cxx
 
 HEADERS += \
     config.h \
@@ -61,12 +60,9 @@ HEADERS += \
     src/hunspell/phonet.hxx \
     src/hunspell/replist.hxx \
     src/hunspell/suggestmgr.hxx \
-    src/hunspell/w_char.hxx \
-    src/parsers/firstparser.hxx \
-    src/parsers/htmlparser.hxx \
-    src/parsers/latexparser.hxx \
-    src/parsers/manparser.hxx \
-    src/parsers/textparser.hxx
+    src/hunspell/w_char.hxx
+HEADERS += \
+    $$PWD/src/parsers/*.hxx
 
 OTHER_FILES +=\
     src/hunspell/license.hunspell \

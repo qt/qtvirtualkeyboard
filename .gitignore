@@ -2,7 +2,6 @@
 # --------------------------------------------------------------
 
 examples/quick/enterprise/virtualkeyboard/virtualkeyboard/virtualkeyboard
-!src/virtualkeyboard/3rdparty/hunspell/config.h
 !src/virtualkeyboard/3rdparty/hunspell/hunspell.pro
 src/virtualkeyboard/3rdparty/hunspell/*
 src/virtualkeyboard/3rdparty/hunspell/doc/html
