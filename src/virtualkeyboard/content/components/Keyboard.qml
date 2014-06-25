@@ -91,13 +91,8 @@ Item {
 
     Connections {
         target: InputContext
-        onFocusEditorChanged: {
-            keyboard.symbolMode = false
-        }
         onInputMethodHintsChanged: {
-            if (InputContext.inputMethodHints & Qt.ImhPreferNumbers) {
-                symbolMode = true
-            }
+            keyboard.symbolMode = InputContext.inputMethodHints & Qt.ImhPreferNumbers
         }
         onInputItemChanged: {
             inputModeNeedsReset = true

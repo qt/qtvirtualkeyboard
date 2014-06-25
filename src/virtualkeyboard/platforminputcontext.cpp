@@ -69,8 +69,19 @@ void PlatformInputContext::commit()
 void PlatformInputContext::update(Qt::InputMethodQueries queries)
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::update():" << queries;
-    if (m_declarativeContext)
-        m_declarativeContext->update(queries);
+    bool enabled = inputMethodQuery(Qt::ImEnabled).toBool();
+    if (enabled && !m_inputPanelCreated) {
+        m_inputPanel->createView();
+        m_inputPanelCreated = true;
+    }
+
+    if (m_declarativeContext) {
+        m_declarativeContext->setFocus(enabled);
+        if (enabled)
+            m_declarativeContext->update(queries);
+        else
+            hideInputPanel();
+    }
 }
 
 void PlatformInputContext::invokeAction(QInputMethod::Action action, int cursorPosition)
@@ -95,13 +106,7 @@ bool PlatformInputContext::isAnimating() const
 
 void PlatformInputContext::showInputPanel()
 {
-    if (!m_inputPanelCreated) {
-        m_inputPanel->createView();
-        m_inputPanelCreated = true;
-        if (m_declarativeContext)
-            m_declarativeContext->update(Qt::ImQueryAll);
-    }
-    if (m_inputPanel->isVisible())
+    if (!m_inputPanelCreated || m_inputPanel->isVisible())
         return;
     m_inputPanel->show();
     emitInputPanelVisibleChanged();
@@ -160,20 +165,7 @@ void PlatformInputContext::setFocusObject(QObject *object)
         m_focusObject = object;
         emit focusObjectChanged();
     }
-
-    bool enabled = inputMethodQuery(Qt::ImEnabled).toBool();
-    if (enabled && !m_inputPanelCreated) {
-        m_inputPanel->createView();
-        m_inputPanelCreated = true;
-    }
-
-    if (m_declarativeContext) {
-        m_declarativeContext->setFocus(enabled);
-        if (enabled)
-            m_declarativeContext->update(Qt::ImQueryAll);
-        else
-            hideInputPanel();
-    }
+    update(Qt::ImQueryAll);
 }
 
 DeclarativeInputContext *PlatformInputContext::declarativeInputContext() const
