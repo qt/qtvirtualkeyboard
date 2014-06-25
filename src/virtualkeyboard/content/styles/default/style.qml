@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc
+** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
 ** For any questions to Digia, please use contact form at http://qt.digia.com
 **
@@ -322,7 +322,7 @@ KeyboardStyle {
             states: [
                 State {
                     name: "capslock"
-                    when: control.capsLock
+                    when: InputContext.capsLock
                     PropertyChanges {
                         target: shiftKeyBackground
                         color: "#5a892e"
@@ -334,7 +334,7 @@ KeyboardStyle {
                 },
                 State {
                     name: "shift"
-                    when: control.shift
+                    when: InputContext.shift
                     PropertyChanges {
                         target: shiftKeyIcon
                         color: "#80c342"

@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc
+** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
 ** For any questions to Digia, please use contact form at http://qt.digia.com
 **
@@ -43,7 +43,7 @@ Item {
         return "main"
     }
     property bool active: Qt.inputMethod.visible
-    property bool uppercased: uppercaseOnly ? true : (lowercaseOnly ? false : InputContext.shift || InputContext.capsLock)
+    property bool uppercased: InputContext.shift || InputContext.capsLock
     property bool uppercaseOnly: InputContext.inputMethodHints & Qt.ImhUppercaseOnly
     property bool lowercaseOnly: InputContext.inputMethodHints & Qt.ImhLowercaseOnly
     property bool dialpadMode: InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly
@@ -51,7 +51,6 @@ Item {
     property bool digitMode: InputContext.inputMethodHints & Qt.ImhDigitsOnly
     property bool latinOnly: InputContext.inputMethodHints & (Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText | Qt.ImhLatinOnly)
     property bool symbolMode
-    property bool shiftChanged: true
     property var defaultInputMethod: initDefaultInputMethod()
     property var plainInputMethod: PlainInputMethod {}
     property int defaultInputMode: InputEngine.Latin
@@ -83,7 +82,6 @@ Item {
         updateAvailableLocaleIndices()
         updateLayout()
     }
-    onUppercasedChanged: shiftChanged = true
     onLatinOnlyChanged: {
         updateLayout()
         updateInputMethod()

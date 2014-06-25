@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc
+** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
 ** For any questions to Digia, please use contact form at http://qt.digia.com
 **
@@ -33,7 +33,7 @@ import QtQuick.Enterprise.VirtualKeyboard 1.1
 BaseKey {
     id: shiftKey
     key: Qt.Key_Shift
-    enabled: !keyboard.uppercaseOnly && !keyboard.lowercaseOnly
+    enabled: InputContext.shiftHandler.toggleShiftEnabled
     highlighted: InputContext.capsLock
     functionKey: true
     keyPanelDelegate: keyboard.style ? keyboard.style.shiftKeyPanel : undefined
@@ -41,14 +41,5 @@ BaseKey {
     property bool capsLock: InputContext.capsLock
     /*! \internal */
     property bool shift: InputContext.shift
-    onClicked: {
-        if (InputContext.inputMethodHints & Qt.ImhNoAutoUppercase) {
-            InputContext.capsLock = !InputContext.capsLock
-            InputContext.shift = !InputContext.shift
-        } else {
-            InputContext.capsLock = !InputContext.capsLock && (InputContext.shift && !keyboard.shiftChanged)
-            InputContext.shift = InputContext.capsLock || !InputContext.shift ? true : false
-            keyboard.shiftChanged = false
-        }
-    }
+    onClicked: InputContext.shiftHandler.toggleShift()
 }

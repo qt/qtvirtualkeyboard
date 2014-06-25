@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc
+** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
 ** For any questions to Digia, please use contact form at http://qt.digia.com
 **
@@ -40,6 +40,7 @@ Item {
             \li \c control.pressed Set to true when the key is currently pressed.
             \li \c control.uppercased Set to true when the key is uppercased.
             \li \c control.capsLock Set to true when caps lock is enabled.
+            \note Deprecated since 1.2. Use \l {InputContext::capsLock} {InputContext.capsLock} instead.
         \endlist
     */
     property Item control

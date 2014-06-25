@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc
+** Copyright (C) 2014 Digia Plc
 ** All rights reserved.
 ** For any questions to Digia, please use contact form at http://qt.digia.com
 **
@@ -19,12 +19,29 @@
 #include "declarativeshifthandler.h"
 #include "declarativeinputcontext.h"
 #include <QtCore/private/qobject_p.h>
+#include <QSet>
 
 class DeclarativeShiftHandlerPrivate : public QObjectPrivate
 {
 public:
+    DeclarativeShiftHandlerPrivate() :
+        QObjectPrivate(),
+        inputContext(0),
+        sentenceEndingCharacters(QString(".!?") + QChar(Qt::Key_exclamdown) + QChar(Qt::Key_questiondown)),
+        autoCapitalizationEnabled(false),
+        toggleShiftEnabled(false),
+        shiftChanged(false),
+        languageFilter(QSet<QLocale::Language>() << QLocale::Arabic << QLocale::Persian << QLocale::Hindi)
+    {
+    }
+
     DeclarativeInputContext *inputContext;
     QString sentenceEndingCharacters;
+    bool autoCapitalizationEnabled;
+    bool toggleShiftEnabled;
+    bool shiftChanged;
+    QLocale locale;
+    const QSet<QLocale::Language> languageFilter;
 };
 
 /*!
@@ -51,8 +68,11 @@ DeclarativeShiftHandler::DeclarativeShiftHandler(DeclarativeInputContext *parent
         connect(d->inputContext, SIGNAL(focusEditorChanged()), SLOT(restart()));
         connect(d->inputContext, SIGNAL(preeditTextChanged()), SLOT(autoCapitalize()));
         connect(d->inputContext, SIGNAL(cursorPositionChanged()), SLOT(autoCapitalize()));
+        connect(d->inputContext, SIGNAL(shiftChanged()), SLOT(shiftChanged()));
+        connect(d->inputContext, SIGNAL(capsLockChanged()), SLOT(shiftChanged()));
+        connect(d->inputContext, SIGNAL(localeChanged()), SLOT(localeChanged()));
+        d->locale = QLocale(d->inputContext->locale());
     }
-    d->sentenceEndingCharacters = QString(".!?") + QChar(Qt::Key_exclamdown) + QChar(Qt::Key_questiondown);
 }
 
 /*!
@@ -79,25 +99,89 @@ void DeclarativeShiftHandler::setSentenceEndingCharacters(const QString &value)
     }
 }
 
+bool DeclarativeShiftHandler::autoCapitalizationEnabled() const
+{
+    Q_D(const DeclarativeShiftHandler);
+    return d->autoCapitalizationEnabled;
+}
+
+bool DeclarativeShiftHandler::toggleShiftEnabled() const
+{
+    Q_D(const DeclarativeShiftHandler);
+    return d->toggleShiftEnabled;
+}
+
+/*!
+    \since 1.2
+
+    \qmlmethod void ShiftHandler::toggleShift()
+
+    Toggles the current shift state.
+
+    This method provides the functionality of the shift key.
+
+    \sa toggleShiftEnabled
+*/
+/*!
+    \since 1.2
+
+    Toggles the current shift state.
+
+    This method provides the functionality of the shift key.
+
+    \sa toggleShiftEnabled
+*/
+void DeclarativeShiftHandler::toggleShift()
+{
+    Q_D(DeclarativeShiftHandler);
+    if (!d->toggleShiftEnabled)
+        return;
+    if (d->languageFilter.contains(d->locale.language())) {
+        d->inputContext->setCapsLock(false);
+        d->inputContext->setShift(!d->inputContext->shift());
+    } else if (d->inputContext->inputMethodHints() & Qt::ImhNoAutoUppercase) {
+        bool capsLock = d->inputContext->capsLock();
+        d->inputContext->setCapsLock(!capsLock);
+        d->inputContext->setShift(!capsLock);
+    } else {
+        d->inputContext->setCapsLock(!d->inputContext->capsLock() && d->inputContext->shift() && !d->shiftChanged);
+        d->inputContext->setShift(d->inputContext->capsLock() || !d->inputContext->shift());
+        d->shiftChanged = false;
+    }
+}
+
 void DeclarativeShiftHandler::reset()
 {
     Q_D(DeclarativeShiftHandler);
     if (d->inputContext->inputItem()) {
-        bool preferUpperCase = (d->inputContext->inputMethodHints() & Qt::ImhPreferUppercase);
+        Qt::InputMethodHints inputMethodHints = d->inputContext->inputMethodHints();
+        bool preferUpperCase = (inputMethodHints & (Qt::ImhPreferUppercase | Qt::ImhUppercaseOnly));
+        bool autoCapitalizationEnabled = !(d->inputContext->inputMethodHints() & (Qt::ImhNoAutoUppercase |
+              Qt::ImhUppercaseOnly | Qt::ImhLowercaseOnly | Qt::ImhEmailCharactersOnly |
+              Qt::ImhUrlCharactersOnly | Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly |
+              Qt::ImhDigitsOnly));
+        bool toggleShiftEnabled = !(inputMethodHints & (Qt::ImhUppercaseOnly | Qt::ImhLowercaseOnly));
+        // For filtered languages reset the initial shift status to lower case
+        // and allow manual shift change
+        if (d->languageFilter.contains(d->locale.language())) {
+            preferUpperCase = false;
+            autoCapitalizationEnabled = false;
+            toggleShiftEnabled = true;
+        }
         d->inputContext->setShift(preferUpperCase);
         d->inputContext->setCapsLock(preferUpperCase);
+        setToggleShiftEnabled(toggleShiftEnabled);
+        setAutoCapitalizationEnabled(autoCapitalizationEnabled);
     }
 }
 
 void DeclarativeShiftHandler::autoCapitalize()
 {
     Q_D(DeclarativeShiftHandler);
-    if (!isEnabled() || d->inputContext->capsLock())
+    if (d->inputContext->capsLock())
         return;
-    if (!d->inputContext->preeditText().isEmpty()) {
-        if (isEnabled() && !d->inputContext->capsLock()) {
-            d->inputContext->setShift(false);
-        }
+    if (!d->autoCapitalizationEnabled || !d->inputContext->preeditText().isEmpty()) {
+        d->inputContext->setShift(false);
     } else {
         int cursorPosition = d->inputContext->cursorPosition();
         bool preferLowerCase = d->inputContext->inputMethodHints() & Qt::ImhPreferLowercase;
@@ -123,13 +207,35 @@ void DeclarativeShiftHandler::restart()
     autoCapitalize();
 }
 
-bool DeclarativeShiftHandler::isEnabled() const
+void DeclarativeShiftHandler::shiftChanged()
 {
-    static const Qt::InputMethodHints disallowFlags = (Qt::ImhNoAutoUppercase | Qt::ImhUppercaseOnly| Qt::ImhLowercaseOnly |
-        Qt::ImhEmailCharactersOnly | Qt::ImhUrlCharactersOnly | Qt::ImhDialableCharactersOnly |
-        Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly);
-    Q_D(const DeclarativeShiftHandler);
-    return !(d->inputContext->inputMethodHints() & disallowFlags);
+    Q_D(DeclarativeShiftHandler);
+    d->shiftChanged = true;
+}
+
+void DeclarativeShiftHandler::localeChanged()
+{
+    Q_D(DeclarativeShiftHandler);
+    d->locale = QLocale(d->inputContext->locale());
+    restart();
+}
+
+void DeclarativeShiftHandler::setAutoCapitalizationEnabled(bool enabled)
+{
+    Q_D(DeclarativeShiftHandler);
+    if (d->autoCapitalizationEnabled != enabled) {
+        d->autoCapitalizationEnabled = enabled;
+        emit autoCapitalizationEnabledChanged();
+    }
+}
+
+void DeclarativeShiftHandler::setToggleShiftEnabled(bool enabled)
+{
+    Q_D(DeclarativeShiftHandler);
+    if (d->toggleShiftEnabled != enabled) {
+        d->toggleShiftEnabled = enabled;
+        emit toggleShiftEnabledChanged();
+    }
 }
 
 /*!
@@ -150,4 +256,42 @@ bool DeclarativeShiftHandler::isEnabled() const
 
     By default, the property is initialized to sentence
     ending characters found in the ASCII range (i.e. ".!?").
+*/
+
+/*!
+    \since 1.2
+
+    \property DeclarativeShiftHandler::autoCapitalizationEnabled
+
+    This property provides the current state of the automatic
+    capitalization feature.
+*/
+
+/*!
+    \since 1.2
+
+    \qmlproperty bool ShiftHandler::autoCapitalizationEnabled
+
+    This property provides the current state of the automatic
+    capitalization feature.
+*/
+
+/*!
+    \since 1.2
+
+    \property DeclarativeShiftHandler::toggleShiftEnabled
+
+    This property provides the current state of the toggleShift()
+    method. When true, the current shift state can be changed by
+    calling the toggleShift() method.
+*/
+
+/*!
+    \since 1.2
+
+    \qmlproperty bool ShiftHandler::toggleShiftEnabled
+
+    This property provides the current state of the toggleShift()
+    method. When true, the current shift state can be changed by
+    calling the toggleShift() method.
 */
