@@ -93,6 +93,7 @@ else: qml_layouts.files = \
     content/layouts/de_DE \
     content/layouts/en_GB \
     content/layouts/es_ES \
+    content/layouts/hi_IN \
     content/layouts/fi_FI \
     content/layouts/fr_FR \
     content/layouts/it_IT \
