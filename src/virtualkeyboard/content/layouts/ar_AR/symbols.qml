@@ -181,7 +181,7 @@ KeyboardLayoutLoader {
                 keyWeight: 154
                 SymbolModeKey {
                     weight: 217
-                    displayText: "ا\u2009ب\u2009ج"
+                    displayText: "\u0623\u200C\u0628\u200C\u062C"
                 }
                 ChangeLanguageKey {
                     weight: 154
@@ -351,7 +351,7 @@ KeyboardLayoutLoader {
                 keyWeight: 154
                 SymbolModeKey {
                     weight: 217
-                    displayText: "ا\u2009ب\u2009ج"
+                    displayText: "\u0623\u200C\u0628\u200C\u062C"
                 }
                 ChangeLanguageKey {
                     weight: 154
