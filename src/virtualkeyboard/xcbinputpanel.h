@@ -21,7 +21,10 @@
 
 #include "abstractinputpanel.h"
 
+QT_BEGIN_NAMESPACE
 class QWindow;
+QT_END_NAMESPACE
+
 class XcbInputPanelPrivate;
 
 class XcbInputPanel : public AbstractInputPanel
