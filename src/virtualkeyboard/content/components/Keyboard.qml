@@ -96,25 +96,65 @@ Item {
             inputModeNeedsReset = true
         }
         onNavigationKeyPressed: {
+            var initialKey
             switch (key) {
             case Qt.Key_Left:
                 if (keyboard.navigationModeActive && !keyboardInputArea.initialKey) {
                     if (alternativeKeys.active) {
-                        alternativeKeys.listView.decrementCurrentIndex()
+                        if (alternativeKeys.listView.currentIndex > 0) {
+                            alternativeKeys.listView.decrementCurrentIndex()
+                        } else {
+                            alternativeKeys.close()
+                            keyboardInputArea.setActiveKey(null)
+                            keyboardInputArea.navigateToNextKey(0, 0, false)
+                        }
                         break
                     }
                     if (wordCandidateView.count) {
-                        wordCandidateView.decrementCurrentIndex()
+                        if (wordCandidateView.currentIndex > 0) {
+                            wordCandidateView.decrementCurrentIndex()
+                        } else {
+                            keyboardInputArea.navigateToNextKey(0, 0, false)
+                            initialKey = keyboardInputArea.initialKey
+                            if (!keyboardInputArea.navigateToNextKey(-1, -1, false)) {
+                                keyboardInputArea.initialKey = initialKey
+                                keyboardInputArea.navigateToNextKey(-1, -1, true)
+                            } else {
+                                keyboardInputArea.navigateToNextKey(1, 1, false)
+                            }
+                        }
                         break
                     }
                 }
-                keyboardInputArea.navigateToNextKey(-1, 0, true)
+                initialKey = keyboardInputArea.initialKey
+                if (!keyboardInputArea.navigateToNextKey(-1, 0, false)) {
+                    keyboardInputArea.initialKey = initialKey
+                    if (!keyboardInputArea.navigateToNextKey(0, -1, false)) {
+                        if (wordCandidateView.count) {
+                            if (wordCandidateView.currentIndex === -1)
+                                wordCandidateView.incrementCurrentIndex()
+                            break
+                        }
+                        keyboardInputArea.initialKey = initialKey
+                        keyboardInputArea.navigateToNextKey(0, -1, true)
+                    }
+                    keyboardInputArea.navigateToNextKey(-1, 0, true)
+                }
                 break
             case Qt.Key_Up:
                 if (alternativeKeys.active) {
                     alternativeKeys.close()
                     keyboardInputArea.setActiveKey(null)
                     keyboardInputArea.navigateToNextKey(0, 0, false)
+                } else if (keyboard.navigationModeActive && !keyboardInputArea.initialKey && wordCandidateView.count) {
+                    keyboardInputArea.navigateToNextKey(0, 0, false)
+                    initialKey = keyboardInputArea.initialKey
+                    if (!keyboardInputArea.navigateToNextKey(0, -1, false)) {
+                        keyboardInputArea.initialKey = initialKey
+                        keyboardInputArea.navigateToNextKey(0, -1, true)
+                    } else {
+                        keyboardInputArea.navigateToNextKey(0, 1, false)
+                    }
                 } else if (!keyboardInputArea.navigateToNextKey(0, -1, !keyboard.navigationModeActive || !keyboardInputArea.initialKey || wordCandidateView.count == 0)) {
                     if (wordCandidateView.currentIndex === -1)
                         wordCandidateView.incrementCurrentIndex()
@@ -123,21 +163,60 @@ Item {
             case Qt.Key_Right:
                 if (keyboard.navigationModeActive && !keyboardInputArea.initialKey) {
                     if (alternativeKeys.active) {
-                        alternativeKeys.listView.incrementCurrentIndex()
+                        if (alternativeKeys.listView.currentIndex + 1 < alternativeKeys.listView.count) {
+                            alternativeKeys.listView.incrementCurrentIndex()
+                        } else {
+                            alternativeKeys.close()
+                            keyboardInputArea.setActiveKey(null)
+                            keyboardInputArea.navigateToNextKey(0, 0, false)
+                        }
                         break
                     }
                     if (wordCandidateView.count) {
-                        wordCandidateView.incrementCurrentIndex()
+                        if (wordCandidateView.currentIndex + 1 < wordCandidateView.count) {
+                            wordCandidateView.incrementCurrentIndex()
+                        } else {
+                            keyboardInputArea.navigateToNextKey(0, 0, false)
+                            initialKey = keyboardInputArea.initialKey
+                            if (!keyboardInputArea.navigateToNextKey(1, 1, false)) {
+                                keyboardInputArea.initialKey = initialKey
+                                keyboardInputArea.navigateToNextKey(1, 1, true)
+                            } else {
+                                keyboardInputArea.navigateToNextKey(-1, -1, false)
+                            }
+                        }
                         break
                     }
                 }
-                keyboardInputArea.navigateToNextKey(1, 0, true)
+                initialKey = keyboardInputArea.initialKey
+                if (!keyboardInputArea.navigateToNextKey(1, 0, false)) {
+                    keyboardInputArea.initialKey = initialKey
+                    if (!keyboardInputArea.navigateToNextKey(0, 1, false)) {
+                        if (wordCandidateView.count) {
+                            if (wordCandidateView.currentIndex === -1)
+                                wordCandidateView.incrementCurrentIndex()
+                            break
+                        }
+                        keyboardInputArea.initialKey = initialKey
+                        keyboardInputArea.navigateToNextKey(0, 1, true)
+                    }
+                    keyboardInputArea.navigateToNextKey(1, 0, true)
+                }
                 break
             case Qt.Key_Down:
                 if (alternativeKeys.active) {
                     alternativeKeys.close()
                     keyboardInputArea.setActiveKey(null)
                     keyboardInputArea.navigateToNextKey(0, 0, false)
+                } else if (keyboard.navigationModeActive && !keyboardInputArea.initialKey && wordCandidateView.count) {
+                    keyboardInputArea.navigateToNextKey(0, 0, false)
+                    initialKey = keyboardInputArea.initialKey
+                    if (!keyboardInputArea.navigateToNextKey(0, 1, false)) {
+                        keyboardInputArea.initialKey = initialKey
+                        keyboardInputArea.navigateToNextKey(0, 1, true)
+                    } else {
+                        keyboardInputArea.navigateToNextKey(0, -1, false)
+                    }
                 } else if (!keyboardInputArea.navigateToNextKey(0, 1, !keyboard.navigationModeActive || !keyboardInputArea.initialKey || wordCandidateView.count == 0)) {
                     if (wordCandidateView.currentIndex === -1)
                         wordCandidateView.incrementCurrentIndex()
@@ -610,7 +689,13 @@ Item {
                                 navigationCursor = Qt.point(width / 2, height / 2)
                             keyboard.navigationModeActive = true
                         }
-                        initialKey = nextKeyInNavigation(dX, dY, wrapEnabled)
+                        if (dX && dY) {
+                            initialKey = nextKeyInNavigation(dX, 0, wrapEnabled)
+                            if (initialKey || wrapEnabled)
+                                initialKey = nextKeyInNavigation(0, dY, wrapEnabled)
+                        } else {
+                            initialKey = nextKeyInNavigation(dX, dY, wrapEnabled)
+                        }
                         return initialKey !== null
                     }
 
