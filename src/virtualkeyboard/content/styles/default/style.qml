@@ -39,7 +39,6 @@ KeyboardStyle {
     }
 
     keyPanel: KeyPanel {
-        soundEffect: "qrc:/sounds/key.wav"
         Rectangle {
             id: keyBackground
             radius: 5
@@ -91,7 +90,6 @@ KeyboardStyle {
     }
 
     backspaceKeyPanel: KeyPanel {
-        soundEffect: "qrc:/sounds/backspace.wav"
         Rectangle {
             id: backspaceKeyBackground
             radius: 5
@@ -136,7 +134,6 @@ KeyboardStyle {
     }
 
     languageKeyPanel: KeyPanel {
-        soundEffect: "qrc:/sounds/key.wav"
         Rectangle {
             id: languageKeyBackground
             radius: 5
@@ -181,7 +178,6 @@ KeyboardStyle {
     }
 
     enterKeyPanel: KeyPanel {
-        soundEffect: "qrc:/sounds/key.wav"
         Rectangle {
             id: enterKeyBackground
             radius: 5
@@ -265,7 +261,6 @@ KeyboardStyle {
     }
 
     hideKeyPanel: KeyPanel {
-        soundEffect: "qrc:/sounds/key.wav"
         Rectangle {
             id: hideKeyBackground
             radius: 5
@@ -310,7 +305,6 @@ KeyboardStyle {
     }
 
     shiftKeyPanel: KeyPanel {
-        soundEffect: "qrc:/sounds/key.wav"
         Rectangle {
             id: shiftKeyBackground
             radius: 5
@@ -377,7 +371,6 @@ KeyboardStyle {
     }
 
     spaceKeyPanel: KeyPanel {
-        soundEffect: "qrc:/sounds/key.wav"
         Rectangle {
             id: spaceKeyBackground
             radius: 5
@@ -406,7 +399,6 @@ KeyboardStyle {
     }
 
     symbolKeyPanel: KeyPanel {
-        soundEffect: "qrc:/sounds/key.wav"
         Rectangle {
             id: symbolKeyBackground
             radius: 5
@@ -522,7 +514,6 @@ KeyboardStyle {
     selectionListHeight: 85 * scaleHint
     selectionListDelegate: SelectionListItem {
         id: selectionListItem
-        soundEffect: "qrc:/sounds/select.wav"
         width: Math.round(selectionListLabel.width + selectionListLabel.anchors.leftMargin * 2)
         Text {
             id: selectionListLabel
