@@ -61,6 +61,7 @@ class HunspellBuildSuggestionsTask : public HunspellTask
 public:
     QString word;
     QSharedPointer<HunspellWordList> wordList;
+    bool autoCorrect;
 
     void run();
     bool spellCheck(const QString &word);

@@ -79,7 +79,7 @@ void HunspellBuildSuggestionsTask::run()
             which may be suboptimal for the purpose, but gives some clue
             how much the suggested word differs from the given word.
         */
-        if (wordList->list.length() > 1 && (!spellCheck(word) || suggestCapitalization)) {
+        if (autoCorrect && wordList->list.length() > 1 && (!spellCheck(word) || suggestCapitalization)) {
             if (lastWordCompletionIndex > firstWordCompletionIndex || levenshteinDistance(word, wordList->list.at(firstWordCompletionIndex)) < 3)
                 wordList->index = firstWordCompletionIndex;
         }

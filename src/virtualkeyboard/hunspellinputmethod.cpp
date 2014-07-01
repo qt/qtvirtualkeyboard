@@ -112,6 +112,7 @@ public:
                     QSharedPointer<HunspellBuildSuggestionsTask> buildSuggestionsTask(new HunspellBuildSuggestionsTask());
                     buildSuggestionsTask->word = word;
                     buildSuggestionsTask->wordList = wordList;
+                    buildSuggestionsTask->autoCorrect = false;
                     hunspellWorker->addTask(buildSuggestionsTask);
                     QSharedPointer<HunspellUpdateSuggestionsTask> updateSuggestionsTask(new HunspellUpdateSuggestionsTask());
                     updateSuggestionsTask->wordList = wordList;
