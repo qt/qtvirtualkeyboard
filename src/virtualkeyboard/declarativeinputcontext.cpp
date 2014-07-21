@@ -28,6 +28,10 @@
 #include <QGuiApplication>
 #include <QtCore/private/qobject_p.h>
 
+#ifdef COMPILING_QML
+#include "qrclayoutsindex.h"
+#endif
+
 /*!
     \qmlmodule QtQuick.Enterprise.VirtualKeyboard 1.1
 
@@ -395,9 +399,15 @@ void DeclarativeInputContext::clear()
         emit preeditTextChanged();
 }
 
-bool DeclarativeInputContext::fileExists(const QUrl& fileUrl)
+bool DeclarativeInputContext::fileExists(const QUrl &fileUrl)
 {
+#ifdef COMPILING_QML
+    // since this uses compile-time information, new layouts
+    // can not be added dynamically
+    return layoutsDir.contains(fileUrl.url());
+#else
     return QFile(fileUrl.toLocalFile()).exists();
+#endif
 }
 
 bool DeclarativeInputContext::hasEnterKeyAction(QObject *item) const

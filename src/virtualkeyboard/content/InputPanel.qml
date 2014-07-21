@@ -17,7 +17,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "components"
+import QtQuick.Enterprise.VirtualKeyboard 1.1
 
 /*!
     \qmltype InputPanel

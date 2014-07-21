@@ -9,6 +9,8 @@ CONFIG += precompile_header warn_off
 debug {
     DEFINES += HUNSPELL_WARNING_ON
 }
+CONFIG -= qtquickcompiler # QTRD-3292
+
 dll {
     android-no-sdk {
         target.path = /system/lib

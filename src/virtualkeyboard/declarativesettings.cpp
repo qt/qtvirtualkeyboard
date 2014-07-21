@@ -20,7 +20,8 @@
 #include "settings.h"
 #include "virtualkeyboarddebug.h"
 #include <QQmlEngine>
-#include <QFile>
+#include <QFileInfo>
+#include <QDir>
 #include <QtCore/private/qobject_p.h>
 
 class DeclarativeSettingsPrivate : public QObjectPrivate
@@ -54,7 +55,14 @@ public:
             styleImportPathList << importPathList.last() + "/QtQuick/Enterprise/VirtualKeyboard/Styles/";
         foreach (const QString &styleImportPath, styleImportPathList) {
             QString filePath = buildStyleFilePath(styleImportPath, name);
-            if (QFile(filePath).exists())
+            bool pathExist = false;
+#ifdef COMPILING_QML
+            // qtquickcompiler removes *.qml file paths from qrc file, but keeps directories - QTRD-3268
+            pathExist = QFileInfo(filePath).dir().exists();
+#else
+            pathExist = QFileInfo(filePath).exists();
+#endif
+            if (pathExist)
                 return buildStyleImportPath(styleImportPath, name);
         }
         return QString();

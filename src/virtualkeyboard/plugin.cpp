@@ -16,11 +16,7 @@
 **
 ****************************************************************************/
 
-#include <QtQml>
-#include <QStringList>
-#include <qpa/qplatforminputcontextplugin_p.h>
-
-#include "platforminputcontext.h"
+#include "plugin.h"
 #include "declarativeinputcontext.h"
 #include "declarativeinputengine.h"
 #include "declarativeshifthandler.h"
@@ -46,16 +42,6 @@ static QObject *createInputContextModule(QQmlEngine *engine, QJSEngine *scriptEn
     return new DeclarativeInputContext(platformInputContext);
 }
 
-class PlatformInputContextPlugin : public QPlatformInputContextPlugin
-{
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QPlatformInputContextFactoryInterface" FILE "qtvirtualkeyboard.json")
-
-public:
-    QStringList keys() const;
-    QPlatformInputContext *create(const QString&, const QStringList&);
-};
-
 QStringList PlatformInputContextPlugin::keys() const
 {
     return QStringList(QStringLiteral("qtvirtualkeyboard"));
@@ -64,7 +50,15 @@ QStringList PlatformInputContextPlugin::keys() const
 QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system, const QStringList &paramList)
 {
     Q_UNUSED(paramList);
-
+#ifdef COMPILING_QML
+    Q_INIT_RESOURCE(content_qtquickcompiler);
+    Q_INIT_RESOURCE(default_style_qtquickcompiler);
+    Q_INIT_RESOURCE(retro_style_qtquickcompiler);
+#else
+    Q_INIT_RESOURCE(default_style);
+    Q_INIT_RESOURCE(retro_style);
+#endif
+    const QString path(QT_VIRTUALKEYBOARD_IMPORT_PATH);
     qmlRegisterSingletonType<DeclarativeInputContext>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "InputContext", createInputContextModule);
     qmlRegisterUncreatableType<DeclarativeInputEngine>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "InputEngine", "Cannot create input method engine");
     qmlRegisterUncreatableType<DeclarativeShiftHandler>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "ShiftHandler", "Cannot create shift handler");
@@ -82,10 +76,32 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     qmlRegisterType<EnterKeyAction>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "EnterKeyAction");
     qmlRegisterSingletonType<DeclarativeSettings>("QtQuick.Enterprise.VirtualKeyboard.Settings", 1, 0, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
 
+    qmlRegisterType(QUrl(path + "InputPanel.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "InputPanel");
+    const QString componentsPath = path + QLatin1Literal("components/");
+    qmlRegisterType(QUrl(componentsPath + "AlternativeKeys.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "AlternativeKeys");
+    qmlRegisterType(QUrl(componentsPath + "AutoScroller.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "AutoScroller");
+    qmlRegisterType(QUrl(componentsPath + "BackspaceKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "BackspaceKey");
+    qmlRegisterType(QUrl(componentsPath + "BaseKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "BaseKey");
+    qmlRegisterType(QUrl(componentsPath + "ChangeLanguageKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "ChangeLanguageKey");
+    qmlRegisterType(QUrl(componentsPath + "CharacterPreviewBubble.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "CharacterPreviewBubble");
+    qmlRegisterType(QUrl(componentsPath + "EnterKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "EnterKey");
+    qmlRegisterType(QUrl(componentsPath + "FillerKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "FillerKey");
+    qmlRegisterType(QUrl(componentsPath + "HideKeyboardKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "HideKeyboardKey");
+    qmlRegisterType(QUrl(componentsPath + "KeyboardColumn.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "KeyboardColumn");
+    qmlRegisterType(QUrl(componentsPath + "KeyboardLayout.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "KeyboardLayout");
+    qmlRegisterType(QUrl(componentsPath + "KeyboardLayoutLoader.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 1, "KeyboardLayoutLoader");
+    qmlRegisterType(QUrl(componentsPath + "Keyboard.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "Keyboard");
+    qmlRegisterType(QUrl(componentsPath + "KeyboardRow.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "KeyboardRow");
+    qmlRegisterType(QUrl(componentsPath + "Key.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "Key");
+    qmlRegisterType(QUrl(componentsPath + "MultiSoundEffect.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 1, "MultiSoundEffect");
+    qmlRegisterType(QUrl(componentsPath + "MultitapInputMethod.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "MultitapInputMethod");
+    qmlRegisterType(QUrl(componentsPath + "NumberKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "NumberKey");
+    qmlRegisterType(QUrl(componentsPath + "ShiftKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "ShiftKey");
+    qmlRegisterType(QUrl(componentsPath + "SpaceKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "SpaceKey");
+    qmlRegisterType(QUrl(componentsPath + "SymbolModeKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "SymbolModeKey");
+
     if (system.compare(system, QStringLiteral("qtvirtualkeyboard"), Qt::CaseInsensitive) == 0) {
         platformInputContext = new PlatformInputContext();
     }
     return platformInputContext;
 }
-
-#include "plugin.moc"

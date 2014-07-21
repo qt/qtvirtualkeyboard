@@ -6,6 +6,8 @@ CONFIG += dll
 QMAKE_CXXFLAGS += -Wno-unused-parameter
 #CONFIG += staticlib
 #CONFIG += precompile_header warn_off
+CONFIG -= qtquickcompiler # QTRD-3292
+
 dll {
     android-no-sdk {
         target.path = /system/lib
@@ -61,4 +63,3 @@ HEADERS += \
 OTHER_FILES +=\
     data/rawdict_utf16_65105_freq.txt \
     data/valid_utf16.txt
-

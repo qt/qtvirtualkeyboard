@@ -283,8 +283,13 @@ Item {
     }
     FolderListModel {
         id: layoutsModel
-        folder: "../layouts"
         nameFilters: ["$"]
+        Component.onCompleted: {
+            if (InputContext.fileExists("qrc:/content/layouts"))
+                layoutsModel.folder = "qrc:/content/layouts"
+            else
+                layoutsModel.folder = "../layouts"
+        }
     }
     Connections {
         target: layoutsModel
@@ -878,6 +883,8 @@ Item {
     }
 
     function getLayoutFile(localeName, layoutType) {
+        if (localeName === "" || layoutType === "")
+            return ""
         return layoutsModel.folder + "/" + localeName + "/" + layoutType + ".qml"
     }
 

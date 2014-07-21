@@ -108,8 +108,7 @@ void XcbInputPanel::createView()
         d->view->setFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::WindowDoesNotAcceptFocus | Qt::BypassWindowManagerHint);
         d->view->setColor(QColor(Qt::transparent));
         const QString virtualKeyboardImportPath(QT_VIRTUALKEYBOARD_IMPORT_PATH);
-        d->view->engine()->addImportPath(virtualKeyboardImportPath);
-        d->view->setSource(QUrl::fromLocalFile(virtualKeyboardImportPath+"/InputPanel.qml"));
+        d->view->setSource(QUrl(virtualKeyboardImportPath + "InputPanel.qml"));
         /*  Destroy the view along with the last window in application. */
         connect(qGuiApp, SIGNAL(lastWindowClosed()), SLOT(destroyView()));
     }

@@ -28,5 +28,13 @@
 
 void StylesPlugin::registerTypes(const char *uri)
 {
-    Q_UNUSED(uri)
+#ifdef COMPILING_QML
+    Q_INIT_RESOURCE(styles_qtquickcompiler);
+#endif
+    const QString path(STYLES_IMPORT_PATH);
+    qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 0, "KeyboardStyle");
+    qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 1, "KeyboardStyle");
+    qmlRegisterType(QUrl(path + "KeyIcon.qml"), uri, 1, 0, "KeyIcon");
+    qmlRegisterType(QUrl(path + "KeyPanel.qml"), uri, 1, 0, "KeyPanel");
+    qmlRegisterType(QUrl(path + "SelectionListItem.qml"), uri, 1, 0, "SelectionListItem");
 }
