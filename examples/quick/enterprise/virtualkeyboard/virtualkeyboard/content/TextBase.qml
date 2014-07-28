@@ -65,8 +65,13 @@ FocusScope {
         parent: textBase
         anchors.fill: parent
         onClicked: {
-            if (editor.inputMethodComposing)
+            if (editor.inputMethodComposing) {
+                if (!Qt.inputMethod.visible) {
+                    Qt.inputMethod.show()
+                    return
+                }
                 Qt.inputMethod.commit()
+            }
             var positionInEditor = mapToItem(editor, mouseX, mouseY)
             var cursorPosition = editor.positionAt(positionInEditor.x, positionInEditor.y)
             editor.cursorPosition = cursorPosition
