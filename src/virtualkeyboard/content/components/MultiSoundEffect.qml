@@ -17,6 +17,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtMultimedia 5.0
 
 Item {
     id: multiSoundEffect
@@ -25,13 +26,20 @@ Item {
     property var __cachedInstances
     property int __currentIndex: 0
 
+    Component {
+        id: soundEffectComp
+        SoundEffect {
+            source: multiSoundEffect.source
+        }
+    }
+
     onSourceChanged: {
         __cachedInstances = []
         __currentIndex = 0
         if (source != Qt.resolvedUrl("")) {
             var i
             for (i = 0; i < maxInstances; i++) {
-                var soundEffect = Qt.createQmlObject('import QtQuick 2.0; import QtMultimedia 5.0; SoundEffect { source: multiSoundEffect.source }', multiSoundEffect)
+                var soundEffect = soundEffectComp.createObject(multiSoundEffect)
                 if (soundEffect === null)
                     return
                 __cachedInstances.push(soundEffect)
