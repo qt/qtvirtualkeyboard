@@ -169,6 +169,29 @@ bool MatrixSearch::init_fd(int sys_fd, long start_offset, long length,
   return true;
 }
 
+void MatrixSearch::init_user_dictionary(const char *fn_usr_dict) {
+  assert(inited_);
+
+  if (NULL != user_dict_) {
+    delete user_dict_;
+    user_dict_ = NULL;
+  }
+
+  if (NULL != fn_usr_dict) {
+    user_dict_ = static_cast<AtomDictBase*>(new UserDict());
+    if (!user_dict_->load_dict(fn_usr_dict, kUserDictIdStart, kUserDictIdEnd)) {
+      delete user_dict_;
+      user_dict_ = NULL;
+    }
+  }
+
+  reset_search0();
+}
+
+bool MatrixSearch::is_user_dictionary_enabled() const {
+  return NULL != user_dict_;
+}
+
 void MatrixSearch::set_max_lens(size_t max_sps_len, size_t max_hzs_len) {
   if (0 != max_sps_len)
     max_sps_len_ = max_sps_len;

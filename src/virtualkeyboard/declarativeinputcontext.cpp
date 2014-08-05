@@ -486,6 +486,9 @@ void DeclarativeInputContext::update(Qt::InputMethodQueries queries)
     if (newSurroundingText || newCursorPosition) {
         d->inputEngine->update();
     }
+    if (newInputMethodHints) {
+        d->inputEngine->reset();
+    }
 
     // notify
     if (newInputMethodHints) {

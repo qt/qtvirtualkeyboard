@@ -53,6 +53,16 @@ public:
     void resetToIdleState()
     {
         Q_Q(PinyinInputMethod);
+
+        DeclarativeInputContext *inputContext = q->inputContext();
+
+        // Disable the user dictionary when entering sensitive data
+        if (inputContext) {
+            bool userDictionaryEnabled = !inputContext->inputMethodHints().testFlag(Qt::ImhSensitiveData);
+            if (userDictionaryEnabled != pinyinDecoderService->isUserDictionaryEnabled())
+                pinyinDecoderService->setUserDictionary(userDictionaryEnabled);
+        }
+
         if (state == Idle)
             return;
 
@@ -61,7 +71,6 @@ public:
         fixedLen = 0;
         finishSelection = true;
         composingStr.clear();
-        DeclarativeInputContext *inputContext = q->inputContext();
         if (inputContext)
             inputContext->setPreeditText("");
         activeCmpsLen = 0;

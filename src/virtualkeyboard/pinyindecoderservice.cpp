@@ -74,6 +74,24 @@ bool PinyinDecoderService::init()
     return initDone;
 }
 
+void PinyinDecoderService::setUserDictionary(bool enabled)
+{
+    if (enabled == im_is_user_dictionary_enabled())
+        return;
+    if (enabled) {
+        QString usrDictPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
+        QFileInfo usrDictInfo(usrDictPath + "/qtvirtualkeyboard/pinyin/usr_dict.dat");
+        im_init_user_dictionary(usrDictInfo.absoluteFilePath().toUtf8().constData());
+    } else {
+        im_init_user_dictionary(NULL);
+    }
+}
+
+bool PinyinDecoderService::isUserDictionaryEnabled() const
+{
+    return im_is_user_dictionary_enabled();
+}
+
 void PinyinDecoderService::setLimits(int maxSpsLen, int maxHzsLen)
 {
     if (maxSpsLen <= 0)

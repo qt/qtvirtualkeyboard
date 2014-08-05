@@ -33,6 +33,8 @@ public:
     static PinyinDecoderService *getInstance();
 
     bool init();
+    void setUserDictionary(bool enabled);
+    bool isUserDictionaryEnabled() const;
     void setLimits(int maxSpelling, int maxHzsLen);
     int search(const QString &spelling);
     int deleteSearch(int pos, bool isPosInSpellingId, bool clearFixedInThisStep);

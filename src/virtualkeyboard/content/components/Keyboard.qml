@@ -49,7 +49,7 @@ Item {
     property bool dialpadMode: InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly
     property bool numberMode: InputContext.inputMethodHints & Qt.ImhFormattedNumbersOnly
     property bool digitMode: InputContext.inputMethodHints & Qt.ImhDigitsOnly
-    property bool latinOnly: InputContext.inputMethodHints & (Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText | Qt.ImhLatinOnly)
+    property bool latinOnly: InputContext.inputMethodHints & Qt.ImhLatinOnly
     property bool symbolMode
     property var defaultInputMethod: initDefaultInputMethod()
     property var plainInputMethod: PlainInputMethod {}
@@ -83,7 +83,6 @@ Item {
         updateLayout()
     }
     onLatinOnlyChanged: {
-        updateLayout()
         updateInputMethod()
     }
 
@@ -766,21 +765,15 @@ Item {
             return
         var inputMethod = null
         var inputMode = InputContext.inputEngine.inputMode
-        // Force plain input method in password mode
-        if (latinOnly) {
-            inputMethod = keyboard.plainInputMethod
+        // Use input method from keyboard layout
+        if (keyboardLayoutLoader.item.inputMethod)
+            inputMethod = keyboardLayoutLoader.item.inputMethod
+        else
+            inputMethod = keyboard.defaultInputMethod
+        if (latinOnly)
             inputMode = InputEngine.Latin
-        } else {
-            // Use input method from keyboard layout
-            if (keyboardLayoutLoader.item.inputMethod) {
-                inputMethod = keyboardLayoutLoader.item.inputMethod
-            } else {
-                inputMethod = keyboard.defaultInputMethod
-            }
-            if (keyboardLayoutLoader.item.inputMode !== -1) {
-                inputMode = keyboardLayoutLoader.item.inputMode
-            }
-        }
+        else if (keyboardLayoutLoader.item.inputMode !== -1)
+            inputMode = keyboardLayoutLoader.item.inputMode
         var inputMethodChanged = InputContext.inputEngine.inputMethod !== inputMethod
         if (inputMethodChanged) {
             InputContext.inputEngine.inputMethod = inputMethod
@@ -802,11 +795,11 @@ Item {
 
     function updateLayout() {
         var newLayout
-        newLayout = findLayout(latinOnly ? defaultLocale : locale, layoutType)
+        newLayout = findLayout(locale, layoutType)
         if (!newLayout.length) {
-            newLayout = findLayout(latinOnly ? defaultLocale : locale, "main")
+            newLayout = findLayout(locale, "main")
         }
-        inputLocale = !latinOnly && layoutExists(locale, layoutType) ? locale : defaultLocale
+        inputLocale = layoutExists(locale, layoutType) ? locale : defaultLocale
         layout = newLayout
     }
 
@@ -859,7 +852,7 @@ Item {
     }
 
     function canChangeInputLanguage(customLayoutsOnly) {
-        return !latinOnly && availableLocaleIndices.length > 1
+        return availableLocaleIndices.length > 1
     }
 
     function findLocale(localeName, defaultValue) {

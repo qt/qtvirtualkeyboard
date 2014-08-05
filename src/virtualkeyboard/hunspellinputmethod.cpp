@@ -148,6 +148,19 @@ public:
         return !wordCandidates.isEmpty();
     }
 
+    bool isAutoSpaceAllowed() const
+    {
+        Q_Q(const HunspellInputMethod);
+        if (q->inputEngine()->inputMode() != DeclarativeInputEngine::Latin)
+            return false;
+        DeclarativeInputContext *ic = q->inputContext();
+        if (!ic)
+            return false;
+        Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
+        return !inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly) &&
+               !inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly);
+    }
+
     HunspellInputMethod *q_ptr;
     QScopedPointer<HunspellWorker> hunspellWorker;
     QString locale;
@@ -189,6 +202,7 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
 {
     Q_UNUSED(modifiers)
     Q_D(HunspellInputMethod);
+    DeclarativeInputContext *ic = inputContext();
     bool accept = false;
     switch (key) {
     case Qt::Key_Enter:
@@ -200,7 +214,7 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
     case Qt::Key_Backspace:
         if (!d->word.isEmpty()) {
             d->word.remove(d->word.length() - 1, 1);
-            inputContext()->setPreeditText(d->word);
+            ic->setPreeditText(d->word);
             if (d->updateSuggestions()) {
                 emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
                 emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
@@ -209,6 +223,8 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
         }
         break;
     default:
+        if (ic->inputMethodHints().testFlag(Qt::ImhNoPredictiveText))
+            break;
         if (text.length() > 0) {
             QChar c = text.at(0);
             bool addToWord = !c.isPunct() && !c.isSymbol();
@@ -219,7 +235,6 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
                 }
             }
             if (addToWord) {
-                DeclarativeInputContext *ic = inputContext();
                 /*  Automatic space insertion. */
                 if (d->word.isEmpty()) {
                     QString surroundingText = ic->surroundingText();
@@ -234,8 +249,9 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
                         QChar lastChar = surroundingText.at(cursorPosition - 1);
                         if (!lastChar.isSpace() &&
                             lastChar != Qt::Key_Minus &&
-                            lastChar != Qt::Key_Apostrophe) {
-                            inputContext()->commit(" ");
+                            lastChar != Qt::Key_Apostrophe &&
+                            d->isAutoSpaceAllowed()) {
+                            ic->commit(" ");
                         }
                     }
                 }
@@ -249,9 +265,9 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
             } else if (text.length() > 1) {
                 bool addSpace = !d->word.isEmpty();
                 update();
-                if (addSpace)
-                    inputContext()->commit(" ");
-                inputContext()->commit(text);
+                if (addSpace && d->isAutoSpaceAllowed())
+                    ic->commit(" ");
+                ic->commit(text);
                 accept = true;
             } else {
                 update();
