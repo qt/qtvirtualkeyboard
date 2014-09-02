@@ -25,6 +25,7 @@ import Qt.labs.folderlistmodel 2.0
 
 Item {
     id: keyboard
+    objectName: "keyboard"
 
     property alias style: styleLoader.item
     property var activeKey: null
@@ -312,6 +313,7 @@ Item {
     }
     AlternativeKeys {
         id: alternativeKeys
+        objectName: "alternativeKeys"
         // Add some extra margin for decoration
         property real horizontalMargin: style.alternateKeysListItemWidth
         property real verticalMargin: style.alternateKeysListItemHeight
@@ -370,6 +372,7 @@ Item {
     }
     CharacterPreviewBubble {
         id: characterPreview
+        objectName: "characterPreviewBubble"
         active: keyboardInputArea.pressed && !alternativeKeys.active
         property rect previewRect: Qt.rect(keyboard.x + characterPreview.x,
                                            keyboard.y + characterPreview.y,
@@ -398,6 +401,7 @@ Item {
     }
     Loader {
         id: naviationHighlight
+        objectName: "naviationHighlight"
         property var highlightItem: {
             if (keyboard.navigationModeActive) {
                 if (keyboardInputArea.initialKey) {
@@ -437,6 +441,7 @@ Item {
 
     ListView {
         id: wordCandidateView
+        objectName: "wordCandidateView"
         clip: true
         height: Math.round(style.selectionListHeight)
         anchors.left: parent.left
@@ -530,6 +535,7 @@ Item {
 
             Loader {
                 id: keyboardLayoutLoader
+                objectName: "keyboardLayoutLoader"
 
                 anchors.fill: parent
                 anchors.leftMargin: Math.round(style.keyboardRelativeLeftMargin * parent.width)
@@ -547,6 +553,7 @@ Item {
 
                 MultiPointTouchArea {
                     id: keyboardInputArea
+                    objectName: "keyboardInputArea"
 
                     property var initialKey: null
                     property bool dragSymbolMode

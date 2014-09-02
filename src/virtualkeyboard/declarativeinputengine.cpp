@@ -294,6 +294,7 @@ bool DeclarativeInputEngine::virtualKeyRelease(Qt::Key key, const QString &text,
 bool DeclarativeInputEngine::virtualKeyClick(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
     Q_D(DeclarativeInputEngine);
+    VIRTUALKEYBOARD_DEBUG() << "DeclarativeInputEngine::virtualKeyClick():" << key << text << modifiers;
     return d->virtualKeyClick(key, text, modifiers, false);
 }
 
