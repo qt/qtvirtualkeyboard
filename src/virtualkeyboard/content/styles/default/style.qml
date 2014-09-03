@@ -17,8 +17,8 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.Enterprise.VirtualKeyboard 1.1
-import QtQuick.Enterprise.VirtualKeyboard.Styles 1.1
+import QtQuick.Enterprise.VirtualKeyboard 1.2
+import QtQuick.Enterprise.VirtualKeyboard.Styles 1.2
 
 KeyboardStyle {
     readonly property bool pinyinMode: InputContext.inputEngine.inputMode === InputEngine.Pinyin

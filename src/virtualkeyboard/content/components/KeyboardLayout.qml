@@ -18,7 +18,7 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
-import QtQuick.Enterprise.VirtualKeyboard 1.1
+import QtQuick.Enterprise.VirtualKeyboard 1.2
 
 /*!
     \qmltype KeyboardLayout
@@ -36,7 +36,7 @@ import QtQuick.Enterprise.VirtualKeyboard 1.1
     \code
     import QtQuick 2.0
     import QtQuick.Layouts 1.0
-    import QtQuick.Enterprise.VirtualKeyboard 1.1
+    import QtQuick.Enterprise.VirtualKeyboard 1.2
 
     // file: layouts/en_GB/main.qml
 
