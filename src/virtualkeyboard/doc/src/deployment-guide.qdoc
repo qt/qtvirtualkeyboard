@@ -120,10 +120,9 @@ Item {
     }
     InputPanel {
         id: inputPanel
-        y: Qt.inputMethod.visible ? appContainer.height - inputPanel.height : appContainer.height
+        y: Qt.inputMethod.visible ? parent.height - inputPanel.height : parent.height
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.bottom: parent.bottom
     }
 }
 \endcode
