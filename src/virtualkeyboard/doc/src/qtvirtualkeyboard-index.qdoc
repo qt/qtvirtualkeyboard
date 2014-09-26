@@ -27,6 +27,32 @@
     integrate 3rd party input engines. The input methods can be implemented
     in C++ or QML.
 
+    \section1 Supported Languages
+
+    The Virtual Keyboard supports the following languages:
+
+    \list
+        \li Arabic
+        \li Danish
+        \li English
+        \li Finnish
+        \li French
+        \li German
+        \li Hindi
+        \li Italian
+        \li Norwegian
+        \li Persian/Farsi
+        \li Polish
+        \li Portugese
+        \li Russian
+        \li Simplified Chinese
+        \li Spanish
+        \li Swedish
+    \endlist
+
+    To add support for an additional language, see
+    \l {Adding New Keyboard Layouts}.
+
     \section1 Guides
 
     \list
