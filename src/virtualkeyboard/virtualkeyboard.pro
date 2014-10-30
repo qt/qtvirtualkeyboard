@@ -1,18 +1,8 @@
 TEMPLATE = lib
 TARGET  = qtvirtualkeyboardplugin
-android-no-sdk {
-    INSTALL_PATH = /system/plugins/platforminputcontexts
-    QMLPATH = /system/qml/QtQuick/Enterprise/VirtualKeyboard
-    DATAPATH = /system/qtvirtualkeyboard
-} else:!isEmpty(CROSS_COMPILE) {
-    INSTALL_PATH = /usr/local/Qt-$$[QT_VERSION]/plugins/platforminputcontexts
-    QMLPATH = /usr/local/Qt-$$[QT_VERSION]/qml/QtQuick/Enterprise/VirtualKeyboard
-    DATAPATH = /usr/local/Qt-$$[QT_VERSION]/qtvirtualkeyboard
-} else {
-    INSTALL_PATH = $$[QT_INSTALL_PLUGINS]/platforminputcontexts
-    QMLPATH = $$[QT_INSTALL_QML]/QtQuick/Enterprise/VirtualKeyboard
-    DATAPATH = $$[QT_INSTALL_DATA]/qtvirtualkeyboard
-}
+INSTALL_PATH = $$[QT_INSTALL_PLUGINS]/platforminputcontexts
+QMLPATH = $$[QT_INSTALL_QML]/QtQuick/Enterprise/VirtualKeyboard
+DATAPATH = $$[QT_INSTALL_DATA]/qtvirtualkeyboard
 
 QMAKE_DOCS = $$PWD/doc/qtvirtualkeyboard.qdocconf
 include(doc/doc.pri)

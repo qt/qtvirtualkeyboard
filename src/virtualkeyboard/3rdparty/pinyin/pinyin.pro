@@ -9,13 +9,7 @@ QMAKE_CXXFLAGS += -Wno-unused-parameter
 CONFIG -= qtquickcompiler # QTRD-3292
 
 dll {
-    android-no-sdk {
-        target.path = /system/lib
-    } else:!isEmpty(CROSS_COMPILE) {
-        target.path = /usr/local/Qt-$$[QT_VERSION]/lib
-    } else {
-        target.path = $$[QT_INSTALL_LIBS]
-    }
+    target.path = $$[QT_INSTALL_LIBS]
     INSTALLS += target
 }
 

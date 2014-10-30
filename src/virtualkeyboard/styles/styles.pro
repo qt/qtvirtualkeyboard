@@ -1,12 +1,6 @@
 TEMPLATE = lib
 TARGET = qtvirtualkeyboardstylesplugin
-android-no-sdk {
-    INSTALL_PATH = /system/qml/QtQuick/Enterprise/VirtualKeyboard/Styles
-} else:!isEmpty(CROSS_COMPILE) {
-    INSTALL_PATH = /usr/local/Qt-$$[QT_VERSION]/qml/QtQuick/Enterprise/VirtualKeyboard/Styles
-} else {
-    INSTALL_PATH = $$[QT_INSTALL_QML]/QtQuick/Enterprise/VirtualKeyboard/Styles
-}
+INSTALL_PATH = $$[QT_INSTALL_QML]/QtQuick/Enterprise/VirtualKeyboard/Styles
 QT += qml quick
 CONFIG += plugin
 
