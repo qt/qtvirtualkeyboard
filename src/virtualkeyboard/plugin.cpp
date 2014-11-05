@@ -52,10 +52,12 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     Q_UNUSED(paramList);
 #ifdef COMPILING_QML
     Q_INIT_RESOURCE(content);
+    const QString path("qrc:///content/");
+#else
+    const QString path = "file://" + QLibraryInfo::location(QLibraryInfo::Qml2ImportsPath) + "/QtQuick/Enterprise/VirtualKeyboard/";
 #endif
     Q_INIT_RESOURCE(default_style);
     Q_INIT_RESOURCE(retro_style);
-    const QString path(QT_VIRTUALKEYBOARD_IMPORT_PATH);
     qmlRegisterSingletonType<DeclarativeInputContext>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "InputContext", createInputContextModule);
     qmlRegisterUncreatableType<DeclarativeInputEngine>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "InputEngine", "Cannot create input method engine");
     qmlRegisterUncreatableType<DeclarativeShiftHandler>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "ShiftHandler", "Cannot create shift handler");

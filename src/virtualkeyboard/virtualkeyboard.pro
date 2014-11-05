@@ -77,9 +77,6 @@ OTHER += qtvirtualkeyboard.json
 qtquickcompiler {
     TARGETPATH = QtQuick/Enterprise/VirtualKeyboard
     DEFINES += COMPILING_QML
-    DEFINES += QT_VIRTUALKEYBOARD_IMPORT_PATH=\\\"qrc:/content/\\\"
-} else {
-    DEFINES += QT_VIRTUALKEYBOARD_IMPORT_PATH=\\\"file://$$QMLPATH/\\\"
 }
 
 qml.files = \

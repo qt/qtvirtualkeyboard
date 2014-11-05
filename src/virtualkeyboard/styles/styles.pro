@@ -10,9 +10,6 @@ INSTALLS += target
 qtquickcompiler {
     TARGETPATH = QtQuick/Enterprise/VirtualKeyboard/Styles
     DEFINES += COMPILING_QML
-    DEFINES += STYLES_IMPORT_PATH=\\\"qrc:/\\\"
-} else {
-    DEFINES += STYLES_IMPORT_PATH=\\\"file://$$INSTALL_PATH/\\\"
 }
 
 SOURCES += \

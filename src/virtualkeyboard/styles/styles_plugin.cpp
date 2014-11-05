@@ -19,6 +19,7 @@
 #include "styles_plugin.h"
 
 #include <qqml.h>
+#include <QtCore/QLibraryInfo>
 
 /*!
     \qmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles 1.2
@@ -30,8 +31,10 @@ void StylesPlugin::registerTypes(const char *uri)
 {
 #ifdef COMPILING_QML
     Q_INIT_RESOURCE(styles);
+    const QString path("qrc:///");
+#else
+    const QString path = "file://" + QLibraryInfo::location(QLibraryInfo::Qml2ImportsPath) + "/QtQuick/Enterprise/VirtualKeyboard/Styles/";
 #endif
-    const QString path(STYLES_IMPORT_PATH);
     qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 0, "KeyboardStyle");
     qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 1, "KeyboardStyle");
     qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 2, "KeyboardStyle");

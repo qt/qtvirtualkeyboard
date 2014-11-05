@@ -28,6 +28,7 @@
 #include <xcb/xfixes.h>
 #include <qpa/qplatformnativeinterface.h>
 #include <QtCore/private/qobject_p.h>
+#include <QtCore/QLibraryInfo>
 
 class XcbInputPanelPrivate : public QObjectPrivate
 {
@@ -107,7 +108,11 @@ void XcbInputPanel::createView()
         d->view.reset(new InputView());
         d->view->setFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::WindowDoesNotAcceptFocus | Qt::BypassWindowManagerHint);
         d->view->setColor(QColor(Qt::transparent));
-        const QString virtualKeyboardImportPath(QT_VIRTUALKEYBOARD_IMPORT_PATH);
+#ifdef COMPILING_QML
+        const QString virtualKeyboardImportPath("qrc:///content/");
+#else
+        const QString virtualKeyboardImportPath = "file://" + QLibraryInfo::location(QLibraryInfo::Qml2ImportsPath) + "/QtQuick/Enterprise/VirtualKeyboard/";
+#endif
         d->view->setSource(QUrl(virtualKeyboardImportPath + "InputPanel.qml"));
         /*  Destroy the view along with the last window in application. */
         connect(qGuiApp, SIGNAL(lastWindowClosed()), SLOT(destroyView()));
