@@ -51,13 +51,10 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
 {
     Q_UNUSED(paramList);
 #ifdef COMPILING_QML
-    Q_INIT_RESOURCE(content_qtquickcompiler);
-    Q_INIT_RESOURCE(default_style_qtquickcompiler);
-    Q_INIT_RESOURCE(retro_style_qtquickcompiler);
-#else
+    Q_INIT_RESOURCE(content);
+#endif
     Q_INIT_RESOURCE(default_style);
     Q_INIT_RESOURCE(retro_style);
-#endif
     const QString path(QT_VIRTUALKEYBOARD_IMPORT_PATH);
     qmlRegisterSingletonType<DeclarativeInputContext>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "InputContext", createInputContextModule);
     qmlRegisterUncreatableType<DeclarativeInputEngine>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "InputEngine", "Cannot create input method engine");

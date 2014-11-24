@@ -29,7 +29,7 @@
 void StylesPlugin::registerTypes(const char *uri)
 {
 #ifdef COMPILING_QML
-    Q_INIT_RESOURCE(styles_qtquickcompiler);
+    Q_INIT_RESOURCE(styles);
 #endif
     const QString path(STYLES_IMPORT_PATH);
     qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 0, "KeyboardStyle");

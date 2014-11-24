@@ -8,15 +8,13 @@ android-no-sdk {
     INSTALL_PATH = $$[QT_INSTALL_QML]/QtQuick/Enterprise/VirtualKeyboard/Styles
 }
 QT += qml quick
-CONFIG += qt plugin
+CONFIG += plugin
 
 target.path = $$INSTALL_PATH
 INSTALLS += target
 
 qtquickcompiler {
     TARGETPATH = QtQuick/Enterprise/VirtualKeyboard/Styles
-    # without the next line it fails to compile - QTRD-3291
-    CONFIG += qtquickcompiler
     DEFINES += COMPILING_QML
     DEFINES += STYLES_IMPORT_PATH=\\\"qrc:/\\\"
 } else {
