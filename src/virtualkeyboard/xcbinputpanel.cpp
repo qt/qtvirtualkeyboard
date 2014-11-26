@@ -141,7 +141,7 @@ void XcbInputPanel::focusWindowChanged(QWindow *focusWindow)
 {
     disconnect(this, SLOT(focusWindowVisibleChanged(bool)));
     if (focusWindow)
-        connect(focusWindow, SIGNAL(visibleChanged(bool)), SLOT(focusWindowVisibleChanged(bool)));
+        connect(focusWindow, &QWindow::visibleChanged, this, &XcbInputPanel::focusWindowVisibleChanged);
 }
 
 void XcbInputPanel::focusWindowVisibleChanged(bool visible)
