@@ -97,13 +97,17 @@ KeyboardStyle {
             color: "#1e1b18"
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
-            KeyIcon {
+            Item {
                 id: backspaceKeyIcon
-                source: resourcePrefix + "images/backspace.png"
-                color: "#868482"
                 anchors.fill: parent
                 anchors.topMargin: keyIconMargin
                 anchors.bottomMargin: keyIconMargin
+                Image {
+                    source: resourcePrefix + "images/backspace-868482.png"
+                    fillMode: Image.PreserveAspectFit
+                    anchors.fill: parent
+                    anchors.margins: parent.width * 0.05
+                }
             }
         }
         states: [
@@ -141,13 +145,16 @@ KeyboardStyle {
             color: "#35322f"
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
-            KeyIcon {
+            Item {
                 id: languageKeyIcon
-                source: resourcePrefix + "images/globe.png"
-                color: "#868482"
                 anchors.fill: parent
                 anchors.topMargin: keyIconMargin
                 anchors.bottomMargin: keyIconMargin
+                Image {
+                    source: resourcePrefix + "images/globe-868482.png"
+                    fillMode: Image.PreserveAspectFit
+                    anchors.fill: parent
+                }
             }
         }
         states: [
@@ -185,26 +192,30 @@ KeyboardStyle {
             color: "#1e1b18"
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
-            KeyIcon {
+            Item {
                 id: enterKeyIcon
                 visible: enterKeyText.text.length === 0
-                source: {
-                    switch (control.actionId) {
-                    case EnterKeyAction.Go:
-                    case EnterKeyAction.Send:
-                    case EnterKeyAction.Next:
-                    case EnterKeyAction.Done:
-                        return resourcePrefix + "images/check.png"
-                    case EnterKeyAction.Search:
-                        return resourcePrefix + "images/search.png"
-                    default:
-                        return resourcePrefix + "images/enter.png"
-                    }
-                }
-                color: "#868482"
                 anchors.fill: parent
                 anchors.topMargin: keyIconMargin
                 anchors.bottomMargin: keyIconMargin
+
+                Image {
+                    anchors.fill: parent
+                    fillMode: Image.PreserveAspectFit
+                    source: {
+                        switch (control.actionId) {
+                        case EnterKeyAction.Go:
+                        case EnterKeyAction.Send:
+                        case EnterKeyAction.Next:
+                        case EnterKeyAction.Done:
+                            return resourcePrefix + "images/check-868482.png"
+                        case EnterKeyAction.Search:
+                            return resourcePrefix + "images/search-868482.png"
+                        default:
+                            return resourcePrefix + "images/enter-868482.png"
+                        }
+                    }
+                }
             }
             Text {
                 id: enterKeyText
@@ -268,13 +279,17 @@ KeyboardStyle {
             color: "#1e1b18"
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
-            KeyIcon {
+            Item {
                 id: hideKeyIcon
-                source: resourcePrefix + "images/hidekeyboard.png"
-                color: "#868482"
                 anchors.fill: parent
                 anchors.topMargin: keyIconMargin
                 anchors.bottomMargin: keyIconMargin
+
+                Image {
+                    source: resourcePrefix + "images/hidekeyboard-868482.png"
+                    fillMode: Image.PreserveAspectFit
+                    anchors.fill: parent
+                }
             }
         }
         states: [
@@ -312,13 +327,18 @@ KeyboardStyle {
             color: "#1e1b18"
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
-            KeyIcon {
+            Item {
                 id: shiftKeyIcon
-                source: resourcePrefix + "images/shift.png"
-                color: "#868482"
                 anchors.fill: parent
                 anchors.topMargin: keyIconMargin
                 anchors.bottomMargin: keyIconMargin
+
+                Image {
+                    id: shiftKeyIconImage
+                    source: resourcePrefix + "images/shift-868482.png"
+                    fillMode: Image.PreserveAspectFit
+                    anchors.fill: parent
+                }
             }
             states: [
                 State {
@@ -329,16 +349,16 @@ KeyboardStyle {
                         color: "#5a892e"
                     }
                     PropertyChanges {
-                        target: shiftKeyIcon
-                        color: "#c5d6b6"
+                        target: shiftKeyIconImage
+                        source: resourcePrefix + "images/shift-c5d6b6.png"
                     }
                 },
                 State {
                     name: "shift"
                     when: InputContext.shift
                     PropertyChanges {
-                        target: shiftKeyIcon
-                        color: "#80c342"
+                        target: shiftKeyIconImage
+                        source: resourcePrefix + "images/shift-80c342.png"
                     }
                 }
             ]

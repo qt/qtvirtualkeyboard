@@ -136,13 +136,18 @@ KeyboardStyle {
             horizontalTileMode: BorderImage.Stretch
             scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
         }
-        KeyIcon {
+        Item {
             id: backspaceKeyIcon
-            source: resourcePrefix + "images/backspace.png"
-            color: "#c5a96f"
             anchors.fill: parent
             anchors.topMargin: keyIconMargin
             anchors.bottomMargin: keyIconMargin
+
+            Image {
+                anchors.fill: parent
+                anchors.margins: parent.width * 0.1
+                fillMode: Image.PreserveAspectFit
+                source: resourcePrefix + "images/backspace-c5a96f.png"
+            }
         }
         states: [
             State {
@@ -180,13 +185,17 @@ KeyboardStyle {
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
         }
-        KeyIcon {
+        Item {
             id: languageKeyIcon
-            source: resourcePrefix + "images/globe.png"
-            color: "#110b05"
             anchors.fill: parent
             anchors.topMargin: keyIconMargin
             anchors.bottomMargin: keyIconMargin
+
+            Image {
+                source: resourcePrefix + "images/globe-110b05.png"
+                fillMode: Image.PreserveAspectFit
+                anchors.fill: parent
+            }
         }
         states: [
             State {
@@ -230,26 +239,31 @@ KeyboardStyle {
             horizontalTileMode: BorderImage.Stretch
             scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
         }
-        KeyIcon {
+        Item {
             id: enterKeyIcon
             visible: enterKeyText.text.length === 0
-            source: {
-                switch (control.actionId) {
-                case EnterKeyAction.Go:
-                case EnterKeyAction.Send:
-                case EnterKeyAction.Next:
-                case EnterKeyAction.Done:
-                    return resourcePrefix + "images/check.png"
-                case EnterKeyAction.Search:
-                    return resourcePrefix + "images/search.png"
-                default:
-                    return resourcePrefix + "images/enter.png"
-                }
-            }
-            color: "#c5a96f"
             anchors.fill: parent
             anchors.topMargin: keyIconMargin
             anchors.bottomMargin: keyIconMargin
+
+            Image {
+                anchors.fill: parent
+                anchors.margins: parent.width * 0.025
+                fillMode: Image.PreserveAspectFit
+                source: {
+                    switch (control.actionId) {
+                    case EnterKeyAction.Go:
+                    case EnterKeyAction.Send:
+                    case EnterKeyAction.Next:
+                    case EnterKeyAction.Done:
+                        return resourcePrefix + "images/check-c5a96f.png"
+                    case EnterKeyAction.Search:
+                        return resourcePrefix + "images/search-c5a96f.png"
+                    default:
+                        return resourcePrefix + "images/enter-c5a96f.png"
+                    }
+                }
+            }
         }
         Text {
             id: enterKeyText
@@ -322,13 +336,18 @@ KeyboardStyle {
             horizontalTileMode: BorderImage.Stretch
             scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
         }
-        KeyIcon {
+        Item {
             id: hideKeyIcon
-            source: resourcePrefix + "images/hidekeyboard.png"
-            color: "#c5a96f"
             anchors.fill: parent
             anchors.topMargin: keyIconMargin
             anchors.bottomMargin: keyIconMargin
+
+            Image {
+                source: resourcePrefix + "images/hidekeyboard-c5a96f.png"
+                fillMode: Image.PreserveAspectFit
+                anchors.fill: parent
+                anchors.margins: parent.width * 0.025
+            }
         }
         states: [
             State {
@@ -380,8 +399,8 @@ KeyboardStyle {
                         source: resourcePrefix + "images/key154px_capslock.png"
                     }
                     PropertyChanges {
-                        target: shiftKeyIcon
-                        color: "#cd8865"
+                        target: shiftKeyIconImage
+                        source: resourcePrefix + "images/shift-cd8865.png"
                     }
                 },
                 State {
@@ -392,19 +411,25 @@ KeyboardStyle {
                         source: resourcePrefix + "images/key154px_shiftcase.png"
                     }
                     PropertyChanges {
-                        target: shiftKeyIcon
-                        color: "#dc4f28"
+                        target: shiftKeyIconImage
+                        source: resourcePrefix + "images/shift-dc4f28.png"
                     }
                 }
             ]
         }
-        KeyIcon {
+        Item {
             id: shiftKeyIcon
-            source: resourcePrefix + "images/shift.png"
-            color: "#c5a96f"
             anchors.fill: parent
             anchors.topMargin: keyIconMargin
             anchors.bottomMargin: keyIconMargin
+
+            Image {
+                id: shiftKeyIconImage
+                anchors.fill: parent
+                anchors.margins: parent.width * 0.025
+                fillMode: Image.PreserveAspectFit
+                source: resourcePrefix + "images/shift-c5a96f.png"
+            }
         }
         states: [
             State {

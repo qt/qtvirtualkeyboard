@@ -20,12 +20,13 @@
         <file>images/key_preview.png</file>
         <file>images/triangle_black.png</file>
         <file>images/triangle_highlight.png</file>
-        <file>images/backspace.png</file>
-        <file>images/enter.png</file>
-        <file>images/hidekeyboard.png</file>
-        <file>images/shift.png</file>
-        <file>images/globe.png</file>
-        <file>images/search.png</file>
-        <file>images/check.png</file>
+        <file>images/backspace-c5a96f.png</file>
+        <file>images/check-c5a96f.png</file>
+        <file>images/enter-c5a96f.png</file>
+        <file>images/globe-110b05.png</file>
+        <file>images/hidekeyboard-c5a96f.png</file>
+        <file>images/search-c5a96f.png</file>
+        <file>images/shift-c5a96f.png</file>
+        <file>images/shift-dc4f28.png</file>
     </qresource>
 </RCC>
