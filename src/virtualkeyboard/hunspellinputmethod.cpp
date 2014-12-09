@@ -24,6 +24,7 @@
 #include <QFileInfo>
 #include "virtualkeyboarddebug.h"
 #include <QTextCodec>
+#include <QtCore/QLibraryInfo>
 
 class HunspellInputMethodPrivate : public AbstractInputMethodPrivate
 {
@@ -53,7 +54,7 @@ public:
             Hunhandle *hunspell = 0;
             QString hunspellDataPath(QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_HUNSPELL_DATA_PATH").constData()));
             if (hunspellDataPath.isEmpty())
-                hunspellDataPath = QT_VIRTUALKEYBOARD_HUNSPELL_DATA_PATH;
+                hunspellDataPath = QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/hunspell:/usr/share/hunspell:/usr/share/myspell/dicts";
             QStringList searchPaths(hunspellDataPath.split(":"));
             foreach (const QString &searchPath, searchPaths) {
                 QByteArray affpath(QString("%1/%2.aff").arg(searchPath).arg(locale).toUtf8());

@@ -22,6 +22,7 @@
 #include <QStandardPaths>
 #include <QFileInfo>
 #include <QDir>
+#include <QtCore/QLibraryInfo>
 #include "virtualkeyboarddebug.h"
 
 using namespace ime_pinyin;
@@ -58,7 +59,7 @@ bool PinyinDecoderService::init()
 
     QString sysDict(QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_PINYIN_DICTIONARY").constData()));
     if (sysDict.isEmpty())
-        sysDict = QT_VIRTUALKEYBOARD_PINYIN_DICTIONARY;
+        sysDict = QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/pinyin/dict_pinyin.dat";
 
     QString usrDictPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
     QFileInfo usrDictInfo(usrDictPath + "/qtvirtualkeyboard/pinyin/usr_dict.dat");

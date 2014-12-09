@@ -171,8 +171,6 @@ INSTALLS += qml
         INCLUDEPATH += 3rdparty/hunspell/src
         DEPENDPATH += 3rdparty/hunspell/src
         LIBS += -L$$OUT_PWD/3rdparty/hunspell/ -lhunspell
-        isEmpty(hunspell_search_paths) hunspell_search_paths=$$DATAPATH/hunspell
-        DEFINES += QT_VIRTUALKEYBOARD_HUNSPELL_DATA_PATH=\\\"$$join(hunspell_search_paths, :)\\\"
         exists(3rdparty/hunspell/data) {
             hunspell_data.files = 3rdparty/hunspell/data/*.dic 3rdparty/hunspell/data/*.aff
             hunspell_data.path = $$DATAPATH/hunspell
@@ -186,8 +184,6 @@ INSTALLS += qml
         HEADERS += hunspellinputmethod.h hunspellworker.h
         DEFINES += HAVE_HUNSPELL
         PKGCONFIG += hunspell
-        isEmpty(hunspell_search_paths) hunspell_search_paths=/usr/share/hunspell /usr/share/myspell/dicts
-        DEFINES += QT_VIRTUALKEYBOARD_HUNSPELL_DATA_PATH=\\\"$$join(hunspell_search_paths, :)\\\"
     } else {
         message(Hunspell not found! Spell correction will not be available.)
     }
@@ -204,7 +200,6 @@ pinyin {
     INCLUDEPATH += 3rdparty/pinyin/include
     DEPENDPATH += 3rdparty/pinyin/include
     LIBS += -L$$OUT_PWD/3rdparty/pinyin/ -lpinyin
-    DEFINES += QT_VIRTUALKEYBOARD_PINYIN_DICTIONARY=\\\"$$DATAPATH/pinyin/dict_pinyin.dat\\\"
     pinyin_data.files = $$PWD/3rdparty/pinyin/data/dict_pinyin.dat
     pinyin_data.path = $$DATAPATH/pinyin
     INSTALLS += pinyin_data
