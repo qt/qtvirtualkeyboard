@@ -111,7 +111,7 @@ void XcbInputPanel::createView()
 #ifdef COMPILING_QML
         const QString virtualKeyboardImportPath("qrc:///content/");
 #else
-        const QString virtualKeyboardImportPath = "file://" + QLibraryInfo::location(QLibraryInfo::Qml2ImportsPath) + "/QtQuick/Enterprise/VirtualKeyboard/";
+        const QString virtualKeyboardImportPath = QUrl::fromLocalFile(QLibraryInfo::location(QLibraryInfo::Qml2ImportsPath)).toEncoded() + "/QtQuick/Enterprise/VirtualKeyboard/";
 #endif
         d->view->setSource(QUrl(virtualKeyboardImportPath + "InputPanel.qml"));
         /*  Destroy the view along with the last window in application. */

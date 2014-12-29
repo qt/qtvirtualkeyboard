@@ -33,7 +33,7 @@ void StylesPlugin::registerTypes(const char *uri)
     Q_INIT_RESOURCE(styles);
     const QString path("qrc:///");
 #else
-    const QString path = "file://" + QLibraryInfo::location(QLibraryInfo::Qml2ImportsPath) + "/QtQuick/Enterprise/VirtualKeyboard/Styles/";
+    const QString path = QUrl::fromLocalFile(QLibraryInfo::location(QLibraryInfo::Qml2ImportsPath)).toEncoded() + "/QtQuick/Enterprise/VirtualKeyboard/Styles/";
 #endif
     qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 0, "KeyboardStyle");
     qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 1, "KeyboardStyle");

@@ -54,7 +54,7 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     Q_INIT_RESOURCE(content);
     const QString path("qrc:///content/");
 #else
-    const QString path = "file://" + QLibraryInfo::location(QLibraryInfo::Qml2ImportsPath) + "/QtQuick/Enterprise/VirtualKeyboard/";
+    const QString path = QUrl::fromLocalFile(QLibraryInfo::location(QLibraryInfo::Qml2ImportsPath)).toEncoded() + "/QtQuick/Enterprise/VirtualKeyboard/";
 #endif
     Q_INIT_RESOURCE(default_style);
     Q_INIT_RESOURCE(retro_style);
