@@ -23,18 +23,40 @@
 #ifdef ___DEBUG_PERF___
 #include <cutils/log.h>
 #endif
+#ifdef _WIN32
+#include <io.h>
+#else
 #include <unistd.h>
+#endif
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <assert.h>
 #include <ctype.h>
 #include <sys/types.h>
+#ifndef _WIN32
 #include <sys/time.h>
+#endif
 #include <time.h>
+#ifdef _WIN32
+#undef max
+#undef min
+#include <QDateTime>
+#include <QMutex>
+#else
 #include <pthread.h>
+#endif
 #include <math.h>
 
 namespace ime_pinyin {
+
+#ifdef _WIN32
+static int gettimeofday(struct timeval *tp, void *) {
+    const qint64 current_msecs_since_epoch = QDateTime::currentMSecsSinceEpoch();
+    tp->tv_sec = (long)(current_msecs_since_epoch / 1000);
+    tp->tv_usec = (long)((current_msecs_since_epoch % 1000) * 1000);
+    return 0;
+}
+#endif
 
 #ifdef ___DEBUG_PERF___
 static uint64 _ellapse_ = 0;
@@ -58,7 +80,14 @@ static struct timeval _tv_start_, _tv_end_;
 #endif
 
 // XXX File load and write are thread-safe by g_mutex_
+#ifdef _WIN32
+static QMutex g_mutex_;
+#define pthread_mutex_lock(MUTEX) ((MUTEX)->lock())
+#define pthread_mutex_unlock(MUTEX) ((MUTEX)->unlock())
+#define pthread_mutex_trylock(MUTEX) (!(MUTEX)->tryLock(0))
+#else
 static pthread_mutex_t g_mutex_ = PTHREAD_MUTEX_INITIALIZER;
+#endif
 static struct timeval g_last_update_ = {0, 0};
 
 inline uint32 UserDict::get_dict_file_size(UserDictInfo * info) {
@@ -1267,7 +1296,9 @@ void UserDict::write_back() {
   // It seems truncate is not need on Linux, Windows except Mac
   // I am doing it here anyway for safety.
   off_t cur = lseek(fd, 0, SEEK_CUR);
+#ifndef _WIN32
   ftruncate(fd, cur);
+#endif
   close(fd);
   state_ = USER_DICT_SYNC;
 }

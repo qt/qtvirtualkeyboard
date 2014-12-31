@@ -201,7 +201,9 @@ pinyin {
     DEFINES += HAVE_PINYIN
     INCLUDEPATH += 3rdparty/pinyin/include
     DEPENDPATH += 3rdparty/pinyin/include
-    LIBS += -L$$OUT_PWD/3rdparty/pinyin/ -lpinyin
+    win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/3rdparty/pinyin/release/ -lpinyin
+    else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/3rdparty/pinyin/debug/ -lpinyin
+    else: LIBS += -L$$OUT_PWD/3rdparty/pinyin/ -lpinyin
     pinyin_data.files = $$PWD/3rdparty/pinyin/data/dict_pinyin.dat
     pinyin_data.path = $$DATAPATH/pinyin
     INSTALLS += pinyin_data

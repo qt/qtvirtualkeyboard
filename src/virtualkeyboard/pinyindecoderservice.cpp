@@ -127,7 +127,7 @@ QString PinyinDecoderService::pinyinString(bool decoded)
     if (!decoded)
         py_len = strlen(py);
 
-    return QString(QLatin1String(py, py_len));
+    return QString(QLatin1String(py, (int)py_len));
 }
 
 int PinyinDecoderService::pinyinStringLength(bool decoded)
@@ -136,20 +136,20 @@ int PinyinDecoderService::pinyinStringLength(bool decoded)
     const char *py = im_get_sps_str(&py_len);
     if (!decoded)
         py_len = strlen(py);
-    return py_len;
+    return (int)py_len;
 }
 
 QVector<int> PinyinDecoderService::spellingStartPositions()
 {
     const unsigned short *spl_start;
-    size_t len;
+    int len;
     // There will be len + 1 elements in the buffer when len > 0.
-    len = im_get_spl_start_pos(spl_start);
+    len = (int)im_get_spl_start_pos(spl_start);
 
     QVector<int> arr;
     arr.resize(len + 2);
     arr[0] = len; // element 0 is used to store the length of buffer.
-    for (size_t i = 0; i <= len; i++)
+    for (int i = 0; i <= len; i++)
         arr[i + 1] = spl_start[i];
     return arr;
 }
@@ -189,7 +189,7 @@ int PinyinDecoderService::cancelLastChoice()
 
 int PinyinDecoderService::fixedLength()
 {
-    return im_get_fixed_len();
+    return (int)im_get_fixed_len();
 }
 
 void PinyinDecoderService::flushCache()

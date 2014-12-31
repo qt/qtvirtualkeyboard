@@ -19,6 +19,10 @@
 #include <assert.h>
 #include "../include/dictdef.h"
 
+#ifdef _WIN32
+#define snprintf _snprintf
+#endif
+
 #ifdef ___BUILD_MODEL___
 #include "../include/spellingtable.h"
 #endif

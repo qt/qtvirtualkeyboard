@@ -1,17 +1,11 @@
 TEMPLATE = lib
-QT -= core gui
+win32: QT -= gui
+else: CONFIG -= qt
 TARGET = pinyin
 VERSION = 1.0.0
-CONFIG += dll
-QMAKE_CXXFLAGS += -Wno-unused-parameter
-#CONFIG += staticlib
-#CONFIG += precompile_header warn_off
+CONFIG += staticlib
+CONFIG += warn_off
 CONFIG -= qtquickcompiler # QTRD-3292
-
-dll {
-    target.path = $$[QT_INSTALL_LIBS]
-    INSTALLS += target
-}
 
 INCLUDEPATH += \
     include
