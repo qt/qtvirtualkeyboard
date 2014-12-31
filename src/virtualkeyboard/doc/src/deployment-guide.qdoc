@@ -73,7 +73,7 @@ for using the plugin:
 The integration method is automatically selected by the project files.
 However, in desktop environments, it is possible to override the desktop
 integration method and use the application integration method instead.
-This happens by adding the \c CONFIG+=disable-xcb option to the \c qmake
+This happens by adding the \c CONFIG+=disable-desktop to the \c qmake
 command line.
 
 \note The desktop integration method is not currently available in Boot2Qt

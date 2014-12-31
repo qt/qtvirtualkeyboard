@@ -310,7 +310,21 @@ Item {
             updateAvailableLocaleIndices()
         }
     }
-    AlternativeKeys { id: alternativeKeys }
+    AlternativeKeys {
+        id: alternativeKeys
+        // Add some extra margin for decoration
+        property real horizontalMargin: style.alternateKeysListItemWidth
+        property real verticalMargin: style.alternateKeysListItemHeight
+        property rect previewRect: Qt.rect(keyboard.x + alternativeKeys.listView.x - horizontalMargin,
+                                           keyboard.y + alternativeKeys.listView.y - verticalMargin,
+                                           alternativeKeys.listView.width + horizontalMargin * 2,
+                                           alternativeKeys.listView.height + verticalMargin * 2)
+        onVisibleChanged: {
+            if (visible)
+                InputContext.previewRectangle = Qt.binding(function() {return previewRect})
+            InputContext.previewVisible = visible
+        }
+    }
     Timer {
         id: pressAndHoldTimer
         interval: 800
@@ -354,7 +368,19 @@ Item {
             }
         }
     }
-    CharacterPreviewBubble { active: keyboardInputArea.pressed && !alternativeKeys.active }
+    CharacterPreviewBubble {
+        id: characterPreview
+        active: keyboardInputArea.pressed && !alternativeKeys.active
+        property rect previewRect: Qt.rect(keyboard.x + characterPreview.x,
+                                           keyboard.y + characterPreview.y,
+                                           characterPreview.width,
+                                           characterPreview.height)
+        onVisibleChanged: {
+            if (visible)
+                InputContext.previewRectangle = Qt.binding(function() {return previewRect})
+            InputContext.previewVisible = visible
+        }
+    }
     Binding {
         target: InputContext
         property: "keyboardRectangle"

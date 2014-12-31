@@ -19,8 +19,8 @@
 #include "platforminputcontext.h"
 #include "declarativeinputcontext.h"
 #include "abstractinputpanel.h"
-#ifdef HAVE_XCB
-#include "xcbinputpanel.h"
+#ifdef QT_VIRTUALKEYBOARD_DESKTOP
+#include "desktopinputpanel.h"
 #else
 #include "appinputpanel.h"
 #endif
@@ -31,8 +31,8 @@
 
 PlatformInputContext::PlatformInputContext() :
     m_declarativeContext(0),
-#ifdef HAVE_XCB
-    m_inputPanel(new XcbInputPanel(this)),
+#ifdef QT_VIRTUALKEYBOARD_DESKTOP
+    m_inputPanel(new DesktopInputPanel(this)),
 #else
     m_inputPanel(new AppInputPanel(this)),
 #endif
@@ -40,6 +40,9 @@ PlatformInputContext::PlatformInputContext() :
     m_focusObject(0),
     m_locale(),
     m_inputDirection(m_locale.textDirection())
+#if defined(Q_OS_WIN)
+    ,m_filterEvent(0)
+#endif
 {
 }
 
@@ -91,7 +94,14 @@ void PlatformInputContext::invokeAction(QInputMethod::Action action, int cursorP
 
 bool PlatformInputContext::filterEvent(const QEvent *event)
 {
-    return m_declarativeContext ? m_declarativeContext->filterEvent(event) : QPlatformInputContext::filterEvent(event);
+    // On Windows the events are filtered using eventFilter()
+#if !defined(Q_OS_WIN)
+    if (m_declarativeContext)
+        return m_declarativeContext->filterEvent(event);
+#else
+    Q_UNUSED(event)
+#endif
+    return false;
 }
 
 QRectF PlatformInputContext::keyboardRect() const
@@ -162,7 +172,15 @@ void PlatformInputContext::setFocusObject(QObject *object)
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::setFocusObject():" << object;
     if (m_focusObject != object) {
+#if defined(Q_OS_WIN)
+        if (m_focusObject)
+            m_focusObject->removeEventFilter(this);
+#endif
         m_focusObject = object;
+#if defined(Q_OS_WIN)
+        if (m_focusObject)
+            m_focusObject->installEventFilter(this);
+#endif
         emit focusObjectChanged();
     }
     update(Qt::ImQueryAll);
@@ -173,18 +191,41 @@ DeclarativeInputContext *PlatformInputContext::declarativeInputContext() const
     return m_declarativeContext;
 }
 
+#if defined(Q_OS_WIN)
+bool PlatformInputContext::eventFilter(QObject *object, QEvent *event)
+{
+    if (event != m_filterEvent && object == m_focusObject && m_declarativeContext)
+        return m_declarativeContext->filterEvent(event);
+    return false;
+}
+#endif
+
 void PlatformInputContext::sendEvent(QEvent *event)
 {
-    if (m_focusObject)
+    if (m_focusObject) {
+#if defined(Q_OS_WIN)
+        m_filterEvent = event;
+#endif
         QGuiApplication::sendEvent(m_focusObject, event);
+#if defined(Q_OS_WIN)
+        m_filterEvent = 0;
+#endif
+    }
 }
 
 void PlatformInputContext::sendKeyEvent(QKeyEvent *event)
 {
     const QGuiApplication *app = qApp;
     QWindow *focusWindow = app ? app->focusWindow() : 0;
-    if (focusWindow)
+    if (focusWindow) {
+#if defined(Q_OS_WIN)
+        m_filterEvent = event;
+#endif
         QGuiApplication::sendEvent(focusWindow, event);
+#if defined(Q_OS_WIN)
+        m_filterEvent = 0;
+#endif
+    }
 }
 
 QVariant PlatformInputContext::inputMethodQuery(Qt::InputMethodQuery query)

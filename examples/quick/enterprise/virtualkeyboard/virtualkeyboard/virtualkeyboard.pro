@@ -22,7 +22,12 @@ OTHER_FILES += \
     content/TextBase.qml \
     content/TextField.qml \
 
-disable-xcb|android-no-sdk|!isEmpty(CROSS_COMPILE) {
+disable-xcb {
+    message(The disable-xcb option has been deprecated. Please use disable-desktop instead.)
+    CONFIG += disable-desktop
+}
+
+disable-desktop|android-no-sdk|!isEmpty(CROSS_COMPILE) {
     DEFINES += MAIN_QML=\\\"VirtualKeyboard-b2qt.qml\\\"
 } else {
     DEFINES += MAIN_QML=\\\"VirtualKeyboard.qml\\\"

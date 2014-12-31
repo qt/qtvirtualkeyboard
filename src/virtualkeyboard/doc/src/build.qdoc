@@ -50,7 +50,8 @@ in C++.
 
 \section1 Build Instructions
 
-The Qt Virtual Keyboard can be built for Linux Desktop/X11 or Boot2Qt targets.
+The Qt Virtual Keyboard can be built for Linux Desktop/X11, Windows Desktop
+or Boot2Qt targets.
 The target is automatically detected by QMAKE and requires no special
 configuration parameters.
 
@@ -62,8 +63,12 @@ build targets.
 
 \table
 \row
+    \li \e CONFIG += disable-desktop
+    \li Disables Desktop integration
+\row
     \li \e CONFIG += disable-xcb
     \li Disables X11 integration
+    \note Deprecated since 1.3. Use \e disable-desktop instead.
 \row
     \li \e CONFIG += disable-hunspell
     \li Disables Hunspell integration

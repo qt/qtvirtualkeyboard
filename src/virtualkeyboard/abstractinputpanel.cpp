@@ -32,7 +32,7 @@
     \list
         \li AppInputPanel Input panel type that is integrated directly into the
             application.
-        \li XcbInputPanel Input panel type for X-windowing system.
+        \li DesktopInputPanel Input panel type for Desktop systems.
     \endlist
 */
 

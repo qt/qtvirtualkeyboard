@@ -16,8 +16,8 @@
 **
 ****************************************************************************/
 
-#ifndef INPUTPANEL_H
-#define INPUTPANEL_H
+#ifndef DESKTOPINPUTPANEL_H
+#define DESKTOPINPUTPANEL_H
 
 #include "abstractinputpanel.h"
 
@@ -25,15 +25,15 @@ QT_BEGIN_NAMESPACE
 class QWindow;
 QT_END_NAMESPACE
 
-class XcbInputPanelPrivate;
+class DesktopInputPanelPrivate;
 
-class XcbInputPanel : public AbstractInputPanel
+class DesktopInputPanel : public AbstractInputPanel
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(XcbInputPanel)
+    Q_DECLARE_PRIVATE(DesktopInputPanel)
 public:
-    explicit XcbInputPanel(QObject *parent = 0);
-    ~XcbInputPanel();
+    explicit DesktopInputPanel(QObject *parent = 0);
+    ~DesktopInputPanel();
 
     void show();
     void hide();
@@ -49,6 +49,11 @@ protected slots:
     void repositionView(const QRect &rect);
     void focusWindowChanged(QWindow *focusWindow);
     void focusWindowVisibleChanged(bool visible);
+    void previewRectangleChanged();
+    void previewVisibleChanged();
+
+protected:
+    void updateInputRegion();
 };
 
-#endif // INPUTPANEL_H
+#endif // DESKTOPINPUTPANEL_H

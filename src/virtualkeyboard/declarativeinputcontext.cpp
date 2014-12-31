@@ -55,6 +55,8 @@ public:
         inputEngine(0),
         shiftHandler(0),
         keyboardRect(),
+        previewRect(),
+        previewVisible(false),
         animating(false),
         focus(false),
         shift(false),
@@ -75,6 +77,8 @@ public:
     DeclarativeInputEngine *inputEngine;
     DeclarativeShiftHandler *shiftHandler;
     QRectF keyboardRect;
+    QRectF previewRect;
+    bool previewVisible;
     bool animating;
     bool focus;
     bool shift;
@@ -229,6 +233,36 @@ void DeclarativeInputContext::setKeyboardRectangle(QRectF rectangle)
         d->keyboardRect = rectangle;
         emit keyboardRectangleChanged();
         d->inputContext->emitKeyboardRectChanged();
+    }
+}
+
+QRectF DeclarativeInputContext::previewRectangle() const
+{
+    Q_D(const DeclarativeInputContext);
+    return d->previewRect;
+}
+
+void DeclarativeInputContext::setPreviewRectangle(QRectF rectangle)
+{
+    Q_D(DeclarativeInputContext);
+    if (d->previewRect != rectangle) {
+        d->previewRect = rectangle;
+        emit previewRectangleChanged();
+    }
+}
+
+bool DeclarativeInputContext::previewVisible() const
+{
+    Q_D(const DeclarativeInputContext);
+    return d->previewVisible;
+}
+
+void DeclarativeInputContext::setPreviewVisible(bool visible)
+{
+    Q_D(DeclarativeInputContext);
+    if (d->previewVisible != visible) {
+        d->previewVisible = visible;
+        emit previewVisibleChanged();
     }
 }
 
@@ -671,6 +705,32 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
     \brief the keyboard rectangle.
 
     Use this property to set the keyboard rectangle.
+*/
+
+/*!
+    \qmlproperty rect InputContext::previewRectangle
+
+    Use this property to set the preview rectangle.
+*/
+
+/*!
+    \property DeclarativeInputContext::previewRectangle
+    \brief the preview rectangle.
+
+    Use this property to set the preview rectangle.
+*/
+
+/*!
+    \qmlproperty bool InputContext::previewVisible
+
+    Use this property to set the visibility status of the preview.
+*/
+
+/*!
+    \property DeclarativeInputContext::previewVisible
+    \brief the animating status.
+
+    Use this property to set the visibility status of the preview.
 */
 
 /*!

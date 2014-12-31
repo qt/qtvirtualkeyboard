@@ -13,7 +13,8 @@ INSTALLS += target
 QT += quick gui gui-private core-private
 
 CONFIG += plugin
-CONFIG += link_pkgconfig
+win32: CONFIG += no-pkg-config
+!contains(CONFIG, no-pkg-config): CONFIG += link_pkgconfig
 
 SOURCES += platforminputcontext.cpp \
     declarativeinputcontext.cpp \
@@ -64,11 +65,19 @@ OTHER_FILES += content/layouts \
 
 OTHER += qtvirtualkeyboard.json
 
-!disable-xcb:isEmpty(CROSS_COMPILE):!android-no-sdk {
-    PKGCONFIG += xcb xcb-xfixes
-    SOURCES += xcbinputpanel.cpp inputview.cpp
-    HEADERS += xcbinputpanel.h inputview.h
-    DEFINES += HAVE_XCB
+disable-xcb {
+    message(The disable-xcb option has been deprecated. Please use disable-desktop instead.)
+    CONFIG += disable-desktop
+}
+
+!disable-desktop:isEmpty(CROSS_COMPILE):!android-no-sdk {
+    SOURCES += desktopinputpanel.cpp inputview.cpp
+    HEADERS += desktopinputpanel.h inputview.h
+    DEFINES += QT_VIRTUALKEYBOARD_DESKTOP
+    !contains(CONFIG, no-pkg-config):packagesExist(xcb) {
+        PKGCONFIG += xcb xcb-xfixes
+        DEFINES += QT_VIRTUALKEYBOARD_HAVE_XCB
+    }
 } else {
     SOURCES += appinputpanel.cpp
     HEADERS += appinputpanel.h
@@ -180,7 +189,7 @@ INSTALLS += qml
         } else {
             error(Hunspell dictionaries are missing! Please copy .dic and .aff files to src/virtualkeyboard/3rdparty/hunspell/data directory.)
         }
-    } else:packagesExist(hunspell) {
+    } else:!contains(CONFIG, no-pkg-config):packagesExist(hunspell) {
         message(Found Hunspell package from pkg-config!)
         SOURCES += hunspellinputmethod.cpp hunspellworker.cpp
         HEADERS += hunspellinputmethod.h hunspellworker.h

@@ -43,6 +43,8 @@ class DeclarativeInputContext : public QObject
     Q_PROPERTY(QString selectedText READ selectedText NOTIFY selectedTextChanged)
     Q_PROPERTY(QRectF cursorRectangle READ cursorRectangle NOTIFY cursorRectangleChanged)
     Q_PROPERTY(QRectF keyboardRectangle READ keyboardRectangle WRITE setKeyboardRectangle NOTIFY keyboardRectangleChanged)
+    Q_PROPERTY(QRectF previewRectangle READ previewRectangle WRITE setPreviewRectangle NOTIFY previewRectangleChanged)
+    Q_PROPERTY(bool previewVisible READ previewVisible WRITE setPreviewVisible NOTIFY previewVisibleChanged)
     Q_PROPERTY(bool animating READ animating WRITE setAnimating NOTIFY animatingChanged)
     Q_PROPERTY(QString locale READ locale WRITE setLocale NOTIFY localeChanged)
     Q_PROPERTY(QObject *inputItem READ inputItem NOTIFY inputItemChanged)
@@ -67,6 +69,10 @@ public:
     QRectF cursorRectangle() const;
     QRectF keyboardRectangle() const;
     void setKeyboardRectangle(QRectF rectangle);
+    QRectF previewRectangle() const;
+    void setPreviewRectangle(QRectF rectangle);
+    bool previewVisible() const;
+    void setPreviewVisible(bool visible);
     bool animating() const;
     void setAnimating(bool animating);
     QString locale() const;
@@ -97,6 +103,8 @@ signals:
     void shiftChanged();
     void capsLockChanged();
     void keyboardRectangleChanged();
+    void previewRectangleChanged();
+    void previewVisibleChanged();
     void animatingChanged();
     void localeChanged();
     void inputItemChanged();

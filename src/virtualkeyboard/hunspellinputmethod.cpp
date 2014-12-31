@@ -22,6 +22,7 @@
 #include <hunspell/hunspell.h>
 #include <QStringList>
 #include <QFileInfo>
+#include <QDir>
 #include "virtualkeyboarddebug.h"
 #include <QTextCodec>
 #include <QtCore/QLibraryInfo>
@@ -53,9 +54,19 @@ public:
             hunspellWorker.reset(0);
             Hunhandle *hunspell = 0;
             QString hunspellDataPath(QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_HUNSPELL_DATA_PATH").constData()));
-            if (hunspellDataPath.isEmpty())
-                hunspellDataPath = QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/hunspell:/usr/share/hunspell:/usr/share/myspell/dicts";
-            QStringList searchPaths(hunspellDataPath.split(":"));
+            const QString pathListSep(
+#if defined(Q_OS_WIN32)
+                QStringLiteral(";")
+#else
+                QStringLiteral(":")
+#endif
+            );
+            QStringList searchPaths(hunspellDataPath.split(pathListSep, QString::SkipEmptyParts));
+            searchPaths.append(QDir(QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/hunspell").absolutePath());
+#if !defined(Q_OS_WIN32)
+            searchPaths.append(QStringLiteral("/usr/share/hunspell"));
+            searchPaths.append(QStringLiteral("/usr/share/myspell/dicts"));
+#endif
             foreach (const QString &searchPath, searchPaths) {
                 QByteArray affpath(QString("%1/%2.aff").arg(searchPath).arg(locale).toUtf8());
                 QByteArray dpath(QString("%1/%2.dic").arg(searchPath).arg(locale).toUtf8());
