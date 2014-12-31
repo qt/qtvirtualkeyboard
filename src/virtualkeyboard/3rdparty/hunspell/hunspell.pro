@@ -37,7 +37,7 @@ SOURCES += \
     src/hunspell/replist.cxx \
     src/hunspell/suggestmgr.cxx
 SOURCES += \
-    $$PWD/src/parsers/*.cxx
+    $$files(src/parsers/*.cxx)
 
 HEADERS += \
     config.h \
@@ -50,7 +50,9 @@ HEADERS += \
     src/hunspell/filemgr.hxx \
     src/hunspell/hashmgr.hxx \
     src/hunspell/htypes.hxx \
+    src/hunspell/hunspell.h \
     src/hunspell/hunspell.hxx \
+    src/hunspell/hunvisapi.h \
     src/hunspell/hunzip.hxx \
     src/hunspell/langnum.hxx \
     src/hunspell/phonet.hxx \
@@ -58,7 +60,7 @@ HEADERS += \
     src/hunspell/suggestmgr.hxx \
     src/hunspell/w_char.hxx
 HEADERS += \
-    $$PWD/src/parsers/*.hxx
+    $$files(src/parsers/*.hxx)
 
 OTHER_FILES +=\
     src/hunspell/license.hunspell \

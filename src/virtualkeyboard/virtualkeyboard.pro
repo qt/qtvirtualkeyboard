@@ -170,7 +170,9 @@ INSTALLS += qml
         DEFINES += HAVE_HUNSPELL
         INCLUDEPATH += 3rdparty/hunspell/src
         DEPENDPATH += 3rdparty/hunspell/src
-        LIBS += -L$$OUT_PWD/3rdparty/hunspell/ -lhunspell
+        win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/3rdparty/hunspell/release/ -lhunspell1
+        else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/3rdparty/hunspell/debug/ -lhunspell1
+        else: LIBS += -L$$OUT_PWD/3rdparty/hunspell/ -lhunspell
         exists(3rdparty/hunspell/data) {
             hunspell_data.files = 3rdparty/hunspell/data/*.dic 3rdparty/hunspell/data/*.aff
             hunspell_data.path = $$DATAPATH/hunspell
