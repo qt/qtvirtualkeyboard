@@ -21,9 +21,8 @@
 #include "abstractinputpanel.h"
 #ifdef QT_VIRTUALKEYBOARD_DESKTOP
 #include "desktopinputpanel.h"
-#else
-#include "appinputpanel.h"
 #endif
+#include "appinputpanel.h"
 #include "virtualkeyboarddebug.h"
 
 #include <QWindow>
@@ -31,12 +30,7 @@
 
 PlatformInputContext::PlatformInputContext() :
     m_declarativeContext(0),
-#ifdef QT_VIRTUALKEYBOARD_DESKTOP
-    m_inputPanel(new DesktopInputPanel(this)),
-#else
-    m_inputPanel(new AppInputPanel(this)),
-#endif
-    m_inputPanelCreated(false),
+    m_inputPanel(0),
     m_focusObject(0),
     m_locale(),
     m_inputDirection(m_locale.textDirection())
@@ -73,10 +67,12 @@ void PlatformInputContext::update(Qt::InputMethodQueries queries)
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::update():" << queries;
     bool enabled = inputMethodQuery(Qt::ImEnabled).toBool();
-    if (enabled && !m_inputPanelCreated) {
+#ifdef QT_VIRTUALKEYBOARD_DESKTOP
+    if (enabled && !m_inputPanel) {
+        m_inputPanel = new DesktopInputPanel(this);
         m_inputPanel->createView();
-        m_inputPanelCreated = true;
     }
+#endif
 
     if (m_declarativeContext) {
         m_declarativeContext->setFocus(enabled);
@@ -116,7 +112,7 @@ bool PlatformInputContext::isAnimating() const
 
 void PlatformInputContext::showInputPanel()
 {
-    if (!m_inputPanelCreated || m_inputPanel->isVisible())
+    if (!m_inputPanel || m_inputPanel->isVisible())
         return;
     m_inputPanel->show();
     emitInputPanelVisibleChanged();
@@ -124,7 +120,7 @@ void PlatformInputContext::showInputPanel()
 
 void PlatformInputContext::hideInputPanel()
 {
-    if (!m_inputPanel->isVisible())
+    if (!m_inputPanel || !m_inputPanel->isVisible())
         return;
     m_inputPanel->hide();
     emitInputPanelVisibleChanged();
@@ -132,7 +128,7 @@ void PlatformInputContext::hideInputPanel()
 
 bool PlatformInputContext::isInputPanelVisible() const
 {
-    return m_inputPanel->isVisible();
+    return m_inputPanel ? m_inputPanel->isVisible() : false;
 }
 
 QLocale PlatformInputContext::locale() const
@@ -242,7 +238,11 @@ void PlatformInputContext::setDeclarativeContext(DeclarativeInputContext *contex
     }
     m_declarativeContext = context;
     if (m_declarativeContext) {
+        if (!m_inputPanel)
+            m_inputPanel = new AppInputPanel(this);
         connect(m_declarativeContext, SIGNAL(keyboardRectangleChanged()), SLOT(keyboardRectangleChanged()));
+    } else if (m_inputPanel) {
+        m_inputPanel = 0;
     }
 }
 

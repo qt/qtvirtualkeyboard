@@ -136,9 +136,6 @@ DeclarativeInputContext::DeclarativeInputContext(PlatformInputContext *parent) :
 */
 DeclarativeInputContext::~DeclarativeInputContext()
 {
-    Q_D(DeclarativeInputContext);
-    if (d->inputContext)
-        d->inputContext->setDeclarativeContext(0);
 }
 
 bool DeclarativeInputContext::focus() const

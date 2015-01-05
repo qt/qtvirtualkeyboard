@@ -76,9 +76,8 @@ private slots:
 
 private:
     friend class DeclarativeInputContext;
-    DeclarativeInputContext *m_declarativeContext;
-    AbstractInputPanel *m_inputPanel;
-    bool m_inputPanelCreated;
+    QPointer<DeclarativeInputContext> m_declarativeContext;
+    QPointer<AbstractInputPanel> m_inputPanel;
     QPointer<QObject> m_focusObject;
     QLocale m_locale;
     Qt::LayoutDirection m_inputDirection;

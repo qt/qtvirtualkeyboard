@@ -78,10 +78,9 @@ disable-xcb {
         PKGCONFIG += xcb xcb-xfixes
         DEFINES += QT_VIRTUALKEYBOARD_HAVE_XCB
     }
-} else {
-    SOURCES += appinputpanel.cpp
-    HEADERS += appinputpanel.h
 }
+SOURCES += appinputpanel.cpp
+HEADERS += appinputpanel.h
 
 qtquickcompiler {
     TARGETPATH = QtQuick/Enterprise/VirtualKeyboard
