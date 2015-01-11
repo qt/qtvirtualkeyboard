@@ -186,10 +186,14 @@ void HunspellWorker::run()
         QSharedPointer<HunspellTask> currentTask;
         {
             QMutexLocker guard(&taskLock);
-            currentTask = taskList.front();
-            taskList.pop_front();
+            if (!taskList.isEmpty()) {
+                currentTask = taskList.front();
+                taskList.pop_front();
+            }
         }
-        currentTask->hunspell = hunspell;
-        currentTask->run();
+        if (currentTask) {
+            currentTask->hunspell = hunspell;
+            currentTask->run();
+        }
     }
 }
