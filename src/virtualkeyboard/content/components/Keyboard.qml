@@ -635,9 +635,9 @@ Item {
                     function reset() {
                         releaseInaccuracyTimer.stop()
                         pressAndHoldTimer.stop()
-                        alternativeKeys.close()
                         setActiveKey(null)
                         activeTouchPoint = null
+                        alternativeKeys.close()
                         if (dragSymbolMode) {
                             keyboard.symbolMode = false
                             dragSymbolMode = false

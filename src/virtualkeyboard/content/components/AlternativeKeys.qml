@@ -108,6 +108,7 @@ Item {
     }
 
     function close() {
+        listView.currentIndex = -1
         listModel.clear()
     }
 }
