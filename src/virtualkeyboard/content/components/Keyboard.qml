@@ -537,7 +537,7 @@ Item {
 
                     property var initialKey: null
                     property bool dragSymbolMode
-                    property real releaseMargin: 18
+                    property real releaseMargin: initialKey !== null ? Math.min(initialKey.width / 3, initialKey.height / 3) : 0
                     property point navigationCursor: Qt.point(-1, -1)
 
                     anchors.fill: keyboardLayoutLoader
