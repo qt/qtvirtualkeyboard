@@ -470,6 +470,17 @@ Item {
     Item {
         id: soundEffect
         property var __sounds: ({})
+        property bool available: false
+
+        signal playingChanged(url source, bool playing)
+
+        Connections {
+            target: VirtualKeyboardSettings
+            onStyleNameChanged: {
+                soundEffect.__sounds = {}
+                soundEffect.available = false
+            }
+        }
 
         function play(sound) {
             if (enabled && sound != Qt.resolvedUrl("")) {
@@ -490,8 +501,10 @@ Item {
                 if (!multiSoundEffect) {
                     multiSoundEffect = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 1.2; MultiSoundEffect {}', soundEffect)
                     if (multiSoundEffect) {
+                        multiSoundEffect.playingChanged.connect(soundEffect.playingChanged)
                         multiSoundEffect.source = sound
                         __sounds[soundId] = multiSoundEffect
+                        available = true
                     }
                 }
             }

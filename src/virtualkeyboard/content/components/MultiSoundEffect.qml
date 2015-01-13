@@ -26,10 +26,13 @@ Item {
     property var __cachedInstances
     property int __currentIndex: 0
 
+    signal playingChanged(url source, bool playing)
+
     Component {
         id: soundEffectComp
         SoundEffect {
             source: multiSoundEffect.source
+            onPlayingChanged: multiSoundEffect.playingChanged(source, playing)
         }
     }
 
