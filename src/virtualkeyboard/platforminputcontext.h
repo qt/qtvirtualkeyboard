@@ -39,7 +39,6 @@ public:
     virtual void commit();
     virtual void update(Qt::InputMethodQueries queries);
     virtual void invokeAction(QInputMethod::Action action, int cursorPosition);
-    virtual bool filterEvent(const QEvent *event);
     virtual QRectF keyboardRect() const;
 
     virtual bool isAnimating() const;
@@ -58,9 +57,7 @@ public:
 
     DeclarativeInputContext *declarativeInputContext() const;
 
-#if defined(Q_OS_WIN)
     virtual bool eventFilter(QObject *object, QEvent *event);
-#endif
 
 signals:
     void focusObjectChanged();
@@ -81,9 +78,7 @@ private:
     QPointer<QObject> m_focusObject;
     QLocale m_locale;
     Qt::LayoutDirection m_inputDirection;
-#if defined(Q_OS_WIN)
     QEvent *m_filterEvent;
-#endif
 };
 
 #endif
