@@ -201,6 +201,8 @@ bool HunspellInputMethod::setInputMode(const QString &locale, DeclarativeInputEn
 {
     Q_UNUSED(inputMode)
     Q_D(HunspellInputMethod);
+    if (inputContext()->inputMethodHints().testFlag(Qt::ImhNoPredictiveText))
+        return true;
     return d->createHunspell(locale);
 }
 
