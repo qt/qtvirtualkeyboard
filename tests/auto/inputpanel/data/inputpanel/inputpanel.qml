@@ -136,11 +136,19 @@ InputPanel {
         var localeIndex = keyboard.findLocale(inputLocale, -1)
         if (localeIndex === -1)
             return false
+        var origLocaleIndex = keyboard.localeIndex
         if (keyboard.localeIndex !== localeIndex) {
             keyboard.localeIndex = localeIndex
             keyboardLayoutLoaderItemSpy.wait()
         }
-        return true
+        var success = keyboardLayoutLoader.item !== null
+        if (keyboardLayoutLoader.item === null) {
+            if (keyboard.localeIndex !== origLocaleIndex) {
+                keyboard.localeIndex = origLocaleIndex
+                keyboardLayoutLoaderItemSpy.wait()
+            }
+        }
+        return success
     }
 
     function findVirtualKey(key) {
@@ -346,5 +354,37 @@ InputPanel {
 
     function setStyle(style) {
         VirtualKeyboardSettings.styleName = style
+    }
+
+    function selectionListSearchSuggestion(suggestion) {
+        var suggestionFound = false
+        var origIndex = inputPanel.wordCandidateView.currentIndex
+        if (origIndex !== -1) {
+            while (true) {
+                if (inputPanel.wordCandidateView.model.itemData(inputPanel.wordCandidateView.currentIndex) === suggestion) {
+                    suggestionFound = true
+                    break
+                }
+                if (inputPanel.wordCandidateView.currentIndex === inputPanel.wordCandidateView.count - 1)
+                    break
+                inputPanel.wordCandidateView.incrementCurrentIndex()
+            }
+            if (!suggestionFound) {
+                while (inputPanel.wordCandidateView.currentIndex !== origIndex) {
+                    inputPanel.wordCandidateView.decrementCurrentIndex()
+                }
+            }
+            testcase.waitForRendering(inputPanel)
+        }
+        return suggestionFound
+    }
+
+    function selectionListSelectCurrentItem() {
+        if (inputPanel.wordCandidateView.currentItem === -1)
+            return false
+        var itemPos = inputPanel.mapFromItem(inputPanel.wordCandidateView.currentItem, 0, 0)
+        testcase.mouseClick(inputPanel, itemPos.x, itemPos.y)
+        testcase.waitForRendering(inputPanel)
+        return true
     }
 }

@@ -479,5 +479,69 @@ Rectangle {
             verify(inputPanel.wordCandidateView.count === 0)
             verify(textInput.text.length > 0)
         }
+
+        function test_spellCorrectionSuggestions_data() {
+            return [
+                { initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hwllo", outputText: "Hwllo" },
+                { initInputMethodHints: Qt.ImhNone, inputSequence: "hwllo", expectedSuggestion: "Hello", outputText: "Hello" },
+                { initText: "Hello", initInputMethodHints: Qt.ImhNone, inputSequence: "qorld", expectedSuggestion: "world", outputText: "Hello world" },
+                { initText: "isn'", initInputMethodHints: Qt.ImhNone, inputSequence: "t", outputText: "isn't" },
+                { initInputMethodHints: Qt.ImhUrlCharactersOnly | Qt.ImhNoAutoUppercase, inputSequence: "www.example.com", expectedSuggestion: "www.example.com", outputText: "www.example.com" },
+                { initInputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhNoAutoUppercase, inputSequence: "user.name@example.com", expectedSuggestion: "user.name@example.com", outputText: "user.name@example.com" },
+            ]
+        }
+
+        function test_spellCorrectionSuggestions(data) {
+            prepareTest(data)
+
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
+            }
+            wait(200)
+
+            if (data.hasOwnProperty("expectedSuggestion")) {
+                if (inputPanel.wordCandidateView.count <= 1)
+                    expectFail("", "Prediction/spell correction not enabled")
+                verify(inputPanel.wordCandidateView.count > 1, "Prediction/spell correction results are expected")
+
+                verify(inputPanel.selectionListSearchSuggestion(data.expectedSuggestion))
+                verify(inputPanel.selectionListSelectCurrentItem())
+            } else {
+                verify(inputPanel.wordCandidateView.count <= 1, "Prediction/spell correction results are not expected")
+                Qt.inputMethod.commit()
+                waitForRendering(inputPanel)
+            }
+            compare(textInput.text, data.outputText)
+        }
+
+        function test_pinyinInputMethod_data() {
+            return [
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "suoer", expectedCandidates: [ "\u7D22\u5C14" ], outputText: "\u7D22\u5C14" },
+                // Build phase from individual candidates
+                // Note: this phrase does not exist in the system dictionary
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "bailou", expectedCandidates: [ "\u5457", "\u5A04" ], outputText: "\u5457\u5A04" },
+                // Select phrase from the user dictinary
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "bailou", expectedCandidates: [ "\u5457\u5A04" ], outputText: "\u5457\u5A04" },
+                // Add an apostrophe before joined syllables in cases of ambiguity
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "zhangang", expectedCandidates: [ "\u5360", "\u94A2" ], outputText: "\u5360\u94A2" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "zhang'ang", expectedCandidates: [ "\u7AE0", "\u6602" ], outputText: "\u7AE0\u6602" },
+            ]
+        }
+
+        function test_pinyinInputMethod(data) {
+            prepareTest(data)
+
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
+            }
+            waitForRendering(inputPanel)
+
+            for (var candidateIndex in data.expectedCandidates) {
+                verify(inputPanel.selectionListSearchSuggestion(data.expectedCandidates[candidateIndex]))
+                verify(inputPanel.selectionListSelectCurrentItem())
+            }
+
+            compare(textInput.text, data.outputText)
+        }
     }
 }
