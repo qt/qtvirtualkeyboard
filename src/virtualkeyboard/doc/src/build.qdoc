@@ -34,12 +34,21 @@ The project is split into the following subprojects:
     \li Qt Virtual Keyboard Demo application
 \row
     \li \e src/virtualkeyboard/virtualkeyboard.pro
-    \li Qt Virtual Keyboard C++ backend for input engine and
-        QPlatformInputContext integration
+    \li Qt Virtual Keyboard plugin
 \row
     \li \e src/virtualkeyboard/styles/styles.pro
     \li Qt Virtual Keyboard Style plugin that enables style decorations for the
         keyboard
+\row
+    \li \e src/virtualkeyboard/3rdparty/hunspell/hunspell.pro
+    \li A project file for compiling the Hunspell library.
+    \note This project is used if the Hunspell library is built from
+          sources rather than depending on the system library. The project
+          will be activated when the source code is extracted to this
+          directory.
+\row
+    \li \e src/virtualkeyboard/3rdparty/pinyin/pinyin.pro
+    \li A project file for compiling the PinyinIME library.
 \endtable
 
 The input methods are implemented either in C++ or QML.
@@ -62,25 +71,43 @@ build targets.
 \section2 Configuration Options
 
 \table
+\header
+    \li CONFIG
+    \li Description
+    \li Remarks
 \row
-    \li \e CONFIG += disable-desktop
+    \li \e disable-desktop
     \li Disables Desktop integration
+    \li By default, the desktop integration is enabled when the target environment
+        is X11 or Windows desktop. With this option, the desktop integration can be
+        disabled.
 \row
-    \li \e CONFIG += disable-xcb
+    \li \e disable-xcb
     \li Disables X11 integration
-    \note Deprecated since 1.3. Use \e disable-desktop instead.
+    \li \note Deprecated since 1.3. Use \e disable-desktop instead.
 \row
-    \li \e CONFIG += disable-hunspell
+    \li \e disable-hunspell
     \li Disables Hunspell integration
+    \li Hunspell integration is enabled if the Hunspell library is available on the
+        system, or if it is built using the local project file. Integration can be
+        disabled using this option.
 \row
-    \li \e CONFIG += retro-style
+    \li \e retro-style
     \li Enables Retro style
+    \li Changes the default keyboard style to the Retro style. Both styles are still
+        included in the package, but this option allows you to change the built-in
+        default style.
 \row
-    \li \e CONFIG += pinyin
-    \li Enables the pinyin input method for Simplified Chinese.
+    \li \e pinyin
+    \li Enables the Pinyin input method for Simplified Chinese.
+    \li This option activates the Pinyin input method for the Simplified Chinese
+        language and disables all other languages, except English. Before changing
+        this option, you should first clean up the previous keyboard layouts, so
+        that they are not left in the installation directory.
 \row
-    \li \e CONFIG += arrow-key-navigation
+    \li \e arrow-key-navigation
     \li Enables arrow key navigation for the keyboard
+    \li Allows controlling the keyboard using the arrow and return keys.
 \endtable
 
 \section2 Building Documentation
@@ -104,12 +131,12 @@ sources are used, \e hunspell.pro will be used for all targets.
 
 \section1 Deployment
 
-\section2 Linux/X11
+\section2 Desktop Targets
 
 Add a Deploy Step that executes the \e {make install} command, then deploy using
 the \e {Deploy All} command.
 
-\section2 Boot to Qt
+\section2 Boot2Qt Targets
 
 Remount target file system as read-write before deployment.
 
