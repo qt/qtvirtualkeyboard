@@ -217,6 +217,7 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
     Q_UNUSED(modifiers)
     Q_D(HunspellInputMethod);
     DeclarativeInputContext *ic = inputContext();
+    Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
     bool accept = false;
     switch (key) {
     case Qt::Key_Enter:
@@ -237,14 +238,16 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
         }
         break;
     default:
-        if (ic->inputMethodHints().testFlag(Qt::ImhNoPredictiveText))
+        if (inputMethodHints.testFlag(Qt::ImhNoPredictiveText))
             break;
         if (text.length() > 0) {
             QChar c = text.at(0);
             bool addToWord = !c.isPunct() && !c.isSymbol();
             if (!addToWord) {
                 if (!d->word.isEmpty()) {
-                    if (c == Qt::Key_Apostrophe || c == Qt::Key_Minus)
+                    if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly) || inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly))
+                        addToWord = QString(QStringLiteral(":/?#[]@!$&'()*+,;=-_.%")).contains(c);
+                    else if (c == Qt::Key_Apostrophe || c == Qt::Key_Minus)
                         addToWord = true;
                 }
             }
