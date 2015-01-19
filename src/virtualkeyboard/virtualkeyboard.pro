@@ -70,7 +70,7 @@ disable-xcb {
     CONFIG += disable-desktop
 }
 
-!disable-desktop:isEmpty(CROSS_COMPILE):!android-no-sdk {
+!disable-desktop:isEmpty(CROSS_COMPILE):!android-no-sdk:!qnx {
     SOURCES += desktopinputpanel.cpp inputview.cpp
     HEADERS += desktopinputpanel.h inputview.h
     DEFINES += QT_VIRTUALKEYBOARD_DESKTOP

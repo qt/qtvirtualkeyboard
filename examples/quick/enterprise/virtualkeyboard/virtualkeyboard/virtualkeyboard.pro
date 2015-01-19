@@ -27,7 +27,7 @@ disable-xcb {
     CONFIG += disable-desktop
 }
 
-disable-desktop|android-no-sdk|!isEmpty(CROSS_COMPILE) {
+disable-desktop|android-no-sdk|!isEmpty(CROSS_COMPILE)|qnx {
     DEFINES += MAIN_QML=\\\"VirtualKeyboard-b2qt.qml\\\"
 } else {
     DEFINES += MAIN_QML=\\\"VirtualKeyboard.qml\\\"
