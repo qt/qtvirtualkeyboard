@@ -198,6 +198,14 @@ void DeclarativeSelectionListModel::selectItem(int index)
 }
 
 /*!
+ * \internal
+ */
+QVariant DeclarativeSelectionListModel::itemData(int index, int role) const
+{
+    return data(this->index(index, 0), role);
+}
+
+/*!
     \internal
 */
 void DeclarativeSelectionListModel::selectionListChanged(int type)
