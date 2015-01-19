@@ -33,8 +33,12 @@ public:
 
     QString buildStyleImportPath(const QString &path, const QString &name) const
     {
-        QString importPath(path);
-        return importPath + name + "/style.qml";
+        QString importPath(path + name + "/style.qml");
+        if (!importPath.startsWith("qrc:")) {
+            QUrl url = QUrl::fromLocalFile(importPath);
+            importPath = url.toString();
+        }
+        return importPath;
     }
 
     QString buildStyleFilePath(const QString &path, const QString &name) const

@@ -437,7 +437,13 @@ bool DeclarativeInputContext::fileExists(const QUrl &fileUrl)
     // can not be added dynamically
     return layoutsDir.contains(fileUrl.url());
 #else
-    return QFile(fileUrl.toLocalFile()).exists();
+    QString fileName;
+    if (fileUrl.scheme() == QLatin1String("qrc")) {
+        fileName = QLatin1Char(':') + fileUrl.path();
+    } else {
+        fileName = fileUrl.toLocalFile();
+    }
+    return QFile(fileName).exists();
 #endif
 }
 

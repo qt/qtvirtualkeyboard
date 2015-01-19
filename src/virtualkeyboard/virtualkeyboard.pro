@@ -51,19 +51,25 @@ HEADERS += platforminputcontext.h \
 
 RESOURCES += \
     content/styles/default/default_style.qrc \
-    content/styles/retro/retro_style.qrc
+    content/styles/retro/retro_style.qrc \
+    content/content.qrc
+
+pinyin: RESOURCES += content/layouts_pinyin.qrc
+else: RESOURCES += content/layouts.qrc
+
 retro-style {
     DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"retro\\\"
 } else {
     DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"default\\\"
 }
 
-OTHER_FILES += content/layouts \
+OTHER_FILES += \
     content/styles/default/*.qml \
     content/styles/retro/*.qml \
-    generateresource.prf
-
-OTHER += qtvirtualkeyboard.json
+    content/*.qml \
+    content/components/*.qml \
+    content/qmldir \
+    qtvirtualkeyboard.json
 
 disable-xcb {
     message(The disable-xcb option has been deprecated. Please use disable-desktop instead.)
@@ -82,15 +88,7 @@ disable-xcb {
 SOURCES += appinputpanel.cpp
 HEADERS += appinputpanel.h
 
-qtquickcompiler {
-    TARGETPATH = QtQuick/Enterprise/VirtualKeyboard
-    DEFINES += COMPILING_QML
-}
-
-qml.files = \
-    content/*.qml \
-    content/components
-qml.path = $$QMLPATH
+qtquickcompiler: DEFINES += COMPILING_QML
 
 pinyin: qml_layouts.files = \
     content/layouts/en_GB \
@@ -114,38 +112,6 @@ else: qml_layouts.files = \
 qml_layouts.path = $$QMLPATH/layouts
 
 qtquickcompiler {
-    QML_FILES += content/InputPanel.qml \
-        content/qmldir \
-        content/components/AlternativeKeys.qml \
-        content/components/AutoScroller.qml \
-        content/components/BackspaceKey.qml \
-        content/components/BaseKey.qml \
-        content/components/ChangeLanguageKey.qml \
-        content/components/CharacterPreviewBubble.qml \
-        content/components/EnterKey.qml \
-        content/components/FillerKey.qml \
-        content/components/HideKeyboardKey.qml \
-        content/components/KeyboardColumn.qml \
-        content/components/KeyboardLayoutLoader.qml \
-        content/components/KeyboardLayout.qml \
-        content/components/Keyboard.qml \
-        content/components/KeyboardRow.qml \
-        content/components/Key.qml \
-        content/components/MultiSoundEffect.qml \
-        content/components/MultitapInputMethod.qml \
-        content/components/NumberKey.qml \
-        content/components/ShiftKey.qml \
-        content/components/SpaceKey.qml \
-        content/components/SymbolModeKey.qml
-
-    # generate qrc file, this should work out-of-box with later releases of qtquickcompiler
-    include(generateresource.prf)
-    resource_files = $$QML_FILES
-    for (layoutdir, qml_layouts.files) {
-        resource_files += $$files($$absolute_path($$layoutdir/*), $$_PRO_FILE_PWD_)
-    }
-    RESOURCES += $$generate_resource(content.qrc, $$resource_files)
-
     # workaround that qtquickcompiler removes *.qml file paths from qrc file (QTRD-3268)
     LAYOUTS_INDEX_FILE = $$OUT_PWD/qrclayoutsindex.h
     LAYOUTS_INDEX_CONTENT = "const QStringList layoutsDir = QStringList() " \
@@ -162,13 +128,8 @@ qtquickcompiler {
     LAYOUTS_INDEX_CONTENT += ";"
     write_file($$LAYOUTS_INDEX_FILE, LAYOUTS_INDEX_CONTENT)|error("Failed to write resource file!")
 
-    qml.files = content/qmldir
-    QMAKE_CLEAN += $$GENERATED_FILE $$LAYOUTS_INDEX_FILE
-} else {
-    qml.files += content/qmldir
-    INSTALLS += qml_layouts
+    QMAKE_CLEAN += $$LAYOUTS_INDEX_FILE
 }
-INSTALLS += qml
 
 !disable-hunspell {
     exists(3rdparty/hunspell/src/hunspell/hunspell.h) {

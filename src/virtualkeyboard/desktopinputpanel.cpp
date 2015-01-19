@@ -116,12 +116,7 @@ void DesktopInputPanel::createView()
         d->view->setFlags(d->view->flags() | Qt::ToolTip);
 #endif
         d->view->setColor(QColor(Qt::transparent));
-#ifdef COMPILING_QML
-        const QString virtualKeyboardImportPath("qrc:///content/");
-#else
-        const QString virtualKeyboardImportPath = QUrl::fromLocalFile(QLibraryInfo::location(QLibraryInfo::Qml2ImportsPath)).toEncoded() + "/QtQuick/Enterprise/VirtualKeyboard/";
-#endif
-        d->view->setSource(QUrl(virtualKeyboardImportPath + "InputPanel.qml"));
+        d->view->setSource(QUrl("qrc:///content/InputPanel.qml"));
         /*  Destroy the view along with the last window in application. */
         connect(qGuiApp, SIGNAL(lastWindowClosed()), SLOT(destroyView()));
     }

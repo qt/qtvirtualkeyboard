@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/content">
+        <file>InputPanel.qml</file>
+        <file>components/AlternativeKeys.qml</file>
+        <file>components/AutoScroller.qml</file>
+        <file>components/BackspaceKey.qml</file>
+        <file>components/BaseKey.qml</file>
+        <file>components/ChangeLanguageKey.qml</file>
+        <file>components/CharacterPreviewBubble.qml</file>
+        <file>components/EnterKey.qml</file>
+        <file>components/FillerKey.qml</file>
+        <file>components/HideKeyboardKey.qml</file>
+        <file>components/Key.qml</file>
+        <file>components/Keyboard.qml</file>
+        <file>components/KeyboardColumn.qml</file>
+        <file>components/KeyboardLayout.qml</file>
+        <file>components/KeyboardLayoutLoader.qml</file>
+        <file>components/KeyboardRow.qml</file>
+        <file>components/MultiSoundEffect.qml</file>
+        <file>components/MultitapInputMethod.qml</file>
+        <file>components/NumberKey.qml</file>
+        <file>components/ShiftKey.qml</file>
+        <file>components/SpaceKey.qml</file>
+        <file>components/SymbolModeKey.qml</file>
+        <file>qmldir</file>
+    </qresource>
+</RCC>

@@ -50,12 +50,7 @@ QStringList PlatformInputContextPlugin::keys() const
 QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system, const QStringList &paramList)
 {
     Q_UNUSED(paramList);
-#ifdef COMPILING_QML
     Q_INIT_RESOURCE(content);
-    const QString path("qrc:///content/");
-#else
-    const QString path = QUrl::fromLocalFile(QLibraryInfo::location(QLibraryInfo::Qml2ImportsPath)).toEncoded() + "/QtQuick/Enterprise/VirtualKeyboard/";
-#endif
     Q_INIT_RESOURCE(default_style);
     Q_INIT_RESOURCE(retro_style);
     qmlRegisterSingletonType<DeclarativeInputContext>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "InputContext", createInputContextModule);
@@ -75,6 +70,7 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     qmlRegisterType<EnterKeyAction>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "EnterKeyAction");
     qmlRegisterSingletonType<DeclarativeSettings>("QtQuick.Enterprise.VirtualKeyboard.Settings", 1, 2, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
 
+    const QString path("qrc:///content/");
     qmlRegisterType(QUrl(path + "InputPanel.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "InputPanel");
     qmlRegisterType(QUrl(path + "InputPanel.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 2, "InputPanel");
     const QString componentsPath = path + QLatin1Literal("components/");

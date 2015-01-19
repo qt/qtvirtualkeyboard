@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/content/styles">
+        <file>KeyboardStyle.qml</file>
+        <file>KeyIcon.qml</file>
+        <file>KeyPanel.qml</file>
+        <file>SelectionListItem.qml</file>
+        <file>qmldir</file>
+    </qresource>
+</RCC>
