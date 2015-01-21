@@ -90,47 +90,6 @@ HEADERS += appinputpanel.h
 
 qtquickcompiler: DEFINES += COMPILING_QML
 
-pinyin: qml_layouts.files = \
-    content/layouts/en_GB \
-    content/layouts/zh_CN
-else: qml_layouts.files = \
-    content/layouts/ar_AR \
-    content/layouts/fa_FA \
-    content/layouts/da_DK \
-    content/layouts/de_DE \
-    content/layouts/en_GB \
-    content/layouts/es_ES \
-    content/layouts/hi_IN \
-    content/layouts/fi_FI \
-    content/layouts/fr_FR \
-    content/layouts/it_IT \
-    content/layouts/nb_NO \
-    content/layouts/pl_PL \
-    content/layouts/pt_PT \
-    content/layouts/ru_RU \
-    content/layouts/sv_SE
-qml_layouts.path = $$QMLPATH/layouts
-
-qtquickcompiler {
-    # workaround that qtquickcompiler removes *.qml file paths from qrc file (QTRD-3268)
-    LAYOUTS_INDEX_FILE = $$OUT_PWD/qrclayoutsindex.h
-    LAYOUTS_INDEX_CONTENT = "const QStringList layoutsDir = QStringList() " \
-        "<< \"qrc:/content/layouts\""
-
-    for (layoutdir, qml_layouts.files) {
-        layoutfiles = $$files($$absolute_path($$layoutdir/*), $$_PRO_FILE_PWD_)
-        for (qmlfile, layoutfiles) {
-            relativepath = $$relative_path($$qmlfile, $$_PRO_FILE_PWD_)
-            LAYOUTS_INDEX_CONTENT += "<< \"qrc:/$$relativepath\""
-        }
-    }
-
-    LAYOUTS_INDEX_CONTENT += ";"
-    write_file($$LAYOUTS_INDEX_FILE, LAYOUTS_INDEX_CONTENT)|error("Failed to write resource file!")
-
-    QMAKE_CLEAN += $$LAYOUTS_INDEX_FILE
-}
-
 !disable-hunspell {
     exists(3rdparty/hunspell/src/hunspell/hunspell.h) {
         message(Found Hunspell library!)

@@ -29,7 +29,7 @@
 #include <QtCore/private/qobject_p.h>
 
 #ifdef COMPILING_QML
-#include "qrclayoutsindex.h"
+#include <private/qqmlmetatype_p.h>
 #endif
 
 /*!
@@ -433,9 +433,8 @@ void DeclarativeInputContext::clear()
 bool DeclarativeInputContext::fileExists(const QUrl &fileUrl)
 {
 #ifdef COMPILING_QML
-    // since this uses compile-time information, new layouts
-    // can not be added dynamically
-    return layoutsDir.contains(fileUrl.url());
+    // workaround that qtquickcompiler removes *.qml file paths from qrc file (QTRD-3268)
+    return QQmlMetaType::findCachedCompilationUnit(fileUrl);
 #else
     QString fileName;
     if (fileUrl.scheme() == QLatin1String("qrc")) {
