@@ -203,7 +203,7 @@ InputPanel {
                 } else {
                     // Some layouts (such as Arabic, Hindi) may have a second layout
                     InputContext.shiftHandler.toggleShift()
-                    waitForRendering(inputPanel)
+                    testcase.waitForRendering(inputPanel)
                     success = keyActionOnCurrentLayoutCb(key)
                     InputContext.shiftHandler.toggleShift()
                 }

@@ -84,7 +84,7 @@ public:
     Q_INVOKABLE void hideInputPanel();
     Q_INVOKABLE void sendKeyClick(int key, const QString &text, int modifiers = 0);
     Q_INVOKABLE void commit();
-    Q_INVOKABLE void commit(const QString &text, int replacementStart = 0, int replacementEnd = 0);
+    Q_INVOKABLE void commit(const QString &text, int replacementStart = 0, int replacementLength = 0);
     Q_INVOKABLE void clear();
 
     // Helper functions

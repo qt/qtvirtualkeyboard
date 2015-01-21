@@ -53,7 +53,8 @@ public:
         Latin,
         Numeric,
         Dialable,
-        Pinyin
+        Pinyin,
+        Hangul
     };
 
 public:

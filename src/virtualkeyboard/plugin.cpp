@@ -27,6 +27,9 @@
 #ifdef HAVE_PINYIN
 #include "pinyininputmethod.h"
 #endif
+#ifdef HAVE_HANGUL
+#include "hangulinputmethod.h"
+#endif
 #include "declarativeinputmethod.h"
 #include "declarativeselectionlistmodel.h"
 #include "enterkeyaction.h"
@@ -65,6 +68,10 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
 #endif
 #ifdef HAVE_PINYIN
     qmlRegisterType<PinyinInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 1, "PinyinInputMethod");
+#endif
+#ifdef HAVE_HANGUL
+    // TODO: Added in version 1.3
+    qmlRegisterType<HangulInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 2, "HangulInputMethod");
 #endif
     qmlRegisterType<EnterKeyActionAttachedType>();
     qmlRegisterType<EnterKeyAction>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "EnterKeyAction");

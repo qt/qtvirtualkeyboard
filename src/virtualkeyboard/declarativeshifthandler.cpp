@@ -31,7 +31,7 @@ public:
         autoCapitalizationEnabled(false),
         toggleShiftEnabled(false),
         shiftChanged(false),
-        languageFilter(QSet<QLocale::Language>() << QLocale::Arabic << QLocale::Persian << QLocale::Hindi)
+        languageFilter(QSet<QLocale::Language>() << QLocale::Arabic << QLocale::Persian << QLocale::Hindi << QLocale::Korean)
     {
     }
 

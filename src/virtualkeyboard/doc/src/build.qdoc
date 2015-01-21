@@ -101,9 +101,12 @@ build targets.
     \li \e pinyin
     \li Enables the Pinyin input method for Simplified Chinese.
     \li This option activates the Pinyin input method for the Simplified Chinese
-        language and disables all other languages, except English. Before changing
-        this option, you should first clean up the previous keyboard layouts, so
-        that they are not left in the installation directory.
+        language and disables all other default languages, except English.
+\row
+    \li \e hangul
+    \li Enables the Hangul input method for Korean.
+    \li This option activates the Hangul input method for the Korean
+        language and disables all other default languages, except English.
 \row
     \li \e arrow-key-navigation
     \li Enables arrow key navigation for the keyboard

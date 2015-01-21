@@ -55,7 +55,8 @@ RESOURCES += \
     content/content.qrc
 
 pinyin: RESOURCES += content/layouts_pinyin.qrc
-else: RESOURCES += content/layouts.qrc
+hangul: RESOURCES += content/layouts_hangul.qrc
+!pinyin:!hangul: RESOURCES += content/layouts.qrc
 
 retro-style {
     DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"retro\\\"
@@ -135,6 +136,16 @@ pinyin {
     pinyin_data.files = $$PWD/3rdparty/pinyin/data/dict_pinyin.dat
     pinyin_data.path = $$DATAPATH/pinyin
     INSTALLS += pinyin_data
+}
+
+hangul {
+    SOURCES += \
+        hangulinputmethod.cpp \
+        hangul.cpp
+    HEADERS += \
+        hangulinputmethod.h \
+        hangul.h
+    DEFINES += HAVE_HANGUL
 }
 
 arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION

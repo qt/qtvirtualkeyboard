@@ -61,7 +61,7 @@ Rectangle {
             container.forceActiveFocus()
             if (data !== undefined && data.hasOwnProperty("initText")) {
                 textInput.text = data.initText
-                textInput.cursorPosition = textInput.text.length
+                textInput.cursorPosition = data.hasOwnProperty("initCursorPosition") ? data.initCursorPosition : textInput.text.length
             } else {
                 textInput.text = ""
             }
@@ -185,7 +185,7 @@ Rectangle {
         function test_inputLocale(data) {
             prepareTest(data)
 
-            verify(Qt.inputMethod.locale.name === Qt.locale(data.initLocale).name)
+            compare(Qt.inputMethod.locale.name, Qt.locale(data.initLocale).name)
             for (var inputIndex in data.inputSequence) {
                 verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
             }
@@ -542,6 +542,70 @@ Rectangle {
             }
 
             compare(textInput.text, data.outputText)
+        }
+
+        function test_hangulInputMethod_data() {
+            return [
+                // Test boundaries of the Hangul Jamo BMP plane
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F", outputText: "\uAC00" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3131", outputText: "\uAC01" },
+                { initLocale: "ko_KR", inputSequence: "\u314E\u3163", outputText: "\uD788" },
+                { initLocale: "ko_KR", inputSequence: "\u314E\u3163\u314E", outputText: "\uD7A3" },
+                // Test double medial Jamos
+                { initLocale: "ko_KR", inputSequence: "\u3131\u3157\u314F", outputText: "\uACFC" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u3157\u3150", outputText: "\uAD18" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u3157\u3163", outputText: "\uAD34" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u315C\u3153", outputText: "\uAD88" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u315C\u3154", outputText: "\uADA4" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u315C\u3163", outputText: "\uADC0" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u3161\u3163", outputText: "\uAE14" },
+                // Test double final Jamos
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3131\u3145", outputText: "\uAC03" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3134\u3148", outputText: "\uAC05" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3134\u314E", outputText: "\uAC06" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3139\u3131", outputText: "\uAC09" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3139\u3141", outputText: "\uAC0A" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3139\u3142", outputText: "\uAC0B" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3139\u3145", outputText: "\uAC0C" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3139\u314C", outputText: "\uAC0D" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3139\u314D", outputText: "\uAC0E" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3139\u314E", outputText: "\uAC0F" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3142\u3145", outputText: "\uAC12" },
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3145\u3145", outputText: "\uAC14" },
+                // Test using the final Jamo of the first syllable as an initial
+                // Jamo of the following syllable
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3131\u314F", outputText: "\uAC00\uAC00" },
+                // Test splitting the final double Jamo and use the second Jamo of
+                // the split Jamo as initial Jamo of the following syllable
+                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3131\u3145\u314F", outputText: "\uAC01\uC0AC" },
+                // Test entering a Jamo syllable with surrounding text
+                { initLocale: "ko_KR", initText: "abcdef", initCursorPosition: 3, inputSequence: "\u3131\u314F\u3131", outputText: "abc\uAC01def" },
+            ]
+        }
+
+        function test_hangulInputMethod(data) {
+            prepareTest(data)
+
+            compare(Qt.inputMethod.locale.name, Qt.locale(data.initLocale).name)
+
+            // Add Jamos one by one
+            var intermediateResult = []
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
+                intermediateResult.push(textInput.text)
+            }
+
+            compare(textInput.text, data.outputText)
+
+            // Remove Jamos one by one.
+            // The number of removed characters must match to the number of Jamos entered.
+            for (; inputIndex >= 0; inputIndex--) {
+                compare(textInput.text, intermediateResult.pop())
+                inputPanel.virtualKeyClick(Qt.Key_Backspace)
+            }
+
+            waitForRendering(inputPanel)
+            compare(textInput.text, data.initText !== undefined ? data.initText : "")
         }
     }
 }
