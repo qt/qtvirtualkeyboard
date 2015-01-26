@@ -174,6 +174,7 @@ Rectangle {
                 { initLocale: "fi_FI", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hei", outputText: "Hei" },
                 { initLocale: "fr_FR", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "bonjour", outputText: "Bonjour" },
                 { initLocale: "it_IT", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "ciao", outputText: "Ciao" },
+                { initLocale: "ja_JP", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "watashi", outputText: "\u308F\u305F\u3057" },
                 { initLocale: "nb_NO", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hallo", outputText: "Hallo" },
                 { initLocale: "pl_PL", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "cze\u015B\u0107", outputText: "Cze\u015B\u0107" },
                 { initLocale: "pt_PT", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "ol\u00E1", outputText: "Ol\u00E1" },
@@ -606,6 +607,58 @@ Rectangle {
 
             waitForRendering(inputPanel)
             compare(textInput.text, data.initText !== undefined ? data.initText : "")
+        }
+
+        function test_japaneseInputModes_data() {
+            return [
+                // Hiragana
+                { initLocale: "ja_JP", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Return], outputText: "\u306B\u307B\u3093\u3054" },
+                // Hiragana to Kanjie conversion
+                { initLocale: "ja_JP", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Space,Qt.Key_Return], outputText: "\u65E5\u672C\u8A9E" },
+                // Correction to Hiragana sequence using exact match mode
+                { initLocale: "ja_JP", inputSequence: [
+                                // Write part of the text leaving out "ni" from the beginning
+                                "h","o","n","g","o",
+                                // Activate the exact mode and move the cursor to beginning
+                                Qt.Key_Left,Qt.Key_Left,Qt.Key_Left,Qt.Key_Left,
+                                // Enter the missing text
+                                "n","i",
+                                // Move the cursor to end
+                                Qt.Key_Right,Qt.Key_Right,Qt.Key_Right,Qt.Key_Right,Qt.Key_Right,
+                                // Do Kanjie conversion
+                                Qt.Key_Space,
+                                // Choose the first candidate
+                                Qt.Key_Return], outputText: "\u65E5\u672C\u8A9E" },
+                // Katakana
+                { initLocale: "ja_JP", inputSequence: [Qt.Key_Mode_switch,"a","m","e","r","i","k","a"], outputText: "\u30A2\u30E1\u30EA\u30AB" },
+                // Toggle symbol mode without affecting the input method state
+                { initLocale: "ja_JP", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Context1], outputText: "" },
+                // Latin only
+                { initLocale: "ja_JP", initInputMethodHints: Qt.ImhLatinOnly, inputSequence: "hello", outputText: "Hello" },
+            ]
+        }
+
+        function test_japaneseInputModes(data) {
+            prepareTest(data)
+
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
+            }
+
+            waitForRendering(inputPanel)
+            compare(textInput.text, data.outputText)
+        }
+
+        function test_baseKeyNoModifier() {
+            // The Japanese keyboard uses the BaseKey.noModifier flag for the arrow keys.
+            // Without this flag the arrow key + shift would extend the text selection.
+            prepareTest({ initLocale: "ja_JP", initInputMethodHints: Qt.ImhLatinOnly })
+            verify(inputPanel.virtualKeyClick("a"))
+            verify(inputPanel.virtualKeyClick(Qt.Key_Left))
+            compare(textInput.cursorPosition, 0)
+            verify(inputPanel.virtualKeyClick(Qt.Key_Right))
+            compare(textInput.cursorPosition, 1)
+            compare(textInput.selectedText, "")
         }
     }
 }

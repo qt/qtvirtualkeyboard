@@ -54,7 +54,10 @@ public:
         Numeric,
         Dialable,
         Pinyin,
-        Hangul
+        Hangul,
+        Hiragana,
+        Katakana,
+        FullwidthLatin
     };
 
 public:

@@ -9,6 +9,11 @@ SUBDIRS += \
     virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-hunspell
 }
 
+openwnn {
+    SUBDIRS += virtualkeyboard/3rdparty/openwnn
+    virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-openwnn
+}
+
 pinyin {
     SUBDIRS += virtualkeyboard/3rdparty/pinyin
     virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-pinyin

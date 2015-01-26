@@ -30,6 +30,9 @@
 #ifdef HAVE_HANGUL
 #include "hangulinputmethod.h"
 #endif
+#ifdef HAVE_OPENWNN
+#include "openwnninputmethod.h"
+#endif
 #include "declarativeinputmethod.h"
 #include "declarativeselectionlistmodel.h"
 #include "enterkeyaction.h"
@@ -72,6 +75,10 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
 #ifdef HAVE_HANGUL
     // TODO: Added in version 1.3
     qmlRegisterType<HangulInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 2, "HangulInputMethod");
+#endif
+#ifdef HAVE_OPENWNN
+    // TODO: Added in version 1.3
+    qmlRegisterType<OpenWnnInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 2, "JapaneseInputMethod");
 #endif
     qmlRegisterType<EnterKeyActionAttachedType>();
     qmlRegisterType<EnterKeyAction>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "EnterKeyAction");

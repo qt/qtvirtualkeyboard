@@ -55,7 +55,8 @@ RESOURCES += \
 
 pinyin: RESOURCES += content/layouts_pinyin.qrc
 hangul: RESOURCES += content/layouts_hangul.qrc
-!pinyin:!hangul: RESOURCES += content/layouts.qrc
+openwnn: RESOURCES += content/layouts_japanese.qrc
+!pinyin:!hangul:!openwnn: RESOURCES += content/layouts.qrc
 
 retro-style {
     DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"retro\\\"
@@ -144,6 +145,18 @@ hangul {
         hangulinputmethod.h \
         hangul.h
     DEFINES += HAVE_HANGUL
+}
+
+openwnn {
+    SOURCES += openwnninputmethod.cpp
+    HEADERS += openwnninputmethod.h
+    DEFINES += HAVE_OPENWNN
+    INCLUDEPATH += 3rdparty/openwnn/wnnEngine/include
+    DEPENDPATH += 3rdparty/openwnn/wnnEngine/include
+    # OpenWNN engine
+    win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/3rdparty/openwnn/release/ -lopenwnn
+    else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/3rdparty/openwnn/debug/ -lopenwnn
+    else: LIBS += -L$$OUT_PWD/3rdparty/openwnn/ -lopenwnn
 }
 
 arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION

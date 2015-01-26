@@ -18,6 +18,7 @@
 
 #include "declarativeshifthandler.h"
 #include "declarativeinputcontext.h"
+#include "declarativeinputengine.h"
 #include <QtCore/private/qobject_p.h>
 #include <QSet>
 
@@ -31,7 +32,9 @@ public:
         autoCapitalizationEnabled(false),
         toggleShiftEnabled(false),
         shiftChanged(false),
-        languageFilter(QSet<QLocale::Language>() << QLocale::Arabic << QLocale::Persian << QLocale::Hindi << QLocale::Korean)
+        manualShiftLanguageFilter(QSet<QLocale::Language>() << QLocale::Arabic << QLocale::Persian << QLocale::Hindi << QLocale::Korean),
+        noAutoUppercaseInputModeFilter(QSet<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::FullwidthLatin),
+        allCapsInputModeFilter(QSet<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::Hiragana << DeclarativeInputEngine::Katakana)
     {
     }
 
@@ -41,7 +44,9 @@ public:
     bool toggleShiftEnabled;
     bool shiftChanged;
     QLocale locale;
-    const QSet<QLocale::Language> languageFilter;
+    const QSet<QLocale::Language> manualShiftLanguageFilter;
+    const QSet<DeclarativeInputEngine::InputMode> noAutoUppercaseInputModeFilter;
+    const QSet<DeclarativeInputEngine::InputMode> allCapsInputModeFilter;
 };
 
 /*!
@@ -66,6 +71,7 @@ DeclarativeShiftHandler::DeclarativeShiftHandler(DeclarativeInputContext *parent
     if (d->inputContext) {
         connect(d->inputContext, SIGNAL(inputMethodHintsChanged()), SLOT(restart()));
         connect(d->inputContext, SIGNAL(inputItemChanged()), SLOT(restart()));
+        connect(d->inputContext->inputEngine(), SIGNAL(inputModeChanged()), SLOT(restart()));
         connect(d->inputContext, SIGNAL(preeditTextChanged()), SLOT(autoCapitalize()));
         connect(d->inputContext, SIGNAL(surroundingTextChanged()), SLOT(autoCapitalize()));
         connect(d->inputContext, SIGNAL(cursorPositionChanged()), SLOT(autoCapitalize()));
@@ -137,7 +143,7 @@ void DeclarativeShiftHandler::toggleShift()
     Q_D(DeclarativeShiftHandler);
     if (!d->toggleShiftEnabled)
         return;
-    if (d->languageFilter.contains(d->locale.language())) {
+    if (d->manualShiftLanguageFilter.contains(d->locale.language())) {
         d->inputContext->setCapsLock(false);
         d->inputContext->setShift(!d->inputContext->shift());
     } else if (d->inputContext->inputMethodHints() & Qt::ImhNoAutoUppercase) {
@@ -156,18 +162,23 @@ void DeclarativeShiftHandler::reset()
     Q_D(DeclarativeShiftHandler);
     if (d->inputContext->inputItem()) {
         Qt::InputMethodHints inputMethodHints = d->inputContext->inputMethodHints();
+        DeclarativeInputEngine::InputMode inputMode = d->inputContext->inputEngine()->inputMode();
         bool preferUpperCase = (inputMethodHints & (Qt::ImhPreferUppercase | Qt::ImhUppercaseOnly));
         bool autoCapitalizationEnabled = !(d->inputContext->inputMethodHints() & (Qt::ImhNoAutoUppercase |
               Qt::ImhUppercaseOnly | Qt::ImhLowercaseOnly | Qt::ImhEmailCharactersOnly |
               Qt::ImhUrlCharactersOnly | Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly |
-              Qt::ImhDigitsOnly));
+              Qt::ImhDigitsOnly)) && !d->noAutoUppercaseInputModeFilter.contains(inputMode);
         bool toggleShiftEnabled = !(inputMethodHints & (Qt::ImhUppercaseOnly | Qt::ImhLowercaseOnly));
         // For filtered languages reset the initial shift status to lower case
         // and allow manual shift change
-        if (d->languageFilter.contains(d->locale.language())) {
+        if (d->manualShiftLanguageFilter.contains(d->locale.language())) {
             preferUpperCase = false;
             autoCapitalizationEnabled = false;
             toggleShiftEnabled = true;
+        } else if (d->allCapsInputModeFilter.contains(inputMode)) {
+            preferUpperCase = true;
+            autoCapitalizationEnabled = false;
+            toggleShiftEnabled = false;
         }
         d->inputContext->setShift(preferUpperCase);
         d->inputContext->setCapsLock(preferUpperCase);
