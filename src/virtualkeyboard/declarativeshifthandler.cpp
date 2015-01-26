@@ -67,6 +67,7 @@ DeclarativeShiftHandler::DeclarativeShiftHandler(DeclarativeInputContext *parent
         connect(d->inputContext, SIGNAL(inputMethodHintsChanged()), SLOT(restart()));
         connect(d->inputContext, SIGNAL(inputItemChanged()), SLOT(restart()));
         connect(d->inputContext, SIGNAL(preeditTextChanged()), SLOT(autoCapitalize()));
+        connect(d->inputContext, SIGNAL(surroundingTextChanged()), SLOT(autoCapitalize()));
         connect(d->inputContext, SIGNAL(cursorPositionChanged()), SLOT(autoCapitalize()));
         connect(d->inputContext, SIGNAL(shiftChanged()), SLOT(shiftChanged()));
         connect(d->inputContext, SIGNAL(capsLockChanged()), SLOT(shiftChanged()));
