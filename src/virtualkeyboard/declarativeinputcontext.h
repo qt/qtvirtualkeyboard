@@ -22,6 +22,7 @@
 #include <QObject>
 #include <QRectF>
 #include <QLocale>
+#include <QInputMethodEvent>
 
 class PlatformInputContext;
 class DeclarativeInputEngine;
@@ -63,7 +64,7 @@ public:
     int cursorPosition() const;
     Qt::InputMethodHints inputMethodHints() const;
     QString preeditText() const;
-    void setPreeditText(const QString &text);
+    void setPreeditText(const QString &text, QList<QInputMethodEvent::Attribute> attributes = QList<QInputMethodEvent::Attribute>());
     QString surroundingText() const;
     QString selectedText() const;
     QRectF cursorRectangle() const;
@@ -113,7 +114,7 @@ signals:
 
 private:
     void setFocus(bool enable);
-    void sendPreedit(const QString &text, int cursor = -1);
+    void sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes);
     void reset();
     void externalCommit();
     void update(Qt::InputMethodQueries queries);

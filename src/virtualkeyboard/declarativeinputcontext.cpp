@@ -23,7 +23,6 @@
 #include "virtualkeyboarddebug.h"
 #include "enterkeyaction.h"
 
-#include <QEvent>
 #include <QTextFormat>
 #include <QGuiApplication>
 #include <QtCore/private/qobject_p.h>
@@ -64,6 +63,7 @@ public:
         cursorPosition(0),
         inputMethodHints(Qt::ImhNone),
         preeditText(),
+        preeditTextAttributes(),
         surroundingText(),
         selectedText(),
         cursorRectangle()
@@ -86,6 +86,7 @@ public:
     int cursorPosition;
     Qt::InputMethodHints inputMethodHints;
     QString preeditText;
+    QList<QInputMethodEvent::Attribute> preeditTextAttributes;
     QString surroundingText;
     QString selectedText;
     QRectF cursorRectangle;
@@ -192,11 +193,26 @@ QString DeclarativeInputContext::preeditText() const
     return d->preeditText;
 }
 
-void DeclarativeInputContext::setPreeditText(const QString &text)
+void DeclarativeInputContext::setPreeditText(const QString &text, QList<QInputMethodEvent::Attribute> attributes)
 {
-    Q_D(DeclarativeInputContext);
-    if (text != d->preeditText)
-        sendPreedit(text);
+    // Add default attributes
+    if (!text.isEmpty()) {
+        bool containsTextFormat = false;
+        for (QList<QInputMethodEvent::Attribute>::ConstIterator attribute = attributes.constBegin();
+             attribute != attributes.constEnd(); attribute++) {
+            if (attribute->type == QInputMethodEvent::TextFormat) {
+                containsTextFormat = true;
+                break;
+            }
+        }
+        if (!containsTextFormat) {
+            QTextCharFormat textFormat;
+            textFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
+            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, 0, text.length(), textFormat));
+        }
+    }
+
+    sendPreedit(text, attributes);
 }
 
 QString DeclarativeInputContext::surroundingText() const
@@ -462,32 +478,34 @@ void DeclarativeInputContext::setFocus(bool enable)
     emit focusEditorChanged();
 }
 
-void DeclarativeInputContext::sendPreedit(const QString &text, int cursor)
+bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMethodEvent::Attribute &attribute2)
+{
+    return attribute1.start == attribute2.start &&
+           attribute1.length == attribute2.length &&
+           attribute1.type == attribute2.type &&
+           attribute1.value == attribute2.value;
+}
+
+void DeclarativeInputContext::sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes)
 {
     Q_D(DeclarativeInputContext);
-    VIRTUALKEYBOARD_DEBUG() << "DeclarativeInputContext::sendPreedit():" << text << cursor;
-    const QString preedit = d->preeditText;
-    d->preeditText = text;
+    VIRTUALKEYBOARD_DEBUG() << "DeclarativeInputContext::sendPreedit():" << text;
 
-    if (d->inputContext) {
-        QList<QInputMethodEvent::Attribute> attributes;
+    bool textChanged = d->preeditText != text;
+    bool attributesChanged = d->preeditTextAttributes != attributes;
 
-        if (cursor >= 0 && cursor <= text.length()) {
-            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Cursor, cursor, text.length(), QVariant()));
+    if (textChanged || attributesChanged) {
+        d->preeditText = text;
+        d->preeditTextAttributes = attributes;
+
+        if (d->inputContext) {
+            QInputMethodEvent event(text, attributes);
+            d->inputContext->sendEvent(&event);
         }
 
-        if (!d->preeditText.isEmpty()) {
-            QTextCharFormat textFormat;
-            textFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
-            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, 0, text.length(), textFormat));
-        }
-
-        QInputMethodEvent event(text, attributes);
-        d->inputContext->sendEvent(&event);
+        if (textChanged)
+            emit preeditTextChanged();
     }
-
-    if (d->preeditText != preedit)
-        emit preeditTextChanged();
 }
 
 void DeclarativeInputContext::reset()
