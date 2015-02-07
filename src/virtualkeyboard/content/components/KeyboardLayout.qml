@@ -79,6 +79,19 @@ ColumnLayout {
     */
     property var inputMethod
 
+    /*! This function may be overridden by the keyboard layout
+        to create the input method object dynamically. The default
+        implementation returns \c null.
+
+        The input method object created by this function can outlive
+        keyboard layout transitions in certain cases. In particular,
+        this applies to the transitions between the symbol and the
+        main view.
+    */
+    function createInputMethod() {
+        return null
+    }
+
     /*! Sets the input mode to be used in this layout.
 
         By default, the virtual keyboard attempts to preserve

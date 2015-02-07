@@ -55,7 +55,9 @@ Item {
     property bool symbolMode
     property var defaultInputMethod: initDefaultInputMethod()
     property var plainInputMethod: PlainInputMethod {}
+    property var customInputMethod: null
     property int defaultInputMode: InputEngine.Latin
+    property bool inputMethodNeedsReset: true
     property bool inputModeNeedsReset: true
     property bool navigationModeActive: false
     property alias soundEffect: soundEffect
@@ -73,6 +75,7 @@ Item {
         keyboardInputArea.reset()
     }
     onLocaleChanged: {
+        inputMethodNeedsReset = true
         inputModeNeedsReset = true
         updateLayout()
     }
@@ -93,8 +96,11 @@ Item {
         onInputMethodHintsChanged: {
             keyboard.symbolMode = InputContext.inputMethodHints & Qt.ImhPreferNumbers
         }
-        onInputItemChanged: {
-            inputModeNeedsReset = true
+        onFocusChanged: {
+            if (InputContext.focus) {
+                inputModeNeedsReset = true
+                updateInputMethod()
+            }
         }
         onNavigationKeyPressed: {
             var initialKey
@@ -815,21 +821,36 @@ Item {
     function updateInputMethod() {
         if (!keyboardLayoutLoader.item)
             return
+
+        if (inputMethodNeedsReset) {
+            if (customInputMethod) {
+                customInputMethod.destroy()
+                customInputMethod = null
+            }
+            inputMethodNeedsReset = false
+        }
+
         var inputMethod = null
         var inputMode = InputContext.inputEngine.inputMode
+
         // Use input method from keyboard layout
         if (keyboardLayoutLoader.item.inputMethod)
             inputMethod = keyboardLayoutLoader.item.inputMethod
-        else
-            inputMethod = keyboard.defaultInputMethod
+        else if (!customInputMethod)
+            customInputMethod = keyboardLayoutLoader.item.createInputMethod()
+        if (!inputMethod)
+            inputMethod = customInputMethod ? customInputMethod : defaultInputMethod
+
         if (latinOnly)
             inputMode = InputEngine.Latin
         else if (keyboardLayoutLoader.item.inputMode !== -1)
             inputMode = keyboardLayoutLoader.item.inputMode
+
         var inputMethodChanged = InputContext.inputEngine.inputMethod !== inputMethod
         if (inputMethodChanged) {
             InputContext.inputEngine.inputMethod = inputMethod
         }
+
         if (InputContext.inputEngine.inputMethod) {
             var inputModes = InputContext.inputEngine.inputModes
             if (inputModes.length > 0) {

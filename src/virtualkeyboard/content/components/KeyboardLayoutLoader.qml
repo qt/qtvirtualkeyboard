@@ -72,6 +72,20 @@ Loader {
     */
     property var inputMethod: item.inputMethod
 
+    /*! This function may be overridden by the keyboard layout
+        to create the input method object dynamically. The default
+        implementation forwards the call to the child keyboard
+        layout.
+
+        The input method object created by this function can outlive
+        keyboard layout transitions in certain cases. In particular,
+        this applies to the transitions between the symbol and the
+        main view.
+    */
+    function createInputMethod() {
+        return item ? item.createInputMethod() : null
+    }
+
     /*! Sets the input mode for all the keyboard layouts loaded
         in this context.
 
