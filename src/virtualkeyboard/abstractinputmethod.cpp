@@ -107,8 +107,8 @@ void AbstractInputMethod::setInputEngine(DeclarativeInputEngine *inputEngine)
 {
     Q_D(AbstractInputMethod);
     if (d->inputEngine) {
-        disconnect(this, SLOT(reset()));
-        disconnect(this, SLOT(update()));
+        d->inputEngine->disconnect(this, SLOT(reset()));
+        d->inputEngine->disconnect(this, SLOT(update()));
     }
     d->inputEngine = inputEngine;
     if (d->inputEngine) {
