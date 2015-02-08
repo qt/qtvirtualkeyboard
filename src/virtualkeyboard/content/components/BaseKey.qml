@@ -86,6 +86,14 @@ Item {
     */
     property bool active: false
 
+    /*! \since QtQuick.Enterprise.VirtualKeyboard 1.3
+
+        Disables key modifiers on the emitted key.
+
+        The default is false.
+    */
+    property bool noModifier: false
+
     /*! Sets the key repeat attribute.
 
         If the repeat is enabled, the key will repeat the input events while held down.
@@ -131,7 +139,7 @@ Item {
 
         By default, this property reflects the uppercase status of the keyboard.
     */
-    property bool uppercased: keyboard.uppercased
+    property bool uppercased: keyboard.uppercased && !noModifier
 
     /*! Sets the key panel delegate for the key.
 
