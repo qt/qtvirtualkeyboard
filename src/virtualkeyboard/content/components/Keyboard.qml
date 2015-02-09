@@ -850,7 +850,7 @@ Item {
             var inputModes = InputContext.inputEngine.inputModes
             if (inputModes.length > 0) {
                 // Reset to default input mode if the input locale has changed
-                if (inputModeNeedsReset || inputModes.indexOf(inputMode) === -1) {
+                if ((!latinOnly && inputModeNeedsReset) || inputModes.indexOf(inputMode) === -1) {
                     inputMode = inputModes[0]
                 }
                 if (InputContext.inputEngine.inputMode !== inputMode || inputMethodChanged || inputModeNeedsReset) {
