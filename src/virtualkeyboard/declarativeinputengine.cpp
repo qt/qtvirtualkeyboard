@@ -419,8 +419,10 @@ void DeclarativeInputEngine::setInputMode(DeclarativeInputEngine::InputMode inpu
         QList<DeclarativeInputEngine::InputMode> inputModeList(d->inputMethod->inputModes(locale));
         if (inputModeList.contains(inputMode)) {
             d->inputMethod->setInputMode(locale, inputMode);
-            d->inputMode = inputMode;
-            emit inputModeChanged();
+            if (d->inputMode != inputMode) {
+                d->inputMode = inputMode;
+                emit inputModeChanged();
+            }
         } else {
             qWarning() << "the input mode" << inputMode << "is not valid";
         }
