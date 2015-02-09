@@ -95,5 +95,7 @@ Loader {
     */
     property int inputMode: item.inputMode
 
-    onItemChanged: if (item) keyboard.updateInputMethod()
+    property int __updateCount
+
+    onItemChanged: if (item && __updateCount++ > 0) keyboard.updateInputMethod()
 }
