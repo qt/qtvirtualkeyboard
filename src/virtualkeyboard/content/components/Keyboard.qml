@@ -38,19 +38,14 @@ Item {
     property string defaultLocale: defaultLocaleIndex >= 0 && defaultLocaleIndex < layoutsModel.count ? layoutsModel.get(defaultLocaleIndex, "fileName") : ""
     property string layout
     property string layoutType: {
-        if (keyboard.dialpadMode) return "dialpad"
-        if (keyboard.numberMode) return "numbers"
-        if (keyboard.digitMode) return "digits"
+        if (InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly) return "dialpad"
+        if (InputContext.inputMethodHints & Qt.ImhFormattedNumbersOnly) return "numbers"
+        if (InputContext.inputMethodHints & Qt.ImhDigitsOnly) return "digits"
         if (keyboard.symbolMode) return "symbols"
         return "main"
     }
     property bool active: Qt.inputMethod.visible
     property bool uppercased: InputContext.shift || InputContext.capsLock
-    property bool uppercaseOnly: InputContext.inputMethodHints & Qt.ImhUppercaseOnly
-    property bool lowercaseOnly: InputContext.inputMethodHints & Qt.ImhLowercaseOnly
-    property bool dialpadMode: InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly
-    property bool numberMode: InputContext.inputMethodHints & Qt.ImhFormattedNumbersOnly
-    property bool digitMode: InputContext.inputMethodHints & Qt.ImhDigitsOnly
     property bool latinOnly: InputContext.inputMethodHints & Qt.ImhLatinOnly
     property bool symbolMode
     property var defaultInputMethod: initDefaultInputMethod()
