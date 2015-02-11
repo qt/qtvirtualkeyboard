@@ -21,8 +21,9 @@ import QtQuick.Layouts 1.0
 import QtQuick.Enterprise.VirtualKeyboard 1.2
 
 KeyboardLayoutLoader {
-    inputMethod: HangulInputMethod {}
-    inputMode: InputEngine.Numeric
+    function createInputMethod() {
+        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 1.2; HangulInputMethod {}', parent, "hangulInputMethod")
+    }
     property bool secondPage
     onVisibleChanged: if (!visible) secondPage = false
     sourceComponent: secondPage ? page2 : page1

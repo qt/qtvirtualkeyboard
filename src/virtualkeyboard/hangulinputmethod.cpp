@@ -32,7 +32,7 @@ HangulInputMethod::~HangulInputMethod()
 QList<DeclarativeInputEngine::InputMode> HangulInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::Hangul << DeclarativeInputEngine::Numeric;
+    return QList<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::Hangul;
 }
 
 bool HangulInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
