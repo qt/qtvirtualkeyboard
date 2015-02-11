@@ -21,7 +21,9 @@ import QtQuick.Layouts 1.0
 import QtQuick.Enterprise.VirtualKeyboard 1.2
 
 KeyboardLayoutLoader {
-    inputMethod: PlainInputMethod {}
+    function createInputMethod() {
+        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 1.2; PinyinInputMethod {}', parent, "pinyinInputMethod")
+    }
     property int page
     readonly property int numPages: 3
     property var keysPage1: [

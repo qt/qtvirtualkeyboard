@@ -21,7 +21,9 @@ import QtQuick.Layouts 1.0
 import QtQuick.Enterprise.VirtualKeyboard 1.2
 
 KeyboardLayout {
-    inputMethod: PinyinInputMethod {}
+    function createInputMethod() {
+        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 1.2; PinyinInputMethod {}', parent, "pinyinInputMethod")
+    }
     keyWeight: 160
     KeyboardRow {
         Key {
