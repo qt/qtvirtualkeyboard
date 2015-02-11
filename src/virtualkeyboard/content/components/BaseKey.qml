@@ -80,6 +80,16 @@ Item {
     */
     property int key: Qt.Key_unknown
 
+    /*! \since QtQuick.Enterprise.VirtualKeyboard 1.3
+
+        This property controls whether the key emits key events for input
+        method processing. When true, the key events are disabled.
+
+        By default, the key event is emitted if the \e key is not unknown
+        or the \e text is not empty.
+    */
+    property bool noKeyEvent: key === Qt.Key_unknown && text.length === 0
+
     /*! This property holds the active status of the key.
 
         This property is automatically set to true when the key is pressed.

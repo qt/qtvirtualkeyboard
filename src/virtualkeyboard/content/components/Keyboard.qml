@@ -584,7 +584,7 @@ Item {
 
                     function press(key, isRealPress) {
                         if (key && key.enabled) {
-                            if (key.key !== Qt.Key_unknown || key.text.length > 0)
+                            if (!key.noKeyEvent)
                                 InputContext.inputEngine.virtualKeyPress(key.key, key.uppercased ? key.text.toUpperCase() : key.text, key.uppercased ? Qt.ShiftModifier : 0, key.repeat && !dragSymbolMode)
                             if (isRealPress)
                                 soundEffect.play(key.soundEffect)
@@ -592,14 +592,14 @@ Item {
                     }
                     function release(key) {
                         if (key && key.enabled) {
-                            if (key.key !== Qt.Key_unknown || key.text.length > 0)
+                            if (!key.noKeyEvent)
                                 InputContext.inputEngine.virtualKeyRelease(key.key, key.uppercased ? key.text.toUpperCase() : key.text, key.uppercased ? Qt.ShiftModifier : 0)
                             key.clicked()
                         }
                     }
                     function click(key) {
                         if (key && key.enabled) {
-                            if (key.key !== Qt.Key_unknown || key.text.length > 0)
+                            if (!key.noKeyEvent)
                                 InputContext.inputEngine.virtualKeyClick(key.key, keyboard.uppercased ? key.text.toUpperCase() : key.text, keyboard.uppercased ? Qt.ShiftModifier : 0)
                             key.clicked()
                         }
