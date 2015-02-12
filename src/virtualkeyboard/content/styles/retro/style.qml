@@ -17,8 +17,8 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.Enterprise.VirtualKeyboard 1.3
-import QtQuick.Enterprise.VirtualKeyboard.Styles 1.3
+import QtQuick.Enterprise.VirtualKeyboard 1.4
+import QtQuick.Enterprise.VirtualKeyboard.Styles 1.4
 
 KeyboardStyle {
     id: currentStyle
@@ -27,7 +27,8 @@ KeyboardStyle {
     readonly property real keyBackgroundMargin: Math.round(9 * scaleHint)
     readonly property real keyContentMargin: Math.round(50 * scaleHint)
     readonly property real keyIconScale: scaleHint * 0.6
-    readonly property string resourcePrefix: "qrc:/content/styles/retro/"
+    readonly property string resourcePath: "content/styles/retro/"
+    readonly property string resourcePrefix: "qrc:/" + resourcePath
 
     readonly property string inputLocale: InputContext.locale
     property color inputLocaleIndicatorColor: "#110b05"
@@ -560,6 +561,57 @@ KeyboardStyle {
         ]
     }
 
+    handwritingKeyPanel: KeyPanel {
+        BorderImage {
+            id: hwrKeyBackground
+            source: resourcePrefix + "images/key154px_colorB.png"
+            width: (parent.width - 2 * hwrKeyBackground) / scale
+            height: sourceSize.height
+            anchors.centerIn: parent
+            border.left: 76
+            border.top: 76
+            border.right: 76
+            border.bottom: 76
+            horizontalTileMode: BorderImage.Stretch
+            scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
+        }
+        Image {
+            id: hwrKeyIcon
+            anchors.centerIn: parent
+            readonly property size hwrKeyIconSize: keyboard.handwritingMode ? Qt.size(124, 96) : Qt.size(156, 104)
+            sourceSize.width: hwrKeyIconSize.width * keyIconScale
+            sourceSize.height: hwrKeyIconSize.height * keyIconScale
+            smooth: false
+            source: resourcePrefix + (keyboard.handwritingMode ? "images/textmode-110b05.svg" : "images/handwriting-110b05.svg")
+        }
+        states: [
+            State {
+                name: "pressed"
+                when: control.pressed
+                PropertyChanges {
+                    target: hwrKeyBackground
+                    opacity: 0.70
+                }
+                PropertyChanges {
+                    target: hwrKeyIcon
+                    opacity: 0.70
+                }
+            },
+            State {
+                name: "disabled"
+                when: !control.enabled
+                PropertyChanges {
+                    target: hwrKeyBackground
+                    opacity: 0.20
+                }
+                PropertyChanges {
+                    target: hwrKeyIcon
+                    opacity: 0.20
+                }
+            }
+        ]
+    }
+
     characterPreviewMargin: Math.round(20 * scaleHint)
     characterPreviewDelegate: Item {
         property string text
@@ -722,5 +774,88 @@ KeyboardStyle {
         color: "transparent"
         border.color: "yellow"
         border.width: 5
+    }
+
+    traceInputKeyPanelDelegate: TraceInputKeyPanel {
+        traceMargins: keyBackgroundMargin
+        BorderImage {
+            id: traceInputKeyPanelBackground
+            readonly property int traceInputKeyPanelSvgImageHeight: Math.round(height / 12)
+            readonly property real traceInputKeyPanelSvgImageScale: traceInputKeyPanelSvgImageHeight / 154
+            source: "image://qtvkbsvg/%1/images/key154px_colorA.svg?height=%2".arg(resourcePath).arg(traceInputKeyPanelSvgImageHeight)
+            anchors.fill: parent
+            anchors.margins: keyBackgroundMargin
+            border.left: 76 * traceInputKeyPanelSvgImageScale
+            border.top: 76 * traceInputKeyPanelSvgImageScale
+            border.right: 78 * traceInputKeyPanelSvgImageScale
+            border.bottom: 78 * traceInputKeyPanelSvgImageScale
+            horizontalTileMode: BorderImage.Stretch
+            verticalTileMode: BorderImage.Stretch
+        }
+        Text {
+            id: hwrInputModeIndicator
+            visible: control.patternRecognitionMode === InputEngine.HandwritingRecoginition
+            text: InputContext.inputEngine.inputMode === InputEngine.Latin ? "Abc" : "123"
+            color: "black"
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.margins: keyContentMargin * 1.5
+            font {
+                family: fontFamily
+                weight: Font.Bold
+                pixelSize: 72 * scaleHint
+                capitalization: {
+                    if (InputContext.capsLock)
+                        return Font.AllUppercase
+                    if (InputContext.shift)
+                        return Font.MixedCase
+                    return Font.AllLowercase
+                }
+            }
+        }
+        Canvas {
+            id: traceInputKeyGuideLines
+            anchors.fill: traceInputKeyPanelBackground
+            opacity: 0.1
+            onPaint: {
+                var ctx = getContext("2d")
+                ctx.lineWidth = 1
+                ctx.strokeStyle = Qt.rgba(0xFF, 0xFF, 0xFF)
+                ctx.clearRect(0, 0, width, height)
+                var i
+                if (control.horizontalRulers) {
+                    for (i = 0; i < control.horizontalRulers.length; i++) {
+                        ctx.beginPath()
+                        ctx.moveTo(0, control.horizontalRulers[i])
+                        ctx.lineTo(width, control.horizontalRulers[i])
+                        ctx.stroke()
+                    }
+                }
+                if (control.verticalRulers) {
+                    for (i = 0; i < control.verticalRulers.length; i++) {
+                        ctx.beginPath()
+                        ctx.moveTo(control.verticalRulers[i], 0)
+                        ctx.lineTo(control.verticalRulers[i], height)
+                        ctx.stroke()
+                    }
+                }
+            }
+        }
+    }
+
+    traceCanvasDelegate: TraceCanvas {
+        id: traceCanvas
+        onAvailableChanged: {
+            if (!available)
+                return
+            var ctx = getContext("2d")
+            ctx.lineWidth = 10 * scaleHint
+            ctx.lineCap = "round"
+            ctx.strokeStyle = Qt.rgba(0, 0, 0)
+            ctx.fillStyle = ctx.strokeStyle
+        }
+        autoDestroyDelay: 800
+        onTraceChanged: if (trace === null) opacity = 0
+        Behavior on opacity { PropertyAnimation { easing.type: Easing.OutCubic; duration: 150 } }
     }
 }

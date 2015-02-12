@@ -22,5 +22,8 @@
         <file>components/ShiftKey.qml</file>
         <file>components/SpaceKey.qml</file>
         <file>components/SymbolModeKey.qml</file>
+        <file>components/TraceInputKey.qml</file>
+        <file>components/TraceInputArea.qml</file>
+        <file>components/HandwritingModeKey.qml</file>
     </qresource>
 </RCC>

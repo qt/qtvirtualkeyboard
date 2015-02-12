@@ -7,6 +7,7 @@
         <file>images/key154px_capslock.png</file>
         <file>images/key154px_colorA_long.png</file>
         <file>images/key154px_colorA.png</file>
+        <file>images/key154px_colorA.svg</file>
         <file>images/key154px_colorB.png</file>
         <file>images/key154px_shiftcase_long.png</file>
         <file>images/key154px_shiftcase.png</file>
@@ -24,10 +25,12 @@
         <file>images/check-c5a96f.svg</file>
         <file>images/enter-c5a96f.svg</file>
         <file>images/globe-110b05.svg</file>
+        <file>images/handwriting-110b05.svg</file>
         <file>images/hidekeyboard-c5a96f.svg</file>
         <file>images/search-c5a96f.svg</file>
         <file>images/shift-c5a96f.svg</file>
         <file>images/shift-cd8865.svg</file>
         <file>images/shift-dc4f28.svg</file>
+        <file>images/textmode-110b05.svg</file>
     </qresource>
 </RCC>

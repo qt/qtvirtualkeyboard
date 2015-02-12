@@ -17,8 +17,8 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.Enterprise.VirtualKeyboard 1.3
-import QtQuick.Enterprise.VirtualKeyboard.Styles 1.3
+import QtQuick.Enterprise.VirtualKeyboard 1.4
+import QtQuick.Enterprise.VirtualKeyboard.Styles 1.4
 
 KeyboardStyle {
     id: currentStyle
@@ -487,6 +487,51 @@ KeyboardStyle {
         ]
     }
 
+    handwritingKeyPanel: KeyPanel {
+        Rectangle {
+            id: hwrKeyBackground
+            radius: 5
+            color: "#35322f"
+            anchors.fill: parent
+            anchors.margins: keyBackgroundMargin
+            Image {
+                id: hwrKeyIcon
+                anchors.centerIn: parent
+                readonly property size hwrKeyIconSize: keyboard.handwritingMode ? Qt.size(124, 96) : Qt.size(156, 104)
+                sourceSize.width: hwrKeyIconSize.width * keyIconScale
+                sourceSize.height: hwrKeyIconSize.height * keyIconScale
+                smooth: false
+                source: resourcePrefix + (keyboard.handwritingMode ? "images/textmode-868482.svg" : "images/handwriting-868482.svg")
+            }
+        }
+        states: [
+            State {
+                name: "pressed"
+                when: control.pressed
+                PropertyChanges {
+                    target: hwrKeyBackground
+                    opacity: 0.80
+                }
+                PropertyChanges {
+                    target: hwrKeyIcon
+                    opacity: 0.6
+                }
+            },
+            State {
+                name: "disabled"
+                when: !control.enabled
+                PropertyChanges {
+                    target: hwrKeyBackground
+                    opacity: 0.8
+                }
+                PropertyChanges {
+                    target: hwrKeyIcon
+                    opacity: 0.2
+                }
+            }
+        ]
+    }
+
     characterPreviewMargin: 0
     characterPreviewDelegate: Item {
         property string text
@@ -606,5 +651,81 @@ KeyboardStyle {
         color: "transparent"
         border.color: "yellow"
         border.width: 5
+    }
+
+    traceInputKeyPanelDelegate: TraceInputKeyPanel {
+        traceMargins: keyBackgroundMargin
+        Rectangle {
+            id: traceInputKeyPanelBackground
+            radius: 5
+            color: "#35322f"
+            anchors.fill: parent
+            anchors.margins: keyBackgroundMargin
+            Text {
+                id: hwrInputModeIndicator
+                visible: control.patternRecognitionMode === InputEngine.HandwritingRecoginition
+                text: InputContext.inputEngine.inputMode === InputEngine.Latin ? "Abc" : "123"
+                color: "white"
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.margins: keyContentMargin
+                font {
+                    family: fontFamily
+                    weight: Font.Normal
+                    pixelSize: 44 * scaleHint
+                    capitalization: {
+                        if (InputContext.capsLock)
+                            return Font.AllUppercase
+                        if (InputContext.shift)
+                            return Font.MixedCase
+                        return Font.AllLowercase
+                    }
+                }
+            }
+        }
+        Canvas {
+            id: traceInputKeyGuideLines
+            anchors.fill: traceInputKeyPanelBackground
+            opacity: 0.1
+            onPaint: {
+                var ctx = getContext("2d")
+                ctx.lineWidth = 1
+                ctx.strokeStyle = Qt.rgba(0xFF, 0xFF, 0xFF)
+                ctx.clearRect(0, 0, width, height)
+                var i
+                if (control.horizontalRulers) {
+                    for (i = 0; i < control.horizontalRulers.length; i++) {
+                        ctx.beginPath()
+                        ctx.moveTo(0, control.horizontalRulers[i])
+                        ctx.lineTo(width, control.horizontalRulers[i])
+                        ctx.stroke()
+                    }
+                }
+                if (control.verticalRulers) {
+                    for (i = 0; i < control.verticalRulers.length; i++) {
+                        ctx.beginPath()
+                        ctx.moveTo(control.verticalRulers[i], 0)
+                        ctx.lineTo(control.verticalRulers[i], height)
+                        ctx.stroke()
+                    }
+                }
+            }
+        }
+    }
+
+    traceCanvasDelegate: TraceCanvas {
+        id: traceCanvas
+        onAvailableChanged: {
+            if (!available)
+                return
+            var ctx = getContext("2d")
+            ctx.lineWidth = 10 * scaleHint
+            ctx.lineCap = "round"
+            ctx.strokeStyle = Qt.rgba(0xFF, 0xFF, 0xFF)
+            ctx.fillStyle = ctx.strokeStyle
+        }
+        autoDestroyDelay: 800
+        onTraceChanged: if (trace === null) opacity = 0
+        Behavior on opacity { PropertyAnimation { easing.type: Easing.OutCubic; duration: 150 } }
     }
 }

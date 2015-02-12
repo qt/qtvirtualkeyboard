@@ -29,7 +29,8 @@ SOURCES += platforminputcontext.cpp \
     enterkeyaction.cpp \
     enterkeyactionattachedtype.cpp \
     settings.cpp \
-    declarativesettings.cpp
+    declarativesettings.cpp \
+    declarativetrace.cpp \
 
 HEADERS += platforminputcontext.h \
     declarativeinputcontext.h \
@@ -46,7 +47,8 @@ HEADERS += platforminputcontext.h \
     enterkeyactionattachedtype.h \
     settings.h \
     declarativesettings.h \
-    plugin.h
+    plugin.h \
+    declarativetrace.h \
 
 RESOURCES += \
     content/styles/default/default_style.qrc \

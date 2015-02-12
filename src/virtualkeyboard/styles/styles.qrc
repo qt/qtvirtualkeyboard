@@ -5,5 +5,8 @@
         <file>KeyPanel.qml</file>
         <file>SelectionListItem.qml</file>
         <file>qmldir</file>
+        <file>TraceInputKeyPanel.qml</file>
+        <file>TraceCanvas.qml</file>
+        <file>TraceUtils.js</file>
     </qresource>
 </RCC>

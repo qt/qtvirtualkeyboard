@@ -17,6 +17,7 @@
 ****************************************************************************/
 
 #include "declarativeinputmethod.h"
+#include "declarativetrace.h"
 #include <QVariant>
 
 /*!
@@ -148,6 +149,39 @@
     in the selection list identified by \a type.
 */
 
+/*!
+    \qmlmethod list<int> InputMethod::patternRecognitionModes()
+    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+
+    Returns list of supported pattern recognition modes.
+
+    This method is invoked by the input engine to query the list of
+    supported pattern recognition modes.
+*/
+
+/*!
+    \qmlmethod Trace InputMethod::traceBegin(var traceCaptureDeviceInfo, var traceScreenInfo)
+    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+
+    This method is called when a trace interaction starts. The \a traceCaptureDeviceInfo provides
+    information about the source device and the \a traceScreenInfo provides information about the screen
+    context.
+
+    If the input method accepts the event and wants to capture the trace input, it must return
+    a new Trace object. This object must remain valid until the \l {InputMethod::traceEnd()}
+    {InputMethod.traceEnd()} method is called. If the Trace is rendered on screen, it remains there
+    until the Trace object is destroyed.
+*/
+
+/*!
+    \qmlmethod bool InputMethod::traceEnd(Trace trace)
+    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+
+    This method is called when the trace interaction ends. The input method should destroy the \a trace object
+    at some point after this function is called. See the \l Trace API how to access the gathered
+    data.
+*/
+
 DeclarativeInputMethod::DeclarativeInputMethod(QObject *parent) :
     AbstractInputMethod(parent)
 {
@@ -240,6 +274,39 @@ void DeclarativeInputMethod::selectionListItemSelected(DeclarativeSelectionListM
     QMetaObject::invokeMethod(this, "selectionListItemSelected",
                               Q_ARG(QVariant, static_cast<int>(type)),
                               Q_ARG(QVariant, index));
+}
+
+QList<DeclarativeInputEngine::PatternRecognitionMode> DeclarativeInputMethod::patternRecognitionModes() const
+{
+    QVariant result;
+    QMetaObject::invokeMethod(const_cast<DeclarativeInputMethod *>(this), "patternRecognitionModes",
+                              Q_RETURN_ARG(QVariant, result));
+    QList<DeclarativeInputEngine::PatternRecognitionMode> patterRecognitionModeList;
+    foreach (const QVariant &patterRecognitionMode, result.toList()) {
+        patterRecognitionModeList.append(static_cast<DeclarativeInputEngine::PatternRecognitionMode>(patterRecognitionMode.toInt()));
+    }
+    return patterRecognitionModeList;
+}
+
+DeclarativeTrace *DeclarativeInputMethod::traceBegin(DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
+                                                     const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
+{
+    Q_UNUSED(patternRecognitionMode)
+    QVariant result;
+    QMetaObject::invokeMethod(this, "traceBegin",
+                              Q_RETURN_ARG(QVariant, result),
+                              Q_ARG(QVariant, traceCaptureDeviceInfo),
+                              Q_ARG(QVariant, traceScreenInfo));
+    return result.value<DeclarativeTrace *>();
+}
+
+bool DeclarativeInputMethod::traceEnd(DeclarativeTrace *trace)
+{
+    QVariant result;
+    QMetaObject::invokeMethod(this, "traceEnd",
+                              Q_RETURN_ARG(QVariant, result),
+                              Q_ARG(QVariant, QVariant::fromValue(trace)));
+    return result.toBool();
 }
 
 void DeclarativeInputMethod::reset()

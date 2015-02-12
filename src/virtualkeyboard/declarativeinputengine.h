@@ -26,6 +26,7 @@ class DeclarativeInputContext;
 class DeclarativeSelectionListModel;
 class AbstractInputMethod;
 class DeclarativeInputEnginePrivate;
+class DeclarativeTrace;
 
 class DeclarativeInputEngine : public QObject
 {
@@ -34,11 +35,13 @@ class DeclarativeInputEngine : public QObject
     Q_DECLARE_PRIVATE(DeclarativeInputEngine)
     Q_ENUMS(TextCase)
     Q_ENUMS(InputMode)
+    Q_ENUMS(PatternRecognitionMode)
     Q_PROPERTY(Qt::Key activeKey READ activeKey NOTIFY activeKeyChanged)
     Q_PROPERTY(Qt::Key previousKey READ previousKey NOTIFY previousKeyChanged)
     Q_PROPERTY(AbstractInputMethod *inputMethod READ inputMethod WRITE setInputMethod NOTIFY inputMethodChanged)
     Q_PROPERTY(QList<int> inputModes READ inputModes NOTIFY inputModesChanged)
     Q_PROPERTY(InputMode inputMode READ inputMode WRITE setInputMode NOTIFY inputModeChanged)
+    Q_PROPERTY(QList<int> patternRecognitionModes READ patternRecognitionModes NOTIFY patternRecognitionModesChanged)
     Q_PROPERTY(DeclarativeSelectionListModel *wordCandidateListModel READ wordCandidateListModel NOTIFY wordCandidateListModelChanged)
     Q_PROPERTY(bool wordCandidateListVisibleHint READ wordCandidateListVisibleHint NOTIFY wordCandidateListVisibleHintChanged)
 
@@ -58,6 +61,10 @@ public:
         Hiragana,
         Katakana,
         FullwidthLatin
+    };
+    enum PatternRecognitionMode {
+        PatternRecognitionDisabled,
+        HandwritingRecoginition
     };
 
 public:
@@ -83,6 +90,11 @@ public:
     DeclarativeSelectionListModel *wordCandidateListModel() const;
     bool wordCandidateListVisibleHint() const;
 
+    QList<int> patternRecognitionModes() const;
+    Q_INVOKABLE DeclarativeTrace *traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
+                                             const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
+    Q_INVOKABLE bool traceEnd(DeclarativeTrace *trace);
+
 signals:
     void virtualKeyClicked(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool isAutoRepeat);
     void activeKeyChanged(Qt::Key key);
@@ -92,6 +104,7 @@ signals:
     void inputMethodUpdate();
     void inputModesChanged();
     void inputModeChanged();
+    void patternRecognitionModesChanged();
     void wordCandidateListModelChanged();
     void wordCandidateListVisibleHintChanged();
 

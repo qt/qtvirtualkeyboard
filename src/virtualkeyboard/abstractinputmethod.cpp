@@ -148,6 +148,54 @@ void AbstractInputMethod::selectionListItemSelected(DeclarativeSelectionListMode
 }
 
 /*!
+    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+
+    Returns list of supported pattern recognition modes.
+
+    This method is called by the input engine to query the list of
+    supported pattern recognition modes.
+*/
+QList<DeclarativeInputEngine::PatternRecognitionMode> AbstractInputMethod::patternRecognitionModes() const
+{
+    return QList<DeclarativeInputEngine::PatternRecognitionMode>();
+}
+
+/*!
+    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+
+    This method is called when a trace interaction starts with the specified \a patternRecognitionMode.
+    The \a traceCaptureDeviceInfo provides information about the source device and the
+    \a traceScreenInfo provides information about the screen context.
+
+    If the input method accepts the event and wants to capture the trace input, it must return
+    a new Trace object. This object must remain valid until the traceEnd() method is called. If the
+    Trace is rendered on screen, it remains there until the Trace object is destroyed.
+*/
+DeclarativeTrace *AbstractInputMethod::traceBegin(DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
+                                                  const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
+{
+    Q_UNUSED(patternRecognitionMode)
+    Q_UNUSED(traceCaptureDeviceInfo)
+    Q_UNUSED(traceScreenInfo)
+    return 0;
+}
+
+/*!
+    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+
+    This method is called when the trace interaction ends. The input method should destroy the \a trace object
+    at some point after this function is called. See the \l Trace API how to access the gathered
+    data.
+
+    The method returns \c true if the trace interaction was accepted.
+*/
+bool AbstractInputMethod::traceEnd(DeclarativeTrace *trace)
+{
+    Q_UNUSED(trace)
+    return false;
+}
+
+/*!
     \fn QList<DeclarativeInputEngine::InputMode> AbstractInputMethod::inputModes(const QString& locale)
 
     Returns the list of input modes for \a locale.

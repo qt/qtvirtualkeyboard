@@ -264,6 +264,47 @@ to hide the list if necessary.
 The list model's word candidate list is provided by the
 InputEngine::wordCandidateListModel property.
 
+\section1 Integrating Handwriting Recognition
+
+Since the version 1.4 of the virtual keyboard, the input methods can consume
+touch input data from touch screen or other input device.
+
+\section2 Data Model for the Handwriting Input
+
+The data collected from the input source is stored in an object named DeclarativeTrace (C++) or \l Trace (QML).
+
+By definition, a trace is a set of points collected from a single point of contact.
+In addition to point data, the trace may also include data from other channels,
+such as the time for each data point.
+
+\section2 Trace API for Input Method
+
+The trace API consists of the following virtual methods, which the input method
+must implement in order to receive and process touch input data.
+
+\list
+    \li \l { AbstractInputMethod::patternRecognitionModes } { patternRecognitionModes }
+    \li \l { AbstractInputMethod::traceBegin } { traceBegin }
+    \li \l { AbstractInputMethod::traceEnd } { traceEnd }
+\endlist
+
+By implementing these methods, the input method can receive and process the data
+from variety of input sources.
+
+The patternRecognitionModes method returns a list of pattern recognition modes,
+which are supported by the input method. A pattern recognition mode, such as the
+\l { DeclarativeInputEngine::HandwritingRecoginition } { HandwritingRecoginition },
+defines the method by which the input method processes the data.
+
+The trace interaction is started when an input source detects a new contact point, and
+calls the traceBegin method for a new trace object. If the input method accepts the
+interaction, it creates a new trace object and returns it to the caller. From this point
+on, the data is collected to the trace until the traceEnd method is called.
+
+When the traceEnd method is called, the input method may begin processing of the data
+contained in the trace object. After processing the data the input method should destroy
+the object. This also removes the trace rendered to the screen.
+
 \section1 Keyboard Layouts
 
 Keyboard layouts are located in the \e src/virtualkeyboard/content/layouts
@@ -275,7 +316,7 @@ uppercase, two or three-letter ISO 3166 country code.
 \section2 Layout Types
 
 Different keyboard layout types are used in different input modes. The default
-layout which is used for reqular text input, is called the "main" layout.
+layout which is used for regular text input, is called the "main" layout.
 The layout type is determined by the layout file name. Therefore, the "main" layout
 file is called the "main.qml".
 
@@ -287,6 +328,7 @@ List of supported layout types:
     \li \c numbers Numeric layout for formatted numbers (activated by Qt::ImhFormattedNumbersOnly)
     \li \c digits Digits only layout (activated by Qt::ImhDigitsOnly)
     \li \c dialpad Dialpad layout for phone number input (activated by Qt::ImhDialableCharactersOnly)
+    \li \c handwriting Handwriting layout for handwriting recognition (activated from main layout)
 \endlist
 
 \section2 Adding New Keyboard Layouts
@@ -328,6 +370,8 @@ specialized key types. Below is the list of all key types:
     \li \l ShiftKey
     \li \l SpaceKey
     \li \l SymbolModeKey
+    \li \l HandwritingModeKey
+    \li \l TraceInputKey
 \endlist
 
 For example, to add a regular key which sends a key event to the input method:

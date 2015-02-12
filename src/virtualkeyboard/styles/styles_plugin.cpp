@@ -39,6 +39,8 @@ void StylesPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(path + "KeyIcon.qml"), uri, 1, 0, "KeyIcon");
     qmlRegisterType(QUrl(path + "KeyPanel.qml"), uri, 1, 0, "KeyPanel");
     qmlRegisterType(QUrl(path + "SelectionListItem.qml"), uri, 1, 0, "SelectionListItem");
+    qmlRegisterType(QUrl(path + "TraceInputKeyPanel.qml"), uri, 1, 4, "TraceInputKeyPanel");
+    qmlRegisterType(QUrl(path + "TraceCanvas.qml"), uri, 1, 4, "TraceCanvas");
 }
 
 void StylesPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

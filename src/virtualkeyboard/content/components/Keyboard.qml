@@ -44,10 +44,12 @@ Item {
         if (InputContext.inputMethodHints & Qt.ImhFormattedNumbersOnly) return "numbers"
         if (InputContext.inputMethodHints & Qt.ImhDigitsOnly) return "digits"
         if (keyboard.symbolMode) return "symbols"
+        if (keyboard.handwritingMode) return "handwriting"
         return "main"
     }
     property bool active: Qt.inputMethod.visible
     property bool uppercased: InputContext.shift
+    property bool handwritingMode
     property bool symbolMode
     property var defaultInputMethod: initDefaultInputMethod()
     property var plainInputMethod: PlainInputMethod {}
@@ -94,7 +96,7 @@ Item {
         updateInputMethod()
     }
     onPreferNumbersChanged: {
-        keyboard.symbolMode = preferNumbers
+        keyboard.symbolMode = !keyboard.handwritingMode && preferNumbers
         if (!preferNumbers)
             inputModeNeedsReset = true
         updateInputMethod()

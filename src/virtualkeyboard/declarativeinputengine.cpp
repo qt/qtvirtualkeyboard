@@ -19,6 +19,7 @@
 #include "declarativeinputengine.h"
 #include "declarativeinputcontext.h"
 #include "defaultinputmethod.h"
+#include "declarativetrace.h"
 #include "virtualkeyboarddebug.h"
 
 #include <QTimerEvent>
@@ -384,6 +385,7 @@ void DeclarativeInputEngine::setInputMethod(AbstractInputMethod *inputMethod)
         }
         emit inputMethodChanged();
         emit inputModesChanged();
+        emit patternRecognitionModesChanged();
     }
 }
 
@@ -444,6 +446,113 @@ bool DeclarativeInputEngine::wordCandidateListVisibleHint() const
     if (!d->selectionListModels.contains(DeclarativeSelectionListModel::WordCandidateList))
         return false;
     return d->selectionListModels[DeclarativeSelectionListModel::WordCandidateList]->dataSource() != 0;
+}
+
+/*!
+   Returns list of supported pattern recognition modes.
+*/
+QList<int> DeclarativeInputEngine::patternRecognitionModes() const
+{
+    Q_D(const DeclarativeInputEngine);
+    QList<PatternRecognitionMode> patterRecognitionModeList;
+    if (d->inputMethod)
+        patterRecognitionModeList = d->inputMethod->patternRecognitionModes();
+    if (patterRecognitionModeList.isEmpty())
+        return QList<int>();
+    QList<int> resultList;
+    foreach (const PatternRecognitionMode &patternRecognitionMode, patterRecognitionModeList)
+        resultList.append(patternRecognitionMode);
+    return resultList;
+}
+
+/*!
+    \qmlmethod Trace InputEngine::traceBegin(int patternRecognitionMode, var traceCaptureDeviceInfo, var traceScreenInfo)
+    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+
+    Starts a trace interaction with the input engine.
+
+    The trace is uniquely identified by the \a traceId. The input engine will assign
+    the id to the Trace object if the input method accepts the event.
+
+    The \a patternRecognitionMode specifies the recognition mode used for the pattern.
+
+    If the current input method accepts the event it returns a Trace object associated with this interaction.
+    If the input method discards the event, it returns a null value.
+
+    The \a traceCaptureDeviceInfo provides information about the source device and the \a traceScreenInfo
+    provides information about the screen context.
+
+    By definition, the Trace object remains valid until the traceEnd() method is called.
+
+    The trace interaction is ended by calling the \l {InputEngine::traceEnd()} {InputEngine.traceEnd()} method.
+*/
+/*!
+    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+
+    Starts a trace interaction with the input engine.
+
+    The trace is uniquely identified by the \a traceId. The input engine will assign
+    the id to the Trace object if the input method accepts the event.
+
+    The \a patternRecognitionMode specifies the recognition mode used for the pattern.
+
+    If the current input method accepts the event it returns a Trace object associated with this interaction.
+    If the input method discards the event, it returns a NULL value.
+
+    The \a traceCaptureDeviceInfo provides information about the source device and the \a traceScreenInfo
+    provides information about the screen context.
+
+    By definition, the Trace object remains valid until the traceEnd() method is called.
+
+    The trace interaction is ended by calling the traceEnd() method.
+*/
+DeclarativeTrace *DeclarativeInputEngine::traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
+                                                     const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
+{
+    Q_D(DeclarativeInputEngine);
+    VIRTUALKEYBOARD_DEBUG() << "DeclarativeInputEngine::traceBegin():"
+                            << "traceId:" << traceId
+                            << "patternRecognitionMode:" << patternRecognitionMode
+                            << "traceCaptureDeviceInfo:" << traceCaptureDeviceInfo
+                            << "traceScreenInfo:" << traceScreenInfo;
+    if (!d->inputMethod)
+        return 0;
+    if (patternRecognitionMode == PatternRecognitionDisabled)
+        return 0;
+    if (!d->inputMethod->patternRecognitionModes().contains(patternRecognitionMode))
+        return 0;
+    DeclarativeTrace *trace = d->inputMethod->traceBegin(patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
+    if (trace)
+        trace->setTraceId(traceId);
+    return trace;
+}
+
+/*!
+    \qmlmethod bool InputEngine::traceEnd(Trace trace)
+
+    Ends the trace interaction with the input engine.
+
+    The \a trace object may be discarded at any point after calling this function.
+
+    The function returns true if the trace interaction was accepted (i.e. the touch
+    events should not be used for anything else).
+*/
+/*!
+    Ends the trace interaction with the input engine.
+
+    The \a trace object may be discarded at any point after calling this function.
+
+    The function returns true if the trace interaction was accepted (i.e. the touch
+    events should not be used for anything else).
+*/
+bool DeclarativeInputEngine::traceEnd(DeclarativeTrace *trace)
+{
+    Q_D(DeclarativeInputEngine);
+    VIRTUALKEYBOARD_DEBUG() << "DeclarativeInputEngine::traceEnd():" << trace;
+    Q_ASSERT(trace);
+    if (!d->inputMethod)
+        return false;
+    return d->inputMethod->traceEnd(trace);
 }
 
 /*!
@@ -657,6 +766,17 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
+    \enum DeclarativeInputEngine::PatternRecognitionMode
+
+    This enum specifies the input mode for the input method.
+
+    \value PatternRecognitionDisabled
+           Pattern recognition is not available.
+    \value HandwritingRecoginition
+           Pattern recognition mode for handwriting recognition.
+*/
+
+/*!
     \qmlsignal void InputEngine::virtualKeyClicked(int key, string text, int modifiers)
 
     Indicates that the virtual \a key was clicked with the given \a text and
@@ -671,6 +791,21 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent *timerEvent)
     \a modifiers. The \a isAutoRepeat indicates if the event is automatically
     repeated while the key is being pressed.
     This signal is emitted after the input method has processed the key event.
+*/
+
+/*!
+    \qmlproperty list<int> InputEngine::patternRecognitionModes
+    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+
+    The list of available pattern recognition modes.
+*/
+
+/*!
+    \property DeclarativeInputEngine::patternRecognitionModes
+    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \brief the list of available pattern recognition modes.
+
+    The list of available pattern recognition modes.
 */
 
 /*!
@@ -763,4 +898,25 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent *timerEvent)
     \fn void DeclarativeInputEngine::inputModeChanged()
 
     Indicates that the input mode has changed.
+*/
+
+/*!
+    \qmlsignal void InputEngine::patternRecognitionModesChanged()
+    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+
+    Indicates that the available pattern recognition modes have changed.
+
+    The predefined pattern recognition modes are:
+
+    \list
+        \li \c InputEngine.PatternRecognitionDisabled Pattern recognition is not available.
+        \li \c InputEngine.HandwritingRecoginition Pattern recognition mode for handwriting recognition.
+    \endlist
+*/
+
+/*!
+    \fn void DeclarativeInputEngine::patternRecognitionModesChanged()
+    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+
+    Indicates that the available pattern recognition modes have changed.
 */

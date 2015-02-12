@@ -142,6 +142,12 @@ QtObject {
     */
     property Component symbolKeyPanel: null
 
+    /*! Template for the handwriting mode key.
+
+        \note The delegate must be based on KeyPanel type.
+    */
+    property Component handwritingKeyPanel: null
+
     /*! Number of pixels between the key top and the characterPreviewDelegate bottom. */
     property real characterPreviewMargin: 0
 
@@ -258,4 +264,22 @@ QtObject {
         high contrast border.
     */
     property Component navigationHighlight: null
+
+    /*!
+        \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.4
+
+        Template for the trace input key.
+
+        \note The delegate must be based on TraceInputKeyPanel type.
+    */
+    property Component traceInputKeyPanelDelegate: null
+
+    /*!
+        \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.4
+
+        Template for rendering a Trace object.
+
+        \note The delegate must be based on TraceCanvas type.
+    */
+    property Component traceCanvasDelegate: null
 }
