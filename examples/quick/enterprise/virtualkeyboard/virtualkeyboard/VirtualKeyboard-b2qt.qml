@@ -17,6 +17,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtQuick.Window 2.2
 import QtQuick.Enterprise.VirtualKeyboard 1.2
 
 Item {
@@ -24,10 +25,10 @@ Item {
     implicitHeight: virtualKeyboard.implicitWidth
     Item {
         id: appContainer
-        width: parent.height
-        height: parent.width
+        width: Screen.width < Screen.height ? parent.height : parent.width
+        height: Screen.width < Screen.height ? parent.width : parent.height
         anchors.centerIn: parent
-        rotation: 90
+        rotation: Screen.width < Screen.height ? 90 : 0
         VirtualKeyboard {
             id: virtualKeyboard
             anchors.left: parent.left
