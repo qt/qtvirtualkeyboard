@@ -21,12 +21,24 @@ import QtQuick.Enterprise.VirtualKeyboard 1.2
 import QtQuick.Enterprise.VirtualKeyboard.Styles 1.2
 
 KeyboardStyle {
+    id: currentStyle
     readonly property bool pinyinMode: InputContext.inputEngine.inputMode === InputEngine.Pinyin
     readonly property string fontFamily: "Sans"
     readonly property real keyBackgroundMargin: Math.round(13 * scaleHint)
     readonly property real keyContentMargin: Math.round(45 * scaleHint)
     readonly property real keyIconMargin: Math.round(35 * scaleHint)
     readonly property string resourcePrefix: "qrc:/content/styles/default/"
+
+    readonly property string inputLocale: InputContext.locale
+    property color inputLocaleIndicatorColor: "white"
+    property Timer inputLocaleIndicatorHighlightTimer: Timer {
+        interval: 1000
+        onTriggered: inputLocaleIndicatorColor = "gray"
+    }
+    onInputLocaleChanged: {
+        inputLocaleIndicatorColor = "white"
+        inputLocaleIndicatorHighlightTimer.restart()
+    }
 
     keyboardDesignWidth: 2560
     keyboardDesignHeight: 800
@@ -398,6 +410,18 @@ KeyboardStyle {
             color: "#35322f"
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
+            Text {
+                id: spaceKeyText
+                text: Qt.locale(InputContext.locale).nativeLanguageName
+                color: currentStyle.inputLocaleIndicatorColor
+                Behavior on color { PropertyAnimation { duration: 250 } }
+                anchors.centerIn: parent
+                font {
+                    family: fontFamily
+                    weight: Font.Normal
+                    pixelSize: 48 * scaleHint
+                }
+            }
         }
         states: [
             State {

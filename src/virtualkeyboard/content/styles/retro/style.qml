@@ -21,12 +21,24 @@ import QtQuick.Enterprise.VirtualKeyboard 1.2
 import QtQuick.Enterprise.VirtualKeyboard.Styles 1.2
 
 KeyboardStyle {
+    id: currentStyle
     readonly property bool pinyinMode: InputContext.inputEngine.inputMode === InputEngine.Pinyin
     readonly property string fontFamily: "Courier"
     readonly property real keyBackgroundMargin: Math.round(9 * scaleHint)
     readonly property real keyContentMargin: Math.round(50 * scaleHint)
     readonly property real keyIconMargin: Math.round(40 * scaleHint)
     readonly property string resourcePrefix: "qrc:/content/styles/retro/"
+
+    readonly property string inputLocale: InputContext.locale
+    property color inputLocaleIndicatorColor: "#110b05"
+    property Timer inputLocaleIndicatorHighlightTimer: Timer {
+        interval: 1000
+        onTriggered: inputLocaleIndicatorColor = "#413828"
+    }
+    onInputLocaleChanged: {
+        inputLocaleIndicatorColor = "#110b05"
+        inputLocaleIndicatorHighlightTimer.restart()
+    }
 
     keyboardDesignWidth: 2560
     keyboardDesignHeight: 800
@@ -472,6 +484,18 @@ KeyboardStyle {
             border.bottom: 76
             horizontalTileMode: BorderImage.Stretch
             scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
+            Text {
+                id: spaceKeyText
+                text: Qt.locale(InputContext.locale).nativeLanguageName
+                color: currentStyle.inputLocaleIndicatorColor
+                Behavior on color { PropertyAnimation { duration: 250 } }
+                anchors.centerIn: parent
+                font {
+                    family: fontFamily
+                    weight: Font.Bold
+                    pixelSize: 72 * scaleHint
+                }
+            }
         }
         states: [
             State {
