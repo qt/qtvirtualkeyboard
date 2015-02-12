@@ -131,7 +131,7 @@ KeyboardLayout {
                 }
                 Key {
                     text: " "
-                    displayText: "_"
+                    displayText: "\u2423"
                     repeat: true
                     showPreview: false
                     key: Qt.Key_Space
