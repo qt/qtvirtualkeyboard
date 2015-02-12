@@ -1,7 +1,6 @@
 TEMPLATE = lib
 TARGET  = qtvirtualkeyboardplugin
 INSTALL_PATH = $$[QT_INSTALL_PLUGINS]/platforminputcontexts
-QMLPATH = $$[QT_INSTALL_QML]/QtQuick/Enterprise/VirtualKeyboard
 DATAPATH = $$[QT_INSTALL_DATA]/qtvirtualkeyboard
 
 QMAKE_DOCS = $$PWD/doc/qtvirtualkeyboard.qdocconf
@@ -69,7 +68,6 @@ OTHER_FILES += \
     content/styles/retro/*.qml \
     content/*.qml \
     content/components/*.qml \
-    content/qmldir \
     qtvirtualkeyboard.json
 
 disable-xcb {

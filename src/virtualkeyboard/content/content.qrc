@@ -22,6 +22,5 @@
         <file>components/ShiftKey.qml</file>
         <file>components/SpaceKey.qml</file>
         <file>components/SymbolModeKey.qml</file>
-        <file>qmldir</file>
     </qresource>
 </RCC>
