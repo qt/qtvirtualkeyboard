@@ -253,7 +253,6 @@ InputPanel {
     }
 
     function virtualKeyClick(key) {
-        testcase.verify(virtualKeyPressPoint === null)
         if (virtualKeyPress(key)) {
             virtualKeyRelease()
             return true

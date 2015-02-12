@@ -62,6 +62,9 @@ Rectangle {
             if (data !== undefined && data.hasOwnProperty("initText")) {
                 textInput.text = data.initText
                 textInput.cursorPosition = data.hasOwnProperty("initCursorPosition") ? data.initCursorPosition : textInput.text.length
+                if (data.hasOwnProperty("selectionStart") && data.hasOwnProperty("selectionEnd")) {
+                    textInput.select(data.selectionStart, data.selectionEnd)
+                }
             } else {
                 textInput.text = ""
             }
@@ -485,7 +488,7 @@ Rectangle {
             return [
                 { initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hwllo", outputText: "Hwllo" },
                 { initInputMethodHints: Qt.ImhNone, inputSequence: "hwllo", expectedSuggestion: "Hello", outputText: "Hello" },
-                { initText: "Hello", initInputMethodHints: Qt.ImhNone, inputSequence: "qorld", expectedSuggestion: "world", outputText: "Hello world" },
+                { initText: "Hello", initInputMethodHints: Qt.ImhNone, inputSequence: "qorld", expectedSuggestion: "world", outputText: "Helloworld" },
                 { initText: "isn'", initInputMethodHints: Qt.ImhNone, inputSequence: "t", outputText: "isn't" },
                 { initInputMethodHints: Qt.ImhUrlCharactersOnly | Qt.ImhNoAutoUppercase, inputSequence: "www.example.com", expectedSuggestion: "www.example.com", outputText: "www.example.com" },
                 { initInputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhNoAutoUppercase, inputSequence: "user.name@example.com", expectedSuggestion: "user.name@example.com", outputText: "user.name@example.com" },
@@ -512,6 +515,44 @@ Rectangle {
                 Qt.inputMethod.commit()
                 waitForRendering(inputPanel)
             }
+            compare(textInput.text, data.outputText)
+        }
+
+        function test_spellCorrectionAutomaticSpaceInsertion_data() {
+            return [
+                { inputSequence: ['h','e','l','l','o',Qt.Key_Select,'w','o','r','l','d'], outputText: "Hello world" },
+                { inputSequence: ['h','e','l','l','o','\'','s',Qt.Key_Select,'w','o','r','l','d'], outputText: "Hello's world" },
+                { inputSequence: ['h','e','l','l','o','s','\'',Qt.Key_Select,'w','o','r','l','d'], outputText: "Hellos' world" },
+                { inputSequence: ['h','e','l','l','o','-','w','o','r','l','d'], outputText: "Hello-world" },
+                { inputSequence: ['h','e','l','l','o',Qt.Key_Select,'.','w','o','r','l','d'], outputText: "Hello. World" },
+                { inputSequence: ['h','e','l','l','o',Qt.Key_Select,',','w','o','r','l','d'], outputText: "Hello, world" },
+                { inputSequence: ['h','e','l','l','o','.',Qt.Key_Backspace,'w','o','r','l','d'], outputText: "Helloworld" },
+                { inputSequence: ['h','e','l','l','o',' ',Qt.Key_Backspace,'w','o','r','l','d'], outputText: "Helloworld" },
+                { inputSequence: ['h','e','l','l','o',Qt.Key_Select,'w','o','r','l','d',':-)'], outputText: "Hello world :-)" },
+                { inputSequence: ['h','e','l','l','o',Qt.Key_Select,'w','o','r','l','d',':-)',':-)'], outputText: "Hello world :-) :-)" },
+                { inputSequence: ['h','e','l','l','o',Qt.Key_Select,':-)'], outputText: "Hello :-)" },
+                { initText: "Hekko world", selectionStart: 2, selectionEnd: 4, inputSequence: ['l','l'], outputText: "Hello world" },
+            ]
+        }
+
+        function test_spellCorrectionAutomaticSpaceInsertion(data) {
+            prepareTest(data)
+
+            for (var inputIndex in data.inputSequence) {
+                var key = data.inputSequence[inputIndex]
+                if (key === Qt.Key_Select) {
+                    wait(200)
+                    if (inputPanel.wordCandidateView.count > 1)
+                        inputPanel.selectionListSelectCurrentItem()
+                    else
+                        expectFail("", "Prediction/spell correction not enabled")
+                } else {
+                    inputPanel.virtualKeyClick(key)
+                }
+            }
+
+            Qt.inputMethod.commit()
+            waitForRendering(inputPanel)
             compare(textInput.text, data.outputText)
         }
 

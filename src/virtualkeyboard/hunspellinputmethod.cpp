@@ -40,7 +40,9 @@ public:
         word(),
         wordCandidates(),
         activeWordIndex(-1),
-        wordCompletionPoint(2)
+        wordCompletionPoint(2),
+        ignoreUpdate(false),
+        autoSpaceAllowed(false)
     {
     }
 
@@ -163,6 +165,8 @@ public:
     bool isAutoSpaceAllowed() const
     {
         Q_Q(const HunspellInputMethod);
+        if (!autoSpaceAllowed)
+            return false;
         if (q->inputEngine()->inputMode() != DeclarativeInputEngine::Latin)
             return false;
         DeclarativeInputContext *ic = q->inputContext();
@@ -180,6 +184,8 @@ public:
     QStringList wordCandidates;
     int activeWordIndex;
     int wordCompletionPoint;
+    bool ignoreUpdate;
+    bool autoSpaceAllowed;
 };
 
 HunspellInputMethod::HunspellInputMethod(QObject *parent) :
@@ -266,28 +272,38 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
                         QChar lastChar = surroundingText.at(cursorPosition - 1);
                         if (!lastChar.isSpace() &&
                             lastChar != Qt::Key_Minus &&
-                            lastChar != Qt::Key_Apostrophe &&
                             d->isAutoSpaceAllowed()) {
                             ic->commit(" ");
                         }
                     }
                 }
+                /*  Ignore possible call to update() function when sending initial
+                    pre-edit text. The update is triggered if the text editor has
+                    a selection which the pre-edit text will replace.
+                */
+                d->ignoreUpdate = d->word.isEmpty();
                 d->word.append(text);
                 ic->setPreeditText(d->word);
+                d->ignoreUpdate = false;
                 if (d->updateSuggestions()) {
                     emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
                     emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
                 }
                 accept = true;
             } else if (text.length() > 1) {
-                bool addSpace = !d->word.isEmpty();
+                bool addSpace = !d->word.isEmpty() || d->autoSpaceAllowed;
                 update();
+                d->autoSpaceAllowed = true;
                 if (addSpace && d->isAutoSpaceAllowed())
                     ic->commit(" ");
                 ic->commit(text);
+                d->autoSpaceAllowed = addSpace;
                 accept = true;
             } else {
                 update();
+                inputContext()->sendKeyClick(key, text, modifiers);
+                d->autoSpaceAllowed = true;
+                accept = true;
             }
         }
         break;
@@ -337,6 +353,7 @@ void HunspellInputMethod::selectionListItemSelected(DeclarativeSelectionListMode
     QString finalWord = d->wordCandidates.at(index);
     reset();
     inputContext()->commit(finalWord);
+    d->autoSpaceAllowed = true;
 }
 
 void HunspellInputMethod::reset()
@@ -347,16 +364,20 @@ void HunspellInputMethod::reset()
         emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
     }
     d->word.clear();
+    d->autoSpaceAllowed = false;
 }
 
 void HunspellInputMethod::update()
 {
     Q_D(HunspellInputMethod);
+    if (d->ignoreUpdate)
+        return;
     if (!d->word.isEmpty()) {
         QString finalWord = d->hasSuggestions() ? d->wordCandidates.at(d->activeWordIndex) : d->word;
         reset();
         inputContext()->commit(finalWord);
     }
+    d->autoSpaceAllowed = false;
 }
 
 void HunspellInputMethod::updateSuggestions(const QStringList &wordList, int activeWordIndex)
