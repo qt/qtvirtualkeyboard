@@ -450,6 +450,7 @@ Item {
         anchors.right: parent.right
         spacing: 0
         orientation: ListView.Horizontal
+        snapMode: ListView.SnapToItem
         delegate: style.selectionListDelegate
         highlight: style.selectionListHighlight ? style.selectionListHighlight : defaultHighlight
         highlightMoveDuration: 0
