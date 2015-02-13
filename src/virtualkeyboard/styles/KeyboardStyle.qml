@@ -232,6 +232,20 @@ QtObject {
     /*! Template for the selection list background. */
     property Component selectionListBackground: null
 
+    /*! \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.3
+
+        This property holds the transition to apply to items that
+        are added to the selection list view.
+    */
+    property Transition selectionListAdd
+
+    /*! \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.3
+
+        This property holds the transition to apply to items that
+        are removed from the selection list view.
+    */
+    property Transition selectionListRemove
+
     /*!
         \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.1
 

@@ -455,6 +455,8 @@ Item {
         highlight: style.selectionListHighlight ? style.selectionListHighlight : defaultHighlight
         highlightMoveDuration: 0
         highlightResizeDuration: 0
+        add: style.selectionListAdd
+        remove: style.selectionListRemove
         keyNavigationWraps: true
         model: InputContext.inputEngine.wordCandidateListModel
         onCurrentItemChanged: if (currentItem) soundEffect.register(currentItem.soundEffect)
