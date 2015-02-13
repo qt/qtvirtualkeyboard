@@ -721,6 +721,14 @@ KeyboardStyle {
     selectionListBackground: Rectangle {
         color: "#222222"
     }
+    selectionListAdd: Transition {
+        NumberAnimation { property: "y"; from: wordCandidateView.height; duration: 200 }
+        NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 200 }
+    }
+    selectionListRemove: Transition {
+        NumberAnimation { property: "y"; to: -wordCandidateView.height; duration: 200 }
+        NumberAnimation { property: "opacity"; to: 0; duration: 200 }
+    }
 
     navigationHighlight: Rectangle {
         color: "transparent"
