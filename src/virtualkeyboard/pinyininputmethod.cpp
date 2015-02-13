@@ -225,14 +225,10 @@ public:
         finishSelection = splStart.size() == (fixedLen + 2);
         if (!finishSelection)
             candidateAt(0);
-
-        emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-        emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, totalChoicesNum > 0 ? 0 : -1);
     }
 
     void choosePredictChoice(int choiceId)
     {
-        Q_Q(PinyinInputMethod);
         Q_ASSERT(state == Predict);
 
         if (choiceId < 0 || choiceId >= totalChoicesNum)
@@ -251,10 +247,6 @@ public:
         activeCmpsLen = fixedLen;
 
         finishSelection = true;
-
-        emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-        emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, 0);
-        emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, -1);
     }
 
     QString getComposingStrActivePart()
@@ -264,13 +256,18 @@ public:
 
     void resetCandidates()
     {
-        Q_Q(PinyinInputMethod);
         candidatesList.clear();
         if (totalChoicesNum) {
             totalChoicesNum = 0;
-            emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-            emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, -1);
         }
+    }
+
+    void updateCandidateList()
+    {
+        Q_Q(PinyinInputMethod);
+        emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
+        emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList,
+                                               totalChoicesNum > 0 && state == PinyinInputMethodPrivate::Input ? 0 : -1);
     }
 
     bool canDoPrediction()
@@ -296,7 +293,6 @@ public:
             QString history = inputContext->surroundingText().mid(historyStart, cursorPosition - historyStart);
             candidatesList = pinyinDecoderService->predictionList(history);
             totalChoicesNum = candidatesList.size();
-            emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
             finishSelection = false;
             state = Predict;
         } else {
@@ -320,6 +316,31 @@ public:
     bool finishSelection;
     int posDelSpl;
     bool isPosInSpl;
+};
+
+class ScopedCandidateListUpdate
+{
+    Q_DISABLE_COPY(ScopedCandidateListUpdate)
+public:
+    inline explicit ScopedCandidateListUpdate(PinyinInputMethodPrivate *d) :
+        d(d),
+        candidatesList(d->candidatesList),
+        totalChoicesNum(d->totalChoicesNum),
+        state(d->state)
+    {
+    }
+
+    inline ~ScopedCandidateListUpdate()
+    {
+        if (totalChoicesNum != d->totalChoicesNum || state != d->state || candidatesList != d->candidatesList)
+            d->updateCandidateList();
+    }
+
+private:
+    PinyinInputMethodPrivate *d;
+    QList<QString> candidatesList;
+    int totalChoicesNum;
+    PinyinInputMethodPrivate::State state;
 };
 
 PinyinInputMethod::PinyinInputMethod(QObject *parent) :
@@ -364,6 +385,8 @@ bool PinyinInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardM
     Q_UNUSED(modifiers)
     Q_D(PinyinInputMethod);
     if (d->inputMode == DeclarativeInputEngine::Pinyin) {
+        ScopedCandidateListUpdate scopedCandidateListUpdate(d);
+        Q_UNUSED(scopedCandidateListUpdate)
         if ((key >= Qt::Key_A && key <= Qt::Key_Z) || (key == Qt::Key_Apostrophe)) {
             if (d->state == PinyinInputMethodPrivate::Predict)
                 d->resetToIdleState();
@@ -430,18 +453,24 @@ void PinyinInputMethod::selectionListItemSelected(DeclarativeSelectionListModel:
 {
     Q_UNUSED(type)
     Q_D(PinyinInputMethod);
+    ScopedCandidateListUpdate scopedCandidateListUpdate(d);
+    Q_UNUSED(scopedCandidateListUpdate)
     d->chooseAndUpdate(index);
 }
 
 void PinyinInputMethod::reset()
 {
     Q_D(PinyinInputMethod);
+    ScopedCandidateListUpdate scopedCandidateListUpdate(d);
+    Q_UNUSED(scopedCandidateListUpdate)
     d->resetToIdleState();
 }
 
 void PinyinInputMethod::update()
 {
     Q_D(PinyinInputMethod);
+    ScopedCandidateListUpdate scopedCandidateListUpdate(d);
+    Q_UNUSED(scopedCandidateListUpdate)
     d->chooseAndFinish();
     d->tryPredict();
 }
