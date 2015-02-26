@@ -572,6 +572,11 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent *timerEvent)
         \li \c InputEngine.Latin The default input mode for latin text.
         \li \c InputEngine.Numeric Only numeric input is allowed.
         \li \c InputEngine.Dialable Only dialable input is allowed.
+        \li \c InputEngine.Pinyin Pinyin input mode for Chinese.
+        \li \c InputEngine.Hangul Hangul input mode for Korean.
+        \li \c InputEngine.Hiragana Hiragana input mode for Japanese.
+        \li \c InputEngine.Katakana Katakana input mode for Japanese.
+        \li \c InputEngine.FullwidthLatin Fullwidth latin input mode for East Asian languages.
     \endlist
 */
 
@@ -627,6 +632,14 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent *timerEvent)
            Only dialable input is allowed.
     \value Pinyin
            Pinyin input mode for Chinese.
+    \value Hangul
+           Hangul input mode for Korean.
+    \value Hiragana
+           Hiragana input mode for Japanese.
+    \value Katakana
+           Katakana input mode for Japanese.
+    \value FullwidthLatin
+           Fullwidth latin input mode for East Asian languages.
 */
 
 /*!
