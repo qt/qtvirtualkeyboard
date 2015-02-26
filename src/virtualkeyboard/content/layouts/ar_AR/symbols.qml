@@ -18,7 +18,7 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
-import QtQuick.Enterprise.VirtualKeyboard 1.2
+import QtQuick.Enterprise.VirtualKeyboard 1.3
 
 KeyboardLayoutLoader {
     property bool secondPage

@@ -73,26 +73,24 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     qmlRegisterType<PinyinInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 1, "PinyinInputMethod");
 #endif
 #ifdef HAVE_HANGUL
-    // TODO: Added in version 1.3
-    qmlRegisterType<HangulInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 2, "HangulInputMethod");
+    qmlRegisterType<HangulInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 3, "HangulInputMethod");
 #endif
 #ifdef HAVE_OPENWNN
-    // TODO: Added in version 1.3
-    qmlRegisterType<OpenWnnInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 2, "JapaneseInputMethod");
+    qmlRegisterType<OpenWnnInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 3, "JapaneseInputMethod");
 #endif
     qmlRegisterType<EnterKeyActionAttachedType>();
     qmlRegisterType<EnterKeyAction>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "EnterKeyAction");
-    qmlRegisterSingletonType<DeclarativeSettings>("QtQuick.Enterprise.VirtualKeyboard.Settings", 1, 2, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
+    // NOTE: The Settings component version follows the VirtualKeyboard version
+    qmlRegisterSingletonType<DeclarativeSettings>("QtQuick.Enterprise.VirtualKeyboard.Settings", 1, 3, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
 
     const QString path("qrc:///content/");
-    qmlRegisterType(QUrl(path + "InputPanel.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "InputPanel");
-    qmlRegisterType(QUrl(path + "InputPanel.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 2, "InputPanel");
+    // NOTE: The InputPanel component version follows the VirtualKeyboard version
+    qmlRegisterType(QUrl(path + "InputPanel.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 3, "InputPanel");
     const QString componentsPath = path + QLatin1Literal("components/");
     qmlRegisterType(QUrl(componentsPath + "AlternativeKeys.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "AlternativeKeys");
     qmlRegisterType(QUrl(componentsPath + "AutoScroller.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "AutoScroller");
     qmlRegisterType(QUrl(componentsPath + "BackspaceKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "BackspaceKey");
     qmlRegisterType(QUrl(componentsPath + "BaseKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "BaseKey");
-    qmlRegisterType(QUrl(componentsPath + "BaseKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 1, "BaseKey");
     qmlRegisterType(QUrl(componentsPath + "ChangeLanguageKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "ChangeLanguageKey");
     qmlRegisterType(QUrl(componentsPath + "CharacterPreviewBubble.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "CharacterPreviewBubble");
     qmlRegisterType(QUrl(componentsPath + "EnterKey.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "EnterKey");

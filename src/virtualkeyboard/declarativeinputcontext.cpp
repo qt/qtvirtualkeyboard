@@ -32,7 +32,7 @@
 #endif
 
 /*!
-    \qmlmodule QtQuick.Enterprise.VirtualKeyboard 1.2
+    \qmlmodule QtQuick.Enterprise.VirtualKeyboard 1.3
 
     This module provides a collection of QML components for Qt Virtual Keyboard.
 */

@@ -18,9 +18,9 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
-import QtQuick.Enterprise.VirtualKeyboard 1.2
-import QtQuick.Enterprise.VirtualKeyboard.Styles 1.2
-import QtQuick.Enterprise.VirtualKeyboard.Settings 1.2
+import QtQuick.Enterprise.VirtualKeyboard 1.3
+import QtQuick.Enterprise.VirtualKeyboard.Styles 1.3
+import QtQuick.Enterprise.VirtualKeyboard.Settings 1.3
 import Qt.labs.folderlistmodel 2.0
 
 Item {
@@ -59,7 +59,7 @@ Item {
 
     function initDefaultInputMethod() {
         try {
-            return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 1.2; HunspellInputMethod {}', keyboard, "defaultInputMethod")
+            return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 1.3; HunspellInputMethod {}', keyboard, "defaultInputMethod")
         } catch (e) { }
         return plainInputMethod
     }
@@ -508,7 +508,7 @@ Item {
                 var soundId = Qt.md5(sound)
                 multiSoundEffect = __sounds[soundId]
                 if (!multiSoundEffect) {
-                    multiSoundEffect = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 1.2; MultiSoundEffect {}', soundEffect)
+                    multiSoundEffect = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 1.3; MultiSoundEffect {}', soundEffect)
                     if (multiSoundEffect) {
                         multiSoundEffect.playingChanged.connect(soundEffect.playingChanged)
                         multiSoundEffect.source = sound

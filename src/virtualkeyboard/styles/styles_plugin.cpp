@@ -22,7 +22,7 @@
 #include <QtCore/QLibraryInfo>
 
 /*!
-    \qmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles 1.2
+    \qmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles 1.3
 
     This module provides styling components for the Qt Virtual Keyboard.
 */
@@ -31,9 +31,8 @@ void StylesPlugin::registerTypes(const char *uri)
 {
     Q_INIT_RESOURCE(styles);
     const QString path("qrc:///content/styles/");
-    qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 0, "KeyboardStyle");
-    qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 1, "KeyboardStyle");
-    qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 2, "KeyboardStyle");
+    // NOTE: The KeyboardStyle component version follows the VirtualKeyboard version
+    qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 3, "KeyboardStyle");
     qmlRegisterType(QUrl(path + "KeyIcon.qml"), uri, 1, 0, "KeyIcon");
     qmlRegisterType(QUrl(path + "KeyPanel.qml"), uri, 1, 0, "KeyPanel");
     qmlRegisterType(QUrl(path + "SelectionListItem.qml"), uri, 1, 0, "SelectionListItem");
