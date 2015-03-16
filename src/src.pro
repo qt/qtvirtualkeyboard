@@ -18,3 +18,8 @@ pinyin {
     SUBDIRS += virtualkeyboard/3rdparty/pinyin
     virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-pinyin
 }
+
+lipi-toolkit {
+    SUBDIRS += virtualkeyboard/3rdparty/lipi-toolkit
+    virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-lipi-toolkit
+}
