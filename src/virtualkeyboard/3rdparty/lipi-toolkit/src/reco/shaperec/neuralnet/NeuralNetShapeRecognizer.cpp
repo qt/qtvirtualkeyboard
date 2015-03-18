@@ -369,7 +369,7 @@ int NeuralNetShapeRecognizer::readClassifierConfig()
     {
         if ( LTKStringUtil::isFloat(tempStringVar) )
         {
-            tempFloatVar = atof((tempStringVar).c_str());
+            tempFloatVar = LTKStringUtil::convertStringToFloat(tempStringVar);
 
             if(tempFloatVar  > 0 && tempFloatVar < 1)
             {
@@ -506,7 +506,7 @@ int NeuralNetShapeRecognizer::readClassifierConfig()
 			//Writing normalised factor
 			m_headerInfo[NORMALISED_FACTOR] = tempStringVar;
 
-            tempFloatVar = atof((tempStringVar).c_str());
+            tempFloatVar = LTKStringUtil::convertStringToFloat(tempStringVar);
 
             if(tempFloatVar  > 0 )
             {
@@ -557,7 +557,7 @@ int NeuralNetShapeRecognizer::readClassifierConfig()
 			//Writing Learning rate
 			m_headerInfo[LEARNING_RATE] = tempStringVar;
 
-			tempFloatVar = atof((tempStringVar).c_str());
+			tempFloatVar = LTKStringUtil::convertStringToFloat(tempStringVar);
 
             if(tempFloatVar  > 0.0 && tempFloatVar <= 1.0)
             {
@@ -607,7 +607,7 @@ int NeuralNetShapeRecognizer::readClassifierConfig()
         {
 			m_headerInfo[MOMEMTUM_RATE] = tempStringVar;
 
-            tempFloatVar = atof((tempStringVar).c_str());
+            tempFloatVar = LTKStringUtil::convertStringToFloat(tempStringVar);
 
             if(tempFloatVar  > 0.0 && tempFloatVar <= 1.0)
             {
@@ -655,7 +655,7 @@ int NeuralNetShapeRecognizer::readClassifierConfig()
     {
         if ( LTKStringUtil::isFloat(tempStringVar) )
         {
-            tempFloatVar = atof((tempStringVar).c_str());
+            tempFloatVar = LTKStringUtil::convertStringToFloat(tempStringVar);
 
             if(tempFloatVar  > 0 && tempFloatVar < 1)
             {
@@ -703,7 +703,7 @@ int NeuralNetShapeRecognizer::readClassifierConfig()
     {
         if ( LTKStringUtil::isFloat(tempStringVar) )
         {
-            tempFloatVar = atof((tempStringVar).c_str());
+            tempFloatVar = LTKStringUtil::convertStringToFloat(tempStringVar);
 
             if(tempFloatVar  > 0 && tempFloatVar < 1)
             {
@@ -1834,7 +1834,7 @@ int NeuralNetShapeRecognizer::loadModelData()
 					{
 						mdtFileHandle >> strValue;
 
-						float floatValue = atof(strValue.c_str());
+                        float floatValue = LTKStringUtil::convertStringToFloat(strValue);
 
 						m_connectionWeightVec[layerIndex][nodeValueIndex] = (double)floatValue;
 					}
@@ -1849,7 +1849,7 @@ int NeuralNetShapeRecognizer::loadModelData()
 					{
 						mdtFileHandle >> strValue;
 
-						double floatValue = atof(strValue.c_str());
+                        double floatValue = LTKStringUtil::convertStringToFloat(strValue);
 
 						m_previousDelW[layerIndex][nodeValueIndex] = floatValue;
 					}
@@ -2024,7 +2024,7 @@ int NeuralNetShapeRecognizer::validateNeuralnetArchitectureParameters(stringStri
 
 	if(LTKSTRCMP((headerSequence[LEARNING_RATE].c_str()),"NA") != 0)
 	{
-		headerValueFloat = atof(headerSequence[LEARNING_RATE].c_str());
+		headerValueFloat = LTKStringUtil::convertStringToFloat(headerSequence[LEARNING_RATE].c_str());
 
 		if(headerValueFloat != m_neuralnetLearningRate)
 		{
@@ -2039,7 +2039,7 @@ int NeuralNetShapeRecognizer::validateNeuralnetArchitectureParameters(stringStri
 
 	if(LTKSTRCMP((headerSequence[MOMEMTUM_RATE].c_str()),"NA") != 0)
 	{
-		headerValueFloat = atof(headerSequence[MOMEMTUM_RATE].c_str());
+		headerValueFloat = LTKStringUtil::convertStringToFloat(headerSequence[MOMEMTUM_RATE].c_str());
 
 		if(headerValueFloat != m_neuralnetMomemtumRate)
 		{
@@ -2054,7 +2054,7 @@ int NeuralNetShapeRecognizer::validateNeuralnetArchitectureParameters(stringStri
 
 	if(LTKSTRCMP((headerSequence[NORMALISED_FACTOR].c_str()),"NA") != 0)
 	{
-		headerValueFloat = atof(headerSequence[NORMALISED_FACTOR].c_str());
+		headerValueFloat = LTKStringUtil::convertStringToFloat(headerSequence[NORMALISED_FACTOR].c_str());
 
 		if(headerValueFloat != m_neuralnetNormalizationFactor)
 		{
@@ -2218,7 +2218,7 @@ int NeuralNetShapeRecognizer::validatePreprocParameters(stringStringMap& headerS
 	tempFloatValue = m_ptrPreproc->getAspectRatioThreshold();
 	if(LTKSTRCMP((headerSequence[ASP_RATIO_THRES]).c_str(), "NA") != 0)
     {
-		headerValueFloat = atof(headerSequence[ASP_RATIO_THRES].c_str());
+		headerValueFloat = LTKStringUtil::convertStringToFloat(headerSequence[ASP_RATIO_THRES].c_str());
 
 		if(headerValueFloat != tempFloatValue)
 		{
@@ -2234,7 +2234,7 @@ int NeuralNetShapeRecognizer::validatePreprocParameters(stringStringMap& headerS
 	// NormLineWidthThreshold
 	if(LTKSTRCMP((headerSequence[DOT_SIZE_THRES]).c_str(), "NA") != 0)
     {
-		headerValueFloat = atof(headerSequence[DOT_SIZE_THRES].c_str());
+		headerValueFloat = LTKStringUtil::convertStringToFloat(headerSequence[DOT_SIZE_THRES].c_str());
 		tempFloatValue = m_ptrPreproc->getSizeThreshold();
 
 		if(headerValueFloat !=  tempFloatValue)
@@ -2251,7 +2251,7 @@ int NeuralNetShapeRecognizer::validatePreprocParameters(stringStringMap& headerS
 	// NormDotSizeThreshold
 	if(LTKSTRCMP((headerSequence[DOT_THRES]).c_str(), "NA") != 0)
     {
-		headerValueFloat = atof(headerSequence[DOT_THRES].c_str());
+		headerValueFloat = LTKStringUtil::convertStringToFloat(headerSequence[DOT_THRES].c_str());
 		tempFloatValue = m_ptrPreproc->getDotThreshold();
 
 		if(headerValueFloat != tempFloatValue)

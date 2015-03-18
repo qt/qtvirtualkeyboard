@@ -33,7 +33,7 @@
 #include <string>
 #include <vector>
 #ifndef _WIN32
-#include <values.h>
+//#include <values.h>
 #endif
 #include <limits>
 #include <algorithm>

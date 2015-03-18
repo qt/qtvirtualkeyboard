@@ -166,23 +166,23 @@ int LTKInkFileReader::readRawInkFile(const string& inkFile, LTKTraceGroup& trace
 
 			LTKStringUtil::tokenizeString(dataLine, " \t", dataVector);
 
-			if(fabs( atof(dataVector[0].c_str()) + 1 ) < EPS)
+            if(fabs( LTKStringUtil::convertStringToFloat(dataVector[0]) + 1 ) < EPS)
 			{
 				traceGroup.addTrace(trace);
 
 				break;
 			}
-			else if(fabs( atof(dataVector[0].c_str()) + 2 ) < EPS)
+            else if(fabs( LTKStringUtil::convertStringToFloat(dataVector[0]) + 2 ) < EPS)
 			{
 				return SUCCESS;
 			}
-			else if(fabs( atof(dataVector[0].c_str()) + 6 ) < EPS)
+            else if(fabs( LTKStringUtil::convertStringToFloat(dataVector[0]) + 6 ) < EPS)
 			{
-				captureDevice.setXDPI(atof(dataVector[1].c_str()));
+                captureDevice.setXDPI(LTKStringUtil::convertStringToFloat(dataVector[1]));
 
-				captureDevice.setYDPI(atof(dataVector[2].c_str()));
+                captureDevice.setYDPI(LTKStringUtil::convertStringToFloat(dataVector[2]));
 			}
-			else if(atof(dataVector[0].c_str()) < 0)
+            else if(LTKStringUtil::convertStringToFloat(dataVector[0]) < 0)
 			{
 				//	unknown tag. skipping line
 
@@ -193,7 +193,7 @@ int LTKInkFileReader::readRawInkFile(const string& inkFile, LTKTraceGroup& trace
 
 				for(pointIndex = 0; pointIndex < dataVector.size(); ++pointIndex)
 				{
-					point.push_back(atof(dataVector[pointIndex].c_str()));
+                    point.push_back(LTKStringUtil::convertStringToFloat(dataVector[pointIndex]));
 				}
 
 				if(dataVector.size() == 2)
@@ -232,7 +232,7 @@ int LTKInkFileReader::readRawInkFile(const string& inkFile, LTKTraceGroup& trace
 
 int LTKInkFileReader::readUnipenInkFile(const string& inkFile, LTKTraceGroup& traceGroup, LTKCaptureDevice& captureDevice, LTKScreenContext& screenContext)
 {
-	LOG( LTKLogger::LTK_LOGLEVEL_DEBUG) << 
+	LOG( LTKLogger::LTK_LOGLEVEL_DEBUG) <<
 	  " Entering: LTKInkFileReader::readUnipenInkFile()" << endl;
 
 	map<string,string> traceIndicesCommentsMap;
@@ -565,7 +565,7 @@ int LTKInkFileReader::readUnipenInkFileWithAnnotation(const string& inkFile,cons
 					}
 					else
 					{
-						floatChannelValue = atof(keyWord.c_str());
+                        floatChannelValue = LTKStringUtil::convertStringToFloat(keyWord);
 
 						point.push_back(floatChannelValue);
 					}
@@ -605,7 +605,7 @@ int LTKInkFileReader::readUnipenInkFileWithAnnotation(const string& inkFile,cons
 						}
 						else
 						{
-							floatChannelValue = atof((coordVals.at(channelIndex -1 )).c_str());
+                            floatChannelValue = LTKStringUtil::convertStringToFloat(coordVals.at(channelIndex -1 ));
 
 							point.push_back(floatChannelValue);
 						}

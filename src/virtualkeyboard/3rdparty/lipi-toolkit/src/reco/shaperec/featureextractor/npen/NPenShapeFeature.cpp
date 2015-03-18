@@ -164,28 +164,28 @@ NPenShapeFeature::NPenShapeFeature():m_data_delimiter(",")
 			return FAILURE;
 		}
 
-		 m_x = atof(tokens[0].c_str());
+         m_x = LTKStringUtil::convertStringToFloat(tokens[0]);
 
-		 m_y = atof(tokens[1].c_str());
+         m_y = LTKStringUtil::convertStringToFloat(tokens[1]);
 		
 		
-		 m_cosAlpha = atof(tokens[2].c_str());
+         m_cosAlpha = LTKStringUtil::convertStringToFloat(tokens[2]);
 
-		 m_sinAlpha = atof(tokens[3].c_str());
+         m_sinAlpha = LTKStringUtil::convertStringToFloat(tokens[3]);
 		
-		 m_cosBeta = atof(tokens[4].c_str());
+         m_cosBeta = LTKStringUtil::convertStringToFloat(tokens[4]);
 
-		 m_sinBeta = atof(tokens[5].c_str());
+         m_sinBeta = LTKStringUtil::convertStringToFloat(tokens[5]);
 
-		 m_aspect = atof(tokens[6].c_str());
+         m_aspect = LTKStringUtil::convertStringToFloat(tokens[6]);
 
-		 m_curliness = atof(tokens[7].c_str());
+         m_curliness = LTKStringUtil::convertStringToFloat(tokens[7]);
 
-		 m_linearity = atof(tokens[8].c_str());
+         m_linearity = LTKStringUtil::convertStringToFloat(tokens[8]);
 
-		 m_slope = atof(tokens[9].c_str());
+         m_slope = LTKStringUtil::convertStringToFloat(tokens[9]);
 
-		 if(fabs(atof(tokens[10].c_str()) - 1.0f) < EPS)
+         if(fabs(LTKStringUtil::convertStringToFloat(tokens[10]) - 1.0f) < EPS)
 		 {
 			m_isPenUp = true;
 		 }

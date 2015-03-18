@@ -262,14 +262,14 @@ int SubStrokeShapeFeature::initialize(const string& initString)
 
 	for( index = 0; index < tokensSize - 3; ++index )
 	{
-		m_slopeVector.push_back(atof(tokens[index].c_str()));
+        m_slopeVector.push_back(LTKStringUtil::convertStringToFloat(tokens[index]));
 	}
 
-	m_xComponentOfCenterOfGravity = atof(tokens[index].c_str());
+    m_xComponentOfCenterOfGravity = LTKStringUtil::convertStringToFloat(tokens[index]);
 
-	m_yComponentOfCenterOfGravity = atof(tokens[index+1].c_str());
+    m_yComponentOfCenterOfGravity = LTKStringUtil::convertStringToFloat(tokens[index+1]);
 
-	m_subStrokeLength = atof(tokens[index+2].c_str());
+    m_subStrokeLength = LTKStringUtil::convertStringToFloat(tokens[index+2]);
 
 	return SUCCESS;
 }

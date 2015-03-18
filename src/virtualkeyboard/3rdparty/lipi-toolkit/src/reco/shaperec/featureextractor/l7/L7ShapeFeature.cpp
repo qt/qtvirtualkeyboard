@@ -427,13 +427,13 @@ int L7ShapeFeature::initialize(const string& initString)
 	if(tokens.size() != 8)
 		 return FAILURE; //Returning an error
 
-	m_x = atof(tokens[0].c_str());
-	m_y = atof(tokens[1].c_str());
-	m_xFirstDerv = atof(tokens[2].c_str());
-	m_yFirstDerv = atof(tokens[3].c_str());
-	m_xSecondDerv = atof(tokens[4].c_str());
-	m_ySecondDerv = atof(tokens[5].c_str());
-	m_curvature= atof(tokens[6].c_str());
+    m_x = LTKStringUtil::convertStringToFloat(tokens[0]);
+    m_y = LTKStringUtil::convertStringToFloat(tokens[1]);
+    m_xFirstDerv = LTKStringUtil::convertStringToFloat(tokens[2]);
+    m_yFirstDerv = LTKStringUtil::convertStringToFloat(tokens[3]);
+    m_xSecondDerv = LTKStringUtil::convertStringToFloat(tokens[4]);
+    m_ySecondDerv = LTKStringUtil::convertStringToFloat(tokens[5]);
+    m_curvature= LTKStringUtil::convertStringToFloat(tokens[6]);
 
 	if(atoi(tokens[7].c_str()) == 1)
 		m_penUp = true;

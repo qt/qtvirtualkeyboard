@@ -204,6 +204,26 @@ void LTKStringUtil::convertFloatToString(float floatVariable, string& outStr)
 }
 
 /***************************************************************************
+* AUTHOR		:
+* DATE			: 18-Mar-2015
+* NAME			: convertStringToFloat
+* DESCRIPTION	: Converts string to float
+* ARGUMENTS		:
+* RETURNS		:
+* NOTES			:
+* CHANGE HISTROY
+* Author			Date				Description of change
+***************************************************************************/
+float LTKStringUtil::convertStringToFloat(const string& str)
+{
+    float rval;
+    stringstream ss(str);
+    ss.imbue(locale("C"));
+    ss >> rval;
+    return rval;
+}
+
+/***************************************************************************
 * AUTHOR		: Nidhi Sharma
 * DATE			: 29-Jan-2008
 * NAME			: isNumeric

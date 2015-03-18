@@ -320,10 +320,10 @@ int PointFloatShapeFeature::initialize(const string& initString)
 	if(tokens.size() != 5)
 		 return FAILURE; //Returning an error
 
-	m_x = atof(tokens[0].c_str());
-	m_y = atof(tokens[1].c_str());
-	m_sinTheta = atof(tokens[2].c_str());
-	m_cosTheta = atof(tokens[3].c_str());
+    m_x = LTKStringUtil::convertStringToFloat(tokens[0]);
+    m_y = LTKStringUtil::convertStringToFloat(tokens[1]);
+    m_sinTheta = LTKStringUtil::convertStringToFloat(tokens[2]);
+    m_cosTheta = LTKStringUtil::convertStringToFloat(tokens[3]);
 
 	if(atoi(tokens[4].c_str()) == 1)
     {   

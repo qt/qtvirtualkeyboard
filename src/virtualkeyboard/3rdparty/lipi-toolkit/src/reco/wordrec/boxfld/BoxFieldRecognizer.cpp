@@ -57,6 +57,7 @@
 #include "LTKException.h"
 #include "LTKOSUtilFactory.h"
 #include "LTKOSUtil.h"
+#include "LTKStringUtil.h"
 
 #include <functional>
 
@@ -248,7 +249,7 @@ int BoxedFieldRecognizer::readClassifierConfig()
 
     if ( errorCode == SUCCESS )
     {
-    	m_shapeRecoMinConfidence = atof(cfgFileValue.c_str());
+        m_shapeRecoMinConfidence = LTKStringUtil::convertStringToFloat(cfgFileValue);
 
 		if(m_shapeRecoMinConfidence < 0 || m_shapeRecoMinConfidence > 1)
 		{

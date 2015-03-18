@@ -95,6 +95,8 @@ public:
 
     static void convertFloatToString(float floatVariable, string& outStr);
 
+    static float convertStringToFloat(const string& str);
+
 	static void trimString(string& str);
 
     static bool isFloat(const string& inputStr);

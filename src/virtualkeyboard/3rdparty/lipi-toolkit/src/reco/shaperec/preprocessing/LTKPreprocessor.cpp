@@ -2997,7 +2997,7 @@ int LTKPreprocessor::readConfig(const string& cfgFilePath)
 		{
 		    if ( LTKStringUtil::isFloat(tempStringVar) )
 	        {
-	    	    if (setSizeThreshold(atof((tempStringVar).c_str())) != SUCCESS)
+                if (setSizeThreshold(LTKStringUtil::convertStringToFloat(tempStringVar)) != SUCCESS)
 	            {
 	                LOG(LTKLogger::LTK_LOGLEVEL_ERR) << SIZETHRESHOLD <<
 	                    " should be atleast less than 1/100'th of NORMALIZEDSIZE"<<endl;
@@ -3030,7 +3030,7 @@ int LTKPreprocessor::readConfig(const string& cfgFilePath)
 		{
 		    if ( LTKStringUtil::isFloat(tempStringVar) )
 	        {
-	    	    if (setAspectRatioThreshold(atof((tempStringVar).c_str())) != SUCCESS)
+                if (setAspectRatioThreshold(LTKStringUtil::convertStringToFloat(tempStringVar)) != SUCCESS)
 	            {
 	                LOG( LTKLogger::LTK_LOGLEVEL_ERR) <<
 	                    ASPECTRATIOTHRESHOLD << " should be positive" << endl;
@@ -3065,7 +3065,7 @@ int LTKPreprocessor::readConfig(const string& cfgFilePath)
 		{
 		    if ( LTKStringUtil::isFloat(tempStringVar) )
 	        {
-	    	    if (setDotThreshold(atof((tempStringVar).c_str())) != SUCCESS)
+                if (setDotThreshold(LTKStringUtil::convertStringToFloat(tempStringVar)) != SUCCESS)
 	            {
 	                LOG(LTKLogger::LTK_LOGLEVEL_ERR) << DOTTHRESHOLD <<
 	                    " should be positive" << endl ;

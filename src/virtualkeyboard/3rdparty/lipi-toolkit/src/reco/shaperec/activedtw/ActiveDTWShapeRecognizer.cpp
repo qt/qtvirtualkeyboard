@@ -339,7 +339,7 @@ int ActiveDTWShapeRecognizer::readClassifierConfig()
     {
         if (LTKStringUtil::isFloat(tempStringVar))
         {
-            tempFloatVar = atof((tempStringVar).c_str());
+            tempFloatVar = LTKStringUtil::convertStringToFloat(tempStringVar);
 			
 			if(tempFloatVar >= MIN_PERCENT_EIGEN_ENERGY && tempFloatVar <= MAX_PERCENT_EIGEN_ENERGY)
             {
@@ -603,7 +603,7 @@ int ActiveDTWShapeRecognizer::readClassifierConfig()
     {
         if ( LTKStringUtil::isFloat(tempStringVar) )
         {
-            tempFloatVar = atof((tempStringVar).c_str());
+            tempFloatVar = LTKStringUtil::convertStringToFloat(tempStringVar);
 			
             if(tempFloatVar  > 0 && tempFloatVar < 1)
             {
@@ -748,7 +748,7 @@ int ActiveDTWShapeRecognizer::readClassifierConfig()
     {
         if ( LTKStringUtil::isFloat(tempStringVar) )
         {
-            tempFloatVar = atof((tempStringVar).c_str());
+            tempFloatVar = LTKStringUtil::convertStringToFloat(tempStringVar);
 			
             if(tempFloatVar  > 0 && tempFloatVar <= 1)
             {
@@ -2060,7 +2060,7 @@ int ActiveDTWShapeRecognizer::loadModelData()
 				for(i = 0; i < subTokens.size(); i++)
 				{
 					
-					eigenValues.push_back(atof((subTokens[i]).c_str()));
+                    eigenValues.push_back(LTKStringUtil::convertStringToFloat(subTokens[i]));
 					
 				}
 				
@@ -2076,7 +2076,7 @@ int ActiveDTWShapeRecognizer::loadModelData()
 					
 					for(int j = 0; j < subTokens.size(); j++)
 					{
-						tempVector.push_back(atof((subTokens[j]).c_str()));
+                        tempVector.push_back(LTKStringUtil::convertStringToFloat(subTokens[j]));
 					}
 					
 					
@@ -2095,7 +2095,7 @@ int ActiveDTWShapeRecognizer::loadModelData()
 				for( i = 0; i < subTokens.size(); i++)
 				{
 					
-					clusterMean.push_back(atof((subTokens[i]).c_str()));
+                    clusterMean.push_back(LTKStringUtil::convertStringToFloat(subTokens[i]));
 				}
 				
 				clusterModel.setClusterMean(clusterMean);
@@ -5474,7 +5474,7 @@ int ActiveDTWShapeRecognizer::validatePreprocParameters(stringStringMap& headerS
 	tempFloatValue = m_ptrPreproc->getAspectRatioThreshold();
 	if(LTKSTRCMP((headerSequence[ASP_RATIO_THRES]).c_str(), "NA") != 0)
 	{
-		headerValueFloat = atof(headerSequence[ASP_RATIO_THRES].c_str());
+        headerValueFloat = LTKStringUtil::convertStringToFloat(headerSequence[ASP_RATIO_THRES]);
 		
 		if(headerValueFloat != tempFloatValue)
 		{
@@ -5492,7 +5492,7 @@ int ActiveDTWShapeRecognizer::validatePreprocParameters(stringStringMap& headerS
 	// NormLineWidthThreshold
 	if(LTKSTRCMP((headerSequence[DOT_SIZE_THRES]).c_str(), "NA") != 0)
 	{
-		headerValueFloat = atof(headerSequence[DOT_SIZE_THRES].c_str());
+        headerValueFloat = LTKStringUtil::convertStringToFloat(headerSequence[DOT_SIZE_THRES]);
 		tempFloatValue = m_ptrPreproc->getSizeThreshold();
 		
 		if(headerValueFloat !=  tempFloatValue)
@@ -5510,7 +5510,7 @@ int ActiveDTWShapeRecognizer::validatePreprocParameters(stringStringMap& headerS
 	// NormDotSizeThreshold
 	if(LTKSTRCMP((headerSequence[DOT_THRES]).c_str(), "NA") != 0)
 	{
-		headerValueFloat = atof(headerSequence[DOT_THRES].c_str());
+        headerValueFloat = LTKStringUtil::convertStringToFloat(headerSequence[DOT_THRES]);
 		tempFloatValue = m_ptrPreproc->getDotThreshold();
 		
 		if(headerValueFloat != tempFloatValue)

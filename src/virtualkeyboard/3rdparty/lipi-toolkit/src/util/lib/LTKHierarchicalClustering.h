@@ -50,7 +50,7 @@
 
 
 #ifndef _WIN32
-#include <values.h>
+//#include <values.h>
 #endif
 
 #include "LTKInc.h"
