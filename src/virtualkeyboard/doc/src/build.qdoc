@@ -113,6 +113,10 @@ build targets.
     \li This option activates the OpenWnn input method for the Japanese
         language and disables all other default languages, except English.
 \row
+    \li \e lipi-toolkit
+    \li Enables the handwriting input method.
+    \li This option enables the handwriting input method.
+\row
     \li \e arrow-key-navigation
     \li Enables arrow key navigation for the keyboard
     \li Allows controlling the keyboard using the arrow and return keys.

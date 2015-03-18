@@ -17,7 +17,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.Enterprise.VirtualKeyboard 1.3
+import QtQuick.Enterprise.VirtualKeyboard 1.4
 
 KeyboardLayout {
     inputMode: InputEngine.Latin
@@ -173,6 +173,9 @@ KeyboardLayout {
             weight: 217
         }
         ChangeLanguageKey {
+            weight: 154
+        }
+        HandwritingModeKey {
             weight: 154
         }
         SpaceKey {

@@ -33,6 +33,9 @@
 #ifdef HAVE_OPENWNN
 #include "openwnninputmethod.h"
 #endif
+#ifdef HAVE_LIPI_TOOLKIT
+#include "lipiinputmethod.h"
+#endif
 #include "declarativeinputmethod.h"
 #include "declarativeselectionlistmodel.h"
 #include "enterkeyaction.h"
@@ -58,6 +61,9 @@ static QObject *createInputContextModule(QQmlEngine *engine, QJSEngine *scriptEn
 #endif
 #ifdef HAVE_OPENWNN
             << QStringLiteral("JapaneseInputMethod")
+#endif
+#ifdef HAVE_LIPI_TOOLKIT
+           << QStringLiteral("HandwritingInputMethod")
 #endif
                ;
     rootContext->setContextProperty(QStringLiteral("VirtualKeyboardInputMethods"), inputMethodList);
@@ -93,6 +99,9 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
 #endif
 #ifdef HAVE_OPENWNN
     qmlRegisterType<OpenWnnInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 3, "JapaneseInputMethod");
+#endif
+#ifdef HAVE_LIPI_TOOLKIT
+    qmlRegisterType<LipiInputMethod>("QtQuick.Enterprise.VirtualKeyboard", 1, 4, "HandwritingInputMethod");
 #endif
     qmlRegisterType<EnterKeyActionAttachedType>();
     qmlRegisterType<EnterKeyAction>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "EnterKeyAction");

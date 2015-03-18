@@ -10,6 +10,7 @@
         <file>layouts/de_DE/symbols.qml</file>
         <file>layouts/en_GB/dialpad.qml</file>
         <file>layouts/en_GB/digits.qml</file>
+        <file>layouts/en_GB/handwriting.qml</file>
         <file>layouts/en_GB/main.qml</file>
         <file>layouts/en_GB/numbers.qml</file>
         <file>layouts/en_GB/symbols.qml</file>

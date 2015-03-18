@@ -161,4 +161,22 @@ openwnn {
     else: LIBS += -L$$OUT_PWD/3rdparty/openwnn/ -lopenwnn
 }
 
+lipi-toolkit {
+    CONFIG += exceptions
+    SOURCES += \
+        lipiinputmethod.cpp \
+        lipisharedrecognizer.cpp \
+        lipiworker.cpp
+    HEADERS += \
+        lipiinputmethod.h \
+        lipisharedrecognizer.h \
+        lipiworker.h
+    DEFINES += HAVE_LIPI_TOOLKIT
+    INCLUDEPATH += \
+        3rdparty/lipi-toolkit/src/include \
+        3rdparty/lipi-toolkit/src/util/lib
+    LIBS += -L$$OUT_PWD/3rdparty/lipi-toolkit/src/lib -lshaperecommon -lltkcommon -lltkutil
+    win32: LIBS += Advapi32.lib
+}
+
 arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
