@@ -115,8 +115,6 @@ public:
     private:
     static void* m_libHandleLogger;
 
-    static LTKOSUtil* m_ptrOSUtil;
-
     static FN_PTR_LOGMESSAGE module_logMessage;
 
     static FN_PTR_STARTLOG module_startLogger;

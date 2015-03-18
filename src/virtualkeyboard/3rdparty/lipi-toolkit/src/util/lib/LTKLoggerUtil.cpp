@@ -52,13 +52,18 @@
 #include <windows.h>
 #endif
 
+#include <memory>
+
 void* LTKLoggerUtil::m_libHandleLogger = NULL;
-LTKOSUtil* LTKLoggerUtil::m_ptrOSUtil = NULL;
 FN_PTR_LOGMESSAGE LTKLoggerUtil::module_logMessage = NULL;
 FN_PTR_STARTLOG LTKLoggerUtil::module_startLogger = NULL;
 FN_PTR_GETINSTANCE LTKLoggerUtil::module_getInstanceLogger = NULL;
 FN_PTR_DESTROYINSTANCE LTKLoggerUtil::module_destroyLogger = NULL;
+#ifdef _WIN32
 ofstream LTKLoggerUtil::m_emptyStream;
+#else
+ofstream LTKLoggerUtil::m_emptyStream("/dev/null");
+#endif
 
 /****************************************************************************
 * AUTHOR		: Nidhi Sharma
@@ -91,28 +96,26 @@ LTKLoggerUtil::LTKLoggerUtil(){}
 int LTKLoggerUtil::createLogger(const string& lipiRoot)
 {
     void* functionHandle = NULL; 
-	m_ptrOSUtil = LTKOSUtilFactory::getInstance();
+    auto_ptr<LTKOSUtil> a_ptrOSUtil(LTKOSUtilFactory::getInstance());
 
-    int iErrorCode = m_ptrOSUtil->loadSharedLib(lipiRoot, 
+    int iErrorCode = a_ptrOSUtil->loadSharedLib(lipiRoot,
                                                 LOGGER_MODULE_STR, 
                                                 &m_libHandleLogger);
 
 	
     if(iErrorCode != SUCCESS)
     {
-		delete m_ptrOSUtil;
         return iErrorCode;
     }
 
     // Create logger instance
     if (module_getInstanceLogger == NULL)
     {
-        iErrorCode = m_ptrOSUtil->getFunctionAddress(m_libHandleLogger,
+        iErrorCode = a_ptrOSUtil->getFunctionAddress(m_libHandleLogger,
                                                      "getLoggerInstance", 
                                                      &functionHandle);
         if(iErrorCode != SUCCESS)
     	{
-			delete m_ptrOSUtil;
     	    return iErrorCode;
     	}
 
@@ -126,12 +129,11 @@ int LTKLoggerUtil::createLogger(const string& lipiRoot)
     // map destoylogger function
     if (module_destroyLogger == NULL)
     {
-        iErrorCode = m_ptrOSUtil->getFunctionAddress(m_libHandleLogger,
+        iErrorCode = a_ptrOSUtil->getFunctionAddress(m_libHandleLogger,
                                                      "destroyLogger", 
                                                      &functionHandle);
         if(iErrorCode != SUCCESS)
     	{
-			delete m_ptrOSUtil;
     	    return iErrorCode;
     	}
 
@@ -140,7 +142,6 @@ int LTKLoggerUtil::createLogger(const string& lipiRoot)
     	functionHandle = NULL;
     }
     
-	delete m_ptrOSUtil;
     return iErrorCode;
     
 }
@@ -158,16 +159,15 @@ int LTKLoggerUtil::createLogger(const string& lipiRoot)
 *****************************************************************************/
 int LTKLoggerUtil::destroyLogger()
 {
-	m_ptrOSUtil = LTKOSUtilFactory::getInstance();
+    auto_ptr<LTKOSUtil> a_ptrOSUtil(LTKOSUtilFactory::getInstance());
 
     if (module_destroyLogger != NULL )
     {
         module_destroyLogger();
     }
 
-	int returnVal = m_ptrOSUtil->unloadSharedLib(m_libHandleLogger);
+    int returnVal = a_ptrOSUtil->unloadSharedLib(m_libHandleLogger);
 
-	delete m_ptrOSUtil;
     return returnVal;
 }
 
@@ -196,11 +196,11 @@ int LTKLoggerUtil::configureLogger(const string& logFile, LTKLogger::EDebugLevel
         LTKReturnError(ELOGGER_LIBRARY_NOT_LOADED);
     }
     
-    m_ptrOSUtil = LTKOSUtilFactory::getInstance();
+    auto_ptr<LTKOSUtil> a_ptrOSUtil(LTKOSUtilFactory::getInstance());
 
     if ( logFile.length() != 0 )
     {
-        returnVal = m_ptrOSUtil->getFunctionAddress(m_libHandleLogger,
+        returnVal = a_ptrOSUtil->getFunctionAddress(m_libHandleLogger,
                                                     "setLoggerFileName", 
                                                     &functionHandle);
 
@@ -221,7 +221,7 @@ int LTKLoggerUtil::configureLogger(const string& logFile, LTKLogger::EDebugLevel
 		LTKReturnError(EINVALID_LOG_FILENAME); 
     }
     
-    returnVal = m_ptrOSUtil->getFunctionAddress(m_libHandleLogger,
+    returnVal = a_ptrOSUtil->getFunctionAddress(m_libHandleLogger,
                                                 "setLoggerLevel", 
                                                 &functionHandle);
 
@@ -236,7 +236,6 @@ int LTKLoggerUtil::configureLogger(const string& logFile, LTKLogger::EDebugLevel
 
     module_setLogLevel(logLevel);
 
-	delete m_ptrOSUtil;
     return SUCCESS;
     
 }
@@ -258,12 +257,15 @@ int LTKLoggerUtil::getAddressLoggerFunctions()
     void* functionHandle = NULL; 
     int returnVal = SUCCESS;
 
+    auto_ptr<LTKOSUtil> a_ptrOSUtil;
 
     //start log
     
     if (module_startLogger == NULL )
     {
-        returnVal = m_ptrOSUtil->getFunctionAddress(m_libHandleLogger,
+        if(!a_ptrOSUtil.get())
+            a_ptrOSUtil.reset(LTKOSUtilFactory::getInstance());
+        returnVal = a_ptrOSUtil->getFunctionAddress(m_libHandleLogger,
                                                     "startLogger", 
                                                     &functionHandle);
 
@@ -282,7 +284,9 @@ int LTKLoggerUtil::getAddressLoggerFunctions()
     // map Log message
     if (module_logMessage == NULL)
     {
-        returnVal = m_ptrOSUtil->getFunctionAddress(m_libHandleLogger,
+        if(!a_ptrOSUtil.get())
+            a_ptrOSUtil.reset(LTKOSUtilFactory::getInstance());
+        returnVal = a_ptrOSUtil->getFunctionAddress(m_libHandleLogger,
                                                     "logMessage", 
                                                     &functionHandle);
 
@@ -317,15 +321,13 @@ int LTKLoggerUtil::getAddressLoggerFunctions()
 
 ostream& LTKLoggerUtil::logMessage(LTKLogger::EDebugLevel logLevel, string inStr, int lineNumber)
 {
-	m_ptrOSUtil = LTKOSUtilFactory::getInstance();
-
 	if (m_libHandleLogger == NULL)
 	{
-		m_libHandleLogger = m_ptrOSUtil->getLibraryHandle(LOGGER_MODULE_STR);
+        auto_ptr<LTKOSUtil> a_ptrOSUtil(LTKOSUtilFactory::getInstance());
+        m_libHandleLogger = a_ptrOSUtil->getLibraryHandle(LOGGER_MODULE_STR);
 
 		if (m_libHandleLogger == NULL)
 		{
-			delete m_ptrOSUtil;
 			return m_emptyStream;
 		}
 	}
@@ -339,11 +341,9 @@ ostream& LTKLoggerUtil::logMessage(LTKLogger::EDebugLevel logLevel, string inStr
 
         if(returnVal != SUCCESS)
     	{
-			delete m_ptrOSUtil;
     	    return m_emptyStream;
     	}
     }
 
-	delete m_ptrOSUtil;
     return module_logMessage(logLevel, inStr, lineNumber);
 }
