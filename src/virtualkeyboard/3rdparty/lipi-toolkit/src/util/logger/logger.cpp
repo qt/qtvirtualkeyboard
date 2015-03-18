@@ -113,6 +113,7 @@ LTKLoggerInterface* getLoggerInstance()
 ***************************************************************************/
 void destroyLogger()
 {
+	ptrLog = NULL;
 	LTKLogger::destroyLoggerInstance();
 }
 
@@ -129,6 +130,7 @@ void destroyLogger()
 ***************************************************************************/
 void setLoggerFileName(const string& logFileName)
 {
+	if (!ptrLog) return;
 	ptrLog->setLogFileName(logFileName);
 }
 
@@ -145,6 +147,7 @@ void setLoggerFileName(const string& logFileName)
 ***************************************************************************/
 int setLoggerLevel(LTKLogger::EDebugLevel logLevel)
 {
+	if (!ptrLog) return FAILURE;
 	return ptrLog->setLogLevel(logLevel);
 }
 
@@ -161,6 +164,8 @@ int setLoggerLevel(LTKLogger::EDebugLevel logLevel)
 ***************************************************************************/
 const string& getLoggerFileName()
 {
+    static string emptyStr;
+    if (!ptrLog) return emptyStr;
     return ptrLog->getLogFileName();
 }
 
@@ -177,6 +182,7 @@ const string& getLoggerFileName()
 ***************************************************************************/
 LTKLogger::EDebugLevel getLoggerLevel()
 {
+    if (!ptrLog) return LTKLogger::LTK_LOGLEVEL_OFF;
     return ptrLog->getLogLevel();
 }
 
@@ -193,6 +199,7 @@ LTKLogger::EDebugLevel getLoggerLevel()
 ***************************************************************************/
 void startLogger()
 {
+    if (!ptrLog) return;
     ptrLog->startLog();
 }
 
@@ -209,6 +216,7 @@ void startLogger()
 ***************************************************************************/
 void stopLogger()
 {
+    if (!ptrLog) return;
     ptrLog->stopLog();
 }
 
@@ -227,5 +235,6 @@ void stopLogger()
 ostream& logMessage(LTKLogger::EDebugLevel logLevel, const string& fileName,
                        int lineNumber)
 {
+    if (!ptrLog) return LTKLoggerUtil::m_emptyStream;
     return (*ptrLog)(logLevel, fileName, lineNumber);
 }
