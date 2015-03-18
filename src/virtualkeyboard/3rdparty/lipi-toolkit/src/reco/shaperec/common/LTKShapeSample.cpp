@@ -189,6 +189,28 @@ const vector<LTKShapeFeaturePtr>& LTKShapeSample::getFeatureVector() const
 }
 
 /**********************************************************************************
+ * AUTHOR		: The Qt Company
+ * DATE			: 17-Mar-2015
+ * NAME			: getFeatureVectorRef
+ * DESCRIPTION	:
+ * ARGUMENTS		:
+ * RETURNS		:
+ * NOTES			:
+ * CHANGE HISTROY
+ * Author			Date				Description of change
+ * ************************************************************************************/
+vector<LTKShapeFeaturePtr>& LTKShapeSample::getFeatureVectorRef()
+{
+    LOG( LTKLogger::LTK_LOGLEVEL_DEBUG)<<
+        "Entering LTKShapeSample:getFeatureVectorRef()"  <<endl;
+
+    LOG( LTKLogger::LTK_LOGLEVEL_DEBUG)<<
+        "Exiting LTKShapeSample:getFeatureVectorRef()"  <<endl;
+
+    return m_featureVector;
+}
+
+/**********************************************************************************
  * AUTHOR		: Saravanan R.
  * DATE			: 22-Mar-2007
  * NAME			: getClassID

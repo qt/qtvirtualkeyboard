@@ -91,6 +91,14 @@ class LTKShapeSample
 
 
         /**
+         * @brief getter method for feature vector
+         * @param none
+         * @return featureVec	Type : LTKShapeFeaturePtrtor
+         */
+        vector<LTKShapeFeaturePtr>& getFeatureVectorRef();
+
+
+        /**
          * @brief setter method for class ID
          * @param none
          * @return classID Type : int

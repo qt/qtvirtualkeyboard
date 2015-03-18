@@ -1883,6 +1883,9 @@ int NNShapeRecognizer::loadModelData()
 
 	else
 	{
+#ifdef OPTIMIZE_LOAD_MODEL_DATA
+		floatVector floatFeatureVectorBuffer;
+#endif
 
 		while(!mdtFileHandle.eof())
 		{
@@ -1899,9 +1902,30 @@ int NNShapeRecognizer::loadModelData()
 			mdtFileHandle.read((char*) &numberOfFeatures, intSize);
 			mdtFileHandle.read((char*) &featureDimension, intSize);
 
+#ifdef OPTIMIZE_LOAD_MODEL_DATA
+			m_prototypeSet.push_back(shapeSampleFeatures);
+			LTKShapeSample &shapeSampleFeaturesRef = m_prototypeSet.back();
+			shapeSampleFeaturesRef.setClassID(classId);
+
+			// Read all features in one batch
+			size_t floatFeatureVectorElementCount = numberOfFeatures * featureDimension;
+			floatFeatureVectorBuffer.resize(floatFeatureVectorElementCount);
+			mdtFileHandle.read((char*) &floatFeatureVectorBuffer.front(), floatFeatureVectorElementCount * floatSize);
+			if ( mdtFileHandle.fail() )
+			{
+				break;
+			}
+#endif
+
 			int featureIndex = 0;
 			
+#ifdef OPTIMIZE_LOAD_MODEL_DATA
+			vector<LTKShapeFeaturePtr>& shapeFeatureVector = shapeSampleFeaturesRef.getFeatureVectorRef();
+			shapeFeatureVector.reserve(numberOfFeatures);
+			floatVector::const_iterator floatFeatureVectorBufferIterator = floatFeatureVectorBuffer.begin();
+#else
 			vector<LTKShapeFeaturePtr> shapeFeatureVector;
+#endif
 			LTKShapeFeaturePtr shapeFeature;
 
 			for ( ; featureIndex < numberOfFeatures ; featureIndex++)
@@ -1911,8 +1935,16 @@ int NNShapeRecognizer::loadModelData()
 
 				shapeFeature = m_ptrFeatureExtractor->getShapeFeatureInstance();
 
+#ifdef OPTIMIZE_LOAD_MODEL_DATA
+				floatFeatureVector.reserve(featureDimension);
+#endif
 				for(; featureValueIndex < featureDimension ; featureValueIndex++)
 				{
+#ifdef OPTIMIZE_LOAD_MODEL_DATA
+					float featureValue = *floatFeatureVectorBufferIterator;
+					floatFeatureVectorBufferIterator++;
+					floatFeatureVector.push_back(featureValue);
+#else
 					float featureValue = 0.0f;
 
 					mdtFileHandle.read((char*) &featureValue, floatSize);
@@ -1923,6 +1955,7 @@ int NNShapeRecognizer::loadModelData()
 					{
 						break;
 					}
+#endif
 				}
 
 				if (shapeFeature->initialize(floatFeatureVector) != SUCCESS)
@@ -1938,6 +1971,19 @@ int NNShapeRecognizer::loadModelData()
 				shapeFeatureVector.push_back(shapeFeature);
 
 			}
+
+#ifdef OPTIMIZE_LOAD_MODEL_DATA
+			//Add to Map
+			intIntMap::iterator mapEntry;
+			if(	(mapEntry = m_shapeIDNumPrototypesMap.find(classId))==m_shapeIDNumPrototypesMap.end())
+			{
+				m_shapeIDNumPrototypesMap[classId] = 1;
+			}
+			else
+			{
+				++mapEntry->second;
+			}
+#else
 			//Set the feature vector and class id to the shape sample features
 			shapeSampleFeatures.setFeatureVector(shapeFeatureVector);
 			shapeSampleFeatures.setClassID(classId);
@@ -1954,13 +2000,16 @@ int NNShapeRecognizer::loadModelData()
 			{
 				++(m_shapeIDNumPrototypesMap[classId]);
 			}
+#endif
 
 
+#ifndef OPTIMIZE_LOAD_MODEL_DATA
 			//Clearing the vectors
 			shapeFeatureVector.clear();
 			tokens.clear();
 			classId = -1;
 			strFeatureVector = "";
+#endif
 
 
 		}
