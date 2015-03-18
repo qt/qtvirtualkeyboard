@@ -53,7 +53,10 @@ typedef void (*FN_PTR_SETLOGFILENAME)(const string&);
 typedef void (*FN_PTR_SETLOGLEVEL)(LTKLogger::EDebugLevel);
 typedef ostream& (*FN_PTR_LOGMESSAGE)(int, const string& , int );  
 
-#define LOG(EDebugLevel) LTKLoggerUtil::logMessage(EDebugLevel, __FILE__, __LINE__)
+// Set to 1 to disable the logging functionality
+#define DISABLE_LOG 1
+
+#define LOG(EDebugLevel) if(!DISABLE_LOG) LTKLoggerUtil::logMessage(EDebugLevel, __FILE__, __LINE__)
 
 /**
 * @ingroup util

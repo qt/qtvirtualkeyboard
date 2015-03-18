@@ -51,18 +51,18 @@ static map<int,string> errors;
 static void initErrorCode()
 {
 	errors.clear();
-	errors[EINK_FILE_OPEN] = "Unable to open ink file, Look at the Log file for more info";				/* 100 - EINK_FILE_OPEN */
-	errors[ECONFIG_FILE_OPEN] = "Unable to open configuration file, Look at the Log file for more info";	/* 101 - ECONFIG_FILE_OPEN */
+	errors[EINK_FILE_OPEN] = "Unable to open ink file";				/* 100 - EINK_FILE_OPEN */
+	errors[ECONFIG_FILE_OPEN] = "Unable to open configuration file";	/* 101 - ECONFIG_FILE_OPEN */
 	errors[EHEADER_INFO_FILE_OPEN] = "Unable to open model header information file";								/* 102 - EHEADER_INFO_FILE_OPEN_ERR */
-	errors[EMODEL_DATA_FILE_OPEN] = "Unable to open model data file, Look at the Log file for more info";		/* 103 - EMODEL_DATA_FILE_OPEN_ERR */
-	errors[ETRAINLIST_FILE_OPEN] = "Unable to open train list file, Look at the Log file for more info";		/* 104 - ETRAINLIST_FILE_OPEN_ERR	*/
-	errors[EMODEL_DATA_FILE_FORMAT] = "Incompatible model data file. The header is not in the desired format. Look at the Log file for more info";						/* 105 - EFILE_FORMAT_ERR	*/
-	errors[EINVALID_INPUT_FORMAT] = "Model data file is corrupted, Look at the Log file for more info";			/* 106 - EFILE_CORRUPT_ERR */
+	errors[EMODEL_DATA_FILE_OPEN] = "Unable to open model data file";		/* 103 - EMODEL_DATA_FILE_OPEN_ERR */
+	errors[ETRAINLIST_FILE_OPEN] = "Unable to open train list file";		/* 104 - ETRAINLIST_FILE_OPEN_ERR	*/
+	errors[EMODEL_DATA_FILE_FORMAT] = "Incompatible model data file. The header is not in the desired format.";						/* 105 - EFILE_FORMAT_ERR	*/
+	errors[EINVALID_INPUT_FORMAT] = "Model data file is corrupted";			/* 106 - EFILE_CORRUPT_ERR */
 
 	errors[ELOAD_SHAPEREC_DLL] = "Error while loading shape recognition module";		/* 107 - ELOAD_SHAPEREC_DLL_ERR */
 	errors[ELOAD_WORDREC_DLL] = "Error while loading word recognition module";		/* 108 - ELOAD_WORDREC_DLL_ERR */
 	errors[ELOAD_PREPROC_DLL] = "Error while loading preprocessing module";			/* 109 - ELOAD_PREPROC_DLL_ERR */
-	errors[EDLL_FUNC_ADDRESS] = "Exported function not found in module, Look at the Log file for more info";			/* 110 - EDLL_FUNC_ADDRESS_ERR */
+	errors[EDLL_FUNC_ADDRESS] = "Exported function not found in module";			/* 110 - EDLL_FUNC_ADDRESS_ERR */
 	errors[ECREATE_SHAPEREC] = "Error while creating shape recognizer instance";		/* 111 - ECREATE_SHAPEREC_ERR	*/
 	errors[ECREATE_WORDREC] = "Error while creating word recognizer instance";		/* 112 - ECREATE_WORDREC_ERR */
 	errors[ECREATE_PREPROC] = "Error while creating preprocessor instance";			/* 113 - ECREATE_PREPROC_ERR */
@@ -73,13 +73,13 @@ static void initErrorCode()
 	errors[ENO_SHAPE_RECOGNIZER] = "No shape recognizer specified in profile.cfg file";	/* 117 - ENO_SHAPE_RECOGNIZER */
 	errors[ENO_WORD_RECOGNIZER] = "No word recognizer specified in profile.cfg file";		/* 118 - ENO_WORD_RECOGNIZER */
 
-	errors[EINVALID_NUM_OF_TRACES] = "Invalid number of traces processed, Look at the Log file for more info";				/* 119 - EINVALID_NUMBER_OF_TRACES */
-	errors[EINVALID_NUM_OF_SHAPES] = "Invalid value for number of shapes, Look at the Log file for more info";				/* 120 - EINVALID_VALUE_NUMOFSHAPES */
-	errors[EINVALID_TRACE_DIMENTION] = "Invalid value for trace dimension, Look at the Log file for more info";				/* 121 - EINVALID_TRACE_DIMENTION */
-	errors[EINVALID_NUMEIGENVECTOR] = "Invalid value for eigen vector, Look at the Log file for more info";					/* 122 - EINVALID_VALUE_NUMEIGENVECTOR */
-	errors[EINVALID_FLOAT_SIZE] = "Invalid float size entry in model data File, Look at the Log file for more info";		/* 123 - EINVALID_FLOAT_SIZE */
-	errors[EINCOMPATIBLE_VERSION] = "Incompatible algorithm version, Look at the Log file for more info";					/* 124 - EINCOMPATIBLE_VERSION_ERR */
-	errors[EINVALID_PREPROC_SEQUENCE] = "Wrong preprocessor sequence entry in cfg file, Look at the Log file for more info";	/* 125 - EPREPROC_SEQUENCE_ERR */
+	errors[EINVALID_NUM_OF_TRACES] = "Invalid number of traces processed";				/* 119 - EINVALID_NUMBER_OF_TRACES */
+	errors[EINVALID_NUM_OF_SHAPES] = "Invalid value for number of shapes";				/* 120 - EINVALID_VALUE_NUMOFSHAPES */
+	errors[EINVALID_TRACE_DIMENTION] = "Invalid value for trace dimension";				/* 121 - EINVALID_TRACE_DIMENTION */
+	errors[EINVALID_NUMEIGENVECTOR] = "Invalid value for eigen vector";					/* 122 - EINVALID_VALUE_NUMEIGENVECTOR */
+	errors[EINVALID_FLOAT_SIZE] = "Invalid float size entry in model data File";		/* 123 - EINVALID_FLOAT_SIZE */
+	errors[EINCOMPATIBLE_VERSION] = "Incompatible algorithm version";					/* 124 - EINCOMPATIBLE_VERSION_ERR */
+	errors[EINVALID_PREPROC_SEQUENCE] = "Wrong preprocessor sequence entry in cfg file";	/* 125 - EPREPROC_SEQUENCE_ERR */
 
 	errors[ENO_TOKEN_FOUND] = "Invalid or no value specified for project name for recognizer";	/* 126 - ENO_TOKEN_FOUND */
 	errors[EINVALID_LOGICAL_NAME] = "Invalid or no value specified for logical name for recognizer";	/* 127 - EINVALID_LOGICAL_NAME */
@@ -202,7 +202,7 @@ string getErrorMessage(int errorCode)
 	string errorDiscrip = errors[errorCode];
 	if(errorDiscrip.empty())
 	{
-		return "Error code is not set, Look at the log file for more information";
+		return "Error code is not set";
 	}
 	
 	return errorDiscrip;
