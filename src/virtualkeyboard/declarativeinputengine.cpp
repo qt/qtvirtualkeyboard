@@ -352,6 +352,9 @@ void DeclarativeInputEngine::setInputMethod(AbstractInputMethod *inputMethod)
         if (d->inputMethod) {
             d->inputMethod->setInputEngine(this);
 
+            // Set current text case
+            d->inputMethod->setTextCase(d->textCase);
+
             // Allocate selection lists for the input method
             QList<DeclarativeSelectionListModel::Type> activeSelectionLists = d->inputMethod->selectionLists();
             QList<DeclarativeSelectionListModel::Type> inactiveSelectionLists = d->selectionListModels.keys();
@@ -482,7 +485,7 @@ void DeclarativeInputEngine::shiftChanged()
 {
     Q_D(DeclarativeInputEngine);
     TextCase newCase = d->inputContext->shift() ? Upper : Lower;
-    if (d->textCase == newCase) {
+    if (d->textCase != newCase) {
         d->textCase = newCase;
         if (d->inputMethod) {
             d->inputMethod->setTextCase(d->textCase);
