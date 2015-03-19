@@ -27,6 +27,8 @@ class HunspellInputMethod : public AbstractInputMethod
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(HunspellInputMethod)
+protected:
+    HunspellInputMethod(HunspellInputMethodPrivate &dd, QObject *parent);
 public:
     explicit HunspellInputMethod(QObject *parent = 0);
     ~HunspellInputMethod();

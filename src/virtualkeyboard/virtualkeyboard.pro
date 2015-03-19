@@ -95,8 +95,8 @@ qtquickcompiler: DEFINES += COMPILING_QML
 !disable-hunspell {
     exists(3rdparty/hunspell/src/hunspell/hunspell.h) {
         message(Found Hunspell library!)
-        SOURCES += hunspellinputmethod.cpp hunspellworker.cpp
-        HEADERS += hunspellinputmethod.h hunspellworker.h
+        SOURCES += hunspellinputmethod.cpp hunspellinputmethod_p.cpp hunspellworker.cpp
+        HEADERS += hunspellinputmethod.h hunspellinputmethod_p.h hunspellworker.h
         DEFINES += HAVE_HUNSPELL
         INCLUDEPATH += 3rdparty/hunspell/src
         DEPENDPATH += 3rdparty/hunspell/src
@@ -112,8 +112,8 @@ qtquickcompiler: DEFINES += COMPILING_QML
         }
     } else:!contains(CONFIG, no-pkg-config):packagesExist(hunspell) {
         message(Found Hunspell package from pkg-config!)
-        SOURCES += hunspellinputmethod.cpp hunspellworker.cpp
-        HEADERS += hunspellinputmethod.h hunspellworker.h
+        SOURCES += hunspellinputmethod.cpp hunspellinputmethod_p.cpp hunspellworker.cpp
+        HEADERS += hunspellinputmethod.h hunspellinputmethod_p.h hunspellworker.h
         DEFINES += HAVE_HUNSPELL
         PKGCONFIG += hunspell
     } else {
