@@ -555,7 +555,7 @@ Rectangle {
             for (var inputIndex in data.inputSequence) {
                 verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
             }
-            wait(200)
+            wait(300)
 
             if (data.hasOwnProperty("expectedSuggestion")) {
                 if (inputPanel.wordCandidateView.count <= 1)
@@ -595,7 +595,7 @@ Rectangle {
             for (var inputIndex in data.inputSequence) {
                 var key = data.inputSequence[inputIndex]
                 if (key === Qt.Key_Select) {
-                    wait(200)
+                    wait(300)
                     if (inputPanel.wordCandidateView.count > 1)
                         inputPanel.selectionListSelectCurrentItem()
                     else
