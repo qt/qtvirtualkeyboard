@@ -79,12 +79,25 @@ Loader {
 
         The input method object created by this function can outlive
         keyboard layout transitions in certain cases. In particular,
-        this applies to the transitions between the symbol and the
-        main view.
+        this applies to the transitions between the layouts listed in
+        the sharedLayouts property.
     */
     function createInputMethod() {
         return item ? item.createInputMethod() : null
     }
+
+    /*! List of layout names which share the input method created
+        by the createInputMethod() function.
+
+        If the list is empty (the default) the input method is not
+        shared with any other layout and will be destroyed when the
+        layout changes.
+
+        The list should contain only the name of the layout type,
+        e.g., ['symbols']. The current layout does not have to be
+        included in the list.
+    */
+    property var sharedLayouts: item ? item.sharedLayouts : null
 
     /*! Sets the input mode for all the keyboard layouts loaded
         in this context.

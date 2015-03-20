@@ -24,6 +24,7 @@ KeyboardLayoutLoader {
     function createInputMethod() {
         return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 1.3; PinyinInputMethod {}', parent, "pinyinInputMethod")
     }
+    sharedLayouts: ['main']
     property int page
     readonly property int numPages: 3
     property var keysPage1: [

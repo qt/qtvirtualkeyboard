@@ -52,6 +52,7 @@ Item {
     property var defaultInputMethod: initDefaultInputMethod()
     property var plainInputMethod: PlainInputMethod {}
     property var customInputMethod: null
+    property var customInputMethodSharedLayouts: []
     property int defaultInputMode: InputEngine.Latin
     property bool inputMethodNeedsReset: true
     property bool inputModeNeedsReset: true
@@ -829,11 +830,16 @@ Item {
         if (!InputContext.focus)
             return
 
+        // Reset the custom input method if it is not included in the list of shared layouts
+        if (customInputMethod && !inputMethodNeedsReset && customInputMethodSharedLayouts.indexOf(layoutType) === -1)
+            inputMethodNeedsReset = true
+
         if (inputMethodNeedsReset) {
             if (customInputMethod) {
                 customInputMethod.destroy()
                 customInputMethod = null
             }
+            customInputMethodSharedLayouts = []
             inputMethodNeedsReset = false
         }
 
@@ -841,10 +847,24 @@ Item {
         var inputMode = InputContext.inputEngine.inputMode
 
         // Use input method from keyboard layout
-        if (keyboardLayoutLoader.item.inputMethod)
+        if (keyboardLayoutLoader.item.inputMethod) {
             inputMethod = keyboardLayoutLoader.item.inputMethod
-        else if (!customInputMethod)
-            customInputMethod = keyboardLayoutLoader.item.createInputMethod()
+        } else if (!customInputMethod) {
+            try {
+                customInputMethod = keyboardLayoutLoader.item.createInputMethod()
+                if (customInputMethod) {
+                    // Pull the list of shared layouts from the keyboard layout
+                    if (keyboardLayoutLoader.item.sharedLayouts)
+                        customInputMethodSharedLayouts = customInputMethodSharedLayouts.concat(keyboardLayoutLoader.item.sharedLayouts)
+
+                    // Make sure the current layout is included in the list
+                    if (customInputMethodSharedLayouts.indexOf(layoutType) === -1)
+                        customInputMethodSharedLayouts.push(layoutType)
+                }
+            } catch (e) {
+                console.error(e.message)
+            }
+        }
         if (!inputMethod)
             inputMethod = customInputMethod ? customInputMethod : defaultInputMethod
 

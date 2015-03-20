@@ -24,6 +24,7 @@ KeyboardLayoutLoader {
         return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 1.3; HangulInputMethod {}', parent, "hangulInputMethod")
     }
     sourceComponent: InputContext.shift ? page2 : page1
+    sharedLayouts: ['symbols']
     Component {
         id: page1
         KeyboardLayout {

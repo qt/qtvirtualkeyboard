@@ -23,6 +23,7 @@ KeyboardLayoutLoader {
     function createInputMethod() {
         return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 1.3; JapaneseInputMethod {}', parent, "japaneseInputMethod")
     }
+    sharedLayouts: ['symbols']
     sourceComponent: InputContext.inputEngine.inputMode === InputEngine.FullwidthLatin ? page2 : page1
     Component {
         id: page1

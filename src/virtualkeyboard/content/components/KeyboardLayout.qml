@@ -85,12 +85,25 @@ ColumnLayout {
 
         The input method object created by this function can outlive
         keyboard layout transitions in certain cases. In particular,
-        this applies to the transitions between the symbol and the
-        main view.
+        this applies to the transitions between the layouts listed in
+        the sharedLayouts property.
     */
     function createInputMethod() {
         return null
     }
+
+    /*! List of layout names which share the input method created
+        by the createInputMethod() function.
+
+        If the list is empty (the default) the input method is not
+        shared with any other layout and will be destroyed when the
+        layout changes.
+
+        The list should contain only the name of the layout type,
+        e.g., ['symbols']. The current layout does not have to be
+        included in the list.
+    */
+    property var sharedLayouts
 
     /*! Sets the input mode to be used in this layout.
 
