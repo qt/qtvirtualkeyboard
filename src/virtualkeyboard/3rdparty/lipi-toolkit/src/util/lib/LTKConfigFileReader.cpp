@@ -211,9 +211,10 @@ int LTKConfigFileReader::getConfigValue(const string& key, string& outValue)
 	LOG( LTKLogger::LTK_LOGLEVEL_DEBUG) << 
 		 " Entering: LTKConfigFileReader::getConfigValue()" << endl;
 
-	if (m_cfgFileMap.find(key) != m_cfgFileMap.end() )
+	stringStringMap::const_iterator cfgItem = m_cfgFileMap.find(key);
+	if (cfgItem != m_cfgFileMap.end() )
 	{
-		outValue = m_cfgFileMap[key];
+		outValue = cfgItem->second.c_str();
 		LOG( LTKLogger::LTK_LOGLEVEL_DEBUG) << 
 		 " Exiting: LTKConfigFileReader::getConfigValue()" << endl;
 		return SUCCESS;
