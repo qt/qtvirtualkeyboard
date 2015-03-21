@@ -31,6 +31,7 @@ public:
     ~HunspellInputMethodPrivate();
 
     bool createHunspell(const QString &locale);
+    void reset();
     bool updateSuggestions();
     bool clearSuggestions();
     bool hasSuggestions() const;

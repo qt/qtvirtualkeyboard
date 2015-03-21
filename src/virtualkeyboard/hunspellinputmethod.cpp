@@ -193,12 +193,7 @@ void HunspellInputMethod::selectionListItemSelected(DeclarativeSelectionListMode
 void HunspellInputMethod::reset()
 {
     Q_D(HunspellInputMethod);
-    if (d->clearSuggestions()) {
-        emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-        emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
-    }
-    d->word.clear();
-    d->autoSpaceAllowed = false;
+    d->reset();
 }
 
 void HunspellInputMethod::update()
@@ -208,7 +203,7 @@ void HunspellInputMethod::update()
         return;
     if (!d->word.isEmpty()) {
         QString finalWord = d->hasSuggestions() ? d->wordCandidates.at(d->activeWordIndex) : d->word;
-        reset();
+        d->reset();
         inputContext()->commit(finalWord);
     }
     d->autoSpaceAllowed = false;

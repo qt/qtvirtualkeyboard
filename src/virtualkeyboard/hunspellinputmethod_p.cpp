@@ -99,6 +99,17 @@ bool HunspellInputMethodPrivate::createHunspell(const QString &locale)
     return true;
 }
 
+void HunspellInputMethodPrivate::reset()
+{
+    if (clearSuggestions()) {
+        Q_Q(HunspellInputMethod);
+        emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
+        emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, activeWordIndex);
+    }
+    word.clear();
+    autoSpaceAllowed = false;
+}
+
 bool HunspellInputMethodPrivate::updateSuggestions()
 {
     bool wordCandidateListChanged = false;
