@@ -70,7 +70,7 @@ Loader {
         layout, or commonly at this context. If set separately, then this
         property should not be modified.
     */
-    property var inputMethod: item.inputMethod
+    property var inputMethod: item ? item.inputMethod : null
 
     /*! This function may be overridden by the keyboard layout
         to create the input method object dynamically. The default
@@ -93,9 +93,11 @@ Loader {
         layout, or commonly at this context. If set separately, then this
         property should not be modified.
     */
-    property int inputMode: item.inputMode
+    property int inputMode: item ? item.inputMode : -1
 
     property int __updateCount
 
-    onItemChanged: if (item && __updateCount++ > 0) keyboard.updateInputMethod()
+    active: parent !== null
+
+    onItemChanged: if (parent && item && __updateCount++ > 0 && !keyboard.inputMethodNeedsReset) keyboard.updateInputMethod()
 }

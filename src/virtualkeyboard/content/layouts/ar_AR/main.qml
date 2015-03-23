@@ -21,7 +21,7 @@ import QtQuick.Enterprise.VirtualKeyboard 1.3
 
 KeyboardLayoutLoader {
     inputMode: InputEngine.Latin
-    sourceComponent: InputContext.shift || InputContext.capsLock ? page2 : page1
+    sourceComponent: InputContext.shift ? page2 : page1
     Component {
         id: page1
         KeyboardLayout {

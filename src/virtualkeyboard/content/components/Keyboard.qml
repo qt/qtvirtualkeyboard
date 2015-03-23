@@ -45,7 +45,7 @@ Item {
         return "main"
     }
     property bool active: Qt.inputMethod.visible
-    property bool uppercased: InputContext.shift || InputContext.capsLock
+    property bool uppercased: InputContext.shift
     property bool latinOnly: InputContext.inputMethodHints & Qt.ImhLatinOnly
     property bool symbolMode
     property var defaultInputMethod: initDefaultInputMethod()
@@ -553,7 +553,6 @@ Item {
                     value: keyboard.layout
                     when: keyboard.layout.length > 0
                 }
-                onItemChanged: if (keyboardLayoutLoader.item) keyboard.updateInputMethod()
 
                 MultiPointTouchArea {
                     id: keyboardInputArea
@@ -870,8 +869,9 @@ Item {
         if (!newLayout.length) {
             newLayout = findLayout(locale, "main")
         }
-        inputLocale = layoutExists(locale, layoutType) ? locale : defaultLocale
         layout = newLayout
+        inputLocale = layoutExists(locale, layoutType) ? locale : defaultLocale
+        updateInputMethod()
     }
 
     function updateAvailableLocaleIndices() {
