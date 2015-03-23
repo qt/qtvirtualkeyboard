@@ -156,7 +156,7 @@ public:
 
 	virtual int getShapeRecoConfidences(const LTKTraceGroup& traceGroup, 
 		const LTKScreenContext& screenContext,
-		const vector<int>& shapeIds, vector<float>& shapeRecoConfidences){return FAILURE;}
+		const vector<int>& shapeIds, vector<float>& shapeRecoConfidences){(void)traceGroup;(void)screenContext;(void)shapeIds;(void)shapeRecoConfidences;return FAILURE;}
 				 
 
 	/**

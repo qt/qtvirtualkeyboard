@@ -45,7 +45,6 @@
 //extern int errorCode; // Error code, which will set for the error occurence.
 
 
-static void initErrorCode();
 /**
  * This method returns error description corresponding to the error code.
  *

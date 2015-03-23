@@ -37,7 +37,6 @@ w
 * CHANGE HISTORY:
 * Author       Date            Description of change
 ***********************************************************************************************/
-#pragma once
 
 #include "ActiveDTWShapeRecognizer.h"
 #include "ActiveDTWAdapt.h"

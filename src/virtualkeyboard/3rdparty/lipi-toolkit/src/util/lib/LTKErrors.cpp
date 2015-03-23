@@ -48,7 +48,7 @@ int errorCode;
 // Error list ( In the same oreder as in LTKErrorList.h file in "include" dir.
 static map<int,string> errors;
 
-void initErrorCode()
+static void initErrorCode()
 {
 	errors.clear();
 	errors[EINK_FILE_OPEN] = "Unable to open ink file, Look at the Log file for more info";				/* 100 - EINK_FILE_OPEN */

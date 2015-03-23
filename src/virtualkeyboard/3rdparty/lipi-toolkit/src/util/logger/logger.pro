@@ -1,6 +1,7 @@
 TEMPLATE = lib
 
 CONFIG -= qt
+CONFIG += warn_off
 CONFIG += plugin
 
 DESTDIR = ../../lib

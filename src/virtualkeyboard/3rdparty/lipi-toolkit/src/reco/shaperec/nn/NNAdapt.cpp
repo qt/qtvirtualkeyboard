@@ -25,7 +25,6 @@
  * $Author: sharmnid $
  *
  ************************************************************************/
-#pragma once
 
 #include "NNShapeRecognizer.h"
 #include "NNAdapt.h"
