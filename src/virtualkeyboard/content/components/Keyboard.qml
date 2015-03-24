@@ -70,6 +70,10 @@ Item {
     onActiveChanged: {
         keyboardInputArea.reset()
     }
+    onActiveKeyChanged: {
+        if (InputContext.inputEngine.activeKey !== Qt.Key_unknown)
+            InputContext.inputEngine.virtualKeyCancel()
+    }
     onLocaleChanged: {
         inputMethodNeedsReset = true
         inputModeNeedsReset = true
