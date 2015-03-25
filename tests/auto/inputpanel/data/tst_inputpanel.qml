@@ -73,7 +73,10 @@ Rectangle {
             var locale = data !== undefined && data.hasOwnProperty("initLocale") ? data.initLocale : "en_GB"
             if (!inputPanel.isLocaleSupported(locale))
                 expectFail("", "Input locale not enabled")
+            var localeChanged = inputPanel.locale !== locale
             verify(inputPanel.setLocale(locale))
+            if (localeChanged && !(textInput.inputMethodHints & Qt.ImhNoPredictiveText))
+                wait(300)
             if (data !== undefined && data.hasOwnProperty("initInputMode"))
                 verify(inputPanel.setInputMode(inputPanel.mapInputMode(data.initInputMode)))
             Qt.inputMethod.show()

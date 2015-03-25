@@ -17,11 +17,78 @@
 ****************************************************************************/
 
 #include "hunspellworker.h"
+#include "virtualkeyboarddebug.h"
 #include <QVector>
 #include <QTextCodec>
+#include <QFileInfo>
+#include <QTime>
+
+HunspellLoadDictionaryTask::HunspellLoadDictionaryTask(const QString &locale, const QStringList &searchPaths) :
+    HunspellTask(),
+    hunspellPtr(0),
+    locale(locale),
+    searchPaths(searchPaths)
+{
+}
+
+void HunspellLoadDictionaryTask::run()
+{
+    Q_ASSERT(hunspellPtr != 0);
+
+    VIRTUALKEYBOARD_DEBUG() << "HunspellLoadDictionaryTask::run(): locale:" << locale;
+
+#ifdef QT_VIRTUALKEYBOARD_DEBUG
+    QTime perf;
+    perf.start();
+#endif
+
+    if (*hunspellPtr) {
+        Hunspell_destroy(*hunspellPtr);
+        *hunspellPtr = 0;
+    }
+
+    QString affPath;
+    QString dicPath;
+    foreach (const QString &searchPath, searchPaths) {
+        affPath = QStringLiteral("%1/%2.aff").arg(searchPath).arg(locale);
+        if (QFileInfo(affPath).exists()) {
+            dicPath = QStringLiteral("%1/%2.dic").arg(searchPath).arg(locale);
+            if (QFileInfo(dicPath).exists())
+                break;
+            dicPath.clear();
+        }
+        affPath.clear();
+    }
+
+    if (affPath.isEmpty() || dicPath.isEmpty()) {
+        VIRTUALKEYBOARD_DEBUG() << "Hunspell dictionary is missing for the" << locale << "language. Search paths" << searchPaths;
+        return;
+    }
+
+    *hunspellPtr = Hunspell_create(affPath.toUtf8().constData(), dicPath.toUtf8().constData());
+    if (*hunspellPtr) {
+        /*  Make sure the encoding used by the dictionary is supported
+            by the QTextCodec.
+        */
+        if (!QTextCodec::codecForName(Hunspell_get_dic_encoding(*hunspellPtr))) {
+            qWarning() << "The Hunspell dictionary" << dicPath << "cannot be used because it uses an unknown text codec" << QString(Hunspell_get_dic_encoding(*hunspellPtr));
+            Hunspell_destroy(*hunspellPtr);
+            *hunspellPtr = 0;
+        }
+    }
+
+#ifdef QT_VIRTUALKEYBOARD_DEBUG
+    VIRTUALKEYBOARD_DEBUG() << "HunspellLoadDictionaryTask::run(): time:" << perf.elapsed() << "ms";
+#endif
+}
 
 void HunspellBuildSuggestionsTask::run()
 {
+#ifdef QT_VIRTUALKEYBOARD_DEBUG
+    QTime perf;
+    perf.start();
+#endif
+
     wordList->list.append(word);
     wordList->index = 0;
 
@@ -85,6 +152,10 @@ void HunspellBuildSuggestionsTask::run()
         }
     }
     Hunspell_free_list(hunspell, &slst, n);
+
+#ifdef QT_VIRTUALKEYBOARD_DEBUG
+    VIRTUALKEYBOARD_DEBUG() << "HunspellBuildSuggestionsTask::run(): time:" << perf.elapsed() << "ms";
+#endif
 }
 
 bool HunspellBuildSuggestionsTask::spellCheck(const QString &word)
@@ -140,11 +211,11 @@ void HunspellUpdateSuggestionsTask::run()
     emit updateSuggestions(wordList->list, wordList->index);
 }
 
-HunspellWorker::HunspellWorker(Hunhandle *hunspell, QObject *parent) :
+HunspellWorker::HunspellWorker(QObject *parent) :
     QThread(parent),
     taskSema(),
     taskLock(),
-    hunspell(hunspell),
+    hunspell(0),
     abort(false)
 {
 }
@@ -154,10 +225,6 @@ HunspellWorker::~HunspellWorker()
     abort = true;
     taskSema.release(1);
     wait();
-    if (hunspell) {
-        Hunspell_destroy(hunspell);
-        hunspell = 0;
-    }
 }
 
 void HunspellWorker::addTask(QSharedPointer<HunspellTask> task)
@@ -173,8 +240,6 @@ void HunspellWorker::removeAllTasks()
 {
     QMutexLocker guard(&taskLock);
     taskList.clear();
-    if (taskSema.available())
-        taskSema.acquire(taskSema.available());
 }
 
 void HunspellWorker::run()
@@ -192,8 +257,18 @@ void HunspellWorker::run()
             }
         }
         if (currentTask) {
-            currentTask->hunspell = hunspell;
+            QSharedPointer<HunspellLoadDictionaryTask> loadDictionaryTask(currentTask.objectCast<HunspellLoadDictionaryTask>());
+            if (loadDictionaryTask)
+                loadDictionaryTask->hunspellPtr = &hunspell;
+            else if (hunspell)
+                currentTask->hunspell = hunspell;
+            else
+                continue;
             currentTask->run();
         }
+    }
+    if (hunspell) {
+        Hunspell_destroy(hunspell);
+        hunspell = 0;
     }
 }

@@ -40,6 +40,19 @@ public:
     Hunhandle *hunspell;
 };
 
+class HunspellLoadDictionaryTask : public HunspellTask
+{
+    Q_OBJECT
+public:
+    explicit HunspellLoadDictionaryTask(const QString &locale, const QStringList &searchPaths);
+
+    void run();
+
+    Hunhandle **hunspellPtr;
+    const QString locale;
+    const QStringList searchPaths;
+};
+
 class HunspellWordList
 {
 public:
@@ -85,16 +98,32 @@ class HunspellWorker : public QThread
 {
     Q_OBJECT
 public:
-    explicit HunspellWorker(Hunhandle *hunspell, QObject *parent = 0);
+    explicit HunspellWorker(QObject *parent = 0);
     ~HunspellWorker();
 
     void addTask(QSharedPointer<HunspellTask> task);
     void removeAllTasks();
 
+    template <class X>
+    void removeAllTasksExcept() {
+        QMutexLocker guard(&taskLock);
+        for (int i = 0; i < taskList.size();) {
+            QSharedPointer<X> task(taskList[i].objectCast<X>());
+            if (!task)
+                taskList.removeAt(i);
+            else
+                i++;
+        }
+    }
+
 protected:
     void run();
 
 private:
+    void createHunspell();
+
+private:
+    friend class HunspellLoadDictionaryTask;
     QList<QSharedPointer<HunspellTask> > taskList;
     QSemaphore taskSema;
     QMutex taskLock;

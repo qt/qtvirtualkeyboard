@@ -20,7 +20,6 @@
 #include "declarativeinputcontext.h"
 #include <hunspell/hunspell.h>
 #include <QStringList>
-#include <QFileInfo>
 #include <QDir>
 #include "virtualkeyboarddebug.h"
 #include <QTextCodec>
@@ -29,7 +28,7 @@
 HunspellInputMethodPrivate::HunspellInputMethodPrivate(HunspellInputMethod *q_ptr) :
     AbstractInputMethodPrivate(),
     q_ptr(q_ptr),
-    hunspellWorker(0),
+    hunspellWorker(new HunspellWorker()),
     locale(),
     word(),
     wordCandidates(),
@@ -38,6 +37,8 @@ HunspellInputMethodPrivate::HunspellInputMethodPrivate(HunspellInputMethod *q_pt
     ignoreUpdate(false),
     autoSpaceAllowed(false)
 {
+    if (hunspellWorker)
+        hunspellWorker->start();
 }
 
 HunspellInputMethodPrivate::~HunspellInputMethodPrivate()
@@ -46,9 +47,10 @@ HunspellInputMethodPrivate::~HunspellInputMethodPrivate()
 
 bool HunspellInputMethodPrivate::createHunspell(const QString &locale)
 {
+    if (!hunspellWorker)
+        return false;
     if (this->locale != locale) {
-        hunspellWorker.reset(0);
-        Hunhandle *hunspell = 0;
+        hunspellWorker->removeAllTasks();
         QString hunspellDataPath(QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_HUNSPELL_DATA_PATH").constData()));
         const QString pathListSep(
 #if defined(Q_OS_WIN32)
@@ -58,43 +60,20 @@ bool HunspellInputMethodPrivate::createHunspell(const QString &locale)
 #endif
         );
         QStringList searchPaths(hunspellDataPath.split(pathListSep, QString::SkipEmptyParts));
-        searchPaths.append(QDir(QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/hunspell").absolutePath());
+        const QStringList defaultPaths = QStringList()
+                << QDir(QLibraryInfo::location(QLibraryInfo::DataPath) + QStringLiteral("/qtvirtualkeyboard/hunspell")).absolutePath()
 #if !defined(Q_OS_WIN32)
-        searchPaths.append(QStringLiteral("/usr/share/hunspell"));
-        searchPaths.append(QStringLiteral("/usr/share/myspell/dicts"));
+                << QStringLiteral("/usr/share/hunspell")
+                << QStringLiteral("/usr/share/myspell/dicts")
 #endif
-        foreach (const QString &searchPath, searchPaths) {
-            QByteArray affpath(QString("%1/%2.aff").arg(searchPath).arg(locale).toUtf8());
-            QByteArray dpath(QString("%1/%2.dic").arg(searchPath).arg(locale).toUtf8());
-            if (QFileInfo(dpath).exists()) {
-                hunspell = Hunspell_create(affpath.constData(), dpath.constData());
-                if (hunspell) {
-                    /*  Make sure the encoding used by the dictionary is supported
-                        by the QTextCodec.
-                    */
-                    if (QTextCodec::codecForName(Hunspell_get_dic_encoding(hunspell))) {
-                        break;
-                    } else {
-                        qWarning() << "The Hunspell dictionary" << QString("%1/%2.dic").arg(searchPath).arg(locale) << "cannot be used because it uses an unknown text codec" << QString(Hunspell_get_dic_encoding(hunspell));
-                        Hunspell_destroy(hunspell);
-                        hunspell = 0;
-                    }
-                }
-            }
+                   ;
+        foreach (const QString &defaultPath, defaultPaths) {
+            if (!searchPaths.contains(defaultPath))
+                searchPaths.append(defaultPath);
         }
-        if (!hunspell) {
-            VIRTUALKEYBOARD_DEBUG() << "Missing Hunspell dictionary for locale" << locale << "in" << searchPaths;
-            this->locale.clear();
-            return false;
-        }
+        QSharedPointer<HunspellLoadDictionaryTask> loadDictionaryTask(new HunspellLoadDictionaryTask(locale, searchPaths));
+        hunspellWorker->addTask(loadDictionaryTask);
         this->locale = locale;
-        hunspellWorker.reset(new HunspellWorker(hunspell));
-        if (!hunspellWorker) {
-            Hunspell_destroy(hunspell);
-            this->locale.clear();
-            return false;
-        }
-        hunspellWorker->start();
     }
     return true;
 }
@@ -115,7 +94,7 @@ bool HunspellInputMethodPrivate::updateSuggestions()
     bool wordCandidateListChanged = false;
     if (!word.isEmpty()) {
         if (hunspellWorker)
-            hunspellWorker->removeAllTasks();
+            hunspellWorker->removeAllTasksExcept<HunspellLoadDictionaryTask>();
         if (wordCandidates.isEmpty()) {
             wordCandidates.append(word);
             activeWordIndex = 0;
@@ -154,7 +133,7 @@ bool HunspellInputMethodPrivate::updateSuggestions()
 bool HunspellInputMethodPrivate::clearSuggestions()
 {
     if (hunspellWorker)
-        hunspellWorker->removeAllTasks();
+        hunspellWorker->removeAllTasksExcept<HunspellLoadDictionaryTask>();
     if (wordCandidates.isEmpty())
         return false;
     wordCandidates.clear();

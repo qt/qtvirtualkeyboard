@@ -33,6 +33,7 @@ InputPanel {
     property var virtualKeyPressPoint: null
     readonly property bool autoCapitalizationEnabled: InputContext.shiftHandler.autoCapitalizationEnabled
     readonly property bool toggleShiftEnabled: InputContext.shiftHandler.toggleShiftEnabled
+    readonly property string locale: InputContext.locale
     readonly property int inputMode: InputContext.inputEngine.inputMode
     readonly property var keyboard: findChildByProperty(inputPanel, "objectName", "keyboard", null)
     readonly property var keyboardLayoutLoader: findChildByProperty(keyboard, "objectName", "keyboardLayoutLoader", null)
