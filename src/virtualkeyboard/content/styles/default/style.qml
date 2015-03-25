@@ -26,7 +26,7 @@ KeyboardStyle {
     readonly property string fontFamily: "Sans"
     readonly property real keyBackgroundMargin: Math.round(13 * scaleHint)
     readonly property real keyContentMargin: Math.round(45 * scaleHint)
-    readonly property real keyIconMargin: Math.round(35 * scaleHint)
+    readonly property real keyIconScale: scaleHint * 0.6
     readonly property string resourcePrefix: "qrc:/content/styles/default/"
 
     readonly property string inputLocale: InputContext.locale
@@ -109,17 +109,11 @@ KeyboardStyle {
             color: "#1e1b18"
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
-            Item {
+            Image {
                 id: backspaceKeyIcon
-                anchors.fill: parent
-                anchors.topMargin: keyIconMargin
-                anchors.bottomMargin: keyIconMargin
-                Image {
-                    source: resourcePrefix + "images/backspace-868482.png"
-                    fillMode: Image.PreserveAspectFit
-                    anchors.fill: parent
-                    anchors.margins: parent.width * 0.05
-                }
+                anchors.centerIn: parent
+                scale: keyIconScale
+                source: resourcePrefix + "images/backspace-868482.png"
             }
         }
         states: [
@@ -157,16 +151,11 @@ KeyboardStyle {
             color: "#35322f"
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
-            Item {
+            Image {
                 id: languageKeyIcon
-                anchors.fill: parent
-                anchors.topMargin: keyIconMargin
-                anchors.bottomMargin: keyIconMargin
-                Image {
-                    source: resourcePrefix + "images/globe-868482.png"
-                    fillMode: Image.PreserveAspectFit
-                    anchors.fill: parent
-                }
+                anchors.centerIn: parent
+                scale: keyIconScale
+                source: resourcePrefix + "images/globe-868482.png"
             }
         }
         states: [
@@ -204,28 +193,22 @@ KeyboardStyle {
             color: "#1e1b18"
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
-            Item {
+            Image {
                 id: enterKeyIcon
                 visible: enterKeyText.text.length === 0
-                anchors.fill: parent
-                anchors.topMargin: keyIconMargin
-                anchors.bottomMargin: keyIconMargin
-
-                Image {
-                    anchors.fill: parent
-                    fillMode: Image.PreserveAspectFit
-                    source: {
-                        switch (control.actionId) {
-                        case EnterKeyAction.Go:
-                        case EnterKeyAction.Send:
-                        case EnterKeyAction.Next:
-                        case EnterKeyAction.Done:
-                            return resourcePrefix + "images/check-868482.png"
-                        case EnterKeyAction.Search:
-                            return resourcePrefix + "images/search-868482.png"
-                        default:
-                            return resourcePrefix + "images/enter-868482.png"
-                        }
+                anchors.centerIn: parent
+                scale: keyIconScale
+                source: {
+                    switch (control.actionId) {
+                    case EnterKeyAction.Go:
+                    case EnterKeyAction.Send:
+                    case EnterKeyAction.Next:
+                    case EnterKeyAction.Done:
+                        return resourcePrefix + "images/check-868482.png"
+                    case EnterKeyAction.Search:
+                        return resourcePrefix + "images/search-868482.png"
+                    default:
+                        return resourcePrefix + "images/enter-868482.png"
                     }
                 }
             }
@@ -291,17 +274,11 @@ KeyboardStyle {
             color: "#1e1b18"
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
-            Item {
+            Image {
                 id: hideKeyIcon
-                anchors.fill: parent
-                anchors.topMargin: keyIconMargin
-                anchors.bottomMargin: keyIconMargin
-
-                Image {
-                    source: resourcePrefix + "images/hidekeyboard-868482.png"
-                    fillMode: Image.PreserveAspectFit
-                    anchors.fill: parent
-                }
+                anchors.centerIn: parent
+                scale: keyIconScale
+                source: resourcePrefix + "images/hidekeyboard-868482.png"
             }
         }
         states: [
@@ -339,18 +316,11 @@ KeyboardStyle {
             color: "#1e1b18"
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
-            Item {
+            Image {
                 id: shiftKeyIcon
-                anchors.fill: parent
-                anchors.topMargin: keyIconMargin
-                anchors.bottomMargin: keyIconMargin
-
-                Image {
-                    id: shiftKeyIconImage
-                    source: resourcePrefix + "images/shift-868482.png"
-                    fillMode: Image.PreserveAspectFit
-                    anchors.fill: parent
-                }
+                anchors.centerIn: parent
+                scale: keyIconScale
+                source: resourcePrefix + "images/shift-868482.png"
             }
             states: [
                 State {
@@ -361,7 +331,7 @@ KeyboardStyle {
                         color: "#5a892e"
                     }
                     PropertyChanges {
-                        target: shiftKeyIconImage
+                        target: shiftKeyIcon
                         source: resourcePrefix + "images/shift-c5d6b6.png"
                     }
                 },
@@ -369,7 +339,7 @@ KeyboardStyle {
                     name: "shift"
                     when: InputContext.shift
                     PropertyChanges {
-                        target: shiftKeyIconImage
+                        target: shiftKeyIcon
                         source: resourcePrefix + "images/shift-80c342.png"
                     }
                 }

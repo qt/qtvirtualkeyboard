@@ -26,7 +26,7 @@ KeyboardStyle {
     readonly property string fontFamily: "Courier"
     readonly property real keyBackgroundMargin: Math.round(9 * scaleHint)
     readonly property real keyContentMargin: Math.round(50 * scaleHint)
-    readonly property real keyIconMargin: Math.round(40 * scaleHint)
+    readonly property real keyIconScale: scaleHint * 0.6
     readonly property string resourcePrefix: "qrc:/content/styles/retro/"
 
     readonly property string inputLocale: InputContext.locale
@@ -148,18 +148,11 @@ KeyboardStyle {
             horizontalTileMode: BorderImage.Stretch
             scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
         }
-        Item {
+        Image {
             id: backspaceKeyIcon
-            anchors.fill: parent
-            anchors.topMargin: keyIconMargin
-            anchors.bottomMargin: keyIconMargin
-
-            Image {
-                anchors.fill: parent
-                anchors.margins: parent.width * 0.1
-                fillMode: Image.PreserveAspectFit
-                source: resourcePrefix + "images/backspace-c5a96f.png"
-            }
+            anchors.centerIn: parent
+            scale: keyIconScale
+            source: resourcePrefix + "images/backspace-c5a96f.png"
         }
         states: [
             State {
@@ -197,17 +190,11 @@ KeyboardStyle {
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
         }
-        Item {
+        Image {
             id: languageKeyIcon
-            anchors.fill: parent
-            anchors.topMargin: keyIconMargin
-            anchors.bottomMargin: keyIconMargin
-
-            Image {
-                source: resourcePrefix + "images/globe-110b05.png"
-                fillMode: Image.PreserveAspectFit
-                anchors.fill: parent
-            }
+            anchors.centerIn: parent
+            scale: keyIconScale
+            source: resourcePrefix + "images/globe-110b05.png"
         }
         states: [
             State {
@@ -251,29 +238,22 @@ KeyboardStyle {
             horizontalTileMode: BorderImage.Stretch
             scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
         }
-        Item {
+        Image {
             id: enterKeyIcon
             visible: enterKeyText.text.length === 0
-            anchors.fill: parent
-            anchors.topMargin: keyIconMargin
-            anchors.bottomMargin: keyIconMargin
-
-            Image {
-                anchors.fill: parent
-                anchors.margins: parent.width * 0.025
-                fillMode: Image.PreserveAspectFit
-                source: {
-                    switch (control.actionId) {
-                    case EnterKeyAction.Go:
-                    case EnterKeyAction.Send:
-                    case EnterKeyAction.Next:
-                    case EnterKeyAction.Done:
-                        return resourcePrefix + "images/check-c5a96f.png"
-                    case EnterKeyAction.Search:
-                        return resourcePrefix + "images/search-c5a96f.png"
-                    default:
-                        return resourcePrefix + "images/enter-c5a96f.png"
-                    }
+            anchors.centerIn: parent
+            scale: keyIconScale
+            source: {
+                switch (control.actionId) {
+                case EnterKeyAction.Go:
+                case EnterKeyAction.Send:
+                case EnterKeyAction.Next:
+                case EnterKeyAction.Done:
+                    return resourcePrefix + "images/check-c5a96f.png"
+                case EnterKeyAction.Search:
+                    return resourcePrefix + "images/search-c5a96f.png"
+                default:
+                    return resourcePrefix + "images/enter-c5a96f.png"
                 }
             }
         }
@@ -348,18 +328,11 @@ KeyboardStyle {
             horizontalTileMode: BorderImage.Stretch
             scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
         }
-        Item {
+        Image {
             id: hideKeyIcon
-            anchors.fill: parent
-            anchors.topMargin: keyIconMargin
-            anchors.bottomMargin: keyIconMargin
-
-            Image {
-                source: resourcePrefix + "images/hidekeyboard-c5a96f.png"
-                fillMode: Image.PreserveAspectFit
-                anchors.fill: parent
-                anchors.margins: parent.width * 0.025
-            }
+            anchors.centerIn: parent
+            scale: keyIconScale
+            source: resourcePrefix + "images/hidekeyboard-c5a96f.png"
         }
         states: [
             State {
@@ -411,7 +384,7 @@ KeyboardStyle {
                         source: resourcePrefix + "images/key154px_capslock.png"
                     }
                     PropertyChanges {
-                        target: shiftKeyIconImage
+                        target: shiftKeyIcon
                         source: resourcePrefix + "images/shift-cd8865.png"
                     }
                 },
@@ -423,25 +396,17 @@ KeyboardStyle {
                         source: resourcePrefix + "images/key154px_shiftcase.png"
                     }
                     PropertyChanges {
-                        target: shiftKeyIconImage
+                        target: shiftKeyIcon
                         source: resourcePrefix + "images/shift-dc4f28.png"
                     }
                 }
             ]
         }
-        Item {
+        Image {
             id: shiftKeyIcon
-            anchors.fill: parent
-            anchors.topMargin: keyIconMargin
-            anchors.bottomMargin: keyIconMargin
-
-            Image {
-                id: shiftKeyIconImage
-                anchors.fill: parent
-                anchors.margins: parent.width * 0.025
-                fillMode: Image.PreserveAspectFit
-                source: resourcePrefix + "images/shift-c5a96f.png"
-            }
+            anchors.centerIn: parent
+            scale: keyIconScale
+            source: resourcePrefix + "images/shift-c5a96f.png"
         }
         states: [
             State {
