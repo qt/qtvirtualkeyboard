@@ -2468,6 +2468,10 @@ int NNShapeRecognizer::recognize(const vector<LTKShapeFeaturePtr>& shapeFeatureV
 						 if(subSetOfClassesIter==subSetOfClasses.end())                        {                            break;                        }                        //filterVector.assign(filterVector.begin()+prototypeIndexOffset,filterVector.begin()+prototypeIndexOffset+shapeIDNumPrototypesMapIter->second,true);
                         ++shapeIDNumPrototypesMapIter;
                         ++subSetOfClassesIter;
+                        if(subSetOfClassesIter==subSetOfClasses.end())
+                        {
+                            break;
+                        }
                        
                     }
                 }
