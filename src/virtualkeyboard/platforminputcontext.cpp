@@ -73,11 +73,11 @@ void PlatformInputContext::update(Qt::InputMethodQueries queries)
 #endif
 
     if (m_declarativeContext) {
-        m_declarativeContext->setFocus(enabled);
         if (enabled)
             m_declarativeContext->update(queries);
         else
             hideInputPanel();
+        m_declarativeContext->setFocus(enabled);
     }
 }
 

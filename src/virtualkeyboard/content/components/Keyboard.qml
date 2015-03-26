@@ -818,6 +818,8 @@ Item {
     function updateInputMethod() {
         if (!keyboardLayoutLoader.item)
             return
+        if (!InputContext.focus)
+            return
 
         if (inputMethodNeedsReset) {
             if (customInputMethod) {
