@@ -70,6 +70,7 @@ Rectangle {
             }
             textInput.inputMethodHints = data !== undefined && data.hasOwnProperty("initInputMethodHints") ? data.initInputMethodHints : Qt.ImhNone
             textInput.forceActiveFocus()
+            inputPanel.setHandwritingMode(false)
             var locale = data !== undefined && data.hasOwnProperty("initLocale") ? data.initLocale : "en_GB"
             if (!inputPanel.isLocaleSupported(locale))
                 expectFail("", "Input locale not enabled")
@@ -769,6 +770,74 @@ Rectangle {
             verify(inputPanel.virtualKeyClick(Qt.Key_Right))
             compare(textInput.cursorPosition, 1)
             compare(textInput.selectedText, "")
+        }
+
+        function test_hwrInputSequence_data() {
+            return [
+                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 0, inputSequence: "abcdefghij", outputText: "Abcdefghij" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 1, inputSequence: "klmnopqrst", outputText: "klmnopqrst" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 3, inputSequence: "uvwxyz", outputText: "UVWXYZ" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhPreferNumbers, toggleShiftCount: 0, inputSequence: "0123456789", outputText: "0123456789" },
+            ]
+        }
+
+        function test_hwrInputSequence(data) {
+            prepareTest(data)
+
+            if (!inputPanel.setHandwritingMode(true))
+                expectFail("", "Handwriting not enabled")
+            verify(inputPanel.handwritingMode === true)
+
+            for (var i = 0; i < data.toggleShiftCount; i++) {
+                inputPanel.toggleShift()
+            }
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
+            }
+
+            Qt.inputMethod.commit()
+            waitForRendering(inputPanel)
+            compare(textInput.text, data.outputText)
+        }
+
+        function test_hwrSpellCorrectionSuggestions_data() {
+            return [
+                { initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hwllo", outputText: "Hwllo" },
+                { initInputMethodHints: Qt.ImhNone, inputSequence: "hwllo", expectedSuggestion: "Hello", outputText: "Hello" },
+                { initText: "Hello", initInputMethodHints: Qt.ImhNone, inputSequence: "qorld", expectedSuggestion: "world", outputText: "Helloworld" },
+                { initText: "isn'", initInputMethodHints: Qt.ImhNone, inputSequence: "t", outputText: "isn't" },
+                { initInputMethodHints: Qt.ImhUrlCharactersOnly | Qt.ImhNoAutoUppercase, inputSequence: "www.example.com", expectedSuggestion: "www.example.com", outputText: "www.example.com" },
+                { initInputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhNoAutoUppercase, inputSequence: "user.name@example.com", expectedSuggestion: "user.name@example.com", outputText: "user.name@example.com" },
+            ]
+        }
+
+        function test_hwrSpellCorrectionSuggestions(data) {
+            prepareTest(data)
+
+            if (!inputPanel.setHandwritingMode(true))
+                expectFail("", "Handwriting not enabled")
+            verify(inputPanel.handwritingMode === true)
+
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
+            }
+            waitForRendering(inputPanel)
+
+            if (data.hasOwnProperty("expectedSuggestion")) {
+                if (inputPanel.wordCandidateView.count > 0) {
+                    verify(inputPanel.selectionListSearchSuggestion(data.expectedSuggestion, 2000), "The expected spell correction suggestion \"%1\" was not found".arg(data.expectedSuggestion))
+                    verify(inputPanel.selectionListSelectCurrentItem(), "Word candidate not selected")
+                } else if (textInput.text !== data.outputText) {
+                    expectFail("", "Prediction/spell correction not enabled")
+                }
+            } else {
+                wait(1000)
+                verify(inputPanel.wordCandidateView.count <= 1, "Prediction/spell correction results are not expected")
+                Qt.inputMethod.commit()
+                waitForRendering(inputPanel)
+            }
+
+            compare(textInput.text, data.outputText)
         }
     }
 }

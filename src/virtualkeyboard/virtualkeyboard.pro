@@ -177,6 +177,7 @@ lipi-toolkit {
         3rdparty/lipi-toolkit/src/util/lib
     LIBS += -L$$OUT_PWD/3rdparty/lipi-toolkit/src/lib -lshaperecommon -lltkcommon -lltkutil
     win32: LIBS += Advapi32.lib
+    record-trace-input: DEFINES += QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
 }
 
 arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION

@@ -20,6 +20,7 @@ import QtTest 1.0
 import QtQuick 2.0
 import QtQuick.Enterprise.VirtualKeyboard 1.3
 import QtQuick.Enterprise.VirtualKeyboard.Settings 1.2
+import "unipen_data.js" as UnipenData
 
 InputPanel {
     id: inputPanel
@@ -36,6 +37,7 @@ InputPanel {
     readonly property string locale: InputContext.locale
     readonly property int inputMode: InputContext.inputEngine.inputMode
     readonly property var keyboard: findChildByProperty(inputPanel, "objectName", "keyboard", null)
+    readonly property bool handwritingMode: keyboard.handwritingMode
     readonly property var keyboardLayoutLoader: findChildByProperty(keyboard, "objectName", "keyboardLayoutLoader", null)
     readonly property var keyboardInputArea: findChildByProperty(keyboard, "objectName", "keyboardInputArea", null)
     readonly property var characterPreviewBubble: findChildByProperty(keyboard, "objectName", "characterPreviewBubble", null)
@@ -220,16 +222,18 @@ InputPanel {
 
     function multiLayoutKeyActionHelper(key, keyActionOnCurrentLayoutCb) {
         var success = keyActionOnCurrentLayoutCb(key)
-        if (success === false) {
+        for (var c = 0; !success && c < 2; c++) {
             // Check if the current layout contains multiple layouts
             if (keyboardLayoutLoader.item.hasOwnProperty("item")) {
-                // If already in symbolMode, try the other page
-                if (keyboard.symbolMode) {
-                    if (keyboardLayoutLoader.item.hasOwnProperty("secondPage")) {
-                        keyboardLayoutLoader.item.secondPage = !keyboardLayoutLoader.item.secondPage
+                if (keyboardLayoutLoader.item.hasOwnProperty("secondPage")) {
+                    keyboardLayoutLoader.item.secondPage = !keyboardLayoutLoader.item.secondPage
+                    testcase.waitForRendering(inputPanel)
+                    success = keyActionOnCurrentLayoutCb(key)
+                } else if (keyboardLayoutLoader.item.hasOwnProperty("page") && keyboardLayoutLoader.item.hasOwnProperty("numPages")) {
+                    for (var page = 0; !success && page < keyboardLayoutLoader.item.numPages; page++) {
+                        keyboardLayoutLoader.item.page = page
                         testcase.waitForRendering(inputPanel)
                         success = keyActionOnCurrentLayoutCb(key)
-                        keyboardLayoutLoader.item.secondPage = !keyboardLayoutLoader.item.secondPage
                     }
                 } else {
                     // Some layouts (such as Arabic, Hindi) may have a second layout
@@ -238,19 +242,18 @@ InputPanel {
                     success = keyActionOnCurrentLayoutCb(key)
                     InputContext.shiftHandler.toggleShift()
                 }
-            } else if (!keyboard.symbolMode) {
-                // Switch to symbol mode
-                keyboard.symbolMode = true
-                testcase.waitForRendering(inputPanel)
-                success = keyActionOnCurrentLayoutCb(key)
-                if (!success && keyboardLayoutLoader.item.hasOwnProperty("secondPage")) {
-                    // Try the second page
-                    keyboardLayoutLoader.item.secondPage = true
-                    testcase.waitForRendering(inputPanel)
-                    success = keyActionOnCurrentLayoutCb(key)
-                }
-                keyboard.symbolMode = false
+                if (success)
+                    break
             }
+
+            // Symbol mode not allowed in handwriting mode
+            if (inputPanel.handwritingMode)
+                break
+
+            // Toggle symbol mode
+            keyboard.symbolMode = !keyboard.symbolMode
+            testcase.waitForRendering(inputPanel)
+            success = keyActionOnCurrentLayoutCb(key)
         }
         if (!success)
             console.warn("Key not found '%1'".arg(key))
@@ -426,8 +429,80 @@ InputPanel {
             return false
         testcase.wait(200)
         var itemPos = inputPanel.mapFromItem(inputPanel.wordCandidateView.currentItem, 0, 0)
-        testcase.mouseClick(inputPanel, itemPos.x, itemPos.y)
+        testcase.mouseClick(inputPanel, itemPos.x, itemPos.y, Qt.LeftButton, 0, 20)
         testcase.waitForRendering(inputPanel)
         return true
+    }
+
+    function setHandwritingMode(enabled) {
+        if (inputPanel.keyboard.handwritingMode !== enabled)
+            virtualKeyClick(Qt.Key_Context2)
+        return inputPanel.keyboard.handwritingMode === enabled
+    }
+
+    function emulateHandwriting(ch, instant) {
+        if (!inputPanel.keyboard.handwritingMode)
+            return false
+        var chKey = "0x" + (ch.charCodeAt(0) + 0x10000).toString(16).substr(-4)
+        if (!UnipenData.unipenData.hasOwnProperty(chKey)) {
+            if (virtualKeyClick(ch))
+                return true
+            console.warn("Cannot produce the symbol '%1' in handwriting mode".arg(ch))
+            return false
+        }
+        var chData = UnipenData.unipenData[chKey]
+        var hwrInputArea = findChildByProperty(keyboard, "objectName", "hwrInputArea", null)
+        var scale = hwrInputArea.height / chData[".Y_DIM"]
+        var strokes = UnipenData.unipenData[chKey][".PEN"]
+        var boundingBox = calculateBoundingBox(strokes)
+        var boxOffset = Qt.point(-boundingBox.x * scale + (hwrInputArea.width - boundingBox.width * scale) / 2, -boundingBox.y * scale + (hwrInputArea.height - boundingBox.height * scale) / 2)
+        var t = 0
+        for (var strokeIndex = 0; strokeIndex < strokes.length; strokeIndex++) {
+            var stroke = strokes[strokeIndex]
+            for (var i = 0; i < stroke.length; i++) {
+                var strokeData = stroke[i]
+                var pt = Qt.point(strokeData[0] * scale + boxOffset.x, strokeData[1] * scale + boxOffset.y)
+                if (instant)
+                    t = strokeData[2]
+                if (i == 0) {
+                    t = strokeData[2]
+                    testcase.mousePress(hwrInputArea, pt.x, pt.y, Qt.LeftButton, 0, strokeData[2] - t)
+                } else {
+                    testcase.mouseMove(hwrInputArea, pt.x, pt.y, strokeData[2] - t, Qt.LeftButton)
+                }
+                if (i + 1 === stroke.length)
+                    testcase.mouseRelease(hwrInputArea, pt.x, pt.y, Qt.LeftButton, 0, instant ? 1 : strokeData[2] - t)
+                t = strokeData[2]
+            }
+        }
+        virtualKeyClickedSpy.clear()
+        virtualKeyClickedSpy.wait(3000)
+        return virtualKeyClickedSpy.count === 1
+    }
+
+    function calculateBoundingBox(unipenStrokes) {
+        var bboxLeft = 2147483647
+        var bboxRight = -2147483647
+        var bboxTop = 2147483647
+        var bboxBottom = -2147483647
+        for (var strokeIndex = 0; strokeIndex < unipenStrokes.length; strokeIndex++) {
+            var stroke = unipenStrokes[strokeIndex]
+            for (var i = 0; i < stroke.length; i++) {
+                var strokeData = stroke[i]
+                var x = strokeData[0]
+                if (bboxLeft > x)
+                    bboxLeft = x
+                if (bboxRight < x)
+                    bboxRight = x
+                var y = strokeData[1]
+                if (bboxTop > y)
+                    bboxTop = y
+                if (bboxBottom < y)
+                    bboxBottom = y
+            }
+        }
+        if (bboxLeft > bboxRight || bboxTop > bboxBottom)
+            return Qt.rect(0, 0, 0, 0)
+        return Qt.rect(bboxLeft, bboxTop, bboxRight - bboxLeft, bboxBottom -bboxTop)
     }
 }

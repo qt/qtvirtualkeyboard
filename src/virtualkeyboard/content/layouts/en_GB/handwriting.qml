@@ -33,6 +33,7 @@ KeyboardLayout {
             Layout.preferredWidth: bottomRow.width - hideKeyboardKey.width
             KeyboardRow {
                 TraceInputKey {
+                    objectName: "hwrInputArea"
                     patternRecognitionMode: InputEngine.HandwritingRecoginition
                 }
             }
