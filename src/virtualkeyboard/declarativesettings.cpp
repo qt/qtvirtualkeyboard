@@ -76,7 +76,7 @@ public:
 };
 
 /*!
-    \qmlmodule QtQuick.Enterprise.VirtualKeyboard.Settings 1.3
+    \qmlmodule QtQuick.Enterprise.VirtualKeyboard.Settings 1.2
 
     This module provides settings components for Qt Virtual Keyboard.
 */

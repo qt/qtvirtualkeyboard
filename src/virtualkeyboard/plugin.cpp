@@ -80,11 +80,10 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
 #endif
     qmlRegisterType<EnterKeyActionAttachedType>();
     qmlRegisterType<EnterKeyAction>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "EnterKeyAction");
-    // NOTE: The Settings component version follows the VirtualKeyboard version
-    qmlRegisterSingletonType<DeclarativeSettings>("QtQuick.Enterprise.VirtualKeyboard.Settings", 1, 3, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
+    qmlRegisterSingletonType<DeclarativeSettings>("QtQuick.Enterprise.VirtualKeyboard.Settings", 1, 2, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
 
     const QString path("qrc:///content/");
-    // NOTE: The InputPanel component version follows the VirtualKeyboard version
+    qmlRegisterType(QUrl(path + "InputPanel.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 2, "InputPanel");
     qmlRegisterType(QUrl(path + "InputPanel.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 3, "InputPanel");
     const QString componentsPath = path + QLatin1Literal("components/");
     qmlRegisterType(QUrl(componentsPath + "AlternativeKeys.qml"), "QtQuick.Enterprise.VirtualKeyboard", 1, 0, "AlternativeKeys");
