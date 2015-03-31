@@ -50,6 +50,7 @@ public:
     OpenWnnInputMethodPrivate(OpenWnnInputMethod *q_ptr) :
         AbstractInputMethodPrivate(),
         q_ptr(q_ptr),
+        inputMode(DeclarativeInputEngine::Latin),
         exactMatchMode(false),
         converter(0),
         converterJAJP(),
@@ -563,6 +564,7 @@ public:
     }
 
     OpenWnnInputMethod *q_ptr;
+    DeclarativeInputEngine::InputMode inputMode;
     bool exactMatchMode;
     QString displayText;
     OpenWnnEngineJAJP *converter;
@@ -603,6 +605,8 @@ bool OpenWnnInputMethod::setInputMode(const QString &locale, DeclarativeInputEng
 {
     Q_UNUSED(locale)
     Q_D(OpenWnnInputMethod);
+    if (d->inputMode == inputMode)
+        return true;
     update();
     switch (inputMode) {
     case DeclarativeInputEngine::Hiragana:
@@ -617,6 +621,7 @@ bool OpenWnnInputMethod::setInputMode(const QString &locale, DeclarativeInputEng
         d->changeEngineMode(OpenWnnInputMethodPrivate::ENGINE_MODE_DIRECT);
         break;
     }
+    d->inputMode = inputMode;
     return true;
 }
 
