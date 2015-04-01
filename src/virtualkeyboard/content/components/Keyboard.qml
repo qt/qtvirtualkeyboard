@@ -36,6 +36,8 @@ Item {
     property string inputLocale
     property int defaultLocaleIndex: -1
     property string defaultLocale: defaultLocaleIndex >= 0 && defaultLocaleIndex < layoutsModel.count ? layoutsModel.get(defaultLocaleIndex, "fileName") : ""
+    property bool latinOnly: InputContext.inputMethodHints & Qt.ImhLatinOnly
+    property bool preferNumbers: InputContext.inputMethodHints & Qt.ImhPreferNumbers
     property string layout
     property string layoutType: {
         if (InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly) return "dialpad"
@@ -46,7 +48,6 @@ Item {
     }
     property bool active: Qt.inputMethod.visible
     property bool uppercased: InputContext.shift
-    property bool latinOnly: InputContext.inputMethodHints & Qt.ImhLatinOnly
     property bool symbolMode
     property var defaultInputMethod: initDefaultInputMethod()
     property var plainInputMethod: PlainInputMethod {}
@@ -83,19 +84,22 @@ Item {
         updateLayout()
     }
     onLatinOnlyChanged: {
+        if (!latinOnly)
+            inputModeNeedsReset = true
+        updateInputMethod()
+    }
+    onPreferNumbersChanged: {
+        keyboard.symbolMode = preferNumbers
+        if (!preferNumbers)
+            inputModeNeedsReset = true
         updateInputMethod()
     }
 
     Connections {
         target: InputContext
-        onInputMethodHintsChanged: {
-            keyboard.symbolMode = InputContext.inputMethodHints & Qt.ImhPreferNumbers
-        }
         onFocusChanged: {
-            if (InputContext.focus) {
-                inputModeNeedsReset = true
+            if (InputContext.focus)
                 updateInputMethod()
-            }
         }
         onNavigationKeyPressed: {
             var initialKey
@@ -840,11 +844,6 @@ Item {
         if (!inputMethod)
             inputMethod = customInputMethod ? customInputMethod : defaultInputMethod
 
-        if (latinOnly)
-            inputMode = InputEngine.Latin
-        else if (keyboardLayoutLoader.item.inputMode !== -1)
-            inputMode = keyboardLayoutLoader.item.inputMode
-
         var inputMethodChanged = InputContext.inputEngine.inputMethod !== inputMethod
         if (inputMethodChanged) {
             InputContext.inputEngine.inputMethod = inputMethod
@@ -854,12 +853,26 @@ Item {
             var inputModes = InputContext.inputEngine.inputModes
             if (inputModes.length > 0) {
                 // Reset to default input mode if the input locale has changed
-                if ((!latinOnly && inputModeNeedsReset) || inputModes.indexOf(inputMode) === -1) {
+                if (inputModeNeedsReset)
                     inputMode = inputModes[0]
-                }
-                if (InputContext.inputEngine.inputMode !== inputMode || inputMethodChanged || inputModeNeedsReset) {
+
+                // Check the current layout for input mode override
+                if (keyboardLayoutLoader.item.inputMode !== -1)
+                    inputMode = keyboardLayoutLoader.item.inputMode
+
+                // Check the input method hints for input mode overrides
+                if (latinOnly)
+                    inputMode = InputEngine.Latin
+                if (preferNumbers)
+                    inputMode = InputEngine.Numeric
+
+                // Make sure the input mode is supported by the current input method
+                if (inputModes.indexOf(inputMode) === -1)
+                    inputMode = inputModes[0]
+
+                if (InputContext.inputEngine.inputMode !== inputMode || inputMethodChanged)
                     InputContext.inputEngine.inputMode = inputMode
-                }
+
                 inputModeNeedsReset = false
             }
         }

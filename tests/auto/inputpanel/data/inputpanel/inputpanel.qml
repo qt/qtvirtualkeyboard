@@ -33,6 +33,7 @@ InputPanel {
     property var virtualKeyPressPoint: null
     readonly property bool autoCapitalizationEnabled: InputContext.shiftHandler.autoCapitalizationEnabled
     readonly property bool toggleShiftEnabled: InputContext.shiftHandler.toggleShiftEnabled
+    readonly property int inputMode: InputContext.inputEngine.inputMode
     readonly property var keyboard: findChildByProperty(inputPanel, "objectName", "keyboard", null)
     readonly property var keyboardLayoutLoader: findChildByProperty(keyboard, "objectName", "keyboardLayoutLoader", null)
     readonly property var keyboardInputArea: findChildByProperty(keyboard, "objectName", "keyboardInputArea", null)
@@ -149,6 +150,35 @@ InputPanel {
             }
         }
         return success
+    }
+
+    function mapInputMode(inputModeName) {
+        if (inputModeName === "Latin")
+            return InputEngine.Latin
+        else if (inputModeName === "Numeric")
+            return InputEngine.Numeric
+        else if (inputModeName === "Dialable")
+            return InputEngine.Dialable
+        else if (inputModeName === "Pinyin")
+            return InputEngine.Pinyin
+        else if (inputModeName === "Hangul")
+            return InputEngine.Hangul
+        else if (inputModeName === "Hiragana")
+            return InputEngine.Hiragana
+        else if (inputModeName === "Katakana")
+            return InputEngine.Katakana
+        else if (inputModeName === "FullwidthLatin")
+            return InputEngine.FullwidthLatin
+        else
+            return -1
+    }
+
+    function setInputMode(inputMode) {
+        if (InputContext.inputEngine.inputModes.indexOf(inputMode) === -1)
+            return false
+        if (InputContext.inputEngine.inputMode !== inputMode)
+            InputContext.inputEngine.inputMode = inputMode
+        return true
     }
 
     function findVirtualKey(key) {

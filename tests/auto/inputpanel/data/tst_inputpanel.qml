@@ -74,6 +74,8 @@ Rectangle {
             if (!inputPanel.isLocaleSupported(locale))
                 expectFail("", "Input locale not enabled")
             verify(inputPanel.setLocale(locale))
+            if (data !== undefined && data.hasOwnProperty("initInputMode"))
+                verify(inputPanel.setInputMode(inputPanel.mapInputMode(data.initInputMode)))
             Qt.inputMethod.show()
             waitForRendering(inputPanel)
             verify(inputPanel.visible === true)
@@ -705,11 +707,11 @@ Rectangle {
         function test_japaneseInputModes_data() {
             return [
                 // Hiragana
-                { initLocale: "ja_JP", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Return], outputText: "\u306B\u307B\u3093\u3054" },
+                { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Return], outputText: "\u306B\u307B\u3093\u3054" },
                 // Hiragana to Kanjie conversion
-                { initLocale: "ja_JP", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Space,Qt.Key_Return], outputText: "\u65E5\u672C\u8A9E" },
+                { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Space,Qt.Key_Return], outputText: "\u65E5\u672C\u8A9E" },
                 // Correction to Hiragana sequence using exact match mode
-                { initLocale: "ja_JP", inputSequence: [
+                { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: [
                                 // Write part of the text leaving out "ni" from the beginning
                                 "h","o","n","g","o",
                                 // Activate the exact mode and move the cursor to beginning
@@ -723,9 +725,9 @@ Rectangle {
                                 // Choose the first candidate
                                 Qt.Key_Return], outputText: "\u65E5\u672C\u8A9E" },
                 // Katakana
-                { initLocale: "ja_JP", inputSequence: [Qt.Key_Mode_switch,"a","m","e","r","i","k","a"], outputText: "\u30A2\u30E1\u30EA\u30AB" },
+                { initLocale: "ja_JP", initInputMode: "Katakana", inputSequence: ["a","m","e","r","i","k","a"], outputText: "\u30A2\u30E1\u30EA\u30AB" },
                 // Toggle symbol mode without affecting the input method state
-                { initLocale: "ja_JP", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Context1], outputText: "" },
+                { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Context1], outputText: "" },
                 // Latin only
                 { initLocale: "ja_JP", initInputMethodHints: Qt.ImhLatinOnly, inputSequence: "hello", outputText: "Hello" },
             ]
