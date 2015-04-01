@@ -385,6 +385,9 @@ void HunspellInputMethod::updateSuggestions(const QStringList &wordList, int act
     Q_D(HunspellInputMethod);
     d->wordCandidates.clear();
     d->wordCandidates.append(wordList);
+    // Make sure the exact match is up-to-date
+    if (!d->word.isEmpty() && !d->wordCandidates.isEmpty() && d->wordCandidates.at(0) != d->word)
+        d->wordCandidates.replace(0, d->word);
     d->activeWordIndex = activeWordIndex;
     emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
     emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
