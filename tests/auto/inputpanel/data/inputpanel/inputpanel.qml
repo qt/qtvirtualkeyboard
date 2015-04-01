@@ -381,6 +381,7 @@ InputPanel {
     function selectionListSelectCurrentItem() {
         if (inputPanel.wordCandidateView.currentItem === -1)
             return false
+        testcase.wait(200)
         var itemPos = inputPanel.mapFromItem(inputPanel.wordCandidateView.currentItem, 0, 0)
         testcase.mouseClick(inputPanel, itemPos.x, itemPos.y)
         testcase.waitForRendering(inputPanel)
