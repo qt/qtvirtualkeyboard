@@ -411,7 +411,7 @@ bool PinyinInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardM
                 d->chooseAndUpdate(-1);
                 return true;
             }
-        } else {
+        } else if (!text.isEmpty()) {
             d->chooseAndFinish();
         }
     }
