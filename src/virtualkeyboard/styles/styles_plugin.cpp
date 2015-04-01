@@ -31,6 +31,7 @@ void StylesPlugin::registerTypes(const char *uri)
 {
     Q_INIT_RESOURCE(styles);
     const QString path("qrc:///content/styles/");
+    qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 0, "KeyboardStyle");
     qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 1, "KeyboardStyle");
     qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 2, "KeyboardStyle");
     qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 3, "KeyboardStyle");

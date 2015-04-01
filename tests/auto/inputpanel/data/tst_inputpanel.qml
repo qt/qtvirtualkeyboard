@@ -79,6 +79,58 @@ Rectangle {
             verify(inputPanel.visible === true)
         }
 
+        function test_versionCheck_data() {
+            return [
+                // Note: Add new import versions here
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.Enterprise.VirtualKeyboard 1.0; \
+                        InputPanel {}" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.Enterprise.VirtualKeyboard 1.1; \
+                        InputPanel {}" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.Enterprise.VirtualKeyboard 1.2; \
+                        InputPanel {}" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.Enterprise.VirtualKeyboard 1.3; \
+                        InputPanel {}" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.Enterprise.VirtualKeyboard.Styles 1.0; \
+                        KeyboardStyle {}" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.Enterprise.VirtualKeyboard.Styles 1.1; \
+                        KeyboardStyle {}" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.Enterprise.VirtualKeyboard.Styles 1.2; \
+                        KeyboardStyle {}" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.Enterprise.VirtualKeyboard.Styles 1.3; \
+                        KeyboardStyle {}" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.Enterprise.VirtualKeyboard.Settings 1.0; \
+                        Item { property var styleName: VirtualKeyboardSettings.styleName }" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.Enterprise.VirtualKeyboard.Settings 1.1; \
+                        Item { property var styleName: VirtualKeyboardSettings.styleName }" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.Enterprise.VirtualKeyboard.Settings 1.2; \
+                        Item { property var styleName: VirtualKeyboardSettings.styleName }" },
+            ]
+        }
+
+        function test_versionCheck(data) {
+            var obj = null
+            var errorMsg
+            try {
+                obj = Qt.createQmlObject(data.qml, testcase)
+            } catch (e) {
+                errorMsg = e
+            }
+            verify(obj !== null, errorMsg)
+            if (obj)
+                obj.destroy()
+        }
+
         function test_focusShowKeyboard() {
             container.forceActiveFocus()
             verify(inputPanel.visible === false)
