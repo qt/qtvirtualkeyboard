@@ -17,5 +17,8 @@
 ****************************************************************************/
 
 #include <QtQuickTest/quicktest.h>
+#include <QByteArray>
+
+static bool s_configEnv = qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
 QUICK_TEST_MAIN(inputpanel)
