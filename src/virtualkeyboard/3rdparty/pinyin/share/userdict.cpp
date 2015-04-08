@@ -309,6 +309,7 @@ bool UserDict::load_dict(const char *file_name, LemmaIdType start_id,
   return true;
  error:
   free((void*)dict_file_);
+  dict_file_ = NULL;
   start_id_ = 0;
   return false;
 }
@@ -1021,6 +1022,8 @@ bool UserDict::remove_lemma(LemmaIdType lemma_id) {
 
 void UserDict::flush_cache() {
   LemmaIdType start_id = start_id_;
+  if (!dict_file_)
+    return;
   const char * file = strdup(dict_file_);
   if (!file)
     return;
