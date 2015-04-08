@@ -202,14 +202,14 @@ KeyboardLayoutLoader {
                 }
                 Key {
                     key: Qt.Key_Left
-                    text: "\u2190"
+                    displayText: "\u2190"
                     repeat: true
                     noModifier: true
                     functionKey: true
                 }
                 Key {
                     key: Qt.Key_Right
-                    text: "\u2192"
+                    displayText: "\u2192"
                     repeat: true
                     noModifier: true
                     functionKey: true
@@ -396,14 +396,14 @@ KeyboardLayoutLoader {
                 }
                 Key {
                     key: Qt.Key_Left
-                    text: "\u2190"
+                    displayText: "\u2190"
                     repeat: true
                     noModifier: true
                     functionKey: true
                 }
                 Key {
                     key: Qt.Key_Right
-                    text: "\u2192"
+                    displayText: "\u2192"
                     repeat: true
                     noModifier: true
                     functionKey: true
