@@ -361,7 +361,7 @@ Item {
         id: releaseInaccuracyTimer
         interval: 500
         onTriggered: {
-            if (keyboardInputArea.pressed && !alternativeKeys.active && !keyboardInputArea.dragSymbolMode) {
+            if (keyboardInputArea.pressed && activeTouchPoint && !alternativeKeys.active && !keyboardInputArea.dragSymbolMode) {
                 var key = keyboardInputArea.keyOnPoint(activeTouchPoint.x, activeTouchPoint.y)
                 if (key !== keyboard.activeKey) {
                     InputContext.inputEngine.virtualKeyCancel()
