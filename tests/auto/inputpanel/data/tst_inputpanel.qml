@@ -555,20 +555,22 @@ Rectangle {
             for (var inputIndex in data.inputSequence) {
                 verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
             }
-            wait(300)
+            waitForRendering(inputPanel)
 
             if (data.hasOwnProperty("expectedSuggestion")) {
-                if (inputPanel.wordCandidateView.count <= 1)
+                if (inputPanel.wordCandidateView.count > 0) {
+                    verify(inputPanel.selectionListSearchSuggestion(data.expectedSuggestion, 2000), "The expected spell correction suggestion \"%1\" was not found".arg(data.expectedSuggestion))
+                    verify(inputPanel.selectionListSelectCurrentItem(), "Word candidate not selected")
+                } else if (textInput.text !== data.outputText) {
                     expectFail("", "Prediction/spell correction not enabled")
-                verify(inputPanel.wordCandidateView.count > 1, "Prediction/spell correction results are expected")
-
-                verify(inputPanel.selectionListSearchSuggestion(data.expectedSuggestion))
-                verify(inputPanel.selectionListSelectCurrentItem())
+                }
             } else {
+                wait(1000)
                 verify(inputPanel.wordCandidateView.count <= 1, "Prediction/spell correction results are not expected")
                 Qt.inputMethod.commit()
                 waitForRendering(inputPanel)
             }
+
             compare(textInput.text, data.outputText)
         }
 
@@ -595,11 +597,7 @@ Rectangle {
             for (var inputIndex in data.inputSequence) {
                 var key = data.inputSequence[inputIndex]
                 if (key === Qt.Key_Select) {
-                    wait(300)
-                    if (inputPanel.wordCandidateView.count > 1)
-                        inputPanel.selectionListSelectCurrentItem()
-                    else
-                        expectFail("", "Prediction/spell correction not enabled")
+                    inputPanel.selectionListSelectCurrentItem()
                 } else {
                     inputPanel.virtualKeyClick(key)
                 }

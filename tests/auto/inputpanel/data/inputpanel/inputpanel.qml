@@ -385,25 +385,37 @@ InputPanel {
         VirtualKeyboardSettings.styleName = style
     }
 
-    function selectionListSearchSuggestion(suggestion) {
+    function selectionListSearchSuggestion(suggestion, timeout) {
+        if (timeout === undefined || timeout < 0)
+            timeout = 0
         var suggestionFound = false
-        var origIndex = inputPanel.wordCandidateView.currentIndex
-        if (origIndex !== -1) {
-            while (true) {
-                if (inputPanel.wordCandidateView.model.itemData(inputPanel.wordCandidateView.currentIndex) === suggestion) {
-                    suggestionFound = true
-                    break
+        var dt = new Date()
+        var startTime = dt.getTime()
+        while (true) {
+            var origIndex = inputPanel.wordCandidateView.currentIndex
+            if (origIndex !== -1) {
+                while (true) {
+                    if (inputPanel.wordCandidateView.model.itemData(inputPanel.wordCandidateView.currentIndex) === suggestion) {
+                        suggestionFound = true
+                        break
+                    }
+                    if (inputPanel.wordCandidateView.currentIndex === inputPanel.wordCandidateView.count - 1)
+                        break
+                    inputPanel.wordCandidateView.incrementCurrentIndex()
                 }
-                if (inputPanel.wordCandidateView.currentIndex === inputPanel.wordCandidateView.count - 1)
-                    break
-                inputPanel.wordCandidateView.incrementCurrentIndex()
-            }
-            if (!suggestionFound) {
-                while (inputPanel.wordCandidateView.currentIndex !== origIndex) {
-                    inputPanel.wordCandidateView.decrementCurrentIndex()
+                if (!suggestionFound) {
+                    while (inputPanel.wordCandidateView.currentIndex !== origIndex) {
+                        inputPanel.wordCandidateView.decrementCurrentIndex()
+                    }
                 }
+                testcase.waitForRendering(inputPanel)
             }
-            testcase.waitForRendering(inputPanel)
+            dt = new Date()
+            var elapsedTime = dt.getTime() - startTime
+            if (suggestionFound || elapsedTime >= timeout)
+                break
+            var maxWait = Math.min(timeout - elapsedTime, 50)
+            testcase.wait(maxWait)
         }
         return suggestionFound
     }
