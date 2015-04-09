@@ -89,7 +89,7 @@ public:
                 }
             }
             if (!hunspell) {
-                qWarning() << "Missing Hunspell dictionary for locale" << locale << "in" << searchPaths;
+                VIRTUALKEYBOARD_DEBUG() << "Missing Hunspell dictionary for locale" << locale << "in" << searchPaths;
                 this->locale.clear();
                 return false;
             }
@@ -207,8 +207,6 @@ bool HunspellInputMethod::setInputMode(const QString &locale, DeclarativeInputEn
 {
     Q_UNUSED(inputMode)
     Q_D(HunspellInputMethod);
-    if (inputContext()->inputMethodHints().testFlag(Qt::ImhNoPredictiveText))
-        return true;
     return d->createHunspell(locale);
 }
 

@@ -874,7 +874,7 @@ Item {
                 if (inputModes.indexOf(inputMode) === -1)
                     inputMode = inputModes[0]
 
-                if (InputContext.inputEngine.inputMode !== inputMode || inputMethodChanged)
+                if (InputContext.inputEngine.inputMode !== inputMode || inputMethodChanged || inputModeNeedsReset)
                     InputContext.inputEngine.inputMode = inputMode
 
                 inputModeNeedsReset = false

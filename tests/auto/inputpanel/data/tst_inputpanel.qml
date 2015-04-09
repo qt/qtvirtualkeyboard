@@ -727,7 +727,7 @@ Rectangle {
                 // Katakana
                 { initLocale: "ja_JP", initInputMode: "Katakana", inputSequence: ["a","m","e","r","i","k","a"], outputText: "\u30A2\u30E1\u30EA\u30AB" },
                 // Toggle symbol mode without affecting the input method state
-                { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Context1], outputText: "" },
+                { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["n","i","h","o","n","g","o"], outputText: "" },
                 // Latin only
                 { initLocale: "ja_JP", initInputMethodHints: Qt.ImhLatinOnly, inputSequence: "hello", outputText: "Hello" },
             ]
