@@ -44,6 +44,8 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
+            if (index === -1)
+                return
             selectionListItem.ListView.view.currentIndex = index
             selectionListItem.ListView.view.model.selectItem(index)
         }

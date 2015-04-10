@@ -191,7 +191,7 @@ QHash<int,QByteArray> DeclarativeSelectionListModel::roleNames() const
 void DeclarativeSelectionListModel::selectItem(int index)
 {
     Q_D(DeclarativeSelectionListModel);
-    if (d->dataSource) {
+    if (index >= 0 && index < d->rowCount && d->dataSource) {
         emit itemSelected(index);
         d->dataSource->selectionListItemSelected(d->type, index);
     }

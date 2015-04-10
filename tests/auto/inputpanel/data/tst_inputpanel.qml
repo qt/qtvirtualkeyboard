@@ -608,6 +608,20 @@ Rectangle {
             compare(textInput.text, data.outputText)
         }
 
+        function test_selectionListSelectInvalidItem() {
+            prepareTest()
+
+            // Note: This test passes if it does not crash
+            if (inputPanel.wordCandidateView.model) {
+                compare(inputPanel.wordCandidateView.count, 0)
+                inputPanel.wordCandidateView.model.selectItem(-2)
+                inputPanel.wordCandidateView.model.selectItem(-1)
+                inputPanel.wordCandidateView.model.selectItem(0)
+                inputPanel.wordCandidateView.model.selectItem(1)
+                inputPanel.wordCandidateView.model.selectItem(2)
+            }
+        }
+
         function test_pinyinInputMethod_data() {
             return [
                 { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "suoer", expectedCandidates: [ "\u7D22\u5C14" ], outputText: "\u7D22\u5C14" },

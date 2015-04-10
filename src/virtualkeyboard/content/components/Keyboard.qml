@@ -471,7 +471,7 @@ Item {
         Connections {
             target: wordCandidateView.model ? wordCandidateView.model : null
             onActiveItemChanged: wordCandidateView.currentIndex = index
-            onItemSelected: soundEffect.play(wordCandidateView.currentItem.soundEffect)
+            onItemSelected: if (wordCandidateView.currentItem) soundEffect.play(wordCandidateView.currentItem.soundEffect)
         }
         Loader {
             sourceComponent: style.selectionListBackground
