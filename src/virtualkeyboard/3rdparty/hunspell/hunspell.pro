@@ -21,8 +21,7 @@ write_file($$PWD/config.h, config_file)
 
 INCLUDEPATH += \
     ./ \
-    src/hunspell \
-    src/parsers
+    src/hunspell
 
 SOURCES += \
     src/hunspell/affentry.cxx \
@@ -36,8 +35,6 @@ SOURCES += \
     src/hunspell/phonet.cxx \
     src/hunspell/replist.cxx \
     src/hunspell/suggestmgr.cxx
-SOURCES += \
-    $$files(src/parsers/*.cxx)
 
 HEADERS += \
     config.h \
@@ -59,8 +56,6 @@ HEADERS += \
     src/hunspell/replist.hxx \
     src/hunspell/suggestmgr.hxx \
     src/hunspell/w_char.hxx
-HEADERS += \
-    $$files(src/parsers/*.hxx)
 
 OTHER_FILES +=\
     src/hunspell/license.hunspell \
