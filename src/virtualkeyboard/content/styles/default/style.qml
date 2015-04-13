@@ -112,8 +112,10 @@ KeyboardStyle {
             Image {
                 id: backspaceKeyIcon
                 anchors.centerIn: parent
-                scale: keyIconScale
-                source: resourcePrefix + "images/backspace-868482.png"
+                sourceSize.width: 159 * keyIconScale
+                sourceSize.height: 88 * keyIconScale
+                smooth: false
+                source: resourcePrefix + "images/backspace-868482.svg"
             }
         }
         states: [
@@ -154,8 +156,10 @@ KeyboardStyle {
             Image {
                 id: languageKeyIcon
                 anchors.centerIn: parent
-                scale: keyIconScale
-                source: resourcePrefix + "images/globe-868482.png"
+                sourceSize.width: 144 * keyIconScale
+                sourceSize.height: 144 * keyIconScale
+                smooth: false
+                source: resourcePrefix + "images/globe-868482.svg"
             }
         }
         states: [
@@ -197,18 +201,33 @@ KeyboardStyle {
                 id: enterKeyIcon
                 visible: enterKeyText.text.length === 0
                 anchors.centerIn: parent
-                scale: keyIconScale
+                readonly property size enterKeyIconSize: {
+                    switch (control.actionId) {
+                    case EnterKeyAction.Go:
+                    case EnterKeyAction.Send:
+                    case EnterKeyAction.Next:
+                    case EnterKeyAction.Done:
+                        return Qt.size(170, 119)
+                    case EnterKeyAction.Search:
+                        return Qt.size(148, 148)
+                    default:
+                        return Qt.size(211, 80)
+                    }
+                }
+                sourceSize.width: enterKeyIconSize.width * keyIconScale
+                sourceSize.height: enterKeyIconSize.height * keyIconScale
+                smooth: false
                 source: {
                     switch (control.actionId) {
                     case EnterKeyAction.Go:
                     case EnterKeyAction.Send:
                     case EnterKeyAction.Next:
                     case EnterKeyAction.Done:
-                        return resourcePrefix + "images/check-868482.png"
+                        return resourcePrefix + "images/check-868482.svg"
                     case EnterKeyAction.Search:
-                        return resourcePrefix + "images/search-868482.png"
+                        return resourcePrefix + "images/search-868482.svg"
                     default:
-                        return resourcePrefix + "images/enter-868482.png"
+                        return resourcePrefix + "images/enter-868482.svg"
                     }
                 }
             }
@@ -277,8 +296,10 @@ KeyboardStyle {
             Image {
                 id: hideKeyIcon
                 anchors.centerIn: parent
-                scale: keyIconScale
-                source: resourcePrefix + "images/hidekeyboard-868482.png"
+                sourceSize.width: 144 * keyIconScale
+                sourceSize.height: 127 * keyIconScale
+                smooth: false
+                source: resourcePrefix + "images/hidekeyboard-868482.svg"
             }
         }
         states: [
@@ -319,8 +340,10 @@ KeyboardStyle {
             Image {
                 id: shiftKeyIcon
                 anchors.centerIn: parent
-                scale: keyIconScale
-                source: resourcePrefix + "images/shift-868482.png"
+                sourceSize.width: 144 * keyIconScale
+                sourceSize.height: 134 * keyIconScale
+                smooth: false
+                source: resourcePrefix + "images/shift-868482.svg"
             }
             states: [
                 State {
@@ -332,7 +355,7 @@ KeyboardStyle {
                     }
                     PropertyChanges {
                         target: shiftKeyIcon
-                        source: resourcePrefix + "images/shift-c5d6b6.png"
+                        source: resourcePrefix + "images/shift-c5d6b6.svg"
                     }
                 },
                 State {
@@ -340,7 +363,7 @@ KeyboardStyle {
                     when: InputContext.shift
                     PropertyChanges {
                         target: shiftKeyIcon
-                        source: resourcePrefix + "images/shift-80c342.png"
+                        source: resourcePrefix + "images/shift-80c342.svg"
                     }
                 }
             ]
