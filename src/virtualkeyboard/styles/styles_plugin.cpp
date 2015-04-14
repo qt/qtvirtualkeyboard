@@ -17,6 +17,7 @@
 ****************************************************************************/
 
 #include "styles_plugin.h"
+#include "svgimageprovider.h"
 
 #include <qqml.h>
 #include <QtCore/QLibraryInfo>
@@ -38,4 +39,10 @@ void StylesPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(path + "KeyIcon.qml"), uri, 1, 0, "KeyIcon");
     qmlRegisterType(QUrl(path + "KeyPanel.qml"), uri, 1, 0, "KeyPanel");
     qmlRegisterType(QUrl(path + "SelectionListItem.qml"), uri, 1, 0, "SelectionListItem");
+}
+
+void StylesPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+{
+    Q_UNUSED(uri)
+    engine->addImageProvider(QLatin1String("qtvkbsvg"), new SvgImageProvider());
 }

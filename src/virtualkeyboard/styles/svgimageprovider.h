@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2014 Digia Plc
+** Copyright (C) 2015 Digia Plc
 ** All rights reserved.
 ** For any questions to Digia, please use contact form at http://www.qt.io
 **
@@ -16,20 +16,19 @@
 **
 ****************************************************************************/
 
-#ifndef STYLES_PLUGIN_H
-#define STYLES_PLUGIN_H
+#ifndef SVGIMAGEPROVIDER_H
+#define SVGIMAGEPROVIDER_H
 
-#include <QQmlExtensionPlugin>
+#include <QQuickImageProvider>
 
-class StylesPlugin : public QQmlExtensionPlugin
+class SvgImageProvider : public QQuickImageProvider
 {
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
-
 public:
-    void registerTypes(const char *uri);
-    void initializeEngine(QQmlEngine *engine, const char *uri);
+    explicit SvgImageProvider();
+    ~SvgImageProvider();
+
+    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
 };
 
-#endif // STYLES_PLUGIN_H
+#endif // SVGIMAGEPROVIDER_H
 
