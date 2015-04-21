@@ -5,7 +5,6 @@ TARGET = pinyin
 VERSION = 1.0.0
 CONFIG += staticlib
 CONFIG += warn_off
-CONFIG -= qtquickcompiler # QTRD-3292
 
 INCLUDEPATH += \
     include

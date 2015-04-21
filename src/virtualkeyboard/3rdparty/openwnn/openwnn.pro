@@ -5,7 +5,6 @@ TARGET = openwnn
 VERSION = 1.3.6
 CONFIG += staticlib
 CONFIG += warn_off
-CONFIG -= qtquickcompiler # QTRD-3292
 
 INCLUDEPATH += \
     wnnDictionary/include \

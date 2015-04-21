@@ -9,7 +9,6 @@ CONFIG += precompile_header warn_off
 debug {
     DEFINES += HUNSPELL_WARNING_ON
 }
-CONFIG -= qtquickcompiler # QTRD-3292
 
 dll {
     target.path = $$[QT_INSTALL_LIBS]
