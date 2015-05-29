@@ -600,7 +600,9 @@
 
 #define PCA_ALGO			"PCA"
 #define WINDOWS				"Windows"
+#ifndef LINUX
 #define LINUX				"Linux"
+#endif
 
 //Defined twice
 #define BYTEORDER			"BYTEORDER"
