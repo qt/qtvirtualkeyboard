@@ -27,6 +27,26 @@
     integrate 3rd party input engines. The input methods can be implemented
     in C++ or QML.
 
+    \section1 Features
+
+    Key features of the Qt Virtual Keyboard include:
+
+    \list
+        \li Customizable keyboard layouts and styles with dynamic switching.
+        \li Predictive text input with word selection.
+        \li Character preview and alternative character view.
+        \li Automatic capitalization and space insertion.
+        \li Scalability to different resolutions.
+        \li Support for different character sets (Latin, Simplified Chinese,
+            Hindi, Japanese, Arabic, Korean, and others).
+        \li Support for most common input \l {Supported Languages}{languages},
+            with possibility to easily extend the language support.
+        \li Left-to-right and right-to-left input.
+        \li Hardware key support for 2-way and 5-way navigation.
+        \li Audio feedback.
+        \li Cross-platform functionality.
+    \endlist
+
     \section1 Supported Languages
 
     The Virtual Keyboard supports the following languages:
