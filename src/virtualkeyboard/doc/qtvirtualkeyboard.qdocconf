@@ -6,6 +6,7 @@ include($QT_INSTALL_DOCS/global/qt-cpp-defines.qdocconf)
 
 project = QtVirtualKeyboard
 description = Qt Virtual Keyboard
+url = http://doc.qt.io/QtVirtualKeyboard/
 
 version = 1.3
 
