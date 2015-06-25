@@ -18,3 +18,4 @@ qrc_*.cpp
 Makefile*
 *.html
 *~
+.qmake.cache
