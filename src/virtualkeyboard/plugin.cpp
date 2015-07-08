@@ -43,6 +43,9 @@
 #include "declarativesettings.h"
 #include "declarativetrace.h"
 
+static const char pluginName[] = "qtvirtualkeyboard";
+static const char inputMethodEnvVarName[] = "QT_IM_MODULE";
+
 static QPointer<PlatformInputContext> platformInputContext;
 
 static QObject *createInputContextModule(QQmlEngine *engine, QJSEngine *scriptEngine)
@@ -72,7 +75,7 @@ static QObject *createInputContextModule(QQmlEngine *engine, QJSEngine *scriptEn
 
 QStringList PlatformInputContextPlugin::keys() const
 {
-    return QStringList(QStringLiteral("qtvirtualkeyboard"));
+    return QStringList(QLatin1String(pluginName));
 }
 
 QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system, const QStringList &paramList)
@@ -81,6 +84,10 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     Q_INIT_RESOURCE(content);
     Q_INIT_RESOURCE(default_style);
     Q_INIT_RESOURCE(retro_style);
+
+    if (!qEnvironmentVariableIsSet(inputMethodEnvVarName) || qgetenv(inputMethodEnvVarName) != pluginName)
+        return Q_NULLPTR;
+
     qmlRegisterSingletonType<DeclarativeInputContext>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "InputContext", createInputContextModule);
     qmlRegisterUncreatableType<DeclarativeInputEngine>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "InputEngine", "Cannot create input method engine");
     qmlRegisterUncreatableType<DeclarativeShiftHandler>("QtQuick.Enterprise.VirtualKeyboard", 1, 0, "ShiftHandler", "Cannot create shift handler");
