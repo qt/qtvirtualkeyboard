@@ -76,11 +76,19 @@ Item {
     */
     readonly property alias boundingBox: traceInputArea.boundingBox
 
+    /*! Canvas type of this trace input area.
+
+        This property can be used to distinguish between different types of canvases.
+        The default value is "keyboard".
+    */
+    property alias canvasType: traceInputArea.canvasType
+
     Layout.minimumWidth: traceInputKeyPanel.implicitWidth
     Layout.minimumHeight: traceInputKeyPanel.implicitHeight
     Layout.preferredWidth: weight
     Layout.fillWidth: true
     Layout.fillHeight: true
+    canvasType: "keyboard"
 
     Loader {
         id: traceInputKeyPanel

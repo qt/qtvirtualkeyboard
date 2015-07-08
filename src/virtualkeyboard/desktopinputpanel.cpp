@@ -32,11 +32,11 @@
 #include <QtCore/private/qobject_p.h>
 #include <QtCore/QLibraryInfo>
 
-class DesktopInputPanelPrivate : public QObjectPrivate
+class DesktopInputPanelPrivate : public AppInputPanelPrivate
 {
 public:
     DesktopInputPanelPrivate() :
-        QObjectPrivate(),
+        AppInputPanelPrivate(),
         view(),
         keyboardRect(),
         previewRect(),
@@ -51,7 +51,7 @@ public:
 };
 
 DesktopInputPanel::DesktopInputPanel(QObject *parent) :
-    AbstractInputPanel(*new DesktopInputPanelPrivate(), parent)
+    AppInputPanel(*new DesktopInputPanelPrivate(), parent)
 {
     /*  Activate the alpha buffer for this application.
     */
@@ -66,6 +66,7 @@ DesktopInputPanel::~DesktopInputPanel()
 
 void DesktopInputPanel::show()
 {
+    AppInputPanel::show();
     Q_D(DesktopInputPanel);
     if (d->view) {
         repositionView(QGuiApplication::primaryScreen()->availableGeometry());
@@ -75,6 +76,7 @@ void DesktopInputPanel::show()
 
 void DesktopInputPanel::hide()
 {
+    AppInputPanel::hide();
     Q_D(DesktopInputPanel);
     if (d->view)
         d->view->hide();
@@ -82,8 +84,7 @@ void DesktopInputPanel::hide()
 
 bool DesktopInputPanel::isVisible() const
 {
-    Q_D(const DesktopInputPanel);
-    return d->view && d->view->isVisible();
+    return AppInputPanel::isVisible();
 }
 
 void DesktopInputPanel::setInputRect(const QRect &inputRect)

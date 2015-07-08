@@ -282,4 +282,47 @@ QtObject {
         \note The delegate must be based on TraceCanvas type.
     */
     property Component traceCanvasDelegate: null
+
+    /*! \since QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
+
+        Template for the popup list item.
+
+        \note The delegate is used as \c ListView.delegate.
+        \note The delegate must be based on SelectionListItem type.
+
+        The following attached properties are available to the item:
+        \list
+            \li \c display Display text for current item.
+            \li \c wordCompletionLength Word completion length measured from the end of the display text.
+        \endlist
+    */
+    property Component popupListDelegate: null
+
+    /*! \since QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
+
+        Template for the popup list highlight.
+
+        \note The delegate is used as \c ListView.highlight.
+    */
+    property Component popupListHighlight: null
+
+    /*! \since QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
+
+        Template for the popup list background.
+    */
+    property Component popupListBackground: null
+
+    /*! \since QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
+
+        This property holds the transition to apply to items that
+        are added to the popup list view.
+    */
+    property Transition popupListAdd
+
+    /*! \since QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
+
+        This property holds the transition to apply to items that
+        are removed from the popup list view.
+    */
+    property Transition popupListRemove
 }

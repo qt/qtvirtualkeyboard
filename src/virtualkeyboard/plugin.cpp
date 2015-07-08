@@ -145,6 +145,7 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 2, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 3, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 0, "InputPanel");
+    qmlRegisterType(QUrl(path + QLatin1String("HandwritingInputPanel.qml")), pluginUri, 2, 0, "HandwritingInputPanel");
     const QString componentsPath = path + QStringLiteral("components/");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("AlternativeKeys.qml")), pluginUri, 1, 0, "AlternativeKeys");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("AutoScroller.qml")), pluginUri, 1, 0, "AutoScroller");
@@ -190,6 +191,7 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     qmlRegisterType(QUrl(componentsPath + QLatin1String("HandwritingModeKey.qml")), pluginUri, 2, 0, "HandwritingModeKey");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("TraceInputArea.qml")), pluginUri, 2, 0, "TraceInputArea");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("TraceInputKey.qml")), pluginUri, 2, 0, "TraceInputKey");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("WordCandidatePopupList.qml")), pluginUri, 2, 0, "WordCandidatePopupList");
 
     if (system.compare(system, QLatin1String(pluginName), Qt::CaseInsensitive) == 0) {
         platformInputContext = new PlatformInputContext();

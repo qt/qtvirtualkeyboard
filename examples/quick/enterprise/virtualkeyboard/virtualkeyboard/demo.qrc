@@ -6,5 +6,9 @@
         <file>content/TextArea.qml</file>
         <file>content/TextBase.qml</file>
         <file>content/TextField.qml</file>
+        <file>content/HandwritingModeButton.qml</file>
+        <file>content/FloatingButton_Active.svg</file>
+        <file>content/FloatingButton_Available.svg</file>
+        <file>content/FloatingButton_Unavailable.svg</file>
     </qresource>
 </RCC>

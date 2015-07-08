@@ -20,13 +20,28 @@
 #define APPINPUTPANEL_H
 
 #include "abstractinputpanel.h"
+#include <QtCore/private/qobject_p.h>
 
-class AppInputPanelPrivate;
+class AppInputPanelPrivate : public QObjectPrivate
+{
+public:
+    AppInputPanelPrivate() :
+        QObjectPrivate(),
+        visible(false)
+    {
+    }
+
+    bool visible;
+};
 
 class AppInputPanel : public AbstractInputPanel
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(AppInputPanel)
+
+protected:
+    AppInputPanel(AppInputPanelPrivate &dd, QObject *parent = 0);
+
 public:
     explicit AppInputPanel(QObject *parent = 0);
     ~AppInputPanel();

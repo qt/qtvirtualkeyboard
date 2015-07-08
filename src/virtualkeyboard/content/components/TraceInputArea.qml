@@ -75,6 +75,14 @@ MultiPointTouchArea {
                             traceInputArea.height) :
                     Qt.rect(0, 0, 0, 0)
 
+    /*! Canvas type of this trace input area.
+
+        This property can be used to distinguish between different types of canvases.
+        For example, in full screen handwriting mode this property is set to "fullscreen", and
+        in keyboard handwriting mode this property is set to "keyboard".
+    */
+    property string canvasType
+
     property var __traceCanvasList: ([])
 
     /*! \internal */
@@ -103,7 +111,8 @@ MultiPointTouchArea {
         ({
              boundingBox: traceInputArea.boundingBox,
              horizontalRulers: traceInputArea.horizontalRulers,
-             verticalRulers: traceInputArea.verticalRulers
+             verticalRulers: traceInputArea.verticalRulers,
+             canvasType: traceInputArea.canvasType
          })
 
     enabled: patternRecognitionMode !== InputEngine.PatternRecognitionDisabled && InputContext.inputEngine.patternRecognitionModes.indexOf(patternRecognitionMode) !== -1

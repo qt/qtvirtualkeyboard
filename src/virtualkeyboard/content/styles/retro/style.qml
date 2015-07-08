@@ -849,7 +849,7 @@ KeyboardStyle {
             if (!available)
                 return
             var ctx = getContext("2d")
-            ctx.lineWidth = 10 * scaleHint
+            ctx.lineWidth = parent.canvasType === "fullscreen" ? 10 : 10 * scaleHint
             ctx.lineCap = "round"
             ctx.strokeStyle = Qt.rgba(0, 0, 0)
             ctx.fillStyle = ctx.strokeStyle
@@ -857,5 +857,60 @@ KeyboardStyle {
         autoDestroyDelay: 800
         onTraceChanged: if (trace === null) opacity = 0
         Behavior on opacity { PropertyAnimation { easing.type: Easing.OutCubic; duration: 150 } }
+    }
+
+    popupListDelegate: SelectionListItem {
+        property real cursorAnchor: popupListLabel.x + popupListLabel.width
+        id: popupListItem
+        width: popupListLabel.width + popupListLabel.anchors.leftMargin * 2
+        height: popupListLabel.height + popupListLabel.anchors.topMargin * 2
+        Text {
+            id: popupListLabel
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.leftMargin: popupListLabel.height / 2
+            anchors.topMargin: popupListLabel.height / 3
+            text: decorateText(display, wordCompletionLength)
+            color: "#5CAA15"
+            font {
+                family: "Sans"
+                weight: Font.Normal
+                pixelSize: Qt.inputMethod.cursorRectangle.height * 0.8
+            }
+            function decorateText(text, wordCompletionLength) {
+                if (wordCompletionLength > 0) {
+                    return text.slice(0, -wordCompletionLength) + '<u>' + text.slice(-wordCompletionLength) + '</u>'
+                }
+                return text
+            }
+        }
+        states: State {
+            name: "current"
+            when: popupListItem.ListView.isCurrentItem
+            PropertyChanges {
+                target: popupListLabel
+                color: "black"
+            }
+        }
+    }
+
+    popupListBackground: Item {
+        Rectangle {
+            width: parent.width
+            height: parent.height
+            color: "white"
+            border {
+                width: 1
+                color: "#929495"
+            }
+        }
+    }
+
+    popupListAdd: Transition {
+        NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 200 }
+    }
+
+    popupListRemove: Transition {
+        NumberAnimation { property: "opacity"; to: 0; duration: 200 }
     }
 }

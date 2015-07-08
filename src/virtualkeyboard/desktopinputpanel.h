@@ -19,7 +19,7 @@
 #ifndef DESKTOPINPUTPANEL_H
 #define DESKTOPINPUTPANEL_H
 
-#include "abstractinputpanel.h"
+#include "appinputpanel.h"
 
 QT_BEGIN_NAMESPACE
 class QWindow;
@@ -27,7 +27,7 @@ QT_END_NAMESPACE
 
 class DesktopInputPanelPrivate;
 
-class DesktopInputPanel : public AbstractInputPanel
+class DesktopInputPanel : public AppInputPanel
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(DesktopInputPanel)

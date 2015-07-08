@@ -34,7 +34,7 @@ Key {
     key: Qt.Key_Context2
     displayText: "HWR"
     functionKey: true
-    visible: VirtualKeyboardInputMethods.indexOf("HandwritingInputMethod") !== -1
+    visible: keyboard.isHandwritingAvailable()
     onClicked: keyboard.handwritingMode = !keyboard.handwritingMode
     keyPanelDelegate: keyboard.style ? keyboard.style.handwritingKeyPanel : undefined
 }

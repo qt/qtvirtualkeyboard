@@ -50,6 +50,7 @@ Item {
     property bool active: Qt.inputMethod.visible
     property bool uppercased: InputContext.shift
     property bool handwritingMode
+    property bool fullScreenHandwritingMode
     property bool symbolMode
     property var defaultInputMethod: initDefaultInputMethod()
     property var plainInputMethod: PlainInputMethod {}
@@ -101,6 +102,8 @@ Item {
             inputModeNeedsReset = true
         updateInputMethod()
     }
+    onHandwritingModeChanged: if (!keyboard.handwritingMode) keyboard.fullScreenHandwritingMode = false
+    onFullScreenHandwritingModeChanged: if (keyboard.fullScreenHandwritingMode) keyboard.handwritingMode = true
 
     Connections {
         target: InputContext
@@ -404,7 +407,7 @@ Item {
         target: InputContext
         property: "keyboardRectangle"
         value: Qt.rect(keyboard.x, keyboard.y, keyboard.width, keyboard.height)
-        when: !InputContext.animating
+        when: keyboard.active && !InputContext.animating
     }
     Loader {
         id: styleLoader
@@ -1020,5 +1023,9 @@ Item {
         if (InputContext.fileExists(layoutFile))
             return layoutFile
         return ""
+    }
+
+    function isHandwritingAvailable() {
+        return VirtualKeyboardInputMethods.indexOf("HandwritingInputMethod") !== -1 && layoutExists(locale, "handwriting")
     }
 }

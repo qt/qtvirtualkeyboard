@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/content">
         <file>InputPanel.qml</file>
+        <file>HandwritingInputPanel.qml</file>
         <file>components/AlternativeKeys.qml</file>
         <file>components/AutoScroller.qml</file>
         <file>components/BackspaceKey.qml</file>
@@ -25,5 +26,6 @@
         <file>components/TraceInputKey.qml</file>
         <file>components/TraceInputArea.qml</file>
         <file>components/HandwritingModeKey.qml</file>
+        <file>components/WordCandidatePopupList.qml</file>
     </qresource>
 </RCC>
