@@ -139,6 +139,7 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     qmlRegisterSingletonType<DeclarativeSettings>(pluginSettingsUri, 1, 0, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
     qmlRegisterSingletonType<DeclarativeSettings>(pluginSettingsUri, 1, 1, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
     qmlRegisterSingletonType<DeclarativeSettings>(pluginSettingsUri, 1, 2, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
+    qmlRegisterSingletonType<DeclarativeSettings>(pluginSettingsUri, 2, 0, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
 
     const QString path(QStringLiteral("qrc:///content/"));
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 0, "InputPanel");

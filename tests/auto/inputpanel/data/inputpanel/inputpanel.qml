@@ -19,7 +19,7 @@
 import QtTest 1.0
 import QtQuick 2.0
 import QtQuick.Enterprise.VirtualKeyboard 2.0
-import QtQuick.Enterprise.VirtualKeyboard.Settings 1.2
+import QtQuick.Enterprise.VirtualKeyboard.Settings 2.0
 import "handwriting.js" as Handwriting
 import "utils.js" as Utils
 
@@ -35,7 +35,10 @@ InputPanel {
     property var virtualKeyPressPoint: null
     readonly property bool autoCapitalizationEnabled: InputContext.shiftHandler.autoCapitalizationEnabled
     readonly property bool toggleShiftEnabled: InputContext.shiftHandler.toggleShiftEnabled
-    readonly property string locale: InputContext.locale
+    readonly property string locale: keyboard.locale
+    readonly property string defaultLocale: VirtualKeyboardSettings.locale
+    readonly property var availableLocales: VirtualKeyboardSettings.availableLocales
+    readonly property var activeLocales: VirtualKeyboardSettings.activeLocales
     readonly property int inputMode: InputContext.inputEngine.inputMode
     readonly property var keyboard: Utils.findChildByProperty(inputPanel, "objectName", "keyboard", null)
     readonly property bool handwritingMode: keyboard.handwritingMode
@@ -160,27 +163,17 @@ InputPanel {
     }
 
     function isLocaleSupported(inputLocale) {
-        var localeIndex = keyboard.findLocale(inputLocale, -1)
+        var localeIndex = VirtualKeyboardSettings.availableLocales.indexOf(inputLocale)
         return localeIndex !== -1
     }
 
     function setLocale(inputLocale) {
-        var localeIndex = keyboard.findLocale(inputLocale, -1)
-        if (localeIndex === -1)
-            return false
-        var origLocaleIndex = keyboard.localeIndex
-        if (keyboard.localeIndex !== localeIndex) {
-            keyboard.localeIndex = localeIndex
-            keyboardLayoutLoaderItemSpy.wait()
-        }
-        var success = keyboardLayoutLoader.item !== null
-        if (keyboardLayoutLoader.item === null) {
-            if (keyboard.localeIndex !== origLocaleIndex) {
-                keyboard.localeIndex = origLocaleIndex
-                keyboardLayoutLoaderItemSpy.wait()
-            }
-        }
-        return success
+        VirtualKeyboardSettings.locale = inputLocale
+        return Qt.inputMethod.locale.name.substring(0, 2) === inputLocale.substring(0, 2)
+    }
+
+    function setActiveLocales(activeLocales) {
+        VirtualKeyboardSettings.activeLocales = activeLocales
     }
 
     function mapInputMode(inputModeName) {

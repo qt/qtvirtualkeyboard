@@ -25,10 +25,17 @@ public:
     SettingsPrivate() :
         QObjectPrivate(),
         style(),
-        styleName() {}
+        styleName(),
+        locale(),
+        availableLocales(),
+        activeLocales()
+    {}
 
     QString style;
     QString styleName;
+    QString locale;
+    QStringList availableLocales;
+    QStringList activeLocales;
 };
 
 static QScopedPointer<Settings> s_settingsInstance;
@@ -72,5 +79,50 @@ void Settings::setStyleName(const QString &styleName)
     if (d->styleName != styleName) {
         d->styleName = styleName;
         emit styleNameChanged();
+    }
+}
+
+QString Settings::locale() const
+{
+    Q_D(const Settings);
+    return d->locale;
+}
+
+void Settings::setLocale(const QString &locale)
+{
+    Q_D(Settings);
+    if (d->locale != locale) {
+        d->locale = locale;
+        emit localeChanged();
+    }
+}
+
+QStringList Settings::availableLocales() const
+{
+    Q_D(const Settings);
+    return d->availableLocales;
+}
+
+void Settings::setAvailableLocales(const QStringList &availableLocales)
+{
+    Q_D(Settings);
+    if (d->availableLocales != availableLocales) {
+        d->availableLocales = availableLocales;
+        emit availableLocalesChanged();
+    }
+}
+
+QStringList Settings::activeLocales() const
+{
+    Q_D(const Settings);
+    return d->activeLocales;
+}
+
+void Settings::setActiveLocales(const QStringList &activeLocales)
+{
+    Q_D(Settings);
+    if (d->activeLocales != activeLocales) {
+        d->activeLocales = activeLocales;
+        emit activeLocalesChanged();
     }
 }

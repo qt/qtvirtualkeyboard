@@ -78,6 +78,7 @@ public:
     void setAnimating(bool animating);
     QString locale() const;
     void setLocale(const QString &locale);
+    Q_INVOKABLE void updateAvailableLocales(const QStringList &availableLocales);
     QObject *inputItem() const;
     DeclarativeShiftHandler *shiftHandler() const;
     DeclarativeInputEngine *inputEngine() const;

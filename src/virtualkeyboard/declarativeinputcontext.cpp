@@ -22,6 +22,7 @@
 #include "platforminputcontext.h"
 #include "virtualkeyboarddebug.h"
 #include "enterkeyaction.h"
+#include "settings.h"
 
 #include <QTextFormat>
 #include <QGuiApplication>
@@ -312,6 +313,13 @@ void DeclarativeInputContext::setLocale(const QString &locale)
         d->inputContext->setInputDirection(newLocale.textDirection());
         emit localeChanged();
     }
+}
+
+void DeclarativeInputContext::updateAvailableLocales(const QStringList &availableLocales)
+{
+    Settings *settings = Settings::instance();
+    if (settings)
+        settings->setAvailableLocales(availableLocales);
 }
 
 QObject *DeclarativeInputContext::inputItem() const

@@ -66,6 +66,7 @@ KeyboardLayout {
         }
         ChangeLanguageKey {
             weight: 154
+            customLayoutsOnly: true
         }
         HandwritingModeKey {
             weight: 154

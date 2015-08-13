@@ -29,6 +29,9 @@ class DeclarativeSettings : public QObject
     Q_DECLARE_PRIVATE(DeclarativeSettings)
     Q_PROPERTY(QUrl style READ style NOTIFY styleChanged)
     Q_PROPERTY(QString styleName READ styleName WRITE setStyleName NOTIFY styleNameChanged)
+    Q_PROPERTY(QString locale READ locale WRITE setLocale NOTIFY localeChanged)
+    Q_PROPERTY(QStringList availableLocales READ availableLocales NOTIFY availableLocalesChanged)
+    Q_PROPERTY(QStringList activeLocales READ activeLocales WRITE setActiveLocales NOTIFY activeLocalesChanged)
 
 public:
     static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine);
@@ -40,9 +43,20 @@ public:
     QString styleName() const;
     void setStyleName(const QString &styleName);
 
+    QString locale() const;
+    void setLocale(const QString &locale);
+
+    QStringList availableLocales() const;
+
+    void setActiveLocales(const QStringList &activeLocales);
+    QStringList activeLocales() const;
+
 signals:
     void styleChanged();
     void styleNameChanged();
+    void localeChanged();
+    void availableLocalesChanged();
+    void activeLocalesChanged();
 
 private:
     void resetStyle();

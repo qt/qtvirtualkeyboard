@@ -40,9 +40,21 @@ public:
     QString styleName() const;
     void setStyleName(const QString &name);
 
+    QString locale() const;
+    void setLocale(const QString &locale);
+
+    QStringList availableLocales() const;
+    void setAvailableLocales(const QStringList &availableLocales);
+
+    QStringList activeLocales() const;
+    void setActiveLocales(const QStringList &activeLocales);
+
 signals:
     void styleChanged();
     void styleNameChanged();
+    void localeChanged();
+    void availableLocalesChanged();
+    void activeLocalesChanged();
 };
 
 #endif // SETTINGS_H

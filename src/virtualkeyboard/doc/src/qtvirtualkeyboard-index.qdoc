@@ -95,6 +95,10 @@
 
     \annotatedlist qtvirtualkeyboard-styles-qml
 
+    Settings components:
+
+    \annotatedlist qtvirtualkeyboard-settings-qml
+
     \section1 Examples
 
      \list
@@ -120,4 +124,8 @@
 Styling components:
 
 \annotatedlist qtvirtualkeyboard-styles-qml
+
+Settings components:
+
+\annotatedlist qtvirtualkeyboard-settings-qml
 */

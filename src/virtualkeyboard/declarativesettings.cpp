@@ -76,7 +76,7 @@ public:
 };
 
 /*!
-    \qmlmodule QtQuick.Enterprise.VirtualKeyboard.Settings 1.2
+    \qmlmodule QtQuick.Enterprise.VirtualKeyboard.Settings 2.0
 
     This module provides settings components for Qt Virtual Keyboard.
 */
@@ -86,14 +86,14 @@ public:
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard.Settings
     \ingroup qtvirtualkeyboard-settings-qml
     \since QtQuick.Enterprise.VirtualKeyboard 1.2
-    \internal
     \brief Provides settings for virtual keyboard.
 
-    This module provides VirtualKeyboarSettings instance,
-    which can be used for configuring virtual keyboard settings.
+    This module provides VirtualKeyboarSettings singleton instance,
+    which can be used to configure the virtual keyboard settings.
 
-    Note that settings have only effect during current application
-    lifetime, i.e. the configuration changes are not persistent.
+    Please note that the settings have only effect in the current
+    application's lifetime, that is, configuration changes are not
+    permanent.
 
     For example, to change the keyboard style in application:
 
@@ -124,6 +124,9 @@ DeclarativeSettings::DeclarativeSettings(QQmlEngine *engine) :
         resetStyle();
     connect(settings, SIGNAL(styleChanged()), SIGNAL(styleChanged()));
     connect(settings, SIGNAL(styleNameChanged()), SIGNAL(styleNameChanged()));
+    connect(settings, SIGNAL(localeChanged()), SIGNAL(localeChanged()));
+    connect(settings, SIGNAL(availableLocalesChanged()), SIGNAL(availableLocalesChanged()));
+    connect(settings, SIGNAL(activeLocalesChanged()), SIGNAL(activeLocalesChanged()));
 }
 
 /*!
@@ -156,6 +159,31 @@ void DeclarativeSettings::setStyleName(const QString &styleName)
     }
     settings->setStyleName(styleName);
     settings->setStyle(style);
+}
+
+QString DeclarativeSettings::locale() const
+{
+    return Settings::instance()->locale();
+}
+
+void DeclarativeSettings::setLocale(const QString &locale)
+{
+    Settings::instance()->setLocale(locale);
+}
+
+QStringList DeclarativeSettings::availableLocales() const
+{
+    return Settings::instance()->availableLocales();
+}
+
+void DeclarativeSettings::setActiveLocales(const QStringList &activeLocales)
+{
+    Settings::instance()->setActiveLocales(activeLocales);
+}
+
+QStringList DeclarativeSettings::activeLocales() const
+{
+    return Settings::instance()->activeLocales();
 }
 
 void DeclarativeSettings::resetStyle()
@@ -199,4 +227,40 @@ void DeclarativeSettings::resetStyle()
 
     The system wide keyboard style can be affected by setting
     the QT_VIRTUALKEYBOARD_STYLE environment variable.
+*/
+
+/*!
+    \qmlproperty string VirtualKeyboardSettings::locale
+    \since QtQuick.Enterprise.VirtualKeyboard.Settings 2.0
+
+    This property provides the default locale for the keyboard.
+
+    When the locale is not specified, the default system locale is used instead.
+
+    If the keyboard locale is different from the new default locale, keyboard
+    language is changed immediately to reflect the new locale. If the locale setting
+    is incorrect, or it is not in the list of supported locales, it is ignored and
+    the default setting is used instead.
+
+    A locale is supported if it is included in the list of availableLocales.
+*/
+
+/*!
+    \qmlproperty list<string> VirtualKeyboardSettings::availableLocales
+    \since QtQuick.Enterprise.VirtualKeyboard.Settings 2.0
+
+    This property contains a list of languages supported by the virtual keyboard.
+
+    This list is read-only and depends on the build-time configuration of the
+    virtual keyboard.
+*/
+
+/*!
+    \qmlproperty list<string> VirtualKeyboardSettings::activeLocales
+    \since QtQuick.Enterprise.VirtualKeyboard.Settings 2.0
+
+    This property contains a list of activated languages of the virtual keyboard.
+
+    The list of active languages is a subset of the available languages, and can be
+    used to limit the list of available languages in the application lifetime.
 */

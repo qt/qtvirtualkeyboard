@@ -81,10 +81,12 @@ Rectangle {
             handwritingInputPanel.available = false
             textInput.forceActiveFocus()
             inputPanel.setHandwritingMode(false)
+            var activeLocales = data !== undefined && data.hasOwnProperty("activeLocales") ? data.activeLocales : []
+            inputPanel.setActiveLocales(activeLocales)
             var locale = data !== undefined && data.hasOwnProperty("initLocale") ? data.initLocale : "en_GB"
             if (!inputPanel.isLocaleSupported(locale))
-                expectFail("", "Input locale not enabled")
-            var localeChanged = inputPanel.locale !== locale
+                expectFail("", "Input locale not available (%1)".arg(locale))
+            var localeChanged = Qt.inputMethod.locale.name !== locale
             verify(inputPanel.setLocale(locale))
             if (localeChanged && !(textInput.inputMethodHints & Qt.ImhNoPredictiveText))
                 wait(300)
@@ -137,6 +139,12 @@ Rectangle {
                 { qml: "import QtQuick 2.0; \
                         import QtQuick.Enterprise.VirtualKeyboard.Settings 1.2; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName }" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.Enterprise.VirtualKeyboard.Settings 2.0; \
+                        Item { property var styleName: VirtualKeyboardSettings.styleName; \
+                               property var locale: VirtualKeyboardSettings.locale; \
+                               property var availableLocales: VirtualKeyboardSettings.availableLocales; \
+                               property var availableLocales: VirtualKeyboardSettings.activeLocales }" },
             ]
         }
 
@@ -916,6 +924,34 @@ Rectangle {
 
             Qt.inputMethod.commit()
             compare(textInput.text, data.outputText)
+        }
+
+        function test_availableLocales() {
+            verify(inputPanel.availableLocales.length > 0)
+        }
+
+        function test_activeLocales_data() {
+            return [
+                { activeLocales: ["invalid"], expectedLocale: "en_GB" },
+                { activeLocales: ["fi_FI"], initLocale: "fi_FI" },
+                { activeLocales: ["en_GB"], initLocale: "en_GB" },
+                { activeLocales: ["en_GB", "fi_FI", "ar_AR"] },
+            ]
+        }
+
+        function test_activeLocales(data) {
+            prepareTest(data)
+            for (var i = 0; i < inputPanel.availableLocales.length; i++) {
+                var locale = inputPanel.availableLocales[i]
+                var expectedResult
+                if (data.hasOwnProperty("expectedLocale"))
+                    expectedResult = locale === data.expectedLocale
+                else
+                    expectedResult = (inputPanel.activeLocales.length === 0 || inputPanel.activeLocales.indexOf(locale) !== -1) && inputPanel.availableLocales.indexOf(locale) !== -1
+                inputPanel.setLocale(locale)
+                waitForRendering(inputPanel)
+                compare(inputPanel.locale === locale, expectedResult, "Test locale %1".arg(locale))
+            }
         }
     }
 }
