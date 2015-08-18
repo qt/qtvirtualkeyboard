@@ -29,6 +29,8 @@
 #include "LTKStringUtil.h"
 #include <sstream>
 
+const string PointFloatShapeFeature::m_data_delimiter = ",";
+
 /**********************************************************************************
 * AUTHOR		: Saravanan R.
 * DATE			: 15-Mar-2007
@@ -40,8 +42,7 @@
 * CHANGE HISTROY
 * Author			Date				Description
 *************************************************************************************/
-PointFloatShapeFeature::PointFloatShapeFeature():
-m_data_delimiter(",")
+PointFloatShapeFeature::PointFloatShapeFeature()
 {
 }
 
@@ -62,8 +63,7 @@ m_x(inX),
 m_y(inY),
 m_sinTheta(inSinTheta),
 m_cosTheta(inCosTheta),
-m_penUp(inPenUp),
-m_data_delimiter(",")
+m_penUp(inPenUp)
 {
 }
 

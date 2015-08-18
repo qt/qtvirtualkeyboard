@@ -61,7 +61,7 @@ private:
 	bool m_penUp;
 
 	/** @brief Delimiter character  */
-    string m_data_delimiter;
+    static const string m_data_delimiter;
 	//@}
 	
 public:
