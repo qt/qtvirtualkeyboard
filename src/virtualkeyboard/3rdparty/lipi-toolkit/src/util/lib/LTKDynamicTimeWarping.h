@@ -514,8 +514,8 @@ class DynamicTimeWarping
                 rowMin = m_maxVal;
 
 
-                localDistPtr(train[i],test[0],tempVal);
-                currentRow[0]=tempVal+previousRow[0];
+                localDistPtr(train[i],test[trunkJ],tempVal);
+                currentRow[trunkJ]=tempVal+previousRow[trunkJ];
 
                 for(j = 1+trunkJ; j < testSize-trunkI; ++j)
                 {
@@ -541,17 +541,17 @@ class DynamicTimeWarping
                         rowMin = tempMinDist;
 
                 }
-                copy(currentRow.begin(), currentRow.end(), previousRow.begin());
-                if(trunkI > 0)
-                    --trunkI;
-                if(i > (trainSize-banded-1))
-                    ++trunkJ;
-
                 if(rowMin > bestSoFar)
                 {
                     distanceDTW = m_maxVal;
                     return SUCCESS;
                 }
+
+                if(i > (trainSize-banded-1))
+                    ++trunkJ;
+                if(trunkI > 0)
+                    --trunkI;
+                copy(currentRow.begin()+trunkJ, currentRow.end()-trunkI, previousRow.begin()+trunkJ);
             }
 
             distanceDTW = tempMinDist;
