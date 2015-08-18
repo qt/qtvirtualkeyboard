@@ -141,10 +141,10 @@ public:
 
         setContext(patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
 
-        if (!recognitionTask) {
-            recognitionTask = recognizer.newRecognition(*deviceInfo, *screenContext, subsetOfClasses, 0.0f, 4);
-            if (!recognitionTask)
-                return 0;
+        if (recognitionTask) {
+            recognizer.cancelRecognitionTask(recognitionTask);
+            recognitionTask.reset();
+            delayedResult.clear();
         }
 
         DeclarativeTrace *trace = new DeclarativeTrace();
@@ -164,10 +164,11 @@ public:
             addPointsToTraceGroup(trace);
         }
         if (!traceList.isEmpty() && countActiveTraces() == 0)
-            resetRecognizeTimer();
+            restartRecognition();
     }
 
-    int countActiveTraces() const {
+    int countActiveTraces() const
+    {
         int count = 0;
         foreach (DeclarativeTrace *trace, traceList) {
             if (!trace->isFinal())
@@ -180,12 +181,11 @@ public:
     {
         qDeleteAll(traceList);
         traceList.clear();
+        traceGroup.emptyAllTraces();
     }
 
     void addPointsToTraceGroup(DeclarativeTrace *trace)
     {
-        if (!recognitionTask)
-            return;
         vector<LTKChannel> channels;
         channels.push_back(LTKChannel("X", DT_INT, true));
         channels.push_back(LTKChannel("Y", DT_INT, true));
@@ -209,24 +209,36 @@ public:
             }
             ltktrace.addPoint(point);
         }
-        recognitionTask->traceGroup.addTrace(ltktrace);
+        traceGroup.addTrace(ltktrace);
     }
 
-    void recognize()
+    void finishRecognition()
     {
 #ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
         dumpTraces();
 #endif
         stopRecognizeTimer();
         clearTraces();
+        if (recognitionTask && !delayedResult.isEmpty() && recognitionTask->resultId() == delayedResult["resultId"].toInt())
+            processResult(delayedResult);
+        delayedResult.clear();
+        recognitionTask.reset();
+    }
 
+    void restartRecognition()
+    {
+        recognitionTask = recognizer.newRecognition(*deviceInfo, *screenContext, subsetOfClasses, 0.0f, 4);
         if (recognitionTask) {
             Q_Q(LipiInputMethod);
+
+            recognitionTask->traceGroup = traceGroup;
 
             QSharedPointer<LipiRecognitionResultsTask> resultsTask = recognizer.startRecognition(recognitionTask);
             q->connect(resultsTask.data(), SIGNAL(resultsAvailable(const QVariantList &)), SLOT(resultsAvailable(const QVariantList &)));
 
-            recognitionTask.reset();
+            resetRecognizeTimer();
+        } else {
+            stopRecognizeTimer();
         }
     }
 
@@ -234,6 +246,7 @@ public:
     {
         stopRecognizeTimer();
         clearTraces();
+        delayedResult.clear();
         bool result = !recognitionTask.isNull();
         recognitionTask.reset();
         return recognizer.cancelRecognition() || result;
@@ -253,6 +266,50 @@ public:
             q->killTimer(recognizeTimer);
             recognizeTimer = 0;
         }
+    }
+
+    void resultsAvailable(const QVariantList &resultList)
+    {
+        if (!resultList.isEmpty()) {
+            const QVariantMap result = resultList.at(0).toMap();
+            if (recognitionTask && recognitionTask->resultId() == result["resultId"].toInt())
+                delayedResult = result;
+            else
+                processResult(result);
+        }
+    }
+
+    void processResult(const QVariantMap &result)
+    {
+        const QChar ch = result["unicode"].toChar();
+        const QChar chUpper = ch.toUpper();
+#ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
+        // In recording mode, the text case must match with the current text case
+        if (!ch.isLetter() || (ch.isUpper() == (textCase == DeclarativeInputEngine::Upper))) {
+            QStringList homeLocations = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+            if (!homeLocations.isEmpty()) {
+                uint confidence = qRound(result["confidence"].toDouble() * 100);
+                QString filePath = QStringLiteral("%1/%2").arg(homeLocations.at(0)).arg("VIRTUAL_KEYBOARD_TRACES");
+                QDir fileDir(filePath);
+                if (!fileDir.exists())
+                    fileDir.mkpath(filePath);
+                if (fileDir.exists()) {
+                    QString fileName;
+                    int fileIndex = 0;
+                    do {
+                        fileName = fileDir.absoluteFilePath(QStringLiteral("%1_%2_%3.txt").arg((uint)ch.unicode()).arg(confidence, 3, 10, QLatin1Char('0')).arg(fileIndex++));
+                    } while (QFileInfo(fileName).exists());
+                    saveTraces(fileName);
+                }
+            }
+        } else {
+            return;
+        }
+#endif
+        Q_Q(LipiInputMethod);
+        q->inputContext()->inputEngine()->virtualKeyClick((Qt::Key)chUpper.unicode(),
+                    textCase == DeclarativeInputEngine::Lower ? QString(ch.toLower()) : QString(chUpper),
+                    Qt::NoModifier);
     }
 
 #ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
@@ -316,10 +373,12 @@ public:
     QScopedPointer<LTKCaptureDevice> deviceInfo;
     QScopedPointer<LTKScreenContext> screenContext;
     QSharedPointer<LipiRecognitionTask> recognitionTask;
+    LTKTraceGroup traceGroup;
     QList<DeclarativeTrace *> traceList;
     int recognizeTimer;
     DeclarativeInputEngine::TextCase textCase;
     vector<int> subsetOfClasses;
+    QVariantMap delayedResult;
 };
 
 LipiInputMethod::LipiInputMethod(QObject *parent) :
@@ -441,7 +500,7 @@ void LipiInputMethod::timerEvent(QTimerEvent *timerEvent)
 {
     Q_D(LipiInputMethod);
     if (timerEvent->timerId() == d->recognizeTimer) {
-        d->recognize();
+        d->finishRecognition();
     }
 }
 
@@ -456,36 +515,6 @@ void LipiInputMethod::resultsAvailable(const QVariantList &resultList)
         }
     }
 #endif
-    if (!resultList.isEmpty()) {
-        Q_D(LipiInputMethod);
-        const QVariantMap result = resultList.at(0).toMap();
-        const QChar ch = result["unicode"].toChar();
-        const QChar chUpper = ch.toUpper();
-#ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
-        // In recording mode, the text case must match with the current text case
-        if (!ch.isLetter() || (ch.isUpper() == (d->textCase == DeclarativeInputEngine::Upper))) {
-            QStringList homeLocations = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-            if (!homeLocations.isEmpty()) {
-                uint confidence = qRound(result["confidence"].toDouble() * 100);
-                QString filePath = QStringLiteral("%1/%2").arg(homeLocations.at(0)).arg("VIRTUAL_KEYBOARD_TRACES");
-                QDir fileDir(filePath);
-                if (!fileDir.exists())
-                    fileDir.mkpath(filePath);
-                if (fileDir.exists()) {
-                    QString fileName;
-                    int fileIndex = 0;
-                    do {
-                        fileName = fileDir.absoluteFilePath(QStringLiteral("%1_%2_%3.txt").arg((uint)ch.unicode()).arg(confidence, 3, 10, QLatin1Char('0')).arg(fileIndex++));
-                    } while (QFileInfo(fileName).exists());
-                    d->saveTraces(fileName);
-                }
-            }
-        } else {
-            return;
-        }
-#endif
-        inputContext()->inputEngine()->virtualKeyClick((Qt::Key)chUpper.unicode(),
-                    d->textCase == DeclarativeInputEngine::Lower ? QString(ch.toLower()) : QString(chUpper),
-                    Qt::NoModifier);
-    }
+    Q_D(LipiInputMethod);
+    d->resultsAvailable(resultList);
 }

@@ -45,6 +45,7 @@ public:
                                                        int numChoices);
     QSharedPointer<LipiRecognitionResultsTask> startRecognition(QSharedPointer<LipiRecognitionTask> &recognitionTask);
     bool cancelRecognition();
+    bool cancelRecognitionTask(QSharedPointer<LipiRecognitionTask> &recognitionTask);
 
 private:
     static int loadLipiInterface();
@@ -69,6 +70,7 @@ private:
     static QMap<int, QChar> s_unicodeMap;
     static QString s_activeModel;
     static stringStringMap s_lipiEngineConfigEntries;
+    static int s_recognitionCount;
 };
 
 #endif // LIPISHAREDRECOGNIZER_H

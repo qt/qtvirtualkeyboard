@@ -43,14 +43,18 @@ LipiRecognitionTask::LipiRecognitionTask(const LTKCaptureDevice& deviceInfo,
                                          const LTKScreenContext& screenContext,
                                          const vector<int>& inSubsetOfClasses,
                                          float confThreshold,
-                                         int numChoices) :
+                                         int numChoices,
+                                         int resultId) :
     LipiTask(),
     deviceInfo(deviceInfo),
     screenContext(screenContext),
     inSubsetOfClasses(inSubsetOfClasses),
     confThreshold(confThreshold),
     numChoices(numChoices),
-    resultVector(new vector<LTKShapeRecoResult>())
+    resultVector(new vector<LTKShapeRecoResult>()),
+    _resultId(resultId),
+    stateRunning(false),
+    stateCancelled(false)
 {
 }
 
@@ -61,6 +65,12 @@ void LipiRecognitionTask::run()
     if (!shapeRecognizer || !resultVector)
         return;
 
+    {
+        QMutexLocker stateGuard(&stateLock);
+        stateRunning = true;
+    }
+
+    resultVector->clear();
     resultVector->reserve(numChoices);
 
     shapeRecognizer->setDeviceContext(deviceInfo);
@@ -72,16 +82,44 @@ void LipiRecognitionTask::run()
     shapeRecognizer->recognize(traceGroup, screenContext,
                                inSubsetOfClasses, confThreshold,
                                numChoices, *resultVector);
+
 #ifdef QT_VIRTUALKEYBOARD_DEBUG
-    VIRTUALKEYBOARD_DEBUG() << "LipiRecognitionTask::run(): time:" << perf.elapsed() << "ms";
+    int perfElapsed = perf.elapsed();
 #endif
+
+    {
+        QMutexLocker stateGuard(&stateLock);
+        stateRunning = false;
+        if (stateCancelled)
+            resultVector->clear();
+#ifdef QT_VIRTUALKEYBOARD_DEBUG
+        VIRTUALKEYBOARD_DEBUG() << "LipiRecognitionTask::run(): time:" << perfElapsed << "ms" << (stateCancelled ? "(cancelled)" : "");
+#endif
+    }
+}
+
+bool LipiRecognitionTask::cancelRecognition()
+{
+    QMutexLocker stateGuard(&stateLock);
+    stateCancelled = true;
+    bool result = (stateRunning && shapeRecognizer);
+    if (result)
+        shapeRecognizer->requestCancelRecognition();
+    return result;
+}
+
+int LipiRecognitionTask::resultId() const
+{
+    return _resultId;
 }
 
 LipiRecognitionResultsTask::LipiRecognitionResultsTask(QSharedPointer<vector<LTKShapeRecoResult> > resultVector,
-                                                       const QMap<int, QChar> &unicodeMap) :
+                                                       const QMap<int, QChar> &unicodeMap,
+                                                       int resultId) :
     LipiTask(),
     resultVector(resultVector),
-    unicodeMap(unicodeMap)
+    unicodeMap(unicodeMap),
+    _resultId(resultId)
 {
 }
 
@@ -95,11 +133,15 @@ void LipiRecognitionResultsTask::run()
          i != resultVector->end(); i++) {
         QVariantMap result;
         int shapeId = i->getShapeId();
+        result["resultId"] = _resultId;
         result["shapeId"] = shapeId;
         result["unicode"] = unicodeMap.value(shapeId);
         result["confidence"] = i->getConfidence();
         resultList.append(result);
     }
+
+    if (resultList.isEmpty())
+        return;
 
     emit resultsAvailable(resultList);
 }
@@ -129,6 +171,17 @@ void LipiWorker::addTask(QSharedPointer<LipiTask> task)
         taskList.append(task);
         taskSema.release();
     }
+}
+
+int LipiWorker::removeTask(QSharedPointer<LipiTask> task)
+{
+    int count = 0;
+    if (task) {
+        QMutexLocker guard(&taskLock);
+        count = taskList.removeAll(task);
+        taskSema.acquire(qMin(count, taskSema.available()));
+    }
+    return count;
 }
 
 int LipiWorker::removeAllTasks()

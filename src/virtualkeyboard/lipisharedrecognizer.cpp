@@ -46,6 +46,7 @@ LipiWorker *LipiSharedRecognizer::s_lipiWorker = 0;
 QMap<int, QChar> LipiSharedRecognizer::s_unicodeMap;
 QString LipiSharedRecognizer::s_activeModel;
 stringStringMap LipiSharedRecognizer::s_lipiEngineConfigEntries;
+int LipiSharedRecognizer::s_recognitionCount = 0;
 
 LipiSharedRecognizer::LipiSharedRecognizer()
 {
@@ -117,7 +118,10 @@ QSharedPointer<LipiRecognitionTask> LipiSharedRecognizer::newRecognition(const L
                                                                      screenContext,
                                                                      inSubsetOfClasses,
                                                                      confThreshold,
-                                                                     numChoices));
+                                                                     numChoices,
+                                                                     s_recognitionCount));
+
+    ++s_recognitionCount;
 
     return task;
 }
@@ -128,7 +132,8 @@ QSharedPointer<LipiRecognitionResultsTask> LipiSharedRecognizer::startRecognitio
         return QSharedPointer<LipiRecognitionResultsTask>();
 
     QSharedPointer<LipiRecognitionResultsTask> resultsTask(new LipiRecognitionResultsTask(recognitionTask->resultVector,
-                                                                                          s_unicodeMap));
+                                                                                          s_unicodeMap,
+                                                                                          recognitionTask->resultId()));
 
     s_lipiWorker->addTask(recognitionTask);
     s_lipiWorker->addTask(resultsTask);
@@ -142,6 +147,14 @@ bool LipiSharedRecognizer::cancelRecognition()
         return false;
 
     return s_lipiWorker->removeAllTasks() > 0;
+}
+
+bool LipiSharedRecognizer::cancelRecognitionTask(QSharedPointer<LipiRecognitionTask> &recognitionTask)
+{
+    if (!s_lipiEngine || !s_shapeRecognizer || !s_lipiWorker || !recognitionTask)
+        return false;
+
+    return recognitionTask->cancelRecognition() || s_lipiWorker->removeTask(recognitionTask) > 0;
 }
 
 int LipiSharedRecognizer::loadLipiInterface()

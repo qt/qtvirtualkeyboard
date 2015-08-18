@@ -65,9 +65,12 @@ public:
                                  const LTKScreenContext& screenContext,
                                  const vector<int>& inSubsetOfClasses,
                                  float confThreshold,
-                                 int numChoices);
+                                 int numChoices,
+                                 int resultId);
 
     void run();
+    bool cancelRecognition();
+    int resultId() const;
 
     LTKTraceGroup traceGroup;
 
@@ -80,6 +83,10 @@ private:
     const float confThreshold;
     const int numChoices;
     QSharedPointer<vector<LTKShapeRecoResult> > resultVector;
+    const int _resultId;
+    QMutex stateLock;
+    bool stateRunning;
+    bool stateCancelled;
 };
 
 class LipiRecognitionResultsTask : public LipiTask
@@ -87,7 +94,8 @@ class LipiRecognitionResultsTask : public LipiTask
     Q_OBJECT
 public:
     explicit LipiRecognitionResultsTask(QSharedPointer<vector<LTKShapeRecoResult> > resultVector,
-                                        const QMap<int, QChar> &unicodeMap);
+                                        const QMap<int, QChar> &unicodeMap,
+                                        int resultId);
 
     void run();
 
@@ -97,6 +105,7 @@ signals:
 private:
     QSharedPointer<vector<LTKShapeRecoResult> > resultVector;
     const QMap<int, QChar> &unicodeMap;
+    const int _resultId;
 };
 
 class LipiWorker : public QThread
@@ -107,6 +116,7 @@ public:
     ~LipiWorker();
 
     void addTask(QSharedPointer<LipiTask> task);
+    int removeTask(QSharedPointer<LipiTask> task);
     int removeAllTasks();
 
 protected:
