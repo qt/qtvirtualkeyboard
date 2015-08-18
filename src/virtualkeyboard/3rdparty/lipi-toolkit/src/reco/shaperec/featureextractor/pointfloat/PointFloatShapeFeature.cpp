@@ -479,25 +479,21 @@ int PointFloatShapeFeature::toFloatVector(floatVector& floatVec)
 *****************************************************************************/
 int PointFloatShapeFeature::initialize(const floatVector& initFloatVector)
 {
+    return initialize(initFloatVector.data(), initFloatVector.size());
+}
 
-    if (initFloatVector.size() == 0)
+int PointFloatShapeFeature::initialize(floatVector::const_pointer initFloatData, size_t dataSize)
+{
+    if (dataSize < 5)
     {
         return FAILURE;
     }
     
-    m_x = initFloatVector[0];
-	m_y = initFloatVector[1];
-	m_sinTheta = initFloatVector[2];
-	m_cosTheta = initFloatVector[3];
-
-	if(initFloatVector[4] == 1)
-    {   
-		m_penUp = true;
-    }
-	else
-    {   
-		m_penUp = false;
-    }
+    m_x = *(initFloatData++);
+	m_y = *(initFloatData++);
+	m_sinTheta = *(initFloatData++);
+	m_cosTheta = *(initFloatData++);
+	m_penUp = *(initFloatData++) != 0;
 	
 	return SUCCESS;
 }

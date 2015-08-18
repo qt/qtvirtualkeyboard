@@ -1912,7 +1912,7 @@ int NNShapeRecognizer::loadModelData()
 #ifdef OPTIMIZE_LOAD_MODEL_DATA
 			vector<LTKShapeFeaturePtr>& shapeFeatureVector = shapeSampleFeaturesRef.getFeatureVectorRef();
 			shapeFeatureVector.reserve(numberOfFeatures);
-			floatVector::const_iterator floatFeatureVectorBufferIterator = floatFeatureVectorBuffer.begin();
+			floatVector::const_pointer floatFeatureVectorData = floatFeatureVectorBuffer.data();
 #else
 			vector<LTKShapeFeaturePtr> shapeFeatureVector;
 #endif
@@ -1920,21 +1920,18 @@ int NNShapeRecognizer::loadModelData()
 
 			for ( ; featureIndex < numberOfFeatures ; featureIndex++)
 			{
+#ifndef OPTIMIZE_LOAD_MODEL_DATA
 				floatVector floatFeatureVector;
 				int featureValueIndex = 0;
+#endif
 
 				shapeFeature = m_ptrFeatureExtractor->getShapeFeatureInstance();
 
 #ifdef OPTIMIZE_LOAD_MODEL_DATA
-				floatFeatureVector.reserve(featureDimension);
-#endif
+				if (shapeFeature->initialize(floatFeatureVectorData + featureIndex * featureDimension, featureDimension) != SUCCESS)
+#else
 				for(; featureValueIndex < featureDimension ; featureValueIndex++)
 				{
-#ifdef OPTIMIZE_LOAD_MODEL_DATA
-					float featureValue = *floatFeatureVectorBufferIterator;
-					floatFeatureVectorBufferIterator++;
-					floatFeatureVector.push_back(featureValue);
-#else
 					float featureValue = 0.0f;
 
 					mdtFileHandle.read((char*) &featureValue, floatSize);
@@ -1945,10 +1942,10 @@ int NNShapeRecognizer::loadModelData()
 					{
 						break;
 					}
-#endif
 				}
 
 				if (shapeFeature->initialize(floatFeatureVector) != SUCCESS)
+#endif
 				{
 					LOG(LTKLogger::LTK_LOGLEVEL_ERR)<<"Error: "<<
 						EINVALID_INPUT_FORMAT << " " <<

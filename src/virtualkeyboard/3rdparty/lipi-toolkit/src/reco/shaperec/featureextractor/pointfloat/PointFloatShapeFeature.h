@@ -151,6 +151,8 @@ public:
 
     int initialize(const floatVector& initFloatVector);
 
+    int initialize(floatVector::const_pointer initFloatData, size_t dataSize);
+
     int toFloatVector(vector<float>& floatVec);
 
 	/**

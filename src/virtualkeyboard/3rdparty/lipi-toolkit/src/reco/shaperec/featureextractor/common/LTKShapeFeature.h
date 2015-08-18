@@ -103,6 +103,8 @@ public:
 
     virtual int initialize(const floatVector& initFloatVector)=0;
 
+    virtual int initialize(floatVector::const_pointer initFloatData, size_t dataSize) { (void)initFloatData; (void)dataSize; return SUCCESS; }
+
 	/**
 	* <b>Responsibility</b><br>
 	* This function returns the character (char*) representation for the instance of type LTKShapeFeature.
