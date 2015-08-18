@@ -57,7 +57,7 @@
 * Author			Date				Description of change
 *************************************************************************************/
 
-LTKShapeRecognizer::LTKShapeRecognizer()
+LTKShapeRecognizer::LTKShapeRecognizer() : m_cancelRecognition(false)
 {
 
     LOG( LTKLogger::LTK_LOGLEVEL_DEBUG)<<
@@ -79,7 +79,7 @@ LTKShapeRecognizer::LTKShapeRecognizer()
 * Author			Date				Description of change
 *************************************************************************************/
 
-LTKShapeRecognizer::LTKShapeRecognizer(const string& shapeRecognzierName) : m_shapeRecognizerName(shapeRecognzierName)
+LTKShapeRecognizer::LTKShapeRecognizer(const string& shapeRecognzierName) : m_shapeRecognizerName(shapeRecognzierName), m_cancelRecognition(false)
 {
 
     LOG( LTKLogger::LTK_LOGLEVEL_DEBUG)<<

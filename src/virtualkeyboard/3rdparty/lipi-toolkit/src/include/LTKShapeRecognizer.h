@@ -70,6 +70,7 @@ class LTKShapeRecognizer
 protected:
 
 	const string m_shapeRecognizerName;	//	name of the shape recognizer class deriving from the LTKShapeRecognizer class
+	bool m_cancelRecognition;
 
 public:
 
@@ -140,6 +141,7 @@ public:
 			int  numChoices,
 			vector<LTKShapeRecoResult>& resultVector) = 0;
 
+	void requestCancelRecognition() { m_cancelRecognition = true; }
 	
 	/**
 	* This is a pure virtual method to be implemented by the derived class.This method calls 

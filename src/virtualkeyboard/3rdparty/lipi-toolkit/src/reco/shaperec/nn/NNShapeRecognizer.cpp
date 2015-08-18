@@ -2070,6 +2070,8 @@ int NNShapeRecognizer::recognize(const vector<LTKShapeFeaturePtr>& shapeFeatureV
     LOG(LTKLogger::LTK_LOGLEVEL_DEBUG) << "Entering " <<
         "NNShapeRecognizer::recognize()" << endl;
 
+    m_cancelRecognition = false;
+
     m_cachedShapeSampleFeatures.setFeatureVector(shapeFeatureVector);
 
     //Creating a local copy of input inSubSetOfClasses, as it is const, STL's unique function modifies it!!!
@@ -2250,6 +2252,9 @@ int NNShapeRecognizer::recognize(const vector<LTKShapeFeaturePtr>& shapeFeatureV
                             m_cachedShapeSampleFeatures,
                             euclideanDistance);
 
+                    if(errorCode == SUCCESS && m_cancelRecognition)
+                        return SUCCESS;
+
                     if(errorCode != SUCCESS)
                     {
                         LOG(LTKLogger::LTK_LOGLEVEL_ERR) << "Error: " << errorCode << " " <<
@@ -2321,6 +2326,9 @@ int NNShapeRecognizer::recognize(const vector<LTKShapeFeaturePtr>& shapeFeatureV
                         errorCode = computeEuclideanDistance(*prototypeSetIter,
                                 m_cachedShapeSampleFeatures,
                                 euclideanDistance);
+
+                        if(errorCode == SUCCESS && m_cancelRecognition)
+                            return SUCCESS;
 
                         if(errorCode != SUCCESS)
                         {
@@ -2417,6 +2425,9 @@ int NNShapeRecognizer::recognize(const vector<LTKShapeFeaturePtr>& shapeFeatureV
                         m_cachedShapeSampleFeatures,
                         dtwDistance);
 
+                if(errorCode == SUCCESS && m_cancelRecognition)
+                    return SUCCESS;
+
                 if(errorCode != SUCCESS)
                 {
                     LOG(LTKLogger::LTK_LOGLEVEL_ERR) << "Error: " << errorCode << " " <<
@@ -2504,6 +2515,9 @@ int NNShapeRecognizer::recognize(const vector<LTKShapeFeaturePtr>& shapeFeatureV
         }
 
     }
+
+    if(m_cancelRecognition)
+        m_vecRecoResult.clear();
 
     outResultVector = m_vecRecoResult;
 
