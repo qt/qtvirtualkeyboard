@@ -161,7 +161,7 @@ LTKShapeFeaturePtr SubStrokeShapeFeature::clone() const
  * Author			Date				Description
  ******************************************************************************/
 
-int SubStrokeShapeFeature::getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, 
+void SubStrokeShapeFeature::getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, 
                                             float& outDistance) const
 {
 
@@ -191,7 +191,7 @@ int SubStrokeShapeFeature::getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr
 	if(numSlope  != (inSubStrokeFeature->getFeatureDimension()-3))
 	{
 		//write log
-		return FAILURE; // error
+		return; // error
 	}
 
 	// compute the distance between the slope vectors of two instances of SubStrokeShapeFeature
@@ -221,8 +221,6 @@ int SubStrokeShapeFeature::getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr
 	lengthDiff = fabs((m_subStrokeLength) - inSubStrokeFeature->getSubStrokeLength());
 
 	outDistance	= (sumSlopeDiff + (xDiff * xDiff) + (yDiff * yDiff) + lengthDiff);
-		
-	return SUCCESS;
 }
 
 /******************************************************************************

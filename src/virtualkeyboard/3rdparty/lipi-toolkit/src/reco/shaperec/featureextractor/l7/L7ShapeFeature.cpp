@@ -383,7 +383,7 @@ LTKShapeFeaturePtr L7ShapeFeature::clone() const
 * CHANGE HISTROY
 * Author            Date                Description of change
 *************************************************************************************/
-int L7ShapeFeature::getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float& outDistance) const
+void L7ShapeFeature::getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float& outDistance) const
 {
 	float xDiff = 0, yDiff = 0;
 	float xFirstDervDiff=0, yFirstDervDiff=0, xSecondDervDiff=0, ySecondDervDiff=0;
@@ -403,8 +403,6 @@ int L7ShapeFeature::getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float
 	outDistance += ( (xFirstDervDiff * xFirstDervDiff) + (yFirstDervDiff * yFirstDervDiff) );
 	outDistance += ( (xSecondDervDiff * xSecondDervDiff) + (ySecondDervDiff * ySecondDervDiff) );
 	outDistance += ( (curvatureDiff * curvatureDiff));
-
-	return SUCCESS;
 }
 /**********************************************************************************
 * AUTHOR        : Naveen Sundar G.

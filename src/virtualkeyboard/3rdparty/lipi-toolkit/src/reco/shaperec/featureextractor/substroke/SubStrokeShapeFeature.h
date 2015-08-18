@@ -165,7 +165,7 @@ public:
     /**
 	* @brief  Gives the distance between two SubStrokeShapeFeature instance
 	*/	
-	int getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float& outDistance) const;
+	void getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float& outDistance) const;
 
 		/**
 	* @brief Adds two SubStrokeShapeFeature instances.

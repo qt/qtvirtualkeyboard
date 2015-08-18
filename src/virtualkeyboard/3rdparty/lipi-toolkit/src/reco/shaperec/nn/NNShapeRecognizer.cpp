@@ -1626,20 +1626,10 @@ int NNShapeRecognizer::computeEuclideanDistance(
     for(int i = 0; i < firstFeatureVectorSize; ++i)
     {
         float tempDistance = 0.0f;
-        int errorCode = getDistance(firstFeatureVec[i],
+        getDistance(firstFeatureVec[i],
                 secondFeatureVec[i],
                 tempDistance);
-
-        if (errorCode != SUCCESS )
-        {
-            LOG(LTKLogger::LTK_LOGLEVEL_ERR)<<"Error: "<<  errorCode << " " <<
-                " NNShapeRecognizer::computeEuclideanDistance()" << endl;
-            LTKReturnError(errorCode);
-        }
-        else
-        {
-            outEuclideanDistance += tempDistance;
-        }
+        outEuclideanDistance += tempDistance;
     }
 
     LOG(LTKLogger::LTK_LOGLEVEL_DEBUG) << "Exiting " <<
@@ -3452,19 +3442,11 @@ void NNShapeRecognizer::updateHeaderWithAlgoInfo()
 * CHANGE HISTROY
 * Author			Date				Description
 ******************************************************************************/
-int NNShapeRecognizer::getDistance(const LTKShapeFeaturePtr& f1,
+void NNShapeRecognizer::getDistance(const LTKShapeFeaturePtr& f1,
     const LTKShapeFeaturePtr& f2,
     float& distance)
 {
-
-    int errorCode = f1->getDistance(f2, distance);
-
-    if (errorCode != SUCCESS )
-    {
-	LTKReturnError(errorCode);
-    }
-
-    return SUCCESS;
+    f1->getDistance(f2, distance);
 }
 
 /******************************************************************************

@@ -907,7 +907,7 @@ class NNShapeRecognizer: public LTKShapeRecognizer
 
         static bool sortDist(const NeighborInfo& x, const NeighborInfo& y);
 
-        static int getDistance(const LTKShapeFeaturePtr& f1,const LTKShapeFeaturePtr& f2, float& distance);
+        static void getDistance(const LTKShapeFeaturePtr& f1,const LTKShapeFeaturePtr& f2, float& distance);
 
         int getShapeSampleFromString(const string& inString, LTKShapeSample& outShapeSample);
 

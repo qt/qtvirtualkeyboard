@@ -185,7 +185,7 @@ public:
 * CHANGE HISTROY
 * Author			Date				Description of change
 *************************************************************************************/       
-    TargetClass* operator->() const
+    inline TargetClass* operator->() const
     {
       return m_sharedCounterPtr->objPtr;
     }

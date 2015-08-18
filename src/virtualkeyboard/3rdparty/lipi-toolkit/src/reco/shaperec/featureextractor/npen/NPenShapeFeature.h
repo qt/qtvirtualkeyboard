@@ -232,7 +232,7 @@ public:
     
     
 	
-	int getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float& outDistance) const;
+	void getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float& outDistance) const;
 	
 	/**
 	* Converts the local feature instance into a float vector. The elements of the float vector are m_x, m_y, m_cosAlpha, m_sinAlpha, m_cosBeta, m_sinBeta, m_aspect, m_curliness, m_linearity, m_slope and m_isPenUp in the order.

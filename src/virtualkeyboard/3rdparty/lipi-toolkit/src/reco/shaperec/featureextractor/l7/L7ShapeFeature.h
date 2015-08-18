@@ -211,7 +211,7 @@ public:
 	* @return float : Distance between two points in the LocalSeven feature representation
 	*
 	*/
-	int getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float& outDistance) const;
+	void getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float& outDistance) const;
 	
 	/**
 	* @brief Adds two L7ShapeFeature instances.

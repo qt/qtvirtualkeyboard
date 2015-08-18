@@ -132,7 +132,7 @@ public:
 	* @return distance (float)  Distance between two instances of LTKShapeFeature class.
 	*/
 
-    virtual int getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float& outDistance) const = 0;
+    virtual void getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float& outDistance) const = 0;
 
 	//@}
 

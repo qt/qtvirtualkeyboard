@@ -163,7 +163,7 @@ public:
 
 	LTKShapeFeaturePtr clone() const;
 
-    int getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float& outDistance) const;
+    void getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float& outDistance) const;
 
     
 

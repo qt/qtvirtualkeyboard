@@ -1020,7 +1020,7 @@ private:
           int findOptimalDeformation(doubleVector& deformationParameters,doubleVector& eigenValues, double2DVector& eigenVector,
                doubleVector& clusterMean, doubleVector& testSample);
 
-          static int getDistance(const LTKShapeFeaturePtr& f1,const LTKShapeFeaturePtr& f2, float& distance);
+          static void getDistance(const LTKShapeFeaturePtr& f1,const LTKShapeFeaturePtr& f2, float& distance);
 
 
           /**

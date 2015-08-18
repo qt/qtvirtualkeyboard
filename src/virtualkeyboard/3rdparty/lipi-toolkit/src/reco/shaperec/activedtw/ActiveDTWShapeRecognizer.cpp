@@ -1753,21 +1753,12 @@ int ActiveDTWShapeRecognizer::computeEuclideanDistance(
 	
     for(int i = 0; i < firstFeatureVectorSize; ++i)
     {
-        float tempDistance = 0.0f;
-        int errorCode = getDistance(inFirstFeature[i],
+        float tempDistance = 0.0;
+        getDistance(inFirstFeature[i],
 			inSecondFeature[i],
 			tempDistance);
 		
-        if (errorCode != SUCCESS )
-        {
-            LOG(LTKLogger::LTK_LOGLEVEL_ERR)<<"Error: "<<  errorCode << " " <<
-                " ActiveDTWShapeRecognizer::computeEuclideanDistance()" << endl;
-            LTKReturnError(errorCode);
-        }
-        else
-        {
-            outEuclideanDistance += tempDistance;
-        }
+        outEuclideanDistance += tempDistance;
     }
 	
     LOG(LTKLogger::LTK_LOGLEVEL_DEBUG) << "Exiting " <<
@@ -4840,19 +4831,11 @@ void ActiveDTWShapeRecognizer::updateHeaderWithAlgoInfo()
 * CHANGE HISTROY
 * Author			Date				Description
 ******************************************************************************/
-int ActiveDTWShapeRecognizer::getDistance(const LTKShapeFeaturePtr& f1,
+void ActiveDTWShapeRecognizer::getDistance(const LTKShapeFeaturePtr& f1,
 										  const LTKShapeFeaturePtr& f2,
 										  float& distance)
 {
-	
-    int errorCode = f1->getDistance(f2, distance);
-	
-    if (errorCode != SUCCESS )
-    {
-		LTKReturnError(errorCode);
-    }
-	
-    return SUCCESS;
+    f1->getDistance(f2, distance);
 }
 
 

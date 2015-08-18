@@ -245,7 +245,7 @@ NPenShapeFeature::NPenShapeFeature():m_data_delimiter(",")
     
     
 	
-	int NPenShapeFeature::getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float& outDistance) const
+	void NPenShapeFeature::getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, float& outDistance) const
 	{ 
 		outDistance = 0.0;
 		
@@ -261,10 +261,6 @@ NPenShapeFeature::NPenShapeFeature():m_data_delimiter(",")
 		outDistance += (m_curliness - inFeature->getCurliness())*(m_curliness - inFeature->getCurliness());
 		outDistance += (m_linearity - inFeature->getLinearity())*(m_linearity - inFeature->getLinearity());
 		outDistance += (m_slope - inFeature->getSlope())*(m_slope - inFeature->getSlope());
-		
-
-		return SUCCESS;
-
 	}
 	
 	

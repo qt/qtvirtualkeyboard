@@ -61,7 +61,7 @@ class DynamicTimeWarping
         vector<vector<int> > m_phi;						// phi matrix required for path computation
 
         //function pointer type of the function that defines local distance function
-        typedef int (*FN_PTR_DISTANCE)(const TimeSeriesElementType&, const TimeSeriesElementType&, DistanceType&) ; 								
+        typedef void (*FN_PTR_DISTANCE)(const TimeSeriesElementType&, const TimeSeriesElementType&, DistanceType&) ; 								
 
 
         DistanceType m_maxVal;	

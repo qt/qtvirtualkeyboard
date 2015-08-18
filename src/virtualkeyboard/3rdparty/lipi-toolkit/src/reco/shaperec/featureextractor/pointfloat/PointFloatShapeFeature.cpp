@@ -277,25 +277,21 @@ LTKShapeFeaturePtr PointFloatShapeFeature::clone() const
 * CHANGE HISTROY
 * Author:  Naveen Sundar G.			Date: 13-Sept-2007				Description: Implemented Support for theta
 *************************************************************************************/
-int PointFloatShapeFeature::getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, 
+void PointFloatShapeFeature::getDistance(const LTKShapeFeaturePtr& shapeFeaturePtr, 
                                             float& outDistance) const
 {
-	float xDiff = 0, yDiff = 0, sinthetaDiff=0, costhetaDiff=0;
-
 	PointFloatShapeFeature *inPointFloatFeature = (PointFloatShapeFeature*)(shapeFeaturePtr.operator ->());
 	
-	xDiff = (m_x) - inPointFloatFeature->getX();
+	float xDiff = (m_x) - inPointFloatFeature->m_x;
 
-    yDiff = (m_y) - inPointFloatFeature->getY();
+    float yDiff = (m_y) - inPointFloatFeature->m_y;
 
-    sinthetaDiff = (m_sinTheta) - inPointFloatFeature->getSinTheta();
+    float sinthetaDiff = (m_sinTheta) - inPointFloatFeature->m_sinTheta;
 
-    costhetaDiff = (m_cosTheta) - inPointFloatFeature->getCosTheta();
+    float costhetaDiff = (m_cosTheta) - inPointFloatFeature->m_cosTheta;
     
     outDistance = ( (xDiff * xDiff) + (yDiff * yDiff) + 
                   (sinthetaDiff * sinthetaDiff) + (costhetaDiff * costhetaDiff) );
-
-	return SUCCESS;
 }
 
 /**********************************************************************************
