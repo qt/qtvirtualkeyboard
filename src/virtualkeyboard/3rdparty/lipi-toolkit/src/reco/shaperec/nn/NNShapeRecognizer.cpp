@@ -1873,9 +1873,7 @@ int NNShapeRecognizer::loadModelData()
 
 	else
 	{
-#ifdef OPTIMIZE_LOAD_MODEL_DATA
 		floatVector floatFeatureVectorBuffer;
-#endif
 
 		while(!mdtFileHandle.eof())
 		{
@@ -1892,7 +1890,6 @@ int NNShapeRecognizer::loadModelData()
 			mdtFileHandle.read((char*) &numberOfFeatures, intSize);
 			mdtFileHandle.read((char*) &featureDimension, intSize);
 
-#ifdef OPTIMIZE_LOAD_MODEL_DATA
 			m_prototypeSet.push_back(shapeSampleFeatures);
 			LTKShapeSample &shapeSampleFeaturesRef = m_prototypeSet.back();
 			shapeSampleFeaturesRef.setClassID(classId);
@@ -1905,47 +1902,20 @@ int NNShapeRecognizer::loadModelData()
 			{
 				break;
 			}
-#endif
 
 			int featureIndex = 0;
 			
-#ifdef OPTIMIZE_LOAD_MODEL_DATA
 			vector<LTKShapeFeaturePtr>& shapeFeatureVector = shapeSampleFeaturesRef.getFeatureVectorRef();
 			shapeFeatureVector.reserve(numberOfFeatures);
 			floatVector::const_pointer floatFeatureVectorData = floatFeatureVectorBuffer.data();
-#else
-			vector<LTKShapeFeaturePtr> shapeFeatureVector;
-#endif
 			LTKShapeFeaturePtr shapeFeature;
 
 			for ( ; featureIndex < numberOfFeatures ; featureIndex++)
 			{
-#ifndef OPTIMIZE_LOAD_MODEL_DATA
-				floatVector floatFeatureVector;
-				int featureValueIndex = 0;
-#endif
 
 				shapeFeature = m_ptrFeatureExtractor->getShapeFeatureInstance();
 
-#ifdef OPTIMIZE_LOAD_MODEL_DATA
 				if (shapeFeature->initialize(floatFeatureVectorData + featureIndex * featureDimension, featureDimension) != SUCCESS)
-#else
-				for(; featureValueIndex < featureDimension ; featureValueIndex++)
-				{
-					float featureValue = 0.0f;
-
-					mdtFileHandle.read((char*) &featureValue, floatSize);
-
-					floatFeatureVector.push_back(featureValue);
-
-					if ( mdtFileHandle.fail() )
-					{
-						break;
-					}
-				}
-
-				if (shapeFeature->initialize(floatFeatureVector) != SUCCESS)
-#endif
 				{
 					LOG(LTKLogger::LTK_LOGLEVEL_ERR)<<"Error: "<<
 						EINVALID_INPUT_FORMAT << " " <<
@@ -1959,7 +1929,6 @@ int NNShapeRecognizer::loadModelData()
 
 			}
 
-#ifdef OPTIMIZE_LOAD_MODEL_DATA
 			//Add to Map
 			intIntMap::iterator mapEntry;
 			if(	(mapEntry = m_shapeIDNumPrototypesMap.find(classId))==m_shapeIDNumPrototypesMap.end())
@@ -1970,35 +1939,6 @@ int NNShapeRecognizer::loadModelData()
 			{
 				++mapEntry->second;
 			}
-#else
-			//Set the feature vector and class id to the shape sample features
-			shapeSampleFeatures.setFeatureVector(shapeFeatureVector);
-			shapeSampleFeatures.setClassID(classId);
-			//cout << "load mdt class id :" << classId << endl;
-
-			//Adding all shape sample feature to the prototypeset
-			m_prototypeSet.push_back(shapeSampleFeatures);
-			//Add to Map
-			if(	m_shapeIDNumPrototypesMap.find(classId)==m_shapeIDNumPrototypesMap.end())
-			{
-				m_shapeIDNumPrototypesMap[classId] = 1;
-			}
-			else
-			{
-				++(m_shapeIDNumPrototypesMap[classId]);
-			}
-#endif
-
-
-#ifndef OPTIMIZE_LOAD_MODEL_DATA
-			//Clearing the vectors
-			shapeFeatureVector.clear();
-			tokens.clear();
-			classId = -1;
-			strFeatureVector = "";
-#endif
-
-
 		}
 	}
 

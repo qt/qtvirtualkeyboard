@@ -12,10 +12,6 @@ TARGET = nn
 target.path = $$[QT_INSTALL_DATA]/qtvirtualkeyboard/lipi_toolkit/lib
 INSTALLS += target
 
-# Applies series of optimizations to NNShapeRecognizer::loadModelData() function
-# Avarage performance gain: x2
-DEFINES += OPTIMIZE_LOAD_MODEL_DATA
-
 INCLUDEPATH += \
     ../../../include \
     ../../../util/lib \
