@@ -176,7 +176,7 @@ int LipiSharedRecognizer::loadLipiInterface()
 
         int result = osUtil->loadSharedLib(lipiRootPath, LIPIENGINE_MODULE_STR, &s_lipiEngineHandle);
         if (result != SUCCESS) {
-            qWarning() << QString("Error %1: %2").arg(result).arg(getErrorMessage(result).c_str());
+            qWarning() << QString("Error %1: Could not open shared library for module '%2'").arg(result).arg(LIPIENGINE_MODULE_STR);
             return result;
         }
 
