@@ -36,7 +36,7 @@
 #include <QtCore/QLibraryInfo>
 
 int LipiSharedRecognizer::s_lipiEngineRefCount = 0;
-const QString LipiSharedRecognizer::s_lipiRoot = QDir(QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/lipi_toolkit").absolutePath();
+QString LipiSharedRecognizer::s_lipiRoot;
 void *LipiSharedRecognizer::s_lipiEngineHandle = 0;
 LipiSharedRecognizer::FN_PTR_CREATELTKLIPIENGINE LipiSharedRecognizer::s_createLTKLipiEngine = 0;
 LipiSharedRecognizer::FN_PTR_DELETELTKLIPIENGINE LipiSharedRecognizer::s_deleteLTKLipiEngine = 0;
@@ -162,7 +162,14 @@ int LipiSharedRecognizer::loadLipiInterface()
     VIRTUALKEYBOARD_DEBUG() << "LipiSharedRecognizer::loadLipiInterface():" << s_lipiEngineRefCount;
 
     if (++s_lipiEngineRefCount == 1) {
-        qputenv("LIPI_ROOT", s_lipiRoot.toLatin1());
+        if (s_lipiRoot.isEmpty()) {
+            if (qEnvironmentVariableIsEmpty("LIPI_ROOT")) {
+                s_lipiRoot = QDir(QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/lipi_toolkit").absolutePath();
+                qputenv("LIPI_ROOT", s_lipiRoot.toLatin1());
+            } else {
+                s_lipiRoot = qgetenv("LIPI_ROOT");
+            }
+        }
 
         QScopedPointer<LTKOSUtil> osUtil(LTKOSUtilFactory::getInstance());
         const string lipiRootPath(QDir::toNativeSeparators(s_lipiRoot).toStdString());

@@ -60,7 +60,7 @@ private:
     typedef void (*FN_PTR_DELETELTKLIPIENGINE)(void);
 
     static int s_lipiEngineRefCount;
-    const static QString s_lipiRoot;
+    static QString s_lipiRoot;
     static void *s_lipiEngineHandle;
     static FN_PTR_CREATELTKLIPIENGINE s_createLTKLipiEngine;
     static FN_PTR_DELETELTKLIPIENGINE s_deleteLTKLipiEngine;
