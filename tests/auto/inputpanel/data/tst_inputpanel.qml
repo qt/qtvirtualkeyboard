@@ -43,7 +43,7 @@ Rectangle {
 
         function initTestCase() {
             var inputPanelComp = Qt.createComponent("inputpanel/inputpanel.qml")
-            compare(inputPanelComp.status, Component.Ready, "Failed to create InputPanel component. Please set QT_IM_MODULE=qtvirtualkeyboard.")
+            compare(inputPanelComp.status, Component.Ready, "Failed to create component: "+inputPanelComp.errorString())
             inputPanel = inputPanelComp.createObject(container)
             inputPanel.testcase = testcase
             inputPanel.keyboardLayoutsAvailableSpy.wait()
