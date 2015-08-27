@@ -31,20 +31,20 @@
 void StylesPlugin::registerTypes(const char *uri)
 {
     Q_INIT_RESOURCE(styles);
-    const QString path("qrc:///content/styles/");
-    qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 0, "KeyboardStyle");
-    qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 1, "KeyboardStyle");
-    qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 2, "KeyboardStyle");
-    qmlRegisterType(QUrl(path + "KeyboardStyle.qml"), uri, 1, 3, "KeyboardStyle");
-    qmlRegisterType(QUrl(path + "KeyIcon.qml"), uri, 1, 0, "KeyIcon");
-    qmlRegisterType(QUrl(path + "KeyPanel.qml"), uri, 1, 0, "KeyPanel");
-    qmlRegisterType(QUrl(path + "SelectionListItem.qml"), uri, 1, 0, "SelectionListItem");
-    qmlRegisterType(QUrl(path + "TraceInputKeyPanel.qml"), uri, 1, 4, "TraceInputKeyPanel");
-    qmlRegisterType(QUrl(path + "TraceCanvas.qml"), uri, 1, 4, "TraceCanvas");
+    const QString path(QStringLiteral("qrc:///content/styles/"));
+    qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 1, 0, "KeyboardStyle");
+    qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 1, 1, "KeyboardStyle");
+    qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 1, 2, "KeyboardStyle");
+    qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 1, 3, "KeyboardStyle");
+    qmlRegisterType(QUrl(path + QLatin1String("KeyIcon.qml")), uri, 1, 0, "KeyIcon");
+    qmlRegisterType(QUrl(path + QLatin1String("KeyPanel.qml")), uri, 1, 0, "KeyPanel");
+    qmlRegisterType(QUrl(path + QLatin1String("SelectionListItem.qml")), uri, 1, 0, "SelectionListItem");
+    qmlRegisterType(QUrl(path + QLatin1String("TraceInputKeyPanel.qml")), uri, 1, 4, "TraceInputKeyPanel");
+    qmlRegisterType(QUrl(path + QLatin1String("TraceCanvas.qml")), uri, 1, 4, "TraceCanvas");
 }
 
 void StylesPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
     Q_UNUSED(uri)
-    engine->addImageProvider(QLatin1String("qtvkbsvg"), new SvgImageProvider());
+    engine->addImageProvider(QStringLiteral("qtvkbsvg"), new SvgImageProvider());
 }
