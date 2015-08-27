@@ -266,7 +266,7 @@ QtObject {
     property Component navigationHighlight: null
 
     /*!
-        \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.4
+        \since QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
 
         Template for the trace input key.
 
@@ -275,7 +275,7 @@ QtObject {
     property Component traceInputKeyPanelDelegate: null
 
     /*!
-        \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.4
+        \since QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
 
         Template for rendering a Trace object.
 

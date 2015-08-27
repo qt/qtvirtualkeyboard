@@ -151,7 +151,7 @@
 
 /*!
     \qmlmethod list<int> InputMethod::patternRecognitionModes()
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     Returns list of supported pattern recognition modes.
 
@@ -161,7 +161,7 @@
 
 /*!
     \qmlmethod Trace InputMethod::traceBegin(var traceCaptureDeviceInfo, var traceScreenInfo)
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     This method is called when a trace interaction starts. The \a traceCaptureDeviceInfo provides
     information about the source device and the \a traceScreenInfo provides information about the screen
@@ -175,7 +175,7 @@
 
 /*!
     \qmlmethod bool InputMethod::traceEnd(Trace trace)
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     This method is called when the trace interaction ends. The input method should destroy the \a trace object
     at some point after this function is called. See the \l Trace API how to access the gathered

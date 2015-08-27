@@ -148,7 +148,7 @@ void AbstractInputMethod::selectionListItemSelected(DeclarativeSelectionListMode
 }
 
 /*!
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     Returns list of supported pattern recognition modes.
 
@@ -161,7 +161,7 @@ QList<DeclarativeInputEngine::PatternRecognitionMode> AbstractInputMethod::patte
 }
 
 /*!
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     This method is called when a trace interaction starts with the specified \a patternRecognitionMode.
     The \a traceCaptureDeviceInfo provides information about the source device and the
@@ -181,7 +181,7 @@ DeclarativeTrace *AbstractInputMethod::traceBegin(DeclarativeInputEngine::Patter
 }
 
 /*!
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     This method is called when the trace interaction ends. The input method should destroy the \a trace object
     at some point after this function is called. See the \l Trace API how to access the gathered

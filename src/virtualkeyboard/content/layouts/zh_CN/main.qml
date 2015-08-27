@@ -18,11 +18,11 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
-import QtQuick.Enterprise.VirtualKeyboard 1.3
+import QtQuick.Enterprise.VirtualKeyboard 2.0
 
 KeyboardLayout {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 1.3; PinyinInputMethod {}', parent, "pinyinInputMethod")
+        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 2.0; PinyinInputMethod {}', parent, "pinyinInputMethod")
     }
     sharedLayouts: ['symbols']
     keyWeight: 160

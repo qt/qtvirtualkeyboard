@@ -39,7 +39,7 @@ public:
 /*!
     \class DeclarativeTrace
     \inmodule qtvirtualkeyboard
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
     \brief Trace is a data model for touch input data.
 
     Trace provides the data model for coordinate data and other
@@ -103,7 +103,7 @@ public:
     \instantiates DeclarativeTrace
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
     \brief Trace is a data model for touch input data.
 
     Trace provides the data model for coordinate data and other

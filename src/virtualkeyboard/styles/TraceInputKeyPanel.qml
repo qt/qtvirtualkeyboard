@@ -23,7 +23,7 @@ import QtQuick 2.0
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles
     \brief A base type of the trace input key.
     \ingroup qtvirtualkeyboard-styles-qml
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     This type provides panel for decorating TraceInputKey
     items in the keyboard layout.

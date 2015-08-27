@@ -91,30 +91,42 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
         return Q_NULLPTR;
 
     qmlRegisterSingletonType<DeclarativeInputContext>(pluginUri, 1, 0, "InputContext", createInputContextModule);
+    qmlRegisterSingletonType<DeclarativeInputContext>(pluginUri, 2, 0, "InputContext", createInputContextModule);
     qmlRegisterUncreatableType<DeclarativeInputEngine>(pluginUri, 1, 0, "InputEngine", QLatin1String("Cannot create input method engine"));
+    qmlRegisterUncreatableType<DeclarativeInputEngine>(pluginUri, 2, 0, "InputEngine", QLatin1String("Cannot create input method engine"));
     qmlRegisterUncreatableType<DeclarativeShiftHandler>(pluginUri, 1, 0, "ShiftHandler", QLatin1String("Cannot create shift handler"));
+    qmlRegisterUncreatableType<DeclarativeShiftHandler>(pluginUri, 2, 0, "ShiftHandler", QLatin1String("Cannot create shift handler"));
     qmlRegisterUncreatableType<DeclarativeSelectionListModel>(pluginUri, 1, 0, "SelectionListModel", QLatin1String("Cannot create selection list model"));
+    qmlRegisterUncreatableType<DeclarativeSelectionListModel>(pluginUri, 2, 0, "SelectionListModel", QLatin1String("Cannot create selection list model"));
     qmlRegisterUncreatableType<AbstractInputMethod>(pluginUri, 1, 0, "AbstractInputMethod", QLatin1String("Cannot create abstract input method"));
+    qmlRegisterUncreatableType<AbstractInputMethod>(pluginUri, 2, 0, "AbstractInputMethod", QLatin1String("Cannot create abstract input method"));
     qmlRegisterType<PlainInputMethod>(pluginUri, 1, 0, "PlainInputMethod");
+    qmlRegisterType<PlainInputMethod>(pluginUri, 2, 0, "PlainInputMethod");
     qmlRegisterType<DeclarativeInputMethod>(pluginUri, 1, 0, "InputMethod");
+    qmlRegisterType<DeclarativeInputMethod>(pluginUri, 2, 0, "InputMethod");
 #ifdef HAVE_HUNSPELL
     qmlRegisterType<HunspellInputMethod>(pluginUri, 1, 0, "HunspellInputMethod");
+    qmlRegisterType<HunspellInputMethod>(pluginUri, 2, 0, "HunspellInputMethod");
 #endif
 #ifdef HAVE_PINYIN
     qmlRegisterType<PinyinInputMethod>(pluginUri, 1, 1, "PinyinInputMethod");
+    qmlRegisterType<PinyinInputMethod>(pluginUri, 2, 0, "PinyinInputMethod");
 #endif
 #ifdef HAVE_HANGUL
     qmlRegisterType<HangulInputMethod>(pluginUri, 1, 3, "HangulInputMethod");
+    qmlRegisterType<HangulInputMethod>(pluginUri, 2, 0, "HangulInputMethod");
 #endif
 #ifdef HAVE_OPENWNN
     qmlRegisterType<OpenWnnInputMethod>(pluginUri, 1, 3, "JapaneseInputMethod");
+    qmlRegisterType<OpenWnnInputMethod>(pluginUri, 2, 0, "JapaneseInputMethod");
 #endif
 #ifdef HAVE_LIPI_TOOLKIT
-    qmlRegisterType<LipiInputMethod>(pluginUri, 1, 4, "HandwritingInputMethod");
+    qmlRegisterType<LipiInputMethod>(pluginUri, 2, 0, "HandwritingInputMethod");
 #endif
     qmlRegisterType<EnterKeyActionAttachedType>();
     qmlRegisterType<EnterKeyAction>(pluginUri, 1, 0, "EnterKeyAction");
-    qmlRegisterType<DeclarativeTrace>(pluginUri, 1, 4, "Trace");
+    qmlRegisterType<EnterKeyAction>(pluginUri, 2, 0, "EnterKeyAction");
+    qmlRegisterType<DeclarativeTrace>(pluginUri, 2, 0, "Trace");
     qmlRegisterSingletonType<DeclarativeSettings>(pluginSettingsUri, 1, 0, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
     qmlRegisterSingletonType<DeclarativeSettings>(pluginSettingsUri, 1, 1, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
     qmlRegisterSingletonType<DeclarativeSettings>(pluginSettingsUri, 1, 2, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
@@ -123,31 +135,52 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 0, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 2, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 3, "InputPanel");
+    qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 0, "InputPanel");
     const QString componentsPath = path + QStringLiteral("components/");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("AlternativeKeys.qml")), pluginUri, 1, 0, "AlternativeKeys");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("AutoScroller.qml")), pluginUri, 1, 0, "AutoScroller");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("AutoScroller.qml")), pluginUri, 2, 0, "AutoScroller");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("BackspaceKey.qml")), pluginUri, 1, 0, "BackspaceKey");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("BackspaceKey.qml")), pluginUri, 2, 0, "BackspaceKey");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("BaseKey.qml")), pluginUri, 1, 0, "BaseKey");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("BaseKey.qml")), pluginUri, 2, 0, "BaseKey");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("ChangeLanguageKey.qml")), pluginUri, 1, 0, "ChangeLanguageKey");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("ChangeLanguageKey.qml")), pluginUri, 2, 0, "ChangeLanguageKey");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("CharacterPreviewBubble.qml")), pluginUri, 1, 0, "CharacterPreviewBubble");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("CharacterPreviewBubble.qml")), pluginUri, 2, 0, "CharacterPreviewBubble");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("EnterKey.qml")), pluginUri, 1, 0, "EnterKey");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("EnterKey.qml")), pluginUri, 2, 0, "EnterKey");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("FillerKey.qml")), pluginUri, 1, 0, "FillerKey");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("FillerKey.qml")), pluginUri, 2, 0, "FillerKey");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("HideKeyboardKey.qml")), pluginUri, 1, 0, "HideKeyboardKey");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("HideKeyboardKey.qml")), pluginUri, 2, 0, "HideKeyboardKey");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("KeyboardColumn.qml")), pluginUri, 1, 0, "KeyboardColumn");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("KeyboardColumn.qml")), pluginUri, 2, 0, "KeyboardColumn");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("KeyboardLayout.qml")), pluginUri, 1, 0, "KeyboardLayout");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("KeyboardLayout.qml")), pluginUri, 2, 0, "KeyboardLayout");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("KeyboardLayoutLoader.qml")), pluginUri, 1, 1, "KeyboardLayoutLoader");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("KeyboardLayoutLoader.qml")), pluginUri, 2, 0, "KeyboardLayoutLoader");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("Keyboard.qml")), pluginUri, 1, 0, "Keyboard");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("Keyboard.qml")), pluginUri, 2, 0, "Keyboard");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("KeyboardRow.qml")), pluginUri, 1, 0, "KeyboardRow");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("KeyboardRow.qml")), pluginUri, 2, 0, "KeyboardRow");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("Key.qml")), pluginUri, 1, 0, "Key");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("Key.qml")), pluginUri, 2, 0, "Key");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("MultiSoundEffect.qml")), pluginUri, 1, 1, "MultiSoundEffect");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("MultiSoundEffect.qml")), pluginUri, 2, 0, "MultiSoundEffect");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("MultitapInputMethod.qml")), pluginUri, 1, 0, "MultitapInputMethod");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("MultitapInputMethod.qml")), pluginUri, 2, 0, "MultitapInputMethod");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("NumberKey.qml")), pluginUri, 1, 0, "NumberKey");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("NumberKey.qml")), pluginUri, 2, 0, "NumberKey");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("ShiftKey.qml")), pluginUri, 1, 0, "ShiftKey");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("ShiftKey.qml")), pluginUri, 2, 0, "ShiftKey");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("SpaceKey.qml")), pluginUri, 1, 0, "SpaceKey");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("SpaceKey.qml")), pluginUri, 2, 0, "SpaceKey");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("SymbolModeKey.qml")), pluginUri, 1, 0, "SymbolModeKey");
-    qmlRegisterType(QUrl(componentsPath + QLatin1String("HandwritingModeKey.qml")), pluginUri, 1, 4, "HandwritingModeKey");
-    qmlRegisterType(QUrl(componentsPath + QLatin1String("TraceInputArea.qml")), pluginUri, 1, 4, "TraceInputArea");
-    qmlRegisterType(QUrl(componentsPath + QLatin1String("TraceInputKey.qml")), pluginUri, 1, 4, "TraceInputKey");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("SymbolModeKey.qml")), pluginUri, 2, 0, "SymbolModeKey");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("HandwritingModeKey.qml")), pluginUri, 2, 0, "HandwritingModeKey");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("TraceInputArea.qml")), pluginUri, 2, 0, "TraceInputArea");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("TraceInputKey.qml")), pluginUri, 2, 0, "TraceInputKey");
 
     if (system.compare(system, QLatin1String(pluginName), Qt::CaseInsensitive) == 0) {
         platformInputContext = new PlatformInputContext();

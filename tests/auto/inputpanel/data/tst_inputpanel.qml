@@ -101,6 +101,9 @@ Rectangle {
                         import QtQuick.Enterprise.VirtualKeyboard 1.3; \
                         InputPanel {}" },
                 { qml: "import QtQuick 2.0; \
+                        import QtQuick.Enterprise.VirtualKeyboard 2.0; \
+                        InputPanel {}" },
+                { qml: "import QtQuick 2.0; \
                         import QtQuick.Enterprise.VirtualKeyboard.Styles 1.0; \
                         KeyboardStyle {}" },
                 { qml: "import QtQuick 2.0; \
@@ -111,6 +114,9 @@ Rectangle {
                         KeyboardStyle {}" },
                 { qml: "import QtQuick 2.0; \
                         import QtQuick.Enterprise.VirtualKeyboard.Styles 1.3; \
+                        KeyboardStyle {}" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.Enterprise.VirtualKeyboard.Styles 2.0; \
                         KeyboardStyle {}" },
                 { qml: "import QtQuick 2.0; \
                         import QtQuick.Enterprise.VirtualKeyboard.Settings 1.0; \

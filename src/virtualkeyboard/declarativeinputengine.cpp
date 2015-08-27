@@ -467,7 +467,7 @@ QList<int> DeclarativeInputEngine::patternRecognitionModes() const
 
 /*!
     \qmlmethod Trace InputEngine::traceBegin(int patternRecognitionMode, var traceCaptureDeviceInfo, var traceScreenInfo)
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     Starts a trace interaction with the input engine.
 
@@ -487,7 +487,7 @@ QList<int> DeclarativeInputEngine::patternRecognitionModes() const
     The trace interaction is ended by calling the \l {InputEngine::traceEnd()} {InputEngine.traceEnd()} method.
 */
 /*!
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     Starts a trace interaction with the input engine.
 
@@ -795,14 +795,14 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent *timerEvent)
 
 /*!
     \qmlproperty list<int> InputEngine::patternRecognitionModes
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     The list of available pattern recognition modes.
 */
 
 /*!
     \property DeclarativeInputEngine::patternRecognitionModes
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
     \brief the list of available pattern recognition modes.
 
     The list of available pattern recognition modes.
@@ -902,7 +902,7 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent *timerEvent)
 
 /*!
     \qmlsignal void InputEngine::patternRecognitionModesChanged()
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     Indicates that the available pattern recognition modes have changed.
 
@@ -916,7 +916,7 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent *timerEvent)
 
 /*!
     \fn void DeclarativeInputEngine::patternRecognitionModesChanged()
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     Indicates that the available pattern recognition modes have changed.
 */

@@ -23,7 +23,7 @@
 #include <QtCore/QLibraryInfo>
 
 /*!
-    \qmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles 1.3
+    \qmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
 
     This module provides styling components for the Qt Virtual Keyboard.
 */
@@ -36,11 +36,15 @@ void StylesPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 1, 1, "KeyboardStyle");
     qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 1, 2, "KeyboardStyle");
     qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 1, 3, "KeyboardStyle");
+    qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 2, 0, "KeyboardStyle");
     qmlRegisterType(QUrl(path + QLatin1String("KeyIcon.qml")), uri, 1, 0, "KeyIcon");
+    qmlRegisterType(QUrl(path + QLatin1String("KeyIcon.qml")), uri, 2, 0, "KeyIcon");
     qmlRegisterType(QUrl(path + QLatin1String("KeyPanel.qml")), uri, 1, 0, "KeyPanel");
+    qmlRegisterType(QUrl(path + QLatin1String("KeyPanel.qml")), uri, 2, 0, "KeyPanel");
     qmlRegisterType(QUrl(path + QLatin1String("SelectionListItem.qml")), uri, 1, 0, "SelectionListItem");
-    qmlRegisterType(QUrl(path + QLatin1String("TraceInputKeyPanel.qml")), uri, 1, 4, "TraceInputKeyPanel");
-    qmlRegisterType(QUrl(path + QLatin1String("TraceCanvas.qml")), uri, 1, 4, "TraceCanvas");
+    qmlRegisterType(QUrl(path + QLatin1String("SelectionListItem.qml")), uri, 2, 0, "SelectionListItem");
+    qmlRegisterType(QUrl(path + QLatin1String("TraceInputKeyPanel.qml")), uri, 2, 0, "TraceInputKeyPanel");
+    qmlRegisterType(QUrl(path + QLatin1String("TraceCanvas.qml")), uri, 2, 0, "TraceCanvas");
 }
 
 void StylesPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

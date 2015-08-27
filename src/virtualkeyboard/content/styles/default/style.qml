@@ -17,8 +17,8 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.Enterprise.VirtualKeyboard 1.4
-import QtQuick.Enterprise.VirtualKeyboard.Styles 1.4
+import QtQuick.Enterprise.VirtualKeyboard 2.0
+import QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
 
 KeyboardStyle {
     id: currentStyle

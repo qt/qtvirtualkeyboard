@@ -38,7 +38,7 @@ import QtQuick 2.0
     \code
     import QtQuick 2.0
     import QtQuick.Layouts 1.0
-    import QtQuick.Enterprise.VirtualKeyboard 1.3
+    import QtQuick.Enterprise.VirtualKeyboard 2.0
 
     // file: layouts/en_GB/symbols.qml
 

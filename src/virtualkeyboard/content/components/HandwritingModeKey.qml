@@ -23,7 +23,7 @@ import QtQuick 2.0
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \inherits Key
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     \brief Hand writing mode key for keyboard layouts.
 

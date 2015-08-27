@@ -24,7 +24,7 @@ import QtQuick.Layouts 1.0
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \inherits Item
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     \brief A specialized key for collecting touch input data.
 

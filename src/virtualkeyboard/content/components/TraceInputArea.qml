@@ -18,14 +18,14 @@
 
 import QtQuick 2.0
 import QtQuick.Window 2.2
-import QtQuick.Enterprise.VirtualKeyboard 1.4
+import QtQuick.Enterprise.VirtualKeyboard 2.0
 
 /*!
     \qmltype TraceInputArea
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \inherits MultiPointTouchArea
-    \since QtQuick.Enterprise.VirtualKeyboard 1.4
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     \brief A specialized MultiPointTouchArea for collecting touch input data.
 
