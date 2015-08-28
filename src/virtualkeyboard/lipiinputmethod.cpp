@@ -20,6 +20,7 @@
 #include "lipisharedrecognizer.h"
 #include "declarativeinputengine.h"
 #include "declarativeinputcontext.h"
+#include "declarativeshifthandler.h"
 #include "virtualkeyboarddebug.h"
 #include "declarativetrace.h"
 
@@ -42,6 +43,8 @@
 #include <QFileInfo>
 #include <QDir>
 #endif
+
+#include <QtCore/qmath.h>
 
 #ifdef HAVE_HUNSPELL
 #define LipiInputMethodPrivateBase HunspellInputMethodPrivate
@@ -165,6 +168,7 @@ public:
         } else {
             addPointsToTraceGroup(trace);
         }
+        handleGesture();
         if (!traceList.isEmpty() && countActiveTraces() == 0)
             restartRecognition();
     }
@@ -177,6 +181,251 @@ public:
                 count++;
         }
         return count;
+    }
+
+    void handleGesture()
+    {
+        if (countActiveTraces() > 0)
+            return;
+
+        QVariantMap gesture = detectGesture();
+        if (gesture.isEmpty())
+            return;
+
+        VIRTUALKEYBOARD_DEBUG() << "LipiInputMethodPrivate::handleGesture():" << gesture;
+
+        if (gesture[QLatin1String("type")].toString() == QLatin1String("swipe")) {
+
+            static const int SWIPE_MIN_LENGTH = 25;         // mm
+            static const int SWIPE_ANGLE_THRESHOLD = 15;    // degrees +-
+
+            qreal swipeLength = gesture[QLatin1String("length_mm")].toReal();
+            if (swipeLength >= SWIPE_MIN_LENGTH) {
+
+                Q_Q(LipiInputMethod);
+                DeclarativeInputContext *ic = q->inputContext();
+                if (!ic)
+                    return;
+
+                qreal swipeAngle = gesture[QLatin1String("angle_degrees")].toReal();
+                int swipeTouchCount = gesture[QLatin1String("touch_count")].toInt();
+
+                // Swipe left
+                if (swipeAngle <= 180 + SWIPE_ANGLE_THRESHOLD && swipeAngle >= 180 - SWIPE_ANGLE_THRESHOLD) {
+                    if (swipeTouchCount == 1) {
+                        // Single swipe: backspace
+#ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
+                        dumpTraces();
+                        saveTraces(Qt::Key_Backspace, 100);
+#endif
+                        cancelRecognition();
+                        ic->inputEngine()->virtualKeyClick(Qt::Key_Backspace, QString(), Qt::NoModifier);
+                    } else if (swipeTouchCount == 2) {
+                        // Double swipe: reset word, or backspace
+                        cancelRecognition();
+                        if (!ic->preeditText().isEmpty()) {
+                            q->reset();
+                            ic->setPreeditText(QString());
+                        } else {
+                            ic->inputEngine()->virtualKeyClick(Qt::Key_Backspace, QString(), Qt::NoModifier);
+                        }
+                    }
+                    return;
+                }
+
+                // Swipe right
+                if (swipeAngle <= SWIPE_ANGLE_THRESHOLD || swipeAngle >= 360 - SWIPE_ANGLE_THRESHOLD) {
+                    if (swipeTouchCount == 1) {
+                        // Single swipe: space
+#ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
+                        dumpTraces();
+                        saveTraces(Qt::Key_Space, 100);
+#endif
+                        cancelRecognition();
+                        ic->inputEngine()->virtualKeyClick(Qt::Key_Space, QString(" "), Qt::NoModifier);
+                    } else if (swipeTouchCount == 2) {
+                        // Double swipe: commit word, or insert space
+                        cancelRecognition();
+#ifdef HAVE_HUNSPELL
+                        if (activeWordIndex != -1) {
+                            q->selectionListItemSelected(DeclarativeSelectionListModel::WordCandidateList, activeWordIndex);
+                            return;
+                        }
+#endif
+                        ic->inputEngine()->virtualKeyClick(Qt::Key_Space, QString(" "), Qt::NoModifier);
+                    }
+                    return;
+                }
+
+                // Swipe up
+                if (swipeAngle <= 270 + SWIPE_ANGLE_THRESHOLD && swipeAngle >= 270 - SWIPE_ANGLE_THRESHOLD) {
+                    if (swipeTouchCount == 1) {
+                        // Single swipe: toggle input mode
+                        cancelRecognition();
+                        DeclarativeInputEngine::InputMode inputMode = ic->inputEngine()->inputMode();
+                        inputMode = inputMode == DeclarativeInputEngine::Latin ?
+                                    DeclarativeInputEngine::Numeric : DeclarativeInputEngine::Latin;
+                        ic->inputEngine()->setInputMode(inputMode);
+                    } else if (swipeTouchCount == 2) {
+                        // Double swipe: toggle text case
+                        cancelRecognition();
+                        ic->shiftHandler()->toggleShift();
+                    }
+                    return;
+                }
+            }
+        }
+    }
+
+    QVariantMap detectGesture()
+    {
+        if (traceList.count() > 0 && traceList.count() < 3) {
+
+            // Swipe gesture detection
+            // =======================
+            //
+            // The following algorithm is based on the assumption that a
+            // vector composed of two arbitrary selected, but consecutive
+            // measuring points, and a vector composed of the first and last
+            // of the measuring points, are approximately in the same angle.
+            //
+            // If the measuring points are located very close to each other,
+            // the angle can fluctuate a lot. This has been taken into account
+            // by setting a minimum Euclidean distance between the measuring
+            // points.
+            //
+
+            // Minimum euclidean distance of a segment (in millimeters)
+            static const int MINIMUM_EUCLIDEAN_DISTANCE = 8;
+
+            // Maximum theta variance (in degrees)
+            static const qreal THETA_THRESHOLD = 25.0;
+
+            // Maximum width variance in multitouch swipe (+- in percent)
+            static const int MAXIMUM_WIDTH_VARIANCE = 20;
+
+            const int dpi = deviceInfo->getXDPI() >= 0 ? deviceInfo->getXDPI() : 96;
+            const qreal minimumEuclideanDistance = MINIMUM_EUCLIDEAN_DISTANCE / 25.4 * dpi;
+            static const qreal thetaThreshold = qDegreesToRadians(THETA_THRESHOLD);
+
+            QList<QVector2D> swipeVectors;
+
+            int traceIndex;
+            const int traceCount = traceList.size();
+            for (traceIndex = 0; traceIndex < traceCount; ++traceIndex) {
+
+                const DeclarativeTrace *trace = traceList.at(traceIndex);
+                const QVariantList &points = trace->points();
+                QVector2D swipeVector;
+                const int pointCount = points.count();
+                int pointIndex = 0;
+                if (pointCount >= 2) {
+
+                    QPointF startPosition = points.first().toPointF();
+                    swipeVector = QVector2D(points.last().toPointF() - startPosition);
+                    const qreal swipeLength = swipeVector.length();
+
+                    if (swipeLength >= minimumEuclideanDistance) {
+
+                        QPointF previousPosition = startPosition;
+                        qreal euclideanDistance = 0;
+                        for (pointIndex = 1; pointIndex < pointCount; ++pointIndex) {
+
+                            QPointF currentPosition(points.at(pointIndex).toPointF());
+
+                            euclideanDistance += QVector2D(currentPosition - previousPosition).length();
+                            if (euclideanDistance >= minimumEuclideanDistance) {
+
+                                // Set the angle (theta) between the sample vector and the swipe vector
+                                const QVector2D sampleVector(currentPosition - startPosition);
+                                const qreal theta = qAcos(QVector2D::dotProduct(swipeVector, sampleVector) / (swipeLength * sampleVector.length()));
+
+                                // Rejected when theta above threshold
+                                if (theta >= thetaThreshold) {
+                                    swipeVector = QVector2D();
+                                    break;
+                                }
+
+                                startPosition = currentPosition;
+                                euclideanDistance = 0;
+                            }
+
+                            previousPosition = currentPosition;
+                        }
+
+                        if (pointIndex < pointCount) {
+                            swipeVector = QVector2D();
+                            break;
+                        }
+
+                        // Check to see if angle and length matches to existing touch points
+                        if (!swipeVectors.isEmpty()) {
+                            bool matchesToExisting = true;
+                            const qreal minimumSwipeLength = (swipeLength * (100.0 - MAXIMUM_WIDTH_VARIANCE) / 100.0);
+                            const qreal maximumSwipeLength = (swipeLength * (100.0 + MAXIMUM_WIDTH_VARIANCE) / 100.0);
+                            foreach (const QVector2D &otherSwipeVector, swipeVectors) {
+                                const qreal otherSwipeLength = otherSwipeVector.length();
+                                const qreal theta = qAcos(QVector2D::dotProduct(swipeVector, otherSwipeVector) / (swipeLength * otherSwipeLength));
+
+                                if (theta >= thetaThreshold) {
+                                    matchesToExisting = false;
+                                    break;
+                                }
+
+                                if (otherSwipeLength < minimumSwipeLength || otherSwipeLength > maximumSwipeLength) {
+                                    matchesToExisting = false;
+                                    break;
+                                }
+                            }
+
+                            if (!matchesToExisting) {
+                                swipeVector = QVector2D();
+                                break;
+                            }
+                        }
+                    } else {
+                        swipeVector = QVector2D();
+                    }
+                }
+
+                if (swipeVector.isNull())
+                    break;
+
+                swipeVectors.append(swipeVector);
+            }
+
+            if (swipeVectors.size() == traceCount) {
+
+                QVariantMap swipeGesture;
+
+                // Get swipe angle from the first vector:
+                //    0 degrees == right
+                //   90 degrees == down
+                //  180 degrees == left
+                //  270 degrees == up
+                QList<QVector2D>::ConstIterator swipeVector = swipeVectors.constBegin();
+                qreal swipeLength = swipeVector->length();
+                qreal swipeAngle = qAcos(swipeVector->x() / swipeLength);
+                if (swipeVector->y() < 0)
+                    swipeAngle = 2 * M_PI - swipeAngle;
+
+                // Calculate an average length of the vector
+                for (++swipeVector; swipeVector != swipeVectors.end(); ++swipeVector)
+                    swipeLength += swipeVector->length();
+                swipeLength /= traceCount;
+
+                swipeGesture[QLatin1String("type")] = QLatin1String("swipe");
+                swipeGesture[QLatin1String("angle")] = swipeAngle;
+                swipeGesture[QLatin1String("angle_degrees")] = qRadiansToDegrees(swipeAngle);
+                swipeGesture[QLatin1String("length")] = swipeLength;
+                swipeGesture[QLatin1String("length_mm")] = swipeLength / dpi * 25.4;
+                swipeGesture[QLatin1String("touch_count")] = traceCount;
+
+                return swipeGesture;
+            }
+        }
+
+        return QVariantMap();
     }
 
     void clearTraces()
@@ -287,26 +536,9 @@ public:
         const QChar chUpper = ch.toUpper();
 #ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
         // In recording mode, the text case must match with the current text case
-        if (!ch.isLetter() || (ch.isUpper() == (textCase == DeclarativeInputEngine::Upper))) {
-            QStringList homeLocations = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-            if (!homeLocations.isEmpty()) {
-                uint confidence = qRound(result["confidence"].toDouble() * 100);
-                QString filePath = QStringLiteral("%1/%2").arg(homeLocations.at(0)).arg("VIRTUAL_KEYBOARD_TRACES");
-                QDir fileDir(filePath);
-                if (!fileDir.exists())
-                    fileDir.mkpath(filePath);
-                if (fileDir.exists()) {
-                    QString fileName;
-                    int fileIndex = 0;
-                    do {
-                        fileName = fileDir.absoluteFilePath(QStringLiteral("%1_%2_%3.txt").arg((uint)ch.unicode()).arg(confidence, 3, 10, QLatin1Char('0')).arg(fileIndex++));
-                    } while (QFileInfo(fileName).exists());
-                    saveTraces(fileName);
-                }
-            }
-        } else {
+        if (ch.isLetter() && (ch.isUpper() != (textCase == DeclarativeInputEngine::Upper)))
             return;
-        }
+        saveTraces(ch.unicode(), qRound(result["confidence"].toDouble() * 100));
 #endif
         Q_Q(LipiInputMethod);
         q->inputContext()->inputEngine()->virtualKeyClick((Qt::Key)chUpper.unicode(),
@@ -317,8 +549,8 @@ public:
 #ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
     QStringList recordedData;
 
-    void dumpTraces() {
-
+    void dumpTraces()
+    {
         recordedData.clear();
         recordedData.append(QStringLiteral(".VERSION 1.0"));
         recordedData.append(QStringLiteral(".HIERARCHY CHARACTER"));
@@ -357,7 +589,22 @@ public:
         }
     }
 
-    void saveTraces(const QString &fileName) {
+    void saveTraces(uint unicode, uint confidence)
+    {
+        QString fileName;
+        QStringList homeLocations = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+        if (!homeLocations.isEmpty()) {
+            QString filePath = QStringLiteral("%1/%2").arg(homeLocations.at(0)).arg("VIRTUAL_KEYBOARD_TRACES");
+            QDir fileDir(filePath);
+            if (!fileDir.exists())
+                fileDir.mkpath(filePath);
+            if (fileDir.exists()) {
+                int fileIndex = 0;
+                do {
+                    fileName = fileDir.absoluteFilePath(QStringLiteral("%1_%2_%3.txt").arg(unicode).arg(confidence, 3, 10, QLatin1Char('0')).arg(fileIndex++));
+                } while (QFileInfo(fileName).exists());
+            }
+        }
         QString dataStr(recordedData.join('\n'));
         dataStr.append('\n');
         QFile file(fileName);
