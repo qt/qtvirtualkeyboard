@@ -6,6 +6,15 @@ VERSION = 1.0.0
 CONFIG += staticlib
 CONFIG += warn_off
 
+build_pass {
+    CONFIG(debug, debug|release): SUBPATH = debug
+    else: SUBPATH = release
+} else {
+    debug_and_release: CONFIG += build_all
+}
+
+DESTDIR = $$SUBPATH
+
 INCLUDEPATH += \
     include
 

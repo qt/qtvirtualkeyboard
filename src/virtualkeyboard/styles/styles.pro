@@ -1,11 +1,10 @@
 TEMPLATE = lib
 TARGET = qtvirtualkeyboardstylesplugin
-INSTALL_PATH = $$[QT_INSTALL_QML]/QtQuick/Enterprise/VirtualKeyboard/Styles
+TARGETPATH = QtQuick/Enterprise/VirtualKeyboard/Styles
 QT += qml quick svg
 CONFIG += plugin
 
-target.path = $$INSTALL_PATH
-INSTALLS += target
+CXX_MODULE = qml
 
 SOURCES += \
     svgimageprovider.cpp \
@@ -21,7 +20,7 @@ OTHER_FILES += \
 other.files = \
     plugins.qmltypes \
     qmldir
-other.path = $$INSTALL_PATH
+other.path = $$[QT_INSTALL_QML]/$$TARGETPATH
 INSTALLS += other
 
 RESOURCES += \
@@ -33,3 +32,5 @@ win32 {
     QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard (Qt $$QT_VERSION)"
     QMAKE_TARGET_DESCRIPTION = "Virtual Keyboard for Qt."
 }
+
+load(qml_plugin)

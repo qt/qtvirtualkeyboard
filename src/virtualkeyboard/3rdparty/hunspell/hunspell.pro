@@ -1,7 +1,5 @@
 TEMPLATE = lib
 QT -= core gui
-TARGET = hunspell
-VERSION = 1.3.3
 DEFINES += BUILDING_LIBHUNSPELL
 CONFIG += dll
 #CONFIG += staticlib
@@ -10,7 +8,24 @@ debug {
     DEFINES += HUNSPELL_WARNING_ON
 }
 
+build_pass {
+    CONFIG(debug, debug|release) {
+        SUBPATH = debug
+        win32: TARGET_SUFFIX = d
+    } else {
+        SUBPATH = release
+    }
+} else {
+    debug_and_release: CONFIG += build_all
+    else:win32:CONFIG(debug, debug|release): TARGET_SUFFIX = d
+}
+
+DESTDIR = $$SUBPATH
+
+TARGET = hunspell$$TARGET_SUFFIX
+
 dll {
+    win32: CONFIG += skip_target_version_ext
     target.path = $$[QT_INSTALL_LIBS]
     INSTALLS += target
 }

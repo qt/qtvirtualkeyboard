@@ -1,13 +1,9 @@
 TEMPLATE = lib
 TARGET  = qtvirtualkeyboardplugin
-INSTALL_PATH = $$[QT_INSTALL_PLUGINS]/platforminputcontexts
 DATAPATH = $$[QT_INSTALL_DATA]/qtvirtualkeyboard
 
 QMAKE_DOCS = $$PWD/doc/qtvirtualkeyboard.qdocconf
 include(doc/doc.pri)
-
-target.path = $$INSTALL_PATH
-INSTALLS += target
 
 QT += quick gui gui-private core-private
 
@@ -98,6 +94,17 @@ HEADERS += appinputpanel.h
 
 qtquickcompiler: DEFINES += COMPILING_QML
 
+build_pass {
+    CONFIG(debug, debug|release) {
+        SUBPATH = debug
+        win32: TARGET_SUFFIX = d
+    } else {
+        SUBPATH = release
+    }
+} else {
+    !debug_and_release:win32:CONFIG(debug, debug|release): TARGET_SUFFIX = d
+}
+
 !disable-hunspell {
     exists(3rdparty/hunspell/src/hunspell/hunspell.h) {
         message(Found Hunspell library!)
@@ -106,9 +113,7 @@ qtquickcompiler: DEFINES += COMPILING_QML
         DEFINES += HAVE_HUNSPELL
         INCLUDEPATH += 3rdparty/hunspell/src
         DEPENDPATH += 3rdparty/hunspell/src
-        win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/3rdparty/hunspell/release/ -lhunspell1
-        else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/3rdparty/hunspell/debug/ -lhunspell1
-        else: LIBS += -L$$OUT_PWD/3rdparty/hunspell/ -lhunspell
+        LIBS += -L$$OUT_PWD/3rdparty/hunspell/$$SUBPATH -lhunspell$$TARGET_SUFFIX
         exists(3rdparty/hunspell/data) {
             hunspell_data.files = 3rdparty/hunspell/data/*.dic 3rdparty/hunspell/data/*.aff
             hunspell_data.path = $$DATAPATH/hunspell
@@ -137,9 +142,7 @@ pinyin {
     DEFINES += HAVE_PINYIN
     INCLUDEPATH += 3rdparty/pinyin/include
     DEPENDPATH += 3rdparty/pinyin/include
-    win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/3rdparty/pinyin/release/ -lpinyin
-    else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/3rdparty/pinyin/debug/ -lpinyin
-    else: LIBS += -L$$OUT_PWD/3rdparty/pinyin/ -lpinyin
+    LIBS += -L$$OUT_PWD/3rdparty/pinyin/$$SUBPATH -lpinyin
     pinyin_data.files = $$PWD/3rdparty/pinyin/data/dict_pinyin.dat
     pinyin_data.path = $$DATAPATH/pinyin
     INSTALLS += pinyin_data
@@ -162,9 +165,7 @@ openwnn {
     INCLUDEPATH += 3rdparty/openwnn/wnnEngine/include
     DEPENDPATH += 3rdparty/openwnn/wnnEngine/include
     # OpenWNN engine
-    win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/3rdparty/openwnn/release/ -lopenwnn
-    else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/3rdparty/openwnn/debug/ -lopenwnn
-    else: LIBS += -L$$OUT_PWD/3rdparty/openwnn/ -lopenwnn
+    LIBS += -L$$OUT_PWD/3rdparty/openwnn/$$SUBPATH -lopenwnn
 }
 
 lipi-toolkit {
@@ -187,3 +188,6 @@ lipi-toolkit {
 }
 
 arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
+
+PLUGIN_TYPE = platforminputcontexts
+load(qt_plugin)
