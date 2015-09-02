@@ -10,4 +10,5 @@ TESTDATA = $$PWD/data/*
 
 OTHER_FILES += \
     $$PWD/data/inputpanel/inputpanel.qml \
+    $$PWD/data/inputpanel/handwritinginputpanel.qml \
     $$PWD/data/tst_inputpanel.qml \

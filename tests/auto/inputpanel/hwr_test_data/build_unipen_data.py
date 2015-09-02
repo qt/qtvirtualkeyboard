@@ -25,7 +25,7 @@ import datetime
 import getopt
 import re
 
-unipen_file_pattern = re.compile(r'(^[0-9]{2,4}).*\.txt')
+unipen_file_pattern = re.compile(r'(^[0-9]{2,9}).*\.txt')
 
 def print_header():
     print """/******************************************************************************

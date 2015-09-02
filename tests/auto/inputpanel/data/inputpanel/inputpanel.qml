@@ -29,7 +29,7 @@ InputPanel {
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.bottom: parent.bottom
-    visible: Qt.inputMethod.visible
+    visible: active
 
     property var testcase
     property var virtualKeyPressPoint: null
@@ -465,13 +465,13 @@ InputPanel {
         if (!inputPanel.keyboard.handwritingMode)
             return false
         var hwrInputArea = Utils.findChildByProperty(keyboard, "objectName", "hwrInputArea", null)
+        inputMethodResultSpy.clear()
         if (!Handwriting.emulate(testcase, hwrInputArea, ch, instant)) {
             if (virtualKeyClick(ch))
                 return true
             console.warn("Cannot produce the symbol '%1' in handwriting mode".arg(ch))
             return false
         }
-        inputMethodResultSpy.clear()
         inputMethodResultSpy.wait(3000)
         return inputMethodResultSpy.count > 0
     }

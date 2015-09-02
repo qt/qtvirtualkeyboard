@@ -23,6 +23,7 @@ Rectangle {
     id: container
     width: 400
     height: 400
+    color: "blue"
 
     Component {
         id: textInputComp
@@ -30,6 +31,7 @@ Rectangle {
             anchors.fill: parent
             visible: true
             focus: true
+            color: "white"
         }
     }
 
@@ -39,14 +41,19 @@ Rectangle {
         when: windowShown
 
         property var inputPanel: null
+        property var handwritingInputPanel: null
         property var textInput: null
 
         function initTestCase() {
             var inputPanelComp = Qt.createComponent("inputpanel/inputpanel.qml")
             compare(inputPanelComp.status, Component.Ready, "Failed to create component: "+inputPanelComp.errorString())
-            inputPanel = inputPanelComp.createObject(container)
-            inputPanel.testcase = testcase
+            inputPanel = inputPanelComp.createObject(container, {"testcase": testcase})
             inputPanel.keyboardLayoutsAvailableSpy.wait()
+
+            var handwritingInputPanelComp = Qt.createComponent("inputpanel/handwritinginputpanel.qml")
+            compare(handwritingInputPanelComp.status, Component.Ready, "Failed to create component: "+handwritingInputPanelComp.errorString())
+            handwritingInputPanel = handwritingInputPanelComp.createObject(container, {"testcase": testcase, "inputPanel": inputPanel})
+
             textInput = textInputComp.createObject(container)
         }
 
@@ -55,6 +62,8 @@ Rectangle {
                 textInput.destroy()
             if (inputPanel)
                 inputPanel.destroy()
+            if (handwritingInputPanel)
+                handwritingInputPanel.destroy()
         }
 
         function prepareTest(data) {
@@ -69,6 +78,7 @@ Rectangle {
                 textInput.text = ""
             }
             textInput.inputMethodHints = data !== undefined && data.hasOwnProperty("initInputMethodHints") ? data.initInputMethodHints : Qt.ImhNone
+            handwritingInputPanel.available = false
             textInput.forceActiveFocus()
             inputPanel.setHandwritingMode(false)
             var locale = data !== undefined && data.hasOwnProperty("initLocale") ? data.initLocale : "en_GB"
@@ -848,6 +858,60 @@ Rectangle {
             }
             Qt.inputMethod.commit()
 
+            compare(textInput.text, data.outputText)
+        }
+
+        function test_hwrFullScreenInputSequence_data() {
+            return [
+                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 0, inputSequence: "abcdefghij", outputText: "Abcdefghij" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 1, inputSequence: "klmnopqrst", outputText: "klmnopqrst" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 3, inputSequence: "uvwxyz", outputText: "UVWXYZ" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhPreferNumbers, toggleShiftCount: 0, inputSequence: "0123456789", outputText: "0123456789" },
+            ]
+        }
+
+        function test_hwrFullScreenInputSequence(data) {
+            prepareTest(data)
+
+            if (!handwritingInputPanel.enabled)
+                expectFail("", "Handwriting not enabled")
+            verify(handwritingInputPanel.enabled)
+            handwritingInputPanel.available = true
+
+            for (var i = 0; i < data.toggleShiftCount; i++) {
+                inputPanel.toggleShift()
+            }
+            for (var inputIndex in data.inputSequence) {
+                verify(handwritingInputPanel.emulateHandwriting(data.inputSequence[inputIndex], true))
+            }
+
+            if (handwritingInputPanel.wordCandidatePopupListSearchSuggestion(data.outputText)) {
+                handwritingInputPanel.wordCandidatePopupListSelectCurrentItem()
+            }
+
+            Qt.inputMethod.commit()
+            compare(textInput.text, data.outputText)
+        }
+
+        function test_hwrFullScreenGestures_data() {
+            return [
+                { initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: ["a","b","c",Qt.Key_Backspace,Qt.Key_Space,"c"], outputText: "Ab c" },
+            ]
+        }
+
+        function test_hwrFullScreenGestures(data) {
+            prepareTest(data)
+
+            if (!handwritingInputPanel.enabled)
+                expectFail("", "Handwriting not enabled")
+            verify(handwritingInputPanel.enabled)
+            handwritingInputPanel.available = true
+
+            for (var inputIndex in data.inputSequence) {
+                verify(handwritingInputPanel.emulateHandwriting(data.inputSequence[inputIndex], true))
+            }
+
+            Qt.inputMethod.commit()
             compare(textInput.text, data.outputText)
         }
     }

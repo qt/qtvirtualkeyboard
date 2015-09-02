@@ -21,11 +21,14 @@
 .import "unipen_data.js" as UnipenData
 
 function emulate(testcase, hwrInputArea, ch, instant) {
-    var chKey = "0x" + (ch.charCodeAt(0) + 0x10000).toString(16).substr(-4)
+    var chKey = (((typeof ch == "number") ? ch : ch.charCodeAt(0)) + 0x100000000).toString(16).substr(1)
+    while (chKey.length > 4 && chKey[0] === '0')
+        chKey = chKey.substring(1)
+    chKey = "0x" + chKey
     if (!UnipenData.unipenData.hasOwnProperty(chKey))
         return false
     var chData = UnipenData.unipenData[chKey]
-    var scale = hwrInputArea.height / chData[".Y_DIM"]
+    var scale = Math.min(hwrInputArea.width / chData[".X_DIM"], hwrInputArea.height / chData[".Y_DIM"])
     var strokes = UnipenData.unipenData[chKey][".PEN"]
     var boundingBox = calculateBoundingBox(strokes)
     var boxOffset = Qt.point(-boundingBox.x * scale + (hwrInputArea.width - boundingBox.width * scale) / 2, -boundingBox.y * scale + (hwrInputArea.height - boundingBox.height * scale) / 2)
