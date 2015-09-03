@@ -12,7 +12,11 @@ INSTALLS += target
 QT += quick gui gui-private core-private
 
 CONFIG += plugin
-win32: CONFIG += no-pkg-config
+win32 {
+    CONFIG += no-pkg-config skip_target_version_ext
+    VERSION = $$QT_VERSION
+}
+
 !contains(CONFIG, no-pkg-config): CONFIG += link_pkgconfig
 
 SOURCES += platforminputcontext.cpp \
