@@ -21,6 +21,7 @@ import QtQuick 2.0
 import QtQuick.Enterprise.VirtualKeyboard 2.0
 import QtQuick.Enterprise.VirtualKeyboard.Settings 1.2
 import "handwriting.js" as Handwriting
+import "utils.js" as Utils
 
 InputPanel {
     id: inputPanel
@@ -36,14 +37,14 @@ InputPanel {
     readonly property bool toggleShiftEnabled: InputContext.shiftHandler.toggleShiftEnabled
     readonly property string locale: InputContext.locale
     readonly property int inputMode: InputContext.inputEngine.inputMode
-    readonly property var keyboard: findChildByProperty(inputPanel, "objectName", "keyboard", null)
+    readonly property var keyboard: Utils.findChildByProperty(inputPanel, "objectName", "keyboard", null)
     readonly property bool handwritingMode: keyboard.handwritingMode
-    readonly property var keyboardLayoutLoader: findChildByProperty(keyboard, "objectName", "keyboardLayoutLoader", null)
-    readonly property var keyboardInputArea: findChildByProperty(keyboard, "objectName", "keyboardInputArea", null)
-    readonly property var characterPreviewBubble: findChildByProperty(keyboard, "objectName", "characterPreviewBubble", null)
-    readonly property var alternativeKeys: findChildByProperty(keyboard, "objectName", "alternativeKeys", null)
-    readonly property var naviationHighlight: findChildByProperty(keyboard, "objectName", "naviationHighlight", null)
-    readonly property var wordCandidateView: findChildByProperty(keyboard, "objectName", "wordCandidateView", null)
+    readonly property var keyboardLayoutLoader: Utils.findChildByProperty(keyboard, "objectName", "keyboardLayoutLoader", null)
+    readonly property var keyboardInputArea: Utils.findChildByProperty(keyboard, "objectName", "keyboardInputArea", null)
+    readonly property var characterPreviewBubble: Utils.findChildByProperty(keyboard, "objectName", "characterPreviewBubble", null)
+    readonly property var alternativeKeys: Utils.findChildByProperty(keyboard, "objectName", "alternativeKeys", null)
+    readonly property var naviationHighlight: Utils.findChildByProperty(keyboard, "objectName", "naviationHighlight", null)
+    readonly property var wordCandidateView: Utils.findChildByProperty(keyboard, "objectName", "wordCandidateView", null)
     readonly property bool keyboardLayoutsAvailable: keyboard.availableLocaleIndices.length > 0 && keyboard.availableLocaleIndices.indexOf(-1) === -1
     property alias keyboardLayoutsAvailableSpy: keyboardLayoutsAvailableSpy
     property alias keyboardLayoutLoaderItemSpy: keyboardLayoutLoaderItemSpy
@@ -203,13 +204,13 @@ InputPanel {
     }
 
     function findVirtualKey(key) {
-        return findChildByProperty(keyboardLayoutLoader, (typeof key == "number") ? "key" : "text", key, null)
+        return Utils.findChildByProperty(keyboardLayoutLoader, (typeof key == "number") ? "key" : "text", key, null)
     }
 
     function findVirtualKeyAlternative(key) {
         if (typeof key != "string")
             return null
-        return findChildByProperty(keyboardLayoutLoader, "alternativeKeys", key, function(propertyValue, key) { return propertyValue.indexOf(key) !== -1 })
+        return Utils.findChildByProperty(keyboardLayoutLoader, "alternativeKeys", key, function(propertyValue, key) { return propertyValue.indexOf(key) !== -1 })
     }
 
     function virtualKeyPressOnCurrentLayout(key) {
@@ -284,7 +285,7 @@ InputPanel {
 
     function virtualKeyDrag(key) {
         if (virtualKeyPressPoint !== null) {
-            var keyObj = findChildByProperty(keyboardLayoutLoader, (typeof key == "number") ? "key" : "text", key, null)
+            var keyObj = Utils.findChildByProperty(keyboardLayoutLoader, (typeof key == "number") ? "key" : "text", key, null)
             if (keyObj !== null) {
                 virtualKeyPressPoint = inputPanel.mapFromItem(keyObj, keyObj.width / 2, keyObj.height / 2)
                 testcase.mouseMove(inputPanel, virtualKeyPressPoint.x, virtualKeyPressPoint.y)
@@ -463,7 +464,7 @@ InputPanel {
     function emulateHandwriting(ch, instant) {
         if (!inputPanel.keyboard.handwritingMode)
             return false
-        var hwrInputArea = findChildByProperty(keyboard, "objectName", "hwrInputArea", null)
+        var hwrInputArea = Utils.findChildByProperty(keyboard, "objectName", "hwrInputArea", null)
         if (!Handwriting.emulate(testcase, hwrInputArea, ch, instant)) {
             if (virtualKeyClick(ch))
                 return true
