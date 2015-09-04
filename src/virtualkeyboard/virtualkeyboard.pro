@@ -182,8 +182,9 @@ lipi-toolkit {
     INCLUDEPATH += \
         3rdparty/lipi-toolkit/src/include \
         3rdparty/lipi-toolkit/src/util/lib
-    LIBS += -L$$OUT_PWD/3rdparty/lipi-toolkit/src/lib -lshaperecommon -lltkcommon -lltkutil
+    LIBS += -L$$OUT_PWD/3rdparty/lipi-toolkit/src/lib/$$SUBPATH -lshaperecommon -lltkcommon -lltkutil
     win32: LIBS += Advapi32.lib
+    else: LIBS += -ldl
     record-trace-input: DEFINES += QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
 }
 

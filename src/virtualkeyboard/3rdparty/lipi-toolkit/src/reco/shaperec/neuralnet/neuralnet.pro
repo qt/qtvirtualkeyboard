@@ -5,9 +5,21 @@ CONFIG += exceptions
 CONFIG += warn_off
 CONFIG += plugin
 
-DESTDIR = ../../../lib
+build_pass {
+    CONFIG(debug, debug|release) {
+        SUBPATH = debug
+        win32: TARGET_SUFFIX = d
+    } else {
+        SUBPATH = release
+    }
+} else {
+    debug_and_release: CONFIG += build_all
+    else:win32:CONFIG(debug, debug|release): TARGET_SUFFIX = d
+}
 
-TARGET = neuralnet
+DESTDIR = ../../../lib/$$SUBPATH
+
+TARGET = neuralnet$$TARGET_SUFFIX
 
 target.path = $$[QT_INSTALL_DATA]/qtvirtualkeyboard/lipi_toolkit/lib
 INSTALLS += target
@@ -26,7 +38,7 @@ SOURCES += \
     NeuralNet.cpp \
     NeuralNetShapeRecognizer.cpp \
 
-LIBS += -L$$OUT_PWD/../../../lib -lshaperecommon -lltkcommon -lltkutil -lfeatureextractorcommon
+LIBS += -L$$OUT_PWD/../../../lib/$$SUBPATH -lshaperecommon -lltkcommon -lltkutil -lfeatureextractorcommon
 
 win32 {
     DEFINES += NEURALNET_EXPORTS

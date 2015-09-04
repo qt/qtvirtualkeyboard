@@ -5,9 +5,21 @@ CONFIG += exceptions
 CONFIG += warn_off
 CONFIG += plugin
 
-DESTDIR = ../../../lib
+build_pass {
+    CONFIG(debug, debug|release) {
+        SUBPATH = debug
+        win32: TARGET_SUFFIX = d
+    } else {
+        SUBPATH = release
+    }
+} else {
+    debug_and_release: CONFIG += build_all
+    else:win32:CONFIG(debug, debug|release): TARGET_SUFFIX = d
+}
 
-TARGET = preproc
+DESTDIR = ../../../lib/$$SUBPATH
+
+TARGET = preproc$$TARGET_SUFFIX
 
 target.path = $$[QT_INSTALL_DATA]/qtvirtualkeyboard/lipi_toolkit/lib
 INSTALLS += target
@@ -24,7 +36,7 @@ SOURCES += \
     LTKPreprocessor.cpp \
     preprocessing.cpp \
 
-LIBS += -L$$OUT_PWD/../../../lib -lshaperecommon -lltkcommon -lltkutil
+LIBS += -L$$OUT_PWD/../../../lib/$$SUBPATH -lshaperecommon -lltkcommon -lltkutil
 
 win32 {
     DEFINES += PREPROCESSING_EXPORTS

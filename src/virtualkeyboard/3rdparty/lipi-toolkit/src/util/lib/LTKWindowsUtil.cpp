@@ -97,8 +97,11 @@ int LTKWindowsUtil::loadSharedLib(const string & lipiRoot,
     string sharedLibraryPath = "";
     
 	//	construct the path for the recogniser DLL
-    sharedLibraryPath = lipiRoot + "\\" + "lib" + "\\" + sharedLibName + ".dll";
-
+    sharedLibraryPath = lipiRoot + "\\" + "lib" + "\\" + sharedLibName +
+#ifndef NDEBUG
+        "d"
+#endif
+        ".dll";
     // Load the DLL
     *libHandle = (void*)LoadLibrary(sharedLibraryPath.c_str());
 
@@ -547,7 +550,11 @@ int LTKWindowsUtil::getSystemTimeString(string& outStr)
 
 void* LTKWindowsUtil::getLibraryHandle(const string& libName)
 {
-    string libNameWindows = libName + ".dll";
+    string libNameWindows = libName +
+#ifndef NDEBUG
+        "d"
+#endif
+        ".dll";
     
     void* libHandle =  NULL;
 

@@ -5,9 +5,21 @@ CONFIG += exceptions
 CONFIG += warn_off
 CONFIG += plugin
 
-DESTDIR = ../../../../lib
+build_pass {
+    CONFIG(debug, debug|release) {
+        SUBPATH = debug
+        win32: TARGET_SUFFIX = d
+    } else {
+        SUBPATH = release
+    }
+} else {
+    debug_and_release: CONFIG += build_all
+    else:win32:CONFIG(debug, debug|release): TARGET_SUFFIX = d
+}
 
-TARGET = l7
+DESTDIR = ../../../../lib/$$SUBPATH
+
+TARGET = l7$$TARGET_SUFFIX
 
 target.path = $$[QT_INSTALL_DATA]/qtvirtualkeyboard/lipi_toolkit/lib
 INSTALLS += target
@@ -27,7 +39,7 @@ SOURCES += \
     L7ShapeFeature.cpp \
     L7ShapeFeatureExtractor.cpp \
 
-LIBS += -L$$OUT_PWD/../../../../lib -lltkcommon -lltkutil -lfeatureextractorcommon
+LIBS += -L$$OUT_PWD/../../../../lib/$$SUBPATH -lltkcommon -lltkutil -lfeatureextractorcommon
 
 win32 {
     DEFINES += L7_EXPORTS
