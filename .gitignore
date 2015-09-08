@@ -5,6 +5,10 @@ examples/quick/enterprise/virtualkeyboard/virtualkeyboard/virtualkeyboard
 !src/virtualkeyboard/3rdparty/hunspell/hunspell.pro
 src/virtualkeyboard/3rdparty/hunspell/*
 src/virtualkeyboard/3rdparty/hunspell/doc/html
+src/virtualkeyboard/3rdparty/t9write/build_*
+src/virtualkeyboard/3rdparty/t9write/databases
+src/virtualkeyboard/3rdparty/t9write/doc
+src/virtualkeyboard/3rdparty/t9write/example
 
 *.pro.user
 *.a

@@ -36,6 +36,9 @@
 #ifdef HAVE_LIPI_TOOLKIT
 #include "lipiinputmethod.h"
 #endif
+#ifdef HAVE_T9WRITE
+#include "t9writeinputmethod.h"
+#endif
 #include "declarativeinputmethod.h"
 #include "declarativeselectionlistmodel.h"
 #include "enterkeyaction.h"
@@ -67,7 +70,7 @@ static QObject *createInputContextModule(QQmlEngine *engine, QJSEngine *scriptEn
 #ifdef HAVE_OPENWNN
             << QLatin1String("JapaneseInputMethod")
 #endif
-#ifdef HAVE_LIPI_TOOLKIT
+#if defined(HAVE_LIPI_TOOLKIT) || defined(HAVE_T9WRITE)
             << QLatin1String("HandwritingInputMethod")
 #endif
                ;
@@ -86,6 +89,9 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     Q_INIT_RESOURCE(content);
     Q_INIT_RESOURCE(default_style);
     Q_INIT_RESOURCE(retro_style);
+#ifdef HAVE_T9WRITE
+    Q_INIT_RESOURCE(t9write_db);
+#endif
 
     if (!qEnvironmentVariableIsSet(inputMethodEnvVarName) || qgetenv(inputMethodEnvVarName) != pluginName)
         return Q_NULLPTR;
@@ -122,6 +128,9 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
 #endif
 #ifdef HAVE_LIPI_TOOLKIT
     qmlRegisterType<LipiInputMethod>(pluginUri, 2, 0, "HandwritingInputMethod");
+#endif
+#ifdef HAVE_T9WRITE
+    qmlRegisterType<T9WriteInputMethod>(pluginUri, 2, 0, "HandwritingInputMethod");
 #endif
     qmlRegisterType<EnterKeyActionAttachedType>();
     qmlRegisterType<EnterKeyAction>(pluginUri, 1, 0, "EnterKeyAction");

@@ -168,6 +168,8 @@ openwnn {
     LIBS += -L$$OUT_PWD/3rdparty/openwnn/$$SUBPATH -lopenwnn
 }
 
+lipi-toolkit:t9write: error("Conflicting configuration flags: lipi-toolkit and t9write. Please use either one, but not both at the same time.")
+
 lipi-toolkit {
     CONFIG += exceptions
     SOURCES += \
@@ -186,6 +188,22 @@ lipi-toolkit {
     win32: LIBS += Advapi32.lib
     else: LIBS += -ldl
     record-trace-input: DEFINES += QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
+}
+
+t9write {
+    include(3rdparty/t9write/t9write-build.pri)
+    SOURCES += \
+        t9writeinputmethod.cpp \
+        t9writeworker.cpp
+    HEADERS += \
+        t9writeinputmethod.h \
+        t9writeworker.h
+    DEFINES += HAVE_T9WRITE
+    INCLUDEPATH += \
+        3rdparty/t9write/$$T9WRITE_BUILD_DIR/api \
+        3rdparty/t9write/$$T9WRITE_BUILD_DIR/public
+    LIBS += -L$$OUT_PWD/3rdparty/t9write/$$SUBPATH -lt9write_db
+    LIBS += $$T9WRITE_ALPHABETIC_OBJ
 }
 
 arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
