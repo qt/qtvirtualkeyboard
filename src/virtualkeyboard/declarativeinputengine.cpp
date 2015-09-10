@@ -466,7 +466,7 @@ QList<int> DeclarativeInputEngine::patternRecognitionModes() const
 }
 
 /*!
-    \qmlmethod Trace InputEngine::traceBegin(int patternRecognitionMode, var traceCaptureDeviceInfo, var traceScreenInfo)
+    \qmlmethod Trace InputEngine::traceBegin(int traceId, int patternRecognitionMode, var traceCaptureDeviceInfo, var traceScreenInfo)
     \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     Starts a trace interaction with the input engine.
@@ -521,7 +521,7 @@ DeclarativeTrace *DeclarativeInputEngine::traceBegin(int traceId, DeclarativeInp
         return 0;
     if (!d->inputMethod->patternRecognitionModes().contains(patternRecognitionMode))
         return 0;
-    DeclarativeTrace *trace = d->inputMethod->traceBegin(patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
+    DeclarativeTrace *trace = d->inputMethod->traceBegin(traceId, patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
     if (trace)
         trace->setTraceId(traceId);
     return trace;

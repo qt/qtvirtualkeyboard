@@ -160,12 +160,13 @@
 */
 
 /*!
-    \qmlmethod Trace InputMethod::traceBegin(var traceCaptureDeviceInfo, var traceScreenInfo)
+    \qmlmethod Trace InputMethod::traceBegin(int traceId, int patternRecognitionMode, var traceCaptureDeviceInfo, var traceScreenInfo)
     \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
-    This method is called when a trace interaction starts. The \a traceCaptureDeviceInfo provides
-    information about the source device and the \a traceScreenInfo provides information about the screen
-    context.
+    This method is called when a trace interaction starts with the specified \a patternRecognitionMode.
+    The trace is uniquely identified by the \a traceId.
+    The \a traceCaptureDeviceInfo provides information about the source device and the
+    \a traceScreenInfo provides information about the screen context.
 
     If the input method accepts the event and wants to capture the trace input, it must return
     a new Trace object. This object must remain valid until the \l {InputMethod::traceEnd()}
@@ -288,13 +289,14 @@ QList<DeclarativeInputEngine::PatternRecognitionMode> DeclarativeInputMethod::pa
     return patterRecognitionModeList;
 }
 
-DeclarativeTrace *DeclarativeInputMethod::traceBegin(DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
+DeclarativeTrace *DeclarativeInputMethod::traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
                                                      const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
 {
-    Q_UNUSED(patternRecognitionMode)
     QVariant result;
     QMetaObject::invokeMethod(this, "traceBegin",
                               Q_RETURN_ARG(QVariant, result),
+                              Q_ARG(int, traceId),
+                              Q_ARG(int, (int)patternRecognitionMode),
                               Q_ARG(QVariant, traceCaptureDeviceInfo),
                               Q_ARG(QVariant, traceScreenInfo));
     return result.value<DeclarativeTrace *>();

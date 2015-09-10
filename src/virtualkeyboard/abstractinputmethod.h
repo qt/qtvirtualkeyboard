@@ -57,7 +57,7 @@ public:
     virtual void selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index);
 
     virtual QList<DeclarativeInputEngine::PatternRecognitionMode> patternRecognitionModes() const;
-    virtual DeclarativeTrace *traceBegin(DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
+    virtual DeclarativeTrace *traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
                                          const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
     virtual bool traceEnd(DeclarativeTrace *trace);
 

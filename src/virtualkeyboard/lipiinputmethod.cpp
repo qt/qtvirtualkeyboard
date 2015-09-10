@@ -134,9 +134,11 @@ public:
         currentContext = context;
     }
 
-    DeclarativeTrace *traceBegin(DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
+    DeclarativeTrace *traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
                                  const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
     {
+        Q_UNUSED(traceId)
+
         stopRecognizeTimer();
 
         setContext(patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
@@ -482,11 +484,11 @@ QList<DeclarativeInputEngine::PatternRecognitionMode> LipiInputMethod::patternRe
             << DeclarativeInputEngine::HandwritingRecoginition;
 }
 
-DeclarativeTrace *LipiInputMethod::traceBegin(DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
+DeclarativeTrace *LipiInputMethod::traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
                                               const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
 {
     Q_D(LipiInputMethod);
-    return d->traceBegin(patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
+    return d->traceBegin(traceId, patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
 }
 
 bool LipiInputMethod::traceEnd(DeclarativeTrace *trace)

@@ -164,6 +164,7 @@ QList<DeclarativeInputEngine::PatternRecognitionMode> AbstractInputMethod::patte
     \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
     This method is called when a trace interaction starts with the specified \a patternRecognitionMode.
+    The trace is uniquely identified by the \a traceId.
     The \a traceCaptureDeviceInfo provides information about the source device and the
     \a traceScreenInfo provides information about the screen context.
 
@@ -171,9 +172,10 @@ QList<DeclarativeInputEngine::PatternRecognitionMode> AbstractInputMethod::patte
     a new Trace object. This object must remain valid until the traceEnd() method is called. If the
     Trace is rendered on screen, it remains there until the Trace object is destroyed.
 */
-DeclarativeTrace *AbstractInputMethod::traceBegin(DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
+DeclarativeTrace *AbstractInputMethod::traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
                                                   const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
 {
+    Q_UNUSED(traceId)
     Q_UNUSED(patternRecognitionMode)
     Q_UNUSED(traceCaptureDeviceInfo)
     Q_UNUSED(traceScreenInfo)
