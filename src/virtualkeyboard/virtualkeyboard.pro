@@ -15,6 +15,8 @@ CONFIG += plugin
 win32 {
     CONFIG += no-pkg-config skip_target_version_ext
     VERSION = $$QT_VERSION
+    QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard (Qt $$QT_VERSION)"
+    QMAKE_TARGET_DESCRIPTION = "Virtual Keyboard for Qt."
 }
 
 !contains(CONFIG, no-pkg-config): CONFIG += link_pkgconfig
