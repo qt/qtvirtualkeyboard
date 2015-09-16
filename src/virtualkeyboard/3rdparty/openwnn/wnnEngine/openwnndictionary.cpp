@@ -1,6 +1,6 @@
 /*
  * Qt implementation of OpenWnn library
- * This file is part of the Qt Virtual Keyboard add-on for Qt.
+ * This file is part of the Qt Virtual Keyboard module.
  * Contact: http://www.qt.io/licensing/
  *
  * Copyright (C) 2015  The Qt Company
