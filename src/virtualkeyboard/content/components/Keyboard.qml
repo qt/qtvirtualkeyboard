@@ -925,7 +925,7 @@ Item {
             newLayout = findLayout(locale, "main")
         }
         layout = newLayout
-        inputLocale = layoutExists(locale, layoutType) ? locale : defaultLocale
+        inputLocale = locale
         updateInputMethod()
     }
 
