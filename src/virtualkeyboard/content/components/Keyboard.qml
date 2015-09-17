@@ -108,6 +108,10 @@ Item {
             if (InputContext.focus)
                 updateInputMethod()
         }
+        onInputMethodHintsChanged: {
+            if (InputContext.focus)
+                updateInputMethod()
+        }
         onNavigationKeyPressed: {
             var initialKey
             switch (key) {
