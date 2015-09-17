@@ -40,11 +40,11 @@ Item {
     property bool preferNumbers: InputContext.inputMethodHints & Qt.ImhPreferNumbers
     property string layout
     property string layoutType: {
+        if (keyboard.handwritingMode) return "handwriting"
         if (InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly) return "dialpad"
         if (InputContext.inputMethodHints & Qt.ImhFormattedNumbersOnly) return "numbers"
         if (InputContext.inputMethodHints & Qt.ImhDigitsOnly) return "digits"
         if (keyboard.symbolMode) return "symbols"
-        if (keyboard.handwritingMode) return "handwriting"
         return "main"
     }
     property bool active: Qt.inputMethod.visible
@@ -889,6 +889,16 @@ Item {
                 // Check the current layout for input mode override
                 if (keyboardLayoutLoader.item.inputMode !== -1)
                     inputMode = keyboardLayoutLoader.item.inputMode
+
+                // Update input mode automatically in handwriting mode
+                if (keyboard.handwritingMode) {
+                    if ((InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly) && inputModes.indexOf(InputEngine.Dialable) !== -1)
+                        inputMode = InputEngine.Dialable
+                    else if ((InputContext.inputMethodHints & (Qt.ImhFormattedNumbersOnly | Qt.ImhDigitsOnly)) && inputModes.indexOf(InputEngine.Numeric) !== -1)
+                        inputMode = InputEngine.Numeric
+                    else
+                        inputMode = inputModes[0]
+                }
 
                 // Check the input method hints for input mode overrides
                 if (latinOnly)
