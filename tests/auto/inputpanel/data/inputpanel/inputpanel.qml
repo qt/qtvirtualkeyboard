@@ -55,6 +55,18 @@ InputPanel {
     property alias styleSpy: styleSpy
     property alias soundEffectSpy: soundEffectSpy
 
+    signal inputMethodResult(var text)
+
+    Connections {
+        target: InputContext
+        onPreeditTextChanged: if (InputContext.preeditText.length > 0) inputMethodResult(InputContext.preeditText)
+    }
+
+    Connections {
+        target: InputContext.inputEngine
+        onVirtualKeyClicked: inputMethodResult(text)
+    }
+
     SignalSpy {
         id: keyboardLayoutsAvailableSpy
         target: inputPanel
@@ -107,6 +119,12 @@ InputPanel {
         id: soundEffectSpy
         target: keyboard.soundEffect
         signalName: "onPlayingChanged"
+    }
+
+    SignalSpy {
+        id: inputMethodResultSpy
+        target: inputPanel
+        signalName: "inputMethodResult"
     }
 
     function findChildByProperty(parent, propertyName, propertyValue, compareCb) {
@@ -428,7 +446,9 @@ InputPanel {
         if (inputPanel.wordCandidateView.currentItem === -1)
             return false
         testcase.wait(200)
-        var itemPos = inputPanel.mapFromItem(inputPanel.wordCandidateView.currentItem, 0, 0)
+        var itemPos = inputPanel.mapFromItem(inputPanel.wordCandidateView.currentItem,
+                                             inputPanel.wordCandidateView.currentItem.width / 2,
+                                             inputPanel.wordCandidateView.currentItem.height / 2)
         testcase.mouseClick(inputPanel, itemPos.x, itemPos.y, Qt.LeftButton, 0, 20)
         testcase.waitForRendering(inputPanel)
         return true
@@ -475,9 +495,9 @@ InputPanel {
                 t = strokeData[2]
             }
         }
-        virtualKeyClickedSpy.clear()
-        virtualKeyClickedSpy.wait(3000)
-        return virtualKeyClickedSpy.count === 1
+        inputMethodResultSpy.clear()
+        inputMethodResultSpy.wait(3000)
+        return inputMethodResultSpy.count > 0
     }
 
     function calculateBoundingBox(unipenStrokes) {

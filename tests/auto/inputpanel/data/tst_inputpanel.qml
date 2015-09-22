@@ -801,6 +801,10 @@ Rectangle {
                 verify(inputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
             }
 
+            if (inputPanel.selectionListSearchSuggestion(data.outputText)) {
+                inputPanel.selectionListSelectCurrentItem()
+            }
+
             Qt.inputMethod.commit()
             waitForRendering(inputPanel)
             compare(textInput.text, data.outputText)
@@ -808,12 +812,12 @@ Rectangle {
 
         function test_hwrSpellCorrectionSuggestions_data() {
             return [
-                { initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hwllo", outputText: "Hwllo" },
-                { initInputMethodHints: Qt.ImhNone, inputSequence: "hwllo", expectedSuggestion: "Hello", outputText: "Hello" },
-                { initText: "Hello", initInputMethodHints: Qt.ImhNone, inputSequence: "qorld", expectedSuggestion: "world", outputText: "Helloworld" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "bello", unexpectedSuggestion: "Hello", outputText: "Bello" },
+                { initInputMethodHints: Qt.ImhNone, inputSequence: "bello", expectedSuggestion: "Hello", outputText: "Hello" },
+                { initText: "Hello", initInputMethodHints: Qt.ImhNone, inputSequence: "worla", expectedSuggestion: "world", outputText: "Helloworld" },
                 { initText: "isn'", initInputMethodHints: Qt.ImhNone, inputSequence: "t", outputText: "isn't" },
-                { initInputMethodHints: Qt.ImhUrlCharactersOnly | Qt.ImhNoAutoUppercase, inputSequence: "www.example.com", expectedSuggestion: "www.example.com", outputText: "www.example.com" },
-                { initInputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhNoAutoUppercase, inputSequence: "user.name@example.com", expectedSuggestion: "user.name@example.com", outputText: "user.name@example.com" },
+                { initInputMethodHints: Qt.ImhUrlCharactersOnly | Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase, inputSequence: "www.example.com", expectedSuggestion: "www.example.com", outputText: "www.example.com" },
+                { initInputMethodHints: Qt.ImhEmailCharactersOnly | Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase, inputSequence: "user.name@example.com", expectedSuggestion: "user.name@example.com", outputText: "user.name@example.com" },
             ]
         }
 
@@ -836,12 +840,13 @@ Rectangle {
                 } else if (textInput.text !== data.outputText) {
                     expectFail("", "Prediction/spell correction not enabled")
                 }
-            } else {
-                wait(1000)
-                verify(inputPanel.wordCandidateView.count <= 1, "Prediction/spell correction results are not expected")
-                Qt.inputMethod.commit()
-                waitForRendering(inputPanel)
+            } else if (data.hasOwnProperty("unexpectedSuggestion")) {
+                if (inputPanel.wordCandidateView.count > 0) {
+                    verify(!inputPanel.selectionListSearchSuggestion(data.unexpectedSuggestion, 2000), "An unexpected spell correction suggestion \"%1\" was found".arg(data.unexpectedSuggestion))
+                    inputPanel.selectionListSelectCurrentItem()
+                }
             }
+            Qt.inputMethod.commit()
 
             compare(textInput.text, data.outputText)
         }

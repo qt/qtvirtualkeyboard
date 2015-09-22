@@ -30,7 +30,7 @@ unipen_file_pattern = re.compile(r'(^[0-9]{2,4}).*\.txt')
 def print_header():
     print """/******************************************************************************
 **
-** Copyright (C) 2015 The Qt Company Ltd
+** Copyright (C) %s The Qt Company Ltd
 ** All rights reserved.
 ** For any questions to The Qt Company, please use contact form at http://qt.io
 **
