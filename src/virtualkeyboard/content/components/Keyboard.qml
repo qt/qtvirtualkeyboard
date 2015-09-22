@@ -943,7 +943,7 @@ Item {
         if (addDefault) {
             newIndices.push(defaultLocaleIndex)
         }
-        newIndices.sort()
+        newIndices.sort(function(a, b) { return a - b })
         availableLocaleIndices = newIndices
     }
 
