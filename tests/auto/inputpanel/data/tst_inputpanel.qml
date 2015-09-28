@@ -1370,5 +1370,33 @@ Rectangle {
                 expectFail("", "Prediction/spell correction not enabled")
             compare(textInput.text, data.expectedText)
         }
+
+        function test_selection_data() {
+            return [
+                { initText: "Hello cruel world", selectionStart: 2, selectionEnd: 9, expectHandlesToBeVisible: true },
+                { initText: "Hello cruel world", selectionStart: 9, selectionEnd: 9, expectHandlesToBeVisible: false },
+                { initText: "Hello cruel world", selectionStart: 2, selectionEnd: 9, expectHandlesToBeVisible: true },
+                { initText: "Hello cruel world", selectionStart: 0, selectionEnd: 17, expectHandlesToBeVisible: true },
+            ]
+        }
+
+        function test_selection(data) {
+            waitForRendering(textInput)
+            prepareTest(data)
+            compare(inputPanel.cursorHandle.visible, data.expectHandlesToBeVisible)
+            compare(inputPanel.anchorHandle.visible, data.expectHandlesToBeVisible)
+            if (data.expectHandlesToBeVisible) {
+                var cursorHandlePointsTo = Qt.point(inputPanel.cursorHandle.x + inputPanel.cursorHandle.width/2, inputPanel.cursorHandle.y)
+                var anchorHandlePointsTo = Qt.point(inputPanel.anchorHandle.x + inputPanel.anchorHandle.width/2, inputPanel.anchorHandle.y)
+                var anchorRect = textInput.positionToRectangle(data.selectionStart)
+                var cursorRect = textInput.positionToRectangle(data.selectionEnd)
+
+                compare(cursorHandlePointsTo.x, cursorRect.x)
+                compare(cursorHandlePointsTo.y, cursorRect.y + cursorRect.height)
+
+                compare(anchorHandlePointsTo.x, anchorRect.x)
+                compare(anchorHandlePointsTo.y, anchorRect.y + anchorRect.height)
+            }
+        }
     }
 }

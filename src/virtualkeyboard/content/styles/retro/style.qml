@@ -989,4 +989,9 @@ KeyboardStyle {
     popupListRemove: Transition {
         NumberAnimation { property: "opacity"; to: 0; duration: 200 }
     }
+
+    selectionHandle: Image {
+        sourceSize.width: 20
+        source: resourcePrefix + "images/selectionhandle-bottom.svg"
+    }
 }

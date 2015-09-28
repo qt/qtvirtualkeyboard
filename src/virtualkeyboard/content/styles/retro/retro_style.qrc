@@ -32,5 +32,6 @@
         <file>images/shift-cd8865.svg</file>
         <file>images/shift-dc4f28.svg</file>
         <file>images/textmode-110b05.svg</file>
+        <file>images/selectionhandle-bottom.svg</file>
     </qresource>
 </RCC>

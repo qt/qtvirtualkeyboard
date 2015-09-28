@@ -106,7 +106,8 @@ public:
         preeditTextAttributes(),
         surroundingText(),
         selectedText(),
-        cursorRectangle()
+        cursorRectangle(),
+        selectionControlVisible(false)
 #ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
         , activeNavigationKeys()
 #endif
@@ -132,6 +133,7 @@ public:
     QString surroundingText;
     QString selectedText;
     QRectF cursorRectangle;
+    bool selectionControlVisible;
 #ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
     QSet<int> activeNavigationKeys;
 #endif
@@ -555,6 +557,17 @@ bool InputContext::hasEnterKeyAction(QObject *item) const
     return item != 0 && qmlAttachedPropertiesObject<EnterKeyAction>(item, false);
 }
 
+void InputContext::setSelectionOnFocusObject(const QPointF &anchorPos, const QPointF &cursorPos)
+{
+    QPlatformInputContext::setSelectionOnFocusObject(anchorPos, cursorPos);
+}
+
+bool InputContext::selectionControlVisible() const
+{
+    Q_D(const InputContext);
+    return d->selectionControlVisible;
+}
+
 void InputContext::onInputItemChanged()
 {
     Q_D(InputContext);
@@ -622,7 +635,8 @@ void InputContext::update(Qt::InputMethodQueries queries)
 
     // fetch
     Qt::InputMethodHints inputMethodHints = Qt::InputMethodHints(d->inputContext->inputMethodQuery(Qt::ImHints).toInt());
-    int cursorPosition = d->inputContext->inputMethodQuery(Qt::ImCursorPosition).toInt();
+    const int cursorPosition = d->inputContext->inputMethodQuery(Qt::ImCursorPosition).toInt();
+    const int anchorPosition = d->inputContext->inputMethodQuery(Qt::ImAnchorPosition).toInt();
     QRectF cursorRectangle = qApp->inputMethod()->cursorRectangle();
     QString surroundingText = d->inputContext->inputMethodQuery(Qt::ImSurroundingText).toString();
     QString selectedText = d->inputContext->inputMethodQuery(Qt::ImCurrentSelection).toString();
@@ -633,6 +647,8 @@ void InputContext::update(Qt::InputMethodQueries queries)
     bool newSelectedText = selectedText != d->selectedText;
     bool newCursorPosition = cursorPosition != d->cursorPosition;
     bool newCursorRectangle = cursorRectangle != d->cursorRectangle;
+    bool selectionControlVisible = d->inputContext->isInputPanelVisible() && (cursorPosition != anchorPosition);
+    bool newSelectionControlVisible = selectionControlVisible != d->selectionControlVisible;
 
     // update
     d->inputMethodHints = inputMethodHints;
@@ -640,6 +656,7 @@ void InputContext::update(Qt::InputMethodQueries queries)
     d->selectedText = selectedText;
     d->cursorPosition = cursorPosition;
     d->cursorRectangle = cursorRectangle;
+    d->selectionControlVisible = selectionControlVisible;
 
     // update input engine
     if ((newSurroundingText || newCursorPosition) &&
@@ -666,6 +683,10 @@ void InputContext::update(Qt::InputMethodQueries queries)
     if (newCursorRectangle) {
         emit cursorRectangleChanged();
     }
+    if (newSelectionControlVisible) {
+        emit selectionControlVisibleChanged();
+    }
+
 
     // word reselection
     if (newInputMethodHints || newSurroundingText || newSelectedText)

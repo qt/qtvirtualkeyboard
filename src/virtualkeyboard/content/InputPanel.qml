@@ -57,6 +57,11 @@ Item {
     /*! \internal */
     property alias keyboard: keyboard
 
+    SelectionControl {
+        x: -parent.x
+        y: -parent.y
+    }
+
     implicitHeight: keyboard.height
     Keyboard {
         id: keyboard

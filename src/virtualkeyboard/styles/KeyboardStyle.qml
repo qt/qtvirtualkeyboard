@@ -361,4 +361,16 @@ QtObject {
         are removed from the popup list view.
     */
     property Transition popupListRemove
+
+    /*!
+        \since QtQuick.VirtualKeyboard.Styles 2.1
+
+        This item is used to indicate where the bounds of the text selection is
+        and to be able to interactively move the start or end of the selection.
+        The same item is used for both start and end selection.
+
+        Selection handles are currently only supported for the
+        \l {Integration Method}{application-based integration method}.
+    */
+    property Component selectionHandle: null
 }
