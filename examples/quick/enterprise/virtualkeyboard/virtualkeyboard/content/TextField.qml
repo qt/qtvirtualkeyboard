@@ -55,12 +55,12 @@ TextBase {
 
             y: 6
             focus: true
-            color: "#EEEEEE"
+            color: "#2B2C2E"
             cursorVisible: activeFocus
             passwordCharacter: "\u2022"
             font.pixelSize: textField.fontPixelSize
-            selectionColor: Qt.rgba(1.0, 1.0, 1.0, 0.5)
-            selectedTextColor: Qt.rgba(0.0, 0.0, 0.0, 0.8)
+            selectionColor: Qt.rgba(0.0, 0.0, 0.0, 0.15)
+            selectedTextColor: color
             width: Math.max(flickable.width, implicitWidth)-2
             onActiveFocusChanged: if (!activeFocus) deselect()
 

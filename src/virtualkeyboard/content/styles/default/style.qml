@@ -55,7 +55,7 @@ KeyboardStyle {
         Rectangle {
             id: keyBackground
             radius: 5
-            color: "#35322f"
+            color: "#383533"
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
             Text {
@@ -106,7 +106,7 @@ KeyboardStyle {
         Rectangle {
             id: backspaceKeyBackground
             radius: 5
-            color: "#1e1b18"
+            color: "#23211E"
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
             Image {

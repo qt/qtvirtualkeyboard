@@ -23,7 +23,7 @@ import "content"
 Rectangle {
     width: 1280
     height: 720
-    color: "#999"
+    color: "#F6F6F6"
 
     Flickable {
         id: flickable
@@ -52,7 +52,7 @@ Rectangle {
                 width: parent.width - 26
 
                 Text {
-                    color: "#EEEEEE"
+                    color: "#565758"
                     text: "Tap fields to enter text"
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: 22

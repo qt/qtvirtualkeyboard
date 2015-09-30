@@ -44,14 +44,14 @@ FocusScope {
         // background
         radius: 5.0
         anchors.fill: parent
-        color: Qt.rgba(1.0, 1.0, 1.0, 0.2)
-        border { width: editor.activeFocus ? 2 : 0; color: "#CCCCCC" }
+        color: "#FFFFFF"
+        border { width: 1; color: editor.activeFocus ? "#5CAA15" : "#BDBEBF" }
     }
     Text {
         id: previewText
 
         y: 8
-        color: "#CCCCCC"
+        color: "#a0a1a2"
         visible: previewTextActive
         text: textBase.previewText
         font.pixelSize: 28

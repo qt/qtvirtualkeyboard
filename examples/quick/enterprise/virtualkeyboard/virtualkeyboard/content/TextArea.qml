@@ -36,7 +36,7 @@ TextBase {
             x: 8
             y: (index+1)*editor.cursorRectangle.height+6
             height: 1; width: textArea.width-24
-            color: Qt.rgba(1.0, 1.0, 1.0, 0.5)
+            color: "#D6D6D6"
         }
     }
     TextEdit {
@@ -48,7 +48,7 @@ TextBase {
 
         y: 6
         focus: true
-        color: "#EEEEEE"
+        color: "#2B2C2E"
         wrapMode: TextEdit.Wrap
         cursorVisible: activeFocus
         height: Math.max(implicitHeight, 60)
