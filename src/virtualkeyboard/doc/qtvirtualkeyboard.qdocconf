@@ -8,7 +8,7 @@ project = QtVirtualKeyboard
 description = Qt Virtual Keyboard
 url = http://doc.qt.io/QtVirtualKeyboard/
 
-version = 1.3
+version = 2.0
 
 headerdirs  += ..
 sourcedirs  += ..
@@ -28,14 +28,14 @@ depends += qtcore qtgui qtquick
 qhp.projects = QtVirtualKeyboard
 
 qhp.QtVirtualKeyboard.file          = qtvirtualkeyboard.qhp
-qhp.QtVirtualKeyboard.namespace     = com.digia.qtvirtualkeyboard.130
+qhp.QtVirtualKeyboard.namespace     = com.digia.qtvirtualkeyboard.200
 qhp.QtVirtualKeyboard.virtualFolder = qtvirtualkeyboard
 qhp.QtVirtualKeyboard.indexTitle    = Qt Virtual Keyboard
 qhp.QtVirtualKeyboard.indexRoot     =
 
-qhp.QtVirtualKeyboard.filterAttributes                  = qtvirtualkeyboard 1.3 qtrefdoc
-qhp.QtVirtualKeyboard.customFilters.Qt.name             = QtVirtualKeyboard 1.3
-qhp.QtVirtualKeyboard.customFilters.Qt.filterAttributes = qtvirtualkeyboard 1.3
+qhp.QtVirtualKeyboard.filterAttributes                  = qtvirtualkeyboard 2.0 qtrefdoc
+qhp.QtVirtualKeyboard.customFilters.Qt.name             = QtVirtualKeyboard 2.0
+qhp.QtVirtualKeyboard.customFilters.Qt.filterAttributes = qtvirtualkeyboard 2.0
 
 qhp.QtVirtualKeyboard.subprojects = classes qmltypes examples
 
