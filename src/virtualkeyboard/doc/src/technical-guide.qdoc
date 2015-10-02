@@ -266,8 +266,8 @@ InputEngine::wordCandidateListModel property.
 
 \section1 Integrating Handwriting Recognition
 
-Since the version 2.0 of the virtual keyboard, the input methods can consume
-touch input data from touch screen or other input device.
+Since version 2.0 of the virtual keyboard, input methods can consume
+touch input data from touch screens or other input devices.
 
 \section2 Data Model for the Handwriting Input
 
@@ -277,7 +277,7 @@ By definition, a trace is a set of points collected from a single point of conta
 In addition to point data, the trace may also include data from other channels,
 such as the time for each data point.
 
-\section2 Trace API for Input Method
+\section2 Trace API for Input Methods
 
 The trace API consists of the following virtual methods, which the input method
 must implement in order to receive and process touch input data.
@@ -288,21 +288,21 @@ must implement in order to receive and process touch input data.
     \li \l { AbstractInputMethod::traceEnd } { traceEnd }
 \endlist
 
-By implementing these methods, the input method can receive and process the data
-from variety of input sources.
+By implementing these methods, the input method can receive and process data
+from a variety of input sources.
 
 The patternRecognitionModes method returns a list of pattern recognition modes,
-which are supported by the input method. A pattern recognition mode, such as the
+which are supported by the input method. A pattern recognition mode, such as
 \l { DeclarativeInputEngine::HandwritingRecoginition } { HandwritingRecoginition },
 defines the method by which the input method processes the data.
 
 The trace interaction is started when an input source detects a new contact point, and
 calls the traceBegin method for a new trace object. If the input method accepts the
 interaction, it creates a new trace object and returns it to the caller. From this point
-on, the data is collected to the trace until the traceEnd method is called.
+on, trace data is collected until the traceEnd method is called.
 
 When the traceEnd method is called, the input method may begin processing of the data
-contained in the trace object. After processing the data the input method should destroy
+contained in the trace object. After processing the data, the input method should destroy
 the object. This also removes the trace rendered to the screen.
 
 \section1 Keyboard Layouts
