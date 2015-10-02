@@ -43,6 +43,7 @@
             with possibility to easily extend the language support.
         \li Left-to-right and right-to-left input.
         \li Hardware key support for 2-way and 5-way navigation.
+        \li Handwriting support, with gestures for fullscreen input.
         \li Audio feedback.
         \li Cross-platform functionality.
     \endlist
@@ -81,6 +82,7 @@
     \li \l {Building Qt Virtual Keyboard}
     \li \l {Deployment Guide}
     \li \l {Technical Guide}
+    \li \l {User Guide}
     \endlist
 
     \section1 C++ Classes
