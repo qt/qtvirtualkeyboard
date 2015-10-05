@@ -82,15 +82,7 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
             break;
         if (text.length() > 0) {
             QChar c = text.at(0);
-            bool addToWord = !c.isPunct() && !c.isSymbol();
-            if (!addToWord) {
-                if (!d->word.isEmpty()) {
-                    if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly) || inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly))
-                        addToWord = QString(QStringLiteral(":/?#[]@!$&'()*+,;=-_.%")).contains(c);
-                    else if (c == Qt::Key_Apostrophe || c == Qt::Key_Minus)
-                        addToWord = true;
-                }
-            }
+            bool addToWord = d->isValidInputChar(c) && (!d->word.isEmpty() || !d->isJoiner(c));
             if (addToWord) {
                 /*  Automatic space insertion. */
                 if (d->word.isEmpty()) {
@@ -188,6 +180,83 @@ void HunspellInputMethod::selectionListItemSelected(DeclarativeSelectionListMode
     reset();
     inputContext()->commit(finalWord);
     d->autoSpaceAllowed = true;
+}
+
+bool HunspellInputMethod::reselect(int cursorPosition, const DeclarativeInputEngine::ReselectFlags &reselectFlags)
+{
+    Q_D(HunspellInputMethod);
+    Q_ASSERT(d->word.isEmpty());
+
+    DeclarativeInputContext *ic = inputContext();
+    if (!ic)
+        return false;
+
+    const QString surroundingText = ic->surroundingText();
+    int replaceFrom = 0;
+
+    if (reselectFlags.testFlag(DeclarativeInputEngine::WordBeforeCursor)) {
+        for (int i = cursorPosition - 1; i >= 0; --i) {
+            QChar c = surroundingText.at(i);
+            if (!d->isValidInputChar(c))
+                break;
+            d->word.insert(0, c);
+            --replaceFrom;
+        }
+
+        while (replaceFrom < 0 && d->isJoiner(d->word.at(0))) {
+            d->word.remove(0, 1);
+            ++replaceFrom;
+        }
+    }
+
+    if (reselectFlags.testFlag(DeclarativeInputEngine::WordAtCursor) && replaceFrom == 0) {
+        d->word.clear();
+        return false;
+    }
+
+    if (reselectFlags.testFlag(DeclarativeInputEngine::WordAfterCursor)) {
+        for (int i = cursorPosition; i < surroundingText.length(); ++i) {
+            QChar c = surroundingText.at(i);
+            if (!d->isValidInputChar(c))
+                break;
+            d->word.append(c);
+        }
+
+        while (replaceFrom < -d->word.length()) {
+            int lastPos = d->word.length() - 1;
+            if (!d->isJoiner(d->word.at(lastPos)))
+                break;
+            d->word.remove(lastPos, 1);
+        }
+    }
+
+    if (d->word.isEmpty())
+        return false;
+
+    if (reselectFlags.testFlag(DeclarativeInputEngine::WordAtCursor) && replaceFrom == -d->word.length()) {
+        d->word.clear();
+        return false;
+    }
+
+    if (d->isJoiner(d->word.at(0))) {
+        d->word.clear();
+        return false;
+    }
+
+    if (d->isJoiner(d->word.at(d->word.length() - 1))) {
+        d->word.clear();
+        return false;
+    }
+
+    ic->setPreeditText(d->word, QList<QInputMethodEvent::Attribute>(), replaceFrom, d->word.length());
+
+    d->autoSpaceAllowed = false;
+    if (d->updateSuggestions()) {
+        emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
+        emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
+    }
+
+    return true;
 }
 
 void HunspellInputMethod::reset()

@@ -36,6 +36,8 @@ public:
     bool clearSuggestions();
     bool hasSuggestions() const;
     bool isAutoSpaceAllowed() const;
+    bool isValidInputChar(const QChar &c) const;
+    bool isJoiner(const QChar &c) const;
 
     HunspellInputMethod *q_ptr;
     QScopedPointer<HunspellWorker> hunspellWorker;

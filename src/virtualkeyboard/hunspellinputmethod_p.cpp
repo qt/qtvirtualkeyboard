@@ -160,3 +160,29 @@ bool HunspellInputMethodPrivate::isAutoSpaceAllowed() const
     return !inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly) &&
            !inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly);
 }
+
+bool HunspellInputMethodPrivate::isValidInputChar(const QChar &c) const
+{
+    if (c.isLetterOrNumber())
+        return true;
+    if (isJoiner(c))
+        return true;
+    return false;
+}
+
+bool HunspellInputMethodPrivate::isJoiner(const QChar &c) const
+{
+    if (c.isPunct() || c.isSymbol()) {
+        Q_Q(const HunspellInputMethod);
+        DeclarativeInputContext *ic = q->inputContext();
+        if (ic) {
+            Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
+            if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly) || inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly))
+                return QString(QStringLiteral(":/?#[]@!$&'()*+,;=-_.%")).contains(c);
+        }
+        ushort unicode = c.unicode();
+        if (unicode == Qt::Key_Apostrophe || unicode == Qt::Key_Minus)
+            return true;
+    }
+    return false;
+}

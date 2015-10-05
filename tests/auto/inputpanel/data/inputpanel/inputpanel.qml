@@ -33,6 +33,9 @@ InputPanel {
 
     property var testcase
     property var virtualKeyPressPoint: null
+    readonly property int cursorPosition: InputContext.cursorPosition
+    readonly property string preeditText: InputContext.preeditText
+    readonly property string surroundingText: InputContext.surroundingText
     readonly property bool autoCapitalizationEnabled: InputContext.shiftHandler.autoCapitalizationEnabled
     readonly property bool toggleShiftEnabled: InputContext.shiftHandler.toggleShiftEnabled
     readonly property string locale: keyboard.locale

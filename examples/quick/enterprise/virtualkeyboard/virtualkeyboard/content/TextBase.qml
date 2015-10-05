@@ -29,7 +29,6 @@ FocusScope {
     property int enterKeyAction: EnterKeyAction.None
     property string enterKeyText
     property bool enterKeyEnabled: enterKeyAction === EnterKeyAction.None || editor.text.length > 0 || editor.inputMethodComposing
-    property alias mouseParent: mouseArea.parent
 
     implicitHeight: editor.height + 12
 
@@ -51,32 +50,12 @@ FocusScope {
         id: previewText
 
         y: 8
+        clip: true
         color: "#a0a1a2"
         visible: previewTextActive
         text: textBase.previewText
         font.pixelSize: 28
         anchors { left: parent.left; right: parent.right; margins: 12 }
 
-    }
-    MouseArea {
-        id: mouseArea
-
-        z: 1
-        parent: textBase
-        anchors.fill: parent
-        onClicked: {
-            if (editor.inputMethodComposing) {
-                if (!Qt.inputMethod.visible) {
-                    Qt.inputMethod.show()
-                    return
-                }
-                Qt.inputMethod.commit()
-            }
-            var positionInEditor = mapToItem(editor, mouseX, mouseY)
-            var cursorPosition = editor.positionAt(positionInEditor.x, positionInEditor.y)
-            editor.cursorPosition = cursorPosition
-            editor.forceActiveFocus()
-            Qt.inputMethod.show()
-        }
     }
 }

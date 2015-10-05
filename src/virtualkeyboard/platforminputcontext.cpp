@@ -88,6 +88,8 @@ void PlatformInputContext::update(Qt::InputMethodQueries queries)
 void PlatformInputContext::invokeAction(QInputMethod::Action action, int cursorPosition)
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::invokeAction():" << action << cursorPosition;
+    if (m_declarativeContext)
+        m_declarativeContext->invokeAction(action, cursorPosition);
 }
 
 QRectF PlatformInputContext::keyboardRect() const

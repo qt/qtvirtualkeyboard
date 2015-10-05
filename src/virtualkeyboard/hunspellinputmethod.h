@@ -44,6 +44,8 @@ public:
     QVariant selectionListData(DeclarativeSelectionListModel::Type type, int index, int role);
     void selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index);
 
+    bool reselect(int cursorPosition, const DeclarativeInputEngine::ReselectFlags &reselectFlags);
+
     void reset();
     void update();
 

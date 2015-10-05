@@ -61,6 +61,8 @@ public:
                                          const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
     virtual bool traceEnd(DeclarativeTrace *trace);
 
+    virtual bool reselect(int cursorPosition, const DeclarativeInputEngine::ReselectFlags &reselectFlags);
+
 signals:
     void selectionListChanged(int type);
     void selectionListActiveItemChanged(int type, int index);

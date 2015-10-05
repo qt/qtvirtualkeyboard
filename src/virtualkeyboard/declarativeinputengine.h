@@ -36,6 +36,7 @@ class DeclarativeInputEngine : public QObject
     Q_ENUMS(TextCase)
     Q_ENUMS(InputMode)
     Q_ENUMS(PatternRecognitionMode)
+    Q_FLAGS(ReselectFlags)
     Q_PROPERTY(Qt::Key activeKey READ activeKey NOTIFY activeKeyChanged)
     Q_PROPERTY(Qt::Key previousKey READ previousKey NOTIFY previousKeyChanged)
     Q_PROPERTY(AbstractInputMethod *inputMethod READ inputMethod WRITE setInputMethod NOTIFY inputMethodChanged)
@@ -66,6 +67,12 @@ public:
         PatternRecognitionDisabled,
         HandwritingRecoginition
     };
+    enum ReselectFlag {
+        WordBeforeCursor = 0x1,
+        WordAfterCursor = 0x2,
+        WordAtCursor = WordBeforeCursor | WordAfterCursor
+    };
+    Q_DECLARE_FLAGS(ReselectFlags, ReselectFlag)
 
 public:
     ~DeclarativeInputEngine();
@@ -95,6 +102,8 @@ public:
                                              const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
     Q_INVOKABLE bool traceEnd(DeclarativeTrace *trace);
 
+    Q_INVOKABLE bool reselect(int cursorPosition, const ReselectFlags &reselectFlags);
+
 signals:
     void virtualKeyClicked(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool isAutoRepeat);
     void activeKeyChanged(Qt::Key key);
@@ -122,5 +131,6 @@ private:
 
 Q_DECLARE_METATYPE(DeclarativeInputEngine::TextCase)
 Q_DECLARE_METATYPE(DeclarativeInputEngine::InputMode)
+Q_DECLARE_OPERATORS_FOR_FLAGS(DeclarativeInputEngine::ReselectFlags)
 
 #endif

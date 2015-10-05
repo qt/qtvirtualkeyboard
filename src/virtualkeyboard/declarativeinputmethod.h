@@ -47,6 +47,8 @@ public:
                                  const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
     bool traceEnd(DeclarativeTrace *trace);
 
+    bool reselect(int cursorPosition, const DeclarativeInputEngine::ReselectFlags &reselectFlags);
+
     void reset();
     void update();
 };

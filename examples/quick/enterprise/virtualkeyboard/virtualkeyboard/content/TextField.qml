@@ -32,7 +32,6 @@ TextBase {
     property int passwordMaskDelay: 1000
 
     editor: textInput
-    mouseParent: flickable
 
     Flickable {
         id: flickable
@@ -61,8 +60,8 @@ TextBase {
             font.pixelSize: textField.fontPixelSize
             selectionColor: Qt.rgba(0.0, 0.0, 0.0, 0.15)
             selectedTextColor: color
+            selectByMouse: true
             width: Math.max(flickable.width, implicitWidth)-2
-            onActiveFocusChanged: if (!activeFocus) deselect()
 
             Binding {
                 target: textInput

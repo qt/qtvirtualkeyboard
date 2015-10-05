@@ -556,6 +556,24 @@ bool DeclarativeInputEngine::traceEnd(DeclarativeTrace *trace)
 }
 
 /*!
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+
+    This function attempts to reselect a word located at the \a cursorPosition.
+    The \a reselectFlags define the rules for how the word should be selected in
+    relation to the cursor position.
+
+    The function returns \c true if the word was successfully reselected.
+*/
+bool DeclarativeInputEngine::reselect(int cursorPosition, const ReselectFlags &reselectFlags)
+{
+    Q_D(DeclarativeInputEngine);
+    VIRTUALKEYBOARD_DEBUG() << "DeclarativeInputEngine::reselect():" << cursorPosition << reselectFlags;
+    if (!d->inputMethod || !wordCandidateListVisibleHint())
+        return false;
+    return d->inputMethod->reselect(cursorPosition, reselectFlags);
+}
+
+/*!
     \internal
     Resets the input method.
 */
@@ -774,6 +792,19 @@ void DeclarativeInputEngine::timerEvent(QTimerEvent *timerEvent)
            Pattern recognition is not available.
     \value HandwritingRecoginition
            Pattern recognition mode for handwriting recognition.
+*/
+
+/*!
+    \enum DeclarativeInputEngine::ReselectFlag
+
+    This enum specifies the rules for word reselection.
+
+    \value WordBeforeCursor
+           Activate the word before the cursor. When this flag is used exclusively, the word must end exactly at the cursor.
+    \value WordAfterCursor
+           Activate the word after the cursor. When this flag is used exclusively, the word must start exactly at the cursor.
+    \value WordAtCursor
+           Activate the word at the cursor. This flag is a combination of the above flags with the exception that the word cannot start or stop at the cursor.
 */
 
 /*!

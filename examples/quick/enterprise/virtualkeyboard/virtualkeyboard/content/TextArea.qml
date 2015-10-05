@@ -39,6 +39,10 @@ TextBase {
             color: "#D6D6D6"
         }
     }
+    MouseArea {
+        anchors.fill: parent
+        onClicked: textEdit.forceActiveFocus()
+    }
     TextEdit {
         id: textEdit
 
@@ -55,7 +59,7 @@ TextBase {
         font.pixelSize: textArea.fontPixelSize
         selectionColor: Qt.rgba(1.0, 1.0, 1.0, 0.5)
         selectedTextColor: Qt.rgba(0.0, 0.0, 0.0, 0.8)
+        selectByMouse: true
         anchors { left: parent.left; right: parent.right; margins: 12 }
-        onActiveFocusChanged: if (!activeFocus) deselect()
     }
 }

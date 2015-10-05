@@ -189,11 +189,27 @@ DeclarativeTrace *AbstractInputMethod::traceBegin(int traceId, DeclarativeInputE
     at some point after this function is called. See the \l Trace API how to access the gathered
     data.
 
-    The method returns \c true if the trace interaction was accepted.
+    The method returns \c true if the trace interaction is accepted.
 */
 bool AbstractInputMethod::traceEnd(DeclarativeTrace *trace)
 {
     Q_UNUSED(trace)
+    return false;
+}
+
+/*!
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+
+    This function attempts to reselect a word located at the \a cursorPosition.
+    The \a reselectFlags define the rules for how the word should be selected in
+    relation to the cursor position.
+
+    The function returns \c true if the word was successfully reselected.
+*/
+bool AbstractInputMethod::reselect(int cursorPosition, const DeclarativeInputEngine::ReselectFlags &reselectFlags)
+{
+    Q_UNUSED(cursorPosition)
+    Q_UNUSED(reselectFlags)
     return false;
 }
 

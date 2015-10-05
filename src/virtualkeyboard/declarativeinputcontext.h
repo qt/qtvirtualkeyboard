@@ -23,6 +23,7 @@
 #include <QRectF>
 #include <QLocale>
 #include <QInputMethodEvent>
+#include <QInputMethod>
 
 class PlatformInputContext;
 class DeclarativeInputEngine;
@@ -64,7 +65,7 @@ public:
     int cursorPosition() const;
     Qt::InputMethodHints inputMethodHints() const;
     QString preeditText() const;
-    void setPreeditText(const QString &text, QList<QInputMethodEvent::Attribute> attributes = QList<QInputMethodEvent::Attribute>());
+    void setPreeditText(const QString &text, QList<QInputMethodEvent::Attribute> attributes = QList<QInputMethodEvent::Attribute>(), int replaceFrom = 0, int replaceLength = 0);
     QString surroundingText() const;
     QString selectedText() const;
     QRectF cursorRectangle() const;
@@ -86,7 +87,7 @@ public:
     Q_INVOKABLE void hideInputPanel();
     Q_INVOKABLE void sendKeyClick(int key, const QString &text, int modifiers = 0);
     Q_INVOKABLE void commit();
-    Q_INVOKABLE void commit(const QString &text, int replacementStart = 0, int replacementLength = 0);
+    Q_INVOKABLE void commit(const QString &text, int replaceFrom = 0, int replaceLength = 0);
     Q_INVOKABLE void clear();
 
     // Helper functions
@@ -118,10 +119,11 @@ private slots:
 
 private:
     void setFocus(bool enable);
-    void sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes);
+    void sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes, int replaceFrom, int replaceLength);
     void reset();
     void externalCommit();
     void update(Qt::InputMethodQueries queries);
+    void invokeAction(QInputMethod::Action action, int cursorPosition);
     bool filterEvent(const QEvent *event);
 
 private:

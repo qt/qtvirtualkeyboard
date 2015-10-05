@@ -900,6 +900,32 @@ public:
         }
     }
 
+    bool isValidInputChar(const QChar &c) const
+    {
+        if (c.isLetterOrNumber())
+            return true;
+        if (isJoiner(c))
+            return true;
+        return false;
+    }
+
+    bool isJoiner(const QChar &c) const
+    {
+        if (c.isPunct() || c.isSymbol()) {
+            Q_Q(const T9WriteInputMethod);
+            DeclarativeInputContext *ic = q->inputContext();
+            if (ic) {
+                Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
+                if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly) || inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly))
+                    return QString(QStringLiteral(":/?#[]@!$&'()*+,;=-_.%")).contains(c);
+            }
+            ushort unicode = c.unicode();
+            if (unicode == Qt::Key_Apostrophe || unicode == Qt::Key_Minus)
+                return true;
+        }
+        return false;
+    }
+
     T9WriteInputMethod *q_ptr;
     static const DECUMA_MEM_FUNCTIONS memFuncs;
     DECUMA_SESSION_SETTINGS sessionSettings;
@@ -1018,20 +1044,10 @@ bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
 
     default:
         if (d->sessionSettings.recognitionMode == mcrMode && text.length() > 0) {
-            QChar c = text.at(0);
-            bool addToWord = !c.isPunct() && !c.isSymbol();
-
             DeclarativeInputContext *ic = inputContext();
-            Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
             QString preeditText = ic->preeditText();
-            if (!addToWord) {
-                if (!preeditText.isEmpty()) {
-                    if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly) || inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly))
-                        addToWord = QString(QStringLiteral(":/?#[]@!$&'()*+,;=-_.%")).contains(c);
-                    else
-                        addToWord = (c == Qt::Key_Apostrophe || c == Qt::Key_Minus);
-                }
-            }
+            QChar c = text.at(0);
+            bool addToWord = d->isValidInputChar(c) && (!preeditText.isEmpty() || !d->isJoiner(c));
             if (addToWord) {
                 preeditText.append(text);
                 ic->setPreeditText(preeditText);
@@ -1127,6 +1143,85 @@ bool T9WriteInputMethod::traceEnd(DeclarativeTrace *trace)
 {
     Q_D(T9WriteInputMethod);
     d->traceEnd(trace);
+    return true;
+}
+
+bool T9WriteInputMethod::reselect(int cursorPosition, const DeclarativeInputEngine::ReselectFlags &reselectFlags)
+{
+    Q_D(T9WriteInputMethod);
+
+    if (d->sessionSettings.recognitionMode == scrMode)
+        return false;
+
+    DeclarativeInputContext *ic = inputContext();
+    if (!ic)
+        return false;
+
+    const QString surroundingText = ic->surroundingText();
+    int replaceFrom = 0;
+
+    if (reselectFlags.testFlag(DeclarativeInputEngine::WordBeforeCursor)) {
+        for (int i = cursorPosition - 1; i >= 0; --i) {
+            QChar c = surroundingText.at(i);
+            if (!d->isValidInputChar(c))
+                break;
+            d->stringStart.insert(0, c);
+            --replaceFrom;
+        }
+
+        while (replaceFrom < 0 && d->isJoiner(d->stringStart.at(0))) {
+            d->stringStart.remove(0, 1);
+            ++replaceFrom;
+        }
+    }
+
+    if (reselectFlags.testFlag(DeclarativeInputEngine::WordAtCursor) && replaceFrom == 0) {
+        d->stringStart.clear();
+        return false;
+    }
+
+    if (reselectFlags.testFlag(DeclarativeInputEngine::WordAfterCursor)) {
+        for (int i = cursorPosition; i < surroundingText.length(); ++i) {
+            QChar c = surroundingText.at(i);
+            if (!d->isValidInputChar(c))
+                break;
+            d->stringStart.append(c);
+        }
+
+        while (replaceFrom < -d->stringStart.length()) {
+            int lastPos = d->stringStart.length() - 1;
+            if (!d->isJoiner(d->stringStart.at(lastPos)))
+                break;
+            d->stringStart.remove(lastPos, 1);
+        }
+    }
+
+    if (d->stringStart.isEmpty())
+        return false;
+
+    if (reselectFlags.testFlag(DeclarativeInputEngine::WordAtCursor) && replaceFrom == -d->stringStart.length()) {
+        d->stringStart.clear();
+        return false;
+    }
+
+    if (d->isJoiner(d->stringStart.at(0))) {
+        d->stringStart.clear();
+        return false;
+    }
+
+    if (d->isJoiner(d->stringStart.at(d->stringStart.length() - 1))) {
+        d->stringStart.clear();
+        return false;
+    }
+
+    ic->setPreeditText(d->stringStart, QList<QInputMethodEvent::Attribute>(), replaceFrom, d->stringStart.length());
+    for (int i = 0; i < d->stringStart.length(); ++i)
+        d->caseFormatter.ensureLength(i + 1, d->stringStart.at(i).isUpper() ? DeclarativeInputEngine::Upper : DeclarativeInputEngine::Lower);
+    d->wordCandidates.append(d->stringStart);
+    d->activeWordIndex = 0;
+    emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
+    emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
+
     return true;
 }
 

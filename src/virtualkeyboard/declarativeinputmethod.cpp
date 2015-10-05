@@ -183,6 +183,23 @@
     data.
 */
 
+/*!
+    \qmlmethod bool InputMethod::reselect(int cursorPosition, int reselectFlags)
+    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+
+    This method attempts to reselect a word located at the \a cursorPosition.
+    The \a reselectFlags define the rules for how the word should be selected in
+    relation to the cursor position.
+
+    \list
+        \li \c InputEngine.WordBeforeCursor Activate the word before the cursor. When this flag is used exclusively, the word must end exactly at the cursor.
+        \li \c InputEngine.WordAfterCursor Activate the word after the cursor. When this flag is used exclusively, the word must start exactly at the cursor.
+        \li \c InputEngine.WordAtCursor Activate the word at the cursor. This flag is a combination of the above flags with the exception that the word cannot start or stop at the cursor.
+    \endlist
+
+    The method returns \c true if the word was successfully reselected.
+*/
+
 DeclarativeInputMethod::DeclarativeInputMethod(QObject *parent) :
     AbstractInputMethod(parent)
 {
@@ -308,6 +325,16 @@ bool DeclarativeInputMethod::traceEnd(DeclarativeTrace *trace)
     QMetaObject::invokeMethod(this, "traceEnd",
                               Q_RETURN_ARG(QVariant, result),
                               Q_ARG(QVariant, QVariant::fromValue(trace)));
+    return result.toBool();
+}
+
+bool DeclarativeInputMethod::reselect(int cursorPosition, const DeclarativeInputEngine::ReselectFlags &reselectFlags)
+{
+    QVariant result;
+    QMetaObject::invokeMethod(this, "reselect",
+                              Q_RETURN_ARG(QVariant, result),
+                              Q_ARG(int, cursorPosition),
+                              Q_ARG(int, (int)reselectFlags));
     return result.toBool();
 }
 
