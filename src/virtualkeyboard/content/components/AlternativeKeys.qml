@@ -60,11 +60,14 @@ Item {
         sourceComponent: keyboard.style.alternateKeysListBackground
         anchors.fill: listView
         z: -1
-        Binding {
-            target: backgroundLoader.item
-            property: "currentItemHighlight"
-            value: listView.currentIndex === highlightIndex
-            when: backgroundLoader.item !== null && listView.currentIndex != -1
+        states: State {
+            name: "highlighted"
+            when: highlightIndex !== -1 && highlightIndex === listView.currentIndex &&
+                  backgroundLoader.item !== null && backgroundLoader.item.hasOwnProperty("currentItemHighlight")
+            PropertyChanges {
+                target: backgroundLoader.item
+                currentItemHighlight: true
+            }
         }
     }
 
