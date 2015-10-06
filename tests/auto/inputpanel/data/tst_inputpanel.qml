@@ -560,7 +560,7 @@ Rectangle {
 
         function test_spellCorrectionSuggestions_data() {
             return [
-                { initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hwllo", outputText: "Hwllo" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hwllo", unexpectedSuggestion: "Hello", outputText: "Hwllo" },
                 { initInputMethodHints: Qt.ImhNone, inputSequence: "hwllo", expectedSuggestion: "Hello", outputText: "Hello" },
                 { initText: "Hello", initInputMethodHints: Qt.ImhNone, inputSequence: "qorld", expectedSuggestion: "world", outputText: "Helloworld" },
                 { initText: "isn'", initInputMethodHints: Qt.ImhNone, inputSequence: "t", outputText: "isn't" },
@@ -577,18 +577,18 @@ Rectangle {
             }
             waitForRendering(inputPanel)
 
-            if (data.hasOwnProperty("expectedSuggestion")) {
-                if (inputPanel.wordCandidateView.count > 0) {
-                    verify(inputPanel.selectionListSearchSuggestion(data.expectedSuggestion, 2000), "The expected spell correction suggestion \"%1\" was not found".arg(data.expectedSuggestion))
+            if (inputPanel.wordCandidateListVisibleHint) {
+                if (data.hasOwnProperty("expectedSuggestion")) {
+                    verify(inputPanel.selectionListSearchSuggestion(data.expectedSuggestion, 1000), "The expected spell correction suggestion \"%1\" was not found".arg(data.expectedSuggestion))
                     verify(inputPanel.selectionListSelectCurrentItem(), "Word candidate not selected")
-                } else if (textInput.text !== data.outputText) {
-                    expectFail("", "Prediction/spell correction not enabled")
+                } else if (data.hasOwnProperty("unexpectedSuggestion")) {
+                    verify(!inputPanel.selectionListSearchSuggestion(data.unexpectedSuggestion, 1000), "An unexpected spell correction suggestion \"%1\" was found".arg(data.unexpectedSuggestion))
+                    inputPanel.selectionListSelectCurrentItem()
+                } else {
+                    Qt.inputMethod.commit()
                 }
-            } else {
-                wait(1000)
-                verify(inputPanel.wordCandidateView.count <= 1, "Prediction/spell correction results are not expected")
-                Qt.inputMethod.commit()
-                waitForRendering(inputPanel)
+            } else if (textInput.text !== data.outputText) {
+                expectFail("", "Prediction/spell correction not enabled")
             }
 
             compare(textInput.text, data.outputText)
@@ -625,6 +625,8 @@ Rectangle {
 
             Qt.inputMethod.commit()
             waitForRendering(inputPanel)
+            if (!inputPanel.wordCandidateListVisibleHint && textInput.text !== data.outputText)
+                expectFail("", "Prediction/spell correction not enabled")
             compare(textInput.text, data.outputText)
         }
 
@@ -811,8 +813,10 @@ Rectangle {
                 verify(inputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
             }
 
-            if (inputPanel.selectionListSearchSuggestion(data.outputText)) {
-                inputPanel.selectionListSelectCurrentItem()
+            if (inputPanel.wordCandidateView.count > 0) {
+                if (inputPanel.selectionListSearchSuggestion(data.outputText)) {
+                    inputPanel.selectionListSelectCurrentItem()
+                }
             }
 
             Qt.inputMethod.commit()
@@ -843,20 +847,19 @@ Rectangle {
             }
             waitForRendering(inputPanel)
 
-            if (data.hasOwnProperty("expectedSuggestion")) {
-                if (inputPanel.wordCandidateView.count > 0) {
-                    verify(inputPanel.selectionListSearchSuggestion(data.expectedSuggestion, 2000), "The expected spell correction suggestion \"%1\" was not found".arg(data.expectedSuggestion))
+            if (inputPanel.wordCandidateListVisibleHint) {
+                if (data.hasOwnProperty("expectedSuggestion")) {
+                    verify(inputPanel.selectionListSearchSuggestion(data.expectedSuggestion, 1000), "The expected spell correction suggestion \"%1\" was not found".arg(data.expectedSuggestion))
                     verify(inputPanel.selectionListSelectCurrentItem(), "Word candidate not selected")
-                } else if (textInput.text !== data.outputText) {
-                    expectFail("", "Prediction/spell correction not enabled")
-                }
-            } else if (data.hasOwnProperty("unexpectedSuggestion")) {
-                if (inputPanel.wordCandidateView.count > 0) {
-                    verify(!inputPanel.selectionListSearchSuggestion(data.unexpectedSuggestion, 2000), "An unexpected spell correction suggestion \"%1\" was found".arg(data.unexpectedSuggestion))
+                } else if (data.hasOwnProperty("unexpectedSuggestion")) {
+                    verify(!inputPanel.selectionListSearchSuggestion(data.unexpectedSuggestion, 1000), "An unexpected spell correction suggestion \"%1\" was found".arg(data.unexpectedSuggestion))
                     inputPanel.selectionListSelectCurrentItem()
+                } else {
+                    Qt.inputMethod.commit()
                 }
+            } else if (textInput.text !== data.outputText) {
+                expectFail("", "Prediction/spell correction not enabled")
             }
-            Qt.inputMethod.commit()
 
             compare(textInput.text, data.outputText)
         }

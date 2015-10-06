@@ -45,6 +45,7 @@ InputPanel {
     readonly property var alternativeKeys: Utils.findChildByProperty(keyboard, "objectName", "alternativeKeys", null)
     readonly property var naviationHighlight: Utils.findChildByProperty(keyboard, "objectName", "naviationHighlight", null)
     readonly property var wordCandidateView: Utils.findChildByProperty(keyboard, "objectName", "wordCandidateView", null)
+    readonly property bool wordCandidateListVisibleHint: InputContext.inputEngine.wordCandidateListVisibleHint
     readonly property bool keyboardLayoutsAvailable: keyboard.availableLocaleIndices.length > 0 && keyboard.availableLocaleIndices.indexOf(-1) === -1
     property alias keyboardLayoutsAvailableSpy: keyboardLayoutsAvailableSpy
     property alias keyboardLayoutLoaderItemSpy: keyboardLayoutLoaderItemSpy
@@ -55,6 +56,8 @@ InputPanel {
     property alias dragSymbolModeSpy: dragSymbolModeSpy
     property alias styleSpy: styleSpy
     property alias soundEffectSpy: soundEffectSpy
+    property alias inputMethodResultSpy: inputMethodResultSpy
+    property alias wordCandidateListChangedSpy: wordCandidateListChangedSpy
 
     signal inputMethodResult(var text)
 
@@ -126,6 +129,12 @@ InputPanel {
         id: inputMethodResultSpy
         target: inputPanel
         signalName: "inputMethodResult"
+    }
+
+    SignalSpy {
+        id: wordCandidateListChangedSpy
+        target: wordCandidateView.model
+        signalName: "dataChanged"
     }
 
     function findChildByProperty(parent, propertyName, propertyValue, compareCb) {
@@ -409,42 +418,48 @@ InputPanel {
     }
 
     function selectionListSearchSuggestion(suggestion, timeout) {
-        if (timeout === undefined || timeout < 0)
-            timeout = 0
-        var suggestionFound = false
-        var dt = new Date()
-        var startTime = dt.getTime()
-        while (true) {
-            var origIndex = inputPanel.wordCandidateView.currentIndex
-            if (origIndex !== -1) {
-                while (true) {
-                    if (inputPanel.wordCandidateView.model.itemData(inputPanel.wordCandidateView.currentIndex) === suggestion) {
-                        suggestionFound = true
-                        break
-                    }
-                    if (inputPanel.wordCandidateView.currentIndex === inputPanel.wordCandidateView.count - 1)
-                        break
-                    inputPanel.wordCandidateView.incrementCurrentIndex()
-                }
-                if (!suggestionFound) {
-                    while (inputPanel.wordCandidateView.currentIndex !== origIndex) {
-                        inputPanel.wordCandidateView.decrementCurrentIndex()
-                    }
-                }
-                testcase.waitForRendering(inputPanel)
+        if (wordCandidateListVisibleHint === false)
+            return false
+
+        if (timeout !== undefined && timeout > 0) {
+            // Note: Not using SignalSpy.wait() since it causes the test case to fail in case the signal is not emitted
+            wordCandidateListChangedSpy.clear()
+            var dt = new Date()
+            var startTime = dt.getTime()
+            while (wordCandidateListChangedSpy.count == 0) {
+                dt = new Date()
+                var elapsedTime = dt.getTime() - startTime
+                if (elapsedTime >= timeout)
+                    break
+                var maxWait = Math.min(timeout - elapsedTime, 50)
+                testcase.wait(maxWait)
             }
-            dt = new Date()
-            var elapsedTime = dt.getTime() - startTime
-            if (suggestionFound || elapsedTime >= timeout)
-                break
-            var maxWait = Math.min(timeout - elapsedTime, 50)
-            testcase.wait(maxWait)
+        }
+
+        var suggestionFound = false
+        var origIndex = inputPanel.wordCandidateView.currentIndex
+        if (origIndex !== -1) {
+            while (true) {
+                if (inputPanel.wordCandidateView.model.itemData(inputPanel.wordCandidateView.currentIndex) === suggestion) {
+                    suggestionFound = true
+                    break
+                }
+                if (inputPanel.wordCandidateView.currentIndex === inputPanel.wordCandidateView.count - 1)
+                    break
+                inputPanel.wordCandidateView.incrementCurrentIndex()
+            }
+            if (!suggestionFound) {
+                while (inputPanel.wordCandidateView.currentIndex !== origIndex) {
+                    inputPanel.wordCandidateView.decrementCurrentIndex()
+                }
+            }
+            testcase.waitForRendering(inputPanel)
         }
         return suggestionFound
     }
 
     function selectionListSelectCurrentItem() {
-        if (inputPanel.wordCandidateView.currentItem === -1)
+        if (!inputPanel.wordCandidateView.currentItem)
             return false
         testcase.wait(200)
         var itemPos = inputPanel.mapFromItem(inputPanel.wordCandidateView.currentItem,

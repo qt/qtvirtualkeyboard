@@ -49,43 +49,55 @@ HandwritingInputPanel {
         signalName: "inputMethodResult"
     }
 
+    SignalSpy {
+        id: wordCandidateListChangedSpy
+        target: wordCandidatePopupList.model
+        signalName: "dataChanged"
+    }
+
     function wordCandidatePopupListSearchSuggestion(suggestion, timeout) {
-        if (timeout === undefined || timeout < 0)
-            timeout = 0
-        var suggestionFound = false
-        var dt = new Date()
-        var startTime = dt.getTime()
-        while (true) {
-            var origIndex = handwritingInputPanel.wordCandidatePopupList.currentIndex
-            if (origIndex !== -1) {
-                while (true) {
-                    if (handwritingInputPanel.wordCandidatePopupList.model.itemData(handwritingInputPanel.wordCandidatePopupList.currentIndex) === suggestion) {
-                        suggestionFound = true
-                        break
-                    }
-                    if (handwritingInputPanel.wordCandidatePopupList.currentIndex === handwritingInputPanel.wordCandidatePopupList.count - 1)
-                        break
-                    handwritingInputPanel.wordCandidatePopupList.incrementCurrentIndex()
-                }
-                if (!suggestionFound) {
-                    while (handwritingInputPanel.wordCandidatePopupList.currentIndex !== origIndex) {
-                        handwritingInputPanel.wordCandidatePopupList.decrementCurrentIndex()
-                    }
-                }
-                testcase.waitForRendering(handwritingInputPanel)
+        if (wordCandidatePopupList.visible === false)
+            return false
+
+        if (timeout !== undefined && timeout > 0) {
+            // Note: Not using SignalSpy.wait() since it causes the test case to fail in case the signal is not emitted
+            wordCandidateListChangedSpy.clear()
+            var dt = new Date()
+            var startTime = dt.getTime()
+            while (wordCandidateListChangedSpy.count == 0) {
+                dt = new Date()
+                var elapsedTime = dt.getTime() - startTime
+                if (elapsedTime >= timeout)
+                    break
+                var maxWait = Math.min(timeout - elapsedTime, 50)
+                testcase.wait(maxWait)
             }
-            dt = new Date()
-            var elapsedTime = dt.getTime() - startTime
-            if (suggestionFound || elapsedTime >= timeout)
-                break
-            var maxWait = Math.min(timeout - elapsedTime, 50)
-            testcase.wait(maxWait)
+        }
+
+        var suggestionFound = false
+        var origIndex = handwritingInputPanel.wordCandidatePopupList.currentIndex
+        if (origIndex !== -1) {
+            while (true) {
+                if (handwritingInputPanel.wordCandidatePopupList.model.itemData(handwritingInputPanel.wordCandidatePopupList.currentIndex) === suggestion) {
+                    suggestionFound = true
+                    break
+                }
+                if (handwritingInputPanel.wordCandidatePopupList.currentIndex === handwritingInputPanel.wordCandidatePopupList.count - 1)
+                    break
+                handwritingInputPanel.wordCandidatePopupList.incrementCurrentIndex()
+            }
+            if (!suggestionFound) {
+                while (handwritingInputPanel.wordCandidatePopupList.currentIndex !== origIndex) {
+                    handwritingInputPanel.wordCandidatePopupList.decrementCurrentIndex()
+                }
+            }
+            testcase.waitForRendering(handwritingInputPanel)
         }
         return suggestionFound
     }
 
     function wordCandidatePopupListSelectCurrentItem() {
-        if (handwritingInputPanel.wordCandidatePopupList.currentItem === -1)
+        if (!handwritingInputPanel.wordCandidatePopupList.currentItem)
             return false
         testcase.wait(200)
         var itemPos = handwritingInputPanel.mapFromItem(handwritingInputPanel.wordCandidatePopupList.currentItem,
