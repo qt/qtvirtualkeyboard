@@ -261,11 +261,17 @@ public:
                 if (swipeAngle <= 270 + SWIPE_ANGLE_THRESHOLD && swipeAngle >= 270 - SWIPE_ANGLE_THRESHOLD) {
                     if (swipeTouchCount == 1) {
                         // Single swipe: toggle input mode
+#ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
+                        dumpTraces();
+                        saveTraces(Qt::Key_Mode_switch, 100);
+#endif
                         cancelRecognition();
-                        DeclarativeInputEngine::InputMode inputMode = ic->inputEngine()->inputMode();
-                        inputMode = inputMode == DeclarativeInputEngine::Latin ?
-                                    DeclarativeInputEngine::Numeric : DeclarativeInputEngine::Latin;
-                        ic->inputEngine()->setInputMode(inputMode);
+                        if (!(ic->inputMethodHints() & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly))) {
+                            DeclarativeInputEngine::InputMode inputMode = ic->inputEngine()->inputMode();
+                            inputMode = inputMode == DeclarativeInputEngine::Latin ?
+                                        DeclarativeInputEngine::Numeric : DeclarativeInputEngine::Latin;
+                            ic->inputEngine()->setInputMode(inputMode);
+                        }
                     } else if (swipeTouchCount == 2) {
                         // Double swipe: toggle text case
                         cancelRecognition();
@@ -644,7 +650,8 @@ QList<DeclarativeInputEngine::InputMode> LipiInputMethod::inputModes(const QStri
     Q_UNUSED(locale)
     return QList<DeclarativeInputEngine::InputMode>()
             << DeclarativeInputEngine::Latin
-            << DeclarativeInputEngine::Numeric;
+            << DeclarativeInputEngine::Numeric
+            << DeclarativeInputEngine::Dialable;
 }
 
 bool LipiInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
@@ -663,7 +670,8 @@ bool LipiInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine
         d->recognizer.subsetOfClasses(QStringLiteral("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz?,.@"), d->subsetOfClasses);
         break;
     case DeclarativeInputEngine::Numeric:
-        d->recognizer.subsetOfClasses(QStringLiteral("1234567890,."), d->subsetOfClasses);
+    case DeclarativeInputEngine::Dialable:
+        d->recognizer.subsetOfClasses(QStringLiteral("1234567890,.+"), d->subsetOfClasses);
         break;
     default:
         break;

@@ -62,6 +62,7 @@ KeyboardLayout {
             functionKey: true
             text: InputContext.inputEngine.inputMode === InputEngine.Latin ? "123" : "ABC"
             onClicked: InputContext.inputEngine.inputMode = InputContext.inputEngine.inputMode === InputEngine.Latin ? InputEngine.Numeric : InputEngine.Latin
+            enabled: !(InputContext.inputMethodHints & (Qt.ImhDialableCharactersOnly | Qt.ImhFormattedNumbersOnly | Qt.ImhDigitsOnly))
             keyPanelDelegate: keyboard.style ? keyboard.style.symbolKeyPanel : undefined
         }
         ChangeLanguageKey {

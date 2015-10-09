@@ -803,7 +803,6 @@ Rectangle {
                 { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 0, inputSequence: "abcdefghij", outputText: "Abcdefghij" },
                 { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 1, inputSequence: "klmnopqrst", outputText: "klmnopqrst" },
                 { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 3, inputSequence: "uvwxyz", outputText: "UVWXYZ" },
-                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhPreferNumbers, toggleShiftCount: 0, inputSequence: "0123456789", outputText: "0123456789" },
             ]
         }
 
@@ -830,6 +829,42 @@ Rectangle {
             Qt.inputMethod.commit()
             waitForRendering(inputPanel)
             compare(textInput.text, data.outputText)
+        }
+
+        function test_hwrNumericInputSequence_data() {
+            return [
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhPreferNumbers, modeSwitchAllowed: true, inputSequence: "0123456789", outputText: "0123456789" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly, modeSwitchAllowed: false, inputSequence: "1234567890", outputText: "1234567890" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhFormattedNumbersOnly, modeSwitchAllowed: false, inputSequence: "1234567890+", outputText: "1234567890+" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDialableCharactersOnly, modeSwitchAllowed: false, inputSequence: "1234567890+", outputText: "1234567890+" },
+            ]
+        }
+
+        function test_hwrNumericInputSequence(data) {
+            prepareTest(data)
+
+            if (!inputPanel.setHandwritingMode(true))
+                expectFail("", "Handwriting not enabled")
+            verify(inputPanel.handwritingMode === true)
+
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
+            }
+
+            if (inputPanel.wordCandidateView.count > 0) {
+                if (inputPanel.selectionListSearchSuggestion(data.outputText)) {
+                    inputPanel.selectionListSelectCurrentItem()
+                }
+            }
+
+            Qt.inputMethod.commit()
+            waitForRendering(inputPanel)
+            compare(textInput.text, data.outputText)
+
+            var inputMode = inputPanel.inputMode
+            verify(inputPanel.virtualKeyClick(Qt.Key_Mode_switch))
+            waitForRendering(inputPanel)
+            compare(inputPanel.inputMode !== inputMode, data.modeSwitchAllowed)
         }
 
         function test_hwrSpellCorrectionSuggestions_data() {
@@ -877,7 +912,6 @@ Rectangle {
                 { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 0, inputSequence: "abcdefghij", outputText: "Abcdefghij" },
                 { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 1, inputSequence: "klmnopqrst", outputText: "klmnopqrst" },
                 { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 3, inputSequence: "uvwxyz", outputText: "UVWXYZ" },
-                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhPreferNumbers, toggleShiftCount: 0, inputSequence: "0123456789", outputText: "0123456789" },
             ]
         }
 
@@ -901,6 +935,37 @@ Rectangle {
             }
 
             Qt.inputMethod.commit()
+            compare(textInput.text, data.outputText)
+        }
+
+        function test_hwrFullScreenNumericInputSequence_data() {
+            return [
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhPreferNumbers, inputSequence: "0123456789", outputText: "0123456789" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly, inputSequence: "1234567890", outputText: "1234567890" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhFormattedNumbersOnly, inputSequence: "1234567890+", outputText: "1234567890+" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDialableCharactersOnly, inputSequence: "1234567890+", outputText: "1234567890+" },
+            ]
+        }
+
+        function test_hwrFullScreenNumericInputSequence(data) {
+            prepareTest(data)
+
+            if (!inputPanel.setHandwritingMode(true))
+                expectFail("", "Handwriting not enabled")
+            verify(inputPanel.handwritingMode === true)
+
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
+            }
+
+            if (inputPanel.wordCandidateView.count > 0) {
+                if (inputPanel.selectionListSearchSuggestion(data.outputText)) {
+                    inputPanel.selectionListSelectCurrentItem()
+                }
+            }
+
+            Qt.inputMethod.commit()
+            waitForRendering(inputPanel)
             compare(textInput.text, data.outputText)
         }
 

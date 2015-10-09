@@ -464,8 +464,10 @@ InputPanel {
     }
 
     function setHandwritingMode(enabled) {
-        if (inputPanel.keyboard.handwritingMode !== enabled)
-            virtualKeyClick(Qt.Key_Context2)
+        if (inputPanel.keyboard.handwritingMode !== enabled) {
+            if (!enabled || inputPanel.keyboard.isHandwritingAvailable())
+                inputPanel.keyboard.handwritingMode = enabled
+        }
         return inputPanel.keyboard.handwritingMode === enabled
     }
 
