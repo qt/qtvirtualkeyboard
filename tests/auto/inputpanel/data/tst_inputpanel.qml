@@ -144,7 +144,7 @@ Rectangle {
                         Item { property var styleName: VirtualKeyboardSettings.styleName; \
                                property var locale: VirtualKeyboardSettings.locale; \
                                property var availableLocales: VirtualKeyboardSettings.availableLocales; \
-                               property var availableLocales: VirtualKeyboardSettings.activeLocales }" },
+                               property var activeLocales: VirtualKeyboardSettings.activeLocales }" },
             ]
         }
 
