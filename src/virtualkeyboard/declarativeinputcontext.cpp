@@ -94,6 +94,7 @@ public:
 #ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
     QSet<int> activeNavigationKeys;
 #endif
+    QSet<quint32> activeKeys;
 };
 
 /*!
@@ -126,6 +127,7 @@ DeclarativeInputContext::DeclarativeInputContext(PlatformInputContext *parent) :
     d->inputContext = parent;
     if (d->inputContext) {
         d->inputContext->setDeclarativeContext(this);
+        connect(d->inputContext, SIGNAL(focusObjectChanged()), SLOT(onInputItemChanged()));
         connect(d->inputContext, SIGNAL(focusObjectChanged()), SIGNAL(inputItemChanged()));
     }
     d->inputEngine = new DeclarativeInputEngine(this);
@@ -475,6 +477,15 @@ bool DeclarativeInputContext::hasEnterKeyAction(QObject *item) const
     return item != 0 && qmlAttachedPropertiesObject<EnterKeyAction>(item, false);
 }
 
+void DeclarativeInputContext::onInputItemChanged()
+{
+    Q_D(DeclarativeInputContext);
+    if (!inputItem() && !d->activeKeys.isEmpty()) {
+        // After losing keyboard focus it is impossible to track pressed keys
+        d->activeKeys.clear();
+    }
+}
+
 void DeclarativeInputContext::setFocus(bool enable)
 {
     Q_D(DeclarativeInputContext);
@@ -582,26 +593,36 @@ void DeclarativeInputContext::update(Qt::InputMethodQueries queries)
 
 bool DeclarativeInputContext::filterEvent(const QEvent *event)
 {
-#ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
-    if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease) {
+    QEvent::Type type = event->type();
+    if (type == QEvent::KeyPress || type == QEvent::KeyRelease) {
         Q_D(DeclarativeInputContext);
         const QKeyEvent *keyEvent = static_cast<const QKeyEvent *>(event);
+
+        // Keep track of pressed keys update key event state
+        if (type == QEvent::KeyPress)
+            d->activeKeys += keyEvent->nativeScanCode();
+        else if (type == QEvent::KeyRelease)
+            d->activeKeys -= keyEvent->nativeScanCode();
+
+#ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
         int key = keyEvent->key();
         if ((key >= Qt::Key_Left && key <= Qt::Key_Down) || key == Qt::Key_Return) {
-            if (event->type() == QEvent::KeyPress && d->inputContext->isInputPanelVisible()) {
+            if (type == QEvent::KeyPress && d->inputContext->isInputPanelVisible()) {
                 d->activeNavigationKeys += key;
                 emit navigationKeyPressed(key, keyEvent->isAutoRepeat());
                 return true;
-            } else if (event->type() == QEvent::KeyRelease && d->activeNavigationKeys.contains(key)) {
+            } else if (type == QEvent::KeyRelease && d->activeNavigationKeys.contains(key)) {
                 d->activeNavigationKeys -= key;
                 emit navigationKeyReleased(key, keyEvent->isAutoRepeat());
                 return true;
             }
         }
-    }
-#else
-    Q_UNUSED(event)
 #endif
+
+        // Break composing text since the virtual keyboard does not support hard keyboard events
+        if (!d->preeditText.isEmpty())
+            d->inputEngine->update();
+    }
     return false;
 }
 

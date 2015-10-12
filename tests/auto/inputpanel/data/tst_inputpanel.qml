@@ -247,6 +247,22 @@ Rectangle {
             compare(textInput.text, "A")
         }
 
+        function test_hardKeyInput() {
+            prepareTest()
+
+            verify(inputPanel.virtualKeyClick("h"))
+            verify(inputPanel.virtualKeyClick("a"))
+            verify(inputPanel.virtualKeyClick("r"))
+            waitForRendering(textInput)
+            if (inputPanel.wordCandidateListVisibleHint)
+                compare(textInput.text, "")
+            else
+                compare(textInput.text, "Har")
+            keyClick('d')
+            waitForRendering(textInput)
+            compare(textInput.text, "Hard")
+        }
+
         function test_inputLocale_data() {
             return [
                 { initLocale: "ar_AR", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "\u0645\u0631\u062D\u0628\u0627", outputText: "\u0645\u0631\u062D\u0628\u0627" },

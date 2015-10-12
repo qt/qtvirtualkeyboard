@@ -113,6 +113,9 @@ signals:
     void navigationKeyPressed(int key, bool isAutoRepeat);
     void navigationKeyReleased(int key, bool isAutoRepeat);
 
+private slots:
+    void onInputItemChanged();
+
 private:
     void setFocus(bool enable);
     void sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes);
