@@ -81,7 +81,7 @@ Item {
                 anchors.margins: 10
                 floating: true
                 flipable: true
-                width: handwritingInputPanel.height / 588 * 76
+                width: 76
                 height: width
                 state: handwritingInputPanel.state
                 onClicked: handwritingInputPanel.active = !handwritingInputPanel.active

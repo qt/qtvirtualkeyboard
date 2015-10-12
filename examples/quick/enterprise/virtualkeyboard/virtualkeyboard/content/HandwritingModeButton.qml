@@ -86,22 +86,28 @@ Item {
     function snapHorizontal() {
         if (!floating)
             return
-        if (mouseArea.drag.maximumX > 0 && anchors.left !== parent.left && anchors.right !== parent.right) {
-            if (x + 20 >= mouseArea.drag.maximumX)
+        if (mouseArea.drag.maximumX > mouseArea.drag.minimumX) {
+            if (x + 20 >= mouseArea.drag.maximumX) {
+                anchors.left = undefined
                 anchors.right = parent.right
-            else if (x - 20 <= mouseArea.drag.minimumX)
+            } else if (x - 20 <= mouseArea.drag.minimumX) {
+                anchors.right = undefined
                 anchors.left = parent.left
+            }
         }
     }
 
     function snapVertical() {
         if (!floating)
             return
-        if (mouseArea.drag.maximumY > 0 && anchors.bottom !== parent.bottom && anchors.top !== parent.top) {
-            if (y + 20 >= mouseArea.drag.maximumY)
+        if (mouseArea.drag.maximumY > mouseArea.drag.minimumY) {
+            if (y + 20 >= mouseArea.drag.maximumY) {
+                anchors.top = undefined
                 anchors.bottom = parent.bottom
-            else if (y - 20 <= mouseArea.drag.minimumY)
+            } else if (y - 20 <= mouseArea.drag.minimumY) {
+                anchors.bottom = undefined
                 anchors.top = parent.top
+            }
         }
     }
 
@@ -112,11 +118,11 @@ Item {
             target: handwritingModeButton.floating ? handwritingModeButton : undefined
             axis: Drag.XAxis | Drag.YAxis
             minimumX: 0
-            maximumX: Math.max(handwritingModeButton.parent.width - handwritingModeButton.width, 0)
-            onMaximumXChanged: handwritingModeButton.snapHorizontal()
+            maximumX: handwritingModeButton.parent.width - handwritingModeButton.width
+            onMaximumXChanged: !mouseArea.drag.active && handwritingModeButton.snapHorizontal()
             minimumY: 0
-            maximumY: Math.max(handwritingModeButton.parent.height - handwritingModeButton.height, 0)
-            onMaximumYChanged: handwritingModeButton.snapVertical()
+            maximumY: handwritingModeButton.parent.height - handwritingModeButton.height
+            onMaximumYChanged: !mouseArea.drag.active && handwritingModeButton.snapVertical()
         }
         onPressed: {
             if (!handwritingModeButton.floating)
