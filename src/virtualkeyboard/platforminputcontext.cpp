@@ -34,7 +34,8 @@ PlatformInputContext::PlatformInputContext() :
     m_focusObject(0),
     m_locale(),
     m_inputDirection(m_locale.textDirection()),
-    m_filterEvent(0)
+    m_filterEvent(0),
+    m_visible(false)
 {
 }
 
@@ -73,10 +74,13 @@ void PlatformInputContext::update(Qt::InputMethodQueries queries)
 #endif
 
     if (m_declarativeContext) {
-        if (enabled)
+        if (enabled) {
             m_declarativeContext->update(queries);
-        else
+            if (m_visible)
+                updateInputPanelVisible();
+        } else {
             hideInputPanel();
+        }
         m_declarativeContext->setFocus(enabled);
     }
 }
@@ -98,18 +102,20 @@ bool PlatformInputContext::isAnimating() const
 
 void PlatformInputContext::showInputPanel()
 {
-    if (!m_inputPanel || m_inputPanel->isVisible())
-        return;
-    m_inputPanel->show();
-    emitInputPanelVisibleChanged();
+    if (!m_visible) {
+        VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::showInputPanel()";
+        m_visible = true;
+    }
+    updateInputPanelVisible();
 }
 
 void PlatformInputContext::hideInputPanel()
 {
-    if (!m_inputPanel || !m_inputPanel->isVisible())
-        return;
-    m_inputPanel->hide();
-    emitInputPanelVisibleChanged();
+    if (m_visible) {
+        VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::hideInputPanel()";
+        m_visible = false;
+    }
+    updateInputPanelVisible();
 }
 
 bool PlatformInputContext::isInputPanelVisible() const
@@ -221,4 +227,18 @@ void PlatformInputContext::setDeclarativeContext(DeclarativeInputContext *contex
 void PlatformInputContext::keyboardRectangleChanged()
 {
     m_inputPanel->setInputRect(m_declarativeContext->keyboardRectangle().toRect());
+}
+
+void PlatformInputContext::updateInputPanelVisible()
+{
+    if (!m_inputPanel)
+        return;
+
+    if (m_visible && !m_inputPanel->isVisible()) {
+        m_inputPanel->show();
+        emitInputPanelVisibleChanged();
+    } else if (!m_visible && m_inputPanel->isVisible()) {
+        m_inputPanel->hide();
+        emitInputPanelVisibleChanged();
+    }
 }

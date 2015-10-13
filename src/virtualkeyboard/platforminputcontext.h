@@ -70,6 +70,7 @@ protected:
 
 private slots:
     void keyboardRectangleChanged();
+    void updateInputPanelVisible();
 
 private:
     friend class DeclarativeInputContext;
@@ -79,6 +80,7 @@ private:
     QLocale m_locale;
     Qt::LayoutDirection m_inputDirection;
     QEvent *m_filterEvent;
+    bool m_visible;
 };
 
 #endif
