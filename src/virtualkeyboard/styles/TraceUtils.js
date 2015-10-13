@@ -57,19 +57,22 @@ function renderSmoothedLine(ctx, trace, renderPos) {
             pt2 = points[i]
             tp = Qt.point((pt1.x + pt2.x) / 2, (pt1.y + pt2.y) / 2)
             ctx.quadraticCurveTo(pt1.x, pt1.y, tp.x, tp.y)
+            ctx.moveTo(tp.x, tp.y)
         }
+        ctx.stroke()
     }
 
     // Draw the remainder of the line
     if (trace.isFinal) {
         if (i < points.length) {
+            tp = points[i - 1]
+            ctx.beginPath()
+            ctx.moveTo(tp.x, tp.y)
             tp = points[i++]
             ctx.lineTo(tp.x, tp.y)
+            ctx.stroke()
         }
     }
-
-    if (i > 1)
-        ctx.stroke()
 
     return renderPos + i - 1
 }

@@ -113,6 +113,8 @@ Canvas {
 
     property int __renderPos
 
+    property bool __renderingEnabled
+
     /*! Renders smoothed line with round corners.
 
         This function is incremental and renders only the new part added to the Trace.
@@ -125,8 +127,14 @@ Canvas {
 
     onTraceChanged: if (trace === null && autoDestroy) destroy(autoDestroyDelay)
 
+    onAvailableChanged: {
+        __renderingEnabled = available
+        if (__renderingEnabled)
+            requestAnimationFrame(renderFunction)
+    }
+
     Connections {
-        target: trace ? trace : null
+        target: canvas.__renderingEnabled && trace ? trace : null
         onLengthChanged: if (renderFunction) canvas.requestAnimationFrame(renderFunction)
         onFinalChanged: if (renderFunction) canvas.requestAnimationFrame(renderFunction)
     }
