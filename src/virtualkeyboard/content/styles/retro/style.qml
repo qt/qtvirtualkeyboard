@@ -473,17 +473,17 @@ KeyboardStyle {
             border.bottom: 76
             horizontalTileMode: BorderImage.Stretch
             scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
-            Text {
-                id: spaceKeyText
-                text: Qt.locale(InputContext.locale).nativeLanguageName
-                color: currentStyle.inputLocaleIndicatorColor
-                Behavior on color { PropertyAnimation { duration: 250 } }
-                anchors.centerIn: parent
-                font {
-                    family: fontFamily
-                    weight: Font.Bold
-                    pixelSize: 72 * scaleHint
-                }
+        }
+        Text {
+            id: spaceKeyText
+            text: Qt.locale(InputContext.locale).nativeLanguageName
+            color: currentStyle.inputLocaleIndicatorColor
+            Behavior on color { PropertyAnimation { duration: 250 } }
+            anchors.centerIn: parent
+            font {
+                family: fontFamily
+                weight: Font.Bold
+                pixelSize: 72 * scaleHint
             }
         }
         states: [
