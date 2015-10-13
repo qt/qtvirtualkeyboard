@@ -166,7 +166,7 @@ public:
         Q_Q(PinyinInputMethod);
         Q_ASSERT(state != Predict);
 
-        int result;
+        int result = 0;
         if (candId < 0) {
             if (surface.length() > 0) {
                 if (posDelSpl < 0) {
