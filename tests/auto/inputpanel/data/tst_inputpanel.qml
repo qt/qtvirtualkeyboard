@@ -102,19 +102,19 @@ Rectangle {
                 // Note: Add new import versions here
                 { qml: "import QtQuick 2.0; \
                         import QtQuick.Enterprise.VirtualKeyboard 1.0; \
-                        InputPanel {}" },
+                        Item {}" },
                 { qml: "import QtQuick 2.0; \
                         import QtQuick.Enterprise.VirtualKeyboard 1.1; \
-                        InputPanel {}" },
+                        Item {}" },
                 { qml: "import QtQuick 2.0; \
                         import QtQuick.Enterprise.VirtualKeyboard 1.2; \
-                        InputPanel {}" },
+                        Item {}" },
                 { qml: "import QtQuick 2.0; \
                         import QtQuick.Enterprise.VirtualKeyboard 1.3; \
-                        InputPanel {}" },
+                        Item {}" },
                 { qml: "import QtQuick 2.0; \
                         import QtQuick.Enterprise.VirtualKeyboard 2.0; \
-                        InputPanel {}" },
+                        Item {}" },
                 { qml: "import QtQuick 2.0; \
                         import QtQuick.Enterprise.VirtualKeyboard.Styles 1.0; \
                         KeyboardStyle {}" },
