@@ -812,6 +812,9 @@ public:
 
         Q_Q(T9WriteInputMethod);
         DeclarativeInputContext *ic = q->inputContext();
+        if (!ic)
+            return;
+
         QStringList newWordCandidates;
         QList<int> newWordCandidatesHwrResultIndex;
         QString resultString;
@@ -1020,7 +1023,7 @@ bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
 
             DeclarativeInputContext *ic = inputContext();
             Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
-            QString preeditText = inputContext()->preeditText();
+            QString preeditText = ic->preeditText();
             if (!addToWord) {
                 if (!preeditText.isEmpty()) {
                     if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly) || inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly))
@@ -1153,10 +1156,11 @@ void T9WriteInputMethod::dictionaryLoadCompleted(const QString &fileUri, void *d
     if (!dictionary)
         return;
 
-    if (fileUri == d->dictionaryFileName) {
+    DeclarativeInputContext *ic = inputContext();
+    if (ic && fileUri == d->dictionaryFileName) {
         d->convertedDictionary = dictionary;
         if (d->sessionSettings.recognitionMode == mcrMode &&
-                !inputContext()->inputMethodHints().testFlag(Qt::ImhNoPredictiveText) &&
+                !ic->inputMethodHints().testFlag(Qt::ImhNoPredictiveText) &&
                 !d->attachedDictionary) {
             d->attachDictionary(d->convertedDictionary);
             d->attachedDictionary = d->convertedDictionary;
