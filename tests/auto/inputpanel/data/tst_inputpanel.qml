@@ -938,6 +938,7 @@ Rectangle {
                 expectFail("", "Handwriting not enabled")
             verify(handwritingInputPanel.enabled)
             handwritingInputPanel.available = true
+            verify(inputPanel.visible === false)
 
             for (var i = 0; i < data.toggleShiftCount; i++) {
                 inputPanel.toggleShift()
@@ -966,22 +967,21 @@ Rectangle {
         function test_hwrFullScreenNumericInputSequence(data) {
             prepareTest(data)
 
-            if (!inputPanel.setHandwritingMode(true))
+            if (!handwritingInputPanel.enabled)
                 expectFail("", "Handwriting not enabled")
-            verify(inputPanel.handwritingMode === true)
+            verify(handwritingInputPanel.enabled)
+            handwritingInputPanel.available = true
+            verify(inputPanel.visible === false)
 
             for (var inputIndex in data.inputSequence) {
-                verify(inputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
+                verify(handwritingInputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
             }
 
-            if (inputPanel.wordCandidateView.count > 0) {
-                if (inputPanel.selectionListSearchSuggestion(data.outputText)) {
-                    inputPanel.selectionListSelectCurrentItem()
-                }
+            if (handwritingInputPanel.wordCandidatePopupListSearchSuggestion(data.outputText)) {
+                handwritingInputPanel.wordCandidatePopupListSelectCurrentItem()
             }
 
             Qt.inputMethod.commit()
-            waitForRendering(inputPanel)
             compare(textInput.text, data.outputText)
         }
 
@@ -998,6 +998,7 @@ Rectangle {
                 expectFail("", "Handwriting not enabled")
             verify(handwritingInputPanel.enabled)
             handwritingInputPanel.available = true
+            verify(inputPanel.visible === false)
 
             for (var inputIndex in data.inputSequence) {
                 verify(handwritingInputPanel.emulateHandwriting(data.inputSequence[inputIndex], true))
