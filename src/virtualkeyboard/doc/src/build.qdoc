@@ -52,6 +52,9 @@ The project is split into the following subprojects:
 \row
     \li \e src/virtualkeyboard/3rdparty/pinyin/pinyin.pro
     \li A project file for compiling the PinyinIME library.
+\row
+    \li \e src/virtualkeyboard/3rdparty/tcime/tcime.pro
+    \li A project file for compiling the TCIME library.
 \endtable
 
 The input methods are implemented either in C++ or QML.
@@ -104,6 +107,11 @@ build targets.
     \li \e pinyin
     \li Enables the Pinyin input method for Simplified Chinese.
     \li This option activates the Pinyin input method for the Simplified Chinese
+        language and disables all other default languages, except English.
+\row
+    \li \e tcime
+    \li Enables the Cangjie input method for Traditional Chinese.
+    \li This option activates the Canjie input method for the Traditional Chinese
         language and disables all other default languages, except English.
 \row
     \li \e hangul

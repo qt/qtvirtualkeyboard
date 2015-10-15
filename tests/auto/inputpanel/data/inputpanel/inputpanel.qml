@@ -46,6 +46,7 @@ InputPanel {
     readonly property var availableLocales: VirtualKeyboardSettings.availableLocales
     readonly property var activeLocales: VirtualKeyboardSettings.activeLocales
     readonly property int inputMode: InputContext.inputEngine.inputMode
+    readonly property var inputMethod: InputContext.inputEngine.inputMethod
     readonly property var keyboard: Utils.findChildByProperty(inputPanel, "objectName", "keyboard", null)
     readonly property bool handwritingMode: keyboard.handwritingMode
     readonly property var keyboardLayoutLoader: Utils.findChildByProperty(keyboard, "objectName", "keyboardLayoutLoader", null)
@@ -175,7 +176,9 @@ InputPanel {
 
     function setLocale(inputLocale) {
         VirtualKeyboardSettings.locale = inputLocale
-        return Qt.inputMethod.locale.name.substring(0, 2) === inputLocale.substring(0, 2)
+        if (["ar", "fa"].indexOf(inputLocale.substring(0, 2)) !== -1)
+            return Qt.inputMethod.locale.name.substring(0, 2) === inputLocale.substring(0, 2)
+        return Qt.inputMethod.locale.name === inputLocale
     }
 
     function setActiveLocales(activeLocales) {
@@ -191,6 +194,8 @@ InputPanel {
             return InputEngine.Dialable
         else if (inputModeName === "Pinyin")
             return InputEngine.Pinyin
+        else if (inputModeName === "Canjie")
+            return InputEngine.Canjie
         else if (inputModeName === "Hangul")
             return InputEngine.Hangul
         else if (inputModeName === "Hiragana")

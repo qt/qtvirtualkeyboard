@@ -25,7 +25,7 @@ import QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
 
 KeyboardStyle {
     id: currentStyle
-    readonly property bool pinyinMode: InputContext.inputEngine.inputMode === InputEngine.Pinyin
+    readonly property bool compactSelectionList: [InputEngine.Pinyin, InputEngine.Cangjie].indexOf(InputContext.inputEngine.inputMode) !== -1
     readonly property string fontFamily: "Courier"
     readonly property real keyBackgroundMargin: Math.round(9 * scaleHint)
     readonly property real keyContentMargin: Math.round(50 * scaleHint)
@@ -564,6 +564,63 @@ KeyboardStyle {
         ]
     }
 
+    modeKeyPanel: KeyPanel {
+        BorderImage {
+            id: modeKeyBackground
+            source: resourcePrefix + "images/key154px_black.png"
+            width: (parent.width - 2 * keyBackgroundMargin) / scale
+            height: sourceSize.height
+            anchors.centerIn: parent
+            border.left: 76
+            border.top: 76
+            border.right: 76
+            border.bottom: 76
+            horizontalTileMode: BorderImage.Stretch
+            scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
+            states: [
+                State {
+                    name: "mode"
+                    when: control.mode
+                    PropertyChanges {
+                        target: modeKeyBackground
+                        source: resourcePrefix + "images/key154px_capslock.png"
+                    }
+                }
+            ]
+        }
+        Text {
+            id: modeKeyText
+            text: control.displayText
+            color: "#c5a96f"
+            anchors.centerIn: parent
+            font {
+                family: fontFamily
+                weight: Font.DemiBold
+                pixelSize: 74 * scaleHint
+                letterSpacing: -5 * scaleHint
+                capitalization: Font.AllUppercase
+            }
+        }
+        states: [
+            State {
+                name: "pressed"
+                when: control.pressed
+                PropertyChanges {
+                    target: modeKeyBackground
+                    opacity: 0.70
+                }
+            },
+            State {
+                name: "disabled"
+                when: !control.enabled
+                PropertyChanges {
+                    target: modeKeyBackground
+                    opacity: 0.20
+                }
+            }
+        ]
+    }
+
     handwritingKeyPanel: KeyPanel {
         BorderImage {
             id: hwrKeyBackground
@@ -728,7 +785,7 @@ KeyboardStyle {
         Text {
             id: selectionListLabel
             anchors.left: parent.left
-            anchors.leftMargin: Math.round((pinyinMode ? 50 : 140) * scaleHint)
+            anchors.leftMargin: Math.round((compactSelectionList ? 50 : 140) * scaleHint)
             anchors.verticalCenter: parent.verticalCenter
             text: decorateText(display, wordCompletionLength)
             color: "white"

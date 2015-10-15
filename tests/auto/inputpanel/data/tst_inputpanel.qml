@@ -701,6 +701,59 @@ Rectangle {
             compare(textInput.text, data.outputText)
         }
 
+        function test_cangjieInputMethod_data() {
+            return [
+                // "vehicle"
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530\u5341", expectedCandidates: [ "\u8ECA" ], outputText: "\u8ECA" },
+                // simplified mode: "vehicle"
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: true, inputSequence: "\u5341\u5341", expectedCandidates: [ "\u8ECA" ], outputText: "\u8ECA" },
+                // "to thank"
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u535C\u53E3\u7AF9\u7AF9\u6208", expectedCandidates: [ "\u8B1D" ], outputText: "\u8B1D" },
+                // exceptions: "door"
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u65E5\u5F13", expectedCandidates: [ "\u9580" ], outputText: "\u9580" },
+                // exceptions: "small table"
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u7AF9\u5F13", expectedCandidates: [ "\u51E0" ], outputText: "\u51E0" },
+                // fixed decomposition
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u7AF9\u96E3", expectedCandidates: [ "\u81FC" ], outputText: "\u81FC" },
+                // input handling: valid input sequence + space
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530\u5341 ", outputText: "\u8ECA" },
+                // input handling: invalid input sequence + space
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530 ", outputText: "" },
+                // input handling: valid input sequence + enter
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530\u5341\n", outputText: "\u8ECA\n" },
+                // input handling: invalid input sequence + enter
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530\n", outputText: "\n" },
+                // input handling: valid input sequence + punctuation
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530\u5341\uFF0E", outputText: "\u8ECA\uFF0E" },
+                // input handling: invalid input sequence + punctuation
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530\uFF0E", outputText: "\uFF0E" },
+            ]
+        }
+
+        function test_cangjieInputMethod(data) {
+            prepareTest(data)
+
+            if (data.hasOwnProperty("initSimplified")) {
+                if (inputPanel.inputMethod.simplified !== data.initSimplified)
+                    verify(inputPanel.virtualKeyClick(Qt.Key_Mode_switch))
+                verify(inputPanel.inputMethod.simplified === data.initSimplified)
+            }
+
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
+            }
+            waitForRendering(inputPanel)
+
+            if (data.expectedCandidates) {
+                for (var candidateIndex in data.expectedCandidates) {
+                    verify(inputPanel.selectionListSearchSuggestion(data.expectedCandidates[candidateIndex]))
+                    verify(inputPanel.selectionListSelectCurrentItem())
+                }
+            }
+
+            compare(textInput.text, data.outputText)
+        }
+
         function test_hangulInputMethod_data() {
             return [
                 // Test boundaries of the Hangul Jamo BMP plane

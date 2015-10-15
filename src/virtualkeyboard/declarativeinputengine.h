@@ -61,6 +61,7 @@ public:
         Numeric,
         Dialable,
         Pinyin,
+        Cangjie,
         Hangul,
         Hiragana,
         Katakana,

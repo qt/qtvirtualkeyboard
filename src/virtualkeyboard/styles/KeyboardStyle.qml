@@ -155,6 +155,18 @@ QtObject {
     */
     property Component symbolKeyPanel: null
 
+    /*! Template for the generic mode key.
+
+        This template provides a visualization of the key in which the state
+        can be on / off. This template is used in situations where the key label
+        will remain the same regardless of status.
+
+        The current state is available in the \c control.mode property.
+
+        \note The delegate must be based on the KeyPanel type.
+    */
+    property Component modeKeyPanel: null
+
     /*! Template for the handwriting mode key.
 
         \note The delegate must be based on the KeyPanel type.

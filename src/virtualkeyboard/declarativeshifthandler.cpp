@@ -36,7 +36,8 @@ public:
         toggleShiftEnabled(false),
         shiftChanged(false),
         manualShiftLanguageFilter(QSet<QLocale::Language>() << QLocale::Arabic << QLocale::Persian << QLocale::Hindi << QLocale::Korean),
-        noAutoUppercaseInputModeFilter(QSet<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::FullwidthLatin),
+        manualCapsInputModeFilter(QSet<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::Cangjie),
+        noAutoUppercaseInputModeFilter(QSet<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::FullwidthLatin << DeclarativeInputEngine::Pinyin << DeclarativeInputEngine::Cangjie),
         allCapsInputModeFilter(QSet<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::Hiragana << DeclarativeInputEngine::Katakana)
     {
     }
@@ -48,6 +49,7 @@ public:
     bool shiftChanged;
     QLocale locale;
     const QSet<QLocale::Language> manualShiftLanguageFilter;
+    const QSet<DeclarativeInputEngine::InputMode> manualCapsInputModeFilter;
     const QSet<DeclarativeInputEngine::InputMode> noAutoUppercaseInputModeFilter;
     const QSet<DeclarativeInputEngine::InputMode> allCapsInputModeFilter;
 };
@@ -149,7 +151,8 @@ void DeclarativeShiftHandler::toggleShift()
     if (d->manualShiftLanguageFilter.contains(d->locale.language())) {
         d->inputContext->setCapsLock(false);
         d->inputContext->setShift(!d->inputContext->shift());
-    } else if (d->inputContext->inputMethodHints() & Qt::ImhNoAutoUppercase) {
+    } else if (d->inputContext->inputMethodHints() & Qt::ImhNoAutoUppercase ||
+               d->manualCapsInputModeFilter.contains(d->inputContext->inputEngine()->inputMode())) {
         bool capsLock = d->inputContext->capsLock();
         d->inputContext->setCapsLock(!capsLock);
         d->inputContext->setShift(!capsLock);
@@ -174,7 +177,8 @@ void DeclarativeShiftHandler::reset()
         bool toggleShiftEnabled = !(inputMethodHints & (Qt::ImhUppercaseOnly | Qt::ImhLowercaseOnly));
         // For filtered languages reset the initial shift status to lower case
         // and allow manual shift change
-        if (d->manualShiftLanguageFilter.contains(d->locale.language())) {
+        if (d->manualShiftLanguageFilter.contains(d->locale.language()) ||
+                d->manualCapsInputModeFilter.contains(inputMode)) {
             preferUpperCase = false;
             autoCapitalizationEnabled = false;
             toggleShiftEnabled = true;

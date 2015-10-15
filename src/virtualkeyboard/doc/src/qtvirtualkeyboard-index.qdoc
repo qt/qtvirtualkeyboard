@@ -40,7 +40,7 @@
         \li Character preview and alternative character view.
         \li Automatic capitalization and space insertion.
         \li Scalability to different resolutions.
-        \li Support for different character sets (Latin, Simplified Chinese,
+        \li Support for different character sets (Latin, Simplified/Traditional Chinese,
             Hindi, Japanese, Arabic, Korean, and others).
         \li Support for most common input \l {Supported Languages}{languages},
             with possibility to easily extend the language support.
@@ -72,6 +72,7 @@
         \li Portugese
         \li Russian
         \li Simplified Chinese
+        \li Traditional Chinese
         \li Spanish
         \li Swedish
     \endlist

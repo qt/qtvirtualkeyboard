@@ -25,7 +25,7 @@ import QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
 
 KeyboardStyle {
     id: currentStyle
-    readonly property bool pinyinMode: InputContext.inputEngine.inputMode === InputEngine.Pinyin
+    readonly property bool compactSelectionList: [InputEngine.Pinyin, InputEngine.Cangjie].indexOf(InputContext.inputEngine.inputMode) !== -1
     readonly property string fontFamily: "Sans"
     readonly property real keyBackgroundMargin: Math.round(13 * scaleHint)
     readonly property real keyContentMargin: Math.round(45 * scaleHint)
@@ -508,6 +508,70 @@ KeyboardStyle {
         ]
     }
 
+    modeKeyPanel: KeyPanel {
+        Rectangle {
+            id: modeKeyBackground
+            radius: 5
+            color: "#1e1b18"
+            anchors.fill: parent
+            anchors.margins: keyBackgroundMargin
+            Text {
+                id: modeKeyText
+                text: control.displayText
+                color: "white"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.fill: parent
+                anchors.margins: keyContentMargin
+                font {
+                    family: fontFamily
+                    weight: Font.Normal
+                    pixelSize: 44 * scaleHint
+                    capitalization: Font.AllUppercase
+                }
+            }
+            Rectangle {
+                id: modeKeyIndicator
+                implicitHeight: parent.height * 0.1
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.leftMargin: parent.width * 0.4
+                anchors.rightMargin: parent.width * 0.4
+                anchors.bottomMargin: parent.height * 0.12
+                color: "#80c342"
+                radius: 3
+                visible: control.mode
+            }
+        }
+        states: [
+            State {
+                name: "pressed"
+                when: control.pressed
+                PropertyChanges {
+                    target: modeKeyBackground
+                    opacity: 0.80
+                }
+                PropertyChanges {
+                    target: modeKeyText
+                    opacity: 0.6
+                }
+            },
+            State {
+                name: "disabled"
+                when: !control.enabled
+                PropertyChanges {
+                    target: modeKeyBackground
+                    opacity: 0.8
+                }
+                PropertyChanges {
+                    target: modeKeyText
+                    opacity: 0.2
+                }
+            }
+        ]
+    }
+
     handwritingKeyPanel: KeyPanel {
         Rectangle {
             id: hwrKeyBackground
@@ -622,7 +686,7 @@ KeyboardStyle {
         Text {
             id: selectionListLabel
             anchors.left: parent.left
-            anchors.leftMargin: Math.round((pinyinMode ? 50 : 140) * scaleHint)
+            anchors.leftMargin: Math.round((compactSelectionList ? 50 : 140) * scaleHint)
             anchors.verticalCenter: parent.verticalCenter
             text: decorateText(display, wordCompletionLength)
             color: "#80c342"

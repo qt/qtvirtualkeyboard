@@ -17,6 +17,7 @@
         <file>components/KeyboardLayout.qml</file>
         <file>components/KeyboardLayoutLoader.qml</file>
         <file>components/KeyboardRow.qml</file>
+        <file>components/ModeKey.qml</file>
         <file>components/MultiSoundEffect.qml</file>
         <file>components/MultitapInputMethod.qml</file>
         <file>components/NumberKey.qml</file>

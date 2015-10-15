@@ -30,6 +30,9 @@
 #ifdef HAVE_PINYIN
 #include "pinyininputmethod.h"
 #endif
+#ifdef HAVE_TCIME
+#include "tcinputmethod.h"
+#endif
 #ifdef HAVE_HANGUL
 #include "hangulinputmethod.h"
 #endif
@@ -66,6 +69,9 @@ static QObject *createInputContextModule(QQmlEngine *engine, QJSEngine *scriptEn
             << QLatin1String("HunspellInputMethod")
 #ifdef HAVE_PINYIN
             << QLatin1String("PinyinInputMethod")
+#endif
+#ifdef HAVE_TCIME
+            << QLatin1String("TCInputMethod")
 #endif
 #ifdef HAVE_HANGUL
             << QLatin1String("HangulInputMethod")
@@ -120,6 +126,9 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
 #ifdef HAVE_PINYIN
     qmlRegisterType<PinyinInputMethod>(pluginUri, 1, 1, "PinyinInputMethod");
     qmlRegisterType<PinyinInputMethod>(pluginUri, 2, 0, "PinyinInputMethod");
+#endif
+#ifdef HAVE_TCIME
+    qmlRegisterType<TCInputMethod>(pluginUri, 2, 0, "TCInputMethod");
 #endif
 #ifdef HAVE_HANGUL
     qmlRegisterType<HangulInputMethod>(pluginUri, 1, 3, "HangulInputMethod");
@@ -180,6 +189,7 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     qmlRegisterType(QUrl(componentsPath + QLatin1String("KeyboardRow.qml")), pluginUri, 2, 0, "KeyboardRow");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("Key.qml")), pluginUri, 1, 0, "Key");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("Key.qml")), pluginUri, 2, 0, "Key");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("ModeKey.qml")), pluginUri, 2, 0, "ModeKey");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("MultiSoundEffect.qml")), pluginUri, 1, 1, "MultiSoundEffect");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("MultiSoundEffect.qml")), pluginUri, 2, 0, "MultiSoundEffect");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("MultitapInputMethod.qml")), pluginUri, 1, 0, "MultitapInputMethod");

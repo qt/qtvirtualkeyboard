@@ -19,6 +19,11 @@ pinyin {
     virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-pinyin
 }
 
+tcime {
+    SUBDIRS += virtualkeyboard/3rdparty/tcime
+    virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-tcime
+}
+
 lipi-toolkit {
     SUBDIRS += virtualkeyboard/3rdparty/lipi-toolkit
     virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-lipi-toolkit

@@ -58,9 +58,10 @@ RESOURCES += \
     content/content.qrc
 
 pinyin: RESOURCES += content/layouts_pinyin.qrc
+tcime: RESOURCES += content/layouts_traditional_chinese.qrc
 hangul: RESOURCES += content/layouts_hangul.qrc
 openwnn: RESOURCES += content/layouts_japanese.qrc
-!pinyin:!hangul:!openwnn: RESOURCES += content/layouts.qrc
+!tcime:!pinyin:!hangul:!openwnn: RESOURCES += content/layouts.qrc
 
 retro-style {
     DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"retro\\\"
@@ -146,6 +147,22 @@ pinyin {
     pinyin_data.files = $$PWD/3rdparty/pinyin/data/dict_pinyin.dat
     pinyin_data.path = $$DATAPATH/pinyin
     INSTALLS += pinyin_data
+}
+
+tcime {
+    SOURCES += \
+        tcinputmethod.cpp
+    HEADERS += \
+        tcinputmethod.h
+    DEFINES += HAVE_TCIME
+    INCLUDEPATH += 3rdparty/tcime
+    DEPENDPATH += 3rdparty/tcime
+    LIBS += -L$$OUT_PWD/3rdparty/tcime/$$SUBPATH -ltcime
+    tcime_data.files = \
+        $$PWD/3rdparty/tcime/data/qt/dict_cangjie.dat \
+        $$PWD/3rdparty/tcime/data/qt/dict_phrases.dat
+    tcime_data.path = $$DATAPATH/tcime
+    INSTALLS += tcime_data
 }
 
 hangul {
