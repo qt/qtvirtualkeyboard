@@ -89,7 +89,7 @@ Item {
         }
         onActiveLocalesChanged: {
             updateDefaultLocale()
-            if (!isValidLocale(localeIndex))
+            if (!isValidLocale(localeIndex) || VirtualKeyboardSettings.locale)
                 localeIndex = defaultLocaleIndex
         }
     }
