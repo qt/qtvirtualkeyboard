@@ -64,6 +64,22 @@ Item {
     */
     property string displayText: text
 
+    /*! \since QtQuick.Enterprise.VirtualKeyboard 2.0
+
+        Sets the small text rendered in the corner of the key.
+
+        The default value based on the default item in the effective alternative keys.
+    */
+    property string smallText: effectiveAlternativeKeysHighlightIndex !== -1 ? effectiveAlternativeKeys[effectiveAlternativeKeysHighlightIndex] : ""
+
+    /*! \since QtQuick.Enterprise.VirtualKeyboard 2.0
+
+        Sets the visibility of small text.
+
+        The default value is inherited from the parent.
+    */
+    property bool smallTextVisible: parent.smallTextVisible
+
     /*! Sets the list of alternative keys.
 
         This property can be set to a string, or a list of strings. If the value is
@@ -73,9 +89,42 @@ Item {
         The alternative keys are presented to the user by pressing and holding a key
         with this property set.
 
+        \note If the alternative keys contains the key \c text, it will be filtered from
+              the \c effectiveAlternativeKeys and its position will be used as an indicator
+              for the highlighted item instead.
+
         The default is empty list.
     */
     property var alternativeKeys: []
+
+    /*! \since QtQuick.Enterprise.VirtualKeyboard 2.0
+
+        This property contains the effective alternative keys presented to user.
+
+        The list is contains the items in the \c alternativeKeys excluding the \c text
+        item.
+    */
+    readonly property var effectiveAlternativeKeys: {
+        var textIndex = alternativeKeys.indexOf(text)
+        if (textIndex == -1)
+            return alternativeKeys
+        return alternativeKeys.slice(0, textIndex).concat(alternativeKeys.slice(textIndex + 1))
+    }
+
+    /*! \since QtQuick.Enterprise.VirtualKeyboard 2.0
+
+        This property contains the index of highlighted item in the \c effectiveAlternativeKeys.
+
+        The index is calculated from the index of the key \c text in the \c alternativeKeys.
+
+        For example, if the alternative keys contains "çcċčć" and the key \c text is "c",
+        this index will become 1 and the effective alternative keys presented to user will
+        be "ç[ċ]čć".
+    */
+    readonly property int effectiveAlternativeKeysHighlightIndex: {
+        var index = alternativeKeys.indexOf(text)
+        return index > 1 && (index + 1) == alternativeKeys.length ? alternativeKeys.length - 2 : index
+    }
 
     /*! Sets the key code for input method processing.
 

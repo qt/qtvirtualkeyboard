@@ -40,5 +40,15 @@ RowLayout {
         in the layout hierarchy.
     */
     property real keyWeight: parent ? parent.keyWeight : undefined
+
+    /*! \since QtQuick.Enterprise.VirtualKeyboard 2.0
+
+        Sets the \c smallTextVisible for all children keys.
+
+        The default value is inherited from the parent element
+        in the layout hierarchy.
+    */
+    property bool smallTextVisible: parent ? parent.smallTextVisible : false
+
     spacing: 0
 }

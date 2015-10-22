@@ -43,3 +43,18 @@ function findChildByProperty(parent, propertyName, propertyValue, compareCb) {
     return obj
 }
 
+function findChild(parent, param, matchCb) {
+    var obj = null
+    if (parent === null)
+        return null
+    var children = parent.children
+    for (var i = 0; i < children.length; i++) {
+        obj = children[i]
+        if (matchCb(obj, param))
+            break
+        obj = findChild(obj, param, matchCb)
+        if (obj)
+            break
+    }
+    return obj
+}

@@ -38,6 +38,8 @@ Item {
             \li \c control.key Unicode code of the key.
             \li \c control.text Unicode text of the key.
             \li \c control.displayText Display text of the key.
+            \li \c control.smallText Small text of the key, usually rendered in the corner of the key.
+            \li \c control.smallTextVisible Visibility of the small text.
             \li \c control.alternativeKeys List of alternative key sequences.
             \li \c control.enabled Set to true when the key is enabled.
             \li \c control.pressed Set to true when the key is currently pressed.

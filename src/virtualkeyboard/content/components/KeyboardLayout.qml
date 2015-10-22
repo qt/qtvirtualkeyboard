@@ -127,5 +127,14 @@ ColumnLayout {
     */
     property real keyWeight
 
+    /*! \since QtQuick.Enterprise.VirtualKeyboard 2.0
+
+        Sets the \c smallTextVisible for all children keys.
+
+        The default value is inherited from the parent element
+        in the layout hierarchy.
+    */
+    property bool smallTextVisible
+
     spacing: 0
 }

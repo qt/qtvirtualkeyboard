@@ -75,7 +75,7 @@ Item {
     }
 
     onClicked: {
-        if (active) {
+        if (active && listView.currentIndex >= 0 && listView.currentIndex < listView.model.count) {
             var activeKey = listView.model.get(listView.currentIndex)
             InputContext.inputEngine.virtualKeyClick(keyCode, activeKey.text,
                                                      uppercased ? Qt.ShiftModifier : 0)
@@ -84,14 +84,14 @@ Item {
 
     function open(key, originX, originY) {
         keyCode = key.key
-        var alternativeKeys = key.alternativeKeys
+        var alternativeKeys = key.effectiveAlternativeKeys
         if (alternativeKeys.length > 0) {
             for (var i = 0; i < alternativeKeys.length; i++) {
                 listModel.append({ "text": uppercased ? alternativeKeys[i].toUpperCase() : alternativeKeys[i] })
             }
             listView.width = keyboard.style.alternateKeysListItemWidth * listModel.count
             listView.forceLayout()
-            highlightIndex = alternativeKeys.indexOf(key.text)
+            highlightIndex = key.effectiveAlternativeKeysHighlightIndex
             if (highlightIndex === -1) {
                 console.log("AlternativeKeys: active key \"" + key.text + "\" not found in alternativeKeys \"" + alternativeKeys + ".\"")
                 highlightIndex = 0

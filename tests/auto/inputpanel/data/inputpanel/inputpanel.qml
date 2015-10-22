@@ -212,13 +212,17 @@ InputPanel {
     }
 
     function findVirtualKey(key) {
-        return Utils.findChildByProperty(keyboardLayoutLoader, (typeof key == "number") ? "key" : "text", key, null)
+        return Utils.findChild(keyboardLayoutLoader, key, function(obj, param) {
+            if (!obj.hasOwnProperty("key") || !obj.hasOwnProperty("text"))
+                return false
+            return (typeof param == "number") ? obj.key === param :  obj.text === param
+        })
     }
 
     function findVirtualKeyAlternative(key) {
         if (typeof key != "string")
             return null
-        return Utils.findChildByProperty(keyboardLayoutLoader, "alternativeKeys", key, function(propertyValue, key) { return propertyValue.indexOf(key) !== -1 })
+        return Utils.findChildByProperty(keyboardLayoutLoader, "effectiveAlternativeKeys", key, function(propertyValue, key) { return propertyValue.indexOf(key) !== -1 })
     }
 
     function virtualKeyPressOnCurrentLayout(key) {
@@ -236,7 +240,7 @@ InputPanel {
             testcase.waitForRendering(inputPanel)
             if (alternativeKey) {
                 alternativeKeysSpy.wait()
-                var keyIndex = keyObj.alternativeKeys.indexOf(key)
+                var keyIndex = keyObj.effectiveAlternativeKeys.indexOf(key)
                 var itemX = keyIndex * keyboard.style.alternateKeysListItemWidth + keyboard.style.alternateKeysListItemWidth / 2
                 virtualKeyPressPoint.x = inputPanel.mapFromItem(alternativeKeys.listView, itemX, 0).x
                 testcase.mouseMove(inputPanel, virtualKeyPressPoint.x, virtualKeyPressPoint.y)
@@ -368,7 +372,7 @@ InputPanel {
                 testcase.keyPress(Qt.Key_Return)
                 alternativeKeysSpy.wait()
                 testcase.keyRelease(Qt.Key_Return)
-                var keyIndex = keyObj.alternativeKeys.indexOf(key)
+                var keyIndex = keyObj.effectiveAlternativeKeys.indexOf(key)
                 while (inputPanel.alternativeKeys.listView.currentIndex !== keyIndex) {
                     testcase.verify(inputPanel.alternativeKeys.listView.currentIndex !== -1)
                     emulateNavigationKeyClick(inputPanel.alternativeKeys.listView.currentIndex < keyIndex ? Qt.Key_Right : Qt.Key_Left)

@@ -62,13 +62,31 @@ KeyboardStyle {
             anchors.fill: parent
             anchors.margins: keyBackgroundMargin
             Text {
+                id: keySmallText
+                text: control.smallText
+                visible: control.smallTextVisible
+                color: "gray"
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.margins: keyContentMargin / 3
+                font {
+                    family: fontFamily
+                    weight: Font.Normal
+                    pixelSize: 38 * scaleHint
+                    capitalization: control.uppercased ? Font.AllUppercase : Font.MixedCase
+                }
+            }
+            Text {
                 id: keyText
                 text: control.displayText
                 color: "white"
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 anchors.fill: parent
-                anchors.margins: keyContentMargin
+                anchors.leftMargin: keyContentMargin
+                anchors.topMargin: control.smallTextVisible ? keyContentMargin * 1.2 : keyContentMargin
+                anchors.rightMargin: keyContentMargin
+                anchors.bottomMargin: control.smallTextVisible ? keyContentMargin * 0.8 : keyContentMargin
                 font {
                     family: fontFamily
                     weight: Font.Normal
