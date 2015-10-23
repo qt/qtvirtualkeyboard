@@ -26,6 +26,23 @@
 #include <QFileInfo>
 #include <QTime>
 
+namespace QtVirtualKeyboard {
+
+/*!
+    \class QtVirtualKeyboard::HunspellTask
+    \internal
+*/
+
+/*!
+    \class QtVirtualKeyboard::HunspellWordList
+    \internal
+*/
+
+/*!
+    \class QtVirtualKeyboard::HunspellLoadDictionaryTask
+    \internal
+*/
+
 HunspellLoadDictionaryTask::HunspellLoadDictionaryTask(const QString &locale, const QStringList &searchPaths) :
     HunspellTask(),
     hunspellPtr(0),
@@ -84,6 +101,11 @@ void HunspellLoadDictionaryTask::run()
     VIRTUALKEYBOARD_DEBUG() << "HunspellLoadDictionaryTask::run(): time:" << perf.elapsed() << "ms";
 #endif
 }
+
+/*!
+    \class QtVirtualKeyboard::HunspellBuildSuggestionsTask
+    \internal
+*/
 
 void HunspellBuildSuggestionsTask::run()
 {
@@ -209,10 +231,20 @@ QString HunspellBuildSuggestionsTask::removeAccentsAndDiacritics(const QString& 
     return normalized;
 }
 
+/*!
+    \class QtVirtualKeyboard::HunspellUpdateSuggestionsTask
+    \internal
+*/
+
 void HunspellUpdateSuggestionsTask::run()
 {
     emit updateSuggestions(wordList->list, wordList->index);
 }
+
+/*!
+    \class QtVirtualKeyboard::HunspellWorker
+    \internal
+*/
 
 HunspellWorker::HunspellWorker(QObject *parent) :
     QThread(parent),
@@ -275,3 +307,5 @@ void HunspellWorker::run()
         hunspell = 0;
     }
 }
+
+} // namespace QtVirtualKeyboard

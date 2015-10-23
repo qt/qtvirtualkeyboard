@@ -21,6 +21,8 @@
 
 #include "hangul.h"
 
+namespace QtVirtualKeyboard {
+
 const QList<ushort> Hangul::initials = QList<ushort>()
     << 0x3131 << 0x3132 << 0x3134 << 0x3137 << 0x3138 << 0x3139 << 0x3141
     << 0x3142 << 0x3143 << 0x3145 << 0x3146 << 0x3147 << 0x3148 << 0x3149
@@ -43,6 +45,11 @@ const int Hangul::VCount = 21;
 const int Hangul::TCount = 28;
 const int Hangul::NCount = Hangul::VCount * Hangul::TCount; // 588
 const int Hangul::SCount = Hangul::LCount * Hangul::NCount; // 11172
+
+/*!
+    \class QtVirtualKeyboard::Hangul
+    \internal
+*/
 
 QString Hangul::decompose(const QString &source)
 {
@@ -352,3 +359,5 @@ QMap<ushort, Hangul::HangulFinalIndex> Hangul::initDoubleFinalMap()
     map.insert(packDoubleFinal(HANGUL_FINAL_SIOS, HANGUL_FINAL_SIOS), HANGUL_FINAL_SSANGSIOS);
     return map;
 }
+
+} // namespace QtVirtualKeyboard

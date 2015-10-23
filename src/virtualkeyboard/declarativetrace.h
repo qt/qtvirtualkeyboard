@@ -26,6 +26,8 @@
 #include <QVariant>
 #include <QPointF>
 
+namespace QtVirtualKeyboard {
+
 class DeclarativeTracePrivate;
 
 class DeclarativeTrace : public QObject
@@ -68,5 +70,7 @@ signals:
     void finalChanged(bool isFinal);
     void canceledChanged(bool isCanceled);
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // DECLARATIVETRACE_H

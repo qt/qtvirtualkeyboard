@@ -24,6 +24,8 @@
 
 #include "qqml.h"
 
+namespace QtVirtualKeyboard {
+
 class DeclarativeSettingsPrivate;
 
 class DeclarativeSettings : public QObject
@@ -64,5 +66,7 @@ signals:
 private:
     void resetStyle();
 };
+
+}
 
 #endif // DECLARATIVESETTINGS_H

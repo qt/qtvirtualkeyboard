@@ -22,6 +22,13 @@
 #include "hunspellinputmethod_p.h"
 #include "declarativeinputcontext.h"
 
+namespace QtVirtualKeyboard {
+
+/*!
+    \class QtVirtualKeyboard::HunspellInputMethod
+    \internal
+*/
+
 HunspellInputMethod::HunspellInputMethod(HunspellInputMethodPrivate &dd, QObject *parent) :
     AbstractInputMethod(dd, parent)
 {
@@ -293,3 +300,5 @@ void HunspellInputMethod::updateSuggestions(const QStringList &wordList, int act
     emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
     emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
 }
+
+} // namespace QtVirtualKeyboard

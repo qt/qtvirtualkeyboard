@@ -24,6 +24,8 @@
 
 #include <QObject>
 
+namespace QtVirtualKeyboard {
+
 class AbstractInputPanel : public QObject
 {
     Q_OBJECT
@@ -43,5 +45,7 @@ public slots:
     virtual void createView();
     virtual void destroyView();
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // ABSTRACTINPUTPANEL_H

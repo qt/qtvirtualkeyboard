@@ -26,6 +26,8 @@
 #include <QList>
 #include <QMap>
 
+namespace QtVirtualKeyboard {
+
 class Hangul
 {
     Q_DISABLE_COPY(Hangul)
@@ -120,5 +122,7 @@ private:
     static const int NCount;
     static const int SCount;
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif

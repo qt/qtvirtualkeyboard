@@ -28,6 +28,8 @@ QT_BEGIN_NAMESPACE
 class QWindow;
 QT_END_NAMESPACE
 
+namespace QtVirtualKeyboard {
+
 class DesktopInputPanelPrivate;
 
 class DesktopInputPanel : public AppInputPanel
@@ -58,5 +60,7 @@ protected slots:
 protected:
     void updateInputRegion();
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // DESKTOPINPUTPANEL_H

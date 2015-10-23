@@ -22,6 +22,8 @@
 #include "settings.h"
 #include <QtCore/private/qobject_p.h>
 
+namespace QtVirtualKeyboard {
+
 class SettingsPrivate : public QObjectPrivate
 {
 public:
@@ -42,6 +44,11 @@ public:
 };
 
 static QScopedPointer<Settings> s_settingsInstance;
+
+/*!
+    \class QtVirtualKeyboard::Settings
+    \internal
+*/
 
 Settings::Settings(QObject *parent) :
     QObject(*new SettingsPrivate(), parent)
@@ -129,3 +136,5 @@ void Settings::setActiveLocales(const QStringList &activeLocales)
         emit activeLocalesChanged();
     }
 }
+
+} // namespace QtVirtualKeyboard

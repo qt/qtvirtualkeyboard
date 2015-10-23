@@ -29,6 +29,8 @@
 
 class LTKLipiEngineInterface;
 
+namespace QtVirtualKeyboard {
+
 class LipiSharedRecognizer
 {
     Q_DISABLE_COPY(LipiSharedRecognizer)
@@ -75,5 +77,7 @@ private:
     static stringStringMap s_lipiEngineConfigEntries;
     static int s_recognitionCount;
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // LIPISHAREDRECOGNIZER_H

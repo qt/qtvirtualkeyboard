@@ -24,6 +24,8 @@
 
 #include <QObject>
 
+namespace QtVirtualKeyboard {
+
 class PinyinDecoderService : public QObject
 {
     Q_OBJECT
@@ -57,5 +59,7 @@ private:
     static QScopedPointer<PinyinDecoderService> _instance;
     bool initDone;
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // PINYINDECODERSERVICE_H

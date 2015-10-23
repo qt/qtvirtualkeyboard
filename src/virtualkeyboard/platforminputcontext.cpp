@@ -31,6 +31,13 @@
 #include <QWindow>
 #include <QGuiApplication>
 
+namespace QtVirtualKeyboard {
+
+/*!
+    \class QtVirtualKeyboard::PlatformInputContext
+    \internal
+*/
+
 PlatformInputContext::PlatformInputContext() :
     m_declarativeContext(0),
     m_inputPanel(0),
@@ -247,3 +254,5 @@ void PlatformInputContext::updateInputPanelVisible()
         emitInputPanelVisibleChanged();
     }
 }
+
+} // namespace QtVirtualKeyboard

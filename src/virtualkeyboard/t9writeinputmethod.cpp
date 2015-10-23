@@ -36,6 +36,8 @@
 #include "decumaLanguages.h"
 #include "xxt9wOem.h"
 
+namespace QtVirtualKeyboard {
+
 class T9WriteCaseFormatter
 {
 public:
@@ -966,6 +968,11 @@ const DECUMA_MEM_FUNCTIONS T9WriteInputMethodPrivate::memFuncs = {
     NULL
 };
 
+/*!
+    \class QtVirtualKeyboard::T9WriteInputMethod
+    \internal
+*/
+
 T9WriteInputMethod::T9WriteInputMethod(QObject *parent) :
     AbstractInputMethod(*new T9WriteInputMethodPrivate(this), parent)
 {
@@ -1292,3 +1299,5 @@ void T9WriteInputMethod::resultsAvailable(const QVariantList &resultList)
     Q_D(T9WriteInputMethod);
     d->resultsAvailable(resultList);
 }
+
+} // namespace QtVirtualKeyboard

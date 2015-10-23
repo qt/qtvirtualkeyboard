@@ -35,6 +35,8 @@
 
 #include "decuma_hwr.h"
 
+namespace QtVirtualKeyboard {
+
 class T9WriteTask : public QObject
 {
     Q_OBJECT
@@ -167,5 +169,7 @@ private:
     DECUMA_SESSION *decumaSession;
     bool abort;
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // T9WRITEWORKER_H

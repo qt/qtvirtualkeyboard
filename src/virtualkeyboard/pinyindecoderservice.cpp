@@ -28,9 +28,16 @@
 #include <QtCore/QLibraryInfo>
 #include "virtualkeyboarddebug.h"
 
+namespace QtVirtualKeyboard {
+
 using namespace ime_pinyin;
 
 QScopedPointer<PinyinDecoderService> PinyinDecoderService::_instance;
+
+/*!
+    \class QtVirtualKeyboard::PinyinDecoderService
+    \internal
+*/
 
 PinyinDecoderService::PinyinDecoderService(QObject *parent) :
     QObject(parent),
@@ -210,3 +217,5 @@ QList<QString> PinyinDecoderService::predictionList(const QString &history)
         predictList.append(QString((QChar *)predictItems[i]));
     return predictList;
 }
+
+} // namespace QtVirtualKeyboard

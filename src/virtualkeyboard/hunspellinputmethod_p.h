@@ -25,6 +25,8 @@
 #include "hunspellinputmethod.h"
 #include "hunspellworker.h"
 
+namespace QtVirtualKeyboard {
+
 class HunspellInputMethodPrivate : public AbstractInputMethodPrivate
 {
     Q_DECLARE_PUBLIC(HunspellInputMethod)
@@ -52,5 +54,7 @@ public:
     bool ignoreUpdate;
     bool autoSpaceAllowed;
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // HUNSPELLINPUTMETHOD_P_H

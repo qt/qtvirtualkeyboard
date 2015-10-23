@@ -29,6 +29,8 @@
 #include <romkanhalfkatakana.h>
 #include <QTextFormat>
 
+namespace QtVirtualKeyboard {
+
 class OpenWnnInputMethodPrivate : public AbstractInputMethodPrivate
 {
     Q_DECLARE_PUBLIC(OpenWnnInputMethod)
@@ -585,6 +587,11 @@ public:
     int activeWordIndex;
 };
 
+/*!
+    \class QtVirtualKeyboard::OpenWnnInputMethod
+    \internal
+*/
+
 OpenWnnInputMethod::OpenWnnInputMethod(QObject *parent) :
     AbstractInputMethod(*new OpenWnnInputMethodPrivate(this), parent)
 {
@@ -793,3 +800,5 @@ void OpenWnnInputMethod::update()
     if (!d->disableUpdate)
         reset();
 }
+
+} // namespace QtVirtualKeyboard

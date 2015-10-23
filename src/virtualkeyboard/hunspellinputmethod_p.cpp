@@ -28,6 +28,13 @@
 #include <QTextCodec>
 #include <QtCore/QLibraryInfo>
 
+namespace QtVirtualKeyboard {
+
+/*!
+    \class QtVirtualKeyboard::HunspellInputMethodPrivate
+    \internal
+*/
+
 HunspellInputMethodPrivate::HunspellInputMethodPrivate(HunspellInputMethod *q_ptr) :
     AbstractInputMethodPrivate(),
     q_ptr(q_ptr),
@@ -189,3 +196,5 @@ bool HunspellInputMethodPrivate::isJoiner(const QChar &c) const
     }
     return false;
 }
+
+} // namespace QtVirtualKeyboard

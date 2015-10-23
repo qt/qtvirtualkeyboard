@@ -22,6 +22,8 @@
 #include "enterkeyaction.h"
 #include "enterkeyactionattachedtype.h"
 
+namespace QtVirtualKeyboard {
+
 /*!
     \qmltype EnterKeyAction
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
@@ -50,7 +52,7 @@
 */
 
 /*!
-    \class EnterKeyAction
+    \class QtVirtualKeyboard::EnterKeyAction
     \internal
 */
 
@@ -93,3 +95,5 @@ EnterKeyActionAttachedType *EnterKeyAction::qmlAttachedProperties(QObject *objec
 
     Enables or disables the enter key button in virtual keyboard.
 */
+
+} // namespace QtVirtualKeyboard

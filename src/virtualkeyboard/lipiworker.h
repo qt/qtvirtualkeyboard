@@ -39,6 +39,8 @@
 #include "LTKShapeRecognizer.h"
 #include "LTKShapeRecoResult.h"
 
+namespace QtVirtualKeyboard {
+
 class LipiTask : public QObject
 {
     Q_OBJECT
@@ -132,5 +134,7 @@ private:
     LTKShapeRecognizer *shapeRecognizer;
     bool abort;
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // LIPIWORKER_H

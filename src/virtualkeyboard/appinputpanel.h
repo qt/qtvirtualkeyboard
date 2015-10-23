@@ -25,6 +25,13 @@
 #include "abstractinputpanel.h"
 #include <QtCore/private/qobject_p.h>
 
+namespace QtVirtualKeyboard {
+
+/*!
+    \class QtVirtualKeyboard::AppInputPanelPrivate
+    \internal
+*/
+
 class AppInputPanelPrivate : public QObjectPrivate
 {
 public:
@@ -36,6 +43,11 @@ public:
 
     bool visible;
 };
+
+/*!
+    \class QtVirtualKeyboard::AppInputPanel
+    \internal
+*/
 
 class AppInputPanel : public AbstractInputPanel
 {
@@ -53,5 +65,7 @@ public:
     void hide();
     bool isVisible() const;
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // APPINPUTPANEL_H

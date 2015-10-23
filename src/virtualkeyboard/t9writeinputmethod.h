@@ -24,6 +24,8 @@
 
 #include "abstractinputmethod.h"
 
+namespace QtVirtualKeyboard {
+
 class T9WriteInputMethodPrivate;
 
 class T9WriteInputMethod : public AbstractInputMethod
@@ -63,5 +65,7 @@ protected slots:
     void dictionaryLoadCompleted(const QString &fileUri, void *dictionary);
     void resultsAvailable(const QVariantList &resultList);
 };
+
+}
 
 #endif

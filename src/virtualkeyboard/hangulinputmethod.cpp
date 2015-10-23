@@ -23,6 +23,13 @@
 #include "declarativeinputcontext.h"
 #include "hangul.h"
 
+namespace QtVirtualKeyboard {
+
+/*!
+    \class QtVirtualKeyboard::HangulInputMethod
+    \internal
+*/
+
 HangulInputMethod::HangulInputMethod(QObject *parent) :
     AbstractInputMethod(*new AbstractInputMethodPrivate(), parent)
 {
@@ -82,3 +89,5 @@ void HangulInputMethod::reset()
 void HangulInputMethod::update()
 {
 }
+
+} // namespace QtVirtualKeyboard

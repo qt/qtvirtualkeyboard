@@ -27,6 +27,18 @@
 #include "LTKShapeRecognizer.h"
 #include "LTKErrors.h"
 
+namespace QtVirtualKeyboard {
+
+/*!
+    \class QtVirtualKeyboard::LipiTask
+    \internal
+*/
+
+/*!
+    \class QtVirtualKeyboard::LipiLoadModelDataTask
+    \internal
+*/
+
 void LipiLoadModelDataTask::run()
 {
     VIRTUALKEYBOARD_DEBUG() << "LipiLoadModelDataTask::run()";
@@ -41,6 +53,11 @@ void LipiLoadModelDataTask::run()
     if (result != SUCCESS)
         qWarning() << QString("Error %1: %2").arg(result).arg(getErrorMessage(result).c_str());
 }
+
+/*!
+    \class QtVirtualKeyboard::LipiRecognitionTask
+    \internal
+*/
 
 LipiRecognitionTask::LipiRecognitionTask(const LTKCaptureDevice& deviceInfo,
                                          const LTKScreenContext& screenContext,
@@ -116,6 +133,11 @@ int LipiRecognitionTask::resultId() const
     return _resultId;
 }
 
+/*!
+    \class QtVirtualKeyboard::LipiRecognitionResultsTask
+    \internal
+*/
+
 LipiRecognitionResultsTask::LipiRecognitionResultsTask(QSharedPointer<vector<LTKShapeRecoResult> > resultVector,
                                                        const QMap<int, QChar> &unicodeMap,
                                                        int resultId) :
@@ -148,6 +170,11 @@ void LipiRecognitionResultsTask::run()
 
     emit resultsAvailable(resultList);
 }
+
+/*!
+    \class QtVirtualKeyboard::LipiWorker
+    \internal
+*/
 
 LipiWorker::LipiWorker(LTKShapeRecognizer *shapeRecognizer, QObject *parent) :
     QThread(parent),
@@ -217,3 +244,5 @@ void LipiWorker::run()
         }
     }
 }
+
+} // namespace QtVirtualKeyboard

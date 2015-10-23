@@ -24,6 +24,8 @@
 
 #include <QAbstractListModel>
 
+namespace QtVirtualKeyboard {
+
 class AbstractInputMethod;
 class DeclarativeInputEngine;
 class DeclarativeSelectionListModelPrivate;
@@ -70,7 +72,9 @@ private:
     friend class DeclarativeInputEngine;
 };
 
-Q_DECLARE_METATYPE(DeclarativeSelectionListModel::Type)
-Q_DECLARE_METATYPE(DeclarativeSelectionListModel::Role)
+} // namespace QtVirtualKeyboard
+
+Q_DECLARE_METATYPE(QtVirtualKeyboard::DeclarativeSelectionListModel::Type)
+Q_DECLARE_METATYPE(QtVirtualKeyboard::DeclarativeSelectionListModel::Role)
 
 #endif // DECLARATIVESELECTIONLISTMODEL_H

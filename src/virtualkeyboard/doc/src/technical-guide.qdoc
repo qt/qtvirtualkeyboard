@@ -286,9 +286,9 @@ The trace API consists of the following virtual methods, which the input method
 must implement in order to receive and process touch input data.
 
 \list
-    \li \l { AbstractInputMethod::patternRecognitionModes } { patternRecognitionModes }
-    \li \l { AbstractInputMethod::traceBegin } { traceBegin }
-    \li \l { AbstractInputMethod::traceEnd } { traceEnd }
+    \li \l { QtVirtualKeyboard::AbstractInputMethod::patternRecognitionModes } { patternRecognitionModes }
+    \li \l { QtVirtualKeyboard::AbstractInputMethod::traceBegin } { traceBegin }
+    \li \l { QtVirtualKeyboard::AbstractInputMethod::traceEnd } { traceEnd }
 \endlist
 
 By implementing these methods, the input method can receive and process data
@@ -296,7 +296,7 @@ from a variety of input sources.
 
 The patternRecognitionModes method returns a list of pattern recognition modes,
 which are supported by the input method. A pattern recognition mode, such as
-\l { DeclarativeInputEngine::HandwritingRecoginition } { HandwritingRecoginition },
+\l { QtVirtualKeyboard::DeclarativeInputEngine::HandwritingRecoginition } { HandwritingRecoginition },
 defines the method by which the input method processes the data.
 
 The trace interaction is started when an input source detects a new contact point, and

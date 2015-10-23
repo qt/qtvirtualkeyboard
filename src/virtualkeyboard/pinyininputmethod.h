@@ -24,6 +24,8 @@
 
 #include "abstractinputmethod.h"
 
+namespace QtVirtualKeyboard {
+
 class PinyinInputMethodPrivate;
 
 class PinyinInputMethod : public AbstractInputMethod
@@ -49,5 +51,7 @@ public:
     void reset();
     void update();
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // PINYININPUTMETHOD_H

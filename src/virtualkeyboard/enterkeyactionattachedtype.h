@@ -25,6 +25,8 @@
 #include <QObject>
 #include "enterkeyaction.h"
 
+namespace QtVirtualKeyboard {
+
 class EnterKeyActionAttachedType : public QObject
 {
     Q_OBJECT
@@ -52,5 +54,7 @@ private:
     QString m_label;
     bool m_enabled;
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif

@@ -23,6 +23,8 @@
 #include "abstractinputmethod.h"
 #include <QtCore/private/qabstractitemmodel_p.h>
 
+namespace QtVirtualKeyboard {
+
 class DeclarativeSelectionListModelPrivate : public QAbstractItemModelPrivate
 {
 public:
@@ -42,7 +44,7 @@ public:
 
 /*!
     \qmltype SelectionListModel
-    \instantiates DeclarativeSelectionListModel
+    \instantiates QtVirtualKeyboard::DeclarativeSelectionListModel
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \brief Provides a data model for the selection lists.
@@ -71,7 +73,7 @@ public:
 */
 
 /*!
-    \class DeclarativeSelectionListModel
+    \class QtVirtualKeyboard::DeclarativeSelectionListModel
 
     \inmodule InputFramework
 
@@ -83,7 +85,7 @@ public:
 */
 
 /*!
-    \enum DeclarativeSelectionListModel::Type
+    \enum QtVirtualKeyboard::DeclarativeSelectionListModel::Type
 
     This enum specifies the type of selection list.
 
@@ -92,7 +94,7 @@ public:
 */
 
 /*!
-    \enum DeclarativeSelectionListModel::Role
+    \enum QtVirtualKeyboard::DeclarativeSelectionListModel::Role
 
     This enum specifies a role of the data requested.
 
@@ -257,7 +259,7 @@ void DeclarativeSelectionListModel::selectionListActiveItemChanged(int type, int
     the list.
 */
 /*!
-    \fn void DeclarativeSelectionListModel::activeItemChanged(int index)
+    \fn void QtVirtualKeyboard::DeclarativeSelectionListModel::activeItemChanged(int index)
 
     This signal is emitted when the active item in the list changes. The
     UI should react to this signal by highlighting the item at \a index in
@@ -270,7 +272,9 @@ void DeclarativeSelectionListModel::selectionListActiveItemChanged(int type, int
     This signal is emitted when an item at \a index is selected by the user.
 */
 /*!
-    \fn void DeclarativeSelectionListModel::itemSelected(int index)
+    \fn void QtVirtualKeyboard::DeclarativeSelectionListModel::itemSelected(int index)
 
     This signal is emitted when an item at \a index is selected by the user.
 */
+
+} // namespace QtVirtualKeyboard

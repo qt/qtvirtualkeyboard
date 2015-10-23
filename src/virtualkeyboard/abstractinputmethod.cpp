@@ -21,6 +21,13 @@
 
 #include "abstractinputmethod.h"
 
+namespace QtVirtualKeyboard {
+
+/*!
+    \class QtVirtualKeyboard::AbstractInputMethodPrivate
+    \internal
+*/
+
 AbstractInputMethodPrivate::AbstractInputMethodPrivate() :
     QObjectPrivate(),
     inputEngine(0)
@@ -28,7 +35,7 @@ AbstractInputMethodPrivate::AbstractInputMethodPrivate() :
 }
 
 /*!
-    \class AbstractInputMethod
+    \class QtVirtualKeyboard::AbstractInputMethod
 
     \inmodule qtvirtualkeyboard
 
@@ -297,3 +304,5 @@ bool AbstractInputMethod::reselect(int cursorPosition, const DeclarativeInputEng
     The input method emits this signal when the current \a index has changed
     in the selection list identified by \a type.
 */
+
+} // namespace QtVirtualKeyboard

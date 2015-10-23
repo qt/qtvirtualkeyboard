@@ -24,6 +24,8 @@
 
 #include <QObject>
 
+namespace QtVirtualKeyboard {
+
 class SettingsPrivate;
 
 class Settings : public QObject
@@ -59,5 +61,7 @@ signals:
     void availableLocalesChanged();
     void activeLocalesChanged();
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // SETTINGS_H

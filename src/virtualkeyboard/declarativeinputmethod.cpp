@@ -23,9 +23,11 @@
 #include "declarativetrace.h"
 #include <QVariant>
 
+namespace QtVirtualKeyboard {
+
 /*!
     \qmltype InputMethod
-    \instantiates DeclarativeInputMethod
+    \instantiates QtVirtualKeyboard::DeclarativeInputMethod
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \brief Base type for creating input method in QML.
@@ -203,6 +205,11 @@
     The method returns \c true if the word was successfully reselected.
 */
 
+/*!
+    \class QtVirtualKeyboard::DeclarativeInputMethod
+    \internal
+*/
+
 DeclarativeInputMethod::DeclarativeInputMethod(QObject *parent) :
     AbstractInputMethod(parent)
 {
@@ -350,3 +357,5 @@ void DeclarativeInputMethod::update()
 {
     QMetaObject::invokeMethod(this, "update");
 }
+
+} // namespace QtVirtualKeyboard

@@ -24,6 +24,8 @@
 
 #include <QObject>
 
+namespace QtVirtualKeyboard {
+
 class DeclarativeInputContext;
 class DeclarativeShiftHandlerPrivate;
 
@@ -67,5 +69,7 @@ private:
 private:
     friend class DeclarativeInputContext;
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // DECLARATIVESHIFTHANDLER_H

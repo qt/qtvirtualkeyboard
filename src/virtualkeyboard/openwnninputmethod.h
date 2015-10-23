@@ -24,6 +24,8 @@
 
 #include "abstractinputmethod.h"
 
+namespace QtVirtualKeyboard {
+
 class OpenWnnInputMethodPrivate;
 
 class OpenWnnInputMethod : public AbstractInputMethod
@@ -49,5 +51,7 @@ public:
     void reset();
     void update();
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif

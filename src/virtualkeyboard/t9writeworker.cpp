@@ -25,6 +25,13 @@
 #include <QFile>
 #include <QTime>
 
+namespace QtVirtualKeyboard {
+
+/*!
+    \class QtVirtualKeyboard::T9WriteTask
+    \internal
+*/
+
 T9WriteTask::T9WriteTask(QObject *parent) :
     QObject(parent),
     decumaSession(0),
@@ -37,6 +44,11 @@ void T9WriteTask::wait()
     runSema.acquire();
     runSema.release();
 }
+
+/*!
+    \class QtVirtualKeyboard::T9WriteDictionaryTask
+    \internal
+*/
 
 T9WriteDictionaryTask::T9WriteDictionaryTask(const QString &fileUri,
                                              const DECUMA_MEM_FUNCTIONS &memFuncs) :
@@ -83,6 +95,11 @@ void T9WriteDictionaryTask::run()
     emit completed(fileUri, dictionary);
 }
 
+/*!
+    \class QtVirtualKeyboard::T9WriteRecognitionResult
+    \internal
+*/
+
 T9WriteRecognitionResult::T9WriteRecognitionResult(int id, int maxResults, int maxCharsPerWord) :
     numResults(0),
     instantGesture(0),
@@ -104,6 +121,11 @@ T9WriteRecognitionResult::T9WriteRecognitionResult(int id, int maxResults, int m
         hwrResult.pSymbolStrokes = &_symbolStrokes[i * bufferLength];
     }
 }
+
+/*!
+    \class QtVirtualKeyboard::T9WriteRecognitionTask
+    \internal
+*/
 
 T9WriteRecognitionTask::T9WriteRecognitionTask(QSharedPointer<T9WriteRecognitionResult> result,
                                                const DECUMA_INSTANT_GESTURE_SETTINGS &instantGestureSettings,
@@ -215,6 +237,11 @@ int T9WriteRecognitionTask::resultId() const
     return result != 0 ? result->id : -1;
 }
 
+/*!
+    \class QtVirtualKeyboard::T9WriteRecognitionResultsTask
+    \internal
+*/
+
 T9WriteRecognitionResultsTask::T9WriteRecognitionResultsTask(QSharedPointer<T9WriteRecognitionResult> result) :
     T9WriteTask(),
     result(result)
@@ -265,6 +292,11 @@ void T9WriteRecognitionResultsTask::run()
 
     emit resultsAvailable(resultList);
 }
+
+/*!
+    \class QtVirtualKeyboard::T9WriteWorker
+    \internal
+*/
 
 T9WriteWorker::T9WriteWorker(DECUMA_SESSION *decumaSession, QObject *parent) :
     QThread(parent),
@@ -334,3 +366,5 @@ void T9WriteWorker::run()
         }
     }
 }
+
+} // namespace QtVirtualKeyboard

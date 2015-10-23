@@ -27,6 +27,8 @@
 #include <QDir>
 #include <QtCore/private/qobject_p.h>
 
+namespace QtVirtualKeyboard {
+
 class DeclarativeSettingsPrivate : public QObjectPrivate
 {
 public:
@@ -113,6 +115,11 @@ QObject *DeclarativeSettings::registerSettingsModule(QQmlEngine *engine, QJSEngi
     Q_UNUSED(jsEngine);
     return new DeclarativeSettings(engine);
 }
+
+/*!
+    \class QtVirtualKeyboard::DeclarativeSettings
+    \internal
+*/
 
 /*!
     \internal
@@ -267,3 +274,5 @@ void DeclarativeSettings::resetStyle()
     The list of active languages is a subset of the available languages, and can be
     used to limit the list of available languages in the application lifetime.
 */
+
+} // namespace QtVirtualKeyboard

@@ -26,6 +26,8 @@
 
 #include <QLibraryInfo>
 
+namespace QtVirtualKeyboard {
+
 using namespace tcime;
 
 class TCInputMethodPrivate : public AbstractInputMethodPrivate
@@ -122,6 +124,11 @@ public:
     QStringList candidates;
     int highlightIndex;
 };
+
+/*!
+    \class QtVirtualKeyboard::TCInputMethod
+    \internal
+*/
 
 TCInputMethod::TCInputMethod(QObject *parent) :
     AbstractInputMethod(*new TCInputMethodPrivate(this), parent)
@@ -328,3 +335,5 @@ void TCInputMethod::update()
         d->reset();
     }
 }
+
+} // namespace QtVirtualKeyboard

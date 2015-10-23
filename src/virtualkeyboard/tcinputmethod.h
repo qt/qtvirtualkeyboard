@@ -21,6 +21,8 @@
 
 #include "abstractinputmethod.h"
 
+namespace QtVirtualKeyboard {
+
 class TCInputMethodPrivate;
 
 class TCInputMethod : public AbstractInputMethod
@@ -53,5 +55,7 @@ public:
 signals:
     void simplifiedChanged();
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif

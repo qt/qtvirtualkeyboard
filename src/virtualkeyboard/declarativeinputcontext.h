@@ -28,6 +28,8 @@
 #include <QInputMethodEvent>
 #include <QInputMethod>
 
+namespace QtVirtualKeyboard {
+
 class PlatformInputContext;
 class DeclarativeInputEngine;
 class DeclarativeShiftHandler;
@@ -53,8 +55,8 @@ class DeclarativeInputContext : public QObject
     Q_PROPERTY(bool animating READ animating WRITE setAnimating NOTIFY animatingChanged)
     Q_PROPERTY(QString locale READ locale WRITE setLocale NOTIFY localeChanged)
     Q_PROPERTY(QObject *inputItem READ inputItem NOTIFY inputItemChanged)
-    Q_PROPERTY(DeclarativeShiftHandler *shiftHandler READ shiftHandler CONSTANT)
-    Q_PROPERTY(DeclarativeInputEngine *inputEngine READ inputEngine CONSTANT)
+    Q_PROPERTY(QtVirtualKeyboard::DeclarativeShiftHandler *shiftHandler READ shiftHandler CONSTANT)
+    Q_PROPERTY(QtVirtualKeyboard::DeclarativeInputEngine *inputEngine READ inputEngine CONSTANT)
 
 public:
     explicit DeclarativeInputContext(PlatformInputContext *parent = 0);
@@ -132,5 +134,7 @@ private:
 private:
     friend class PlatformInputContext;
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif

@@ -24,11 +24,13 @@
 
 #include "abstractinputmethod.h"
 
+namespace QtVirtualKeyboard {
+
 class DeclarativeInputMethod : public AbstractInputMethod
 {
     Q_OBJECT
-    Q_PROPERTY(DeclarativeInputContext *inputContext READ inputContext CONSTANT)
-    Q_PROPERTY(DeclarativeInputEngine *inputEngine READ inputEngine CONSTANT)
+    Q_PROPERTY(QtVirtualKeyboard::DeclarativeInputContext *inputContext READ inputContext CONSTANT)
+    Q_PROPERTY(QtVirtualKeyboard::DeclarativeInputEngine *inputEngine READ inputEngine CONSTANT)
 
 public:
     explicit DeclarativeInputMethod(QObject *parent = 0);
@@ -55,5 +57,7 @@ public:
     void reset();
     void update();
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // DECLARATIVEINPUTMETHOD_H

@@ -24,6 +24,8 @@
 
 #include <qqml.h>
 
+namespace QtVirtualKeyboard {
+
 class EnterKeyActionAttachedType;
 
 class EnterKeyAction : public QObject
@@ -45,7 +47,9 @@ public:
     static EnterKeyActionAttachedType *qmlAttachedProperties(QObject *object);
 };
 
-Q_DECLARE_METATYPE(EnterKeyAction::Id)
-QML_DECLARE_TYPEINFO(EnterKeyAction, QML_HAS_ATTACHED_PROPERTIES)
+} // namespace QtVirtualKeyboard
+
+Q_DECLARE_METATYPE(QtVirtualKeyboard::EnterKeyAction::Id)
+QML_DECLARE_TYPEINFO(QtVirtualKeyboard::EnterKeyAction, QML_HAS_ATTACHED_PROPERTIES)
 
 #endif

@@ -52,6 +52,8 @@
 #include "declarativesettings.h"
 #include "declarativetrace.h"
 
+using namespace QtVirtualKeyboard;
+
 static const char pluginName[] = "qtvirtualkeyboard";
 static const char inputMethodEnvVarName[] = "QT_IM_MODULE";
 static const char pluginUri[] = "QtQuick.Enterprise.VirtualKeyboard";

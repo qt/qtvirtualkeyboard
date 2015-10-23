@@ -24,6 +24,8 @@
 #include "declarativeinputcontext.h"
 #include "virtualkeyboarddebug.h"
 
+namespace QtVirtualKeyboard {
+
 class PinyinInputMethodPrivate : public AbstractInputMethodPrivate
 {
     Q_DECLARE_PUBLIC(PinyinInputMethod)
@@ -346,6 +348,11 @@ private:
     PinyinInputMethodPrivate::State state;
 };
 
+/*!
+    \class QtVirtualKeyboard::PinyinInputMethod
+    \internal
+*/
+
 PinyinInputMethod::PinyinInputMethod(QObject *parent) :
     AbstractInputMethod(*new PinyinInputMethodPrivate(this), parent)
 {
@@ -477,3 +484,5 @@ void PinyinInputMethod::update()
     d->chooseAndFinish();
     d->tryPredict();
 }
+
+} // namespace QtVirtualKeyboard

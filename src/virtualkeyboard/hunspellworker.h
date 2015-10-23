@@ -29,6 +29,12 @@
 #include <QSharedPointer>
 #include <hunspell/hunspell.h>
 
+QT_BEGIN_NAMESPACE
+class QTextCodec;
+QT_END_NAMESPACE
+
+namespace QtVirtualKeyboard {
+
 class HunspellTask : public QObject
 {
     Q_OBJECT
@@ -67,8 +73,6 @@ public:
     QStringList list;
     int index;
 };
-
-class QTextCodec;
 
 class HunspellBuildSuggestionsTask : public HunspellTask
 {
@@ -133,5 +137,7 @@ private:
     Hunhandle *hunspell;
     bool abort;
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // HUNSPELLWORKER_H

@@ -24,6 +24,8 @@
 
 #include "abstractinputmethod.h"
 
+namespace QtVirtualKeyboard {
+
 class PlainInputMethod : public AbstractInputMethod
 {
     Q_OBJECT
@@ -41,5 +43,7 @@ public:
     void reset();
     void update();
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif

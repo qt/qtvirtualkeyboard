@@ -21,6 +21,13 @@
 
 #include "inputview.h"
 
+namespace QtVirtualKeyboard {
+
+/*!
+    \class QtVirtualKeyboard::InputView
+    \internal
+*/
+
 InputView::InputView(QWindow *parent) :
     QQuickView(parent)
 {
@@ -31,3 +38,5 @@ void InputView::resizeEvent(QResizeEvent *event)
     QQuickWindow::resizeEvent(event);
     emit sizeChanged();
 }
+
+} // namespace QtVirtualKeyboard

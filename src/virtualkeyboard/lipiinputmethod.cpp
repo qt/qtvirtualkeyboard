@@ -55,6 +55,8 @@
 #define LipiInputMethodPrivateBase AbstractInputMethodPrivate
 #endif
 
+namespace QtVirtualKeyboard {
+
 class LipiInputMethodPrivate : public LipiInputMethodPrivateBase
 {
     Q_DECLARE_PUBLIC(LipiInputMethod)
@@ -639,6 +641,11 @@ public:
     QVariantMap delayedResult;
 };
 
+/*!
+    \class QtVirtualKeyboard::LipiInputMethod
+    \internal
+*/
+
 LipiInputMethod::LipiInputMethod(QObject *parent) :
     LipiInputMethodBase(*new LipiInputMethodPrivate(this), parent)
 {
@@ -778,3 +785,5 @@ void LipiInputMethod::resultsAvailable(const QVariantList &resultList)
     Q_D(LipiInputMethod);
     d->resultsAvailable(resultList);
 }
+
+} // namespace QtVirtualKeyboard

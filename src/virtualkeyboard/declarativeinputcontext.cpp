@@ -35,6 +35,14 @@
 #include <private/qqmlmetatype_p.h>
 #endif
 
+bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMethodEvent::Attribute &attribute2)
+{
+    return attribute1.start == attribute2.start &&
+           attribute1.length == attribute2.length &&
+           attribute1.type == attribute2.type &&
+           attribute1.value == attribute2.value;
+}
+
 /*!
     \qmlmodule QtQuick.Enterprise.VirtualKeyboard 2.0
 
@@ -48,6 +56,15 @@
 
     \brief Contains classes for integrating input methods.
 */
+
+/*!
+    \namespace QtVirtualKeyboard
+    \inmodule InputFramework
+
+    \brief Namespace for the Qt Virtual Keyboard C++ API.
+*/
+
+namespace QtVirtualKeyboard {
 
 class DeclarativeInputContextPrivate : public QObjectPrivate
 {
@@ -115,7 +132,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(DeclarativeInputContextPrivate::StateFlags)
 
 /*!
     \qmltype InputContext
-    \instantiates DeclarativeInputContext
+    \instantiates QtVirtualKeyboard::DeclarativeInputContext
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \brief Provides access to an input context.
@@ -124,11 +141,9 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(DeclarativeInputContextPrivate::StateFlags)
 */
 
 /*!
-    \class DeclarativeInputContext
+    \class QtVirtualKeyboard::DeclarativeInputContext
     \inmodule InputFramework
-    \ingroup qtvirtualkeyboard-qml
     \brief Provides access to an input context.
-    \internal
 */
 
 /*!
@@ -338,6 +353,9 @@ void DeclarativeInputContext::setLocale(const QString &locale)
     }
 }
 
+/*!
+    \internal
+*/
 void DeclarativeInputContext::updateAvailableLocales(const QStringList &availableLocales)
 {
     Settings *settings = Settings::instance();
@@ -494,6 +512,9 @@ void DeclarativeInputContext::clear()
         emit preeditTextChanged();
 }
 
+/*!
+    \internal
+*/
 bool DeclarativeInputContext::fileExists(const QUrl &fileUrl)
 {
 #ifdef COMPILING_QML
@@ -510,6 +531,9 @@ bool DeclarativeInputContext::fileExists(const QUrl &fileUrl)
 #endif
 }
 
+/*!
+    \internal
+*/
 bool DeclarativeInputContext::hasEnterKeyAction(QObject *item) const
 {
     return item != 0 && qmlAttachedPropertiesObject<EnterKeyAction>(item, false);
@@ -535,14 +559,6 @@ void DeclarativeInputContext::setFocus(bool enable)
         emit focusChanged();
     }
     emit focusEditorChanged();
-}
-
-bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMethodEvent::Attribute &attribute2)
-{
-    return attribute1.start == attribute2.start &&
-           attribute1.length == attribute2.length &&
-           attribute1.type == attribute2.type &&
-           attribute1.value == attribute2.value;
 }
 
 void DeclarativeInputContext::sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes, int replaceFrom, int replaceLength)
@@ -720,7 +736,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::focus
+    \property QtVirtualKeyboard::DeclarativeInputContext::focus
     \brief the focus status.
 
     This property is changed when the input method receives or loses focus.
@@ -733,7 +749,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::shift
+    \property QtVirtualKeyboard::DeclarativeInputContext::shift
     \brief the shift status.
 
     This property is changed when the shift status changes.
@@ -746,7 +762,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::capsLock
+    \property QtVirtualKeyboard::DeclarativeInputContext::capsLock
     \brief the caps lock status.
 
     This property is changed when the caps lock status changes.
@@ -759,7 +775,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::cursorPosition
+    \property QtVirtualKeyboard::DeclarativeInputContext::cursorPosition
     \brief the cursor position.
 
     This property is changed when the cursor position changes.
@@ -772,7 +788,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::inputMethodHints
+    \property QtVirtualKeyboard::DeclarativeInputContext::inputMethodHints
     \brief the input method hints.
 
     This property is changed when the input method hints changes.
@@ -785,7 +801,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::preeditText
+    \property QtVirtualKeyboard::DeclarativeInputContext::preeditText
     \brief the pre-edit text.
 
     This property sets the pre-edit text.
@@ -798,7 +814,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::surroundingText
+    \property QtVirtualKeyboard::DeclarativeInputContext::surroundingText
     \brief the surrounding text around cursor.
 
     This property is changed when the surrounding text around the cursor changes.
@@ -811,7 +827,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::selectedText
+    \property QtVirtualKeyboard::DeclarativeInputContext::selectedText
     \brief the selected text.
 
     This property is changed when the selected text changes.
@@ -824,7 +840,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::cursorRectangle
+    \property QtVirtualKeyboard::DeclarativeInputContext::cursorRectangle
     \brief the cursor rectangle.
 
     This property is changed when the cursor rectangle changes.
@@ -837,7 +853,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::keyboardRectangle
+    \property QtVirtualKeyboard::DeclarativeInputContext::keyboardRectangle
     \brief the keyboard rectangle.
 
     Use this property to set the keyboard rectangle.
@@ -850,7 +866,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::previewRectangle
+    \property QtVirtualKeyboard::DeclarativeInputContext::previewRectangle
     \brief the preview rectangle.
 
     Use this property to set the preview rectangle.
@@ -863,7 +879,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::previewVisible
+    \property QtVirtualKeyboard::DeclarativeInputContext::previewVisible
     \brief the animating status.
 
     Use this property to set the visibility status of the preview.
@@ -877,7 +893,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::animating
+    \property QtVirtualKeyboard::DeclarativeInputContext::animating
     \brief the animating status.
 
     Use this property to set the animating status, for example
@@ -891,7 +907,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::locale
+    \property QtVirtualKeyboard::DeclarativeInputContext::locale
     \brief the locale.
 
     Sets the locale for this input context.
@@ -904,7 +920,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::inputItem
+    \property QtVirtualKeyboard::DeclarativeInputContext::inputItem
     \brief the focused input item.
 
     This property is changed when the focused input item changes.
@@ -917,7 +933,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::shiftHandler
+    \property QtVirtualKeyboard::DeclarativeInputContext::shiftHandler
     \brief the shift handler instance.
 
     This property stores the shift handler.
@@ -930,7 +946,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property DeclarativeInputContext::inputEngine
+    \property QtVirtualKeyboard::DeclarativeInputContext::inputEngine
     \brief the input engine.
 
     This property stores the input engine.
@@ -943,7 +959,19 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \fn void DeclarativeInputContext::focusEditorChanged()
+    \fn void QtVirtualKeyboard::DeclarativeInputContext::focusEditorChanged()
 
     This signal is emitted when the focus editor changes.
 */
+
+/*!
+    \fn void QtVirtualKeyboard::DeclarativeInputContext::navigationKeyPressed(int key, bool isAutoRepeat)
+    \internal
+*/
+
+/*!
+    \fn void QtVirtualKeyboard::DeclarativeInputContext::navigationKeyReleased(int key, bool isAutoRepeat)
+    \internal
+*/
+
+} // namespace QtVirtualKeyboard

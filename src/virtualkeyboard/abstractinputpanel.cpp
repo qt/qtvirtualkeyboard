@@ -22,8 +22,10 @@
 #include "abstractinputpanel.h"
 #include <QtCore/QRect>
 
+namespace QtVirtualKeyboard {
+
 /*!
-    \class AbstractInputPanel
+    \class QtVirtualKeyboard::AbstractInputPanel
 
     \inmodule qtvirtualkeyboard
 
@@ -109,3 +111,5 @@ void AbstractInputPanel::createView()
 void AbstractInputPanel::destroyView()
 {
 }
+
+} // namespace QtVirtualKeyboard

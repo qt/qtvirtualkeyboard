@@ -24,6 +24,8 @@
 
 #include <QQuickView>
 
+namespace QtVirtualKeyboard {
+
 class InputView : public QQuickView
 {
     Q_OBJECT
@@ -36,5 +38,7 @@ signals:
 protected:
     void resizeEvent(QResizeEvent *event);
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // INPUTVIEW_H

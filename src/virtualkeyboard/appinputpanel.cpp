@@ -21,6 +21,8 @@
 
 #include "appinputpanel.h"
 
+namespace QtVirtualKeyboard {
+
 AppInputPanel::AppInputPanel(AppInputPanelPrivate &dd, QObject *parent) :
     AbstractInputPanel(dd, parent)
 {
@@ -56,3 +58,5 @@ bool AppInputPanel::isVisible() const
     Q_D(const AppInputPanel);
     return d->visible;
 }
+
+} // namespace QtVirtualKeyboard

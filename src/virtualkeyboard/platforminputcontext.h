@@ -27,6 +27,8 @@
 #include <QPointer>
 #include <QLocale>
 
+namespace QtVirtualKeyboard {
+
 class DeclarativeInputContext;
 class AbstractInputPanel;
 class PlatformInputContext : public QPlatformInputContext
@@ -85,5 +87,7 @@ private:
     QEvent *m_filterEvent;
     bool m_visible;
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif

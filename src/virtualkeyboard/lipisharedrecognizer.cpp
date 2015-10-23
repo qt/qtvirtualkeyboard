@@ -38,6 +38,8 @@
 #include <QDir>
 #include <QtCore/QLibraryInfo>
 
+namespace QtVirtualKeyboard {
+
 int LipiSharedRecognizer::s_lipiEngineRefCount = 0;
 QString LipiSharedRecognizer::s_lipiRoot;
 void *LipiSharedRecognizer::s_lipiEngineHandle = 0;
@@ -50,6 +52,11 @@ QMap<int, QChar> LipiSharedRecognizer::s_unicodeMap;
 QString LipiSharedRecognizer::s_activeModel;
 stringStringMap LipiSharedRecognizer::s_lipiEngineConfigEntries;
 int LipiSharedRecognizer::s_recognitionCount = 0;
+
+/*!
+    \class QtVirtualKeyboard::LipiSharedRecognizer
+    \internal
+*/
 
 LipiSharedRecognizer::LipiSharedRecognizer()
 {
@@ -384,3 +391,5 @@ int LipiSharedRecognizer::loadMapping(const QString &mapFile)
 
     return SUCCESS;
 }
+
+} // namespace QtVirtualKeyboard

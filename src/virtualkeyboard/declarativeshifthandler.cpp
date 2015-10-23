@@ -25,6 +25,8 @@
 #include <QtCore/private/qobject_p.h>
 #include <QSet>
 
+namespace QtVirtualKeyboard {
+
 class DeclarativeShiftHandlerPrivate : public QObjectPrivate
 {
 public:
@@ -58,12 +60,12 @@ public:
     \qmltype ShiftHandler
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
-    \instantiates DeclarativeShiftHandler
+    \instantiates QtVirtualKeyboard::DeclarativeShiftHandler
     \brief Manages the shift state.
 */
 
 /*!
-    \class DeclarativeShiftHandler
+    \class QtVirtualKeyboard::DeclarativeShiftHandler
     \inmodule InputFramework
     \brief Manages the shift state.
 */
@@ -258,7 +260,7 @@ void DeclarativeShiftHandler::setToggleShiftEnabled(bool enabled)
 }
 
 /*!
-    \property DeclarativeShiftHandler::sentenceEndingCharacters
+    \property QtVirtualKeyboard::DeclarativeShiftHandler::sentenceEndingCharacters
 
     This property specifies the sentence ending characters which
     will cause shift state change.
@@ -280,7 +282,7 @@ void DeclarativeShiftHandler::setToggleShiftEnabled(bool enabled)
 /*!
     \since 1.2
 
-    \property DeclarativeShiftHandler::autoCapitalizationEnabled
+    \property QtVirtualKeyboard::DeclarativeShiftHandler::autoCapitalizationEnabled
 
     This property provides the current state of the automatic
     capitalization feature.
@@ -298,7 +300,7 @@ void DeclarativeShiftHandler::setToggleShiftEnabled(bool enabled)
 /*!
     \since 1.2
 
-    \property DeclarativeShiftHandler::toggleShiftEnabled
+    \property QtVirtualKeyboard::DeclarativeShiftHandler::toggleShiftEnabled
 
     This property provides the current state of the toggleShift()
     method. When true, the current shift state can be changed by
@@ -314,3 +316,5 @@ void DeclarativeShiftHandler::setToggleShiftEnabled(bool enabled)
     method. When true, the current shift state can be changed by
     calling the toggleShift() method.
 */
+
+} // namespace QtVirtualKeyboard

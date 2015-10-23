@@ -24,6 +24,8 @@
 
 #include "abstractinputmethod.h"
 
+namespace QtVirtualKeyboard {
+
 class HunspellInputMethodPrivate;
 
 class HunspellInputMethod : public AbstractInputMethod
@@ -55,5 +57,7 @@ public:
 protected slots:
     void updateSuggestions(const QStringList &wordList, int activeWordIndex);
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // HUNSPELLINPUTMETHOD_H

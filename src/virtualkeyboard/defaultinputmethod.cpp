@@ -22,6 +22,13 @@
 #include "defaultinputmethod.h"
 #include "declarativeinputcontext.h"
 
+namespace QtVirtualKeyboard {
+
+/*!
+    \class QtVirtualKeyboard::DefaultInputMethod
+    \internal
+*/
+
 DefaultInputMethod::DefaultInputMethod(QObject *parent) :
     AbstractInputMethod(parent)
 {
@@ -59,3 +66,5 @@ void DefaultInputMethod::reset()
 void DefaultInputMethod::update()
 {
 }
+
+} // namespace QtVirtualKeyboard

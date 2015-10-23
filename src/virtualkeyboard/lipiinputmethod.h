@@ -30,6 +30,8 @@
 #define LipiInputMethodBase AbstractInputMethod
 #endif
 
+namespace QtVirtualKeyboard {
+
 class LipiInputMethodPrivate;
 
 class LipiInputMethod : public LipiInputMethodBase
@@ -62,5 +64,7 @@ protected:
 protected slots:
     void resultsAvailable(const QVariantList &resultList);
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif

@@ -35,6 +35,8 @@
 #include <QtCore/private/qobject_p.h>
 #include <QtCore/QLibraryInfo>
 
+namespace QtVirtualKeyboard {
+
 class DesktopInputPanelPrivate : public AppInputPanelPrivate
 {
 public:
@@ -52,6 +54,11 @@ public:
     bool previewVisible;
     bool previewBindingActive;
 };
+
+/*!
+    \class QtVirtualKeyboard::DesktopInputPanel
+    \internal
+*/
 
 DesktopInputPanel::DesktopInputPanel(QObject *parent) :
     AppInputPanel(*new DesktopInputPanelPrivate(), parent)
@@ -234,3 +241,5 @@ void DesktopInputPanel::updateInputRegion()
     d->view->setMask(inputRegion);
 #endif
 }
+
+} // namespace QtVirtualKeyboard

@@ -24,6 +24,8 @@
 
 #include "abstractinputmethod.h"
 
+namespace QtVirtualKeyboard {
+
 class HangulInputMethodPrivate;
 
 class HangulInputMethod : public AbstractInputMethod
@@ -43,5 +45,7 @@ public:
     void reset();
     void update();
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif // HANGULINPUTMETHOD_H

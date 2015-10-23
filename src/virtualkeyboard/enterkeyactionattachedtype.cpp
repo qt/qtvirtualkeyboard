@@ -21,6 +21,13 @@
 
 #include "enterkeyactionattachedtype.h"
 
+namespace QtVirtualKeyboard {
+
+/*!
+    \class QtVirtualKeyboard::EnterKeyActionAttachedType
+    \internal
+*/
+
 EnterKeyActionAttachedType::EnterKeyActionAttachedType(QObject *parent) :
     QObject(parent),
     m_actionId(EnterKeyAction::None),
@@ -67,3 +74,5 @@ void EnterKeyActionAttachedType::setEnabled(bool enabled)
         emit enabledChanged();
     }
 }
+
+} // namespace QtVirtualKeyboard

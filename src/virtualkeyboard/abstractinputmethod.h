@@ -26,6 +26,8 @@
 #include "declarativeselectionlistmodel.h"
 #include <QtCore/private/qobject_p.h>
 
+namespace QtVirtualKeyboard {
+
 class AbstractInputMethodPrivate : public QObjectPrivate
 {
 public:
@@ -79,5 +81,7 @@ private:
 
     friend class DeclarativeInputEngine;
 };
+
+} // namespace QtVirtualKeyboard
 
 #endif

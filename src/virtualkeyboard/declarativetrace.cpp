@@ -22,6 +22,8 @@
 #include "declarativetrace.h"
 #include <QtCore/private/qobject_p.h>
 
+namespace QtVirtualKeyboard {
+
 class DeclarativeTracePrivate : public QObjectPrivate
 {
 public:
@@ -40,7 +42,7 @@ public:
 };
 
 /*!
-    \class DeclarativeTrace
+    \class QtVirtualKeyboard::DeclarativeTrace
     \inmodule qtvirtualkeyboard
     \since QtQuick.Enterprise.VirtualKeyboard 2.0
     \brief Trace is a data model for touch input data.
@@ -103,7 +105,7 @@ public:
 
 /*!
     \qmltype Trace
-    \instantiates DeclarativeTrace
+    \instantiates QtVirtualKeyboard::DeclarativeTrace
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \since QtQuick.Enterprise.VirtualKeyboard 2.0
@@ -157,11 +159,11 @@ public:
 
     Trace objects are owned by their creator, which is the input method in
     normal case. This means the objects are constructed in
-    \l {AbstractInputMethod::traceBegin()} (C++) or \l {InputMethod::traceBegin()}
+    \l {QtVirtualKeyboard::AbstractInputMethod::traceBegin()} (C++) or \l {InputMethod::traceBegin()}
     {InputMethod.traceBegin()} (QML) method.
 
     By definition, the trace object can be destroyed at earliest in the
-    \l {AbstractInputMethod::traceEnd()} (C++) or \l {InputMethod::traceEnd()}
+    \l {QtVirtualKeyboard::AbstractInputMethod::traceEnd()} (C++) or \l {InputMethod::traceEnd()}
     {InputMethod.traceEnd()} (QML) method.
 */
 
@@ -366,7 +368,7 @@ void DeclarativeTrace::setCanceled(bool canceled)
     Unique id of this Trace.
 */
 
-/*! \property DeclarativeTrace::traceId
+/*! \property QtVirtualKeyboard::DeclarativeTrace::traceId
     \brief unique id of this Trace.
 */
 
@@ -377,7 +379,7 @@ void DeclarativeTrace::setCanceled(bool canceled)
     is added.
 */
 
-/*! \property DeclarativeTrace::channels
+/*! \property QtVirtualKeyboard::DeclarativeTrace::channels
     \brief list of data channels in the Trace.
 
     This property must be initialized before the data
@@ -389,7 +391,7 @@ void DeclarativeTrace::setCanceled(bool canceled)
     The number of points in the Trace.
 */
 
-/*! \property DeclarativeTrace::length
+/*! \property QtVirtualKeyboard::DeclarativeTrace::length
     \brief the number of of points in the Trace.
 */
 
@@ -399,7 +401,7 @@ void DeclarativeTrace::setCanceled(bool canceled)
     If the value is true, no more data is accepted.
 */
 
-/*! \property DeclarativeTrace::isFinal
+/*! \property QtVirtualKeyboard::DeclarativeTrace::isFinal
     \brief defines whether the Trace can accept more data.
     If the value is true, no more data is accepted.
 */
@@ -411,9 +413,11 @@ void DeclarativeTrace::setCanceled(bool canceled)
     whose isCanceled property set to true.
 */
 
-/*! \property DeclarativeTrace::isCanceled
+/*! \property QtVirtualKeyboard::DeclarativeTrace::isCanceled
     \brief defines whether the Trace is canceled.
 
     The input data should not be processed from the Traces
     whose isCanceled property set to true.
 */
+
+} // namespace QtVirtualKeyboard
