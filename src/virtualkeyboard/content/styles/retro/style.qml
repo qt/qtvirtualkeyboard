@@ -30,7 +30,7 @@ KeyboardStyle {
     readonly property real keyBackgroundMargin: Math.round(9 * scaleHint)
     readonly property real keyContentMargin: Math.round(50 * scaleHint)
     readonly property real keyIconScale: scaleHint * 0.6
-    readonly property string resourcePath: "content/styles/retro/"
+    readonly property string resourcePath: "QtQuick/Enterprise/VirtualKeyboard/content/styles/retro/"
     readonly property string resourcePrefix: "qrc:/" + resourcePath
 
     readonly property string inputLocale: InputContext.locale

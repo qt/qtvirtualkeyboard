@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/content">
+    <qresource prefix="/QtQuick/Enterprise/VirtualKeyboard/content">
         <file>InputPanel.qml</file>
         <file>HandwritingInputPanel.qml</file>
         <file>components/AlternativeKeys.qml</file>

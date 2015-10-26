@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/content/styles">
+    <qresource prefix="/QtQuick/Enterprise/VirtualKeyboard/Styles/content">
         <file>KeyboardStyle.qml</file>
         <file>KeyIcon.qml</file>
         <file>KeyPanel.qml</file>

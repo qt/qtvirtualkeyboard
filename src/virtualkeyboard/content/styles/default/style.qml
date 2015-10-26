@@ -30,7 +30,7 @@ KeyboardStyle {
     readonly property real keyBackgroundMargin: Math.round(13 * scaleHint)
     readonly property real keyContentMargin: Math.round(45 * scaleHint)
     readonly property real keyIconScale: scaleHint * 0.6
-    readonly property string resourcePrefix: "qrc:/content/styles/default/"
+    readonly property string resourcePrefix: "qrc:/QtQuick/Enterprise/VirtualKeyboard/content/styles/default/"
 
     readonly property string inputLocale: InputContext.locale
     property color inputLocaleIndicatorColor: "white"

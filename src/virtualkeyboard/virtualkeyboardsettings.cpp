@@ -57,7 +57,7 @@ public:
     QString styleImportPath(const QString &name) const
     {
         QStringList styleImportPathList;
-        styleImportPathList << "qrc:/content/styles/";
+        styleImportPathList << "qrc:/QtQuick/Enterprise/VirtualKeyboard/content/styles/";
         QStringList importPathList = engine->importPathList();
         // Add QML import path (Note: the QML base dir is always the last entry in the list)
         if (!importPathList.isEmpty())

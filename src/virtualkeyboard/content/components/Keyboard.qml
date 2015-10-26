@@ -320,8 +320,8 @@ Item {
         id: layoutsModel
         nameFilters: ["$"]
         Component.onCompleted: {
-            if (InputContext.fileExists("qrc:/content/layouts"))
-                layoutsModel.folder = "qrc:/content/layouts"
+            if (InputContext.fileExists("qrc:/QtQuick/Enterprise/VirtualKeyboard/content/layouts"))
+                layoutsModel.folder = "qrc:/QtQuick/Enterprise/VirtualKeyboard/content/layouts"
             else
                 layoutsModel.folder = "../layouts"
         }
