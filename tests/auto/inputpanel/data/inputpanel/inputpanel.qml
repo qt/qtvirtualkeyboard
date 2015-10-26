@@ -436,7 +436,7 @@ InputPanel {
         var origIndex = inputPanel.wordCandidateView.currentIndex
         if (origIndex !== -1) {
             while (true) {
-                if (inputPanel.wordCandidateView.model.itemData(inputPanel.wordCandidateView.currentIndex) === suggestion) {
+                if (inputPanel.wordCandidateView.model.dataAt(inputPanel.wordCandidateView.currentIndex) === suggestion) {
                     suggestionFound = true
                     break
                 }

@@ -78,7 +78,7 @@ HandwritingInputPanel {
         var origIndex = handwritingInputPanel.wordCandidatePopupList.currentIndex
         if (origIndex !== -1) {
             while (true) {
-                if (handwritingInputPanel.wordCandidatePopupList.model.itemData(handwritingInputPanel.wordCandidatePopupList.currentIndex) === suggestion) {
+                if (handwritingInputPanel.wordCandidatePopupList.model.dataAt(handwritingInputPanel.wordCandidatePopupList.currentIndex) === suggestion) {
                     suggestionFound = true
                     break
                 }

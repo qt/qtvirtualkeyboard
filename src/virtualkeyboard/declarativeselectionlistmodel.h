@@ -53,7 +53,7 @@ public:
     QHash<int,QByteArray> roleNames() const;
 
     Q_INVOKABLE void selectItem(int index);
-    Q_INVOKABLE QVariant itemData(int index, int role = Qt::DisplayRole) const;
+    Q_INVOKABLE QVariant dataAt(int index, int role = Qt::DisplayRole) const;
 
 signals:
     void activeItemChanged(int index);
