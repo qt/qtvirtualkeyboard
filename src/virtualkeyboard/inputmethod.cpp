@@ -19,15 +19,15 @@
 **
 ******************************************************************************/
 
-#include "declarativeinputmethod.h"
-#include "declarativetrace.h"
+#include "inputmethod.h"
+#include "trace.h"
 #include <QVariant>
 
 namespace QtVirtualKeyboard {
 
 /*!
     \qmltype InputMethod
-    \instantiates QtVirtualKeyboard::DeclarativeInputMethod
+    \instantiates QtVirtualKeyboard::InputMethod
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \brief Base type for creating input method in QML.
@@ -206,33 +206,33 @@ namespace QtVirtualKeyboard {
 */
 
 /*!
-    \class QtVirtualKeyboard::DeclarativeInputMethod
+    \class QtVirtualKeyboard::InputMethod
     \internal
 */
 
-DeclarativeInputMethod::DeclarativeInputMethod(QObject *parent) :
+InputMethod::InputMethod(QObject *parent) :
     AbstractInputMethod(parent)
 {
 }
 
-DeclarativeInputMethod::~DeclarativeInputMethod()
+InputMethod::~InputMethod()
 {
 }
 
-QList<DeclarativeInputEngine::InputMode> DeclarativeInputMethod::inputModes(const QString &locale)
+QList<InputEngine::InputMode> InputMethod::inputModes(const QString &locale)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "inputModes",
                               Q_RETURN_ARG(QVariant, result),
                               Q_ARG(QVariant, locale));
-    QList<DeclarativeInputEngine::InputMode> inputModeList;
+    QList<InputEngine::InputMode> inputModeList;
     foreach (const QVariant &inputMode, result.toList()) {
-        inputModeList.append(static_cast<DeclarativeInputEngine::InputMode>(inputMode.toInt()));
+        inputModeList.append(static_cast<InputEngine::InputMode>(inputMode.toInt()));
     }
     return inputModeList;
 }
 
-bool DeclarativeInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
+bool InputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "setInputMode",
@@ -242,7 +242,7 @@ bool DeclarativeInputMethod::setInputMode(const QString &locale, DeclarativeInpu
     return result.toBool();
 }
 
-bool DeclarativeInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
+bool InputMethod::setTextCase(InputEngine::TextCase textCase)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "setTextCase",
@@ -251,7 +251,7 @@ bool DeclarativeInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCa
     return result.toBool();
 }
 
-bool DeclarativeInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
+bool InputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "keyEvent",
@@ -262,19 +262,19 @@ bool DeclarativeInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyb
     return result.toBool();
 }
 
-QList<DeclarativeSelectionListModel::Type> DeclarativeInputMethod::selectionLists()
+QList<SelectionListModel::Type> InputMethod::selectionLists()
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "selectionLists",
                               Q_RETURN_ARG(QVariant, result));
-    QList<DeclarativeSelectionListModel::Type> selectionListsList;
+    QList<SelectionListModel::Type> selectionListsList;
     foreach (const QVariant &selectionListType, result.toList()) {
-        selectionListsList.append(static_cast<DeclarativeSelectionListModel::Type>(selectionListType.toInt()));
+        selectionListsList.append(static_cast<SelectionListModel::Type>(selectionListType.toInt()));
     }
     return selectionListsList;
 }
 
-int DeclarativeInputMethod::selectionListItemCount(DeclarativeSelectionListModel::Type type)
+int InputMethod::selectionListItemCount(SelectionListModel::Type type)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "selectionListItemCount",
@@ -283,7 +283,7 @@ int DeclarativeInputMethod::selectionListItemCount(DeclarativeSelectionListModel
     return result.toInt();
 }
 
-QVariant DeclarativeInputMethod::selectionListData(DeclarativeSelectionListModel::Type type, int index, int role)
+QVariant InputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "selectionListData",
@@ -297,27 +297,27 @@ QVariant DeclarativeInputMethod::selectionListData(DeclarativeSelectionListModel
     return result;
 }
 
-void DeclarativeInputMethod::selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index)
+void InputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
 {
     QMetaObject::invokeMethod(this, "selectionListItemSelected",
                               Q_ARG(QVariant, static_cast<int>(type)),
                               Q_ARG(QVariant, index));
 }
 
-QList<DeclarativeInputEngine::PatternRecognitionMode> DeclarativeInputMethod::patternRecognitionModes() const
+QList<InputEngine::PatternRecognitionMode> InputMethod::patternRecognitionModes() const
 {
     QVariant result;
-    QMetaObject::invokeMethod(const_cast<DeclarativeInputMethod *>(this), "patternRecognitionModes",
+    QMetaObject::invokeMethod(const_cast<InputMethod *>(this), "patternRecognitionModes",
                               Q_RETURN_ARG(QVariant, result));
-    QList<DeclarativeInputEngine::PatternRecognitionMode> patterRecognitionModeList;
+    QList<InputEngine::PatternRecognitionMode> patterRecognitionModeList;
     foreach (const QVariant &patterRecognitionMode, result.toList()) {
-        patterRecognitionModeList.append(static_cast<DeclarativeInputEngine::PatternRecognitionMode>(patterRecognitionMode.toInt()));
+        patterRecognitionModeList.append(static_cast<InputEngine::PatternRecognitionMode>(patterRecognitionMode.toInt()));
     }
     return patterRecognitionModeList;
 }
 
-DeclarativeTrace *DeclarativeInputMethod::traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
-                                                     const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
+Trace *InputMethod::traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
+                               const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "traceBegin",
@@ -326,10 +326,10 @@ DeclarativeTrace *DeclarativeInputMethod::traceBegin(int traceId, DeclarativeInp
                               Q_ARG(int, (int)patternRecognitionMode),
                               Q_ARG(QVariant, traceCaptureDeviceInfo),
                               Q_ARG(QVariant, traceScreenInfo));
-    return result.value<DeclarativeTrace *>();
+    return result.value<Trace *>();
 }
 
-bool DeclarativeInputMethod::traceEnd(DeclarativeTrace *trace)
+bool InputMethod::traceEnd(Trace *trace)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "traceEnd",
@@ -338,7 +338,7 @@ bool DeclarativeInputMethod::traceEnd(DeclarativeTrace *trace)
     return result.toBool();
 }
 
-bool DeclarativeInputMethod::reselect(int cursorPosition, const DeclarativeInputEngine::ReselectFlags &reselectFlags)
+bool InputMethod::reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "reselect",
@@ -348,12 +348,12 @@ bool DeclarativeInputMethod::reselect(int cursorPosition, const DeclarativeInput
     return result.toBool();
 }
 
-void DeclarativeInputMethod::reset()
+void InputMethod::reset()
 {
     QMetaObject::invokeMethod(this, "reset");
 }
 
-void DeclarativeInputMethod::update()
+void InputMethod::update()
 {
     QMetaObject::invokeMethod(this, "update");
 }

@@ -22,7 +22,7 @@
 #include "desktopinputpanel.h"
 #include "inputview.h"
 #include "platforminputcontext.h"
-#include "declarativeinputcontext.h"
+#include "inputcontext.h"
 #include <QGuiApplication>
 #include <QQmlEngine>
 #include <QScreen>
@@ -145,7 +145,7 @@ void DesktopInputPanel::repositionView(const QRect &rect)
     Q_D(DesktopInputPanel);
     VIRTUALKEYBOARD_DEBUG() << "DesktopInputPanel::repositionView():" << rect;
     if (d->view && d->view->geometry() != rect) {
-        DeclarativeInputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->declarativeInputContext();
+        InputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->inputContext();
         if (inputContext) {
             inputContext->setAnimating(true);
             if (!d->previewBindingActive) {
@@ -173,7 +173,7 @@ void DesktopInputPanel::focusWindowChanged(QWindow *focusWindow)
 void DesktopInputPanel::focusWindowVisibleChanged(bool visible)
 {
     if (!visible) {
-        DeclarativeInputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->declarativeInputContext();
+        InputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->inputContext();
         if (inputContext)
             inputContext->hideInputPanel();
     }
@@ -182,7 +182,7 @@ void DesktopInputPanel::focusWindowVisibleChanged(bool visible)
 void DesktopInputPanel::previewRectangleChanged()
 {
     Q_D(DesktopInputPanel);
-    DeclarativeInputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->declarativeInputContext();
+    InputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->inputContext();
     d->previewRect = inputContext->previewRectangle();
     if (d->previewVisible)
         updateInputRegion();
@@ -191,7 +191,7 @@ void DesktopInputPanel::previewRectangleChanged()
 void DesktopInputPanel::previewVisibleChanged()
 {
     Q_D(DesktopInputPanel);
-    DeclarativeInputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->declarativeInputContext();
+    InputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->inputContext();
     d->previewVisible = inputContext->previewVisible();
     if (d->view->isVisible())
         updateInputRegion();

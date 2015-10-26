@@ -20,7 +20,7 @@
 ******************************************************************************/
 
 #include "hunspellinputmethod_p.h"
-#include "declarativeinputcontext.h"
+#include "inputcontext.h"
 
 namespace QtVirtualKeyboard {
 
@@ -43,20 +43,20 @@ HunspellInputMethod::~HunspellInputMethod()
 {
 }
 
-QList<DeclarativeInputEngine::InputMode> HunspellInputMethod::inputModes(const QString &locale)
+QList<InputEngine::InputMode> HunspellInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::Latin << DeclarativeInputEngine::Numeric;
+    return QList<InputEngine::InputMode>() << InputEngine::Latin << InputEngine::Numeric;
 }
 
-bool HunspellInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
+bool HunspellInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
 {
     Q_UNUSED(inputMode)
     Q_D(HunspellInputMethod);
     return d->createHunspell(locale);
 }
 
-bool HunspellInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
+bool HunspellInputMethod::setTextCase(InputEngine::TextCase textCase)
 {
     Q_UNUSED(textCase)
     return true;
@@ -66,7 +66,7 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
 {
     Q_UNUSED(modifiers)
     Q_D(HunspellInputMethod);
-    DeclarativeInputContext *ic = inputContext();
+    InputContext *ic = inputContext();
     Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
     bool accept = false;
     switch (key) {
@@ -81,8 +81,8 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
             d->word.remove(d->word.length() - 1, 1);
             ic->setPreeditText(d->word);
             if (d->updateSuggestions()) {
-                emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-                emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
+                emit selectionListChanged(SelectionListModel::WordCandidateList);
+                emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->activeWordIndex);
             }
             accept = true;
         }
@@ -122,8 +122,8 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
                 ic->setPreeditText(d->word);
                 d->ignoreUpdate = false;
                 if (d->updateSuggestions()) {
-                    emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-                    emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
+                    emit selectionListChanged(SelectionListModel::WordCandidateList);
+                    emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->activeWordIndex);
                 }
                 accept = true;
             } else if (text.length() > 1) {
@@ -147,28 +147,28 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
     return accept;
 }
 
-QList<DeclarativeSelectionListModel::Type> HunspellInputMethod::selectionLists()
+QList<SelectionListModel::Type> HunspellInputMethod::selectionLists()
 {
-    return QList<DeclarativeSelectionListModel::Type>() << DeclarativeSelectionListModel::WordCandidateList;
+    return QList<SelectionListModel::Type>() << SelectionListModel::WordCandidateList;
 }
 
-int HunspellInputMethod::selectionListItemCount(DeclarativeSelectionListModel::Type type)
+int HunspellInputMethod::selectionListItemCount(SelectionListModel::Type type)
 {
     Q_UNUSED(type)
     Q_D(HunspellInputMethod);
     return d->wordCandidates.count();
 }
 
-QVariant HunspellInputMethod::selectionListData(DeclarativeSelectionListModel::Type type, int index, int role)
+QVariant HunspellInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
 {
     QVariant result;
     Q_UNUSED(type)
     Q_D(HunspellInputMethod);
     switch (role) {
-    case DeclarativeSelectionListModel::DisplayRole:
+    case SelectionListModel::DisplayRole:
         result = QVariant(d->wordCandidates.at(index));
         break;
-    case DeclarativeSelectionListModel::WordCompletionLengthRole:
+    case SelectionListModel::WordCompletionLengthRole:
     {
         const QString wordCandidate(d->wordCandidates.at(index));
         int wordCompletionLength = wordCandidate.length() - d->word.length();
@@ -182,7 +182,7 @@ QVariant HunspellInputMethod::selectionListData(DeclarativeSelectionListModel::T
     return result;
 }
 
-void HunspellInputMethod::selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index)
+void HunspellInputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
 {
     Q_UNUSED(type)
     Q_D(HunspellInputMethod);
@@ -192,19 +192,19 @@ void HunspellInputMethod::selectionListItemSelected(DeclarativeSelectionListMode
     d->autoSpaceAllowed = true;
 }
 
-bool HunspellInputMethod::reselect(int cursorPosition, const DeclarativeInputEngine::ReselectFlags &reselectFlags)
+bool HunspellInputMethod::reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags)
 {
     Q_D(HunspellInputMethod);
     Q_ASSERT(d->word.isEmpty());
 
-    DeclarativeInputContext *ic = inputContext();
+    InputContext *ic = inputContext();
     if (!ic)
         return false;
 
     const QString surroundingText = ic->surroundingText();
     int replaceFrom = 0;
 
-    if (reselectFlags.testFlag(DeclarativeInputEngine::WordBeforeCursor)) {
+    if (reselectFlags.testFlag(InputEngine::WordBeforeCursor)) {
         for (int i = cursorPosition - 1; i >= 0; --i) {
             QChar c = surroundingText.at(i);
             if (!d->isValidInputChar(c))
@@ -219,12 +219,12 @@ bool HunspellInputMethod::reselect(int cursorPosition, const DeclarativeInputEng
         }
     }
 
-    if (reselectFlags.testFlag(DeclarativeInputEngine::WordAtCursor) && replaceFrom == 0) {
+    if (reselectFlags.testFlag(InputEngine::WordAtCursor) && replaceFrom == 0) {
         d->word.clear();
         return false;
     }
 
-    if (reselectFlags.testFlag(DeclarativeInputEngine::WordAfterCursor)) {
+    if (reselectFlags.testFlag(InputEngine::WordAfterCursor)) {
         for (int i = cursorPosition; i < surroundingText.length(); ++i) {
             QChar c = surroundingText.at(i);
             if (!d->isValidInputChar(c))
@@ -243,7 +243,7 @@ bool HunspellInputMethod::reselect(int cursorPosition, const DeclarativeInputEng
     if (d->word.isEmpty())
         return false;
 
-    if (reselectFlags.testFlag(DeclarativeInputEngine::WordAtCursor) && replaceFrom == -d->word.length()) {
+    if (reselectFlags.testFlag(InputEngine::WordAtCursor) && replaceFrom == -d->word.length()) {
         d->word.clear();
         return false;
     }
@@ -262,8 +262,8 @@ bool HunspellInputMethod::reselect(int cursorPosition, const DeclarativeInputEng
 
     d->autoSpaceAllowed = false;
     if (d->updateSuggestions()) {
-        emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-        emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
+        emit selectionListChanged(SelectionListModel::WordCandidateList);
+        emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->activeWordIndex);
     }
 
     return true;
@@ -297,8 +297,8 @@ void HunspellInputMethod::updateSuggestions(const QStringList &wordList, int act
     if (!d->word.isEmpty() && !d->wordCandidates.isEmpty() && d->wordCandidates.at(0) != d->word)
         d->wordCandidates.replace(0, d->word);
     d->activeWordIndex = activeWordIndex;
-    emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-    emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
+    emit selectionListChanged(SelectionListModel::WordCandidateList);
+    emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->activeWordIndex);
 }
 
 } // namespace QtVirtualKeyboard

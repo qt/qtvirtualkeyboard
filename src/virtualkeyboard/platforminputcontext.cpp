@@ -20,7 +20,7 @@
 ******************************************************************************/
 
 #include "platforminputcontext.h"
-#include "declarativeinputcontext.h"
+#include "inputcontext.h"
 #include "abstractinputpanel.h"
 #ifdef QT_VIRTUALKEYBOARD_DESKTOP
 #include "desktopinputpanel.h"
@@ -39,7 +39,7 @@ namespace QtVirtualKeyboard {
 */
 
 PlatformInputContext::PlatformInputContext() :
-    m_declarativeContext(0),
+    m_inputContext(0),
     m_inputPanel(0),
     m_focusObject(0),
     m_locale(),
@@ -61,15 +61,15 @@ bool PlatformInputContext::isValid() const
 void PlatformInputContext::reset()
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::reset()";
-    if (m_declarativeContext)
-        m_declarativeContext->reset();
+    if (m_inputContext)
+        m_inputContext->reset();
 }
 
 void PlatformInputContext::commit()
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::commit()";
-    if (m_declarativeContext)
-        m_declarativeContext->externalCommit();
+    if (m_inputContext)
+        m_inputContext->externalCommit();
 }
 
 void PlatformInputContext::update(Qt::InputMethodQueries queries)
@@ -83,33 +83,33 @@ void PlatformInputContext::update(Qt::InputMethodQueries queries)
     }
 #endif
 
-    if (m_declarativeContext) {
+    if (m_inputContext) {
         if (enabled) {
-            m_declarativeContext->update(queries);
+            m_inputContext->update(queries);
             if (m_visible)
                 updateInputPanelVisible();
         } else {
             hideInputPanel();
         }
-        m_declarativeContext->setFocus(enabled);
+        m_inputContext->setFocus(enabled);
     }
 }
 
 void PlatformInputContext::invokeAction(QInputMethod::Action action, int cursorPosition)
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::invokeAction():" << action << cursorPosition;
-    if (m_declarativeContext)
-        m_declarativeContext->invokeAction(action, cursorPosition);
+    if (m_inputContext)
+        m_inputContext->invokeAction(action, cursorPosition);
 }
 
 QRectF PlatformInputContext::keyboardRect() const
 {
-    return m_declarativeContext ? m_declarativeContext->keyboardRectangle() : QRectF();
+    return m_inputContext ? m_inputContext->keyboardRectangle() : QRectF();
 }
 
 bool PlatformInputContext::isAnimating() const
 {
-    return m_declarativeContext ? m_declarativeContext->animating() : false;
+    return m_inputContext ? m_inputContext->animating() : false;
 }
 
 void PlatformInputContext::showInputPanel()
@@ -182,15 +182,15 @@ void PlatformInputContext::setFocusObject(QObject *object)
     update(Qt::ImQueryAll);
 }
 
-DeclarativeInputContext *PlatformInputContext::declarativeInputContext() const
+InputContext *PlatformInputContext::inputContext() const
 {
-    return m_declarativeContext;
+    return m_inputContext;
 }
 
 bool PlatformInputContext::eventFilter(QObject *object, QEvent *event)
 {
-    if (event != m_filterEvent && object == m_focusObject && m_declarativeContext)
-        return m_declarativeContext->filterEvent(event);
+    if (event != m_filterEvent && object == m_focusObject && m_inputContext)
+        return m_inputContext->filterEvent(event);
     return false;
 }
 
@@ -221,16 +221,16 @@ QVariant PlatformInputContext::inputMethodQuery(Qt::InputMethodQuery query)
     return event.value(query);
 }
 
-void PlatformInputContext::setDeclarativeContext(DeclarativeInputContext *context)
+void PlatformInputContext::setInputContext(InputContext *context)
 {
-    if (m_declarativeContext) {
+    if (m_inputContext) {
         disconnect(this, SLOT(keyboardRectangleChanged()));
     }
-    m_declarativeContext = context;
-    if (m_declarativeContext) {
+    m_inputContext = context;
+    if (m_inputContext) {
         if (!m_inputPanel)
             m_inputPanel = new AppInputPanel(this);
-        connect(m_declarativeContext, SIGNAL(keyboardRectangleChanged()), SLOT(keyboardRectangleChanged()));
+        connect(m_inputContext, SIGNAL(keyboardRectangleChanged()), SLOT(keyboardRectangleChanged()));
     } else if (m_inputPanel) {
         m_inputPanel = 0;
     }
@@ -238,7 +238,7 @@ void PlatformInputContext::setDeclarativeContext(DeclarativeInputContext *contex
 
 void PlatformInputContext::keyboardRectangleChanged()
 {
-    m_inputPanel->setInputRect(m_declarativeContext->keyboardRectangle().toRect());
+    m_inputPanel->setInputRect(m_inputContext->keyboardRectangle().toRect());
 }
 
 void PlatformInputContext::updateInputPanelVisible()

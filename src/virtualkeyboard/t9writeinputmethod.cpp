@@ -20,9 +20,9 @@
 ******************************************************************************/
 
 #include "t9writeinputmethod.h"
-#include "declarativeinputengine.h"
-#include "declarativeinputcontext.h"
-#include "declarativetrace.h"
+#include "inputengine.h"
+#include "inputcontext.h"
+#include "trace.h"
 #include "t9writeworker.h"
 #include "virtualkeyboarddebug.h"
 #include "QDirIterator"
@@ -51,7 +51,7 @@ public:
         textCaseList.clear();
     }
 
-    void ensureLength(int length, DeclarativeInputEngine::TextCase textCase)
+    void ensureLength(int length, InputEngine::TextCase textCase)
     {
         if (length <= 0) {
             textCaseList.clear();
@@ -66,11 +66,11 @@ public:
     QString formatString(const QString &str) const
     {
         QString result;
-        DeclarativeInputEngine::TextCase textCase = DeclarativeInputEngine::Lower;
+        InputEngine::TextCase textCase = InputEngine::Lower;
         for (int i = 0; i < str.length(); ++i) {
             if (i < textCaseList.length())
                 textCase = textCaseList.at(i);
-            result.append(textCase == DeclarativeInputEngine::Upper ? str.at(i).toUpper() : (preferLowercase ? str.at(i).toLower() : str.at(i)));
+            result.append(textCase == InputEngine::Upper ? str.at(i).toUpper() : (preferLowercase ? str.at(i).toLower() : str.at(i)));
         }
         return result;
     }
@@ -78,7 +78,7 @@ public:
     bool preferLowercase;
 
 private:
-    QList<DeclarativeInputEngine::TextCase> textCaseList;
+    QList<InputEngine::TextCase> textCaseList;
 };
 
 class T9WriteInputMethodPrivate : public AbstractInputMethodPrivate
@@ -98,7 +98,7 @@ public:
         activeWordIndex(-1),
         arcAdditionStarted(false),
         ignoreUpdate(false),
-        textCase(DeclarativeInputEngine::Lower)
+        textCase(InputEngine::Lower)
     {
     }
 
@@ -275,7 +275,7 @@ public:
         Q_ASSERT(*dictionary == 0);
     }
 
-    bool setInputMode(const QLocale &locale, DeclarativeInputEngine::InputMode inputMode)
+    bool setInputMode(const QLocale &locale, InputEngine::InputMode inputMode)
     {
         VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::setInputMode():" << locale << inputMode;
 
@@ -306,7 +306,7 @@ public:
         Qt::InputMethodHints inputMethodHints = q->inputContext()->inputMethodHints();
         symbolCategories.clear();
         switch (inputMode) {
-        case DeclarativeInputEngine::Latin:
+        case InputEngine::Latin:
             if (inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly)) {
                 symbolCategories.append(DECUMA_CATEGORY_EMAIL);
             } else if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly)) {
@@ -341,13 +341,13 @@ public:
             }
             break;
 
-        case DeclarativeInputEngine::Numeric:
+        case InputEngine::Numeric:
             symbolCategories.append(DECUMA_CATEGORY_DIGIT);
             if (!inputMethodHints.testFlag(Qt::ImhDigitsOnly))
                 symbolCategories.append(DECUMA_CATEGORY_NUM_SUP);
             break;
 
-        case DeclarativeInputEngine::Dialable:
+        case InputEngine::Dialable:
             symbolCategories.append(DECUMA_CATEGORY_PHONE_NUMBER);
             break;
 
@@ -566,8 +566,8 @@ public:
         return language;
     }
 
-    DeclarativeTrace *traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
-                                 const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
+    Trace *traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
+                      const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
     {
         Q_UNUSED(traceId)
         Q_UNUSED(patternRecognitionMode)
@@ -614,13 +614,13 @@ public:
             return NULL;
         }
 
-        DeclarativeTrace *trace = new DeclarativeTrace();
+        Trace *trace = new Trace();
         traceList.append(trace);
 
         return trace;
     }
 
-    void traceEnd(DeclarativeTrace *trace)
+    void traceEnd(Trace *trace)
     {
         if (trace->isCanceled()) {
             decumaCancelArc(decumaSession, trace->traceId());
@@ -642,7 +642,7 @@ public:
     int countActiveTraces() const
     {
         int count = 0;
-        foreach (DeclarativeTrace *trace, traceList) {
+        foreach (Trace *trace, traceList) {
             if (!trace->isFinal())
                 count++;
         }
@@ -655,7 +655,7 @@ public:
         traceList.clear();
     }
 
-    void addPointsToTraceGroup(DeclarativeTrace *trace)
+    void addPointsToTraceGroup(Trace *trace)
     {
         Q_ASSERT(decumaSession != 0);
 
@@ -737,8 +737,8 @@ public:
             activeWordIndex = -1;
             if (emitSelectionListChanged) {
                 Q_Q(T9WriteInputMethod);
-                emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-                emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, activeWordIndex);
+                emit q->selectionListChanged(SelectionListModel::WordCandidateList);
+                emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, activeWordIndex);
             }
             result = true;
         }
@@ -816,7 +816,7 @@ public:
         VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::processResult()";
 
         Q_Q(T9WriteInputMethod);
-        DeclarativeInputContext *ic = q->inputContext();
+        InputContext *ic = q->inputContext();
         if (!ic)
             return;
 
@@ -900,8 +900,8 @@ public:
             wordCandidates = newWordCandidates;
             wordCandidatesHwrResultIndex = newWordCandidatesHwrResultIndex;
             activeWordIndex = wordCandidates.isEmpty() ? -1 : 0;
-            emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-            emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, activeWordIndex);
+            emit q->selectionListChanged(SelectionListModel::WordCandidateList);
+            emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, activeWordIndex);
         }
     }
 
@@ -918,7 +918,7 @@ public:
     {
         if (c.isPunct() || c.isSymbol()) {
             Q_Q(const T9WriteInputMethod);
-            DeclarativeInputContext *ic = q->inputContext();
+            InputContext *ic = q->inputContext();
             if (ic) {
                 Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
                 if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly) || inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly))
@@ -939,7 +939,7 @@ public:
     QVector<DECUMA_UINT32> languageCategories;
     QVector<DECUMA_UINT32> symbolCategories;
     QScopedPointer<T9WriteWorker> worker;
-    QList<DeclarativeTrace *> traceList;
+    QList<Trace *> traceList;
     QMutex dictionaryLock;
     QString dictionaryFileName;
     void *convertedDictionary;
@@ -957,7 +957,7 @@ public:
     int activeWordIndex;
     bool arcAdditionStarted;
     bool ignoreUpdate;
-    DeclarativeInputEngine::TextCase textCase;
+    InputEngine::TextCase textCase;
     T9WriteCaseFormatter caseFormatter;
 };
 
@@ -986,23 +986,23 @@ T9WriteInputMethod::~T9WriteInputMethod()
     d->exitEngine();
 }
 
-QList<DeclarativeInputEngine::InputMode> T9WriteInputMethod::inputModes(const QString &locale)
+QList<InputEngine::InputMode> T9WriteInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<DeclarativeInputEngine::InputMode>()
-            << DeclarativeInputEngine::Latin
-            << DeclarativeInputEngine::Numeric
-            << DeclarativeInputEngine::Dialable;
+    return QList<InputEngine::InputMode>()
+            << InputEngine::Latin
+            << InputEngine::Numeric
+            << InputEngine::Dialable;
 }
 
-bool T9WriteInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
+bool T9WriteInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
 {
     Q_D(T9WriteInputMethod);
     d->select();
     return d->setInputMode(locale, inputMode);
 }
 
-bool T9WriteInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
+bool T9WriteInputMethod::setTextCase(InputEngine::TextCase textCase)
 {
     Q_D(T9WriteInputMethod);
     d->textCase = textCase;
@@ -1025,7 +1025,7 @@ bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
 
     case Qt::Key_Backspace:
         {
-            DeclarativeInputContext *ic = inputContext();
+            InputContext *ic = inputContext();
             QString preeditText = ic->preeditText();
             if (preeditText.length() > 1) {
                 preeditText.chop(1);
@@ -1037,8 +1037,8 @@ bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
                 d->stringStart = preeditText;
                 d->wordCandidates.append(preeditText);
                 d->activeWordIndex = 0;
-                emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-                emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
+                emit selectionListChanged(SelectionListModel::WordCandidateList);
+                emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->activeWordIndex);
                 return true;
             } else {
                 bool result = !preeditText.isEmpty();
@@ -1054,7 +1054,7 @@ bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
 
     default:
         if (d->sessionSettings.recognitionMode == mcrMode && text.length() > 0) {
-            DeclarativeInputContext *ic = inputContext();
+            InputContext *ic = inputContext();
             QString preeditText = ic->preeditText();
             QChar c = text.at(0);
             bool addToWord = d->isValidInputChar(c) && (!preeditText.isEmpty() || !d->isJoiner(c));
@@ -1068,8 +1068,8 @@ bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
                 d->stringStart = preeditText;
                 d->wordCandidates.append(preeditText);
                 d->activeWordIndex = 0;
-                emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-                emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
+                emit selectionListChanged(SelectionListModel::WordCandidateList);
+                emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->activeWordIndex);
                 return true;
             } else {
                 ic->clear();
@@ -1098,28 +1098,28 @@ void T9WriteInputMethod::update()
     d->select();
 }
 
-QList<DeclarativeSelectionListModel::Type> T9WriteInputMethod::selectionLists()
+QList<SelectionListModel::Type> T9WriteInputMethod::selectionLists()
 {
-    return QList<DeclarativeSelectionListModel::Type>() << DeclarativeSelectionListModel::WordCandidateList;
+    return QList<SelectionListModel::Type>() << SelectionListModel::WordCandidateList;
 }
 
-int T9WriteInputMethod::selectionListItemCount(DeclarativeSelectionListModel::Type type)
+int T9WriteInputMethod::selectionListItemCount(SelectionListModel::Type type)
 {
     Q_UNUSED(type)
     Q_D(T9WriteInputMethod);
     return d->wordCandidates.count();
 }
 
-QVariant T9WriteInputMethod::selectionListData(DeclarativeSelectionListModel::Type type, int index, int role)
+QVariant T9WriteInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
 {
     QVariant result;
     Q_UNUSED(type)
     Q_D(T9WriteInputMethod);
     switch (role) {
-    case DeclarativeSelectionListModel::DisplayRole:
+    case SelectionListModel::DisplayRole:
         result = QVariant(d->wordCandidates.at(index));
         break;
-    case DeclarativeSelectionListModel::WordCompletionLengthRole:
+    case SelectionListModel::WordCompletionLengthRole:
         result.setValue(0);
         break;
     default:
@@ -1129,48 +1129,48 @@ QVariant T9WriteInputMethod::selectionListData(DeclarativeSelectionListModel::Ty
     return result;
 }
 
-void T9WriteInputMethod::selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index)
+void T9WriteInputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
 {
     Q_UNUSED(type)
     Q_D(T9WriteInputMethod);
     d->select(index);
 }
 
-QList<DeclarativeInputEngine::PatternRecognitionMode> T9WriteInputMethod::patternRecognitionModes() const
+QList<InputEngine::PatternRecognitionMode> T9WriteInputMethod::patternRecognitionModes() const
 {
-    return QList<DeclarativeInputEngine::PatternRecognitionMode>()
-            << DeclarativeInputEngine::HandwritingRecoginition;
+    return QList<InputEngine::PatternRecognitionMode>()
+            << InputEngine::HandwritingRecoginition;
 }
 
-DeclarativeTrace *T9WriteInputMethod::traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
-                                                 const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
+Trace *T9WriteInputMethod::traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
+                                      const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
 {
     Q_D(T9WriteInputMethod);
     return d->traceBegin(traceId, patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
 }
 
-bool T9WriteInputMethod::traceEnd(DeclarativeTrace *trace)
+bool T9WriteInputMethod::traceEnd(Trace *trace)
 {
     Q_D(T9WriteInputMethod);
     d->traceEnd(trace);
     return true;
 }
 
-bool T9WriteInputMethod::reselect(int cursorPosition, const DeclarativeInputEngine::ReselectFlags &reselectFlags)
+bool T9WriteInputMethod::reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags)
 {
     Q_D(T9WriteInputMethod);
 
     if (d->sessionSettings.recognitionMode == scrMode)
         return false;
 
-    DeclarativeInputContext *ic = inputContext();
+    InputContext *ic = inputContext();
     if (!ic)
         return false;
 
     const QString surroundingText = ic->surroundingText();
     int replaceFrom = 0;
 
-    if (reselectFlags.testFlag(DeclarativeInputEngine::WordBeforeCursor)) {
+    if (reselectFlags.testFlag(InputEngine::WordBeforeCursor)) {
         for (int i = cursorPosition - 1; i >= 0; --i) {
             QChar c = surroundingText.at(i);
             if (!d->isValidInputChar(c))
@@ -1185,12 +1185,12 @@ bool T9WriteInputMethod::reselect(int cursorPosition, const DeclarativeInputEngi
         }
     }
 
-    if (reselectFlags.testFlag(DeclarativeInputEngine::WordAtCursor) && replaceFrom == 0) {
+    if (reselectFlags.testFlag(InputEngine::WordAtCursor) && replaceFrom == 0) {
         d->stringStart.clear();
         return false;
     }
 
-    if (reselectFlags.testFlag(DeclarativeInputEngine::WordAfterCursor)) {
+    if (reselectFlags.testFlag(InputEngine::WordAfterCursor)) {
         for (int i = cursorPosition; i < surroundingText.length(); ++i) {
             QChar c = surroundingText.at(i);
             if (!d->isValidInputChar(c))
@@ -1209,7 +1209,7 @@ bool T9WriteInputMethod::reselect(int cursorPosition, const DeclarativeInputEngi
     if (d->stringStart.isEmpty())
         return false;
 
-    if (reselectFlags.testFlag(DeclarativeInputEngine::WordAtCursor) && replaceFrom == -d->stringStart.length()) {
+    if (reselectFlags.testFlag(InputEngine::WordAtCursor) && replaceFrom == -d->stringStart.length()) {
         d->stringStart.clear();
         return false;
     }
@@ -1226,11 +1226,11 @@ bool T9WriteInputMethod::reselect(int cursorPosition, const DeclarativeInputEngi
 
     ic->setPreeditText(d->stringStart, QList<QInputMethodEvent::Attribute>(), replaceFrom, d->stringStart.length());
     for (int i = 0; i < d->stringStart.length(); ++i)
-        d->caseFormatter.ensureLength(i + 1, d->stringStart.at(i).isUpper() ? DeclarativeInputEngine::Upper : DeclarativeInputEngine::Lower);
+        d->caseFormatter.ensureLength(i + 1, d->stringStart.at(i).isUpper() ? InputEngine::Upper : InputEngine::Lower);
     d->wordCandidates.append(d->stringStart);
     d->activeWordIndex = 0;
-    emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-    emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->activeWordIndex);
+    emit selectionListChanged(SelectionListModel::WordCandidateList);
+    emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->activeWordIndex);
 
     return true;
 }
@@ -1261,7 +1261,7 @@ void T9WriteInputMethod::dictionaryLoadCompleted(const QString &fileUri, void *d
     if (!dictionary)
         return;
 
-    DeclarativeInputContext *ic = inputContext();
+    InputContext *ic = inputContext();
     if (ic && fileUri == d->dictionaryFileName) {
         d->convertedDictionary = dictionary;
         if (d->sessionSettings.recognitionMode == mcrMode &&

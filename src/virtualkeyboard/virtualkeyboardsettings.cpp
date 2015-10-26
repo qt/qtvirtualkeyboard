@@ -19,7 +19,7 @@
 **
 ******************************************************************************/
 
-#include "declarativesettings.h"
+#include "virtualkeyboardsettings.h"
 #include "settings.h"
 #include "virtualkeyboarddebug.h"
 #include <QQmlEngine>
@@ -29,10 +29,10 @@
 
 namespace QtVirtualKeyboard {
 
-class DeclarativeSettingsPrivate : public QObjectPrivate
+class VirtualKeyboardSettingsPrivate : public QObjectPrivate
 {
 public:
-    DeclarativeSettingsPrivate() :
+    VirtualKeyboardSettingsPrivate() :
         QObjectPrivate(),
         engine() {}
 
@@ -110,24 +110,24 @@ public:
 /*!
     \internal
 */
-QObject *DeclarativeSettings::registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine)
+QObject *VirtualKeyboardSettings::registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine)
 {
     Q_UNUSED(jsEngine);
-    return new DeclarativeSettings(engine);
+    return new VirtualKeyboardSettings(engine);
 }
 
 /*!
-    \class QtVirtualKeyboard::DeclarativeSettings
+    \class QtVirtualKeyboard::VirtualKeyboardSettings
     \internal
 */
 
 /*!
     \internal
 */
-DeclarativeSettings::DeclarativeSettings(QQmlEngine *engine) :
-    QObject(*new DeclarativeSettingsPrivate())
+VirtualKeyboardSettings::VirtualKeyboardSettings(QQmlEngine *engine) :
+    QObject(*new VirtualKeyboardSettingsPrivate())
 {
-    Q_D(DeclarativeSettings);
+    Q_D(VirtualKeyboardSettings);
     d->engine = engine;
     Settings *settings = Settings::instance();
     if (settings->styleName().isEmpty())
@@ -142,7 +142,7 @@ DeclarativeSettings::DeclarativeSettings(QQmlEngine *engine) :
 /*!
     \internal
 */
-QString DeclarativeSettings::style() const
+QString VirtualKeyboardSettings::style() const
 {
     return Settings::instance()->style();
 }
@@ -150,7 +150,7 @@ QString DeclarativeSettings::style() const
 /*!
     \internal
 */
-QString DeclarativeSettings::styleName() const
+QString VirtualKeyboardSettings::styleName() const
 {
     return Settings::instance()->styleName();
 }
@@ -158,9 +158,9 @@ QString DeclarativeSettings::styleName() const
 /*!
     \internal
 */
-void DeclarativeSettings::setStyleName(const QString &styleName)
+void VirtualKeyboardSettings::setStyleName(const QString &styleName)
 {
-    Q_D(DeclarativeSettings);
+    Q_D(VirtualKeyboardSettings);
     Settings *settings = Settings::instance();
     QString style = d->styleImportPath(styleName);
     if (style.isEmpty()) {
@@ -171,34 +171,34 @@ void DeclarativeSettings::setStyleName(const QString &styleName)
     settings->setStyle(style);
 }
 
-QString DeclarativeSettings::locale() const
+QString VirtualKeyboardSettings::locale() const
 {
     return Settings::instance()->locale();
 }
 
-void DeclarativeSettings::setLocale(const QString &locale)
+void VirtualKeyboardSettings::setLocale(const QString &locale)
 {
     Settings::instance()->setLocale(locale);
 }
 
-QStringList DeclarativeSettings::availableLocales() const
+QStringList VirtualKeyboardSettings::availableLocales() const
 {
     return Settings::instance()->availableLocales();
 }
 
-void DeclarativeSettings::setActiveLocales(const QStringList &activeLocales)
+void VirtualKeyboardSettings::setActiveLocales(const QStringList &activeLocales)
 {
     Settings::instance()->setActiveLocales(activeLocales);
 }
 
-QStringList DeclarativeSettings::activeLocales() const
+QStringList VirtualKeyboardSettings::activeLocales() const
 {
     return Settings::instance()->activeLocales();
 }
 
-void DeclarativeSettings::resetStyle()
+void VirtualKeyboardSettings::resetStyle()
 {
-    Q_D(DeclarativeSettings);
+    Q_D(VirtualKeyboardSettings);
     Settings *settings = Settings::instance();
     QString styleName = QT_VIRTUALKEYBOARD_DEFAULT_STYLE;
     QString style = d->styleImportPath(styleName);

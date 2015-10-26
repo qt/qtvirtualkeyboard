@@ -20,9 +20,9 @@
 ******************************************************************************/
 
 #include "plugin.h"
-#include "declarativeinputcontext.h"
-#include "declarativeinputengine.h"
-#include "declarativeshifthandler.h"
+#include "inputcontext.h"
+#include "inputengine.h"
+#include "shifthandler.h"
 #include "plaininputmethod.h"
 #ifdef HAVE_HUNSPELL
 #include "hunspellinputmethod.h"
@@ -45,12 +45,12 @@
 #ifdef HAVE_T9WRITE
 #include "t9writeinputmethod.h"
 #endif
-#include "declarativeinputmethod.h"
-#include "declarativeselectionlistmodel.h"
+#include "inputmethod.h"
+#include "selectionlistmodel.h"
 #include "enterkeyaction.h"
 #include "enterkeyactionattachedtype.h"
-#include "declarativesettings.h"
-#include "declarativetrace.h"
+#include "virtualkeyboardsettings.h"
+#include "trace.h"
 
 using namespace QtVirtualKeyboard;
 
@@ -86,7 +86,7 @@ static QObject *createInputContextModule(QQmlEngine *engine, QJSEngine *scriptEn
 #endif
                ;
     rootContext->setContextProperty(QStringLiteral("VirtualKeyboardInputMethods"), inputMethodList);
-    return new DeclarativeInputContext(platformInputContext);
+    return new InputContext(platformInputContext);
 }
 
 QStringList PlatformInputContextPlugin::keys() const
@@ -107,20 +107,20 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     if (!qEnvironmentVariableIsSet(inputMethodEnvVarName) || qgetenv(inputMethodEnvVarName) != pluginName)
         return Q_NULLPTR;
 
-    qmlRegisterSingletonType<DeclarativeInputContext>(pluginUri, 1, 0, "InputContext", createInputContextModule);
-    qmlRegisterSingletonType<DeclarativeInputContext>(pluginUri, 2, 0, "InputContext", createInputContextModule);
-    qmlRegisterUncreatableType<DeclarativeInputEngine>(pluginUri, 1, 0, "InputEngine", QLatin1String("Cannot create input method engine"));
-    qmlRegisterUncreatableType<DeclarativeInputEngine>(pluginUri, 2, 0, "InputEngine", QLatin1String("Cannot create input method engine"));
-    qmlRegisterUncreatableType<DeclarativeShiftHandler>(pluginUri, 1, 0, "ShiftHandler", QLatin1String("Cannot create shift handler"));
-    qmlRegisterUncreatableType<DeclarativeShiftHandler>(pluginUri, 2, 0, "ShiftHandler", QLatin1String("Cannot create shift handler"));
-    qmlRegisterUncreatableType<DeclarativeSelectionListModel>(pluginUri, 1, 0, "SelectionListModel", QLatin1String("Cannot create selection list model"));
-    qmlRegisterUncreatableType<DeclarativeSelectionListModel>(pluginUri, 2, 0, "SelectionListModel", QLatin1String("Cannot create selection list model"));
+    qmlRegisterSingletonType<InputContext>(pluginUri, 1, 0, "InputContext", createInputContextModule);
+    qmlRegisterSingletonType<InputContext>(pluginUri, 2, 0, "InputContext", createInputContextModule);
+    qmlRegisterUncreatableType<InputEngine>(pluginUri, 1, 0, "InputEngine", QLatin1String("Cannot create input method engine"));
+    qmlRegisterUncreatableType<InputEngine>(pluginUri, 2, 0, "InputEngine", QLatin1String("Cannot create input method engine"));
+    qmlRegisterUncreatableType<ShiftHandler>(pluginUri, 1, 0, "ShiftHandler", QLatin1String("Cannot create shift handler"));
+    qmlRegisterUncreatableType<ShiftHandler>(pluginUri, 2, 0, "ShiftHandler", QLatin1String("Cannot create shift handler"));
+    qmlRegisterUncreatableType<SelectionListModel>(pluginUri, 1, 0, "SelectionListModel", QLatin1String("Cannot create selection list model"));
+    qmlRegisterUncreatableType<SelectionListModel>(pluginUri, 2, 0, "SelectionListModel", QLatin1String("Cannot create selection list model"));
     qmlRegisterUncreatableType<AbstractInputMethod>(pluginUri, 1, 0, "AbstractInputMethod", QLatin1String("Cannot create abstract input method"));
     qmlRegisterUncreatableType<AbstractInputMethod>(pluginUri, 2, 0, "AbstractInputMethod", QLatin1String("Cannot create abstract input method"));
     qmlRegisterType<PlainInputMethod>(pluginUri, 1, 0, "PlainInputMethod");
     qmlRegisterType<PlainInputMethod>(pluginUri, 2, 0, "PlainInputMethod");
-    qmlRegisterType<DeclarativeInputMethod>(pluginUri, 1, 0, "InputMethod");
-    qmlRegisterType<DeclarativeInputMethod>(pluginUri, 2, 0, "InputMethod");
+    qmlRegisterType<InputMethod>(pluginUri, 1, 0, "InputMethod");
+    qmlRegisterType<InputMethod>(pluginUri, 2, 0, "InputMethod");
 #ifdef HAVE_HUNSPELL
     qmlRegisterType<HunspellInputMethod>(pluginUri, 1, 0, "HunspellInputMethod");
     qmlRegisterType<HunspellInputMethod>(pluginUri, 2, 0, "HunspellInputMethod");
@@ -149,11 +149,11 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     qmlRegisterType<EnterKeyActionAttachedType>();
     qmlRegisterType<EnterKeyAction>(pluginUri, 1, 0, "EnterKeyAction");
     qmlRegisterType<EnterKeyAction>(pluginUri, 2, 0, "EnterKeyAction");
-    qmlRegisterType<DeclarativeTrace>(pluginUri, 2, 0, "Trace");
-    qmlRegisterSingletonType<DeclarativeSettings>(pluginSettingsUri, 1, 0, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
-    qmlRegisterSingletonType<DeclarativeSettings>(pluginSettingsUri, 1, 1, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
-    qmlRegisterSingletonType<DeclarativeSettings>(pluginSettingsUri, 1, 2, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
-    qmlRegisterSingletonType<DeclarativeSettings>(pluginSettingsUri, 2, 0, "VirtualKeyboardSettings", DeclarativeSettings::registerSettingsModule);
+    qmlRegisterType<Trace>(pluginUri, 2, 0, "Trace");
+    qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 1, 0, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
+    qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 1, 1, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
+    qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 1, 2, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
+    qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 2, 0, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
 
     const QString path(QStringLiteral("qrc:///content/"));
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 0, "InputPanel");

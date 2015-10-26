@@ -19,15 +19,15 @@
 **
 ******************************************************************************/
 
-#include "declarativetrace.h"
+#include "trace.h"
 #include <QtCore/private/qobject_p.h>
 
 namespace QtVirtualKeyboard {
 
-class DeclarativeTracePrivate : public QObjectPrivate
+class TracePrivate : public QObjectPrivate
 {
 public:
-    DeclarativeTracePrivate() :
+    TracePrivate() :
         QObjectPrivate(),
         traceId(0),
         final(false),
@@ -42,7 +42,7 @@ public:
 };
 
 /*!
-    \class QtVirtualKeyboard::DeclarativeTrace
+    \class QtVirtualKeyboard::Trace
     \inmodule qtvirtualkeyboard
     \since QtQuick.Enterprise.VirtualKeyboard 2.0
     \brief Trace is a data model for touch input data.
@@ -83,7 +83,7 @@ public:
     each point:
 
     \code
-        DeclarativeTrace *trace = new DeclarativeTrace(this);
+        Trace *trace = new Trace(this);
         trace->setChannels(QStringList() << "t");
     \endcode
 
@@ -105,7 +105,7 @@ public:
 
 /*!
     \qmltype Trace
-    \instantiates QtVirtualKeyboard::DeclarativeTrace
+    \instantiates QtVirtualKeyboard::Trace
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \since QtQuick.Enterprise.VirtualKeyboard 2.0
@@ -147,7 +147,7 @@ public:
     each point:
 
     \code
-        DeclarativeTrace *trace = new DeclarativeTrace(this);
+        Trace *trace = new Trace(this);
         trace->setChannels(QStringList() << "t");
     \endcode
 
@@ -168,40 +168,40 @@ public:
 */
 
 /*! \internal */
-DeclarativeTrace::DeclarativeTrace(QObject *parent) :
-    QObject(*new DeclarativeTracePrivate(), parent)
+Trace::Trace(QObject *parent) :
+    QObject(*new TracePrivate(), parent)
 {
 }
 
 /*! \internal */
-DeclarativeTrace::~DeclarativeTrace()
+Trace::~Trace()
 {
 }
 
-int DeclarativeTrace::traceId() const
+int Trace::traceId() const
 {
-    Q_D(const DeclarativeTrace);
+    Q_D(const Trace);
     return d->traceId;
 }
 
-void DeclarativeTrace::setTraceId(int id)
+void Trace::setTraceId(int id)
 {
-    Q_D(DeclarativeTrace);
+    Q_D(Trace);
     if (d->traceId != id) {
         d->traceId = id;
         emit traceIdChanged(id);
     }
 }
 
-QStringList DeclarativeTrace::channels() const
+QStringList Trace::channels() const
 {
-    Q_D(const DeclarativeTrace);
+    Q_D(const Trace);
     return d->channels.keys();
 }
 
-void DeclarativeTrace::setChannels(const QStringList &channels)
+void Trace::setChannels(const QStringList &channels)
 {
-    Q_D(DeclarativeTrace);
+    Q_D(Trace);
     Q_ASSERT(d->points.isEmpty());
     if (d->points.isEmpty()) {
         d->channels.clear();
@@ -213,9 +213,9 @@ void DeclarativeTrace::setChannels(const QStringList &channels)
     }
 }
 
-int DeclarativeTrace::length() const
+int Trace::length() const
 {
-    Q_D(const DeclarativeTrace);
+    Q_D(const Trace);
     return d->points.size();
 }
 
@@ -241,9 +241,9 @@ int DeclarativeTrace::length() const
     The returned list contains QPointF types.
 */
 
-QVariantList DeclarativeTrace::points(int pos, int count) const
+QVariantList Trace::points(int pos, int count) const
 {
-    Q_D(const DeclarativeTrace);
+    Q_D(const Trace);
     return d->points.mid(pos, count);
 }
 
@@ -267,9 +267,9 @@ QVariantList DeclarativeTrace::points(int pos, int count) const
     data with the point using the setChannelData() method.
 */
 
-int DeclarativeTrace::addPoint(const QPointF &point)
+int Trace::addPoint(const QPointF &point)
 {
-    Q_D(DeclarativeTrace);
+    Q_D(Trace);
     int index;
     if (!d->final) {
         index = d->points.size();
@@ -297,9 +297,9 @@ int DeclarativeTrace::addPoint(const QPointF &point)
     arbitrary index, i.e., it must be added in synchronously with the point data.
 */
 
-void DeclarativeTrace::setChannelData(const QString &channel, int index, const QVariant &data)
+void Trace::setChannelData(const QString &channel, int index, const QVariant &data)
 {
-    Q_D(DeclarativeTrace);
+    Q_D(Trace);
     if (!d->final && (index + 1) == d->points.size() && d->channels.contains(channel)) {
         QVariantList &channelData = d->channels[channel];
         while (index > channelData.size())
@@ -327,36 +327,36 @@ void DeclarativeTrace::setChannelData(const QString &channel, int index, const Q
     returned.
 */
 
-QVariantList DeclarativeTrace::channelData(const QString &channel, int pos, int count) const
+QVariantList Trace::channelData(const QString &channel, int pos, int count) const
 {
-    Q_D(const DeclarativeTrace);
+    Q_D(const Trace);
     return d->channels.value(channel).mid(pos, count);
 }
 
-bool DeclarativeTrace::isFinal() const
+bool Trace::isFinal() const
 {
-    Q_D(const DeclarativeTrace);
+    Q_D(const Trace);
     return d->final;
 }
 
-void DeclarativeTrace::setFinal(bool final)
+void Trace::setFinal(bool final)
 {
-    Q_D(DeclarativeTrace);
+    Q_D(Trace);
     if (d->final != final) {
         d->final = final;
         emit finalChanged(final);
     }
 }
 
-bool DeclarativeTrace::isCanceled() const
+bool Trace::isCanceled() const
 {
-    Q_D(const DeclarativeTrace);
+    Q_D(const Trace);
     return d->canceled;
 }
 
-void DeclarativeTrace::setCanceled(bool canceled)
+void Trace::setCanceled(bool canceled)
 {
-    Q_D(DeclarativeTrace);
+    Q_D(Trace);
     if (d->canceled != canceled) {
         d->canceled = canceled;
         emit canceledChanged(canceled);
@@ -368,7 +368,7 @@ void DeclarativeTrace::setCanceled(bool canceled)
     Unique id of this Trace.
 */
 
-/*! \property QtVirtualKeyboard::DeclarativeTrace::traceId
+/*! \property QtVirtualKeyboard::Trace::traceId
     \brief unique id of this Trace.
 */
 
@@ -379,7 +379,7 @@ void DeclarativeTrace::setCanceled(bool canceled)
     is added.
 */
 
-/*! \property QtVirtualKeyboard::DeclarativeTrace::channels
+/*! \property QtVirtualKeyboard::Trace::channels
     \brief list of data channels in the Trace.
 
     This property must be initialized before the data
@@ -391,7 +391,7 @@ void DeclarativeTrace::setCanceled(bool canceled)
     The number of points in the Trace.
 */
 
-/*! \property QtVirtualKeyboard::DeclarativeTrace::length
+/*! \property QtVirtualKeyboard::Trace::length
     \brief the number of of points in the Trace.
 */
 
@@ -401,7 +401,7 @@ void DeclarativeTrace::setCanceled(bool canceled)
     If the value is true, no more data is accepted.
 */
 
-/*! \property QtVirtualKeyboard::DeclarativeTrace::isFinal
+/*! \property QtVirtualKeyboard::Trace::isFinal
     \brief defines whether the Trace can accept more data.
     If the value is true, no more data is accepted.
 */
@@ -413,7 +413,7 @@ void DeclarativeTrace::setCanceled(bool canceled)
     whose isCanceled property set to true.
 */
 
-/*! \property QtVirtualKeyboard::DeclarativeTrace::isCanceled
+/*! \property QtVirtualKeyboard::Trace::isCanceled
     \brief defines whether the Trace is canceled.
 
     The input data should not be processed from the Traces

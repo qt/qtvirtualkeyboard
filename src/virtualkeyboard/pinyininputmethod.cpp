@@ -21,7 +21,7 @@
 
 #include "pinyininputmethod.h"
 #include "pinyindecoderservice.h"
-#include "declarativeinputcontext.h"
+#include "inputcontext.h"
 #include "virtualkeyboarddebug.h"
 
 namespace QtVirtualKeyboard {
@@ -40,7 +40,7 @@ public:
 
     PinyinInputMethodPrivate(PinyinInputMethod *q_ptr) :
         q_ptr(q_ptr),
-        inputMode(DeclarativeInputEngine::Pinyin),
+        inputMode(InputEngine::Pinyin),
         pinyinDecoderService(PinyinDecoderService::getInstance()),
         state(Idle),
         surface(),
@@ -59,7 +59,7 @@ public:
     {
         Q_Q(PinyinInputMethod);
 
-        DeclarativeInputContext *inputContext = q->inputContext();
+        InputContext *inputContext = q->inputContext();
 
         // Disable the user dictionary when entering sensitive data
         if (inputContext) {
@@ -270,16 +270,16 @@ public:
     void updateCandidateList()
     {
         Q_Q(PinyinInputMethod);
-        emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-        emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList,
+        emit q->selectionListChanged(SelectionListModel::WordCandidateList);
+        emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList,
                                                totalChoicesNum > 0 && state == PinyinInputMethodPrivate::Input ? 0 : -1);
     }
 
     bool canDoPrediction()
     {
         Q_Q(PinyinInputMethod);
-        DeclarativeInputContext *inputContext = q->inputContext();
-        return inputMode == DeclarativeInputEngine::Pinyin &&
+        InputContext *inputContext = q->inputContext();
+        return inputMode == InputEngine::Pinyin &&
                 composingStr.length() == fixedLen &&
                 inputContext &&
                 !inputContext->inputMethodHints().testFlag(Qt::ImhNoPredictiveText);
@@ -292,7 +292,7 @@ public:
             Q_Q(PinyinInputMethod);
             if (state != Predict)
                 resetToIdleState();
-            DeclarativeInputContext *inputContext = q->inputContext();
+            InputContext *inputContext = q->inputContext();
             int cursorPosition = inputContext->cursorPosition();
             int historyStart = qMax(0, cursorPosition - 3);
             QString history = inputContext->surroundingText().mid(historyStart, cursorPosition - historyStart);
@@ -309,7 +309,7 @@ public:
     }
 
     PinyinInputMethod *q_ptr;
-    DeclarativeInputEngine::InputMode inputMode;
+    InputEngine::InputMode inputMode;
     QPointer<PinyinDecoderService> pinyinDecoderService;
     State state;
     QString surface;
@@ -362,29 +362,29 @@ PinyinInputMethod::~PinyinInputMethod()
 {
 }
 
-QList<DeclarativeInputEngine::InputMode> PinyinInputMethod::inputModes(const QString &locale)
+QList<InputEngine::InputMode> PinyinInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
     Q_D(PinyinInputMethod);
-    QList<DeclarativeInputEngine::InputMode> result;
+    QList<InputEngine::InputMode> result;
     if (d->pinyinDecoderService)
-        result << DeclarativeInputEngine::Pinyin;
-    result << DeclarativeInputEngine::Latin;
+        result << InputEngine::Pinyin;
+    result << InputEngine::Latin;
     return result;
 }
 
-bool PinyinInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
+bool PinyinInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_D(PinyinInputMethod);
     reset();
-    if (inputMode == DeclarativeInputEngine::Pinyin && !d->pinyinDecoderService)
+    if (inputMode == InputEngine::Pinyin && !d->pinyinDecoderService)
         return false;
     d->inputMode = inputMode;
     return true;
 }
 
-bool PinyinInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
+bool PinyinInputMethod::setTextCase(InputEngine::TextCase textCase)
 {
     Q_UNUSED(textCase)
     return true;
@@ -394,7 +394,7 @@ bool PinyinInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardM
 {
     Q_UNUSED(modifiers)
     Q_D(PinyinInputMethod);
-    if (d->inputMode == DeclarativeInputEngine::Pinyin) {
+    if (d->inputMode == InputEngine::Pinyin) {
         ScopedCandidateListUpdate scopedCandidateListUpdate(d);
         Q_UNUSED(scopedCandidateListUpdate)
         if ((key >= Qt::Key_A && key <= Qt::Key_Z) || (key == Qt::Key_Apostrophe)) {
@@ -428,28 +428,28 @@ bool PinyinInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardM
     return false;
 }
 
-QList<DeclarativeSelectionListModel::Type> PinyinInputMethod::selectionLists()
+QList<SelectionListModel::Type> PinyinInputMethod::selectionLists()
 {
-    return QList<DeclarativeSelectionListModel::Type>() << DeclarativeSelectionListModel::WordCandidateList;
+    return QList<SelectionListModel::Type>() << SelectionListModel::WordCandidateList;
 }
 
-int PinyinInputMethod::selectionListItemCount(DeclarativeSelectionListModel::Type type)
+int PinyinInputMethod::selectionListItemCount(SelectionListModel::Type type)
 {
     Q_UNUSED(type)
     Q_D(PinyinInputMethod);
     return d->candidatesCount();
 }
 
-QVariant PinyinInputMethod::selectionListData(DeclarativeSelectionListModel::Type type, int index, int role)
+QVariant PinyinInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
 {
     QVariant result;
     Q_UNUSED(type)
     Q_D(PinyinInputMethod);
     switch (role) {
-    case DeclarativeSelectionListModel::DisplayRole:
+    case SelectionListModel::DisplayRole:
         result = QVariant(d->candidateAt(index));
         break;
-    case DeclarativeSelectionListModel::WordCompletionLengthRole:
+    case SelectionListModel::WordCompletionLengthRole:
         result.setValue(0);
         break;
     default:
@@ -459,7 +459,7 @@ QVariant PinyinInputMethod::selectionListData(DeclarativeSelectionListModel::Typ
     return result;
 }
 
-void PinyinInputMethod::selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index)
+void PinyinInputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
 {
     Q_UNUSED(type)
     Q_D(PinyinInputMethod);

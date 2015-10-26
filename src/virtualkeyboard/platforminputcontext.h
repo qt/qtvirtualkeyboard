@@ -29,7 +29,7 @@
 
 namespace QtVirtualKeyboard {
 
-class DeclarativeInputContext;
+class InputContext;
 class AbstractInputPanel;
 class PlatformInputContext : public QPlatformInputContext
 {
@@ -60,7 +60,7 @@ public:
     QObject *focusObject();
     virtual void setFocusObject(QObject *object);
 
-    DeclarativeInputContext *declarativeInputContext() const;
+    InputContext *inputContext() const;
 
     virtual bool eventFilter(QObject *object, QEvent *event);
 
@@ -71,15 +71,15 @@ protected:
     void sendEvent(QEvent *event);
     void sendKeyEvent(QKeyEvent *event);
     QVariant inputMethodQuery(Qt::InputMethodQuery query);
-    void setDeclarativeContext(DeclarativeInputContext *context);
+    void setInputContext(InputContext *context);
 
 private slots:
     void keyboardRectangleChanged();
     void updateInputPanelVisible();
 
 private:
-    friend class DeclarativeInputContext;
-    QPointer<DeclarativeInputContext> m_declarativeContext;
+    friend class InputContext;
+    QPointer<InputContext> m_inputContext;
     QPointer<AbstractInputPanel> m_inputPanel;
     QPointer<QObject> m_focusObject;
     QLocale m_locale;

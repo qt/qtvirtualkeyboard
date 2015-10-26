@@ -48,7 +48,7 @@ The input framework provides the following main interfaces:
     \li InputEngine: exposes an API to integrate user input events (key
         presses, etc.) and acts as a host for input methods.
     \li InputMethod: a base type for QML based input methods.
-    \li AbstractInputMethod: a base type for C++ based input methods.
+    \li \l {QtVirtualKeyboard::AbstractInputMethod} {AbstractInputMethod}: a base type for C++ based input methods.
 \endlist
 
 \section1 The Input Context
@@ -96,7 +96,7 @@ After the locale selection is done, the keyboard updates the input locale and
 input direction to match the current layout. The application can receive this
 information through the QInputMethod interface.
 
-Internally, the current input locale is also updated to the DeclarativeInputEngine
+Internally, the current input locale is also updated to the InputEngine
 and the current InputMethod instances.
 
 \section2 UI Animations
@@ -133,7 +133,7 @@ Activating an input method is straightforward. The required steps are:
 
 \list
     \li Instantiate a concrete implementation of InputMethod or
-        AbstractInputMethod
+        \l {QtVirtualKeyboard::AbstractInputMethod} {AbstractInputMethod}
     \li Assign the instance to InputEngine::inputMethod
     \li Set the proper input mode with InputEngine::inputMode
 \endlist
@@ -274,7 +274,7 @@ touch input data from touch screens or other input devices.
 
 \section2 Data Model for the Handwriting Input
 
-The data collected from the input source is stored in an object named DeclarativeTrace (C++) or \l Trace (QML).
+The data collected from the input source is stored in an object named QtVirtualKeyboard::Trace (C++) or \l Trace (QML).
 
 By definition, a trace is a set of points collected from a single point of contact.
 In addition to point data, the trace may also include data from other channels,
@@ -296,7 +296,7 @@ from a variety of input sources.
 
 The patternRecognitionModes method returns a list of pattern recognition modes,
 which are supported by the input method. A pattern recognition mode, such as
-\l { QtVirtualKeyboard::DeclarativeInputEngine::HandwritingRecoginition } { HandwritingRecoginition },
+\l { QtVirtualKeyboard::InputEngine::HandwritingRecoginition } { HandwritingRecoginition },
 defines the method by which the input method processes the data.
 
 The trace interaction is started when an input source detects a new contact point, and

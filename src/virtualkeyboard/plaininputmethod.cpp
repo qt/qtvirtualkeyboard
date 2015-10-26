@@ -20,8 +20,8 @@
 ******************************************************************************/
 
 #include "plaininputmethod.h"
-#include "declarativeinputengine.h"
-#include "declarativeinputcontext.h"
+#include "inputengine.h"
+#include "inputcontext.h"
 
 namespace QtVirtualKeyboard {
 
@@ -39,25 +39,25 @@ PlainInputMethod::~PlainInputMethod()
 {
 }
 
-QList<DeclarativeInputEngine::InputMode> PlainInputMethod::inputModes(const QString &locale)
+QList<InputEngine::InputMode> PlainInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
     // Supports all input modes
-    return QList<DeclarativeInputEngine::InputMode>()
-            << DeclarativeInputEngine::Latin
-            << DeclarativeInputEngine::Numeric
-            << DeclarativeInputEngine::Dialable
-            << DeclarativeInputEngine::Pinyin;
+    return QList<InputEngine::InputMode>()
+            << InputEngine::Latin
+            << InputEngine::Numeric
+            << InputEngine::Dialable
+            << InputEngine::Pinyin;
 }
 
-bool PlainInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
+bool PlainInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_UNUSED(inputMode)
     return true;
 }
 
-bool PlainInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
+bool PlainInputMethod::setTextCase(InputEngine::TextCase textCase)
 {
     Q_UNUSED(textCase)
     return true;

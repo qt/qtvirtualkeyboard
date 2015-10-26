@@ -19,29 +19,29 @@
 **
 ******************************************************************************/
 
-#ifndef DECLARATIVESHIFTHANDLER_H
-#define DECLARATIVESHIFTHANDLER_H
+#ifndef SHIFTHANDLER_H
+#define SHIFTHANDLER_H
 
 #include <QObject>
 
 namespace QtVirtualKeyboard {
 
-class DeclarativeInputContext;
-class DeclarativeShiftHandlerPrivate;
+class InputContext;
+class ShiftHandlerPrivate;
 
-class DeclarativeShiftHandler : public QObject
+class ShiftHandler : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY(DeclarativeShiftHandler)
-    Q_DECLARE_PRIVATE(DeclarativeShiftHandler)
+    Q_DISABLE_COPY(ShiftHandler)
+    Q_DECLARE_PRIVATE(ShiftHandler)
     Q_PROPERTY(QString sentenceEndingCharacters READ sentenceEndingCharacters WRITE setSentenceEndingCharacters NOTIFY sentenceEndingCharactersChanged)
     Q_PROPERTY(bool autoCapitalizationEnabled READ autoCapitalizationEnabled NOTIFY autoCapitalizationEnabledChanged)
     Q_PROPERTY(bool toggleShiftEnabled READ toggleShiftEnabled NOTIFY toggleShiftEnabledChanged)
 
-    explicit DeclarativeShiftHandler(DeclarativeInputContext *parent = 0);
+    explicit ShiftHandler(InputContext *parent = 0);
 
 public:
-    ~DeclarativeShiftHandler();
+    ~ShiftHandler();
 
     QString sentenceEndingCharacters() const;
     void setSentenceEndingCharacters(const QString &value);
@@ -67,9 +67,9 @@ private:
     void setToggleShiftEnabled(bool enabled);
 
 private:
-    friend class DeclarativeInputContext;
+    friend class InputContext;
 };
 
 } // namespace QtVirtualKeyboard
 
-#endif // DECLARATIVESHIFTHANDLER_H
+#endif // SHIFTHANDLER_H

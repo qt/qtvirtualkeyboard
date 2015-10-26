@@ -19,32 +19,32 @@
 **
 ******************************************************************************/
 
-#include "declarativeselectionlistmodel.h"
+#include "selectionlistmodel.h"
 #include "abstractinputmethod.h"
 #include <QtCore/private/qabstractitemmodel_p.h>
 
 namespace QtVirtualKeyboard {
 
-class DeclarativeSelectionListModelPrivate : public QAbstractItemModelPrivate
+class SelectionListModelPrivate : public QAbstractItemModelPrivate
 {
 public:
-    DeclarativeSelectionListModelPrivate() :
+    SelectionListModelPrivate() :
         QAbstractItemModelPrivate(),
         dataSource(0),
-        type(DeclarativeSelectionListModel::WordCandidateList),
+        type(SelectionListModel::WordCandidateList),
         rowCount(0)
     {
     }
 
     QHash<int, QByteArray> roles;
     AbstractInputMethod *dataSource;
-    DeclarativeSelectionListModel::Type type;
+    SelectionListModel::Type type;
     int rowCount;
 };
 
 /*!
     \qmltype SelectionListModel
-    \instantiates QtVirtualKeyboard::DeclarativeSelectionListModel
+    \instantiates QtVirtualKeyboard::SelectionListModel
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \brief Provides a data model for the selection lists.
@@ -73,7 +73,7 @@ public:
 */
 
 /*!
-    \class QtVirtualKeyboard::DeclarativeSelectionListModel
+    \class QtVirtualKeyboard::SelectionListModel
 
     \inmodule InputFramework
 
@@ -85,7 +85,7 @@ public:
 */
 
 /*!
-    \enum QtVirtualKeyboard::DeclarativeSelectionListModel::Type
+    \enum QtVirtualKeyboard::SelectionListModel::Type
 
     This enum specifies the type of selection list.
 
@@ -94,7 +94,7 @@ public:
 */
 
 /*!
-    \enum QtVirtualKeyboard::DeclarativeSelectionListModel::Role
+    \enum QtVirtualKeyboard::SelectionListModel::Role
 
     This enum specifies a role of the data requested.
 
@@ -107,10 +107,10 @@ public:
            end of the string.
 */
 
-DeclarativeSelectionListModel::DeclarativeSelectionListModel(QObject *parent) :
-    QAbstractListModel(*new DeclarativeSelectionListModelPrivate(), parent)
+SelectionListModel::SelectionListModel(QObject *parent) :
+    QAbstractListModel(*new SelectionListModelPrivate(), parent)
 {
-    Q_D(DeclarativeSelectionListModel);
+    Q_D(SelectionListModel);
     d->roles[DisplayRole] = "display";
     d->roles[WordCompletionLengthRole] = "wordCompletionLength";
 }
@@ -118,16 +118,16 @@ DeclarativeSelectionListModel::DeclarativeSelectionListModel(QObject *parent) :
 /*!
     \internal
 */
-DeclarativeSelectionListModel::~DeclarativeSelectionListModel()
+SelectionListModel::~SelectionListModel()
 {
 }
 
 /*!
     \internal
 */
-void DeclarativeSelectionListModel::setDataSource(AbstractInputMethod *dataSource, Type type)
+void SelectionListModel::setDataSource(AbstractInputMethod *dataSource, Type type)
 {
-    Q_D(DeclarativeSelectionListModel);
+    Q_D(SelectionListModel);
     if (d->dataSource) {
         disconnect(this, SLOT(selectionListChanged(int)));
         disconnect(this, SLOT(selectionListActiveItemChanged(int, int)));
@@ -148,18 +148,18 @@ void DeclarativeSelectionListModel::setDataSource(AbstractInputMethod *dataSourc
 /*!
     \internal
 */
-AbstractInputMethod *DeclarativeSelectionListModel::dataSource() const
+AbstractInputMethod *SelectionListModel::dataSource() const
 {
-    Q_D(const DeclarativeSelectionListModel);
+    Q_D(const SelectionListModel);
     return d->dataSource;
 }
 
 /*!
     \internal
 */
-int DeclarativeSelectionListModel::rowCount(const QModelIndex &parent) const
+int SelectionListModel::rowCount(const QModelIndex &parent) const
 {
-    Q_D(const DeclarativeSelectionListModel);
+    Q_D(const SelectionListModel);
     Q_UNUSED(parent)
     return d->rowCount;
 }
@@ -167,18 +167,18 @@ int DeclarativeSelectionListModel::rowCount(const QModelIndex &parent) const
 /*!
     \internal
 */
-QVariant DeclarativeSelectionListModel::data(const QModelIndex &index, int role) const
+QVariant SelectionListModel::data(const QModelIndex &index, int role) const
 {
-    Q_D(const DeclarativeSelectionListModel);
+    Q_D(const SelectionListModel);
     return d->dataSource ? d->dataSource->selectionListData(d->type, index.row(), role) : QVariant();
 }
 
 /*!
     \internal
 */
-QHash<int,QByteArray> DeclarativeSelectionListModel::roleNames() const
+QHash<int,QByteArray> SelectionListModel::roleNames() const
 {
-    Q_D(const DeclarativeSelectionListModel);
+    Q_D(const SelectionListModel);
     return d->roles;
 }
 
@@ -189,13 +189,15 @@ QHash<int,QByteArray> DeclarativeSelectionListModel::roleNames() const
     The selection is forwarded to the input method for further processing.
 */
 /*!
+    \fn void QtVirtualKeyboard::SelectionListModel::selectItem(int index)
+
     This method should be called when the user selects an item at position
     \a index from the list.
     The selection is forwarded to the input method for further processing.
 */
-void DeclarativeSelectionListModel::selectItem(int index)
+void SelectionListModel::selectItem(int index)
 {
-    Q_D(DeclarativeSelectionListModel);
+    Q_D(SelectionListModel);
     if (index >= 0 && index < d->rowCount && d->dataSource) {
         emit itemSelected(index);
         d->dataSource->selectionListItemSelected(d->type, index);
@@ -205,7 +207,7 @@ void DeclarativeSelectionListModel::selectItem(int index)
 /*!
  * \internal
  */
-QVariant DeclarativeSelectionListModel::dataAt(int index, int role) const
+QVariant SelectionListModel::dataAt(int index, int role) const
 {
     return data(this->index(index, 0), role);
 }
@@ -213,9 +215,9 @@ QVariant DeclarativeSelectionListModel::dataAt(int index, int role) const
 /*!
     \internal
 */
-void DeclarativeSelectionListModel::selectionListChanged(int type)
+void SelectionListModel::selectionListChanged(int type)
 {
-    Q_D(DeclarativeSelectionListModel);
+    Q_D(SelectionListModel);
     if (static_cast<Type>(type) == d->type) {
         int oldCount = d->rowCount;
         int newCount = d->dataSource ? d->dataSource->selectionListItemCount(d->type) : 0;
@@ -243,9 +245,9 @@ void DeclarativeSelectionListModel::selectionListChanged(int type)
 /*!
     \internal
 */
-void DeclarativeSelectionListModel::selectionListActiveItemChanged(int type, int index)
+void SelectionListModel::selectionListActiveItemChanged(int type, int index)
 {
-    Q_D(DeclarativeSelectionListModel);
+    Q_D(SelectionListModel);
     if (static_cast<Type>(type) == d->type) {
         emit activeItemChanged(index);
     }
@@ -259,7 +261,7 @@ void DeclarativeSelectionListModel::selectionListActiveItemChanged(int type, int
     the list.
 */
 /*!
-    \fn void QtVirtualKeyboard::DeclarativeSelectionListModel::activeItemChanged(int index)
+    \fn void QtVirtualKeyboard::SelectionListModel::activeItemChanged(int index)
 
     This signal is emitted when the active item in the list changes. The
     UI should react to this signal by highlighting the item at \a index in
@@ -272,7 +274,7 @@ void DeclarativeSelectionListModel::selectionListActiveItemChanged(int type, int
     This signal is emitted when an item at \a index is selected by the user.
 */
 /*!
-    \fn void QtVirtualKeyboard::DeclarativeSelectionListModel::itemSelected(int index)
+    \fn void QtVirtualKeyboard::SelectionListModel::itemSelected(int index)
 
     This signal is emitted when an item at \a index is selected by the user.
 */

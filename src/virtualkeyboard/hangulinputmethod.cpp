@@ -20,7 +20,7 @@
 ******************************************************************************/
 
 #include "hangulinputmethod.h"
-#include "declarativeinputcontext.h"
+#include "inputcontext.h"
 #include "hangul.h"
 
 namespace QtVirtualKeyboard {
@@ -39,20 +39,20 @@ HangulInputMethod::~HangulInputMethod()
 {
 }
 
-QList<DeclarativeInputEngine::InputMode> HangulInputMethod::inputModes(const QString &locale)
+QList<InputEngine::InputMode> HangulInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::Hangul;
+    return QList<InputEngine::InputMode>() << InputEngine::Hangul;
 }
 
-bool HangulInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
+bool HangulInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_UNUSED(inputMode)
     return true;
 }
 
-bool HangulInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
+bool HangulInputMethod::setTextCase(InputEngine::TextCase textCase)
 {
     Q_UNUSED(textCase)
     return true;
@@ -61,7 +61,7 @@ bool HangulInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
 bool HangulInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
     Q_UNUSED(modifiers)
-    DeclarativeInputContext *ic = inputContext();
+    InputContext *ic = inputContext();
     bool accept = false;
     int cursorPosition = ic->cursorPosition();
     if (ic->cursorPosition() > 0) {

@@ -19,8 +19,8 @@
 **
 ******************************************************************************/
 
-#ifndef DECLARATIVEINPUTCONTEXT_H
-#define DECLARATIVEINPUTCONTEXT_H
+#ifndef INPUTCONTEXT_H
+#define INPUTCONTEXT_H
 
 #include <QObject>
 #include <QRectF>
@@ -31,15 +31,15 @@
 namespace QtVirtualKeyboard {
 
 class PlatformInputContext;
-class DeclarativeInputEngine;
-class DeclarativeShiftHandler;
-class DeclarativeInputContextPrivate;
+class InputEngine;
+class ShiftHandler;
+class InputContextPrivate;
 
-class DeclarativeInputContext : public QObject
+class InputContext : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY(DeclarativeInputContext)
-    Q_DECLARE_PRIVATE(DeclarativeInputContext)
+    Q_DISABLE_COPY(InputContext)
+    Q_DECLARE_PRIVATE(InputContext)
     Q_PROPERTY(bool focus READ focus NOTIFY focusChanged)
     Q_PROPERTY(bool shift READ shift WRITE setShift NOTIFY shiftChanged)
     Q_PROPERTY(bool capsLock READ capsLock WRITE setCapsLock NOTIFY capsLockChanged)
@@ -55,12 +55,12 @@ class DeclarativeInputContext : public QObject
     Q_PROPERTY(bool animating READ animating WRITE setAnimating NOTIFY animatingChanged)
     Q_PROPERTY(QString locale READ locale WRITE setLocale NOTIFY localeChanged)
     Q_PROPERTY(QObject *inputItem READ inputItem NOTIFY inputItemChanged)
-    Q_PROPERTY(QtVirtualKeyboard::DeclarativeShiftHandler *shiftHandler READ shiftHandler CONSTANT)
-    Q_PROPERTY(QtVirtualKeyboard::DeclarativeInputEngine *inputEngine READ inputEngine CONSTANT)
+    Q_PROPERTY(QtVirtualKeyboard::ShiftHandler *shiftHandler READ shiftHandler CONSTANT)
+    Q_PROPERTY(QtVirtualKeyboard::InputEngine *inputEngine READ inputEngine CONSTANT)
 
 public:
-    explicit DeclarativeInputContext(PlatformInputContext *parent = 0);
-    ~DeclarativeInputContext();
+    explicit InputContext(PlatformInputContext *parent = 0);
+    ~InputContext();
 
     bool focus() const;
     bool shift() const;
@@ -86,8 +86,8 @@ public:
     void setLocale(const QString &locale);
     Q_INVOKABLE void updateAvailableLocales(const QStringList &availableLocales);
     QObject *inputItem() const;
-    DeclarativeShiftHandler *shiftHandler() const;
-    DeclarativeInputEngine *inputEngine() const;
+    ShiftHandler *shiftHandler() const;
+    InputEngine *inputEngine() const;
 
     Q_INVOKABLE void hideInputPanel();
     Q_INVOKABLE void sendKeyClick(int key, const QString &text, int modifiers = 0);

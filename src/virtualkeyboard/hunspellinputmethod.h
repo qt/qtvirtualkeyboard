@@ -38,18 +38,18 @@ public:
     explicit HunspellInputMethod(QObject *parent = 0);
     ~HunspellInputMethod();
 
-    QList<DeclarativeInputEngine::InputMode> inputModes(const QString &locale);
-    bool setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode);
-    bool setTextCase(DeclarativeInputEngine::TextCase textCase);
+    QList<InputEngine::InputMode> inputModes(const QString &locale);
+    bool setInputMode(const QString &locale, InputEngine::InputMode inputMode);
+    bool setTextCase(InputEngine::TextCase textCase);
 
     bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 
-    QList<DeclarativeSelectionListModel::Type> selectionLists();
-    int selectionListItemCount(DeclarativeSelectionListModel::Type type);
-    QVariant selectionListData(DeclarativeSelectionListModel::Type type, int index, int role);
-    void selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index);
+    QList<SelectionListModel::Type> selectionLists();
+    int selectionListItemCount(SelectionListModel::Type type);
+    QVariant selectionListData(SelectionListModel::Type type, int index, int role);
+    void selectionListItemSelected(SelectionListModel::Type type, int index);
 
-    bool reselect(int cursorPosition, const DeclarativeInputEngine::ReselectFlags &reselectFlags);
+    bool reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags);
 
     void reset();
     void update();

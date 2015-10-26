@@ -20,8 +20,8 @@
 ******************************************************************************/
 
 #include "tcinputmethod.h"
-#include "declarativeinputengine.h"
-#include "declarativeinputcontext.h"
+#include "inputengine.h"
+#include "inputcontext.h"
 #include "cangjiedictionary.h"
 #include "cangjietable.h"
 #include "phrasedictionary.h"
@@ -71,8 +71,8 @@ public:
     {
         if (clearCandidates()) {
             Q_Q(TCInputMethod);
-            emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-            emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, highlightIndex);
+            emit q->selectionListChanged(SelectionListModel::WordCandidateList);
+            emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, highlightIndex);
         }
         input.clear();
     }
@@ -93,8 +93,8 @@ public:
                     << QChar(0xFE5B) << QChar(0xFE5C) << QChar(0xFE43) << QChar(0xFE44);
             Q_Q(TCInputMethod);
             if (setCandidates(specialChars1, true)) {
-                emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-                emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, highlightIndex);
+                emit q->selectionListChanged(SelectionListModel::WordCandidateList);
+                emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, highlightIndex);
             }
             q->inputContext()->setPreeditText(candidates[highlightIndex]);
             return true;
@@ -111,8 +111,8 @@ public:
                     << QChar(0xFE4F) << QChar(0xFE34) << QChar(0xFE33);
             Q_Q(TCInputMethod);
             if (setCandidates(specialChars2, true)) {
-                emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-                emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, highlightIndex);
+                emit q->selectionListChanged(SelectionListModel::WordCandidateList);
+                emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, highlightIndex);
             }
             q->inputContext()->setPreeditText(candidates[highlightIndex]);
             return true;
@@ -154,7 +154,7 @@ void TCInputMethod::setSimplified(bool simplified)
     VIRTUALKEYBOARD_DEBUG() << "TCInputMethod::setSimplified(): " << simplified;
     if (d->cangjieDictionary.simplified() != simplified) {
         d->reset();
-        DeclarativeInputContext *ic = inputContext();
+        InputContext *ic = inputContext();
         if (ic)
             ic->clear();
         d->cangjieDictionary.setSimplified(simplified);
@@ -162,19 +162,19 @@ void TCInputMethod::setSimplified(bool simplified)
     }
 }
 
-QList<DeclarativeInputEngine::InputMode> TCInputMethod::inputModes(const QString &locale)
+QList<InputEngine::InputMode> TCInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<DeclarativeInputEngine::InputMode>()
-            << DeclarativeInputEngine::Cangjie;
+    return QList<InputEngine::InputMode>()
+            << InputEngine::Cangjie;
 }
 
-bool TCInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
+bool TCInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_UNUSED(inputMode)
     Q_D(TCInputMethod);
-    if (inputMode == DeclarativeInputEngine::Cangjie) {
+    if (inputMode == InputEngine::Cangjie) {
         if (d->cangjieDictionary.isEmpty()) {
             QString cangjieDictionary(QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_CANGJIE_DICTIONARY").constData()));
             if (cangjieDictionary.isEmpty())
@@ -192,7 +192,7 @@ bool TCInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::
     return false;
 }
 
-bool TCInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
+bool TCInputMethod::setTextCase(InputEngine::TextCase textCase)
 {
     Q_UNUSED(textCase)
     return true;
@@ -204,7 +204,7 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
     Q_UNUSED(text)
     Q_UNUSED(modifiers)
     Q_D(TCInputMethod);
-    DeclarativeInputContext *ic = inputContext();
+    InputContext *ic = inputContext();
     bool accept = false;
     switch (key) {
     case Qt::Key_Enter:
@@ -229,14 +229,14 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
             ic->setPreeditText(d->input);
             if (!d->checkSpecialCharInput()) {
                 if (d->setCandidates(d->cangjieDictionary.getWords(d->input), true)) {
-                    emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-                    emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->highlightIndex);
+                    emit selectionListChanged(SelectionListModel::WordCandidateList);
+                    emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->highlightIndex);
                 }
             }
             accept = true;
         } else if (d->clearCandidates()) {
-            emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-            emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->highlightIndex);
+            emit selectionListChanged(SelectionListModel::WordCandidateList);
+            emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->highlightIndex);
         }
         break;
 
@@ -248,8 +248,8 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
                     d->input.append(c);
                     ic->setPreeditText(d->input);
                     if (d->setCandidates(d->cangjieDictionary.getWords(d->input), true)) {
-                        emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-                        emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->highlightIndex);
+                        emit selectionListChanged(SelectionListModel::WordCandidateList);
+                        emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->highlightIndex);
                     }
                 }
                 accept = true;
@@ -277,27 +277,27 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
     return accept;
 }
 
-QList<DeclarativeSelectionListModel::Type> TCInputMethod::selectionLists()
+QList<SelectionListModel::Type> TCInputMethod::selectionLists()
 {
-    return QList<DeclarativeSelectionListModel::Type>() << DeclarativeSelectionListModel::WordCandidateList;
+    return QList<SelectionListModel::Type>() << SelectionListModel::WordCandidateList;
 }
 
-int TCInputMethod::selectionListItemCount(DeclarativeSelectionListModel::Type type)
+int TCInputMethod::selectionListItemCount(SelectionListModel::Type type)
 {
     Q_UNUSED(type)
     Q_D(TCInputMethod);
     return d->candidates.count();
 }
 
-QVariant TCInputMethod::selectionListData(DeclarativeSelectionListModel::Type type, int index, int role)
+QVariant TCInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
 {
     QVariant result;
     Q_D(TCInputMethod);
     switch (role) {
-    case DeclarativeSelectionListModel::DisplayRole:
+    case SelectionListModel::DisplayRole:
         result = QVariant(d->candidates.at(index));
         break;
-    case DeclarativeSelectionListModel::WordCompletionLengthRole:
+    case SelectionListModel::WordCompletionLengthRole:
         result.setValue(0);
         break;
     default:
@@ -307,7 +307,7 @@ QVariant TCInputMethod::selectionListData(DeclarativeSelectionListModel::Type ty
     return result;
 }
 
-void TCInputMethod::selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index)
+void TCInputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
 {
     Q_UNUSED(type)
     Q_D(TCInputMethod);
@@ -315,8 +315,8 @@ void TCInputMethod::selectionListItemSelected(DeclarativeSelectionListModel::Typ
     reset();
     inputContext()->commit(finalWord);
     if (d->setCandidates(d->phraseDictionary.getWords(finalWord.left(1)), false)) {
-        emit selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-        emit selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, d->highlightIndex);
+        emit selectionListChanged(SelectionListModel::WordCandidateList);
+        emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->highlightIndex);
     }
 }
 

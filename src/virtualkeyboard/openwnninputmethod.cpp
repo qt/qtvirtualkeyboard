@@ -20,7 +20,7 @@
 ******************************************************************************/
 
 #include "openwnninputmethod.h"
-#include "declarativeinputcontext.h"
+#include "inputcontext.h"
 #include "virtualkeyboarddebug.h"
 #include <openwnnenginejajp.h>
 #include <composingtext.h>
@@ -55,7 +55,7 @@ public:
     OpenWnnInputMethodPrivate(OpenWnnInputMethod *q_ptr) :
         AbstractInputMethodPrivate(),
         q_ptr(q_ptr),
-        inputMode(DeclarativeInputEngine::Latin),
+        inputMode(InputEngine::Latin),
         exactMatchMode(false),
         converter(0),
         converterJAJP(),
@@ -307,9 +307,9 @@ public:
 
         Q_Q(OpenWnnInputMethod);
         if (!candidateList.isEmpty() || !wasEmpty)
-            emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
+            emit q->selectionListChanged(SelectionListModel::WordCandidateList);
         if (previousActiveWordIndex != activeWordIndex)
-            emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, activeWordIndex);
+            emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, activeWordIndex);
     }
 
     void clearCandidates(bool deferUpdate = false)
@@ -318,7 +318,7 @@ public:
             candidateList.clear();
             if (!deferUpdate) {
                 Q_Q(OpenWnnInputMethod);
-                emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
+                emit q->selectionListChanged(SelectionListModel::WordCandidateList);
             }
             clearFocusCandidate(deferUpdate);
         }
@@ -332,7 +332,7 @@ public:
         activeWordIndex++;
         if (activeWordIndex >= candidateList.size())
             activeWordIndex = 0;
-        emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, activeWordIndex);
+        emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, activeWordIndex);
         return candidateList.at(activeWordIndex);
     }
 
@@ -342,7 +342,7 @@ public:
         if (activeWordIndex != -1) {
             activeWordIndex = -1;
             if (!deferUpdate)
-                emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, activeWordIndex);
+                emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, activeWordIndex);
         }
     }
 
@@ -569,7 +569,7 @@ public:
     }
 
     OpenWnnInputMethod *q_ptr;
-    DeclarativeInputEngine::InputMode inputMode;
+    InputEngine::InputMode inputMode;
     bool exactMatchMode;
     QString displayText;
     OpenWnnEngineJAJP *converter;
@@ -601,17 +601,17 @@ OpenWnnInputMethod::~OpenWnnInputMethod()
 {
 }
 
-QList<DeclarativeInputEngine::InputMode> OpenWnnInputMethod::inputModes(const QString &locale)
+QList<InputEngine::InputMode> OpenWnnInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<DeclarativeInputEngine::InputMode>()
-            << DeclarativeInputEngine::Hiragana
-            << DeclarativeInputEngine::Katakana
-            << DeclarativeInputEngine::FullwidthLatin
-            << DeclarativeInputEngine::Latin;
+    return QList<InputEngine::InputMode>()
+            << InputEngine::Hiragana
+            << InputEngine::Katakana
+            << InputEngine::FullwidthLatin
+            << InputEngine::Latin;
 }
 
-bool OpenWnnInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
+bool OpenWnnInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_D(OpenWnnInputMethod);
@@ -619,11 +619,11 @@ bool OpenWnnInputMethod::setInputMode(const QString &locale, DeclarativeInputEng
         return true;
     update();
     switch (inputMode) {
-    case DeclarativeInputEngine::Hiragana:
+    case InputEngine::Hiragana:
         d->changeEngineMode(OpenWnnInputMethodPrivate::ENGINE_MODE_DEFAULT);
         break;
 
-    case DeclarativeInputEngine::Katakana:
+    case InputEngine::Katakana:
         d->changeEngineMode(OpenWnnInputMethodPrivate::ENGINE_MODE_FULL_KATAKANA);
         break;
 
@@ -635,7 +635,7 @@ bool OpenWnnInputMethod::setInputMode(const QString &locale, DeclarativeInputEng
     return true;
 }
 
-bool OpenWnnInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
+bool OpenWnnInputMethod::setTextCase(InputEngine::TextCase textCase)
 {
     Q_UNUSED(textCase)
     return true;
@@ -748,28 +748,28 @@ bool OpenWnnInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
     return false;
 }
 
-QList<DeclarativeSelectionListModel::Type> OpenWnnInputMethod::selectionLists()
+QList<SelectionListModel::Type> OpenWnnInputMethod::selectionLists()
 {
-    return QList<DeclarativeSelectionListModel::Type>() << DeclarativeSelectionListModel::WordCandidateList;
+    return QList<SelectionListModel::Type>() << SelectionListModel::WordCandidateList;
 }
 
-int OpenWnnInputMethod::selectionListItemCount(DeclarativeSelectionListModel::Type type)
+int OpenWnnInputMethod::selectionListItemCount(SelectionListModel::Type type)
 {
     Q_UNUSED(type)
     Q_D(OpenWnnInputMethod);
     return d->candidateList.size();
 }
 
-QVariant OpenWnnInputMethod::selectionListData(DeclarativeSelectionListModel::Type type, int index, int role)
+QVariant OpenWnnInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
 {
     QVariant result;
     Q_UNUSED(type)
     Q_D(OpenWnnInputMethod);
     switch (role) {
-    case DeclarativeSelectionListModel::DisplayRole:
+    case SelectionListModel::DisplayRole:
         result = QVariant(d->candidateList.at(index)->candidate);
         break;
-    case DeclarativeSelectionListModel::WordCompletionLengthRole:
+    case SelectionListModel::WordCompletionLengthRole:
         result.setValue(0);
         break;
     default:
@@ -779,7 +779,7 @@ QVariant OpenWnnInputMethod::selectionListData(DeclarativeSelectionListModel::Ty
     return result;
 }
 
-void OpenWnnInputMethod::selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index)
+void OpenWnnInputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
 {
     Q_UNUSED(type)
     Q_D(OpenWnnInputMethod);

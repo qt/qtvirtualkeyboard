@@ -19,9 +19,9 @@
 **
 ******************************************************************************/
 
-#include "declarativeinputcontext.h"
-#include "declarativeinputengine.h"
-#include "declarativeshifthandler.h"
+#include "inputcontext.h"
+#include "inputengine.h"
+#include "shifthandler.h"
 #include "platforminputcontext.h"
 #include "virtualkeyboarddebug.h"
 #include "enterkeyaction.h"
@@ -68,7 +68,7 @@ QT_END_NAMESPACE
 
 namespace QtVirtualKeyboard {
 
-class DeclarativeInputContextPrivate : public QObjectPrivate
+class InputContextPrivate : public QObjectPrivate
 {
 public:
     enum StateFlag {
@@ -79,7 +79,7 @@ public:
     };
     Q_DECLARE_FLAGS(StateFlags, StateFlag)
 
-    DeclarativeInputContextPrivate() :
+    InputContextPrivate() :
         QObjectPrivate(),
         inputContext(0),
         inputEngine(0),
@@ -106,8 +106,8 @@ public:
     }
 
     PlatformInputContext *inputContext;
-    DeclarativeInputEngine *inputEngine;
-    DeclarativeShiftHandler *shiftHandler;
+    InputEngine *inputEngine;
+    ShiftHandler *shiftHandler;
     QRectF keyboardRect;
     QRectF previewRect;
     bool previewVisible;
@@ -130,11 +130,11 @@ public:
     QSet<quint32> activeKeys;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(DeclarativeInputContextPrivate::StateFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS(InputContextPrivate::StateFlags)
 
 /*!
     \qmltype InputContext
-    \instantiates QtVirtualKeyboard::DeclarativeInputContext
+    \instantiates QtVirtualKeyboard::InputContext
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \brief Provides access to an input context.
@@ -143,93 +143,93 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(DeclarativeInputContextPrivate::StateFlags)
 */
 
 /*!
-    \class QtVirtualKeyboard::DeclarativeInputContext
+    \class QtVirtualKeyboard::InputContext
     \inmodule InputFramework
     \brief Provides access to an input context.
 */
 
 /*!
     \internal
-    Constructs a declarative input context with \a parent as the platform input
+    Constructs an input context with \a parent as the platform input
     context.
 */
-DeclarativeInputContext::DeclarativeInputContext(PlatformInputContext *parent) :
-    QObject(*new DeclarativeInputContextPrivate(), parent)
+InputContext::InputContext(PlatformInputContext *parent) :
+    QObject(*new InputContextPrivate(), parent)
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     d->inputContext = parent;
     if (d->inputContext) {
-        d->inputContext->setDeclarativeContext(this);
+        d->inputContext->setInputContext(this);
         connect(d->inputContext, SIGNAL(focusObjectChanged()), SLOT(onInputItemChanged()));
         connect(d->inputContext, SIGNAL(focusObjectChanged()), SIGNAL(inputItemChanged()));
     }
-    d->inputEngine = new DeclarativeInputEngine(this);
-    d->shiftHandler = new DeclarativeShiftHandler(this);
+    d->inputEngine = new InputEngine(this);
+    d->shiftHandler = new ShiftHandler(this);
 }
 
 /*!
     \internal
     Destroys the input context and frees all allocated resources.
 */
-DeclarativeInputContext::~DeclarativeInputContext()
+InputContext::~InputContext()
 {
 }
 
-bool DeclarativeInputContext::focus() const
+bool InputContext::focus() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->focus;
 }
 
-bool DeclarativeInputContext::shift() const
+bool InputContext::shift() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->shift;
 }
 
-void DeclarativeInputContext::setShift(bool enable)
+void InputContext::setShift(bool enable)
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     if (d->shift != enable) {
         d->shift = enable;
         emit shiftChanged();
     }
 }
 
-bool DeclarativeInputContext::capsLock() const
+bool InputContext::capsLock() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->capsLock;
 }
 
-void DeclarativeInputContext::setCapsLock(bool enable)
+void InputContext::setCapsLock(bool enable)
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     if (d->capsLock != enable) {
         d->capsLock = enable;
         emit capsLockChanged();
     }
 }
 
-int DeclarativeInputContext::cursorPosition() const
+int InputContext::cursorPosition() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->cursorPosition;
 }
 
-Qt::InputMethodHints DeclarativeInputContext::inputMethodHints() const
+Qt::InputMethodHints InputContext::inputMethodHints() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->inputMethodHints;
 }
 
-QString DeclarativeInputContext::preeditText() const
+QString InputContext::preeditText() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->preeditText;
 }
 
-void DeclarativeInputContext::setPreeditText(const QString &text, QList<QInputMethodEvent::Attribute> attributes, int replaceFrom, int replaceLength)
+void InputContext::setPreeditText(const QString &text, QList<QInputMethodEvent::Attribute> attributes, int replaceFrom, int replaceLength)
 {
     // Add default attributes
     if (!text.isEmpty()) {
@@ -247,7 +247,7 @@ void DeclarativeInputContext::setPreeditText(const QString &text, QList<QInputMe
             attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, 0, text.length(), textFormat));
         }
     } else {
-        Q_D(DeclarativeInputContext);
+        Q_D(InputContext);
         if (d->forceCursorPosition != -1)
             attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Selection, d->forceCursorPosition, 0, QVariant()));
         d->forceCursorPosition = -1;
@@ -256,33 +256,33 @@ void DeclarativeInputContext::setPreeditText(const QString &text, QList<QInputMe
     sendPreedit(text, attributes, replaceFrom, replaceLength);
 }
 
-QString DeclarativeInputContext::surroundingText() const
+QString InputContext::surroundingText() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->surroundingText;
 }
 
-QString DeclarativeInputContext::selectedText() const
+QString InputContext::selectedText() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->selectedText;
 }
 
-QRectF DeclarativeInputContext::cursorRectangle() const
+QRectF InputContext::cursorRectangle() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->cursorRectangle;
 }
 
-QRectF DeclarativeInputContext::keyboardRectangle() const
+QRectF InputContext::keyboardRectangle() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->keyboardRect;
 }
 
-void DeclarativeInputContext::setKeyboardRectangle(QRectF rectangle)
+void InputContext::setKeyboardRectangle(QRectF rectangle)
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     if (d->keyboardRect != rectangle) {
         d->keyboardRect = rectangle;
         emit keyboardRectangleChanged();
@@ -290,45 +290,45 @@ void DeclarativeInputContext::setKeyboardRectangle(QRectF rectangle)
     }
 }
 
-QRectF DeclarativeInputContext::previewRectangle() const
+QRectF InputContext::previewRectangle() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->previewRect;
 }
 
-void DeclarativeInputContext::setPreviewRectangle(QRectF rectangle)
+void InputContext::setPreviewRectangle(QRectF rectangle)
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     if (d->previewRect != rectangle) {
         d->previewRect = rectangle;
         emit previewRectangleChanged();
     }
 }
 
-bool DeclarativeInputContext::previewVisible() const
+bool InputContext::previewVisible() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->previewVisible;
 }
 
-void DeclarativeInputContext::setPreviewVisible(bool visible)
+void InputContext::setPreviewVisible(bool visible)
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     if (d->previewVisible != visible) {
         d->previewVisible = visible;
         emit previewVisibleChanged();
     }
 }
 
-bool DeclarativeInputContext::animating() const
+bool InputContext::animating() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->animating;
 }
 
-void DeclarativeInputContext::setAnimating(bool animating)
+void InputContext::setAnimating(bool animating)
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     if (d->animating != animating) {
         d->animating = animating;
         emit animatingChanged();
@@ -337,16 +337,16 @@ void DeclarativeInputContext::setAnimating(bool animating)
 }
 
 
-QString DeclarativeInputContext::locale() const
+QString InputContext::locale() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->inputContext->locale().name();
 }
 
-void DeclarativeInputContext::setLocale(const QString &locale)
+void InputContext::setLocale(const QString &locale)
 {
-    Q_D(DeclarativeInputContext);
-    VIRTUALKEYBOARD_DEBUG() << "DeclarativeInputContext::setLocale():" << locale;
+    Q_D(InputContext);
+    VIRTUALKEYBOARD_DEBUG() << "InputContext::setLocale():" << locale;
     QLocale newLocale(locale);
     if (newLocale != d->inputContext->locale()) {
         d->inputContext->setLocale(newLocale);
@@ -358,28 +358,28 @@ void DeclarativeInputContext::setLocale(const QString &locale)
 /*!
     \internal
 */
-void DeclarativeInputContext::updateAvailableLocales(const QStringList &availableLocales)
+void InputContext::updateAvailableLocales(const QStringList &availableLocales)
 {
     Settings *settings = Settings::instance();
     if (settings)
         settings->setAvailableLocales(availableLocales);
 }
 
-QObject *DeclarativeInputContext::inputItem() const
+QObject *InputContext::inputItem() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->inputContext ? d->inputContext->focusObject() : 0;
 }
 
-DeclarativeShiftHandler *DeclarativeInputContext::shiftHandler() const
+ShiftHandler *InputContext::shiftHandler() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->shiftHandler;
 }
 
-DeclarativeInputEngine *DeclarativeInputContext::inputEngine() const
+InputEngine *InputContext::inputEngine() const
 {
-    Q_D(const DeclarativeInputContext);
+    Q_D(const InputContext);
     return d->inputEngine;
 }
 
@@ -391,13 +391,15 @@ DeclarativeInputEngine *DeclarativeInputContext::inputEngine() const
     on the keyboard.
 */
 /*!
+    \fn void QtVirtualKeyboard::InputContext::hideInputPanel()
+
     This method hides the input panel. This method should only be called
     when the user initiates the hide, e.g. by pressing a dedicated button
     on the keyboard.
 */
-void DeclarativeInputContext::hideInputPanel()
+void InputContext::hideInputPanel()
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     d->inputContext->hideInputPanel();
 }
 
@@ -411,21 +413,21 @@ void DeclarativeInputContext::hideInputPanel()
     Sends a key click event with the given \a key, \a text and \a modifiers to
     the input item that currently has focus.
 */
-void DeclarativeInputContext::sendKeyClick(int key, const QString &text, int modifiers)
+void InputContext::sendKeyClick(int key, const QString &text, int modifiers)
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     if (d->focus && d->inputContext) {
         QKeyEvent pressEvent(QEvent::KeyPress, key, Qt::KeyboardModifiers(modifiers), text);
         QKeyEvent releaseEvent(QEvent::KeyRelease, key, Qt::KeyboardModifiers(modifiers), text);
-        VIRTUALKEYBOARD_DEBUG() << "DeclarativeInputContext::::sendKeyClick():" << key;
+        VIRTUALKEYBOARD_DEBUG() << "InputContext::::sendKeyClick():" << key;
 
-        d->stateFlags |= DeclarativeInputContextPrivate::KeyEventState;
+        d->stateFlags |= InputContextPrivate::KeyEventState;
         d->inputContext->sendKeyEvent(&pressEvent);
         d->inputContext->sendKeyEvent(&releaseEvent);
         if (d->activeKeys.isEmpty())
-            d->stateFlags &= ~DeclarativeInputContextPrivate::KeyEventState;
+            d->stateFlags &= ~InputContextPrivate::KeyEventState;
     } else {
-        qWarning() << "DeclarativeInputContext::::sendKeyClick():" << key << "no focus";
+        qWarning() << "InputContext::::sendKeyClick():" << key << "no focus";
     }
 }
 
@@ -435,11 +437,13 @@ void DeclarativeInputContext::sendKeyClick(int key, const QString &text, int mod
     Commits the current pre-edit text.
 */
 /*!
+    \fn void QtVirtualKeyboard::InputContext::commit()
+
     Commits the current pre-edit text.
 */
-void DeclarativeInputContext::commit()
+void InputContext::commit()
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     QString text = d->preeditText;
     commit(text);
 }
@@ -460,10 +464,10 @@ void DeclarativeInputContext::commit()
     contents relative to \a replaceFrom with a length of
     \a replaceLength.
 */
-void DeclarativeInputContext::commit(const QString &text, int replaceFrom, int replaceLength)
+void InputContext::commit(const QString &text, int replaceFrom, int replaceLength)
 {
-    Q_D(DeclarativeInputContext);
-    VIRTUALKEYBOARD_DEBUG() << "DeclarativeInputContext::commit():" << text << replaceFrom << replaceLength;
+    Q_D(InputContext);
+    VIRTUALKEYBOARD_DEBUG() << "InputContext::commit():" << text << replaceFrom << replaceLength;
     bool preeditChanged = !d->preeditText.isEmpty();
     d->preeditText.clear();
 
@@ -475,9 +479,9 @@ void DeclarativeInputContext::commit(const QString &text, int replaceFrom, int r
         }
         QInputMethodEvent inputEvent(QString(), attributes);
         inputEvent.setCommitString(text, replaceFrom, replaceLength);
-        d->stateFlags |= DeclarativeInputContextPrivate::InputMethodEventState;
+        d->stateFlags |= InputContextPrivate::InputMethodEventState;
         d->inputContext->sendEvent(&inputEvent);
-        d->stateFlags &= ~DeclarativeInputContextPrivate::InputMethodEventState;
+        d->stateFlags &= ~InputContextPrivate::InputMethodEventState;
     }
 
     if (preeditChanged)
@@ -490,11 +494,13 @@ void DeclarativeInputContext::commit(const QString &text, int replaceFrom, int r
     Clears the pre-edit text.
 */
 /*!
+    \fn void QtVirtualKeyboard::InputContext::clear()
+
     Clears the pre-edit text.
 */
-void DeclarativeInputContext::clear()
+void InputContext::clear()
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     bool preeditChanged = !d->preeditText.isEmpty();
     d->preeditText.clear();
 
@@ -505,9 +511,9 @@ void DeclarativeInputContext::clear()
             d->forceCursorPosition = -1;
         }
         QInputMethodEvent event(QString(), attributes);
-        d->stateFlags |= DeclarativeInputContextPrivate::InputMethodEventState;
+        d->stateFlags |= InputContextPrivate::InputMethodEventState;
         d->inputContext->sendEvent(&event);
-        d->stateFlags &= ~DeclarativeInputContextPrivate::InputMethodEventState;
+        d->stateFlags &= ~InputContextPrivate::InputMethodEventState;
     }
 
     if (preeditChanged)
@@ -517,7 +523,7 @@ void DeclarativeInputContext::clear()
 /*!
     \internal
 */
-bool DeclarativeInputContext::fileExists(const QUrl &fileUrl)
+bool InputContext::fileExists(const QUrl &fileUrl)
 {
 #ifdef COMPILING_QML
     // workaround that qtquickcompiler removes *.qml file paths from qrc file (QTRD-3268)
@@ -536,37 +542,37 @@ bool DeclarativeInputContext::fileExists(const QUrl &fileUrl)
 /*!
     \internal
 */
-bool DeclarativeInputContext::hasEnterKeyAction(QObject *item) const
+bool InputContext::hasEnterKeyAction(QObject *item) const
 {
     return item != 0 && qmlAttachedPropertiesObject<EnterKeyAction>(item, false);
 }
 
-void DeclarativeInputContext::onInputItemChanged()
+void InputContext::onInputItemChanged()
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     if (!inputItem() && !d->activeKeys.isEmpty()) {
         // After losing keyboard focus it is impossible to track pressed keys
         d->activeKeys.clear();
-        d->stateFlags &= ~DeclarativeInputContextPrivate::KeyEventState;
+        d->stateFlags &= ~InputContextPrivate::KeyEventState;
     }
-    d->stateFlags &= ~DeclarativeInputContextPrivate::InputMethodClickState;
+    d->stateFlags &= ~InputContextPrivate::InputMethodClickState;
 }
 
-void DeclarativeInputContext::setFocus(bool enable)
+void InputContext::setFocus(bool enable)
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     if (d->focus != enable) {
-        VIRTUALKEYBOARD_DEBUG() << "DeclarativeInputContext::setFocus():" << enable;
+        VIRTUALKEYBOARD_DEBUG() << "InputContext::setFocus():" << enable;
         d->focus = enable;
         emit focusChanged();
     }
     emit focusEditorChanged();
 }
 
-void DeclarativeInputContext::sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes, int replaceFrom, int replaceLength)
+void InputContext::sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes, int replaceFrom, int replaceLength)
 {
-    Q_D(DeclarativeInputContext);
-    VIRTUALKEYBOARD_DEBUG() << "DeclarativeInputContext::sendPreedit():" << text << replaceFrom << replaceLength;
+    Q_D(InputContext);
+    VIRTUALKEYBOARD_DEBUG() << "InputContext::sendPreedit():" << text << replaceFrom << replaceLength;
 
     bool textChanged = d->preeditText != text;
     bool attributesChanged = d->preeditTextAttributes != attributes;
@@ -579,9 +585,9 @@ void DeclarativeInputContext::sendPreedit(const QString &text, const QList<QInpu
             QInputMethodEvent event(text, attributes);
             if (replaceFrom != 0 || replaceLength > 0)
                 event.setCommitString(QString(), replaceFrom, replaceLength);
-            d->stateFlags |= DeclarativeInputContextPrivate::InputMethodEventState;
+            d->stateFlags |= InputContextPrivate::InputMethodEventState;
             d->inputContext->sendEvent(&event);
-            d->stateFlags &= ~DeclarativeInputContextPrivate::InputMethodEventState;
+            d->stateFlags &= ~InputContextPrivate::InputMethodEventState;
         }
 
         if (textChanged)
@@ -589,21 +595,21 @@ void DeclarativeInputContext::sendPreedit(const QString &text, const QList<QInpu
     }
 }
 
-void DeclarativeInputContext::reset()
+void InputContext::reset()
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     d->inputEngine->reset();
 }
 
-void DeclarativeInputContext::externalCommit()
+void InputContext::externalCommit()
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     d->inputEngine->update();
 }
 
-void DeclarativeInputContext::update(Qt::InputMethodQueries queries)
+void InputContext::update(Qt::InputMethodQueries queries)
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     Q_UNUSED(queries);
 
     // fetch
@@ -629,7 +635,7 @@ void DeclarativeInputContext::update(Qt::InputMethodQueries queries)
 
     // update input engine
     if ((newSurroundingText || newCursorPosition) &&
-            !d->stateFlags.testFlag(DeclarativeInputContextPrivate::InputMethodEventState)) {
+            !d->stateFlags.testFlag(InputContextPrivate::InputMethodEventState)) {
         d->inputEngine->update();
     }
     if (newInputMethodHints) {
@@ -655,35 +661,35 @@ void DeclarativeInputContext::update(Qt::InputMethodQueries queries)
 
     // word reselection
     if (newInputMethodHints || newSurroundingText || newSelectedText)
-        d->stateFlags &= ~DeclarativeInputContextPrivate::InputMethodClickState;
+        d->stateFlags &= ~InputContextPrivate::InputMethodClickState;
     if ((newSurroundingText || newCursorPosition) && !newSelectedText && (int)d->stateFlags == 0 &&
             !d->inputMethodHints.testFlag(Qt::ImhNoPredictiveText) &&
             d->cursorPosition > 0 && d->selectedText.isEmpty()) {
-        d->stateFlags |= DeclarativeInputContextPrivate::ReselectEventState;
-        if (d->inputEngine->reselect(d->cursorPosition, DeclarativeInputEngine::WordAtCursor))
-            d->stateFlags |= DeclarativeInputContextPrivate::InputMethodClickState;
-        d->stateFlags &= ~DeclarativeInputContextPrivate::ReselectEventState;
+        d->stateFlags |= InputContextPrivate::ReselectEventState;
+        if (d->inputEngine->reselect(d->cursorPosition, InputEngine::WordAtCursor))
+            d->stateFlags |= InputContextPrivate::InputMethodClickState;
+        d->stateFlags &= ~InputContextPrivate::ReselectEventState;
     }
 }
 
-void DeclarativeInputContext::invokeAction(QInputMethod::Action action, int cursorPosition)
+void InputContext::invokeAction(QInputMethod::Action action, int cursorPosition)
 {
-    Q_D(DeclarativeInputContext);
+    Q_D(InputContext);
     switch (action) {
     case QInputMethod::Click:
         if ((int)d->stateFlags == 0) {
             bool reselect = !d->inputMethodHints.testFlag(Qt::ImhNoPredictiveText) && d->selectedText.isEmpty() && cursorPosition < d->preeditText.length();
             if (reselect) {
-                d->stateFlags |= DeclarativeInputContextPrivate::ReselectEventState;
+                d->stateFlags |= InputContextPrivate::ReselectEventState;
                 d->forceCursorPosition = d->cursorPosition + cursorPosition;
                 d->inputEngine->update();
-                d->inputEngine->reselect(d->cursorPosition, DeclarativeInputEngine::WordBeforeCursor);
-                d->stateFlags &= ~DeclarativeInputContextPrivate::ReselectEventState;
+                d->inputEngine->reselect(d->cursorPosition, InputEngine::WordBeforeCursor);
+                d->stateFlags &= ~InputContextPrivate::ReselectEventState;
             } else if (!d->preeditText.isEmpty() && cursorPosition == d->preeditText.length()) {
                 d->inputEngine->update();
             }
         }
-        d->stateFlags &= ~DeclarativeInputContextPrivate::InputMethodClickState;
+        d->stateFlags &= ~InputContextPrivate::InputMethodClickState;
         break;
 
     case QInputMethod::ContextMenu:
@@ -691,11 +697,11 @@ void DeclarativeInputContext::invokeAction(QInputMethod::Action action, int curs
     }
 }
 
-bool DeclarativeInputContext::filterEvent(const QEvent *event)
+bool InputContext::filterEvent(const QEvent *event)
 {
     QEvent::Type type = event->type();
     if (type == QEvent::KeyPress || type == QEvent::KeyRelease) {
-        Q_D(DeclarativeInputContext);
+        Q_D(InputContext);
         const QKeyEvent *keyEvent = static_cast<const QKeyEvent *>(event);
 
         // Keep track of pressed keys update key event state
@@ -705,9 +711,9 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
             d->activeKeys -= keyEvent->nativeScanCode();
 
         if (d->activeKeys.isEmpty())
-            d->stateFlags &= ~DeclarativeInputContextPrivate::KeyEventState;
+            d->stateFlags &= ~InputContextPrivate::KeyEventState;
         else
-            d->stateFlags |= DeclarativeInputContextPrivate::KeyEventState;
+            d->stateFlags |= InputContextPrivate::KeyEventState;
 
 #ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
         int key = keyEvent->key();
@@ -738,7 +744,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::focus
+    \property QtVirtualKeyboard::InputContext::focus
     \brief the focus status.
 
     This property is changed when the input method receives or loses focus.
@@ -751,7 +757,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::shift
+    \property QtVirtualKeyboard::InputContext::shift
     \brief the shift status.
 
     This property is changed when the shift status changes.
@@ -764,7 +770,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::capsLock
+    \property QtVirtualKeyboard::InputContext::capsLock
     \brief the caps lock status.
 
     This property is changed when the caps lock status changes.
@@ -777,7 +783,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::cursorPosition
+    \property QtVirtualKeyboard::InputContext::cursorPosition
     \brief the cursor position.
 
     This property is changed when the cursor position changes.
@@ -790,7 +796,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::inputMethodHints
+    \property QtVirtualKeyboard::InputContext::inputMethodHints
     \brief the input method hints.
 
     This property is changed when the input method hints changes.
@@ -803,7 +809,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::preeditText
+    \property QtVirtualKeyboard::InputContext::preeditText
     \brief the pre-edit text.
 
     This property sets the pre-edit text.
@@ -816,7 +822,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::surroundingText
+    \property QtVirtualKeyboard::InputContext::surroundingText
     \brief the surrounding text around cursor.
 
     This property is changed when the surrounding text around the cursor changes.
@@ -829,7 +835,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::selectedText
+    \property QtVirtualKeyboard::InputContext::selectedText
     \brief the selected text.
 
     This property is changed when the selected text changes.
@@ -842,7 +848,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::cursorRectangle
+    \property QtVirtualKeyboard::InputContext::cursorRectangle
     \brief the cursor rectangle.
 
     This property is changed when the cursor rectangle changes.
@@ -855,7 +861,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::keyboardRectangle
+    \property QtVirtualKeyboard::InputContext::keyboardRectangle
     \brief the keyboard rectangle.
 
     Use this property to set the keyboard rectangle.
@@ -868,7 +874,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::previewRectangle
+    \property QtVirtualKeyboard::InputContext::previewRectangle
     \brief the preview rectangle.
 
     Use this property to set the preview rectangle.
@@ -881,7 +887,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::previewVisible
+    \property QtVirtualKeyboard::InputContext::previewVisible
     \brief the animating status.
 
     Use this property to set the visibility status of the preview.
@@ -895,7 +901,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::animating
+    \property QtVirtualKeyboard::InputContext::animating
     \brief the animating status.
 
     Use this property to set the animating status, for example
@@ -909,7 +915,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::locale
+    \property QtVirtualKeyboard::InputContext::locale
     \brief the locale.
 
     Sets the locale for this input context.
@@ -922,7 +928,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::inputItem
+    \property QtVirtualKeyboard::InputContext::inputItem
     \brief the focused input item.
 
     This property is changed when the focused input item changes.
@@ -935,7 +941,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::shiftHandler
+    \property QtVirtualKeyboard::InputContext::shiftHandler
     \brief the shift handler instance.
 
     This property stores the shift handler.
@@ -948,7 +954,7 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeInputContext::inputEngine
+    \property QtVirtualKeyboard::InputContext::inputEngine
     \brief the input engine.
 
     This property stores the input engine.
@@ -961,18 +967,18 @@ bool DeclarativeInputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \fn void QtVirtualKeyboard::DeclarativeInputContext::focusEditorChanged()
+    \fn void QtVirtualKeyboard::InputContext::focusEditorChanged()
 
     This signal is emitted when the focus editor changes.
 */
 
 /*!
-    \fn void QtVirtualKeyboard::DeclarativeInputContext::navigationKeyPressed(int key, bool isAutoRepeat)
+    \fn void QtVirtualKeyboard::InputContext::navigationKeyPressed(int key, bool isAutoRepeat)
     \internal
 */
 
 /*!
-    \fn void QtVirtualKeyboard::DeclarativeInputContext::navigationKeyReleased(int key, bool isAutoRepeat)
+    \fn void QtVirtualKeyboard::InputContext::navigationKeyReleased(int key, bool isAutoRepeat)
     \internal
 */
 

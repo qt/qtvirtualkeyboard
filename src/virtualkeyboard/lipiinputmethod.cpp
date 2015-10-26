@@ -21,11 +21,11 @@
 
 #include "lipiinputmethod.h"
 #include "lipisharedrecognizer.h"
-#include "declarativeinputengine.h"
-#include "declarativeinputcontext.h"
-#include "declarativeshifthandler.h"
+#include "inputengine.h"
+#include "inputcontext.h"
+#include "shifthandler.h"
 #include "virtualkeyboarddebug.h"
-#include "declarativetrace.h"
+#include "trace.h"
 
 #ifdef HAVE_HUNSPELL
 #include "hunspellinputmethod_p.h"
@@ -69,7 +69,7 @@ public:
 #endif
         q_ptr(q_ptr),
         recognizeTimer(0),
-        textCase(DeclarativeInputEngine::Lower)
+        textCase(InputEngine::Lower)
     {
     }
 
@@ -78,7 +78,7 @@ public:
         cancelRecognition();
     }
 
-    QByteArray getContext(DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
+    QByteArray getContext(InputEngine::PatternRecognitionMode patternRecognitionMode,
                           const QVariantMap &traceCaptureDeviceInfo,
                           const QVariantMap &traceScreenInfo) const
     {
@@ -95,7 +95,7 @@ public:
         return hash.result();
     }
 
-    void setContext(DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
+    void setContext(InputEngine::PatternRecognitionMode patternRecognitionMode,
                     const QVariantMap &traceCaptureDeviceInfo,
                     const QVariantMap &traceScreenInfo)
     {
@@ -142,8 +142,8 @@ public:
         currentContext = context;
     }
 
-    DeclarativeTrace *traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
-                                 const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
+    Trace *traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
+                      const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
     {
         Q_UNUSED(traceId)
 
@@ -157,14 +157,14 @@ public:
             delayedResult.clear();
         }
 
-        DeclarativeTrace *trace = new DeclarativeTrace();
+        Trace *trace = new Trace();
         trace->setChannels(QStringList("t"));
         traceList.append(trace);
 
         return trace;
     }
 
-    void traceEnd(DeclarativeTrace *trace)
+    void traceEnd(Trace *trace)
     {
         if (trace->isCanceled()) {
             VIRTUALKEYBOARD_DEBUG() << "LipiInputMethodPrivate::traceEnd(): discarded" << trace;
@@ -181,7 +181,7 @@ public:
     int countActiveTraces() const
     {
         int count = 0;
-        foreach (DeclarativeTrace *trace, traceList) {
+        foreach (Trace *trace, traceList) {
             if (!trace->isFinal())
                 count++;
         }
@@ -208,7 +208,7 @@ public:
             if (swipeLength >= SWIPE_MIN_LENGTH) {
 
                 Q_Q(LipiInputMethod);
-                DeclarativeInputContext *ic = q->inputContext();
+                InputContext *ic = q->inputContext();
                 if (!ic)
                     return;
 
@@ -253,7 +253,7 @@ public:
                         cancelRecognition();
 #ifdef HAVE_HUNSPELL
                         if (activeWordIndex != -1) {
-                            q->selectionListItemSelected(DeclarativeSelectionListModel::WordCandidateList, activeWordIndex);
+                            q->selectionListItemSelected(SelectionListModel::WordCandidateList, activeWordIndex);
                             return;
                         }
 #endif
@@ -272,9 +272,9 @@ public:
 #endif
                         cancelRecognition();
                         if (!(ic->inputMethodHints() & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly))) {
-                            DeclarativeInputEngine::InputMode inputMode = ic->inputEngine()->inputMode();
-                            inputMode = inputMode == DeclarativeInputEngine::Latin ?
-                                        DeclarativeInputEngine::Numeric : DeclarativeInputEngine::Latin;
+                            InputEngine::InputMode inputMode = ic->inputEngine()->inputMode();
+                            inputMode = inputMode == InputEngine::Latin ?
+                                        InputEngine::Numeric : InputEngine::Latin;
                             ic->inputEngine()->setInputMode(inputMode);
                         }
                     } else if (swipeTouchCount == 2) {
@@ -325,7 +325,7 @@ public:
             const int traceCount = traceList.size();
             for (traceIndex = 0; traceIndex < traceCount; ++traceIndex) {
 
-                const DeclarativeTrace *trace = traceList.at(traceIndex);
+                const Trace *trace = traceList.at(traceIndex);
                 const QVariantList &points = trace->points();
                 QVector2D swipeVector;
                 const int pointCount = points.count();
@@ -446,7 +446,7 @@ public:
         traceGroup.emptyAllTraces();
     }
 
-    void addPointsToTraceGroup(DeclarativeTrace *trace)
+    void addPointsToTraceGroup(Trace *trace)
     {
         vector<LTKChannel> channels;
         channels.push_back(LTKChannel("X", DT_INT, true));
@@ -547,13 +547,13 @@ public:
         const QChar chUpper = ch.toUpper();
 #ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
         // In recording mode, the text case must match with the current text case
-        if (ch.isLetter() && (ch.isUpper() != (textCase == DeclarativeInputEngine::Upper)))
+        if (ch.isLetter() && (ch.isUpper() != (textCase == InputEngine::Upper)))
             return;
         saveTraces(ch.unicode(), qRound(result["confidence"].toDouble() * 100));
 #endif
         Q_Q(LipiInputMethod);
         q->inputContext()->inputEngine()->virtualKeyClick((Qt::Key)chUpper.unicode(),
-                    textCase == DeclarativeInputEngine::Lower ? QString(ch.toLower()) : QString(chUpper),
+                    textCase == InputEngine::Lower ? QString(ch.toLower()) : QString(chUpper),
                     Qt::NoModifier);
     }
 
@@ -574,7 +574,7 @@ public:
         recordedData.append(QStringLiteral(".POINTS_PER_SECOND %1").arg(deviceInfo->getSamplingRate()));
 
         qlonglong t0 = 0;
-        foreach (const DeclarativeTrace *trace, traceList) {
+        foreach (const Trace *trace, traceList) {
             const QVariantList &points = trace->points();
             const bool hasTime = trace->channels().contains("t");
             const QVariantList timeData = hasTime ? trace->channelData("t") : QVariantList();
@@ -634,9 +634,9 @@ public:
     QScopedPointer<LTKScreenContext> screenContext;
     QSharedPointer<LipiRecognitionTask> recognitionTask;
     LTKTraceGroup traceGroup;
-    QList<DeclarativeTrace *> traceList;
+    QList<Trace *> traceList;
     int recognizeTimer;
-    DeclarativeInputEngine::TextCase textCase;
+    InputEngine::TextCase textCase;
     vector<int> subsetOfClasses;
     QVariantMap delayedResult;
 };
@@ -655,16 +655,16 @@ LipiInputMethod::~LipiInputMethod()
 {
 }
 
-QList<DeclarativeInputEngine::InputMode> LipiInputMethod::inputModes(const QString &locale)
+QList<InputEngine::InputMode> LipiInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<DeclarativeInputEngine::InputMode>()
-            << DeclarativeInputEngine::Latin
-            << DeclarativeInputEngine::Numeric
-            << DeclarativeInputEngine::Dialable;
+    return QList<InputEngine::InputMode>()
+            << InputEngine::Latin
+            << InputEngine::Numeric
+            << InputEngine::Dialable;
 }
 
-bool LipiInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
+bool LipiInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_D(LipiInputMethod);
@@ -676,11 +676,11 @@ bool LipiInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine
         return false;
     d->subsetOfClasses.clear();
     switch (inputMode) {
-    case DeclarativeInputEngine::Latin:
+    case InputEngine::Latin:
         d->recognizer.subsetOfClasses(QStringLiteral("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz?,.@"), d->subsetOfClasses);
         break;
-    case DeclarativeInputEngine::Numeric:
-    case DeclarativeInputEngine::Dialable:
+    case InputEngine::Numeric:
+    case InputEngine::Dialable:
         d->recognizer.subsetOfClasses(QStringLiteral("1234567890,.+"), d->subsetOfClasses);
         break;
     default:
@@ -689,7 +689,7 @@ bool LipiInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine
     return true;
 }
 
-bool LipiInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
+bool LipiInputMethod::setTextCase(InputEngine::TextCase textCase)
 {
     Q_D(LipiInputMethod);
     d->textCase = textCase;
@@ -736,27 +736,27 @@ void LipiInputMethod::update()
     LipiInputMethodBase::update();
 }
 
-void LipiInputMethod::selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index)
+void LipiInputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
 {
     LipiInputMethodBase::selectionListItemSelected(type, index);
     Q_D(LipiInputMethod);
     d->cancelRecognition();
 }
 
-QList<DeclarativeInputEngine::PatternRecognitionMode> LipiInputMethod::patternRecognitionModes() const
+QList<InputEngine::PatternRecognitionMode> LipiInputMethod::patternRecognitionModes() const
 {
-    return QList<DeclarativeInputEngine::PatternRecognitionMode>()
-            << DeclarativeInputEngine::HandwritingRecoginition;
+    return QList<InputEngine::PatternRecognitionMode>()
+            << InputEngine::HandwritingRecoginition;
 }
 
-DeclarativeTrace *LipiInputMethod::traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
-                                              const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
+Trace *LipiInputMethod::traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
+                                   const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
 {
     Q_D(LipiInputMethod);
     return d->traceBegin(traceId, patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
 }
 
-bool LipiInputMethod::traceEnd(DeclarativeTrace *trace)
+bool LipiInputMethod::traceEnd(Trace *trace)
 {
     Q_D(LipiInputMethod);
     d->traceEnd(trace);

@@ -19,19 +19,19 @@
 **
 ******************************************************************************/
 
-#ifndef DECLARATIVESETTINGS_H
-#define DECLARATIVESETTINGS_H
+#ifndef VIRTUALKEYBOARDSETTINGS_H
+#define VIRTUALKEYBOARDSETTINGS_H
 
 #include "qqml.h"
 
 namespace QtVirtualKeyboard {
 
-class DeclarativeSettingsPrivate;
+class VirtualKeyboardSettingsPrivate;
 
-class DeclarativeSettings : public QObject
+class VirtualKeyboardSettings : public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(DeclarativeSettings)
+    Q_DECLARE_PRIVATE(VirtualKeyboardSettings)
     Q_PROPERTY(QUrl style READ style NOTIFY styleChanged)
     Q_PROPERTY(QString styleName READ styleName WRITE setStyleName NOTIFY styleNameChanged)
     Q_PROPERTY(QString locale READ locale WRITE setLocale NOTIFY localeChanged)
@@ -41,7 +41,7 @@ class DeclarativeSettings : public QObject
 public:
     static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine);
 
-    explicit DeclarativeSettings(QQmlEngine *engine);
+    explicit VirtualKeyboardSettings(QQmlEngine *engine);
 
     QString style() const;
 
@@ -69,4 +69,4 @@ private:
 
 }
 
-#endif // DECLARATIVESETTINGS_H
+#endif // VIRTUALKEYBOARDSETTINGS_H

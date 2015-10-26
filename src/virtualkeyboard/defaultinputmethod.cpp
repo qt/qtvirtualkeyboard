@@ -20,7 +20,7 @@
 ******************************************************************************/
 
 #include "defaultinputmethod.h"
-#include "declarativeinputcontext.h"
+#include "inputcontext.h"
 
 namespace QtVirtualKeyboard {
 
@@ -34,20 +34,20 @@ DefaultInputMethod::DefaultInputMethod(QObject *parent) :
 {
 }
 
-QList<DeclarativeInputEngine::InputMode> DefaultInputMethod::inputModes(const QString &locale)
+QList<InputEngine::InputMode> DefaultInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<DeclarativeInputEngine::InputMode>();
+    return QList<InputEngine::InputMode>();
 }
 
-bool DefaultInputMethod::setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode)
+bool DefaultInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_UNUSED(inputMode)
     return true;
 }
 
-bool DefaultInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
+bool DefaultInputMethod::setTextCase(InputEngine::TextCase textCase)
 {
     Q_UNUSED(textCase)
     return true;

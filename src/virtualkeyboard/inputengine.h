@@ -27,17 +27,17 @@
 
 namespace QtVirtualKeyboard {
 
-class DeclarativeInputContext;
-class DeclarativeSelectionListModel;
+class InputContext;
+class SelectionListModel;
 class AbstractInputMethod;
-class DeclarativeInputEnginePrivate;
-class DeclarativeTrace;
+class InputEnginePrivate;
+class Trace;
 
-class DeclarativeInputEngine : public QObject
+class InputEngine : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY(DeclarativeInputEngine)
-    Q_DECLARE_PRIVATE(DeclarativeInputEngine)
+    Q_DISABLE_COPY(InputEngine)
+    Q_DECLARE_PRIVATE(InputEngine)
     Q_ENUMS(TextCase)
     Q_ENUMS(InputMode)
     Q_ENUMS(PatternRecognitionMode)
@@ -48,10 +48,10 @@ class DeclarativeInputEngine : public QObject
     Q_PROPERTY(QList<int> inputModes READ inputModes NOTIFY inputModesChanged)
     Q_PROPERTY(InputMode inputMode READ inputMode WRITE setInputMode NOTIFY inputModeChanged)
     Q_PROPERTY(QList<int> patternRecognitionModes READ patternRecognitionModes NOTIFY patternRecognitionModesChanged)
-    Q_PROPERTY(QtVirtualKeyboard::DeclarativeSelectionListModel *wordCandidateListModel READ wordCandidateListModel NOTIFY wordCandidateListModelChanged)
+    Q_PROPERTY(QtVirtualKeyboard::SelectionListModel *wordCandidateListModel READ wordCandidateListModel NOTIFY wordCandidateListModelChanged)
     Q_PROPERTY(bool wordCandidateListVisibleHint READ wordCandidateListVisibleHint NOTIFY wordCandidateListVisibleHintChanged)
 
-    explicit DeclarativeInputEngine(DeclarativeInputContext *parent = 0);
+    explicit InputEngine(InputContext *parent = 0);
 
 public:
     enum TextCase {
@@ -81,14 +81,14 @@ public:
     Q_DECLARE_FLAGS(ReselectFlags, ReselectFlag)
 
 public:
-    ~DeclarativeInputEngine();
+    ~InputEngine();
 
     Q_INVOKABLE bool virtualKeyPress(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool repeat);
     Q_INVOKABLE void virtualKeyCancel();
     Q_INVOKABLE bool virtualKeyRelease(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
     Q_INVOKABLE bool virtualKeyClick(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 
-    DeclarativeInputContext *inputContext() const;
+    InputContext *inputContext() const;
     Qt::Key activeKey() const;
     Qt::Key previousKey() const;
 
@@ -100,13 +100,13 @@ public:
     InputMode inputMode() const;
     void setInputMode(InputMode inputMode);
 
-    DeclarativeSelectionListModel *wordCandidateListModel() const;
+    SelectionListModel *wordCandidateListModel() const;
     bool wordCandidateListVisibleHint() const;
 
     QList<int> patternRecognitionModes() const;
-    Q_INVOKABLE QtVirtualKeyboard::DeclarativeTrace *traceBegin(int traceId, QtVirtualKeyboard::DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
-                                                                const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
-    Q_INVOKABLE bool traceEnd(QtVirtualKeyboard::DeclarativeTrace *trace);
+    Q_INVOKABLE QtVirtualKeyboard::Trace *traceBegin(int traceId, QtVirtualKeyboard::InputEngine::PatternRecognitionMode patternRecognitionMode,
+                                                     const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
+    Q_INVOKABLE bool traceEnd(QtVirtualKeyboard::Trace *trace);
 
     Q_INVOKABLE bool reselect(int cursorPosition, const ReselectFlags &reselectFlags);
 
@@ -132,13 +132,13 @@ protected:
     void timerEvent(QTimerEvent *timerEvent);
 
 private:
-    friend class DeclarativeInputContext;
+    friend class InputContext;
 };
 
 } // namespace QtVirtualKeyboard
 
-Q_DECLARE_METATYPE(QtVirtualKeyboard::DeclarativeInputEngine::TextCase)
-Q_DECLARE_METATYPE(QtVirtualKeyboard::DeclarativeInputEngine::InputMode)
-Q_DECLARE_OPERATORS_FOR_FLAGS(QtVirtualKeyboard::DeclarativeInputEngine::ReselectFlags)
+Q_DECLARE_METATYPE(QtVirtualKeyboard::InputEngine::TextCase)
+Q_DECLARE_METATYPE(QtVirtualKeyboard::InputEngine::InputMode)
+Q_DECLARE_OPERATORS_FOR_FLAGS(QtVirtualKeyboard::InputEngine::ReselectFlags)
 
 #endif

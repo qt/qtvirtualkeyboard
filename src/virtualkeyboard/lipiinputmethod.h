@@ -42,21 +42,21 @@ public:
     explicit LipiInputMethod(QObject *parent = 0);
     ~LipiInputMethod();
 
-    QList<DeclarativeInputEngine::InputMode> inputModes(const QString &locale);
-    bool setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode);
-    bool setTextCase(DeclarativeInputEngine::TextCase textCase);
+    QList<InputEngine::InputMode> inputModes(const QString &locale);
+    bool setInputMode(const QString &locale, InputEngine::InputMode inputMode);
+    bool setTextCase(InputEngine::TextCase textCase);
 
     bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 
     void reset();
     void update();
 
-    void selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index);
+    void selectionListItemSelected(SelectionListModel::Type type, int index);
 
-    QList<DeclarativeInputEngine::PatternRecognitionMode> patternRecognitionModes() const;
-    DeclarativeTrace *traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
-                                 const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
-    bool traceEnd(DeclarativeTrace *trace);
+    QList<InputEngine::PatternRecognitionMode> patternRecognitionModes() const;
+    Trace *traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
+                      const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
+    bool traceEnd(Trace *trace);
 
 protected:
     void timerEvent(QTimerEvent *timerEvent);

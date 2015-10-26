@@ -18,39 +18,39 @@ win32 {
 !contains(CONFIG, no-pkg-config): CONFIG += link_pkgconfig
 
 SOURCES += platforminputcontext.cpp \
-    declarativeinputcontext.cpp \
+    inputcontext.cpp \
     abstractinputmethod.cpp \
     plaininputmethod.cpp \
-    declarativeinputengine.cpp \
-    declarativeshifthandler.cpp \
+    inputengine.cpp \
+    shifthandler.cpp \
     plugin.cpp \
-    declarativeinputmethod.cpp \
-    declarativeselectionlistmodel.cpp \
+    inputmethod.cpp \
+    selectionlistmodel.cpp \
     defaultinputmethod.cpp \
     abstractinputpanel.cpp \
     enterkeyaction.cpp \
     enterkeyactionattachedtype.cpp \
     settings.cpp \
-    declarativesettings.cpp \
-    declarativetrace.cpp \
+    virtualkeyboardsettings.cpp \
+    trace.cpp \
 
 HEADERS += platforminputcontext.h \
-    declarativeinputcontext.h \
+    inputcontext.h \
     abstractinputmethod.h \
     plaininputmethod.h \
-    declarativeinputengine.h \
-    declarativeshifthandler.h \
-    declarativeinputmethod.h \
-    declarativeselectionlistmodel.h \
+    inputengine.h \
+    shifthandler.h \
+    inputmethod.h \
+    selectionlistmodel.h \
     defaultinputmethod.h \
     abstractinputpanel.h \
     virtualkeyboarddebug.h \
     enterkeyaction.h \
     enterkeyactionattachedtype.h \
     settings.h \
-    declarativesettings.h \
+    virtualkeyboardsettings.h \
     plugin.h \
-    declarativetrace.h \
+    trace.h \
 
 RESOURCES += \
     content/styles/default/default_style.qrc \

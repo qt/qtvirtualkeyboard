@@ -19,18 +19,18 @@
 **
 ******************************************************************************/
 
-#include "declarativeshifthandler.h"
-#include "declarativeinputcontext.h"
-#include "declarativeinputengine.h"
+#include "shifthandler.h"
+#include "inputcontext.h"
+#include "inputengine.h"
 #include <QtCore/private/qobject_p.h>
 #include <QSet>
 
 namespace QtVirtualKeyboard {
 
-class DeclarativeShiftHandlerPrivate : public QObjectPrivate
+class ShiftHandlerPrivate : public QObjectPrivate
 {
 public:
-    DeclarativeShiftHandlerPrivate() :
+    ShiftHandlerPrivate() :
         QObjectPrivate(),
         inputContext(0),
         sentenceEndingCharacters(QString(".!?") + QChar(Qt::Key_exclamdown) + QChar(Qt::Key_questiondown)),
@@ -38,42 +38,42 @@ public:
         toggleShiftEnabled(false),
         shiftChanged(false),
         manualShiftLanguageFilter(QSet<QLocale::Language>() << QLocale::Arabic << QLocale::Persian << QLocale::Hindi << QLocale::Korean),
-        manualCapsInputModeFilter(QSet<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::Cangjie),
-        noAutoUppercaseInputModeFilter(QSet<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::FullwidthLatin << DeclarativeInputEngine::Pinyin << DeclarativeInputEngine::Cangjie),
-        allCapsInputModeFilter(QSet<DeclarativeInputEngine::InputMode>() << DeclarativeInputEngine::Hiragana << DeclarativeInputEngine::Katakana)
+        manualCapsInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::Cangjie),
+        noAutoUppercaseInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::FullwidthLatin << InputEngine::Pinyin << InputEngine::Cangjie),
+        allCapsInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::Hiragana << InputEngine::Katakana)
     {
     }
 
-    DeclarativeInputContext *inputContext;
+    InputContext *inputContext;
     QString sentenceEndingCharacters;
     bool autoCapitalizationEnabled;
     bool toggleShiftEnabled;
     bool shiftChanged;
     QLocale locale;
     const QSet<QLocale::Language> manualShiftLanguageFilter;
-    const QSet<DeclarativeInputEngine::InputMode> manualCapsInputModeFilter;
-    const QSet<DeclarativeInputEngine::InputMode> noAutoUppercaseInputModeFilter;
-    const QSet<DeclarativeInputEngine::InputMode> allCapsInputModeFilter;
+    const QSet<InputEngine::InputMode> manualCapsInputModeFilter;
+    const QSet<InputEngine::InputMode> noAutoUppercaseInputModeFilter;
+    const QSet<InputEngine::InputMode> allCapsInputModeFilter;
 };
 
 /*!
     \qmltype ShiftHandler
     \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
-    \instantiates QtVirtualKeyboard::DeclarativeShiftHandler
+    \instantiates QtVirtualKeyboard::ShiftHandler
     \brief Manages the shift state.
 */
 
 /*!
-    \class QtVirtualKeyboard::DeclarativeShiftHandler
+    \class QtVirtualKeyboard::ShiftHandler
     \inmodule InputFramework
     \brief Manages the shift state.
 */
 
-DeclarativeShiftHandler::DeclarativeShiftHandler(DeclarativeInputContext *parent) :
-    QObject(*new DeclarativeShiftHandlerPrivate(), parent)
+ShiftHandler::ShiftHandler(InputContext *parent) :
+    QObject(*new ShiftHandlerPrivate(), parent)
 {
-    Q_D(DeclarativeShiftHandler);
+    Q_D(ShiftHandler);
     d->inputContext = parent;
     if (d->inputContext) {
         connect(d->inputContext, SIGNAL(inputMethodHintsChanged()), SLOT(restart()));
@@ -92,20 +92,20 @@ DeclarativeShiftHandler::DeclarativeShiftHandler(DeclarativeInputContext *parent
 /*!
     \internal
 */
-DeclarativeShiftHandler::~DeclarativeShiftHandler()
+ShiftHandler::~ShiftHandler()
 {
 
 }
 
-QString DeclarativeShiftHandler::sentenceEndingCharacters() const
+QString ShiftHandler::sentenceEndingCharacters() const
 {
-    Q_D(const DeclarativeShiftHandler);
+    Q_D(const ShiftHandler);
     return d->sentenceEndingCharacters;
 }
 
-void DeclarativeShiftHandler::setSentenceEndingCharacters(const QString &value)
+void ShiftHandler::setSentenceEndingCharacters(const QString &value)
 {
-    Q_D(DeclarativeShiftHandler);
+    Q_D(ShiftHandler);
     if (d->sentenceEndingCharacters != value) {
         d->sentenceEndingCharacters = value;
         autoCapitalize();
@@ -113,15 +113,15 @@ void DeclarativeShiftHandler::setSentenceEndingCharacters(const QString &value)
     }
 }
 
-bool DeclarativeShiftHandler::autoCapitalizationEnabled() const
+bool ShiftHandler::autoCapitalizationEnabled() const
 {
-    Q_D(const DeclarativeShiftHandler);
+    Q_D(const ShiftHandler);
     return d->autoCapitalizationEnabled;
 }
 
-bool DeclarativeShiftHandler::toggleShiftEnabled() const
+bool ShiftHandler::toggleShiftEnabled() const
 {
-    Q_D(const DeclarativeShiftHandler);
+    Q_D(const ShiftHandler);
     return d->toggleShiftEnabled;
 }
 
@@ -139,15 +139,17 @@ bool DeclarativeShiftHandler::toggleShiftEnabled() const
 /*!
     \since 1.2
 
+    \fn void QtVirtualKeyboard::ShiftHandler::toggleShift()
+
     Toggles the current shift state.
 
     This method provides the functionality of the shift key.
 
     \sa toggleShiftEnabled
 */
-void DeclarativeShiftHandler::toggleShift()
+void ShiftHandler::toggleShift()
 {
-    Q_D(DeclarativeShiftHandler);
+    Q_D(ShiftHandler);
     if (!d->toggleShiftEnabled)
         return;
     if (d->manualShiftLanguageFilter.contains(d->locale.language())) {
@@ -165,12 +167,12 @@ void DeclarativeShiftHandler::toggleShift()
     }
 }
 
-void DeclarativeShiftHandler::reset()
+void ShiftHandler::reset()
 {
-    Q_D(DeclarativeShiftHandler);
+    Q_D(ShiftHandler);
     if (d->inputContext->inputItem()) {
         Qt::InputMethodHints inputMethodHints = d->inputContext->inputMethodHints();
-        DeclarativeInputEngine::InputMode inputMode = d->inputContext->inputEngine()->inputMode();
+        InputEngine::InputMode inputMode = d->inputContext->inputEngine()->inputMode();
         bool preferUpperCase = (inputMethodHints & (Qt::ImhPreferUppercase | Qt::ImhUppercaseOnly));
         bool autoCapitalizationEnabled = !(d->inputContext->inputMethodHints() & (Qt::ImhNoAutoUppercase |
               Qt::ImhUppercaseOnly | Qt::ImhLowercaseOnly | Qt::ImhEmailCharactersOnly |
@@ -196,9 +198,9 @@ void DeclarativeShiftHandler::reset()
     }
 }
 
-void DeclarativeShiftHandler::autoCapitalize()
+void ShiftHandler::autoCapitalize()
 {
-    Q_D(DeclarativeShiftHandler);
+    Q_D(ShiftHandler);
     if (d->inputContext->capsLock())
         return;
     if (!d->autoCapitalizationEnabled || !d->inputContext->preeditText().isEmpty()) {
@@ -222,37 +224,37 @@ void DeclarativeShiftHandler::autoCapitalize()
     }
 }
 
-void DeclarativeShiftHandler::restart()
+void ShiftHandler::restart()
 {
     reset();
     autoCapitalize();
 }
 
-void DeclarativeShiftHandler::shiftChanged()
+void ShiftHandler::shiftChanged()
 {
-    Q_D(DeclarativeShiftHandler);
+    Q_D(ShiftHandler);
     d->shiftChanged = true;
 }
 
-void DeclarativeShiftHandler::localeChanged()
+void ShiftHandler::localeChanged()
 {
-    Q_D(DeclarativeShiftHandler);
+    Q_D(ShiftHandler);
     d->locale = QLocale(d->inputContext->locale());
     restart();
 }
 
-void DeclarativeShiftHandler::setAutoCapitalizationEnabled(bool enabled)
+void ShiftHandler::setAutoCapitalizationEnabled(bool enabled)
 {
-    Q_D(DeclarativeShiftHandler);
+    Q_D(ShiftHandler);
     if (d->autoCapitalizationEnabled != enabled) {
         d->autoCapitalizationEnabled = enabled;
         emit autoCapitalizationEnabledChanged();
     }
 }
 
-void DeclarativeShiftHandler::setToggleShiftEnabled(bool enabled)
+void ShiftHandler::setToggleShiftEnabled(bool enabled)
 {
-    Q_D(DeclarativeShiftHandler);
+    Q_D(ShiftHandler);
     if (d->toggleShiftEnabled != enabled) {
         d->toggleShiftEnabled = enabled;
         emit toggleShiftEnabledChanged();
@@ -260,7 +262,7 @@ void DeclarativeShiftHandler::setToggleShiftEnabled(bool enabled)
 }
 
 /*!
-    \property QtVirtualKeyboard::DeclarativeShiftHandler::sentenceEndingCharacters
+    \property QtVirtualKeyboard::ShiftHandler::sentenceEndingCharacters
 
     This property specifies the sentence ending characters which
     will cause shift state change.
@@ -282,7 +284,7 @@ void DeclarativeShiftHandler::setToggleShiftEnabled(bool enabled)
 /*!
     \since 1.2
 
-    \property QtVirtualKeyboard::DeclarativeShiftHandler::autoCapitalizationEnabled
+    \property QtVirtualKeyboard::ShiftHandler::autoCapitalizationEnabled
 
     This property provides the current state of the automatic
     capitalization feature.
@@ -300,7 +302,7 @@ void DeclarativeShiftHandler::setToggleShiftEnabled(bool enabled)
 /*!
     \since 1.2
 
-    \property QtVirtualKeyboard::DeclarativeShiftHandler::toggleShiftEnabled
+    \property QtVirtualKeyboard::ShiftHandler::toggleShiftEnabled
 
     This property provides the current state of the toggleShift()
     method. When true, the current shift state can be changed by

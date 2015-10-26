@@ -41,16 +41,16 @@ public:
     bool simplified() const;
     void setSimplified(bool simplified);
 
-    QList<DeclarativeInputEngine::InputMode> inputModes(const QString &locale);
-    bool setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode);
-    bool setTextCase(DeclarativeInputEngine::TextCase textCase);
+    QList<InputEngine::InputMode> inputModes(const QString &locale);
+    bool setInputMode(const QString &locale, InputEngine::InputMode inputMode);
+    bool setTextCase(InputEngine::TextCase textCase);
 
     bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 
-    QList<DeclarativeSelectionListModel::Type> selectionLists();
-    int selectionListItemCount(DeclarativeSelectionListModel::Type type);
-    QVariant selectionListData(DeclarativeSelectionListModel::Type type, int index, int role);
-    void selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index);
+    QList<SelectionListModel::Type> selectionLists();
+    int selectionListItemCount(SelectionListModel::Type type);
+    QVariant selectionListData(SelectionListModel::Type type, int index, int role);
+    void selectionListItemSelected(SelectionListModel::Type type, int index);
 
     void reset();
     void update();

@@ -19,8 +19,8 @@
 **
 ******************************************************************************/
 
-#ifndef DECLARATIVETRACE_H
-#define DECLARATIVETRACE_H
+#ifndef TRACE_H
+#define TRACE_H
 
 #include <QObject>
 #include <QVariant>
@@ -28,20 +28,20 @@
 
 namespace QtVirtualKeyboard {
 
-class DeclarativeTracePrivate;
+class TracePrivate;
 
-class DeclarativeTrace : public QObject
+class Trace : public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(DeclarativeTrace)
+    Q_DECLARE_PRIVATE(Trace)
     Q_PROPERTY(int traceId READ traceId WRITE setTraceId NOTIFY traceIdChanged)
     Q_PROPERTY(QStringList channels READ channels WRITE setChannels NOTIFY channelsChanged)
     Q_PROPERTY(int length READ length NOTIFY lengthChanged)
     Q_PROPERTY(bool isFinal READ isFinal WRITE setFinal NOTIFY finalChanged)
     Q_PROPERTY(bool isCanceled READ isCanceled WRITE setCanceled NOTIFY canceledChanged)
 public:
-    explicit DeclarativeTrace(QObject *parent = 0);
-    ~DeclarativeTrace();
+    explicit Trace(QObject *parent = 0);
+    ~Trace();
 
     int traceId() const;
     void setTraceId(int id);
@@ -73,4 +73,4 @@ signals:
 
 } // namespace QtVirtualKeyboard
 
-#endif // DECLARATIVETRACE_H
+#endif // TRACE_H

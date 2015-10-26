@@ -22,8 +22,8 @@
 #ifndef ABSTRACTINPUTMETHOD_H
 #define ABSTRACTINPUTMETHOD_H
 
-#include "declarativeinputengine.h"
-#include "declarativeselectionlistmodel.h"
+#include "inputengine.h"
+#include "selectionlistmodel.h"
 #include <QtCore/private/qobject_p.h>
 
 namespace QtVirtualKeyboard {
@@ -33,7 +33,7 @@ class AbstractInputMethodPrivate : public QObjectPrivate
 public:
     AbstractInputMethodPrivate();
 
-    DeclarativeInputEngine *inputEngine;
+    InputEngine *inputEngine;
 };
 
 class AbstractInputMethod : public QObject
@@ -47,26 +47,26 @@ public:
     explicit AbstractInputMethod(QObject *parent = 0);
     ~AbstractInputMethod();
 
-    DeclarativeInputContext *inputContext() const;
-    DeclarativeInputEngine *inputEngine() const;
+    InputContext *inputContext() const;
+    InputEngine *inputEngine() const;
 
-    virtual QList<DeclarativeInputEngine::InputMode> inputModes(const QString &locale) = 0;
-    virtual bool setInputMode(const QString &locale, DeclarativeInputEngine::InputMode inputMode) = 0;
-    virtual bool setTextCase(DeclarativeInputEngine::TextCase textCase) = 0;
+    virtual QList<InputEngine::InputMode> inputModes(const QString &locale) = 0;
+    virtual bool setInputMode(const QString &locale, InputEngine::InputMode inputMode) = 0;
+    virtual bool setTextCase(InputEngine::TextCase textCase) = 0;
 
     virtual bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers) = 0;
 
-    virtual QList<DeclarativeSelectionListModel::Type> selectionLists();
-    virtual int selectionListItemCount(DeclarativeSelectionListModel::Type type);
-    virtual QVariant selectionListData(DeclarativeSelectionListModel::Type type, int index, int role);
-    virtual void selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index);
+    virtual QList<SelectionListModel::Type> selectionLists();
+    virtual int selectionListItemCount(SelectionListModel::Type type);
+    virtual QVariant selectionListData(SelectionListModel::Type type, int index, int role);
+    virtual void selectionListItemSelected(SelectionListModel::Type type, int index);
 
-    virtual QList<DeclarativeInputEngine::PatternRecognitionMode> patternRecognitionModes() const;
-    virtual DeclarativeTrace *traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
-                                         const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
-    virtual bool traceEnd(DeclarativeTrace *trace);
+    virtual QList<InputEngine::PatternRecognitionMode> patternRecognitionModes() const;
+    virtual Trace *traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
+                              const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
+    virtual bool traceEnd(Trace *trace);
 
-    virtual bool reselect(int cursorPosition, const DeclarativeInputEngine::ReselectFlags &reselectFlags);
+    virtual bool reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags);
 
 signals:
     void selectionListChanged(int type);
@@ -77,9 +77,9 @@ public slots:
     virtual void update();
 
 private:
-    void setInputEngine(DeclarativeInputEngine *inputEngine);
+    void setInputEngine(InputEngine *inputEngine);
 
-    friend class DeclarativeInputEngine;
+    friend class InputEngine;
 };
 
 } // namespace QtVirtualKeyboard

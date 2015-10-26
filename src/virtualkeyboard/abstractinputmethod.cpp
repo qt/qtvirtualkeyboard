@@ -73,7 +73,7 @@ AbstractInputMethod::~AbstractInputMethod()
     Returns the input context associated with the input method.
     This method returns \c NULL if the input method is not active.
 */
-DeclarativeInputContext *AbstractInputMethod::inputContext() const
+InputContext *AbstractInputMethod::inputContext() const
 {
     Q_D(const AbstractInputMethod);
     return d->inputEngine ? d->inputEngine->inputContext() : 0;
@@ -83,7 +83,7 @@ DeclarativeInputContext *AbstractInputMethod::inputContext() const
     Returns the input engine associated with the input method.
     This method returns \c NULL if the input method is not active.
 */
-DeclarativeInputEngine *AbstractInputMethod::inputEngine() const
+InputEngine *AbstractInputMethod::inputEngine() const
 {
     Q_D(const AbstractInputMethod);
     return d->inputEngine;
@@ -113,7 +113,7 @@ void AbstractInputMethod::update()
     Called by the input engine when the input method is activated and
     deactivated.
 */
-void AbstractInputMethod::setInputEngine(DeclarativeInputEngine *inputEngine)
+void AbstractInputMethod::setInputEngine(InputEngine *inputEngine)
 {
     Q_D(AbstractInputMethod);
     if (d->inputEngine) {
@@ -127,31 +127,31 @@ void AbstractInputMethod::setInputEngine(DeclarativeInputEngine *inputEngine)
     }
 }
 
-QList<DeclarativeSelectionListModel::Type> AbstractInputMethod::selectionLists()
+QList<SelectionListModel::Type> AbstractInputMethod::selectionLists()
 {
-    return QList<DeclarativeSelectionListModel::Type>();
+    return QList<SelectionListModel::Type>();
 }
 
-int AbstractInputMethod::selectionListItemCount(DeclarativeSelectionListModel::Type type)
+int AbstractInputMethod::selectionListItemCount(SelectionListModel::Type type)
 {
     Q_UNUSED(type)
     return 0;
 }
 
-QVariant AbstractInputMethod::selectionListData(DeclarativeSelectionListModel::Type type, int index, int role)
+QVariant AbstractInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
 {
     Q_UNUSED(type)
     Q_UNUSED(index)
     switch (role) {
-    case DeclarativeSelectionListModel::DisplayRole:
+    case SelectionListModel::DisplayRole:
         return QVariant("");
-    case DeclarativeSelectionListModel::WordCompletionLengthRole:
+    case SelectionListModel::WordCompletionLengthRole:
         return QVariant(0);
     }
     return QVariant();
 }
 
-void AbstractInputMethod::selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index)
+void AbstractInputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
 {
     Q_UNUSED(type)
     Q_UNUSED(index)
@@ -165,9 +165,9 @@ void AbstractInputMethod::selectionListItemSelected(DeclarativeSelectionListMode
     This method is called by the input engine to query the list of
     supported pattern recognition modes.
 */
-QList<DeclarativeInputEngine::PatternRecognitionMode> AbstractInputMethod::patternRecognitionModes() const
+QList<InputEngine::PatternRecognitionMode> AbstractInputMethod::patternRecognitionModes() const
 {
-    return QList<DeclarativeInputEngine::PatternRecognitionMode>();
+    return QList<InputEngine::PatternRecognitionMode>();
 }
 
 /*!
@@ -182,8 +182,8 @@ QList<DeclarativeInputEngine::PatternRecognitionMode> AbstractInputMethod::patte
     a new Trace object. This object must remain valid until the traceEnd() method is called. If the
     Trace is rendered on screen, it remains there until the Trace object is destroyed.
 */
-DeclarativeTrace *AbstractInputMethod::traceBegin(int traceId, DeclarativeInputEngine::PatternRecognitionMode patternRecognitionMode,
-                                                  const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
+Trace *AbstractInputMethod::traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
+                                       const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
 {
     Q_UNUSED(traceId)
     Q_UNUSED(patternRecognitionMode)
@@ -201,7 +201,7 @@ DeclarativeTrace *AbstractInputMethod::traceBegin(int traceId, DeclarativeInputE
 
     The method returns \c true if the trace interaction is accepted.
 */
-bool AbstractInputMethod::traceEnd(DeclarativeTrace *trace)
+bool AbstractInputMethod::traceEnd(Trace *trace)
 {
     Q_UNUSED(trace)
     return false;
@@ -216,7 +216,7 @@ bool AbstractInputMethod::traceEnd(DeclarativeTrace *trace)
 
     The function returns \c true if the word was successfully reselected.
 */
-bool AbstractInputMethod::reselect(int cursorPosition, const DeclarativeInputEngine::ReselectFlags &reselectFlags)
+bool AbstractInputMethod::reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags)
 {
     Q_UNUSED(cursorPosition)
     Q_UNUSED(reselectFlags)
@@ -224,20 +224,20 @@ bool AbstractInputMethod::reselect(int cursorPosition, const DeclarativeInputEng
 }
 
 /*!
-    \fn QList<DeclarativeInputEngine::InputMode> AbstractInputMethod::inputModes(const QString& locale)
+    \fn QList<InputEngine::InputMode> AbstractInputMethod::inputModes(const QString& locale)
 
     Returns the list of input modes for \a locale.
 */
 
 /*!
-    \fn bool AbstractInputMethod::setInputMode(const QString& locale, DeclarativeInputEngine::InputMode inputMode)
+    \fn bool AbstractInputMethod::setInputMode(const QString& locale, InputEngine::InputMode inputMode)
 
     Sets the \a inputMode and \a locale for this input method. Returns \c true
     if successful.
 */
 
 /*!
-    \fn bool AbstractInputMethod::setTextCase(DeclarativeInputEngine::TextCase textCase)
+    \fn bool AbstractInputMethod::setTextCase(InputEngine::TextCase textCase)
 
     Updates the \a textCase for this input method. The method returns \c true
     if successful.
@@ -260,7 +260,7 @@ bool AbstractInputMethod::reselect(int cursorPosition, const DeclarativeInputEng
 */
 
 /*!
-    \fn QList<DeclarativeSelectionListModel::Type> AbstractInputMethod::selectionLists()
+    \fn QList<SelectionListModel::Type> AbstractInputMethod::selectionLists()
 
     Returns the list of selection lists used by this input method.
 
@@ -270,13 +270,13 @@ bool AbstractInputMethod::reselect(int cursorPosition, const DeclarativeInputEng
 */
 
 /*!
-    \fn int AbstractInputMethod::selectionListItemCount(DeclarativeSelectionListModel::Type type)
+    \fn int AbstractInputMethod::selectionListItemCount(SelectionListModel::Type type)
 
     Returns the number of items in the selection list identified by \a type.
 */
 
 /*!
-    \fn QVariant AbstractInputMethod::selectionListData(DeclarativeSelectionListModel::Type type, int index, int role)
+    \fn QVariant AbstractInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
 
     Returns item data for the selection list identified by \a type. The \a role
     parameter specifies which data is requested. The \a index parameter is a
@@ -284,7 +284,7 @@ bool AbstractInputMethod::reselect(int cursorPosition, const DeclarativeInputEng
 */
 
 /*!
-    \fn void AbstractInputMethod::selectionListItemSelected(DeclarativeSelectionListModel::Type type, int index)
+    \fn void AbstractInputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
 
     This method is called when an item at \a index has been selected by the
     user. The selection list is identified by the \a type parameter.

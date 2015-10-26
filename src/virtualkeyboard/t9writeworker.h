@@ -22,7 +22,7 @@
 #ifndef T9WRITEWORKER_H
 #define T9WRITEWORKER_H
 
-#include "declarativetrace.h"
+#include "trace.h"
 
 #include <QThread>
 #include <QSemaphore>

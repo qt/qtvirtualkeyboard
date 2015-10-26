@@ -20,7 +20,7 @@
 ******************************************************************************/
 
 #include "hunspellinputmethod_p.h"
-#include "declarativeinputcontext.h"
+#include "inputcontext.h"
 #include <hunspell/hunspell.h>
 #include <QStringList>
 #include <QDir>
@@ -92,8 +92,8 @@ void HunspellInputMethodPrivate::reset()
 {
     if (clearSuggestions()) {
         Q_Q(HunspellInputMethod);
-        emit q->selectionListChanged(DeclarativeSelectionListModel::WordCandidateList);
-        emit q->selectionListActiveItemChanged(DeclarativeSelectionListModel::WordCandidateList, activeWordIndex);
+        emit q->selectionListChanged(SelectionListModel::WordCandidateList);
+        emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, activeWordIndex);
     }
     word.clear();
     autoSpaceAllowed = false;
@@ -161,9 +161,9 @@ bool HunspellInputMethodPrivate::isAutoSpaceAllowed() const
     Q_Q(const HunspellInputMethod);
     if (!autoSpaceAllowed)
         return false;
-    if (q->inputEngine()->inputMode() != DeclarativeInputEngine::Latin)
+    if (q->inputEngine()->inputMode() != InputEngine::Latin)
         return false;
-    DeclarativeInputContext *ic = q->inputContext();
+    InputContext *ic = q->inputContext();
     if (!ic)
         return false;
     Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
@@ -184,7 +184,7 @@ bool HunspellInputMethodPrivate::isJoiner(const QChar &c) const
 {
     if (c.isPunct() || c.isSymbol()) {
         Q_Q(const HunspellInputMethod);
-        DeclarativeInputContext *ic = q->inputContext();
+        InputContext *ic = q->inputContext();
         if (ic) {
             Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
             if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly) || inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly))

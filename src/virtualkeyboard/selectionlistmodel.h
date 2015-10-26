@@ -19,25 +19,25 @@
 **
 ******************************************************************************/
 
-#ifndef DECLARATIVESELECTIONLISTMODEL_H
-#define DECLARATIVESELECTIONLISTMODEL_H
+#ifndef SELECTIONLISTMODEL_H
+#define SELECTIONLISTMODEL_H
 
 #include <QAbstractListModel>
 
 namespace QtVirtualKeyboard {
 
 class AbstractInputMethod;
-class DeclarativeInputEngine;
-class DeclarativeSelectionListModelPrivate;
+class InputEngine;
+class SelectionListModelPrivate;
 
-class DeclarativeSelectionListModel : public QAbstractListModel
+class SelectionListModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_ENUMS(Type)
     Q_ENUMS(Role)
-    Q_DECLARE_PRIVATE(DeclarativeSelectionListModel)
+    Q_DECLARE_PRIVATE(SelectionListModel)
 
-    explicit DeclarativeSelectionListModel(QObject *parent = 0);
+    explicit SelectionListModel(QObject *parent = 0);
 
 public:
     enum Type
@@ -50,7 +50,7 @@ public:
         WordCompletionLengthRole = Qt::UserRole + 1
     };
 
-    ~DeclarativeSelectionListModel();
+    ~SelectionListModel();
     void setDataSource(AbstractInputMethod *dataSource, Type type);
     AbstractInputMethod *dataSource() const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -69,12 +69,12 @@ protected slots:
     void selectionListActiveItemChanged(int type, int index);
 
 private:
-    friend class DeclarativeInputEngine;
+    friend class InputEngine;
 };
 
 } // namespace QtVirtualKeyboard
 
-Q_DECLARE_METATYPE(QtVirtualKeyboard::DeclarativeSelectionListModel::Type)
-Q_DECLARE_METATYPE(QtVirtualKeyboard::DeclarativeSelectionListModel::Role)
+Q_DECLARE_METATYPE(QtVirtualKeyboard::SelectionListModel::Type)
+Q_DECLARE_METATYPE(QtVirtualKeyboard::SelectionListModel::Role)
 
-#endif // DECLARATIVESELECTIONLISTMODEL_H
+#endif // SELECTIONLISTMODEL_H
