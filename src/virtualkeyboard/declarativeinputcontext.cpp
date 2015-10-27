@@ -35,6 +35,7 @@
 #include <private/qqmlmetatype_p.h>
 #endif
 
+QT_BEGIN_NAMESPACE
 bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMethodEvent::Attribute &attribute2)
 {
     return attribute1.start == attribute2.start &&
@@ -42,6 +43,7 @@ bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMeth
            attribute1.type == attribute2.type &&
            attribute1.value == attribute2.value;
 }
+QT_END_NAMESPACE
 
 /*!
     \qmlmodule QtQuick.Enterprise.VirtualKeyboard 2.0
