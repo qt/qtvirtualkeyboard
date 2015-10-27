@@ -54,6 +54,10 @@ InputPanel {
     readonly property var characterPreviewBubble: Utils.findChildByProperty(keyboard, "objectName", "characterPreviewBubble", null)
     readonly property var alternativeKeys: Utils.findChildByProperty(keyboard, "objectName", "alternativeKeys", null)
     readonly property var naviationHighlight: Utils.findChildByProperty(keyboard, "objectName", "naviationHighlight", null)
+    readonly property bool naviationHighlightAnimating: naviationHighlight.xAnimation.running ||
+                                                        naviationHighlight.yAnimation.running ||
+                                                        naviationHighlight.widthAnimation.running ||
+                                                        naviationHighlight.heightAnimation.running
     readonly property var wordCandidateView: Utils.findChildByProperty(keyboard, "objectName", "wordCandidateView", null)
     readonly property bool wordCandidateListVisibleHint: InputContext.inputEngine.wordCandidateListVisibleHint
     readonly property bool keyboardLayoutsAvailable: keyboard.availableLocaleIndices.length > 0 && keyboard.availableLocaleIndices.indexOf(-1) === -1
@@ -332,7 +336,8 @@ InputPanel {
 
     function emulateNavigationKeyClick(navigationKey) {
         testcase.keyClick(navigationKey)
-        testcase.waitForRendering(inputPanel)
+        while (inputPanel.naviationHighlightAnimating)
+            testcase.wait(inputPanel.naviationHighlight.moveDuration / 2)
     }
 
     function navigationHighlightContains(point) {
@@ -355,7 +360,6 @@ InputPanel {
                     emulateNavigationKeyClick(Qt.Key_Left)
                 else if (inputPanel.naviationHighlight.x + inputPanel.naviationHighlight.width < point.x)
                     emulateNavigationKeyClick(Qt.Key_Right)
-                testcase.wait(inputPanel.naviationHighlight.moveDuration)
             }
         }
         return false
@@ -407,8 +411,10 @@ InputPanel {
     function activateNavigationKeyMode() {
         if (!inputPanel.naviationHighlight.visible) {
             emulateNavigationKeyClick(Qt.Key_Right)
-            if (inputPanel.naviationHighlight.visible)
-                testcase.wait(inputPanel.naviationHighlight.moveDuration)
+            if (inputPanel.naviationHighlight.visible) {
+                while (inputPanel.naviationHighlightAnimating)
+                    testcase.wait(inputPanel.naviationHighlight.moveDuration / 2)
+            }
         }
         return inputPanel.naviationHighlight.visible
     }

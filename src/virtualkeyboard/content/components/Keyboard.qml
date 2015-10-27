@@ -451,6 +451,10 @@ Item {
         property var highlightItemOffset: highlightItem ? keyboard.mapFromItem(highlightItem, highlightItem.x - highlightItem.x, highlightItem.y - highlightItem.y) : ({x:0, y:0})
         property int moveDuration: 200
         property int resizeDuration: 200
+        property alias xAnimation: xAnimation
+        property alias yAnimation: yAnimation
+        property alias widthAnimation: widthAnimation
+        property alias heightAnimation: heightAnimation
         z: 2
         x: highlightItemOffset.x
         y: highlightItemOffset.y
@@ -459,16 +463,16 @@ Item {
         visible: keyboard.navigationModeActive && highlightItem !== null && highlightItem !== keyboard
         sourceComponent: keyboard.style.navigationHighlight
         Behavior on x {
-            NumberAnimation { duration: naviationHighlight.moveDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { id: xAnimation; duration: naviationHighlight.moveDuration; easing.type: Easing.OutCubic }
         }
         Behavior on y {
-            NumberAnimation { duration: naviationHighlight.moveDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { id: yAnimation; duration: naviationHighlight.moveDuration; easing.type: Easing.OutCubic }
         }
         Behavior on width {
-            NumberAnimation { duration: naviationHighlight.resizeDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { id: widthAnimation; duration: naviationHighlight.resizeDuration; easing.type: Easing.OutCubic }
         }
         Behavior on height {
-            NumberAnimation { duration: naviationHighlight.resizeDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { id: heightAnimation; duration: naviationHighlight.resizeDuration; easing.type: Easing.OutCubic }
         }
     }
 
