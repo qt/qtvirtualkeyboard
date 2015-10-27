@@ -50,8 +50,17 @@ The project is split into the following subprojects:
           will be activated when the source code is extracted to this
           directory.
 \row
+    \li \e src/virtualkeyboard/3rdparty/lipi-toolkit/lipi-toolkit.pro
+    \li A project file for compiling the lipi-toolkit library.
+\row
+    \li \e src/virtualkeyboard/3rdparty/openwnn/openwnn.pro
+    \li A project file for compiling the OpenWNN library.
+\row
     \li \e src/virtualkeyboard/3rdparty/pinyin/pinyin.pro
     \li A project file for compiling the PinyinIME library.
+\row
+    \li \e src/virtualkeyboard/3rdparty/t9write/t9write.pro
+    \li A project file for including T9 Write dictionaries as resources.
 \row
     \li \e src/virtualkeyboard/3rdparty/tcime/tcime.pro
     \li A project file for compiling the TCIME library.
@@ -87,6 +96,10 @@ build targets.
     \li By default, the desktop integration is enabled when the target environment
         is X11 or Windows desktop. With this option, the desktop integration can be
         disabled.
+        \note For embedded integration, where the InputPanel is instantitated by
+        the application, there is no need to use this option explicitly. The virtual
+        keyboard will not create the desktop input panel if the application creates
+        InputPanel before the focus is set to an input field.
 \row
     \li \e disable-xcb
     \li Disables X11 integration
@@ -125,8 +138,12 @@ build targets.
         language and disables all other default languages, except English.
 \row
     \li \e lipi-toolkit
-    \li Enables the handwriting input method.
-    \li This option enables the handwriting input method.
+    \li Enables the handwriting input method using Lipi Toolkit.
+    \li Handwriting recognition is based on the open source Lipi Toolkit.
+\row
+    \li \e t9write
+    \li Enables the handwriting input method using T9 Write.
+    \li Handwriting recognition is based on the commercial T9 Write product from Nuance Communications.
 \row
     \li \e arrow-key-navigation
     \li Enables arrow key navigation for the keyboard
@@ -161,10 +178,7 @@ the \e {Deploy All} command.
 
 \section2 Boot2Qt Targets
 
-Remount target file system as read-write before deployment.
-
-    \e {adb -s <deviceid> remount}
-
-Deploy using the \e {Deploy All} command.
+The installation is done by copying the necessary files to the memory card, or
+by using the adb push command.
 
 */
