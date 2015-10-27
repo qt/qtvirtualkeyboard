@@ -450,8 +450,15 @@ InputPanel {
             }
         }
 
+        if (inputPanel.wordCandidateView.count === 0)
+            return false;
+
         var suggestionFound = false
         var origIndex = inputPanel.wordCandidateView.currentIndex
+        if (origIndex === -1) {
+            inputPanel.wordCandidateView.incrementCurrentIndex()
+            origIndex = inputPanel.wordCandidateView.currentIndex
+        }
         if (origIndex !== -1) {
             while (true) {
                 if (inputPanel.wordCandidateView.model.dataAt(inputPanel.wordCandidateView.currentIndex) === suggestion) {

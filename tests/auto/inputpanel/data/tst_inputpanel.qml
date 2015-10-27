@@ -727,6 +727,10 @@ Rectangle {
                 { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530\u5341\uFF0E", outputText: "\u8ECA\uFF0E" },
                 // input handling: invalid input sequence + punctuation
                 { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530\uFF0E", outputText: "\uFF0E" },
+                // phrase suggestions: select by selection list
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: ['\u5341', '\u7530', '\u5341', Qt.Key_Select], expectedCandidates: [ "\u8F1B" ], outputText: "\u8ECA\u8F1B" },
+                // phrase suggestions: select by space
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: ['\u5341', '\u7530', '\u5341', ' '], expectedCandidates: [ "\u8F1B" ], outputText: "\u8ECA\u8F1B" },
             ]
         }
 
@@ -740,7 +744,11 @@ Rectangle {
             }
 
             for (var inputIndex in data.inputSequence) {
-                verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
+                var key = data.inputSequence[inputIndex]
+                if (key === Qt.Key_Select)
+                    inputPanel.selectionListSelectCurrentItem()
+                else
+                    verify(inputPanel.virtualKeyClick(key))
             }
             waitForRendering(inputPanel)
 

@@ -216,8 +216,15 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
     case Qt::Key_Space:
         if (!d->input.isEmpty()) {
             accept = true;
-            if (d->highlightIndex >= 0)
-                update();
+            if (d->highlightIndex >= 0) {
+                QString finalWord = d->pickHighlighted();
+                d->reset();
+                inputContext()->commit(finalWord);
+                if (d->setCandidates(d->phraseDictionary.getWords(finalWord.left(1)), false)) {
+                    emit selectionListChanged(SelectionListModel::WordCandidateList);
+                    emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->highlightIndex);
+                }
+            }
         } else {
             update();
         }
