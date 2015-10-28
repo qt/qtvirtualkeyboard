@@ -26,11 +26,23 @@ ListView {
     id: wordCandidatePopupList
 
     property int maxVisibleItems: 5
+    readonly property int preferredVisibleItems: {
+        if (!currentItem)
+            return 0
+        var maxHeight = flipVertical ? Qt.inputMethod.cursorRectangle.y : parent.height - Qt.inputMethod.cursorRectangle.height - Qt.inputMethod.cursorRectangle.y
+        var result = Math.min(count, maxVisibleItems)
+        while (result > 2 && result * currentItem.height > maxHeight)
+            --result
+        return result
+    }
     readonly property real contentWidth: contentItem.childrenRect.width
+    readonly property bool flipVertical: currentItem &&
+                                         Qt.inputMethod.cursorRectangle.y + (Qt.inputMethod.cursorRectangle.height / 2) > (parent.height / 2) &&
+                                         Qt.inputMethod.cursorRectangle.y + Qt.inputMethod.cursorRectangle.height + (currentItem.height * 2) > parent.height
 
     clip: true
     visible: enabled && count > 0
-    height: currentItem ? currentItem.height * Math.min(maxVisibleItems, count) + (spacing * Math.min(maxVisibleItems, count) - 1) : 0
+    height: currentItem ? currentItem.height * preferredVisibleItems + (spacing * preferredVisibleItems - 1) : 0
     Binding {
         target: wordCandidatePopupList
         property: "x"
@@ -43,7 +55,7 @@ ListView {
     Binding {
         target: wordCandidatePopupList
         property: "y"
-        value: Qt.inputMethod.cursorRectangle.y + Qt.inputMethod.cursorRectangle.height
+        value: wordCandidatePopupList.flipVertical ? Qt.inputMethod.cursorRectangle.y - wordCandidatePopupList.height : Qt.inputMethod.cursorRectangle.y + Qt.inputMethod.cursorRectangle.height
         when: wordCandidatePopupList.visible
     }
     orientation: ListView.Vertical

@@ -1064,6 +1064,43 @@ Rectangle {
             compare(textInput.text, data.outputText)
         }
 
+        function test_hwrFullScreenWordCandidatePopup_data() {
+            return [
+                { inputSequence: "hello", initLinesToBottom: 0, popupFlipped: true },
+                { inputSequence: "hello", initLinesToBottom: 2, popupFlipped: true },
+                { inputSequence: "hello", initLinesToBottom: 4, popupFlipped: false },
+                { inputSequence: "hello", initLinesToBottom: 5, popupFlipped: false },
+            ]
+        }
+
+        function test_hwrFullScreenWordCandidatePopup(data) {
+            prepareTest(data)
+
+            if (!handwritingInputPanel.enabled)
+                skip("Handwriting not enabled")
+            handwritingInputPanel.available = true
+            if (!inputPanel.wordCandidateListVisibleHint)
+                skip("Word candidates not available (spell correction/hwr suggestions)")
+
+            var numAddedLines = Math.floor(textInput.height / Qt.inputMethod.cursorRectangle.height - data.initLinesToBottom) - 1
+            for (var i = 0; i < numAddedLines; i++) {
+                textInput.insert(textInput.length, "\n")
+            }
+            compare(textInput.lineCount - 1, numAddedLines)
+
+            for (var inputIndex in data.inputSequence) {
+                verify(handwritingInputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
+            }
+            waitForRendering(handwritingInputPanel)
+
+            if (data.popupFlipped) {
+                verify(handwritingInputPanel.wordCandidatePopupList.y + handwritingInputPanel.wordCandidatePopupList.height <= Qt.inputMethod.cursorRectangle.y)
+            } else {
+                verify(handwritingInputPanel.wordCandidatePopupList.y >= Qt.inputMethod.cursorRectangle.y + Qt.inputMethod.cursorRectangle.height)
+                verify(handwritingInputPanel.wordCandidatePopupList.y + handwritingInputPanel.wordCandidatePopupList.height < textInput.height)
+            }
+        }
+
         function test_availableLocales() {
             verify(inputPanel.availableLocales.length > 0)
         }
