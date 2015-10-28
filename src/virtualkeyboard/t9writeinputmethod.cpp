@@ -1198,7 +1198,7 @@ bool T9WriteInputMethod::reselect(int cursorPosition, const InputEngine::Reselec
             d->stringStart.append(c);
         }
 
-        while (replaceFrom < -d->stringStart.length()) {
+        while (replaceFrom > -d->stringStart.length()) {
             int lastPos = d->stringStart.length() - 1;
             if (!d->isJoiner(d->stringStart.at(lastPos)))
                 break;

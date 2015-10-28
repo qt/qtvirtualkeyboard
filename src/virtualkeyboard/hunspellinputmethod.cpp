@@ -232,7 +232,7 @@ bool HunspellInputMethod::reselect(int cursorPosition, const InputEngine::Resele
             d->word.append(c);
         }
 
-        while (replaceFrom < -d->word.length()) {
+        while (replaceFrom > -d->word.length()) {
             int lastPos = d->word.length() - 1;
             if (!d->isJoiner(d->word.at(lastPos)))
                 break;
