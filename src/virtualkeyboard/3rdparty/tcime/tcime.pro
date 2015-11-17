@@ -16,13 +16,17 @@ SOURCES += \
     cangjiedictionary.cpp \
     cangjietable.cpp \
     phrasedictionary.cpp \
-    worddictionary.cpp
+    worddictionary.cpp \
+    zhuyindictionary.cpp \
+    zhuyintable.cpp
 
 HEADERS += \
     cangjiedictionary.h \
     cangjietable.h \
     phrasedictionary.h \
-    worddictionary.h
+    worddictionary.h \
+    zhuyindictionary.h \
+    zhuyintable.h
 
 OTHER_FILES += \
     data/dict_cangjie.dat \

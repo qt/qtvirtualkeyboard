@@ -19,7 +19,12 @@ pinyin {
     virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-pinyin
 }
 
-tcime {
+!tcime {
+    cangjie: CONFIG += tcime
+    zhuyin: CONFIG += tcime
+}
+
+contains(CONFIG, tcime) {
     SUBDIRS += virtualkeyboard/3rdparty/tcime
     virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-tcime
 }

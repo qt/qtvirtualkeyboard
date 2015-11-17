@@ -25,10 +25,10 @@ import QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
 
 KeyboardStyle {
     id: currentStyle
-    readonly property bool compactSelectionList: [InputEngine.Pinyin, InputEngine.Cangjie].indexOf(InputContext.inputEngine.inputMode) !== -1
+    readonly property bool compactSelectionList: [InputEngine.Pinyin, InputEngine.Cangjie, InputEngine.Zhuyin].indexOf(InputContext.inputEngine.inputMode) !== -1
     readonly property string fontFamily: "Courier"
     readonly property real keyBackgroundMargin: Math.round(9 * scaleHint)
-    readonly property real keyContentMargin: Math.round(50 * scaleHint)
+    readonly property real keyContentMargin: Math.round(30 * scaleHint)
     readonly property real keyIconScale: scaleHint * 0.6
     readonly property string resourcePath: "QtQuick/Enterprise/VirtualKeyboard/content/styles/retro/"
     readonly property string resourcePrefix: "qrc:/" + resourcePath
@@ -90,7 +90,11 @@ KeyboardStyle {
             id: keyText
             text: control.displayText
             color: "#110b05"
-            anchors.centerIn: parent
+            anchors.fill: parent
+            anchors.margins: keyContentMargin
+            fontSizeMode: Text.Fit
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
             font {
                 family: fontFamily
                 weight: Font.Bold
@@ -592,7 +596,11 @@ KeyboardStyle {
             id: modeKeyText
             text: control.displayText
             color: "#c5a96f"
-            anchors.centerIn: parent
+            anchors.fill: parent
+            anchors.margins: keyContentMargin
+            fontSizeMode: Text.Fit
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
             font {
                 family: fontFamily
                 weight: Font.DemiBold

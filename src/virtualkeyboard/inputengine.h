@@ -64,6 +64,7 @@ public:
         Dialable,
         Pinyin,
         Cangjie,
+        Zhuyin,
         Hangul,
         Hiragana,
         Katakana,

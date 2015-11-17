@@ -711,6 +711,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
         \li \c InputEngine.Dialable Only dialable input is allowed.
         \li \c InputEngine.Pinyin Pinyin input mode for Chinese.
         \li \c InputEngine.Cangjie Cangjie input mode for Chinese.
+        \li \c InputEngine.Zhuyin Zhuyin input mode for Chinese.
         \li \c InputEngine.Hangul Hangul input mode for Korean.
         \li \c InputEngine.Hiragana Hiragana input mode for Japanese.
         \li \c InputEngine.Katakana Katakana input mode for Japanese.
@@ -772,6 +773,8 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
            Pinyin input mode for Chinese.
     \value Cangjie
            Cangjie input mode for Chinese.
+    \value Zhuyin
+           Zhuyin input mode for Chinese.
     \value Hangul
            Hangul input mode for Korean.
     \value Hiragana

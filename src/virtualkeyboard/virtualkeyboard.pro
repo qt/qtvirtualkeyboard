@@ -57,11 +57,16 @@ RESOURCES += \
     content/styles/retro/retro_style.qrc \
     content/content.qrc
 
+!tcime {
+    cangjie: CONFIG += tcime
+    zhuyin: CONFIG += tcime
+}
+
 pinyin: RESOURCES += content/layouts_pinyin.qrc
-tcime: RESOURCES += content/layouts_traditional_chinese.qrc
+contains(CONFIG, tcime): RESOURCES += content/layouts_traditional_chinese.qrc
 hangul: RESOURCES += content/layouts_hangul.qrc
 openwnn: RESOURCES += content/layouts_japanese.qrc
-!tcime:!pinyin:!hangul:!openwnn: RESOURCES += content/layouts.qrc
+!contains(CONFIG, tcime):!pinyin:!hangul:!openwnn: RESOURCES += content/layouts.qrc
 
 retro-style {
     DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"retro\\\"
@@ -149,18 +154,24 @@ pinyin {
     INSTALLS += pinyin_data
 }
 
-tcime {
+contains(CONFIG, tcime) {
+    !cangjie:!zhuyin: CONFIG += cangjie zhuyin
     SOURCES += \
         tcinputmethod.cpp
     HEADERS += \
         tcinputmethod.h
     DEFINES += HAVE_TCIME
+    contains(CONFIG, cangjie): DEFINES += HAVE_TCIME_CANGJIE
+    contains(CONFIG, zhuyin): DEFINES += HAVE_TCIME_ZHUYIN
     INCLUDEPATH += 3rdparty/tcime
     DEPENDPATH += 3rdparty/tcime
     LIBS += -L$$OUT_PWD/3rdparty/tcime/$$SUBPATH -ltcime
     tcime_data.files = \
-        $$PWD/3rdparty/tcime/data/qt/dict_cangjie.dat \
         $$PWD/3rdparty/tcime/data/qt/dict_phrases.dat
+    contains(CONFIG, cangjie): tcime_data.files += \
+        $$PWD/3rdparty/tcime/data/qt/dict_cangjie.dat
+    contains(CONFIG, zhuyin): tcime_data.files += \
+        $$PWD/3rdparty/tcime/data/qt/dict_zhuyin.dat
     tcime_data.path = $$DATAPATH/tcime
     INSTALLS += tcime_data
 }

@@ -22,8 +22,14 @@
 #include "tcinputmethod.h"
 #include "inputengine.h"
 #include "inputcontext.h"
+#if defined(HAVE_TCIME_CANGJIE)
 #include "cangjiedictionary.h"
 #include "cangjietable.h"
+#endif
+#if defined(HAVE_TCIME_ZHUYIN)
+#include "zhuyindictionary.h"
+#include "zhuyintable.h"
+#endif
 #include "phrasedictionary.h"
 #include "virtualkeyboarddebug.h"
 
@@ -41,6 +47,8 @@ public:
     TCInputMethodPrivate(TCInputMethod *q_ptr) :
         AbstractInputMethodPrivate(),
         q_ptr(q_ptr),
+        inputMode(InputEngine::Latin),
+        wordDictionary(0),
         highlightIndex(-1)
     {}
 
@@ -75,6 +83,64 @@ public:
             emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, highlightIndex);
         }
         input.clear();
+    }
+
+    bool compose(const QChar &c)
+    {
+        bool accept;
+        Q_Q(TCInputMethod);
+        InputContext *ic = q->inputContext();
+        switch (inputMode)
+        {
+#if defined(HAVE_TCIME_CANGJIE)
+        case InputEngine::Cangjie:
+            accept = composeCangjie(ic, c);
+            break;
+#endif
+#if defined(HAVE_TCIME_ZHUYIN)
+        case InputEngine::Zhuyin:
+            accept = composeZhuyin(ic, c);
+            break;
+#endif
+        default:
+            accept = false;
+            break;
+        }
+        return accept;
+    }
+
+#if defined(HAVE_TCIME_CANGJIE)
+    bool composeCangjie(InputContext *ic, const QChar &c)
+    {
+        bool accept = false;
+        if (!input.contains(0x91CD) && CangjieTable::isLetter(c)) {
+            if (input.length() < (cangjieDictionary.simplified() ? CangjieTable::MAX_SIMPLIFIED_CODE_LENGTH : CangjieTable::MAX_CODE_LENGTH)) {
+                input.append(c);
+                ic->setPreeditText(input);
+                if (setCandidates(wordDictionary->getWords(input), true)) {
+                    Q_Q(TCInputMethod);
+                    emit q->selectionListChanged(SelectionListModel::WordCandidateList);
+                    emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, highlightIndex);
+                }
+            }
+            accept = true;
+        } else if (c.unicode() == 0x91CD) {
+            if (input.isEmpty()) {
+                input.append(c);
+                ic->setPreeditText(input);
+                checkSpecialCharInput();
+            }
+            accept = true;
+        } else if (c.unicode() == 0x96E3) {
+            if (input.length() == 1) {
+                Q_ASSERT(input.at(0).unicode() == 0x91CD);
+                input.append(c);
+                ic->setPreeditText(input);
+                checkSpecialCharInput();
+            }
+            accept = true;
+        }
+        return accept;
     }
 
     bool checkSpecialCharInput()
@@ -119,10 +185,110 @@ public:
         }
         return false;
     }
+#endif
+
+#if defined(HAVE_TCIME_ZHUYIN)
+    bool composeZhuyin(InputContext *ic, const QChar &c)
+    {
+        if (ZhuyinTable::isTone(c)) {
+            if (input.isEmpty())
+                // Tones are accepted only when there's text in composing.
+                return false;
+
+            QStringList pair = ZhuyinTable::stripTones(input);
+            if (pair.isEmpty())
+                // Tones cannot be composed if there's no syllables.
+                return false;
+
+            // Replace the original tone with the new tone, but the default tone
+            // character should not be composed into the composing text.
+            QChar tone = pair[1].at(0);
+            if (c == ZhuyinTable::DEFAULT_TONE) {
+                if (tone != ZhuyinTable::DEFAULT_TONE)
+                    input.remove(input.length() - 1, 1);
+            } else {
+                if (tone == ZhuyinTable::DEFAULT_TONE)
+                    input.append(c);
+                else
+                    input.replace(input.length() - 1, 1, c);
+            }
+        } else if (ZhuyinTable::getInitials(c) > 0) {
+            // Insert the initial or replace the original initial.
+            if (input.isEmpty() || !ZhuyinTable::getInitials(input.at(0)))
+                input.insert(0, c);
+            else
+                input.replace(0, 1, c);
+        } else if (ZhuyinTable::getFinals(QString(c)) > 0) {
+            // Replace the finals in the decomposed of syllables and tones.
+            QList<QChar> decomposed = decomposeZhuyin();
+            if (ZhuyinTable::isYiWuYuFinals(c)) {
+                decomposed[1] = c;
+            } else {
+                decomposed[2] = c;
+            }
+
+            // Compose back the text after the finals replacement.
+            input.clear();
+            for (int i = 0; i < decomposed.length(); ++i) {
+                if (decomposed[i] != 0)
+                    input.append(decomposed[i]);
+            }
+        } else {
+            return false;
+        }
+
+        ic->setPreeditText(input);
+        if (setCandidates(wordDictionary->getWords(input), true)) {
+            Q_Q(TCInputMethod);
+            emit q->selectionListChanged(SelectionListModel::WordCandidateList);
+            emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, highlightIndex);
+        }
+
+        return true;
+    }
+
+    QList<QChar> decomposeZhuyin()
+    {
+        QList<QChar> results = QList<QChar>() << 0 << 0 << 0 << 0;
+        QStringList pair = ZhuyinTable::stripTones(input);
+        if (!pair.isEmpty()) {
+            // Decompose tones.
+            QChar tone = pair[1].at(0);
+            if (tone != ZhuyinTable::DEFAULT_TONE)
+                results[3] = tone;
+
+            // Decompose initials.
+            QString syllables = pair[0];
+            if (ZhuyinTable::getInitials(syllables.at(0)) > 0) {
+                results[0] = syllables.at(0);
+                syllables = syllables.mid(1);
+            }
+
+            // Decompose finals.
+            if (!syllables.isEmpty()) {
+                if (ZhuyinTable::isYiWuYuFinals(syllables.at(0))) {
+                    results[1] = syllables.at(0);
+                    if (syllables.length() > 1)
+                        results[2] = syllables.at(1);
+                } else {
+                    results[2] = syllables.at(0);
+                }
+            }
+        }
+        return results;
+    }
+#endif
 
     TCInputMethod *q_ptr;
+    InputEngine::InputMode inputMode;
+#if defined(HAVE_TCIME_CANGJIE)
     CangjieDictionary cangjieDictionary;
+#endif
+#if defined(HAVE_TCIME_ZHUYIN)
+    ZhuyinDictionary zhuyinDictionary;
+#endif
     PhraseDictionary phraseDictionary;
+    WordDictionary *wordDictionary;
     QString input;
     QStringList candidates;
     int highlightIndex;
@@ -144,14 +310,19 @@ TCInputMethod::~TCInputMethod()
 
 bool TCInputMethod::simplified() const
 {
+#if defined(HAVE_TCIME_CANGJIE)
     Q_D(const TCInputMethod);
     return d->cangjieDictionary.simplified();
+#else
+    return false;
+#endif
 }
 
 void TCInputMethod::setSimplified(bool simplified)
 {
-    Q_D(TCInputMethod);
     VIRTUALKEYBOARD_DEBUG() << "TCInputMethod::setSimplified(): " << simplified;
+#if defined(HAVE_TCIME_CANGJIE)
+    Q_D(TCInputMethod);
     if (d->cangjieDictionary.simplified() != simplified) {
         d->reset();
         InputContext *ic = inputContext();
@@ -160,20 +331,35 @@ void TCInputMethod::setSimplified(bool simplified)
         d->cangjieDictionary.setSimplified(simplified);
         emit simplifiedChanged();
     }
+#else
+    Q_UNUSED(simplified)
+#endif
 }
 
 QList<InputEngine::InputMode> TCInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
     return QList<InputEngine::InputMode>()
-            << InputEngine::Cangjie;
+#if defined(HAVE_TCIME_ZHUYIN)
+            << InputEngine::Zhuyin
+#endif
+#if defined(HAVE_TCIME_CANGJIE)
+           << InputEngine::Cangjie
+#endif
+               ;
 }
 
 bool TCInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
-    Q_UNUSED(inputMode)
     Q_D(TCInputMethod);
+    if (d->inputMode == inputMode)
+        return true;
+    update();
+    bool result = false;
+    d->inputMode = inputMode;
+    d->wordDictionary = 0;
+#if defined(HAVE_TCIME_CANGJIE)
     if (inputMode == InputEngine::Cangjie) {
         if (d->cangjieDictionary.isEmpty()) {
             QString cangjieDictionary(QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_CANGJIE_DICTIONARY").constData()));
@@ -181,15 +367,30 @@ bool TCInputMethod::setInputMode(const QString &locale, InputEngine::InputMode i
                 cangjieDictionary = QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/tcime/dict_cangjie.dat";
             d->cangjieDictionary.load(cangjieDictionary);
         }
-        if (d->phraseDictionary.isEmpty()) {
-            QString phraseDictionary(QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_PHRASE_DICTIONARY").constData()));
-            if (phraseDictionary.isEmpty())
-                phraseDictionary = QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/tcime/dict_phrases.dat";
-            d->phraseDictionary.load(phraseDictionary);
-        }
-        return d->cangjieDictionary.isEmpty();
+        d->wordDictionary = &d->cangjieDictionary;
     }
-    return false;
+#endif
+#if defined(HAVE_TCIME_ZHUYIN)
+    if (inputMode == InputEngine::Zhuyin) {
+        if (d->zhuyinDictionary.isEmpty()) {
+            QString zhuyinDictionary(QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_ZHUYIN_DICTIONARY").constData()));
+            if (zhuyinDictionary.isEmpty())
+                zhuyinDictionary = QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/tcime/dict_zhuyin.dat";
+            d->zhuyinDictionary.load(zhuyinDictionary);
+        }
+        d->wordDictionary = &d->zhuyinDictionary;
+    }
+#endif
+    result = d->wordDictionary && !d->wordDictionary->isEmpty();
+    if (result && d->phraseDictionary.isEmpty()) {
+        QString phraseDictionary(QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_PHRASE_DICTIONARY").constData()));
+        if (phraseDictionary.isEmpty())
+            phraseDictionary = QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/tcime/dict_phrases.dat";
+        d->phraseDictionary.load(phraseDictionary);
+    }
+    if (!result)
+        inputMode = InputEngine::Latin;
+    return result;
 }
 
 bool TCInputMethod::setTextCase(InputEngine::TextCase textCase)
@@ -207,6 +408,11 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
     InputContext *ic = inputContext();
     bool accept = false;
     switch (key) {
+    case Qt::Key_Context1:
+        // Do nothing on symbol mode switch
+        accept = true;
+        break;
+
     case Qt::Key_Enter:
     case Qt::Key_Return:
         update();
@@ -234,12 +440,16 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
         if (!d->input.isEmpty()) {
             d->input.remove(d->input.length() - 1, 1);
             ic->setPreeditText(d->input);
+#if defined(HAVE_TCIME_CANGJIE)
             if (!d->checkSpecialCharInput()) {
-                if (d->setCandidates(d->cangjieDictionary.getWords(d->input), true)) {
+#endif
+                if (d->setCandidates(d->wordDictionary->getWords(d->input), true)) {
                     emit selectionListChanged(SelectionListModel::WordCandidateList);
                     emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->highlightIndex);
                 }
+#if defined(HAVE_TCIME_CANGJIE)
             }
+#endif
             accept = true;
         } else if (d->clearCandidates()) {
             emit selectionListChanged(SelectionListModel::WordCandidateList);
@@ -248,35 +458,8 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
         break;
 
     default:
-        if (text.length() == 1) {
-            QChar c = text.at(0);
-            if (!d->input.contains(0x91CD) && CangjieTable::isLetter(c)) {
-                if (d->input.length() < (d->cangjieDictionary.simplified() ? CangjieTable::MAX_SIMPLIFIED_CODE_LENGTH : CangjieTable::MAX_CODE_LENGTH)) {
-                    d->input.append(c);
-                    ic->setPreeditText(d->input);
-                    if (d->setCandidates(d->cangjieDictionary.getWords(d->input), true)) {
-                        emit selectionListChanged(SelectionListModel::WordCandidateList);
-                        emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->highlightIndex);
-                    }
-                }
-                accept = true;
-            } else if (c.unicode() == 0x91CD) {
-                if (d->input.isEmpty()) {
-                    d->input.append(c);
-                    ic->setPreeditText(d->input);
-                    d->checkSpecialCharInput();
-                }
-                accept = true;
-            } else if (c.unicode() == 0x96E3) {
-                if (d->input.length() == 1) {
-                    Q_ASSERT(d->input.at(0).unicode() == 0x91CD);
-                    d->input.append(c);
-                    ic->setPreeditText(d->input);
-                    d->checkSpecialCharInput();
-                }
-                accept = true;
-            }
-        }
+        if (text.length() == 1)
+            accept = d->compose(text.at(0));
         if (!accept)
             update();
         break;

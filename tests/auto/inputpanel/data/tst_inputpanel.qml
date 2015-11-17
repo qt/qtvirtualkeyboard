@@ -93,8 +93,12 @@ Rectangle {
             verify(inputPanel.setLocale(locale))
             if (localeChanged && !(textInput.inputMethodHints & Qt.ImhNoPredictiveText))
                 wait(300)
-            if (data !== undefined && data.hasOwnProperty("initInputMode"))
-                verify(inputPanel.setInputMode(inputPanel.mapInputMode(data.initInputMode)))
+            if (data !== undefined && data.hasOwnProperty("initInputMode")) {
+                var inputMode = inputPanel.mapInputMode(data.initInputMode)
+                if (!inputPanel.isInputModeSupported(inputMode))
+                    expectFail("", "Input mode not available (%1)".arg(data.initInputMode))
+                verify(inputPanel.setInputMode(inputMode))
+            }
             Qt.inputMethod.show()
             waitForRendering(inputPanel)
             verify(inputPanel.visible === true)
@@ -704,33 +708,33 @@ Rectangle {
         function test_cangjieInputMethod_data() {
             return [
                 // "vehicle"
-                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530\u5341", expectedCandidates: [ "\u8ECA" ], outputText: "\u8ECA" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Cangjie", initSimplified: false, inputSequence: "\u5341\u7530\u5341", expectedCandidates: [ "\u8ECA" ], outputText: "\u8ECA" },
                 // simplified mode: "vehicle"
-                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: true, inputSequence: "\u5341\u5341", expectedCandidates: [ "\u8ECA" ], outputText: "\u8ECA" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Cangjie", initSimplified: true, inputSequence: "\u5341\u5341", expectedCandidates: [ "\u8ECA" ], outputText: "\u8ECA" },
                 // "to thank"
-                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u535C\u53E3\u7AF9\u7AF9\u6208", expectedCandidates: [ "\u8B1D" ], outputText: "\u8B1D" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Cangjie", initSimplified: false, inputSequence: "\u535C\u53E3\u7AF9\u7AF9\u6208", expectedCandidates: [ "\u8B1D" ], outputText: "\u8B1D" },
                 // exceptions: "door"
-                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u65E5\u5F13", expectedCandidates: [ "\u9580" ], outputText: "\u9580" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Cangjie", initSimplified: false, inputSequence: "\u65E5\u5F13", expectedCandidates: [ "\u9580" ], outputText: "\u9580" },
                 // exceptions: "small table"
-                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u7AF9\u5F13", expectedCandidates: [ "\u51E0" ], outputText: "\u51E0" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Cangjie", initSimplified: false, inputSequence: "\u7AF9\u5F13", expectedCandidates: [ "\u51E0" ], outputText: "\u51E0" },
                 // fixed decomposition
-                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u7AF9\u96E3", expectedCandidates: [ "\u81FC" ], outputText: "\u81FC" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Cangjie", initSimplified: false, inputSequence: "\u7AF9\u96E3", expectedCandidates: [ "\u81FC" ], outputText: "\u81FC" },
                 // input handling: valid input sequence + space
-                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530\u5341 ", outputText: "\u8ECA" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Cangjie", initSimplified: false, inputSequence: "\u5341\u7530\u5341 ", outputText: "\u8ECA" },
                 // input handling: invalid input sequence + space
-                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530 ", outputText: "" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Cangjie", initSimplified: false, inputSequence: "\u5341\u7530 ", outputText: "" },
                 // input handling: valid input sequence + enter
-                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530\u5341\n", outputText: "\u8ECA\n" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Cangjie", initSimplified: false, inputSequence: "\u5341\u7530\u5341\n", outputText: "\u8ECA\n" },
                 // input handling: invalid input sequence + enter
-                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530\n", outputText: "\n" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Cangjie", initSimplified: false, inputSequence: "\u5341\u7530\n", outputText: "\n" },
                 // input handling: valid input sequence + punctuation
-                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530\u5341\uFF0E", outputText: "\u8ECA\uFF0E" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Cangjie", initSimplified: false, inputSequence: "\u5341\u7530\u5341\uFF0E", outputText: "\u8ECA\uFF0E" },
                 // input handling: invalid input sequence + punctuation
-                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: "\u5341\u7530\uFF0E", outputText: "\uFF0E" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Cangjie", initSimplified: false, inputSequence: "\u5341\u7530\uFF0E", outputText: "\uFF0E" },
                 // phrase suggestions: select by selection list
-                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: ['\u5341', '\u7530', '\u5341', Qt.Key_Select], expectedCandidates: [ "\u8F1B" ], outputText: "\u8ECA\u8F1B" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Cangjie", initSimplified: false, inputSequence: ['\u5341', '\u7530', '\u5341', Qt.Key_Select], expectedCandidates: [ "\u8F1B" ], outputText: "\u8ECA\u8F1B" },
                 // phrase suggestions: select by space
-                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initSimplified: false, inputSequence: ['\u5341', '\u7530', '\u5341', ' '], expectedCandidates: [ "\u8F1B" ], outputText: "\u8ECA\u8F1B" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Cangjie", initSimplified: false, inputSequence: ['\u5341', '\u7530', '\u5341', ' '], expectedCandidates: [ "\u8F1B" ], outputText: "\u8ECA\u8F1B" },
             ]
         }
 
@@ -759,6 +763,93 @@ Rectangle {
                 }
             }
 
+            compare(textInput.text, data.outputText)
+        }
+
+        function test_zhuyinInputMethod_data() {
+            return [
+                // "Bottle"
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: [ "ㄆㄧㄥˊ", "ㄗ˙" ], expectedCandidates: [ "瓶", "子" ], outputText: "瓶子" },
+                // "Hello you"
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: [ "ㄋㄧˇ", "ㄏㄠˇ" ], expectedCandidates: [ "你", "好" ], outputText: "你好" },
+                // "Hello you" (select by space)
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄋㄧˇ ㄏㄠˇ ", outputText: "你好" },
+                // Incomplete input sequence + space (no suggestions, no output)
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄋㄧ ", outputText: "" },
+                // Test all zhuyin symbols
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄅㄚ", expectedCandidates: "八", outputText: "八" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄆㄚˊ", expectedCandidates: "杷", outputText: "杷" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄇㄚˇ", expectedCandidates: "馬", outputText: "馬" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄈㄚˇ", expectedCandidates: "法", outputText: "法" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄉㄧˋ", expectedCandidates: "地", outputText: "地" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄊㄧˊ", expectedCandidates: "提", outputText: "提" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄋㄧˇ", expectedCandidates: "你", outputText: "你" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄌㄧˋ", expectedCandidates: "利", outputText: "利" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄍㄠˋ", expectedCandidates: "告", outputText: "告" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄎㄠˇ", expectedCandidates: "考", outputText: "考" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄏㄠˇ", expectedCandidates: "好", outputText: "好" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄐㄧㄠˋ", expectedCandidates: "叫", outputText: "叫" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄑㄧㄠˇ", expectedCandidates: "巧", outputText: "巧" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄒㄧㄠˇ", expectedCandidates: "小", outputText: "小" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄓㄨˇ", expectedCandidates: "主", outputText: "主" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄔㄨ", expectedCandidates: "出", outputText: "出" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄕㄨˋ", expectedCandidates: "束", outputText: "束" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄖㄨˋ", expectedCandidates: "入", outputText: "入" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄗㄞˋ", expectedCandidates: "在", outputText: "在" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄘㄞˊ", expectedCandidates: "才", outputText: "才" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄙㄞ", expectedCandidates: "塞", outputText: "塞" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄉㄚˋ", expectedCandidates: "大", outputText: "大" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄉㄨㄛ", expectedCandidates: "多", outputText: "多" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄉㄜˊ", expectedCandidates: "得", outputText: "得" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄉㄧㄝ", expectedCandidates: "爹", outputText: "爹" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄕㄞˋ", expectedCandidates: "晒", outputText: "晒" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄕㄟˊ", expectedCandidates: "誰", outputText: "誰" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄕㄠˇ", expectedCandidates: "少", outputText: "少" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄕㄡ", expectedCandidates: "收", outputText: "收" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄕㄢ", expectedCandidates: "山", outputText: "山" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄕㄣ", expectedCandidates: "申", outputText: "申" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄕㄤˋ", expectedCandidates: "上", outputText: "上" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄕㄥ", expectedCandidates: "生", outputText: "生" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄦˊ", expectedCandidates: "而", outputText: "而" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄋㄧˋ", expectedCandidates: "逆", outputText: "逆" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄋㄨˇ", expectedCandidates: "努", outputText: "努" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄋㄩˇ", expectedCandidates: "女", outputText: "女" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄗ", expectedCandidates: "資", outputText: "資" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄓ", expectedCandidates: "知", outputText: "知" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: "ㄙˇ", expectedCandidates: "死", outputText: "死" },
+                // Symbol mode change during composing state (should not cause interruption to the composing state)
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "Zhuyin", inputSequence: [ "ㄋㄧ", Qt.Key_Context1, Qt.Key_Context1, "ˇ" ], expectedCandidates: [ "", "", "", "你" ], outputText: "你" },
+            ]
+        }
+
+        function test_zhuyinInputMethod(data) {
+            prepareTest(data)
+
+            for (var inputIndex in data.inputSequence) {
+                if (Array.isArray(data.inputSequence)) {
+                    var inputSequence = data.inputSequence[inputIndex]
+                    for (var charIndex in inputSequence) {
+                        verify(inputPanel.virtualKeyClick(inputSequence[charIndex]))
+                    }
+
+                    waitForRendering(inputPanel)
+
+                    if (data.expectedCandidates && inputIndex < data.expectedCandidates.length && data.expectedCandidates[inputIndex].length > 0) {
+                        verify(inputPanel.selectionListSearchSuggestion(data.expectedCandidates[inputIndex]))
+                        verify(inputPanel.selectionListSelectCurrentItem())
+                    }
+                } else {
+                    verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
+                }
+            }
+            waitForRendering(inputPanel)
+
+            if (!Array.isArray(data.inputSequence) && data.expectedCandidates) {
+                verify(inputPanel.selectionListSearchSuggestion(data.expectedCandidates))
+                verify(inputPanel.selectionListSelectCurrentItem())
+            }
+
+            Qt.inputMethod.commit()
             compare(textInput.text, data.outputText)
         }
 

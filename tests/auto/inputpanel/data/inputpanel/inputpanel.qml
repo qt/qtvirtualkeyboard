@@ -198,8 +198,10 @@ InputPanel {
             return InputEngine.Dialable
         else if (inputModeName === "Pinyin")
             return InputEngine.Pinyin
-        else if (inputModeName === "Canjie")
-            return InputEngine.Canjie
+        else if (inputModeName === "Cangjie")
+            return InputEngine.Cangjie
+        else if (inputModeName === "Zhuyin")
+            return InputEngine.Zhuyin
         else if (inputModeName === "Hangul")
             return InputEngine.Hangul
         else if (inputModeName === "Hiragana")
@@ -212,8 +214,12 @@ InputPanel {
             return -1
     }
 
+    function isInputModeSupported(inputMode) {
+        return InputContext.inputEngine.inputModes.indexOf(inputMode) !== -1
+    }
+
     function setInputMode(inputMode) {
-        if (InputContext.inputEngine.inputModes.indexOf(inputMode) === -1)
+        if (!isInputModeSupported(inputMode))
             return false
         if (InputContext.inputEngine.inputMode !== inputMode)
             InputContext.inputEngine.inputMode = inputMode
@@ -296,7 +302,7 @@ InputPanel {
             success = keyActionOnCurrentLayoutCb(key)
         }
         if (!success)
-            console.warn("Key not found '%1'".arg(key))
+            console.warn("Key not found \\u%1".arg(key.charCodeAt(0).toString(16)))
         return success
     }
 

@@ -25,7 +25,7 @@ import QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
 
 KeyboardStyle {
     id: currentStyle
-    readonly property bool compactSelectionList: [InputEngine.Pinyin, InputEngine.Cangjie].indexOf(InputContext.inputEngine.inputMode) !== -1
+    readonly property bool compactSelectionList: [InputEngine.Pinyin, InputEngine.Cangjie, InputEngine.Zhuyin].indexOf(InputContext.inputEngine.inputMode) !== -1
     readonly property string fontFamily: "Sans"
     readonly property real keyBackgroundMargin: Math.round(13 * scaleHint)
     readonly property real keyContentMargin: Math.round(45 * scaleHint)

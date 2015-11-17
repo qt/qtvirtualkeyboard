@@ -38,8 +38,8 @@ public:
         toggleShiftEnabled(false),
         shiftChanged(false),
         manualShiftLanguageFilter(QSet<QLocale::Language>() << QLocale::Arabic << QLocale::Persian << QLocale::Hindi << QLocale::Korean),
-        manualCapsInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::Cangjie),
-        noAutoUppercaseInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::FullwidthLatin << InputEngine::Pinyin << InputEngine::Cangjie),
+        manualCapsInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::Cangjie << InputEngine::Zhuyin),
+        noAutoUppercaseInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::FullwidthLatin << InputEngine::Pinyin << InputEngine::Cangjie << InputEngine::Zhuyin),
         allCapsInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::Hiragana << InputEngine::Katakana)
     {
     }

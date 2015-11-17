@@ -123,8 +123,18 @@ build targets.
         language and disables all other default languages, except English.
 \row
     \li \e tcime
+    \li Enables the both Cangjie and Zhuyin input methods for Traditional Chinese.
+    \li This option activates the both Cangjie and Zhuyin input methods for the Traditional Chinese
+        language and disables all other default languages, except English.
+\row
+    \li \e cangjie
     \li Enables the Cangjie input method for Traditional Chinese.
-    \li This option activates the Canjie input method for the Traditional Chinese
+    \li This option activates the Cangjie input method for the Traditional Chinese
+        language and disables all other default languages, except English.
+\row
+    \li \e zhuyin
+    \li Enables the Zhuyin input method for Traditional Chinese.
+    \li This option activates the Zhuyin input method for the Traditional Chinese
         language and disables all other default languages, except English.
 \row
     \li \e hangul
