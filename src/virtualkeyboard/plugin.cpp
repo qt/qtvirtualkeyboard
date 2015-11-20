@@ -163,6 +163,7 @@ QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system,
     qmlRegisterType(QUrl(path + QLatin1String("HandwritingInputPanel.qml")), pluginUri, 2, 0, "HandwritingInputPanel");
     const QString componentsPath = path + QStringLiteral("components/");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("AlternativeKeys.qml")), pluginUri, 1, 0, "AlternativeKeys");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("AlternativeKeys.qml")), pluginUri, 2, 0, "AlternativeKeys");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("AutoScroller.qml")), pluginUri, 1, 0, "AutoScroller");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("AutoScroller.qml")), pluginUri, 2, 0, "AutoScroller");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("BackspaceKey.qml")), pluginUri, 1, 0, "BackspaceKey");
