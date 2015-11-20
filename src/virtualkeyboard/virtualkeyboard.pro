@@ -226,4 +226,5 @@ t9write {
 arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
 
 PLUGIN_TYPE = platforminputcontexts
+PLUGIN_CLASS_NAME = QVirtualKeyboardPlugin
 load(qt_plugin)

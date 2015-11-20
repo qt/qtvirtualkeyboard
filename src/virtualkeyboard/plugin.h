@@ -27,7 +27,7 @@
 #include "platforminputcontext.h"
 #include <QStringList>
 
-class PlatformInputContextPlugin : public QPlatformInputContextPlugin
+class QVirtualKeyboardPlugin : public QPlatformInputContextPlugin
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID QPlatformInputContextFactoryInterface_iid FILE "qtvirtualkeyboard.json")

@@ -89,12 +89,12 @@ static QObject *createInputContextModule(QQmlEngine *engine, QJSEngine *scriptEn
     return new InputContext(platformInputContext);
 }
 
-QStringList PlatformInputContextPlugin::keys() const
+QStringList QVirtualKeyboardPlugin::keys() const
 {
     return QStringList(QLatin1String(pluginName));
 }
 
-QPlatformInputContext *PlatformInputContextPlugin::create(const QString &system, const QStringList &paramList)
+QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, const QStringList &paramList)
 {
     Q_UNUSED(paramList);
     Q_INIT_RESOURCE(content);
