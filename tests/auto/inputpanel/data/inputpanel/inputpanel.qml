@@ -246,7 +246,7 @@ InputPanel {
         if (keyObj) {
             virtualKeyPressPoint = inputPanel.mapFromItem(keyObj, keyObj.width / 2, keyObj.height / 2)
             testcase.mousePress(inputPanel, virtualKeyPressPoint.x, virtualKeyPressPoint.y)
-            testcase.waitForRendering(inputPanel)
+            testcase.wait(20)
             if (alternativeKey) {
                 alternativeKeysSpy.wait()
                 var keyIndex = keyObj.effectiveAlternativeKeys.indexOf(key)
@@ -329,6 +329,7 @@ InputPanel {
     function virtualKeyClick(key) {
         if (virtualKeyPress(key)) {
             virtualKeyRelease()
+            testcase.waitForRendering(inputPanel)
             return true
         }
         return false
