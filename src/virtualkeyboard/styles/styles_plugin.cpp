@@ -31,7 +31,7 @@
     This module provides styling components for the Qt Virtual Keyboard.
 */
 
-void StylesPlugin::registerTypes(const char *uri)
+void QtVirtualKeyboardStylesPlugin::registerTypes(const char *uri)
 {
     Q_INIT_RESOURCE(styles);
     const QString path(QStringLiteral("qrc:///QtQuick/Enterprise/VirtualKeyboard/Styles/content/"));
@@ -50,7 +50,7 @@ void StylesPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(path + QLatin1String("TraceCanvas.qml")), uri, 2, 0, "TraceCanvas");
 }
 
-void StylesPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+void QtVirtualKeyboardStylesPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
     Q_UNUSED(uri)
     engine->addImageProvider(QStringLiteral("qtvkbsvg"), new SvgImageProvider());

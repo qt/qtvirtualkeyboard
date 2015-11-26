@@ -4,6 +4,11 @@ TARGET = tst_inputpanel
 QT += testlib
 CONFIG += qmltestcase console
 
+static {
+    QT += svg
+    QTPLUGIN += qtvirtualkeyboardplugin
+}
+
 SOURCES += $$PWD/tst_inputpanel.cpp
 
 TESTDATA = $$PWD/data/*

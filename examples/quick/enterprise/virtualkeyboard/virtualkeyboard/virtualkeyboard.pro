@@ -3,6 +3,10 @@ TARGET = virtualkeyboard
 QT += qml quick
 SOURCES += main.cpp
 CONFIG += link_pkgconfig
+static {
+    QT += svg
+    QTPLUGIN += qtvirtualkeyboardplugin
+}
 android-no-sdk|!isEmpty(CROSS_COMPILE) {
     TARGETPATH = /data/user/qt/virtualkeyboard
 } else {

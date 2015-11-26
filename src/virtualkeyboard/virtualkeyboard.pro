@@ -5,7 +5,7 @@ DATAPATH = $$[QT_INSTALL_DATA]/qtvirtualkeyboard
 QMAKE_DOCS = $$PWD/doc/qtvirtualkeyboard.qdocconf
 include(doc/doc.pri)
 
-QT += quick gui gui-private core-private
+QT += qml quick gui gui-private core-private
 
 CONFIG += plugin
 win32 {
@@ -203,6 +203,15 @@ build_pass {
     !debug_and_release:win32:CONFIG(debug, debug|release): TARGET_SUFFIX = d
 }
 
+static {
+    LIBS += \
+        -L$$[QT_INSTALL_QML]/QtQuick.2 -lqtquick2plugin$$TARGET_SUFFIX \
+        -L$$[QT_INSTALL_QML]/QtQuick/Window.2 -lwindowplugin$$TARGET_SUFFIX \
+        -L$$[QT_INSTALL_QML]/QtQuick/Layouts -lqquicklayoutsplugin$$TARGET_SUFFIX \
+        -L$$[QT_INSTALL_QML]/QtQuick/Enterprise/VirtualKeyboard/Styles -lqtvirtualkeyboardstylesplugin$$TARGET_SUFFIX \
+        -L$$[QT_INSTALL_QML]/Qt/labs/folderlistmodel -lqmlfolderlistmodelplugin$$TARGET_SUFFIX
+}
+
 !disable-hunspell {
     exists(3rdparty/hunspell/src/hunspell/hunspell.h) {
         SOURCES += hunspellinputmethod.cpp hunspellinputmethod_p.cpp hunspellworker.cpp
@@ -334,5 +343,6 @@ include(generateresource.pri)
 RESOURCES += $$generate_resource(layouts.qrc, $$LAYOUT_FILES, /QtQuick/Enterprise/VirtualKeyboard)
 
 PLUGIN_TYPE = platforminputcontexts
+PLUGIN_EXTENDS = -
 PLUGIN_CLASS_NAME = QVirtualKeyboardPlugin
 load(qt_plugin)

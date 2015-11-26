@@ -171,6 +171,10 @@ the preferred input method to the configuration, e.g., \c CONFIG+="lang-zh_TW zh
         system, or if it is built using the local project file. Integration can be
         disabled using this option.
 \row
+    \li \e static
+    \li Enables static builds of the virtual keyboard
+    \li This option enables \l {Static build}{static builds}.
+\row
     \li \e retro-style
     \li \e n/a
     \li Enables Retro style
@@ -241,6 +245,37 @@ Alternatively, the Hunspell sources can be extracted into the
 then the dictionary files must also be copied into the
 \e src/virtualkeyboard/3rdparty/hunspell/data directory. Furthermore, if Hunspell
 sources are used, \e hunspell.pro will be used for all targets.
+
+\section2 Static builds
+
+The virtual keyboard can be built and linked statically against the application.
+This implies that Qt is also built statically (using the -static option in the
+configure command line).
+
+Static builds of the virtual keyboard are enabled by adding \c CONFIG+=static to
+the qmake command line and then rebuilding.
+
+Some third party modules used by the virtual keyboard are always built as shared
+libraries. These modules are Hunspell and Lipi Toolkit.
+
+\section3 Using the static plugin
+
+The following section should be added to the application project file that uses the
+statically built virtual keyboard.
+
+\code
+static {
+    QTPLUGIN += qtvirtualkeyboardplugin
+    QT += svg
+}
+\endcode
+
+\c QTPLUGIN causes qmake to pull linker dependencies for the virtual keyboard
+plugin. The SVG module is required as an extra dependency for Qt, since the SVG format is
+required by the default styles.
+
+From here on, using a statically built virtual keyboard is no different from the normal
+case.
 
 \section1 Deployment
 

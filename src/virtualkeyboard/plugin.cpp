@@ -51,6 +51,17 @@
 #include "enterkeyactionattachedtype.h"
 #include "virtualkeyboardsettings.h"
 #include "trace.h"
+#if defined(QT_STATICPLUGIN)
+#include <QtPlugin>
+// This macro is similar to Q_IMPORT_PLUGIN, except it does not
+// register duplicate entries as static plugins.
+// The check is required since the application may already have
+// initialized the plugin by its own dependencies.
+#define Q_VKB_IMPORT_PLUGIN(PLUGIN) \
+        extern const QT_PREPEND_NAMESPACE(QStaticPlugin) qt_static_plugin_##PLUGIN(); \
+        if (!QPluginLoader::staticInstances().contains(qt_static_plugin_##PLUGIN().instance())) \
+            qRegisterStaticPluginFunction(qt_static_plugin_##PLUGIN());
+#endif
 
 using namespace QtVirtualKeyboard;
 
@@ -107,6 +118,14 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
 
     if (!qEnvironmentVariableIsSet(inputMethodEnvVarName) || qgetenv(inputMethodEnvVarName) != pluginName)
         return Q_NULLPTR;
+
+#if defined(QT_STATICPLUGIN)
+    Q_VKB_IMPORT_PLUGIN(QtQuick2Plugin)
+    Q_VKB_IMPORT_PLUGIN(QtQuick2WindowPlugin)
+    Q_VKB_IMPORT_PLUGIN(QtQuickLayoutsPlugin)
+    Q_VKB_IMPORT_PLUGIN(QmlFolderListModelPlugin)
+    Q_VKB_IMPORT_PLUGIN(QtVirtualKeyboardStylesPlugin)
+#endif
 
     qmlRegisterSingletonType<InputContext>(pluginUri, 1, 0, "InputContext", createInputContextModule);
     qmlRegisterSingletonType<InputContext>(pluginUri, 2, 0, "InputContext", createInputContextModule);
