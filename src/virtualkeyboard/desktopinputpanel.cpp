@@ -128,8 +128,7 @@ void DesktopInputPanel::createView()
 #endif
         d->view->setColor(QColor(Qt::transparent));
         d->view->setSource(QUrl("qrc:///QtQuick/Enterprise/VirtualKeyboard/content/InputPanel.qml"));
-        /*  Destroy the view along with the last window in application. */
-        connect(qGuiApp, SIGNAL(lastWindowClosed()), SLOT(destroyView()));
+        connect(qGuiApp, SIGNAL(aboutToQuit()), SLOT(destroyView()));
     }
 }
 
