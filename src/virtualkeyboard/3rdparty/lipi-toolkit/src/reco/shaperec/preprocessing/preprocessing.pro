@@ -1,6 +1,6 @@
 TEMPLATE = lib
 
-CONFIG -= qt
+CONFIG -= qt static
 CONFIG += exceptions
 CONFIG += warn_off
 CONFIG += plugin
