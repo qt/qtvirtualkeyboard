@@ -85,13 +85,71 @@ build targets.
 
 \section2 Configuration Options
 
+The table below contains the top-level options for configuring the virtual
+keyboard features.
+
 \table
 \header
     \li CONFIG
     \li Description
     \li Remarks
 \row
+    \li \e lang-<code>
+    \li Enables the specified language
+    \li The specified language can be activated using \e lang-<code> option, which
+        has the format "language[_country]", where:
+        \list
+            \li language is a lowercase, two-letter, ISO 639 language code
+            \li country is an uppercase, two-letter, ISO 3166 country code
+        \endlist
+
+        This option can be used to define the language support as required. The virtual
+        keyboard can support one or more languages at a time.
+
+        For example, \c CONFIG+=lang-fi activates the Finnish language.
+
+        The virtual keyboard automatically includes the English language if no other languages
+        are specified.
+\row
+    \li \e lang-all
+    \li Enables all the languages
+    \li Enables all the languages supported by the virtual keyboard. This flag is essentially
+        an alias for \c {CONFIG+="lang-ar_AR lang-da_DK lang-de_DE lang-en_GB lang-es_ES
+        lang-fa_FA lang-fi_FI lang-fr_FR lang-hi_IN lang-it_IT lang-ja_JP lang-ko_KR lang-nb_NO
+        lang-pl_PL lang-pt_PT lang-ru_RU lang-sv_SE lang-zh_CN lang-zh_TW"}
+\row
+    \li \e handwriting
+    \li Enables handwriting input
+    \li This flag enables handwriting input using the first engine available at
+        build time in the following order: \c t9write, \c lipi-toolkit. To enable handwriting
+        input using a specific engine, use the feature-specific configuration instead.
+        For example, \c CONFIG+=lipi-toolkit.
+\row
+    \li \e arrow-key-navigation
+    \li Enables arrow key navigation for the keyboard
+    \li Allows controlling the keyboard using the arrow and return keys.
+\endtable
+
+\section3 Advanced Configuration Options
+
+The table below shows the advanced configuration options that will be applied
+automatically when activating a certain top-level feature. The options can also be
+used for enabling or disabling a specific feature.
+
+In most cases, these options are not needed, but there are also cases where their use is
+justified. For example, the Traditional Chinese language (CONFIG=lang-zh_TW) will include
+both Zhuyin and Cangjie input methods by default. This behavior can be changed by adding
+the preferred input method to the configuration, e.g., \c CONFIG+="lang-zh_TW zhuyin".
+
+\table
+\header
+    \li Advanced CONFIG
+    \li Top-level CONFIG
+    \li Description
+    \li Remarks
+\row
     \li \e disable-desktop
+    \li \e n/a
     \li Disables Desktop integration
     \li By default, the desktop integration is enabled when the target environment
         is X11 or Windows desktop. With this option, the desktop integration can be
@@ -102,62 +160,67 @@ build targets.
         InputPanel before the focus is set to an input field.
 \row
     \li \e disable-xcb
+    \li \e n/a
     \li Disables X11 integration
     \li \note Deprecated since 1.3. Use \e disable-desktop instead.
 \row
     \li \e disable-hunspell
+    \li \e n/a
     \li Disables Hunspell integration
     \li Hunspell integration is enabled if the Hunspell library is available on the
         system, or if it is built using the local project file. Integration can be
         disabled using this option.
 \row
     \li \e retro-style
+    \li \e n/a
     \li Enables Retro style
     \li Changes the default keyboard style to the Retro style. Both styles are still
         included in the package, but this option allows you to change the built-in
         default style.
 \row
     \li \e pinyin
+    \li \e lang-zh_CN
     \li Enables the Pinyin input method for Simplified Chinese.
     \li This option activates the Pinyin input method for the Simplified Chinese
-        language and disables all other default languages, except English.
+        language.
 \row
     \li \e tcime
+    \li \e lang-zh_TW
     \li Enables the both Cangjie and Zhuyin input methods for Traditional Chinese.
-    \li This option activates the both Cangjie and Zhuyin input methods for the Traditional Chinese
-        language and disables all other default languages, except English.
+    \li This option activates the both Cangjie and Zhuyin input methods for the
+        Traditional Chinese language.
 \row
     \li \e cangjie
+    \li \e lang-zh_TW
     \li Enables the Cangjie input method for Traditional Chinese.
     \li This option activates the Cangjie input method for the Traditional Chinese
-        language and disables all other default languages, except English.
+        language.
 \row
     \li \e zhuyin
+    \li \e lang-zh_TW
     \li Enables the Zhuyin input method for Traditional Chinese.
     \li This option activates the Zhuyin input method for the Traditional Chinese
-        language and disables all other default languages, except English.
+        language.
 \row
     \li \e hangul
+    \li \e lang-ko_KR
     \li Enables the Hangul input method for Korean.
-    \li This option activates the Hangul input method for the Korean
-        language and disables all other default languages, except English.
+    \li This option activates the Hangul input method for the Korean language.
 \row
     \li \e openwnn
+    \li \e lang-ja_JP
     \li Enables the OpenWnn input method for Japanese.
-    \li This option activates the OpenWnn input method for the Japanese
-        language and disables all other default languages, except English.
+    \li This option activates the OpenWnn input method for the Japanese language.
 \row
     \li \e lipi-toolkit
+    \li \e handwriting
     \li Enables the handwriting input method using Lipi Toolkit.
     \li Handwriting recognition is based on the open source Lipi Toolkit.
 \row
     \li \e t9write
+    \li \e handwriting
     \li Enables the handwriting input method using T9 Write.
     \li Handwriting recognition is based on the commercial T9 Write product from Nuance Communications.
-\row
-    \li \e arrow-key-navigation
-    \li Enables arrow key navigation for the keyboard
-    \li Allows controlling the keyboard using the arrow and return keys.
 \endtable
 
 \section2 Building Documentation

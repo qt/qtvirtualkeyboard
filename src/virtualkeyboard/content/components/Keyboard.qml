@@ -329,17 +329,6 @@ Item {
     Connections {
         target: layoutsModel
         onCountChanged: {
-            // Update available locales
-            var availableLocales = []
-            for (var i = 0; i < layoutsModel.count; i++) {
-                var availableLocale = layoutsModel.get(i, "fileName")
-                if (Qt.locale(availableLocale).name !== "C")
-                    availableLocales.push(availableLocale)
-            }
-            availableLocales.sort()
-            InputContext.updateAvailableLocales(availableLocales)
-
-            // Update default locale
             updateDefaultLocale()
             localeIndex = defaultLocaleIndex
         }
@@ -951,35 +940,68 @@ Item {
     }
 
     function updateDefaultLocale() {
+        updateAvailableLocaleIndices()
         if (layoutsModel.count > 0) {
-            var newDefaultLocaleIndex = -1
+            var defaultLocales = []
             if (isValidLocale(VirtualKeyboardSettings.locale))
-                newDefaultLocaleIndex = findLocale(VirtualKeyboardSettings.locale, -1)
-            if (newDefaultLocaleIndex === -1 && isValidLocale(InputContext.locale))
-                newDefaultLocaleIndex = findLocale(InputContext.locale, -1)
-            if (newDefaultLocaleIndex === -1 && VirtualKeyboardSettings.activeLocales.length > 0 && isValidLocale(VirtualKeyboardSettings.activeLocales[0]))
-                newDefaultLocaleIndex = findLocale(VirtualKeyboardSettings.activeLocales[0], -1)
-            if (newDefaultLocaleIndex === -1)
-                newDefaultLocaleIndex = findLocale("en_GB", -1)
+                defaultLocales.push(VirtualKeyboardSettings.locale)
+            if (isValidLocale(InputContext.locale))
+                defaultLocales.push(InputContext.locale)
+            if (VirtualKeyboardSettings.activeLocales.length > 0 && isValidLocale(VirtualKeyboardSettings.activeLocales[0]))
+                defaultLocales.push(VirtualKeyboardSettings.activeLocales[0])
+            if (VirtualKeyboardSettings.availableLocales.indexOf("en_GB") !== -1)
+                defaultLocales.push("en_GB")
+            if (availableLocaleIndices.length > 0)
+                defaultLocales.push(layoutsModel.get(availableLocaleIndices[0], "fileName"))
+            var newDefaultLocaleIndex = -1
+            for (var i = 0; i < defaultLocales.length; i++) {
+                newDefaultLocaleIndex = findLocale(defaultLocales[i], -1)
+                if (availableLocaleIndices.indexOf(newDefaultLocaleIndex) !== -1)
+                    break;
+                newDefaultLocaleIndex = -1
+            }
             defaultLocaleIndex = newDefaultLocaleIndex
         } else {
             defaultLocaleIndex = -1
         }
-        updateAvailableLocaleIndices()
     }
 
     function updateAvailableLocaleIndices() {
-        // Update list of all available locale indices
+        // Update list of all available locales
+        var baseLayoutIndex = findLocale("en_GB", -1)
         var newIndices = []
+        var newAvailableLocales = []
         for (var i = 0; i < layoutsModel.count; i++) {
-            if (isValidLocale(i) && newIndices.indexOf(i) === -1)
+            var localeName = layoutsModel.get(i, "fileName")
+            if (isValidLocale(i) && newIndices.indexOf(i) === -1 && findLayout(localeName, "main")) {
                 newIndices.push(i)
+                newAvailableLocales.push(localeName)
+            }
         }
+
+        // Handle case where the VirtualKeyboardSettings.activeLocales contains no valid entries
+        if (newIndices.length === 0) {
+            if (baseLayoutIndex !== -1) {
+                newIndices.push(baseLayoutIndex)
+                newAvailableLocales.push("en_GB")
+            } else {
+                for (i = 0; i < layoutsModel.count; i++) {
+                    localeName = layoutsModel.get(i, "fileName")
+                    if (Qt.locale(localeName).name !== "C" && findLayout(localeName, "main")) {
+                        newIndices.push(i)
+                        newAvailableLocales.push(localeName)
+                        break
+                    }
+                }
+            }
+        }
+
         newIndices.sort(function(a, b) { return a - b })
         availableLocaleIndices = newIndices
+        newAvailableLocales.sort()
+        InputContext.updateAvailableLocales(newAvailableLocales)
 
         // Update list of custom locale indices
-        var baseLayoutIndex = findLocale("en_GB", -1)
         newIndices = []
         for (i = 0; i < availableLocaleIndices.length; i++) {
             if (availableLocaleIndices[i] === localeIndex || (availableLocaleIndices[i] !== baseLayoutIndex && layoutExists(layoutsModel.get(availableLocaleIndices[i], "fileName"), layoutType)))

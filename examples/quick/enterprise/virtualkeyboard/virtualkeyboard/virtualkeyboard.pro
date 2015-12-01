@@ -24,7 +24,7 @@ OTHER_FILES += \
     content/TextField.qml \
 
 disable-xcb {
-    message(The disable-xcb option has been deprecated. Please use disable-desktop instead.)
+    message("The disable-xcb option has been deprecated. Please use disable-desktop instead.")
     CONFIG += disable-desktop
 }
 

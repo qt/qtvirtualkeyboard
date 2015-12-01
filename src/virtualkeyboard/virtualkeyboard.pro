@@ -15,7 +15,9 @@ win32 {
     QMAKE_TARGET_DESCRIPTION = "Virtual Keyboard for Qt."
 }
 
-!contains(CONFIG, no-pkg-config): CONFIG += link_pkgconfig
+!no-pkg-config: CONFIG += link_pkgconfig
+
+include(../config.pri)
 
 SOURCES += platforminputcontext.cpp \
     inputcontext.cpp \
@@ -57,16 +59,111 @@ RESOURCES += \
     content/styles/retro/retro_style.qrc \
     content/content.qrc
 
-!tcime {
-    cangjie: CONFIG += tcime
-    zhuyin: CONFIG += tcime
-}
+LAYOUT_FILES += \
+    content/layouts/en_GB/dialpad.qml \
+    content/layouts/en_GB/digits.qml \
+    content/layouts/en_GB/handwriting.qml \
+    content/layouts/en_GB/numbers.qml \
+    content/layouts/en_GB/symbols.qml
 
-pinyin: RESOURCES += content/layouts_pinyin.qrc
-contains(CONFIG, tcime): RESOURCES += content/layouts_traditional_chinese.qrc
-hangul: RESOURCES += content/layouts_hangul.qrc
-openwnn: RESOURCES += content/layouts_japanese.qrc
-!contains(CONFIG, tcime):!pinyin:!hangul:!openwnn: RESOURCES += content/layouts.qrc
+contains(CONFIG, lang-en.*) {
+    LAYOUT_FILES += \
+        content/layouts/en_GB/main.qml
+}
+contains(CONFIG, lang-ar.*) {
+    LAYOUT_FILES += \
+        content/layouts/ar_AR/digits.qml \
+        content/layouts/ar_AR/main.qml \
+        content/layouts/ar_AR/numbers.qml \
+        content/layouts/ar_AR/symbols.qml
+}
+contains(CONFIG, lang-da.*) {
+    LAYOUT_FILES += \
+        content/layouts/da_DK/main.qml \
+        content/layouts/da_DK/symbols.qml
+}
+contains(CONFIG, lang-de.*) {
+    LAYOUT_FILES += \
+        content/layouts/de_DE/main.qml \
+        content/layouts/de_DE/symbols.qml
+}
+contains(CONFIG, lang-es.*) {
+    LAYOUT_FILES += \
+        content/layouts/es_ES/main.qml \
+        content/layouts/es_ES/symbols.qml
+}
+contains(CONFIG, lang-fa.*) {
+    LAYOUT_FILES += \
+        content/layouts/fa_FA/digits.qml \
+        content/layouts/fa_FA/main.qml \
+        content/layouts/fa_FA/numbers.qml \
+        content/layouts/fa_FA/symbols.qml
+}
+contains(CONFIG, lang-fi.*) {
+    LAYOUT_FILES += \
+        content/layouts/fi_FI/main.qml \
+        content/layouts/fi_FI/symbols.qml
+}
+contains(CONFIG, lang-fr.*) {
+    LAYOUT_FILES += \
+        content/layouts/fr_FR/main.qml \
+        content/layouts/fr_FR/symbols.qml
+}
+contains(CONFIG, lang-hi.*) {
+    LAYOUT_FILES += \
+        content/layouts/hi_IN/main.qml \
+        content/layouts/hi_IN/symbols.qml
+}
+contains(CONFIG, lang-it.*) {
+    LAYOUT_FILES += \
+        content/layouts/it_IT/main.qml \
+        content/layouts/it_IT/symbols.qml
+}
+contains(CONFIG, lang-ja.*) {
+    LAYOUT_FILES += \
+        content/layouts/ja_JP/main.qml \
+        content/layouts/ja_JP/symbols.qml
+}
+contains(CONFIG, lang-ko.*) {
+    LAYOUT_FILES += \
+        content/layouts/ko_KR/main.qml \
+        content/layouts/ko_KR/symbols.qml
+}
+contains(CONFIG, lang-nb.*) {
+    LAYOUT_FILES += \
+        content/layouts/nb_NO/main.qml \
+        content/layouts/nb_NO/symbols.qml
+}
+contains(CONFIG, lang-pl.*) {
+    LAYOUT_FILES += \
+        content/layouts/pl_PL/main.qml \
+        content/layouts/pl_PL/symbols.qml
+}
+contains(CONFIG, lang-pt.*) {
+    LAYOUT_FILES += \
+        content/layouts/pt_PT/main.qml \
+        content/layouts/pt_PT/symbols.qml
+}
+contains(CONFIG, lang-ru.*) {
+    LAYOUT_FILES += \
+        content/layouts/ru_RU/main.qml \
+        content/layouts/ru_RU/symbols.qml
+}
+contains(CONFIG, lang-sv.*) {
+    LAYOUT_FILES += \
+        content/layouts/sv_SE/main.qml \
+        content/layouts/sv_SE/symbols.qml
+}
+contains(CONFIG, lang-zh(_CN)?) {
+    LAYOUT_FILES += \
+        content/layouts/zh_CN/main.qml \
+        content/layouts/zh_CN/symbols.qml
+}
+contains(CONFIG, lang-zh(_TW)?) {
+    LAYOUT_FILES += \
+        content/layouts/zh_TW/main.qml \
+        content/layouts/zh_TW/symbols.qml
+}
 
 retro-style {
     DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"retro\\\"
@@ -81,16 +178,11 @@ OTHER_FILES += \
     content/components/*.qml \
     qtvirtualkeyboard.json
 
-disable-xcb {
-    message(The disable-xcb option has been deprecated. Please use disable-desktop instead.)
-    CONFIG += disable-desktop
-}
-
 !disable-desktop:isEmpty(CROSS_COMPILE):!android-no-sdk:!qnx {
     SOURCES += desktopinputpanel.cpp inputview.cpp
     HEADERS += desktopinputpanel.h inputview.h
     DEFINES += QT_VIRTUALKEYBOARD_DESKTOP
-    !contains(CONFIG, no-pkg-config):packagesExist(xcb) {
+    !no-pkg-config:packagesExist(xcb) {
         PKGCONFIG += xcb xcb-xfixes
         DEFINES += QT_VIRTUALKEYBOARD_HAVE_XCB
     }
@@ -113,7 +205,6 @@ build_pass {
 
 !disable-hunspell {
     exists(3rdparty/hunspell/src/hunspell/hunspell.h) {
-        message(Found Hunspell library!)
         SOURCES += hunspellinputmethod.cpp hunspellinputmethod_p.cpp hunspellworker.cpp
         HEADERS += hunspellinputmethod.h hunspellinputmethod_p.h hunspellworker.h
         DEFINES += HAVE_HUNSPELL
@@ -125,16 +216,16 @@ build_pass {
             hunspell_data.path = $$DATAPATH/hunspell
             INSTALLS += hunspell_data
         } else {
-            error(Hunspell dictionaries are missing! Please copy .dic and .aff files to src/virtualkeyboard/3rdparty/hunspell/data directory.)
+            error("Hunspell dictionaries are missing! Please copy .dic and .aff" \
+                  "files to src/virtualkeyboard/3rdparty/hunspell/data directory.")
         }
-    } else:!contains(CONFIG, no-pkg-config):packagesExist(hunspell) {
-        message(Found Hunspell package from pkg-config!)
+    } else:!no-pkg-config:packagesExist(hunspell) {
         SOURCES += hunspellinputmethod.cpp hunspellinputmethod_p.cpp hunspellworker.cpp
         HEADERS += hunspellinputmethod.h hunspellinputmethod_p.h hunspellworker.h
         DEFINES += HAVE_HUNSPELL
         PKGCONFIG += hunspell
     } else {
-        message(Hunspell not found! Spell correction will not be available.)
+        message("Hunspell not found! Spell correction will not be available.")
     }
 }
 
@@ -154,23 +245,22 @@ pinyin {
     INSTALLS += pinyin_data
 }
 
-contains(CONFIG, tcime) {
-    !cangjie:!zhuyin: CONFIG += cangjie zhuyin
+tcime {
     SOURCES += \
         tcinputmethod.cpp
     HEADERS += \
         tcinputmethod.h
     DEFINES += HAVE_TCIME
-    contains(CONFIG, cangjie): DEFINES += HAVE_TCIME_CANGJIE
-    contains(CONFIG, zhuyin): DEFINES += HAVE_TCIME_ZHUYIN
+    cangjie: DEFINES += HAVE_TCIME_CANGJIE
+    zhuyin: DEFINES += HAVE_TCIME_ZHUYIN
     INCLUDEPATH += 3rdparty/tcime
     DEPENDPATH += 3rdparty/tcime
     LIBS += -L$$OUT_PWD/3rdparty/tcime/$$SUBPATH -ltcime
     tcime_data.files = \
         $$PWD/3rdparty/tcime/data/qt/dict_phrases.dat
-    contains(CONFIG, cangjie): tcime_data.files += \
+    cangjie: tcime_data.files += \
         $$PWD/3rdparty/tcime/data/qt/dict_cangjie.dat
-    contains(CONFIG, zhuyin): tcime_data.files += \
+    zhuyin: tcime_data.files += \
         $$PWD/3rdparty/tcime/data/qt/dict_zhuyin.dat
     tcime_data.path = $$DATAPATH/tcime
     INSTALLS += tcime_data
@@ -196,7 +286,9 @@ openwnn {
     LIBS += -L$$OUT_PWD/3rdparty/openwnn/$$SUBPATH -lopenwnn
 }
 
-lipi-toolkit:t9write: error("Conflicting configuration flags: lipi-toolkit and t9write. Please use either one, but not both at the same time.")
+lipi-toolkit:t9write: \
+    error("Conflicting configuration flags: lipi-toolkit and t9write." \
+          "Please use either one, but not both at the same time.")
 
 lipi-toolkit {
     CONFIG += exceptions
@@ -220,6 +312,9 @@ lipi-toolkit {
 
 t9write {
     include(3rdparty/t9write/t9write-build.pri)
+    equals(T9WRITE_FOUND, 0): \
+        error("T9Write SDK could not be found. Please make sure you have extracted" \
+              "the contents of the T9Write SDK to $$PWD/3rdparty/t9write")
     SOURCES += \
         t9writeinputmethod.cpp \
         t9writeworker.cpp
@@ -227,14 +322,16 @@ t9write {
         t9writeinputmethod.h \
         t9writeworker.h
     DEFINES += HAVE_T9WRITE
-    INCLUDEPATH += \
-        3rdparty/t9write/$$T9WRITE_BUILD_DIR/api \
-        3rdparty/t9write/$$T9WRITE_BUILD_DIR/public
+    INCLUDEPATH += $$T9WRITE_INCLUDE_DIRS
     LIBS += -L$$OUT_PWD/3rdparty/t9write/$$SUBPATH -lt9write_db
-    LIBS += $$T9WRITE_ALPHABETIC_OBJ
+    LIBS += $$T9WRITE_ALPHABETIC_LIBS
 }
 
 arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
+
+include(generateresource.pri)
+
+RESOURCES += $$generate_resource(layouts.qrc, $$LAYOUT_FILES, /QtQuick/Enterprise/VirtualKeyboard)
 
 PLUGIN_TYPE = platforminputcontexts
 PLUGIN_CLASS_NAME = QVirtualKeyboardPlugin

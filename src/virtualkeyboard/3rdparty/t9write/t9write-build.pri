@@ -13,10 +13,13 @@
     T9WRITE_BUILD_DIR = $$files(build_VC*)
 }
 
-isEmpty(T9WRITE_BUILD_DIR): error(T9Write SDK could not be detected. Please make sure you have extracted the contents of the T9Write SDK to $$PWD)
-!count(T9WRITE_BUILD_DIR, 1): error(Conflicting T9Write build directories found: $$T9WRITE_BUILD_DIR)
-
-T9WRITE_ALPHABETIC_OBJ = $$PWD/$$files($$T9WRITE_BUILD_DIR/objects/t9write_alphabetic*.o*)
-
-count(T9WRITE_BUILD_DIR, 0): error(T9Write object file is missing for the target $$T9WRITE_BUILD_DIR)
-!count(T9WRITE_BUILD_DIR, 1): error(Multiple T9Write object files found for the target $$T9WRITE_BUILD_DIR)
+count(T9WRITE_BUILD_DIR, 1) {
+    T9WRITE_FOUND = 1
+    T9WRITE_INCLUDE_DIRS = \
+        $$PWD/$$T9WRITE_BUILD_DIR/api \
+        $$PWD/$$T9WRITE_BUILD_DIR/public
+    T9WRITE_ALPHABETIC_LIBS = \
+        $$PWD/$$files($$T9WRITE_BUILD_DIR/objects/t9write_alphabetic*.o*)
+} else {
+    T9WRITE_FOUND = 0
+}

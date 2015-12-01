@@ -20,6 +20,6 @@ T9WRITE_RESOURCE_FILES = \
 # Note: Compression is disabled, because the resource is accessed directly from the memory
 QMAKE_RESOURCE_FLAGS += -no-compress
 
-include(generateresource.prf)
+include(../../generateresource.pri)
 
 RESOURCES += $$generate_resource(t9write_db.qrc, $$T9WRITE_RESOURCE_FILES)

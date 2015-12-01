@@ -181,8 +181,8 @@ InputPanel {
     function setLocale(inputLocale) {
         VirtualKeyboardSettings.locale = inputLocale
         if (["ar", "fa"].indexOf(inputLocale.substring(0, 2)) !== -1)
-            return Qt.inputMethod.locale.name.substring(0, 2) === inputLocale.substring(0, 2)
-        return Qt.inputMethod.locale.name === inputLocale
+            return inputPanel.keyboard.locale.substring(0, 2) === inputLocale.substring(0, 2)
+        return inputPanel.keyboard.locale === inputLocale
     }
 
     function setActiveLocales(activeLocales) {
@@ -267,6 +267,10 @@ InputPanel {
     }
 
     function multiLayoutKeyActionHelper(key, keyActionOnCurrentLayoutCb) {
+        if (!keyboardLayoutLoader.item) {
+            console.warn("Key not found \\u%1 (keyboard layout not loaded)".arg(key.charCodeAt(0).toString(16)))
+            return false
+        }
         var success = keyActionOnCurrentLayoutCb(key)
         for (var c = 0; !success && c < 2; c++) {
             // Check if the current layout contains multiple layouts

@@ -4,6 +4,8 @@ SUBDIRS += \
     virtualkeyboard \
     virtualkeyboard/styles
 
+include(config.pri)
+
 !disable-hunspell:exists(virtualkeyboard/3rdparty/hunspell/src/hunspell/hunspell.h) {
     SUBDIRS += virtualkeyboard/3rdparty/hunspell
     virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-hunspell
@@ -19,12 +21,7 @@ pinyin {
     virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-pinyin
 }
 
-!tcime {
-    cangjie: CONFIG += tcime
-    zhuyin: CONFIG += tcime
-}
-
-contains(CONFIG, tcime) {
+tcime {
     SUBDIRS += virtualkeyboard/3rdparty/tcime
     virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-tcime
 }
