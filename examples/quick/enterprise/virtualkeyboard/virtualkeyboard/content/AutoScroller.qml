@@ -29,6 +29,8 @@ Item {
     property var inputItem: InputContext.inputItem
 
     onInputItemChanged: {
+        innerFlickable = null
+        outerFlickable = null
         if (inputItem !== null) {
             var parent_ = inputItem.parent
             while (parent_) {
@@ -86,12 +88,12 @@ Item {
     }
     Connections {
         ignoreUnknownSignals: true
-        target: InputContext.inputItem && Qt.inputMethod.animating ? Qt.inputMethod : null
+        target: inputItem && !Qt.inputMethod.animating ? Qt.inputMethod : null
         onKeyboardRectangleChanged: delayedLoading.triggered()
     }
     Connections {
         ignoreUnknownSignals: true
-        target: InputContext.inputItem && InputContext.inputItem.activeFocus ? InputContext.inputItem : null
+        target: inputItem && inputItem.activeFocus ? inputItem : null
         onCursorRectangleChanged: delayedLoading.triggered()
     }
 }

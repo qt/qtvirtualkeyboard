@@ -136,7 +136,4 @@ as it would then overlap with the contents of the application. Also, the
 input panel height will be automatically updated according to the available
 width; the aspect ratio of the input panel is constant.
 
-If the application contains Flickable elements, they will be automatically
-scrolled to the focused element.
-
 */

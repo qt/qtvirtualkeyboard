@@ -21,6 +21,7 @@ RESOURCES += \
 OTHER_FILES += \
     VirtualKeyboard.qml \
     VirtualKeyboard-b2qt.qml \
+    content/AutoScroller.qml \
     content/HandwritingModeButton.qml \
     content/ScrollBar.qml \
     content/TextArea.qml \

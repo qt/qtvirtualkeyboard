@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>VirtualKeyboard-b2qt.qml</file>
         <file>VirtualKeyboard.qml</file>
+        <file>content/AutoScroller.qml</file>
         <file>content/ScrollBar.qml</file>
         <file>content/TextArea.qml</file>
         <file>content/TextBase.qml</file>

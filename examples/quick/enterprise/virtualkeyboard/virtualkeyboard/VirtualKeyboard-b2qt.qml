@@ -124,6 +124,7 @@ Item {
                     }
                 }
             }
+            AutoScroller {}
         }
     }
 }

@@ -56,7 +56,6 @@ Item {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
     }
-    AutoScroller { }
     MouseArea {
         z: -1
         anchors.fill: keyboard
