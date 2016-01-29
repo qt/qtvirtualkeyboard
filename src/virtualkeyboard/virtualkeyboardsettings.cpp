@@ -58,10 +58,17 @@ public:
     {
         QStringList styleImportPathList;
         styleImportPathList << "qrc:/QtQuick/Enterprise/VirtualKeyboard/content/styles/";
-        QStringList importPathList = engine->importPathList();
-        // Add QML import path (Note: the QML base dir is always the last entry in the list)
-        if (!importPathList.isEmpty())
-            styleImportPathList << importPathList.last() + "/QtQuick/Enterprise/VirtualKeyboard/Styles/";
+        const QStringList importPathList = engine->importPathList();
+        // Add QML import path (Note: the QML base dir is usually the last entry in the list)
+        for (int i = importPathList.size() - 1; i >= 0; --i) {
+            const QString stylesPath = importPathList.at(i)
+                + QStringLiteral("/QtQuick/Enterprise/VirtualKeyboard/Styles/");
+            if (QFileInfo(stylesPath).isDir()) {
+                styleImportPathList += stylesPath;
+                break;
+            }
+        }
+
         foreach (const QString &styleImportPath, styleImportPathList) {
             QString filePath = buildStyleFilePath(styleImportPath, name);
             bool pathExist = false;
