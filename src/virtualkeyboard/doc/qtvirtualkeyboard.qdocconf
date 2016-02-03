@@ -1,14 +1,8 @@
-include($QT_INSTALL_DOCS/global/macros.qdocconf)
-include($QT_INSTALL_DOCS/global/compat.qdocconf)
-include($QT_INSTALL_DOCS/global/fileextensions.qdocconf)
-include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)
-include($QT_INSTALL_DOCS/global/qt-cpp-defines.qdocconf)
+include($QT_INSTALL_DOCS/global/qt-module-defaults.qdocconf)
 
 project = QtVirtualKeyboard
 description = Qt Virtual Keyboard
-url = http://doc.qt.io/QtVirtualKeyboard/
-
-version = 2.0
+version = $QT_VERSION
 
 headerdirs  += ..
 sourcedirs  += ..
@@ -16,11 +10,9 @@ excludedirs += ../content/layouts \
     ../3rdparty
 
 # Specify the install path under QT_INSTALL_EXAMPLES
-# Examples will be installed under quick/enterprise/virtualkeyboard -
-# 'enterprise/virtualkeyboard' subdirectory is given as part of \example commands
 exampledirs += ../../../examples/quick \
     snippets
-examplesinstallpath = quick
+examplesinstallpath = qtvirtualkeyboard/quick
 imagedirs += images
 
 depends += qtcore qtgui qtquick
@@ -28,14 +20,14 @@ depends += qtcore qtgui qtquick
 qhp.projects = QtVirtualKeyboard
 
 qhp.QtVirtualKeyboard.file          = qtvirtualkeyboard.qhp
-qhp.QtVirtualKeyboard.namespace     = com.digia.qtvirtualkeyboard.200
+qhp.QtVirtualKeyboard.namespace     = org.qt-project.qtvirtualkeyboard.$QT_VERSION_TAG
 qhp.QtVirtualKeyboard.virtualFolder = qtvirtualkeyboard
 qhp.QtVirtualKeyboard.indexTitle    = Qt Virtual Keyboard
 qhp.QtVirtualKeyboard.indexRoot     =
 
-qhp.QtVirtualKeyboard.filterAttributes                  = qtvirtualkeyboard 2.0 qtrefdoc
-qhp.QtVirtualKeyboard.customFilters.Qt.name             = QtVirtualKeyboard 2.0
-qhp.QtVirtualKeyboard.customFilters.Qt.filterAttributes = qtvirtualkeyboard 2.0
+qhp.QtVirtualKeyboard.filterAttributes                  = qtvirtualkeyboard $QT_VERSION qtrefdoc
+qhp.QtVirtualKeyboard.customFilters.Qt.name             = QtVirtualKeyboard $QT_VERSION
+qhp.QtVirtualKeyboard.customFilters.Qt.filterAttributes = qtvirtualkeyboard $QT_VERSION
 
 qhp.QtVirtualKeyboard.subprojects = classes qmltypes examples
 

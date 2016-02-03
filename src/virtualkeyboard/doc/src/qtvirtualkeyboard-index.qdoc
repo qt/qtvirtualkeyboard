@@ -29,7 +29,7 @@
 
 /*!
     \title Qt Virtual Keyboard
-    \page index.html
+    \page qtvirtualkeyboard-index.html
 
     The Qt Virtual Keyboard project provides an input framework and reference
     keyboard frontend for Qt 5 on Linux Desktop/X11 or Boot2Qt targets.
