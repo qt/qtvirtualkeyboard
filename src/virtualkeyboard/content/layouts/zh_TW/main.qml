@@ -191,7 +191,8 @@ KeyboardLayoutLoader {
                 }
                 ModeKey {
                     visible: InputContext.inputEngine.inputModes.indexOf(InputEngine.Zhuyin) !== -1
-                    displayText: "\u6CE8\u97F3"
+                    // Cangjie
+                    displayText: "\u5009\u9821"
                     onClicked: InputContext.inputEngine.inputMode = InputEngine.Zhuyin
                 }
                 SpaceKey {
@@ -416,7 +417,8 @@ KeyboardLayoutLoader {
                 }
                 ModeKey {
                     visible: InputContext.inputEngine.inputModes.indexOf(InputEngine.Cangjie) !== -1
-                    displayText: "\u5009\u9821"
+                    // Zhuyin
+                    displayText: "\u6CE8\u97F3"
                     onClicked: InputContext.inputEngine.inputMode = InputEngine.Cangjie
                 }
                 SpaceKey {
