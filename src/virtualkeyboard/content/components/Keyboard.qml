@@ -1004,7 +1004,10 @@ Item {
         // Update list of custom locale indices
         newIndices = []
         for (i = 0; i < availableLocaleIndices.length; i++) {
-            if (availableLocaleIndices[i] === localeIndex || (availableLocaleIndices[i] !== baseLayoutIndex && layoutExists(layoutsModel.get(availableLocaleIndices[i], "fileName"), layoutType)))
+            if (availableLocaleIndices[i] === localeIndex ||
+                    ((availableLocaleIndices[i] !== baseLayoutIndex ||
+                      (layoutType === "handwriting" && availableLocaleIndices.indexOf(baseLayoutIndex) !== -1)) &&
+                     layoutExists(layoutsModel.get(availableLocaleIndices[i], "fileName"), layoutType)))
                 newIndices.push(availableLocaleIndices[i])
         }
         availableCustomLocaleIndices = newIndices
