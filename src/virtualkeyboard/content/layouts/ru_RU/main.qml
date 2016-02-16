@@ -183,6 +183,9 @@ KeyboardLayout {
         ChangeLanguageKey {
             weight: 154
         }
+        HandwritingModeKey {
+            weight: 154
+        }
         SpaceKey {
             weight: 864
         }
