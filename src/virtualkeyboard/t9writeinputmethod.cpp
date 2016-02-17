@@ -288,7 +288,7 @@ public:
 
         int isLanguageSupported = 0;
         decumaDatabaseIsLanguageSupported(sessionSettings.pStaticDB, language, &isLanguageSupported);
-        if (language == DECUMA_LANG_GSMDEFAULT) {
+        if (!isLanguageSupported) {
             qWarning() << "Handwriting input does not support the language" << locale.name();
             return false;
         }
