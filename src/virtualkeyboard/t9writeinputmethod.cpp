@@ -338,6 +338,9 @@ public:
                     symbolCategories.append(DECUMA_CATEGORY_BASIC_PUNCTUATIONS);
                     symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
                 }
+
+                if (language == DECUMA_LANG_ES)
+                    symbolCategories.append(DECUMA_CATEGORY_SPANISH_PUNCTUATIONS);
             }
             break;
 
