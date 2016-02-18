@@ -272,13 +272,35 @@ InputEngine::wordCandidateListModel property.
 Since version 2.0 of the virtual keyboard, input methods can consume
 touch input data from touch screens or other input devices.
 
+Handwriting recognition works on the same principle as handling of
+normal keyboard input, i.e. input data is collected by the keyboard layout
+and transferred by the input engine to the input method for further processing.
+
+In case of a regular keyboard, the amount of data transferred from the keyboard
+to input method is minimal (namely the keycode and text), but in the case of
+handwriting recognition the data volume is much bigger. Therefore, the touch
+input is stored in a particular data model.
+
+The input method does not participate in the actual collection of touch data.
+However, the input method has full control over touch input since it can
+either accept or reject touch. This allows for precise control over how many
+fingers can be used simultaneously.
+
+The input method can collect as many traces as it deems necessary and begin
+processing them at will. The processing can even be performed in parallel with
+the touch input, although it is not recommended because of the potential side
+effects. A recommended way is to start processing in a background thread
+after a suitable delay, so that it does not negatively affect the performance
+of the user interface.
+
 \section2 Data Model for the Handwriting Input
 
 The data collected from the input source is stored in an object named QtVirtualKeyboard::Trace (C++) or \l Trace (QML).
 
-By definition, a trace is a set of points collected from a single point of contact.
-In addition to point data, the trace may also include data from other channels,
-such as the time for each data point.
+By definition, \e trace is a set of data collected in one touch. In addition to
+the basic coordinate data, it can also include other types of data, such as
+the time of each data point. The input method can define the desired input channels
+at the beginning of a touch event.
 
 \section2 Trace API for Input Methods
 
@@ -507,6 +529,25 @@ For example:
         }
     }
 \endcode
+
+\section2 Handwriting Keyboard Layout
+
+Each language which supports handwriting recognition must provide a
+special keyboard layout named \e handwriting.qml.
+
+This type of keyboard layout must meet the following requirements:
+\list
+\li contains a TraceInputKey in the keyboard layout
+\li provides an instance of HandwritingInputMethod as the input method.
+\endlist
+
+The handwriting layout may also include ChangeLanguageKey. For this purpose, it is
+important to use the \l {ChangeLanguageKey::customLayoutsOnly} {customLayoutsOnly} attribute, which will filter out languages
+that do not use handwriting.
+
+Both the main and handwriting layouts should contain a key to activate
+and deactivate the handwriting input mode. This can be done by adding a
+HandwritingModeKey to the layout.
 
 \section1 Keyboard Styles
 

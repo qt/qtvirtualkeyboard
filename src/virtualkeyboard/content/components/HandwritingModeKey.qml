@@ -31,6 +31,9 @@ import QtQuick 2.0
     \brief Hand writing mode key for keyboard layouts.
 
     This key toggles between the handwriting mode layout and the main layout.
+
+    The key is automatically hidden from the keyboard layout if handwriting support
+    is not enabled for the virtual keyboard.
 */
 
 Key {
