@@ -296,7 +296,7 @@ public:
 
         int isLanguageSupported = 0;
         decumaDatabaseIsLanguageSupported(sessionSettings.pStaticDB, language, &isLanguageSupported);
-        if (language == DECUMA_LANG_GSMDEFAULT) {
+        if (!isLanguageSupported) {
             qWarning() << "Handwriting input does not support the language" << locale.name();
             return false;
         }
@@ -346,6 +346,9 @@ public:
                     symbolCategories.append(DECUMA_CATEGORY_BASIC_PUNCTUATIONS);
                     symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
                 }
+
+                if (language == DECUMA_LANG_ES)
+                    symbolCategories.append(DECUMA_CATEGORY_SPANISH_PUNCTUATIONS);
             }
             break;
 
