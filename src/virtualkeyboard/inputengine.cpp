@@ -372,9 +372,9 @@ void InputEngine::setInputMethod(AbstractInputMethod *inputMethod)
             d->inputMethod->setTextCase(d->textCase);
 
             // Allocate selection lists for the input method
-            QList<SelectionListModel::Type> activeSelectionLists = d->inputMethod->selectionLists();
+            const QList<SelectionListModel::Type> activeSelectionLists = d->inputMethod->selectionLists();
             QList<SelectionListModel::Type> inactiveSelectionLists = d->selectionListModels.keys();
-            foreach (const SelectionListModel::Type &selectionListType, activeSelectionLists) {
+            for (const SelectionListModel::Type &selectionListType : activeSelectionLists) {
                 if (!d->selectionListModels.contains(selectionListType)) {
                     d->selectionListModels[selectionListType] = new SelectionListModel(this);
                     if (selectionListType == SelectionListModel::WordCandidateList) {
@@ -389,7 +389,7 @@ void InputEngine::setInputMethod(AbstractInputMethod *inputMethod)
             }
 
             // Deallocate inactive selection lists
-            foreach (const SelectionListModel::Type &selectionListType, inactiveSelectionLists) {
+            for (const SelectionListModel::Type &selectionListType : qAsConst(inactiveSelectionLists)) {
                 if (d->selectionListModels.contains(selectionListType)) {
                     d->selectionListModels[selectionListType]->setDataSource(0, selectionListType);
                     if (selectionListType == SelectionListModel::WordCandidateList) {
@@ -418,9 +418,8 @@ QList<int> InputEngine::inputModes() const
         return QList<int>();
     }
     QList<int> resultList;
-    foreach (const InputMode &inputMode, inputModeList) {
+    for (const InputMode &inputMode : qAsConst(inputModeList))
         resultList.append(inputMode);
-    }
     return resultList;
 }
 
@@ -475,7 +474,7 @@ QList<int> InputEngine::patternRecognitionModes() const
     if (patterRecognitionModeList.isEmpty())
         return QList<int>();
     QList<int> resultList;
-    foreach (const PatternRecognitionMode &patternRecognitionMode, patterRecognitionModeList)
+    for (const PatternRecognitionMode &patternRecognitionMode : qAsConst(patterRecognitionModeList))
         resultList.append(patternRecognitionMode);
     return resultList;
 }

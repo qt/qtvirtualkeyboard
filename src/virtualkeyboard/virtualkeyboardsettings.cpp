@@ -77,7 +77,7 @@ public:
             }
         }
 
-        foreach (const QString &styleImportPath, styleImportPathList) {
+        for (const QString &styleImportPath : qAsConst(styleImportPathList)) {
             QString filePath = buildStyleFilePath(styleImportPath, name);
             bool pathExist = false;
 #ifdef COMPILING_QML

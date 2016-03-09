@@ -85,7 +85,7 @@ bool HunspellInputMethodPrivate::createHunspell(const QString &locale)
                 << QStringLiteral("/usr/share/myspell/dicts")
 #endif
                    ;
-        foreach (const QString &defaultPath, defaultPaths) {
+        for (const QString &defaultPath : defaultPaths) {
             if (!searchPaths.contains(defaultPath))
                 searchPaths.append(defaultPath);
         }

@@ -653,7 +653,7 @@ public:
     int countActiveTraces() const
     {
         int count = 0;
-        foreach (Trace *trace, traceList) {
+        for (Trace *trace : qAsConst(traceList)) {
             if (!trace->isFinal())
                 count++;
         }
@@ -674,7 +674,7 @@ public:
         DECUMA_UINT32 arcID = (DECUMA_UINT32)trace->traceId();
         DECUMA_STATUS status;
 
-        foreach (const QVariant &p, points) {
+        for (const QVariant &p : points) {
             const QPoint pt(p.toPointF().toPoint());
             status = decumaAddPoint(decumaSession, (DECUMA_COORD)pt.x(),(DECUMA_COORD)pt.y(), arcID);
             Q_ASSERT(status == decumaNoError);

@@ -51,7 +51,7 @@ QPixmap SvgImageProvider::requestPixmap(const QString &id, QSize *size, const QS
         const QString query = request.query();
         const QStringList paramList = query.split(QChar('&'), QString::SkipEmptyParts);
         QVariantMap params;
-        foreach (const QString &param, paramList) {
+        for (const QString &param : paramList) {
             QStringList keyValue = param.split(QChar('='), QString::SkipEmptyParts);
             if (keyValue.length() == 2)
                 params[keyValue[0]] = keyValue[1];
