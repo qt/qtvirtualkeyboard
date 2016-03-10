@@ -235,6 +235,7 @@ QList<InputEngine::InputMode> InputMethod::inputModes(const QString &locale)
                               Q_ARG(QVariant, locale));
     QList<InputEngine::InputMode> inputModeList;
     const auto resultList = result.toList();
+    inputModeList.reserve(resultList.size());
     for (const QVariant &inputMode : resultList)
         inputModeList.append(static_cast<InputEngine::InputMode>(inputMode.toInt()));
     return inputModeList;
@@ -277,6 +278,7 @@ QList<SelectionListModel::Type> InputMethod::selectionLists()
                               Q_RETURN_ARG(QVariant, result));
     QList<SelectionListModel::Type> selectionListsList;
     const auto resultList = result.toList();
+    selectionListsList.reserve(resultList.size());
     for (const QVariant &selectionListType : resultList)
         selectionListsList.append(static_cast<SelectionListModel::Type>(selectionListType.toInt()));
 
@@ -320,6 +322,7 @@ QList<InputEngine::PatternRecognitionMode> InputMethod::patternRecognitionModes(
                               Q_RETURN_ARG(QVariant, result));
     QList<InputEngine::PatternRecognitionMode> patterRecognitionModeList;
     const auto resultList = result.toList();
+    patterRecognitionModeList.reserve(resultList.size());
     for (const QVariant &patterRecognitionMode : resultList)
         patterRecognitionModeList.append(static_cast<InputEngine::PatternRecognitionMode>(patterRecognitionMode.toInt()));
 
