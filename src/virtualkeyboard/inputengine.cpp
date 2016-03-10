@@ -414,10 +414,10 @@ QList<int> InputEngine::inputModes() const
     if (d->inputMethod) {
         inputModeList = d->inputMethod->inputModes(d->inputContext->locale());
     }
-    if (inputModeList.isEmpty()) {
-        return QList<int>();
-    }
     QList<int> resultList;
+    if (inputModeList.isEmpty()) {
+        return resultList;
+    }
     resultList.reserve(inputModeList.size());
     for (const InputMode &inputMode : qAsConst(inputModeList))
         resultList.append(inputMode);
@@ -472,9 +472,9 @@ QList<int> InputEngine::patternRecognitionModes() const
     QList<PatternRecognitionMode> patterRecognitionModeList;
     if (d->inputMethod)
         patterRecognitionModeList = d->inputMethod->patternRecognitionModes();
-    if (patterRecognitionModeList.isEmpty())
-        return QList<int>();
     QList<int> resultList;
+    if (patterRecognitionModeList.isEmpty())
+        return resultList;
     resultList.reserve(patterRecognitionModeList.size());
     for (const PatternRecognitionMode &patternRecognitionMode : qAsConst(patterRecognitionModeList))
         resultList.append(patternRecognitionMode);
