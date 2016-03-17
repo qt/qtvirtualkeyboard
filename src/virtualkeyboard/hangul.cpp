@@ -286,22 +286,12 @@ bool Hangul::isFinal(HangulFinalIndex consonant)
 
 ushort Hangul::findDoubleMedial(HangulMedialIndex vowel)
 {
-    for (QMap<ushort, HangulMedialIndex>::ConstIterator i = doubleMedialMap.constBegin();
-         i != doubleMedialMap.constEnd(); i++) {
-        if (i.value() == vowel)
-            return i.key();
-    }
-    return 0;
+    return doubleFinalMap.key(vowel, 0);
 }
 
 ushort Hangul::findDoubleFinal(HangulFinalIndex consonant)
 {
-    for (QMap<ushort, HangulFinalIndex>::ConstIterator i = doubleFinalMap.constBegin();
-         i != doubleFinalMap.constEnd(); i++) {
-        if (i.value() == consonant)
-            return i.key();
-    }
-    return 0;
+    return doubleFinalMap.key(consonant, 0);
 }
 
 // Packs two Hangul Jamo indices into 16-bit integer.
