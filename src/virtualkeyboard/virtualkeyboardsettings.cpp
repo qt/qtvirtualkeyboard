@@ -84,7 +84,7 @@ public:
             // qtquickcompiler removes *.qml file paths from qrc file, but keeps directories - QTRD-3268
             pathExist = QFileInfo(filePath).dir().exists();
 #else
-            pathExist = QFileInfo(filePath).exists();
+            pathExist = QFileInfo::exists(filePath);
 #endif
             if (pathExist)
                 return buildStyleImportPath(styleImportPath, name);

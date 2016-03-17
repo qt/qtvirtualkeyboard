@@ -255,7 +255,7 @@ int LipiSharedRecognizer::loadLipiEngineConfig()
     s_lipiEngineConfigEntries.clear();
 
     const QString &lipiEngineConfigFile(QDir::toNativeSeparators(QString("%1/projects/lipiengine.cfg").arg(s_lipiRoot)));
-    if (!QFileInfo(lipiEngineConfigFile).exists()) {
+    if (!QFileInfo::exists(lipiEngineConfigFile)) {
         qWarning() << "File not found" << lipiEngineConfigFile;
         return FAILURE;
     }

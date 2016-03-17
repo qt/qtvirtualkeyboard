@@ -621,7 +621,7 @@ public:
                 int fileIndex = 0;
                 do {
                     fileName = fileDir.absoluteFilePath(QStringLiteral("%1_%2_%3.txt").arg(unicode).arg(confidence, 3, 10, QLatin1Char('0')).arg(fileIndex++));
-                } while (QFileInfo(fileName).exists());
+                } while (QFileInfo::exists(fileName));
             }
         }
         QString dataStr(recordedData.join('\n'));
