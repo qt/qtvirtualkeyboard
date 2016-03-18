@@ -286,7 +286,7 @@ bool Hangul::isFinal(HangulFinalIndex consonant)
 
 ushort Hangul::findDoubleMedial(HangulMedialIndex vowel)
 {
-    return doubleFinalMap.key(vowel, 0);
+    return doubleMedialMap.key(vowel, 0);
 }
 
 ushort Hangul::findDoubleFinal(HangulFinalIndex consonant)
