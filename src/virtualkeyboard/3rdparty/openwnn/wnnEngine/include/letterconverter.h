@@ -25,7 +25,9 @@
 #include <QObject>
 #include "composingtext.h"
 
+QT_BEGIN_NAMESPACE
 class QObjectPrivate;
+QT_END_NAMESPACE
 
 class LetterConverter : public QObject
 {
