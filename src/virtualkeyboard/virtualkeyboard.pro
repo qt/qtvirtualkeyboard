@@ -197,7 +197,7 @@ OTHER_FILES += \
     content/components/*.qml \
     qtvirtualkeyboard.json
 
-!disable-desktop:isEmpty(CROSS_COMPILE):!android-no-sdk:!qnx {
+!disable-desktop:isEmpty(CROSS_COMPILE):!qnx {
     SOURCES += desktopinputpanel.cpp inputview.cpp
     HEADERS += desktopinputpanel.h inputview.h
     DEFINES += QT_VIRTUALKEYBOARD_DESKTOP
