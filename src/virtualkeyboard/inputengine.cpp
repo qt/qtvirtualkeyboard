@@ -375,13 +375,14 @@ void InputEngine::setInputMethod(AbstractInputMethod *inputMethod)
             const QList<SelectionListModel::Type> activeSelectionLists = d->inputMethod->selectionLists();
             QList<SelectionListModel::Type> inactiveSelectionLists = d->selectionListModels.keys();
             for (const SelectionListModel::Type &selectionListType : activeSelectionLists) {
-                if (!d->selectionListModels.contains(selectionListType)) {
-                    d->selectionListModels[selectionListType] = new SelectionListModel(this);
+                auto it = d->selectionListModels.find(selectionListType);
+                if (it == d->selectionListModels.end()) {
+                    it = d->selectionListModels.insert(selectionListType, new SelectionListModel(this));
                     if (selectionListType == SelectionListModel::WordCandidateList) {
                         emit wordCandidateListModelChanged();
                     }
                 }
-                d->selectionListModels[selectionListType]->setDataSource(inputMethod, selectionListType);
+                it.value()->setDataSource(inputMethod, selectionListType);
                 if (selectionListType == SelectionListModel::WordCandidateList) {
                     emit wordCandidateListVisibleHintChanged();
                 }
@@ -390,8 +391,9 @@ void InputEngine::setInputMethod(AbstractInputMethod *inputMethod)
 
             // Deallocate inactive selection lists
             for (const SelectionListModel::Type &selectionListType : qAsConst(inactiveSelectionLists)) {
-                if (d->selectionListModels.contains(selectionListType)) {
-                    d->selectionListModels[selectionListType]->setDataSource(0, selectionListType);
+                const auto it = d->selectionListModels.constFind(selectionListType);
+                if (it != d->selectionListModels.cend()) {
+                    it.value()->setDataSource(0, selectionListType);
                     if (selectionListType == SelectionListModel::WordCandidateList) {
                         emit wordCandidateListVisibleHintChanged();
                     }
@@ -458,9 +460,10 @@ SelectionListModel *InputEngine::wordCandidateListModel() const
 bool InputEngine::wordCandidateListVisibleHint() const
 {
     Q_D(const InputEngine);
-    if (!d->selectionListModels.contains(SelectionListModel::WordCandidateList))
+    const auto it = d->selectionListModels.constFind(SelectionListModel::WordCandidateList);
+    if (it == d->selectionListModels.cend())
         return false;
-    return d->selectionListModels[SelectionListModel::WordCandidateList]->dataSource() != 0;
+    return it.value()->dataSource() != 0;
 }
 
 /*!
