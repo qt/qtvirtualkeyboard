@@ -31,12 +31,10 @@
 #define VIRTUALKEYBOARDDEBUG_H
 
 #include <QDebug>
+#include <QLoggingCategory>
 
-//#define QT_VIRTUALKEYBOARD_DEBUG
-#ifdef QT_VIRTUALKEYBOARD_DEBUG
-#  define VIRTUALKEYBOARD_DEBUG qDebug
-#else
-#  define VIRTUALKEYBOARD_DEBUG if (false) qDebug
-#endif
+Q_DECLARE_LOGGING_CATEGORY(qlcVirtualKeyboard)
+
+#define VIRTUALKEYBOARD_DEBUG() qCDebug(qlcVirtualKeyboard)
 
 #endif // VIRTUALKEYBOARDDEBUG_H
