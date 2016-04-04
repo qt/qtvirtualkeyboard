@@ -1,15 +1,6 @@
-TEMPLATE = lib
-CONFIG += staticlib
-TARGET = t9write_db
+TARGET = qtt9write_db
 
-build_pass {
-    CONFIG(debug, debug|release): SUBPATH = debug
-    else: SUBPATH = release
-} else {
-    debug_and_release: CONFIG += build_all
-}
-
-DESTDIR = $$SUBPATH
+CONFIG += static
 
 T9WRITE_LDBS = $$files(databases/XT9_LDBs/*.ldb)
 
@@ -23,3 +14,5 @@ QMAKE_RESOURCE_FLAGS += -no-compress
 include(../../generateresource.pri)
 
 RESOURCES += $$generate_resource(t9write_db.qrc, $$T9WRITE_RESOURCE_FILES)
+
+load(qt_helper_lib)

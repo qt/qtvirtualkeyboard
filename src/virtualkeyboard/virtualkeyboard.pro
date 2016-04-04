@@ -214,17 +214,6 @@ HEADERS += appinputpanel.h
 
 qtquickcompiler: DEFINES += COMPILING_QML
 
-build_pass {
-    CONFIG(debug, debug|release) {
-        SUBPATH = debug
-        win32: TARGET_SUFFIX = d
-    } else {
-        SUBPATH = release
-    }
-} else {
-    !debug_and_release:win32:CONFIG(debug, debug|release): TARGET_SUFFIX = d
-}
-
 static {
     LIBS += \
         -L$$[QT_INSTALL_QML]/QtQuick.2 -lqtquick2plugin$$TARGET_SUFFIX \
@@ -240,7 +229,7 @@ static {
         HEADERS += hunspellinputmethod.h hunspellinputmethod_p.h hunspellworker.h
         DEFINES += HAVE_HUNSPELL
         INCLUDEPATH += 3rdparty/hunspell/src
-        LIBS += -L$$OUT_PWD/3rdparty/hunspell/$$SUBPATH -lhunspell$$TARGET_SUFFIX
+        LIBS += -L$$OUT_PWD/../../lib -lqthunspell$$qtPlatformTargetSuffix()
         exists(3rdparty/hunspell/data) {
             hunspell_data.files = 3rdparty/hunspell/data/*.dic 3rdparty/hunspell/data/*.aff
             hunspell_data.path = $$DATAPATH/hunspell
@@ -268,7 +257,7 @@ pinyin {
         pinyindecoderservice.h
     DEFINES += HAVE_PINYIN
     INCLUDEPATH += 3rdparty/pinyin/include
-    LIBS += -L$$OUT_PWD/3rdparty/pinyin/$$SUBPATH -lpinyin
+    LIBS += -L$$OUT_PWD/../../lib -lqtpinyin$$qtPlatformTargetSuffix()
     pinyin_data.files = $$PWD/3rdparty/pinyin/data/dict_pinyin.dat
     pinyin_data.path = $$DATAPATH/pinyin
     INSTALLS += pinyin_data
@@ -283,7 +272,7 @@ tcime {
     cangjie: DEFINES += HAVE_TCIME_CANGJIE
     zhuyin: DEFINES += HAVE_TCIME_ZHUYIN
     INCLUDEPATH += 3rdparty/tcime
-    LIBS += -L$$OUT_PWD/3rdparty/tcime/$$SUBPATH -ltcime
+    LIBS += -L$$OUT_PWD/../../lib -lqttcime$$qtPlatformTargetSuffix()
     tcime_data.files = \
         $$PWD/3rdparty/tcime/data/qt/dict_phrases.dat
     cangjie: tcime_data.files += \
@@ -310,7 +299,7 @@ openwnn {
     DEFINES += HAVE_OPENWNN
     INCLUDEPATH += 3rdparty/openwnn/wnnEngine/include
     # OpenWNN engine
-    LIBS += -L$$OUT_PWD/3rdparty/openwnn/$$SUBPATH -lopenwnn
+    LIBS += -L$$OUT_PWD/../../lib -lqtopenwnn$$qtPlatformTargetSuffix()
 }
 
 lipi-toolkit:t9write: \
@@ -331,7 +320,10 @@ lipi-toolkit {
     INCLUDEPATH += \
         3rdparty/lipi-toolkit/src/include \
         3rdparty/lipi-toolkit/src/util/lib
-    LIBS += -L$$OUT_PWD/3rdparty/lipi-toolkit/src/lib/$$SUBPATH -lshaperecommon -lltkcommon -lltkutil
+    LIBS += -L$$OUT_PWD/../../lib \
+        -lqtshaperecommon$$qtPlatformTargetSuffix() \
+        -lqtltkcommon$$qtPlatformTargetSuffix() \
+        -lqtltkutil$$qtPlatformTargetSuffix()
     win32: LIBS += Advapi32.lib
     else: LIBS += -ldl
     record-trace-input: DEFINES += QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
@@ -350,7 +342,7 @@ t9write {
         t9writeworker.h
     DEFINES += HAVE_T9WRITE
     INCLUDEPATH += $$T9WRITE_INCLUDE_DIRS
-    LIBS += -L$$OUT_PWD/3rdparty/t9write/$$SUBPATH -lt9write_db
+    LIBS += -L$$OUT_PWD/../../lib -lqtt9write_db$$qtPlatformTargetSuffix()
     LIBS += $$T9WRITE_ALPHABETIC_LIBS
 }
 
