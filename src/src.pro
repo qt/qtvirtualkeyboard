@@ -1,9 +1,5 @@
 TEMPLATE = subdirs
 
-SUBDIRS += \
-    virtualkeyboard \
-    virtualkeyboard/styles
-
 include(config.pri)
 
 !disable-hunspell:exists(virtualkeyboard/3rdparty/hunspell/src/hunspell/hunspell.h) {
@@ -35,3 +31,7 @@ t9write {
     SUBDIRS += virtualkeyboard/3rdparty/t9write
     virtualkeyboard.depends += sub-virtualkeyboard-3rdparty-t9write
 }
+
+SUBDIRS += \
+    virtualkeyboard \
+    virtualkeyboard/styles
