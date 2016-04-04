@@ -240,7 +240,6 @@ static {
         HEADERS += hunspellinputmethod.h hunspellinputmethod_p.h hunspellworker.h
         DEFINES += HAVE_HUNSPELL
         INCLUDEPATH += 3rdparty/hunspell/src
-        DEPENDPATH += 3rdparty/hunspell/src
         LIBS += -L$$OUT_PWD/3rdparty/hunspell/$$SUBPATH -lhunspell$$TARGET_SUFFIX
         exists(3rdparty/hunspell/data) {
             hunspell_data.files = 3rdparty/hunspell/data/*.dic 3rdparty/hunspell/data/*.aff
@@ -269,7 +268,6 @@ pinyin {
         pinyindecoderservice.h
     DEFINES += HAVE_PINYIN
     INCLUDEPATH += 3rdparty/pinyin/include
-    DEPENDPATH += 3rdparty/pinyin/include
     LIBS += -L$$OUT_PWD/3rdparty/pinyin/$$SUBPATH -lpinyin
     pinyin_data.files = $$PWD/3rdparty/pinyin/data/dict_pinyin.dat
     pinyin_data.path = $$DATAPATH/pinyin
@@ -285,7 +283,6 @@ tcime {
     cangjie: DEFINES += HAVE_TCIME_CANGJIE
     zhuyin: DEFINES += HAVE_TCIME_ZHUYIN
     INCLUDEPATH += 3rdparty/tcime
-    DEPENDPATH += 3rdparty/tcime
     LIBS += -L$$OUT_PWD/3rdparty/tcime/$$SUBPATH -ltcime
     tcime_data.files = \
         $$PWD/3rdparty/tcime/data/qt/dict_phrases.dat
@@ -312,7 +309,6 @@ openwnn {
     HEADERS += openwnninputmethod.h
     DEFINES += HAVE_OPENWNN
     INCLUDEPATH += 3rdparty/openwnn/wnnEngine/include
-    DEPENDPATH += 3rdparty/openwnn/wnnEngine/include
     # OpenWNN engine
     LIBS += -L$$OUT_PWD/3rdparty/openwnn/$$SUBPATH -lopenwnn
 }
