@@ -28,3 +28,5 @@ SOURCES += \
     LTKTrace.cpp \
     LTKTraceFormat.cpp \
     LTKTraceGroup.cpp
+
+include(../include/headers.pri)

@@ -3,7 +3,6 @@ TEMPLATE = subdirs
 SUBDIRS += \
     common \
     util \
-    include \
     reco \
     lipiengine
 
