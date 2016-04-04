@@ -211,15 +211,6 @@ HEADERS += appinputpanel.h
 
 qtquickcompiler: DEFINES += COMPILING_QML
 
-static {
-    LIBS += \
-        -L$$[QT_INSTALL_QML]/QtQuick.2 -lqtquick2plugin$$TARGET_SUFFIX \
-        -L$$[QT_INSTALL_QML]/QtQuick/Window.2 -lwindowplugin$$TARGET_SUFFIX \
-        -L$$[QT_INSTALL_QML]/QtQuick/Layouts -lqquicklayoutsplugin$$TARGET_SUFFIX \
-        -L$$[QT_INSTALL_QML]/QtQuick/Enterprise/VirtualKeyboard/Styles -lqtvirtualkeyboardstylesplugin$$TARGET_SUFFIX \
-        -L$$[QT_INSTALL_QML]/Qt/labs/folderlistmodel -lqmlfolderlistmodelplugin$$TARGET_SUFFIX
-}
-
 !disable-hunspell {
     exists(3rdparty/hunspell/src/hunspell/hunspell.h) {
         SOURCES += hunspellinputmethod.cpp hunspellinputmethod_p.cpp hunspellworker.cpp
