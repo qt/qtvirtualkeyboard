@@ -8,7 +8,7 @@ SUBDIRS += \
     nn \
     preprocessing
 
-activedtw.depends = sub-common sub-featureextractor
-neuralnet.depends = sub-common sub-featureextractor
-nn.depends = sub-common sub-featureextractor
-preprocessing.depends = sub-common
+activedtw.depends = common featureextractor
+neuralnet.depends = common featureextractor
+nn.depends = common featureextractor
+preprocessing.depends = common
