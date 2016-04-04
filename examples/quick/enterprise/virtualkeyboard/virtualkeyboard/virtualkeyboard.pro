@@ -7,12 +7,8 @@ static {
     QT += svg
     QTPLUGIN += qtvirtualkeyboardplugin
 }
-android-no-sdk|!isEmpty(CROSS_COMPILE) {
-    TARGETPATH = /data/user/qt/virtualkeyboard
-} else {
-    TARGETPATH = $$[QT_INSTALL_EXAMPLES]/virtualkeyboard
-}
-target.path = $$TARGETPATH
+
+target.path = $$[QT_INSTALL_EXAMPLES]/virtualkeyboard
 INSTALLS += target
 
 RESOURCES += \
