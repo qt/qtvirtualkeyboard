@@ -1,4 +1,3 @@
-TEMPLATE = lib
 TARGET  = qtvirtualkeyboardplugin
 DATAPATH = $$[QT_INSTALL_DATA]/qtvirtualkeyboard
 
@@ -7,10 +6,8 @@ include(doc/doc.pri)
 
 QT += qml quick gui gui-private core-private
 
-CONFIG += plugin
 win32 {
-    CONFIG += no-pkg-config skip_target_version_ext
-    VERSION = $$QT_VERSION
+    CONFIG += no-pkg-config
     QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard (Qt $$QT_VERSION)"
     QMAKE_TARGET_DESCRIPTION = "Virtual Keyboard for Qt."
 }
