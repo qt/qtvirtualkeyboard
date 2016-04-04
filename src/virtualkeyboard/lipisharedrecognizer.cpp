@@ -182,7 +182,7 @@ int LipiSharedRecognizer::loadLipiInterface()
     if (++s_lipiEngineRefCount == 1) {
         if (s_lipiRoot.isEmpty()) {
             if (qEnvironmentVariableIsEmpty("LIPI_ROOT")) {
-                s_lipiRoot = QDir(QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/lipi_toolkit").absolutePath();
+                s_lipiRoot = QDir(QLibraryInfo::location(QLibraryInfo::PluginsPath) + "/lipi_toolkit").absolutePath();
                 qputenv("LIPI_ROOT", s_lipiRoot.toLatin1());
             } else {
                 s_lipiRoot = qgetenv("LIPI_ROOT");
