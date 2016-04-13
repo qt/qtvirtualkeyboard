@@ -66,18 +66,25 @@ public:
     {
         QStringList styleImportPathList;
         styleImportPathList << "qrc:/QtQuick/Enterprise/VirtualKeyboard/content/styles/";
-        QStringList importPathList = engine->importPathList();
-        // Add QML import path (Note: the QML base dir is always the last entry in the list)
-        if (!importPathList.isEmpty())
-            styleImportPathList << importPathList.last() + "/QtQuick/Enterprise/VirtualKeyboard/Styles/";
-        foreach (const QString &styleImportPath, styleImportPathList) {
+        const QStringList importPathList = engine->importPathList();
+        // Add QML import path (Note: the QML base dir is usually the last entry in the list)
+        for (int i = importPathList.size() - 1; i >= 0; --i) {
+            const QString stylesPath = importPathList.at(i)
+                + QStringLiteral("/QtQuick/Enterprise/VirtualKeyboard/Styles/");
+            if (QFileInfo(stylesPath).isDir()) {
+                styleImportPathList += stylesPath;
+                break;
+            }
+        }
+
+        for (const QString &styleImportPath : qAsConst(styleImportPathList)) {
             QString filePath = buildStyleFilePath(styleImportPath, name);
             bool pathExist = false;
 #ifdef COMPILING_QML
             // qtquickcompiler removes *.qml file paths from qrc file, but keeps directories - QTRD-3268
             pathExist = QFileInfo(filePath).dir().exists();
 #else
-            pathExist = QFileInfo(filePath).exists();
+            pathExist = QFileInfo::exists(filePath);
 #endif
             if (pathExist)
                 return buildStyleImportPath(styleImportPath, name);

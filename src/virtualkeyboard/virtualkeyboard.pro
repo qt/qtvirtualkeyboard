@@ -81,16 +81,22 @@ contains(CONFIG, lang-da.*) {
     LAYOUT_FILES += \
         content/layouts/da_DK/main.qml \
         content/layouts/da_DK/symbols.qml
+t9write: LAYOUT_FILES += \
+        content/layouts/da_DK/handwriting.qml
 }
 contains(CONFIG, lang-de.*) {
     LAYOUT_FILES += \
         content/layouts/de_DE/main.qml \
         content/layouts/de_DE/symbols.qml
+t9write: LAYOUT_FILES += \
+        content/layouts/de_DE/handwriting.qml
 }
 contains(CONFIG, lang-es.*) {
     LAYOUT_FILES += \
         content/layouts/es_ES/main.qml \
         content/layouts/es_ES/symbols.qml
+t9write: LAYOUT_FILES += \
+        content/layouts/es_ES/handwriting.qml
 }
 contains(CONFIG, lang-fa.*) {
     LAYOUT_FILES += \
@@ -103,11 +109,15 @@ contains(CONFIG, lang-fi.*) {
     LAYOUT_FILES += \
         content/layouts/fi_FI/main.qml \
         content/layouts/fi_FI/symbols.qml
+t9write: LAYOUT_FILES += \
+        content/layouts/fi_FI/handwriting.qml
 }
 contains(CONFIG, lang-fr.*) {
     LAYOUT_FILES += \
         content/layouts/fr_FR/main.qml \
         content/layouts/fr_FR/symbols.qml
+t9write: LAYOUT_FILES += \
+        content/layouts/fr_FR/handwriting.qml
 }
 contains(CONFIG, lang-hi.*) {
     LAYOUT_FILES += \
@@ -118,6 +128,8 @@ contains(CONFIG, lang-it.*) {
     LAYOUT_FILES += \
         content/layouts/it_IT/main.qml \
         content/layouts/it_IT/symbols.qml
+t9write: LAYOUT_FILES += \
+        content/layouts/it_IT/handwriting.qml
 }
 contains(CONFIG, lang-ja.*) {
     LAYOUT_FILES += \
@@ -133,26 +145,36 @@ contains(CONFIG, lang-nb.*) {
     LAYOUT_FILES += \
         content/layouts/nb_NO/main.qml \
         content/layouts/nb_NO/symbols.qml
+t9write: LAYOUT_FILES += \
+        content/layouts/nb_NO/handwriting.qml
 }
 contains(CONFIG, lang-pl.*) {
     LAYOUT_FILES += \
         content/layouts/pl_PL/main.qml \
         content/layouts/pl_PL/symbols.qml
+t9write: LAYOUT_FILES += \
+        content/layouts/pl_PL/handwriting.qml
 }
 contains(CONFIG, lang-pt.*) {
     LAYOUT_FILES += \
         content/layouts/pt_PT/main.qml \
         content/layouts/pt_PT/symbols.qml
+t9write: LAYOUT_FILES += \
+        content/layouts/pt_PT/handwriting.qml
 }
 contains(CONFIG, lang-ru.*) {
     LAYOUT_FILES += \
         content/layouts/ru_RU/main.qml \
         content/layouts/ru_RU/symbols.qml
+t9write: LAYOUT_FILES += \
+        content/layouts/ru_RU/handwriting.qml
 }
 contains(CONFIG, lang-sv.*) {
     LAYOUT_FILES += \
         content/layouts/sv_SE/main.qml \
         content/layouts/sv_SE/symbols.qml
+t9write: LAYOUT_FILES += \
+        content/layouts/sv_SE/handwriting.qml
 }
 contains(CONFIG, lang-zh(_CN)?) {
     LAYOUT_FILES += \

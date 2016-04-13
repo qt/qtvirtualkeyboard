@@ -11,6 +11,15 @@ handwriting {
     else: CONFIG += lipi-toolkit
 }
 
+# Default language
+!contains(CONFIG, lang-.*) {
+    contains(QT_CONFIG, private_tests) { # CI or developer build, use all languages
+        CONFIG += lang-all
+    } else {
+        CONFIG += lang-en_GB
+    }
+}
+
 # Flag for activating all languages
 lang-all: CONFIG += \
     lang-ar_AR \
@@ -32,9 +41,6 @@ lang-all: CONFIG += \
     lang-sv_SE \
     lang-zh_CN \
     lang-zh_TW
-
-# Default language
-!contains(CONFIG, lang-.*): CONFIG += lang-en_GB
 
 # Enable features by languages
 contains(CONFIG, lang-ja.*): CONFIG += openwnn

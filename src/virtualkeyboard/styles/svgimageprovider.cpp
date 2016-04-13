@@ -51,20 +51,22 @@ QPixmap SvgImageProvider::requestPixmap(const QString &id, QSize *size, const QS
         const QString query = request.query();
         const QStringList paramList = query.split(QChar('&'), QString::SkipEmptyParts);
         QVariantMap params;
-        foreach (const QString &param, paramList) {
+        for (const QString &param : paramList) {
             QStringList keyValue = param.split(QChar('='), QString::SkipEmptyParts);
             if (keyValue.length() == 2)
                 params[keyValue[0]] = keyValue[1];
         }
-        if (params.contains("width")) {
+        const auto widthIt = params.constFind("width");
+        if (widthIt != params.cend()) {
             bool ok = false;
-            int value = params["width"].toInt(&ok);
+            int value = widthIt.value().toInt(&ok);
             if (ok)
                 imageSize.setWidth(value);
         }
-        if (params.contains("height")) {
+        const auto heightIt = params.constFind("height");
+        if (heightIt != params.cend()) {
             bool ok = false;
-            int value = params["height"].toInt(&ok);
+            int value = heightIt.value().toInt(&ok);
             if (ok)
                 imageSize.setHeight(value);
         }

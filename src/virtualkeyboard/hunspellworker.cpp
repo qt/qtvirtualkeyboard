@@ -77,11 +77,11 @@ void HunspellLoadDictionaryTask::run()
 
     QString affPath;
     QString dicPath;
-    foreach (const QString &searchPath, searchPaths) {
+    for (const QString &searchPath : searchPaths) {
         affPath = QStringLiteral("%1/%2.aff").arg(searchPath).arg(locale);
-        if (QFileInfo(affPath).exists()) {
+        if (QFileInfo::exists(affPath)) {
             dicPath = QStringLiteral("%1/%2.dic").arg(searchPath).arg(locale);
-            if (QFileInfo(dicPath).exists())
+            if (QFileInfo::exists(dicPath))
                 break;
             dicPath.clear();
         }

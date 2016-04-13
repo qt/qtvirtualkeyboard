@@ -296,7 +296,7 @@ public:
 
         int isLanguageSupported = 0;
         decumaDatabaseIsLanguageSupported(sessionSettings.pStaticDB, language, &isLanguageSupported);
-        if (language == DECUMA_LANG_GSMDEFAULT) {
+        if (!isLanguageSupported) {
             qWarning() << "Handwriting input does not support the language" << locale.name();
             return false;
         }
@@ -346,6 +346,9 @@ public:
                     symbolCategories.append(DECUMA_CATEGORY_BASIC_PUNCTUATIONS);
                     symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
                 }
+
+                if (language == DECUMA_LANG_ES)
+                    symbolCategories.append(DECUMA_CATEGORY_SPANISH_PUNCTUATIONS);
             }
             break;
 
@@ -650,7 +653,7 @@ public:
     int countActiveTraces() const
     {
         int count = 0;
-        foreach (Trace *trace, traceList) {
+        for (Trace *trace : qAsConst(traceList)) {
             if (!trace->isFinal())
                 count++;
         }
@@ -671,7 +674,7 @@ public:
         DECUMA_UINT32 arcID = (DECUMA_UINT32)trace->traceId();
         DECUMA_STATUS status;
 
-        foreach (const QVariant &p, points) {
+        for (const QVariant &p : points) {
             const QPoint pt(p.toPointF().toPoint());
             status = decumaAddPoint(decumaSession, (DECUMA_COORD)pt.x(),(DECUMA_COORD)pt.y(), arcID);
             Q_ASSERT(status == decumaNoError);

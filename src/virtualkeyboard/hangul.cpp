@@ -154,11 +154,12 @@ QString Hangul::compose(const QString &source)
 
                             // Search the double medial map if such a combination exists
                             ushort key = packDoubleMedial(VIndexA, VIndexB);
-                            if (doubleMedialMap.contains(key)) {
+                            const auto it = doubleMedialMap.constFind(key);
+                            if (it != doubleMedialMap.cend()) {
 
                                 // Update syllable by adding the difference between
                                 // the vowels indices
-                                HangulMedialIndex VIndexD = doubleMedialMap[key];
+                                HangulMedialIndex VIndexD = it.value();
                                 int VDiff = (int)VIndexD - (int)VIndexA;
                                 last = QChar((int)lastUnicode + VDiff * TCount);
                                 result.replace(result.length() - 1, 1, last);
@@ -228,11 +229,12 @@ QString Hangul::compose(const QString &source)
 
                             // Search the double final map if such a combination exists
                             ushort key = packDoubleFinal(TIndexA, TIndexB);
-                            if (doubleFinalMap.contains(key)) {
+                            const auto it = doubleFinalMap.constFind(key);
+                            if (it != doubleFinalMap.cend()) {
 
                                 // Update syllable by adding the difference between
                                 // the consonant indices
-                                HangulFinalIndex TIndexD = doubleFinalMap[key];
+                                HangulFinalIndex TIndexD = it.value();
                                 int TDiff = (int)TIndexD - (int)TIndexA;
                                 last = QChar((int)lastUnicode + TDiff);
                                 result.replace(result.length() - 1, 1, last);
@@ -286,22 +288,12 @@ bool Hangul::isFinal(HangulFinalIndex consonant)
 
 ushort Hangul::findDoubleMedial(HangulMedialIndex vowel)
 {
-    for (QMap<ushort, HangulMedialIndex>::ConstIterator i = doubleMedialMap.constBegin();
-         i != doubleMedialMap.constEnd(); i++) {
-        if (i.value() == vowel)
-            return i.key();
-    }
-    return 0;
+    return doubleMedialMap.key(vowel, 0);
 }
 
 ushort Hangul::findDoubleFinal(HangulFinalIndex consonant)
 {
-    for (QMap<ushort, HangulFinalIndex>::ConstIterator i = doubleFinalMap.constBegin();
-         i != doubleFinalMap.constEnd(); i++) {
-        if (i.value() == consonant)
-            return i.key();
-    }
-    return 0;
+    return doubleFinalMap.key(consonant, 0);
 }
 
 // Packs two Hangul Jamo indices into 16-bit integer.

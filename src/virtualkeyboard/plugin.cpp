@@ -73,6 +73,8 @@
 
 using namespace QtVirtualKeyboard;
 
+Q_LOGGING_CATEGORY(qlcVirtualKeyboard, "qt.virtualkeyboard")
+
 static const char pluginName[] = "qtvirtualkeyboard";
 static const char inputMethodEnvVarName[] = "QT_IM_MODULE";
 static const char pluginUri[] = "QtQuick.Enterprise.VirtualKeyboard";

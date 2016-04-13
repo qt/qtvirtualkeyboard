@@ -189,7 +189,7 @@ public:
     int countActiveTraces() const
     {
         int count = 0;
-        foreach (Trace *trace, traceList) {
+        for (Trace *trace : qAsConst(traceList)) {
             if (!trace->isFinal())
                 count++;
         }
@@ -382,7 +382,7 @@ public:
                             bool matchesToExisting = true;
                             const qreal minimumSwipeLength = (swipeLength * (100.0 - MAXIMUM_WIDTH_VARIANCE) / 100.0);
                             const qreal maximumSwipeLength = (swipeLength * (100.0 + MAXIMUM_WIDTH_VARIANCE) / 100.0);
-                            foreach (const QVector2D &otherSwipeVector, swipeVectors) {
+                            for (const QVector2D &otherSwipeVector : qAsConst(swipeVectors)) {
                                 const qreal otherSwipeLength = otherSwipeVector.length();
                                 const qreal theta = qAcos(QVector2D::dotProduct(swipeVector, otherSwipeVector) / (swipeLength * otherSwipeLength));
 
@@ -468,7 +468,7 @@ public:
         const QVariantList points = trace->points();
         const QVariantList timeData = hasTime ? trace->channelData("t") : QVariantList();
         QVariantList::ConstIterator t = timeData.constBegin();
-        foreach (const QVariant &p, points) {
+        for (const QVariant &p : points) {
             const QPointF pt(p.toPointF());
             vector<float> point;
             point.push_back(pt.x());
@@ -582,7 +582,7 @@ public:
         recordedData.append(QStringLiteral(".POINTS_PER_SECOND %1").arg(deviceInfo->getSamplingRate()));
 
         qlonglong t0 = 0;
-        foreach (const Trace *trace, traceList) {
+        for (const Trace *trace : qAsConst(traceList)) {
             const QVariantList &points = trace->points();
             const bool hasTime = trace->channels().contains("t");
             const QVariantList timeData = hasTime ? trace->channelData("t") : QVariantList();
@@ -592,7 +592,7 @@ public:
 
             recordedData.append(QStringLiteral(".PEN_DOWN"));
 
-            foreach (const QVariant &point, points) {
+            for (const QVariant &point : points) {
                 const QPointF pt(point.toPointF());
                 QString pointStr(QStringLiteral("%1 %2 ").arg(qRound(pt.x())).arg(qRound(pt.y())));
                 if (hasTime) {
@@ -621,7 +621,7 @@ public:
                 int fileIndex = 0;
                 do {
                     fileName = fileDir.absoluteFilePath(QStringLiteral("%1_%2_%3.txt").arg(unicode).arg(confidence, 3, 10, QLatin1Char('0')).arg(fileIndex++));
-                } while (QFileInfo(fileName).exists());
+                } while (QFileInfo::exists(fileName));
             }
         }
         QString dataStr(recordedData.join('\n'));

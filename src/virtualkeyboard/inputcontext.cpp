@@ -543,7 +543,7 @@ bool InputContext::fileExists(const QUrl &fileUrl)
     } else {
         fileName = fileUrl.toLocalFile();
     }
-    return QFile(fileName).exists();
+    return QFile::exists(fileName);
 #endif
 }
 
