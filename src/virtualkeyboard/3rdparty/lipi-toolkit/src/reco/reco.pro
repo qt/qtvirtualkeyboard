@@ -4,4 +4,4 @@ SUBDIRS += \
     shaperec \
     wordrec
 
-wordrec.depends = sub-shaperec
+wordrec.depends = shaperec

@@ -3,10 +3,7 @@ TEMPLATE = subdirs
 SUBDIRS += \
     common \
     util \
-    include \
     reco \
     lipiengine
 
-lipiengine.depends = sub-common sub-util sub-reco
-
-CONFIG += ordered
+lipiengine.depends = common util reco

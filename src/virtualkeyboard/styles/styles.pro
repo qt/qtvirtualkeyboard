@@ -4,7 +4,7 @@ TARGETPATH = QtQuick/Enterprise/VirtualKeyboard/Styles
 QT += qml quick svg
 CONFIG += plugin
 
-CXX_MODULE = qml
+CONFIG += no_cxx_module
 
 SOURCES += \
     svgimageprovider.cpp \

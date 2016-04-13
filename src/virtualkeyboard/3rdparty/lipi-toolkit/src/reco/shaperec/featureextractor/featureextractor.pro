@@ -7,7 +7,7 @@ SUBDIRS += \
     pointfloat \
     substroke
 
-l7.depends = sub-common
-npen.depends = sub-common
-pointfloat.depends = sub-common
-substroke.depends = sub-common
+l7.depends = common
+npen.depends = common
+pointfloat.depends = common
+substroke.depends = common
