@@ -27,7 +27,7 @@
 
 /*!
     \title Qt Quick Virtual Keyboard - Basic Example
-    \example enterprise/virtualkeyboard/basic
+    \example basic
     \brief This is a basic QML example that uses the virtual keyboard.
     \ingroup qtvirtualkeyboard-examples
     \image basic-example.png

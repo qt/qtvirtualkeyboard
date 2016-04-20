@@ -8,9 +8,9 @@ static {
     QTPLUGIN += qtvirtualkeyboardplugin
 }
 android-no-sdk|!isEmpty(CROSS_COMPILE) {
-    TARGETPATH = /data/user/qt/virtualkeyboard
+    TARGETPATH = /data/user/qt/virtualkeyboard/basic
 } else {
-    TARGETPATH = $$[QT_INSTALL_EXAMPLES]/virtualkeyboard
+    TARGETPATH = $$[QT_INSTALL_EXAMPLES]/virtualkeyboard/basic
 }
 target.path = $$TARGETPATH
 INSTALLS += target
