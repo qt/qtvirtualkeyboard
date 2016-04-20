@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = virtualkeyboard
+TARGET = basic
 QT += qml quick
 SOURCES += main.cpp
 CONFIG += link_pkgconfig
@@ -19,8 +19,8 @@ RESOURCES += \
     demo.qrc
 
 OTHER_FILES += \
-    VirtualKeyboard.qml \
-    VirtualKeyboard-b2qt.qml \
+    basic.qml \
+    basic-b2qt.qml \
     content/AutoScroller.qml \
     content/HandwritingModeButton.qml \
     content/ScrollBar.qml \
@@ -34,7 +34,7 @@ disable-xcb {
 }
 
 disable-desktop|android-no-sdk|!isEmpty(CROSS_COMPILE)|qnx {
-    DEFINES += MAIN_QML=\\\"VirtualKeyboard-b2qt.qml\\\"
+    DEFINES += MAIN_QML=\\\"basic-b2qt.qml\\\"
 } else {
-    DEFINES += MAIN_QML=\\\"VirtualKeyboard.qml\\\"
+    DEFINES += MAIN_QML=\\\"basic.qml\\\"
 }
