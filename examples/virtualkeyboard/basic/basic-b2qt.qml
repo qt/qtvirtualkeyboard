@@ -33,8 +33,9 @@ import QtQuick.Enterprise.VirtualKeyboard 2.0
 import "content"
 
 Item {
-    implicitWidth: virtualKeyboard.implicitHeight
-    implicitHeight: virtualKeyboard.implicitWidth
+    width: 1280
+    height: 720
+
     Item {
         id: appContainer
         width: Screen.width < Screen.height ? parent.height : parent.width

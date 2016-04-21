@@ -34,11 +34,11 @@
 */
 
 /*!
-    \title Qt Quick Virtual Keyboard Example
-    \example enterprise/virtualkeyboard/virtualkeyboard
-    \brief This is an example virtual keyboard written in QML.
+    \title Qt Quick Virtual Keyboard - Basic Example
+    \example basic
+    \brief This is a basic QML example that uses the virtual keyboard.
     \ingroup qtvirtualkeyboard-examples
-    \image virtualkeyboard-demo.png
+    \image basic-example.png
 
     The example shows how to build a virtual keyboard UI with support for
     multiple keyboard layouts using QML, and a QPlatformInputContext bridge
