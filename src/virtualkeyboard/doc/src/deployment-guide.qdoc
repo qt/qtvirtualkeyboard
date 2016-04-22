@@ -117,7 +117,7 @@ divide the screen area with the application container.
 
 \code
 import QtQuick 2.0
-import QtQuick.VirtualKeyboard 2.0
+import QtQuick.VirtualKeyboard 2.1
 
 Item {
     id: root

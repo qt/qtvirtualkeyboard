@@ -131,6 +131,9 @@ Rectangle {
                         import QtQuick.VirtualKeyboard 2.0; \
                         Item {}" },
                 { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard 2.1; \
+                        Item {}" },
+                { qml: "import QtQuick 2.0; \
                         import QtQuick.VirtualKeyboard.Styles 1.0; \
                         KeyboardStyle {}" },
                 { qml: "import QtQuick 2.0; \
@@ -146,6 +149,9 @@ Rectangle {
                         import QtQuick.VirtualKeyboard.Styles 2.0; \
                         KeyboardStyle {}" },
                 { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Styles 2.1; \
+                        KeyboardStyle {}" },
+                { qml: "import QtQuick 2.0; \
                         import QtQuick.VirtualKeyboard.Settings 1.0; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName }" },
                 { qml: "import QtQuick 2.0; \
@@ -156,6 +162,12 @@ Rectangle {
                         Item { property var styleName: VirtualKeyboardSettings.styleName }" },
                 { qml: "import QtQuick 2.0; \
                         import QtQuick.VirtualKeyboard.Settings 2.0; \
+                        Item { property var styleName: VirtualKeyboardSettings.styleName; \
+                               property var locale: VirtualKeyboardSettings.locale; \
+                               property var availableLocales: VirtualKeyboardSettings.availableLocales; \
+                               property var activeLocales: VirtualKeyboardSettings.activeLocales }" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Settings 2.1; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName; \
                                property var locale: VirtualKeyboardSettings.locale; \
                                property var availableLocales: VirtualKeyboardSettings.availableLocales; \

@@ -184,12 +184,14 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 1, 1, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
     qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 1, 2, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
     qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 2, 0, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
+    qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 2, 1, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
 
     const QString path(QStringLiteral("qrc:///QtQuick/VirtualKeyboard/content/"));
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 0, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 2, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 3, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 0, "InputPanel");
+    qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 1, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("HandwritingInputPanel.qml")), pluginUri, 2, 0, "HandwritingInputPanel");
     const QString componentsPath = path + QStringLiteral("components/");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("AlternativeKeys.qml")), pluginUri, 1, 0, "AlternativeKeys");

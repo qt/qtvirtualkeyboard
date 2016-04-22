@@ -29,11 +29,11 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
-import QtQuick.VirtualKeyboard 2.0
+import QtQuick.VirtualKeyboard 2.1
 
 KeyboardLayoutLoader {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.0; JapaneseInputMethod {}', parent, "japaneseInputMethod")
+        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.1; JapaneseInputMethod {}', parent, "japaneseInputMethod")
     }
     sharedLayouts: ['main']
     property int page

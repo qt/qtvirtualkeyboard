@@ -29,11 +29,11 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
-import QtQuick.VirtualKeyboard 2.0
+import QtQuick.VirtualKeyboard 2.1
 
 KeyboardLayoutLoader {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.0; TCInputMethod {}', parent, "tcInputMethod")
+        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.1; TCInputMethod {}', parent, "tcInputMethod")
     }
     sharedLayouts: ['symbols']
     sourceComponent: InputContext.inputEngine.inputMode === InputEngine.Cangjie ? pageCangjie : pageZhuyin

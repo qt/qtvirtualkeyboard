@@ -302,7 +302,7 @@ QtObject {
     property Component navigationHighlight: null
 
     /*!
-        \since QtQuick.VirtualKeyboard.Styles 2.0
+        \since QtQuick.VirtualKeyboard.Styles 2.1
 
         Template for the trace input key.
 
@@ -311,7 +311,7 @@ QtObject {
     property Component traceInputKeyPanelDelegate: null
 
     /*!
-        \since QtQuick.VirtualKeyboard.Styles 2.0
+        \since QtQuick.VirtualKeyboard.Styles 2.1
 
         Template for rendering a Trace object.
 
@@ -319,7 +319,7 @@ QtObject {
     */
     property Component traceCanvasDelegate: null
 
-    /*! \since QtQuick.VirtualKeyboard.Styles 2.0
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
 
         Template for the popup list item.
 
@@ -334,7 +334,7 @@ QtObject {
     */
     property Component popupListDelegate: null
 
-    /*! \since QtQuick.VirtualKeyboard.Styles 2.0
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
 
         Template for the popup list highlight.
 
@@ -342,20 +342,20 @@ QtObject {
     */
     property Component popupListHighlight: null
 
-    /*! \since QtQuick.VirtualKeyboard.Styles 2.0
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
 
         Template for the popup list background.
     */
     property Component popupListBackground: null
 
-    /*! \since QtQuick.VirtualKeyboard.Styles 2.0
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
 
         This property holds the transition to apply to items that
         are added to the popup list view.
     */
     property Transition popupListAdd
 
-    /*! \since QtQuick.VirtualKeyboard.Styles 2.0
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
 
         This property holds the transition to apply to items that
         are removed from the popup list view.

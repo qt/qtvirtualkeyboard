@@ -29,11 +29,11 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
-import QtQuick.VirtualKeyboard 2.0
+import QtQuick.VirtualKeyboard 2.1
 
 KeyboardLayoutLoader {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.0; HangulInputMethod {}', parent, "hangulInputMethod")
+        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.1; HangulInputMethod {}', parent, "hangulInputMethod")
     }
     sharedLayouts: ['main']
     property bool secondPage
