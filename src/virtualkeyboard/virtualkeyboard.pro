@@ -245,6 +245,7 @@ static {
             hunspell_data.files = 3rdparty/hunspell/data/*.dic 3rdparty/hunspell/data/*.aff
             hunspell_data.path = $$DATAPATH/hunspell
             INSTALLS += hunspell_data
+            !prefix_build: COPIES += hunspell_data
         } else {
             error("Hunspell dictionaries are missing! Please copy .dic and .aff" \
                   "files to src/virtualkeyboard/3rdparty/hunspell/data directory.")
@@ -272,6 +273,7 @@ pinyin {
     pinyin_data.files = $$PWD/3rdparty/pinyin/data/dict_pinyin.dat
     pinyin_data.path = $$DATAPATH/pinyin
     INSTALLS += pinyin_data
+    !prefix_build: COPIES += pinyin_data
 }
 
 tcime {
@@ -292,6 +294,7 @@ tcime {
         $$PWD/3rdparty/tcime/data/qt/dict_zhuyin.dat
     tcime_data.path = $$DATAPATH/tcime
     INSTALLS += tcime_data
+    !prefix_build: COPIES += tcime_data
 }
 
 hangul {
