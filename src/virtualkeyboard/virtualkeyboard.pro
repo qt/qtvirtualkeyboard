@@ -338,7 +338,7 @@ arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
 
 include(generateresource.pri)
 
-RESOURCES += $$generate_resource(layouts.qrc, $$LAYOUT_FILES, /QtQuick/Enterprise/VirtualKeyboard)
+RESOURCES += $$generate_resource(layouts.qrc, $$LAYOUT_FILES, /QtQuick/VirtualKeyboard)
 
 PLUGIN_TYPE = platforminputcontexts
 PLUGIN_EXTENDS = -

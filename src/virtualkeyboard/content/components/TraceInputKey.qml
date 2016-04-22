@@ -32,10 +32,10 @@ import QtQuick.Layouts 1.0
 
 /*!
     \qmltype TraceInputKey
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \inherits Item
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
 
     \brief A specialized key for collecting touch input data.
 

@@ -29,7 +29,7 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
-import QtQuick.Enterprise.VirtualKeyboard 2.0
+import QtQuick.VirtualKeyboard 2.0
 
 KeyboardLayout {
     inputMethod: PlainInputMethod {}

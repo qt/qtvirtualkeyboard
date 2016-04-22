@@ -31,7 +31,7 @@ import QtQuick 2.0
 
 /*!
     \qmltype NumberKey
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \inherits Key
 

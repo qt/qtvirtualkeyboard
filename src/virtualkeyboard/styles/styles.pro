@@ -1,5 +1,5 @@
 TARGET = qtvirtualkeyboardstylesplugin
-TARGETPATH = QtQuick/Enterprise/VirtualKeyboard/Styles
+TARGETPATH = QtQuick/VirtualKeyboard/Styles
 QT += qml quick svg
 
 CONFIG += no_cxx_module

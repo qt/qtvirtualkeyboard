@@ -28,11 +28,11 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.Enterprise.VirtualKeyboard 2.0
+import QtQuick.VirtualKeyboard 2.0
 
 /*!
     \qmltype InputPanel
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \inqmlmodule QtQuick.VirtualKeyboard
 
     \brief Provides the virtual keyboard UI.
     \ingroup qtvirtualkeyboard-qml
@@ -47,7 +47,7 @@ Item {
     id: inputPanel
 
     /*! \qmlproperty bool Active state of the input panel
-        \since QtQuick.Enterprise.VirtualKeyboard 2.0
+        \since QtQuick.VirtualKeyboard 2.0
 
         This property reflects the active status of the input panel.
         The keyboard should be made visible to user when the active is true.

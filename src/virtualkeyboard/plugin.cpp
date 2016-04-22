@@ -77,8 +77,8 @@ Q_LOGGING_CATEGORY(qlcVirtualKeyboard, "qt.virtualkeyboard")
 
 static const char pluginName[] = "qtvirtualkeyboard";
 static const char inputMethodEnvVarName[] = "QT_IM_MODULE";
-static const char pluginUri[] = "QtQuick.Enterprise.VirtualKeyboard";
-static const char pluginSettingsUri[] = "QtQuick.Enterprise.VirtualKeyboard.Settings";
+static const char pluginUri[] = "QtQuick.VirtualKeyboard";
+static const char pluginSettingsUri[] = "QtQuick.VirtualKeyboard.Settings";
 
 static QPointer<PlatformInputContext> platformInputContext;
 
@@ -185,7 +185,7 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 1, 2, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
     qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 2, 0, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
 
-    const QString path(QStringLiteral("qrc:///QtQuick/Enterprise/VirtualKeyboard/content/"));
+    const QString path(QStringLiteral("qrc:///QtQuick/VirtualKeyboard/content/"));
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 0, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 2, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 3, "InputPanel");

@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/QtQuick/Enterprise/VirtualKeyboard/content/styles/retro">
+    <qresource prefix="/QtQuick/VirtualKeyboard/content/styles/retro">
         <file>style.qml</file>
         <file>images/key154px_black.png</file>
         <file>images/key154px_black_long.png</file>

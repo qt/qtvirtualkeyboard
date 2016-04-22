@@ -116,7 +116,7 @@ private:
 
 /*!
     \qmltype InputEngine
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \instantiates QtVirtualKeyboard::InputEngine
     \brief Maps the user input to the input methods.
@@ -486,7 +486,7 @@ QList<int> InputEngine::patternRecognitionModes() const
 
 /*!
     \qmlmethod Trace InputEngine::traceBegin(int traceId, int patternRecognitionMode, var traceCaptureDeviceInfo, var traceScreenInfo)
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
 
     Starts a trace interaction with the input engine.
 
@@ -506,7 +506,7 @@ QList<int> InputEngine::patternRecognitionModes() const
     The trace interaction is ended by calling the \l {InputEngine::traceEnd()} {InputEngine.traceEnd()} method.
 */
 /*!
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
 
     Starts a trace interaction with the input engine.
 
@@ -575,7 +575,7 @@ bool InputEngine::traceEnd(QtVirtualKeyboard::Trace *trace)
 }
 
 /*!
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
 
     This function attempts to reselect a word located at the \a cursorPosition.
     The \a reselectFlags define the rules for how the word should be selected in
@@ -851,14 +851,14 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 
 /*!
     \qmlproperty list<int> InputEngine::patternRecognitionModes
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
 
     The list of available pattern recognition modes.
 */
 
 /*!
     \property QtVirtualKeyboard::InputEngine::patternRecognitionModes
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
     \brief the list of available pattern recognition modes.
 
     The list of available pattern recognition modes.
@@ -958,7 +958,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 
 /*!
     \qmlsignal void InputEngine::patternRecognitionModesChanged()
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
 
     Indicates that the available pattern recognition modes have changed.
 
@@ -972,7 +972,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 
 /*!
     \fn void QtVirtualKeyboard::InputEngine::patternRecognitionModesChanged()
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
 
     Indicates that the available pattern recognition modes have changed.
 */

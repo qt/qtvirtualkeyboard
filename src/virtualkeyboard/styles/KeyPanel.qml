@@ -31,7 +31,7 @@ import QtQuick 2.0
 
 /*!
     \qmltype KeyPanel
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles
+    \inqmlmodule QtQuick.VirtualKeyboard.Styles
     \brief A base type of the styled keys.
     \ingroup qtvirtualkeyboard-styles-qml
 
@@ -59,7 +59,7 @@ Item {
     property Item control
 
     /*!
-        \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.1
+        \since QtQuick.VirtualKeyboard.Styles 1.1
 
         Sets the sound effect to be played on key press.
     */

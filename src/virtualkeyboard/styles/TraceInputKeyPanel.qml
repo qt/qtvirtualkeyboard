@@ -31,10 +31,10 @@ import QtQuick 2.0
 
 /*!
     \qmltype TraceInputKeyPanel
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles
+    \inqmlmodule QtQuick.VirtualKeyboard.Styles
     \brief A base type of the trace input key.
     \ingroup qtvirtualkeyboard-styles-qml
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
 
     This type provides panel for decorating TraceInputKey
     items in the keyboard layout.

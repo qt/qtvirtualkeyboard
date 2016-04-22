@@ -28,8 +28,8 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.Enterprise.VirtualKeyboard 2.0
-import QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
+import QtQuick.VirtualKeyboard 2.0
+import QtQuick.VirtualKeyboard.Styles 2.0
 
 KeyboardStyle {
     id: currentStyle
@@ -38,7 +38,7 @@ KeyboardStyle {
     readonly property real keyBackgroundMargin: Math.round(13 * scaleHint)
     readonly property real keyContentMargin: Math.round(45 * scaleHint)
     readonly property real keyIconScale: scaleHint * 0.6
-    readonly property string resourcePrefix: "qrc:/QtQuick/Enterprise/VirtualKeyboard/content/styles/default/"
+    readonly property string resourcePrefix: "qrc:/QtQuick/VirtualKeyboard/content/styles/default/"
 
     readonly property string inputLocale: InputContext.locale
     property color inputLocaleIndicatorColor: "white"

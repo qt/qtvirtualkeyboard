@@ -31,7 +31,7 @@ import QtQuick 2.0
 
 /*!
     \qmltype KeyIcon
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles
+    \inqmlmodule QtQuick.VirtualKeyboard.Styles
     \brief Key icon with adjustable color.
     \ingroup qtvirtualkeyboard-styles-qml
 

@@ -29,12 +29,12 @@
 
 import QtQuick 2.0
 import QtQuick.Window 2.2
-import QtQuick.Enterprise.VirtualKeyboard 2.0
+import QtQuick.VirtualKeyboard 2.0
 
 /*!
     \qmltype HandwritingInputPanel
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \inqmlmodule QtQuick.VirtualKeyboard
+    \since QtQuick.VirtualKeyboard 2.0
 
     \brief Provides a handwriting panel add-on for the virtual keyboard UI.
     \ingroup qtvirtualkeyboard-qml

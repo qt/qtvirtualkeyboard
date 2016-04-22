@@ -54,7 +54,7 @@ bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMeth
 QT_END_NAMESPACE
 
 /*!
-    \qmlmodule QtQuick.Enterprise.VirtualKeyboard 2.0
+    \qmlmodule QtQuick.VirtualKeyboard 2.0
 
     This module provides a collection of QML components for Qt Virtual Keyboard.
 */
@@ -143,7 +143,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(InputContextPrivate::StateFlags)
 /*!
     \qmltype InputContext
     \instantiates QtVirtualKeyboard::InputContext
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \brief Provides access to an input context.
 

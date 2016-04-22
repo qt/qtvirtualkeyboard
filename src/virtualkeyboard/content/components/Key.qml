@@ -31,7 +31,7 @@ import QtQuick 2.0
 
 /*!
     \qmltype Key
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \inherits BaseKey
 

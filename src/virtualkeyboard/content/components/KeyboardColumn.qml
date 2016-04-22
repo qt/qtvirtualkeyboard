@@ -32,7 +32,7 @@ import QtQuick.Layouts 1.0
 
 /*!
     \qmltype KeyboardColumn
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \inherits ColumnLayout
 
@@ -50,7 +50,7 @@ ColumnLayout {
     */
     property real keyWeight: parent ? parent.keyWeight : undefined
 
-    /*! \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    /*! \since QtQuick.VirtualKeyboard 2.0
 
         Sets the \c smallTextVisible for all children keys.
 

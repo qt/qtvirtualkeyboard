@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/QtQuick/Enterprise/VirtualKeyboard/content">
+    <qresource prefix="/QtQuick/VirtualKeyboard/content">
         <file>layouts/ar_AR/digits.qml</file>
         <file>layouts/ar_AR/main.qml</file>
         <file>layouts/ar_AR/numbers.qml</file>

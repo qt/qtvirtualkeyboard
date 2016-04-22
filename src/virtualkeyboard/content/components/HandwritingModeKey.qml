@@ -31,10 +31,10 @@ import QtQuick 2.0
 
 /*!
     \qmltype HandwritingModeKey
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \inherits Key
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
 
     \brief Hand writing mode key for keyboard layouts.
 

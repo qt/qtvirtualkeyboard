@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/QtQuick/Enterprise/VirtualKeyboard/content/styles/default">
+    <qresource prefix="/QtQuick/VirtualKeyboard/content/styles/default">
         <file>style.qml</file>
         <file>images/backspace-868482.svg</file>
         <file>images/check-868482.svg</file>

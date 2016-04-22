@@ -31,7 +31,7 @@ import QtQuick 2.0
 
 /*!
     \qmltype SelectionListItem
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles
+    \inqmlmodule QtQuick.VirtualKeyboard.Styles
     \brief A base type for selection list item delegates.
     \ingroup qtvirtualkeyboard-styles-qml
 
@@ -44,7 +44,7 @@ Item {
     height: parent.height
 
     /*!
-        \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.1
+        \since QtQuick.VirtualKeyboard.Styles 1.1
 
         Sets the sound effect to be played on touch event.
     */

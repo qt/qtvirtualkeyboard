@@ -65,12 +65,12 @@ public:
     QString styleImportPath(const QString &name) const
     {
         QStringList styleImportPathList;
-        styleImportPathList << "qrc:/QtQuick/Enterprise/VirtualKeyboard/content/styles/";
+        styleImportPathList << "qrc:/QtQuick/VirtualKeyboard/content/styles/";
         const QStringList importPathList = engine->importPathList();
         // Add QML import path (Note: the QML base dir is usually the last entry in the list)
         for (int i = importPathList.size() - 1; i >= 0; --i) {
             const QString stylesPath = importPathList.at(i)
-                + QStringLiteral("/QtQuick/Enterprise/VirtualKeyboard/Styles/");
+                + QStringLiteral("/QtQuick/VirtualKeyboard/Styles/");
             if (QFileInfo(stylesPath).isDir()) {
                 styleImportPathList += stylesPath;
                 break;
@@ -96,16 +96,16 @@ public:
 };
 
 /*!
-    \qmlmodule QtQuick.Enterprise.VirtualKeyboard.Settings 2.0
+    \qmlmodule QtQuick.VirtualKeyboard.Settings 2.0
 
     This module provides settings components for Qt Virtual Keyboard.
 */
 
 /*!
     \qmltype VirtualKeyboardSettings
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard.Settings
+    \inqmlmodule QtQuick.VirtualKeyboard.Settings
     \ingroup qtvirtualkeyboard-settings-qml
-    \since QtQuick.Enterprise.VirtualKeyboard 1.2
+    \since QtQuick.VirtualKeyboard 1.2
     \brief Provides settings for virtual keyboard.
 
     This module provides VirtualKeyboarSettings singleton instance,
@@ -256,7 +256,7 @@ void VirtualKeyboardSettings::resetStyle()
 
 /*!
     \qmlproperty string VirtualKeyboardSettings::locale
-    \since QtQuick.Enterprise.VirtualKeyboard.Settings 2.0
+    \since QtQuick.VirtualKeyboard.Settings 2.0
 
     This property provides the default locale for the keyboard.
 
@@ -272,7 +272,7 @@ void VirtualKeyboardSettings::resetStyle()
 
 /*!
     \qmlproperty list<string> VirtualKeyboardSettings::availableLocales
-    \since QtQuick.Enterprise.VirtualKeyboard.Settings 2.0
+    \since QtQuick.VirtualKeyboard.Settings 2.0
 
     This property contains a list of languages supported by the virtual keyboard.
 
@@ -282,7 +282,7 @@ void VirtualKeyboardSettings::resetStyle()
 
 /*!
     \qmlproperty list<string> VirtualKeyboardSettings::activeLocales
-    \since QtQuick.Enterprise.VirtualKeyboard.Settings 2.0
+    \since QtQuick.VirtualKeyboard.Settings 2.0
 
     This property contains a list of activated languages of the virtual keyboard.
 
