@@ -41,7 +41,7 @@ This document describes how to build the Qt Virtual Keyboard plugin.
 The project is split into the following subprojects:
 \table
 \row
-    \li \e examples/quick/enterprise/virtualkeyboard/virtualkeyboard/virtualkeyboard.pro
+    \li \e examples/virtualkeyboard/basic/basic.pro
     \li Qt Virtual Keyboard Demo application
 \row
     \li \e src/virtualkeyboard/virtualkeyboard.pro
