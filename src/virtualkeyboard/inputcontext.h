@@ -66,6 +66,8 @@ class InputContext : public QObject
     Q_PROPERTY(QtVirtualKeyboard::ShiftHandler *shiftHandler READ shiftHandler CONSTANT)
     Q_PROPERTY(QtVirtualKeyboard::InputEngine *inputEngine READ inputEngine CONSTANT)
     Q_PROPERTY(bool selectionControlVisible READ selectionControlVisible NOTIFY selectionControlVisibleChanged)
+    Q_PROPERTY(bool anchorRectIntersectsClipRect READ anchorRectIntersectsClipRect NOTIFY anchorRectIntersectsClipRectChanged)
+    Q_PROPERTY(bool cursorRectIntersectsClipRect READ cursorRectIntersectsClipRect NOTIFY cursorRectIntersectsClipRectChanged)
 
 public:
     explicit InputContext(PlatformInputContext *parent = 0);
@@ -98,6 +100,8 @@ public:
     ShiftHandler *shiftHandler() const;
     InputEngine *inputEngine() const;
     bool selectionControlVisible() const;
+    bool anchorRectIntersectsClipRect() const;
+    bool cursorRectIntersectsClipRect() const;
 
     Q_INVOKABLE void hideInputPanel();
     Q_INVOKABLE void sendKeyClick(int key, const QString &text, int modifiers = 0);
@@ -132,6 +136,8 @@ signals:
     void selectionControlVisibleChanged();
     void navigationKeyPressed(int key, bool isAutoRepeat);
     void navigationKeyReleased(int key, bool isAutoRepeat);
+    void anchorRectIntersectsClipRectChanged();
+    void cursorRectIntersectsClipRectChanged();
 
 private slots:
     void onInputItemChanged();

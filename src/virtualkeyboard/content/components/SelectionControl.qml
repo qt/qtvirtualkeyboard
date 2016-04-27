@@ -41,6 +41,11 @@ Item {
         x: visible ? Qt.inputMethod.anchorRectangle.x - width/2 : 0
         y: visible ? Qt.inputMethod.anchorRectangle.y + Qt.inputMethod.anchorRectangle.height : 0
 
+        Behavior on opacity {
+            NumberAnimation { duration: 200 }
+        }
+        opacity: InputContext.anchorRectIntersectsClipRect ? 1.0 : 0.0
+
         MouseArea {
             width: parent.width * 2
             height: width * 1.12
@@ -67,6 +72,11 @@ Item {
         sourceComponent: keyboard.style.selectionHandle
         x: visible ? Qt.inputMethod.cursorRectangle.x - width/2 : 0
         y: visible ? Qt.inputMethod.cursorRectangle.y + Qt.inputMethod.cursorRectangle.height : 0
+
+        Behavior on opacity {
+            NumberAnimation { duration: 200 }
+        }
+        opacity: InputContext.cursorRectIntersectsClipRect ? 1.0 : 0.0
 
         MouseArea {
             width: parent.width * 2
