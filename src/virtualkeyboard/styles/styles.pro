@@ -17,12 +17,6 @@ HEADERS += \
 OTHER_FILES += \
     *.qml
 
-other.files = \
-    plugins.qmltypes \
-    qmldir
-other.path = $$[QT_INSTALL_QML]/$$TARGETPATH
-INSTALLS += other
-
 RESOURCES += \
     styles.qrc
 
