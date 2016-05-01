@@ -16,3 +16,6 @@ include(../../generateresource.pri)
 RESOURCES += $$generate_resource(t9write_db.qrc, $$T9WRITE_RESOURCE_FILES)
 
 load(qt_helper_lib)
+
+# Needed for resources
+CONFIG += qt
