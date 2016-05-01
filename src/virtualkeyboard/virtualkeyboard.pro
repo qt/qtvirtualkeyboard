@@ -215,7 +215,7 @@ qtquickcompiler: DEFINES += COMPILING_QML
     exists(3rdparty/hunspell/src/hunspell/hunspell.h) {
         SOURCES += hunspellinputmethod.cpp hunspellinputmethod_p.cpp hunspellworker.cpp
         HEADERS += hunspellinputmethod.h hunspellinputmethod_p.h hunspellworker.h
-        DEFINES += HAVE_HUNSPELL
+        DEFINES += HAVE_HUNSPELL HUNSPELL_STATIC
         INCLUDEPATH += 3rdparty/hunspell/src
         LIBS += -L$$OUT_PWD/../../lib -lqthunspell$$qtPlatformTargetSuffix()
         exists(3rdparty/hunspell/data) {

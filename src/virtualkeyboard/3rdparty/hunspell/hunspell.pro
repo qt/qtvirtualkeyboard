@@ -1,6 +1,6 @@
 TARGET = qthunspell
 
-DEFINES += BUILDING_LIBHUNSPELL
+DEFINES += HUNSPELL_STATIC
 CONFIG += static
 CONFIG += precompile_header warn_off
 CONFIG(debug, debug|release) {
