@@ -5,7 +5,7 @@ pinyin: CONFIG += lang-zh_CN
 tcime|zhuyin|cangjie: CONFIG += lang-zh_TW
 
 # Enable handwriting
-handwriting {
+handwriting:!lipi-toolkit:!t9write {
     include(virtualkeyboard/3rdparty/t9write/t9write-build.pri)
     equals(T9WRITE_FOUND, 1): CONFIG += t9write
     else: CONFIG += lipi-toolkit
