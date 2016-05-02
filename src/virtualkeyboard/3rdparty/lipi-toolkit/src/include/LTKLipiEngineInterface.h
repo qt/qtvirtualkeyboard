@@ -52,6 +52,8 @@ public:
 
     virtual void setLipiRootPath(const string& appLipiPath)=0;
 
+    virtual void setLipiLibPath(const string& appLipiLibPath)=0;
+
     virtual int setLipiLogFileName(const string& appLipiPath) = 0;
 
     virtual int setLipiLogLevel(const string& appLogLevel)=0;

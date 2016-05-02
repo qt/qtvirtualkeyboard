@@ -95,6 +95,7 @@ struct LTKControlInfo
 	string cfgFileName;
 	string cfgFilePath;
 	string lipiRoot;
+	string lipiLib;
 	string toolkitVersion;
 
 	// constructor
@@ -104,6 +105,7 @@ struct LTKControlInfo
 	cfgFileName(""),
 	cfgFilePath(""),
 	lipiRoot(""),
+	lipiLib(""),
 	toolkitVersion("")
 	{
 	}

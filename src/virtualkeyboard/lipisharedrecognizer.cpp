@@ -42,6 +42,7 @@ namespace QtVirtualKeyboard {
 
 int LipiSharedRecognizer::s_lipiEngineRefCount = 0;
 QString LipiSharedRecognizer::s_lipiRoot;
+QString LipiSharedRecognizer::s_lipiLib;
 void *LipiSharedRecognizer::s_lipiEngineHandle = 0;
 LipiSharedRecognizer::FN_PTR_CREATELTKLIPIENGINE LipiSharedRecognizer::s_createLTKLipiEngine = 0;
 LipiSharedRecognizer::FN_PTR_DELETELTKLIPIENGINE LipiSharedRecognizer::s_deleteLTKLipiEngine = 0;
@@ -173,18 +174,31 @@ int LipiSharedRecognizer::loadLipiInterface()
 
     if (++s_lipiEngineRefCount == 1) {
         if (s_lipiRoot.isEmpty()) {
-            if (qEnvironmentVariableIsEmpty("LIPI_ROOT")) {
-                s_lipiRoot = QDir(QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/lipi_toolkit").absolutePath();
-                qputenv("LIPI_ROOT", s_lipiRoot.toLatin1());
-            } else {
-                s_lipiRoot = qgetenv("LIPI_ROOT");
-            }
+            /*  LIPI_ROOT defines the root directory for lipi-toolkit project.
+                LIPI_LIB is an extension implemented for QtVirtualKeyboard and
+                allows using different location for lipi-toolkit plugins.
+
+                LIPI_LIB defaults to LIPI_ROOT + "/lib".
+            */
+            bool lipiRootVarIsEmpty = qEnvironmentVariableIsEmpty("LIPI_ROOT");
+            s_lipiRoot = lipiRootVarIsEmpty ?
+                        QDir(QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/lipi_toolkit").absolutePath() :
+                        qgetenv("LIPI_ROOT");
+
+            bool lipiLibVarIsEmpty = qEnvironmentVariableIsEmpty("LIPI_LIB");
+            if (!lipiLibVarIsEmpty)
+                s_lipiLib = qgetenv("LIPI_LIB");
+            else if (!lipiRootVarIsEmpty)
+                s_lipiLib = s_lipiRoot + "/lib";
+            else
+                s_lipiLib = QDir(QLibraryInfo::location(QLibraryInfo::PluginsPath) + "/lipi_toolkit").absolutePath();
         }
 
         QScopedPointer<LTKOSUtil> osUtil(LTKOSUtilFactory::getInstance());
         const string lipiRootPath(QDir::toNativeSeparators(s_lipiRoot).toStdString());
+        const string lipiLibPath(QDir::toNativeSeparators(s_lipiLib).toStdString());
 
-        int result = osUtil->loadSharedLib(lipiRootPath, LIPIENGINE_MODULE_STR, &s_lipiEngineHandle);
+        int result = osUtil->loadSharedLib(lipiLibPath, LIPIENGINE_MODULE_STR, &s_lipiEngineHandle);
         if (result != SUCCESS) {
             qWarning() << QString("Error %1: Could not open shared library for module '%2'").arg(result).arg(LIPIENGINE_MODULE_STR);
             return result;
@@ -208,6 +222,7 @@ int LipiSharedRecognizer::loadLipiInterface()
 
         s_lipiEngine = s_createLTKLipiEngine();
         s_lipiEngine->setLipiRootPath(lipiRootPath);
+        s_lipiEngine->setLipiLibPath(lipiLibPath);
 #if 0
         s_lipiEngine->setLipiLogFileName(QDir::toNativeSeparators(QString("%1/lipi.log").arg(s_lipiRoot)).toStdString());
         s_lipiEngine->setLipiLogLevel("DEBUG");

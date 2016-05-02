@@ -169,6 +169,7 @@ m_libHandlerFE(NULL)
 	    assignDefaultValues();
 
 	    m_lipiRootPath = tmpControlInfo.lipiRoot;
+	    m_lipiLibPath = tmpControlInfo.lipiLib;
 	    m_currentVersion = tmpControlInfo.toolkitVersion;
 	    strProjectName = tmpControlInfo.projectName;
 	    strProfileName = tmpControlInfo.profileName;
@@ -3281,6 +3282,7 @@ int NNShapeRecognizer::initializeFeatureExtractorInstance(const LTKControlInfo& 
 	LTKShapeFeatureExtractorFactory factory;
 	int errorCode = factory.createFeatureExtractor(m_featureExtractorName,
 			m_lipiRootPath,
+			m_lipiLibPath,
 			&m_libHandlerFE,
 			controlInfo,
 			&m_ptrFeatureExtractor);
@@ -4223,7 +4225,7 @@ int NNShapeRecognizer::initializePreprocessor(const LTKControlInfo& controlInfo,
     // Load the DLL with path=preprocDLLPath
     void* functionHandle = NULL;
 
-    int returnVal = m_OSUtilPtr->loadSharedLib(controlInfo.lipiRoot, PREPROC, &m_libHandler);
+    int returnVal = m_OSUtilPtr->loadSharedLib(controlInfo.lipiLib, PREPROC, &m_libHandler);
 
     
 	if(returnVal != SUCCESS)

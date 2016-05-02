@@ -94,7 +94,7 @@ LTKLinuxUtil::~LTKLinuxUtil()
  * CHANGE HISTROY
  * Author			Date				Description
  ***************************************************************************/
-int LTKLinuxUtil::loadSharedLib(const string & lipiRoot, 
+int LTKLinuxUtil::loadSharedLib(const string & lipiLibPath,
                                  const string & sharedLibName, 
                                  void * * libHandle)
 {
@@ -103,7 +103,7 @@ int LTKLinuxUtil::loadSharedLib(const string & lipiRoot,
     string sharedLibraryPath = "";
     
 	//	construct the path for the recogniser DLL
-    sharedLibraryPath = lipiRoot + "/" + "lib" + "/" + "lib" + sharedLibName + ".so";
+    sharedLibraryPath = lipiLibPath + "/" + "lib" + sharedLibName + ".so";
     
     // Load the DLL
 	*libHandle = dlopen(sharedLibraryPath.c_str(), RTLD_LAZY);

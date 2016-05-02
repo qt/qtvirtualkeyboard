@@ -66,6 +66,7 @@ private:
 
     static int s_lipiEngineRefCount;
     static QString s_lipiRoot;
+    static QString s_lipiLib;
     static void *s_lipiEngineHandle;
     static FN_PTR_CREATELTKLIPIENGINE s_createLTKLipiEngine;
     static FN_PTR_DELETELTKLIPIENGINE s_deleteLTKLipiEngine;
