@@ -9,6 +9,9 @@ SOURCES += \
     logger.cpp \
     LTKLogger.cpp \
 
+INCLUDEPATH += \
+    ../lib \
+
 win32 {
     DEFINES += LOGGER_EXPORTS
     LIBS += Advapi32.lib

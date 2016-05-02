@@ -1,4 +1,4 @@
-LIPILIBS = shaperecommon ltkcommon ltkutil qtwordreccommon
+LIPILIBS = shaperecommon ltkcommon ltkutil wordreccommon
 include(../../../lipiplugin.pri)
 
 INCLUDEPATH += \
