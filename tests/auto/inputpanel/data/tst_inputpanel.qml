@@ -204,7 +204,7 @@ Rectangle {
                 // function key press
                 { initText: "x", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputKey: Qt.Key_Shift, outputKeyCountMin: 1, outputKey: Qt.Key_Shift, preview: false, outputKeyText: "", outputKeyModifiers: Qt.NoModifier, outputKeyRepeat: false, outputText: "x" },
                 { initText: "x", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputKey: Qt.Key_Backspace, outputKeyCountMin: 1, outputKey: Qt.Key_Backspace, preview: false, outputKeyText: "", outputKeyModifiers: Qt.NoModifier, outputKeyRepeat: false, outputText: "" },
-                { initText: "xxxxxx", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputKey: Qt.Key_Backspace, keyHold: 600 + 8 * 50, outputKeyCountMin: 6, outputKey: Qt.Key_Backspace, preview: false, outputKeyText: "", outputKeyModifiers: Qt.NoModifier, outputKeyRepeat: true, outputText: "" },
+                { initText: "xxxxxx", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputKey: Qt.Key_Backspace, keyHold: 1000, outputKeyCountMin: 6, outputKey: Qt.Key_Backspace, preview: false, outputKeyText: "", outputKeyModifiers: Qt.NoModifier, outputKeyRepeat: true, outputText: "" },
             ]
         }
 
@@ -215,7 +215,9 @@ Rectangle {
             inputPanel.virtualKeyClickedSpy.clear()
             if (data.hasOwnProperty("keyHold")) {
                 inputPanel.virtualKeyPress(data.inputKey)
-                wait(data.keyHold)
+                do {
+                    inputPanel.virtualKeyClickedSpy.wait(data.keyHold)
+                } while (inputPanel.virtualKeyClickedSpy.count < data.outputKeyCountMin)
                 inputPanel.virtualKeyRelease()
             } else {
                 inputPanel.virtualKeyClick(data.inputKey)
