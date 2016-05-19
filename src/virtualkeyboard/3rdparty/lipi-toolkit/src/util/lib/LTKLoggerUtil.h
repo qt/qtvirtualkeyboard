@@ -100,7 +100,7 @@ public:
 	 * @return SUCCESS on successful split operation
 	 */
 
-	static int createLogger(const string& lipiRoot);
+	static int createLogger(const string& lipiLibPath);
 
     static int destroyLogger();
 

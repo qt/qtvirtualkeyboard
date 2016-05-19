@@ -73,11 +73,13 @@ public:
     
 	int createFeatureExtractor(const string& featureExtractorType,
                               const string& lipiRootPath,
+                              const string& lipiLibPath,
                               void** m_libHandlerFE,
                               const LTKControlInfo& controlInfo,
                               LTKShapeFeatureExtractor** outFeatureExtractor);
 
 	int getFeatureExtractorInst(const string& lipiRootPath,
+                                 const string& lipiLibPath,
                                  const string& feName,
                                  void** m_libHandlerFE,
                                  const LTKControlInfo& controlInfo,

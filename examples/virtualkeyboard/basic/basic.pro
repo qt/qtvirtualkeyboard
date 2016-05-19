@@ -15,7 +15,7 @@ RESOURCES += \
     demo.qrc
 
 OTHER_FILES += \
-    basic.qml \
+    Basic.qml \
     basic-b2qt.qml \
     content/AutoScroller.qml \
     content/HandwritingModeButton.qml \
@@ -32,5 +32,5 @@ disable-xcb {
 disable-desktop|!isEmpty(CROSS_COMPILE)|qnx {
     DEFINES += MAIN_QML=\\\"basic-b2qt.qml\\\"
 } else {
-    DEFINES += MAIN_QML=\\\"basic.qml\\\"
+    DEFINES += MAIN_QML=\\\"Basic.qml\\\"
 }

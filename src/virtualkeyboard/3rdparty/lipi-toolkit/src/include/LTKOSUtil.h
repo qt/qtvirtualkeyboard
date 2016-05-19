@@ -69,11 +69,11 @@ public:
 	// @}
 
     /** @brief  Given library name, this function loads it into the adress space.
-        * @param lipiRoot
+        * @param lipiLibPath
         * @param sharedLibName : name of the library to be loaded
         * @param libHandle: pointer to the library handle
         */
-    virtual int loadSharedLib(const string& lipiRoot,
+    virtual int loadSharedLib(const string& lipiLibPath,
                                  const string& sharedLibName,
                                  void** libHandle)=0;
 

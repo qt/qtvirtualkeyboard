@@ -350,6 +350,11 @@
 #define LIPIROOT_ENV_STRING	"LIPI_ROOT"
 
 /**
+* @brief Defines the lipi library environment string used in LipiEngine.cfg
+*/
+#define LIPILIB_ENV_STRING	"LIPI_LIB"
+
+/**
 * @brief Defines the type of project used in LipiEngine.cfg
 */
 #define PROJECT_TYPE_STRING "ProjectType"
