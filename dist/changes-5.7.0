@@ -24,3 +24,6 @@ information about a particular change.
    "import QtQuick.VirtualKeyboard", as the module is now also available
    under the open-source GPLv3 license.
 
+ - Added support for selection handles. Currently, it's only supported for
+   the integrated VKB. Support for the dedicated VKB will be a separate
+   commit.
