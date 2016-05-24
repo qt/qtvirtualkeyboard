@@ -29,8 +29,8 @@
 
 import QtTest 1.0
 import QtQuick 2.0
-import QtQuick.Enterprise.VirtualKeyboard 2.0
-import QtQuick.Enterprise.VirtualKeyboard.Settings 2.0
+import QtQuick.VirtualKeyboard 2.1
+import QtQuick.VirtualKeyboard.Settings 2.1
 import "handwriting.js" as Handwriting
 import "utils.js" as Utils
 
@@ -67,6 +67,9 @@ InputPanel {
                                                         naviationHighlight.widthAnimation.running ||
                                                         naviationHighlight.heightAnimation.running
     readonly property var wordCandidateView: Utils.findChildByProperty(keyboard, "objectName", "wordCandidateView", null)
+    readonly property var selectionControl: Utils.findChild(inputPanel, null, function(obj, param) { return obj.hasOwnProperty("handleIsMoving")})
+    readonly property var anchorHandle: selectionControl.children[0]
+    readonly property var cursorHandle: selectionControl.children[1]
     readonly property bool wordCandidateListVisibleHint: InputContext.inputEngine.wordCandidateListVisibleHint
     readonly property bool keyboardLayoutsAvailable: keyboard.availableLocaleIndices.length > 0 && keyboard.availableLocaleIndices.indexOf(-1) === -1
     property alias keyboardLayoutsAvailableSpy: keyboardLayoutsAvailableSpy

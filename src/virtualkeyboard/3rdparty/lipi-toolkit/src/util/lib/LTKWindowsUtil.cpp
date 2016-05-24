@@ -90,14 +90,14 @@ LTKWindowsUtil::~LTKWindowsUtil()
  * CHANGE HISTROY
  * Author			Date				Description
  ***************************************************************************/
-int LTKWindowsUtil::loadSharedLib(const string & lipiRoot, 
+int LTKWindowsUtil::loadSharedLib(const string & lipiLibPath,
                                  const string & sharedLibName, 
                                  void * * libHandle)
 {    
     string sharedLibraryPath = "";
     
 	//	construct the path for the recogniser DLL
-    sharedLibraryPath = lipiRoot + "\\" + "lib" + "\\" + sharedLibName +
+    sharedLibraryPath = lipiLibPath + "\\" + sharedLibName +
 #ifndef NDEBUG
         "d"
 #endif

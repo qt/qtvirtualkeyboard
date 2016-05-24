@@ -412,7 +412,7 @@ For example, to add a regular key which sends a key event to the input method:
 \code
     import QtQuick 2.0
     import QtQuick.Layouts 1.0
-    import QtQuick.Enterprise.VirtualKeyboard 2.0
+    import QtQuick.VirtualKeyboard 2.1
 
     // file: layouts/en_GB/main.qml
 
@@ -445,7 +445,7 @@ example, we add another key which specifies a custom key weight:
 \code
     import QtQuick 2.0
     import QtQuick.Layouts 1.0
-    import QtQuick.Enterprise.VirtualKeyboard 2.0
+    import QtQuick.VirtualKeyboard 2.1
 
     // file: layouts/en_GB/main.qml
 
@@ -503,7 +503,7 @@ For example:
 \code
     import QtQuick 2.0
     import QtQuick.Layouts 1.0
-    import QtQuick.Enterprise.VirtualKeyboard 2.0
+    import QtQuick.VirtualKeyboard 2.1
 
     // file: layouts/en_GB/symbols.qml
 
@@ -570,7 +570,7 @@ the built-in style, e.g. "retro", or any of the custom styles installed
 into the Styles directory:
 
 \code
-$$[QT_INSTALL_QML]/QtQuick/Enterprise/VirtualKeyboard/Styles
+$$[QT_INSTALL_QML]/QtQuick/VirtualKeyboard/Styles
 \endcode
 
 In case the environment variable is not set, or contains an invalid

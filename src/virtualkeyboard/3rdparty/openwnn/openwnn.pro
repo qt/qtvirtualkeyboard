@@ -1,19 +1,8 @@
-TEMPLATE = lib
-QT += core-private
-QT -= gui
-TARGET = openwnn
+TARGET = qtopenwnn
+
 VERSION = 1.3.6
-CONFIG += staticlib
+CONFIG += static
 CONFIG += warn_off
-
-build_pass {
-    CONFIG(debug, debug|release): SUBPATH = debug
-    else: SUBPATH = release
-} else {
-    debug_and_release: CONFIG += build_all
-}
-
-DESTDIR = $$SUBPATH
 
 INCLUDEPATH += \
     wnnDictionary/include \
@@ -59,3 +48,8 @@ HEADERS += \
     wnnEngine/include/romkan.h \
     wnnEngine/include/romkanfullkatakana.h \
     wnnEngine/include/romkanhalfkatakana.h
+
+load(qt_helper_lib)
+
+CONFIG += qt
+QT = core-private

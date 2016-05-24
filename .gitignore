@@ -1,7 +1,7 @@
 # This file is used to ignore files that should not be committed
 # --------------------------------------------------------------
 
-examples/quick/enterprise/virtualkeyboard/virtualkeyboard/virtualkeyboard
+examples/virtualkeyboard/basic
 !src/virtualkeyboard/3rdparty/hunspell/hunspell.pro
 src/virtualkeyboard/3rdparty/hunspell/*
 src/virtualkeyboard/3rdparty/hunspell/doc/html
@@ -10,6 +10,14 @@ src/virtualkeyboard/3rdparty/t9write/databases
 src/virtualkeyboard/3rdparty/t9write/doc
 src/virtualkeyboard/3rdparty/t9write/example
 
+src/virtualkeyboard/layouts.qrc
+*_wrapper.sh
+*_wrapper.bat
+*_resource.rc
+
+*.exe
+*.ilk
+*.pdb
 *.pro.user
 *.a
 *.so

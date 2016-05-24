@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/QtQuick/Enterprise/VirtualKeyboard/content">
+    <qresource prefix="/QtQuick/VirtualKeyboard/content">
         <file>layouts/ko_KR/main.qml</file>
         <file>layouts/ko_KR/symbols.qml</file>
         <file>layouts/en_GB/dialpad.qml</file>

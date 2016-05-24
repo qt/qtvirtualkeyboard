@@ -1,19 +1,8 @@
-TEMPLATE = lib
-win32: QT -= gui
-else: CONFIG -= qt
-TARGET = pinyin
+TARGET = qtpinyin
+
 VERSION = 1.0.0
-CONFIG += staticlib
+CONFIG += static
 CONFIG += warn_off
-
-build_pass {
-    CONFIG(debug, debug|release): SUBPATH = debug
-    else: SUBPATH = release
-} else {
-    debug_and_release: CONFIG += build_all
-}
-
-DESTDIR = $$SUBPATH
 
 INCLUDEPATH += \
     include
@@ -59,3 +48,11 @@ HEADERS += \
 OTHER_FILES +=\
     data/rawdict_utf16_65105_freq.txt \
     data/valid_utf16.txt
+
+load(qt_helper_lib)
+
+# On Windows, the library uses Qt for platform abstraction.
+win32 {
+    CONFIG += qt
+    QT = core
+}

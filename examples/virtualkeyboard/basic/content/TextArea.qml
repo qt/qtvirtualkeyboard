@@ -28,45 +28,49 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.Enterprise.VirtualKeyboard 2.0
+import QtQuick.VirtualKeyboard 2.1
 
-FocusScope {
-    id: textBase
+TextBase {
+    id: textArea
 
-    property var editor
-    property bool previewTextActive: !editor.activeFocus && text.length === 0
-    property int fontPixelSize: 32
-    property string previewText
-    property int enterKeyAction: EnterKeyAction.None
-    property string enterKeyText
-    property bool enterKeyEnabled: enterKeyAction === EnterKeyAction.None || editor.text.length > 0 || editor.inputMethodComposing
+    property alias color: textEdit.color
+    property alias text: textEdit.text
+    property alias textWidth: textEdit.width
+    property alias readOnly: textEdit.readOnly
+    property alias inputMethodHints: textEdit.inputMethodHints
 
-    implicitHeight: editor.height + 12
+    editor: textEdit
 
-    signal enterKeyClicked
-
-    Keys.onReleased: {
-        if (event.key === Qt.Key_Return)
-            enterKeyClicked()
+    Repeater {
+        model: Math.floor((parent.height - 30) / editor.cursorRectangle.height)
+        Rectangle {
+            x: 8
+            y: (index+1)*editor.cursorRectangle.height+6
+            height: 1; width: textArea.width-24
+            color: "#D6D6D6"
+        }
     }
-
-    Rectangle {
-        // background
-        radius: 5.0
+    MouseArea {
         anchors.fill: parent
-        color: "#FFFFFF"
-        border { width: 1; color: editor.activeFocus ? "#5CAA15" : "#BDBEBF" }
+        onClicked: textEdit.forceActiveFocus()
     }
-    Text {
-        id: previewText
+    TextEdit {
+        id: textEdit
 
-        y: 8
-        clip: true
-        color: "#a0a1a2"
-        visible: previewTextActive
-        text: textBase.previewText
-        font.pixelSize: 28
+        EnterKeyAction.actionId: textArea.enterKeyAction
+        EnterKeyAction.label: textArea.enterKeyText
+        EnterKeyAction.enabled: textArea.enterKeyEnabled
+
+        y: 6
+        focus: true
+        color: "#2B2C2E"
+        wrapMode: TextEdit.Wrap
+        cursorVisible: activeFocus
+        height: Math.max(implicitHeight, 60)
+        font.pixelSize: textArea.fontPixelSize
+        selectionColor: Qt.rgba(1.0, 1.0, 1.0, 0.5)
+        selectedTextColor: Qt.rgba(0.0, 0.0, 0.0, 0.8)
+        selectByMouse: true
         anchors { left: parent.left; right: parent.right; margins: 12 }
-
     }
 }

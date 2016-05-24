@@ -76,7 +76,8 @@ LTKShapeFeatureExtractorFactory::LTKShapeFeatureExtractorFactory()
 int LTKShapeFeatureExtractorFactory::createFeatureExtractor(
                                 const string& featureExtractorName,
                                 const string& lipiRootPath,
-                                void** m_libHandlerFE, 
+                                const string& lipiLibPath,
+                                void** m_libHandlerFE,
                                 const LTKControlInfo& controlInfo,
                                 LTKShapeFeatureExtractor** outFeatureExtractor)
 {
@@ -97,7 +98,7 @@ int LTKShapeFeatureExtractorFactory::createFeatureExtractor(
         LTKReturnError(errorCode);
     }
         
-    errorCode = getFeatureExtractorInst(lipiRootPath, feName, m_libHandlerFE, 
+    errorCode = getFeatureExtractorInst(lipiRootPath, lipiLibPath, feName, m_libHandlerFE,
 			                            controlInfo, outFeatureExtractor);
 
     if ( errorCode != SUCCESS)
@@ -129,6 +130,7 @@ int LTKShapeFeatureExtractorFactory::createFeatureExtractor(
 *************************************************************************************/
 int LTKShapeFeatureExtractorFactory::getFeatureExtractorInst(
                                  const string& lipiRootPath,
+                                 const string& lipiLibPath,
                                  const string& feName,
                                  void** m_libHandlerFE,
                                  const LTKControlInfo& controlInfo,
@@ -139,7 +141,7 @@ int LTKShapeFeatureExtractorFactory::getFeatureExtractorInst(
 
     LTKOSUtil* utilPtr = LTKOSUtilFactory::getInstance();
 
-    int returnVal = utilPtr->loadSharedLib(lipiRootPath, feName, m_libHandlerFE);
+    int returnVal = utilPtr->loadSharedLib(lipiLibPath, feName, m_libHandlerFE);
 
     
 	if(returnVal != SUCCESS)

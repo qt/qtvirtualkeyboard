@@ -1,16 +1,6 @@
-TEMPLATE = lib
-QT -= gui
-TARGET = tcime
-CONFIG += staticlib
+TARGET = qttcime
 
-build_pass {
-    CONFIG(debug, debug|release): SUBPATH = debug
-    else: SUBPATH = release
-} else {
-    debug_and_release: CONFIG += build_all
-}
-
-DESTDIR = $$SUBPATH
+CONFIG += static
 
 SOURCES += \
     cangjiedictionary.cpp \
@@ -31,3 +21,8 @@ HEADERS += \
 OTHER_FILES += \
     data/dict_cangjie.dat \
     data/dict_phrases.dat
+
+load(qt_helper_lib)
+
+CONFIG += qt
+QT = core

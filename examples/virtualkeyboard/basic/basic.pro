@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = virtualkeyboard
+TARGET = basic
 QT += qml quick
 SOURCES += main.cpp
 CONFIG += link_pkgconfig
@@ -7,20 +7,16 @@ static {
     QT += svg
     QTPLUGIN += qtvirtualkeyboardplugin
 }
-android-no-sdk|!isEmpty(CROSS_COMPILE) {
-    TARGETPATH = /data/user/qt/virtualkeyboard
-} else {
-    TARGETPATH = $$[QT_INSTALL_EXAMPLES]/virtualkeyboard
-}
-target.path = $$TARGETPATH
+
+target.path = $$[QT_INSTALL_EXAMPLES]/virtualkeyboard/basic
 INSTALLS += target
 
 RESOURCES += \
     demo.qrc
 
 OTHER_FILES += \
-    VirtualKeyboard.qml \
-    VirtualKeyboard-b2qt.qml \
+    Basic.qml \
+    basic-b2qt.qml \
     content/AutoScroller.qml \
     content/HandwritingModeButton.qml \
     content/ScrollBar.qml \
@@ -33,8 +29,8 @@ disable-xcb {
     CONFIG += disable-desktop
 }
 
-disable-desktop|android-no-sdk|!isEmpty(CROSS_COMPILE)|qnx {
-    DEFINES += MAIN_QML=\\\"VirtualKeyboard-b2qt.qml\\\"
+disable-desktop|!isEmpty(CROSS_COMPILE)|qnx {
+    DEFINES += MAIN_QML=\\\"basic-b2qt.qml\\\"
 } else {
-    DEFINES += MAIN_QML=\\\"VirtualKeyboard.qml\\\"
+    DEFINES += MAIN_QML=\\\"Basic.qml\\\"
 }

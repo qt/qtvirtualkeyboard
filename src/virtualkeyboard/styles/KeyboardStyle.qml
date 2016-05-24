@@ -31,7 +31,7 @@ import QtQuick 2.0
 
 /*!
     \qmltype KeyboardStyle
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles
+    \inqmlmodule QtQuick.VirtualKeyboard.Styles
     \brief Provides a styling interface for the Virtual Keyboard.
     \ingroup qtvirtualkeyboard-styles-qml
 
@@ -274,14 +274,14 @@ QtObject {
     /*! Template for the selection list background. */
     property Component selectionListBackground: null
 
-    /*! \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.3
+    /*! \since QtQuick.VirtualKeyboard.Styles 1.3
 
         This property holds the transition to apply to items that
         are added to the selection list view.
     */
     property Transition selectionListAdd
 
-    /*! \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.3
+    /*! \since QtQuick.VirtualKeyboard.Styles 1.3
 
         This property holds the transition to apply to items that
         are removed from the selection list view.
@@ -289,7 +289,7 @@ QtObject {
     property Transition selectionListRemove
 
     /*!
-        \since QtQuick.Enterprise.VirtualKeyboard.Styles 1.1
+        \since QtQuick.VirtualKeyboard.Styles 1.1
 
         Template for the navigation highlight item.
 
@@ -302,7 +302,7 @@ QtObject {
     property Component navigationHighlight: null
 
     /*!
-        \since QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
+        \since QtQuick.VirtualKeyboard.Styles 2.1
 
         Template for the trace input key.
 
@@ -311,7 +311,7 @@ QtObject {
     property Component traceInputKeyPanelDelegate: null
 
     /*!
-        \since QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
+        \since QtQuick.VirtualKeyboard.Styles 2.1
 
         Template for rendering a Trace object.
 
@@ -319,7 +319,7 @@ QtObject {
     */
     property Component traceCanvasDelegate: null
 
-    /*! \since QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
 
         Template for the popup list item.
 
@@ -334,7 +334,7 @@ QtObject {
     */
     property Component popupListDelegate: null
 
-    /*! \since QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
 
         Template for the popup list highlight.
 
@@ -342,23 +342,35 @@ QtObject {
     */
     property Component popupListHighlight: null
 
-    /*! \since QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
 
         Template for the popup list background.
     */
     property Component popupListBackground: null
 
-    /*! \since QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
 
         This property holds the transition to apply to items that
         are added to the popup list view.
     */
     property Transition popupListAdd
 
-    /*! \since QtQuick.Enterprise.VirtualKeyboard.Styles 2.0
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
 
         This property holds the transition to apply to items that
         are removed from the popup list view.
     */
     property Transition popupListRemove
+
+    /*!
+        \since QtQuick.VirtualKeyboard.Styles 2.1
+
+        This item is used to indicate where the bounds of the text selection is
+        and to be able to interactively move the start or end of the selection.
+        The same item is used for both start and end selection.
+
+        Selection handles are currently only supported for the
+        \l {Integration Method}{application-based integration method}.
+    */
+    property Component selectionHandle: null
 }

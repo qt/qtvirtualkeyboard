@@ -36,7 +36,7 @@ namespace QtVirtualKeyboard {
 /*!
     \qmltype InputMethod
     \instantiates QtVirtualKeyboard::InputMethod
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \brief Base type for creating input method in QML.
 
@@ -164,7 +164,7 @@ namespace QtVirtualKeyboard {
 
 /*!
     \qmlmethod list<int> InputMethod::patternRecognitionModes()
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
 
     Returns list of supported pattern recognition modes.
 
@@ -174,7 +174,7 @@ namespace QtVirtualKeyboard {
 
 /*!
     \qmlmethod Trace InputMethod::traceBegin(int traceId, int patternRecognitionMode, var traceCaptureDeviceInfo, var traceScreenInfo)
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
 
     This method is called when a trace interaction starts with the specified \a patternRecognitionMode.
     The trace is uniquely identified by the \a traceId.
@@ -189,7 +189,7 @@ namespace QtVirtualKeyboard {
 
 /*!
     \qmlmethod bool InputMethod::traceEnd(Trace trace)
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
 
     This method is called when the trace interaction ends. The input method should destroy the \a trace object
     at some point after this function is called. See the \l Trace API how to access the gathered
@@ -198,7 +198,7 @@ namespace QtVirtualKeyboard {
 
 /*!
     \qmlmethod bool InputMethod::reselect(int cursorPosition, int reselectFlags)
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
 
     This method attempts to reselect a word located at the \a cursorPosition.
     The \a reselectFlags define the rules for how the word should be selected in

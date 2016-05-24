@@ -135,7 +135,7 @@ void DesktopInputPanel::createView()
         d->view->setFlags(d->view->flags() | Qt::ToolTip);
 #endif
         d->view->setColor(QColor(Qt::transparent));
-        d->view->setSource(QUrl("qrc:///QtQuick/Enterprise/VirtualKeyboard/content/InputPanel.qml"));
+        d->view->setSource(QUrl("qrc:///QtQuick/VirtualKeyboard/content/InputPanel.qml"));
         connect(qGuiApp, SIGNAL(aboutToQuit()), SLOT(destroyView()));
     }
 }

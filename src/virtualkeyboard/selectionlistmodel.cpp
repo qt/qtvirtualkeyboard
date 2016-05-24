@@ -53,7 +53,7 @@ public:
 /*!
     \qmltype SelectionListModel
     \instantiates QtVirtualKeyboard::SelectionListModel
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \brief Provides a data model for the selection lists.
 

@@ -116,46 +116,58 @@ Rectangle {
             return [
                 // Note: Add new import versions here
                 { qml: "import QtQuick 2.0; \
-                        import QtQuick.Enterprise.VirtualKeyboard 1.0; \
+                        import QtQuick.VirtualKeyboard 1.0; \
                         Item {}" },
                 { qml: "import QtQuick 2.0; \
-                        import QtQuick.Enterprise.VirtualKeyboard 1.1; \
+                        import QtQuick.VirtualKeyboard 1.1; \
                         Item {}" },
                 { qml: "import QtQuick 2.0; \
-                        import QtQuick.Enterprise.VirtualKeyboard 1.2; \
+                        import QtQuick.VirtualKeyboard 1.2; \
                         Item {}" },
                 { qml: "import QtQuick 2.0; \
-                        import QtQuick.Enterprise.VirtualKeyboard 1.3; \
+                        import QtQuick.VirtualKeyboard 1.3; \
                         Item {}" },
                 { qml: "import QtQuick 2.0; \
-                        import QtQuick.Enterprise.VirtualKeyboard 2.0; \
+                        import QtQuick.VirtualKeyboard 2.0; \
                         Item {}" },
                 { qml: "import QtQuick 2.0; \
-                        import QtQuick.Enterprise.VirtualKeyboard.Styles 1.0; \
+                        import QtQuick.VirtualKeyboard 2.1; \
+                        Item {}" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Styles 1.0; \
                         KeyboardStyle {}" },
                 { qml: "import QtQuick 2.0; \
-                        import QtQuick.Enterprise.VirtualKeyboard.Styles 1.1; \
+                        import QtQuick.VirtualKeyboard.Styles 1.1; \
                         KeyboardStyle {}" },
                 { qml: "import QtQuick 2.0; \
-                        import QtQuick.Enterprise.VirtualKeyboard.Styles 1.2; \
+                        import QtQuick.VirtualKeyboard.Styles 1.2; \
                         KeyboardStyle {}" },
                 { qml: "import QtQuick 2.0; \
-                        import QtQuick.Enterprise.VirtualKeyboard.Styles 1.3; \
+                        import QtQuick.VirtualKeyboard.Styles 1.3; \
                         KeyboardStyle {}" },
                 { qml: "import QtQuick 2.0; \
-                        import QtQuick.Enterprise.VirtualKeyboard.Styles 2.0; \
+                        import QtQuick.VirtualKeyboard.Styles 2.0; \
                         KeyboardStyle {}" },
                 { qml: "import QtQuick 2.0; \
-                        import QtQuick.Enterprise.VirtualKeyboard.Settings 1.0; \
+                        import QtQuick.VirtualKeyboard.Styles 2.1; \
+                        KeyboardStyle {}" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Settings 1.0; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName }" },
                 { qml: "import QtQuick 2.0; \
-                        import QtQuick.Enterprise.VirtualKeyboard.Settings 1.1; \
+                        import QtQuick.VirtualKeyboard.Settings 1.1; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName }" },
                 { qml: "import QtQuick 2.0; \
-                        import QtQuick.Enterprise.VirtualKeyboard.Settings 1.2; \
+                        import QtQuick.VirtualKeyboard.Settings 1.2; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName }" },
                 { qml: "import QtQuick 2.0; \
-                        import QtQuick.Enterprise.VirtualKeyboard.Settings 2.0; \
+                        import QtQuick.VirtualKeyboard.Settings 2.0; \
+                        Item { property var styleName: VirtualKeyboardSettings.styleName; \
+                               property var locale: VirtualKeyboardSettings.locale; \
+                               property var availableLocales: VirtualKeyboardSettings.availableLocales; \
+                               property var activeLocales: VirtualKeyboardSettings.activeLocales }" },
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Settings 2.1; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName; \
                                property var locale: VirtualKeyboardSettings.locale; \
                                property var availableLocales: VirtualKeyboardSettings.availableLocales; \
@@ -212,7 +224,7 @@ Rectangle {
                 // function key press
                 { initText: "x", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputKey: Qt.Key_Shift, outputKeyCountMin: 1, outputKey: Qt.Key_Shift, preview: false, outputKeyText: "", outputKeyModifiers: Qt.NoModifier, outputKeyRepeat: false, outputText: "x" },
                 { initText: "x", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputKey: Qt.Key_Backspace, outputKeyCountMin: 1, outputKey: Qt.Key_Backspace, preview: false, outputKeyText: "", outputKeyModifiers: Qt.NoModifier, outputKeyRepeat: false, outputText: "" },
-                { initText: "xxxxxx", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputKey: Qt.Key_Backspace, keyHold: 600 + 8 * 50, outputKeyCountMin: 6, outputKey: Qt.Key_Backspace, preview: false, outputKeyText: "", outputKeyModifiers: Qt.NoModifier, outputKeyRepeat: true, outputText: "" },
+                { initText: "xxxxxx", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputKey: Qt.Key_Backspace, keyHold: 1000, outputKeyCountMin: 6, outputKey: Qt.Key_Backspace, preview: false, outputKeyText: "", outputKeyModifiers: Qt.NoModifier, outputKeyRepeat: true, outputText: "" },
             ]
         }
 
@@ -223,7 +235,9 @@ Rectangle {
             inputPanel.virtualKeyClickedSpy.clear()
             if (data.hasOwnProperty("keyHold")) {
                 inputPanel.virtualKeyPress(data.inputKey)
-                wait(data.keyHold)
+                do {
+                    inputPanel.virtualKeyClickedSpy.wait(data.keyHold)
+                } while (inputPanel.virtualKeyClickedSpy.count < data.outputKeyCountMin)
                 inputPanel.virtualKeyRelease()
             } else {
                 inputPanel.virtualKeyClick(data.inputKey)
@@ -1355,6 +1369,34 @@ Rectangle {
             if (!inputPanel.wordCandidateListVisibleHint && textInput.text !== data.expectedText)
                 expectFail("", "Prediction/spell correction not enabled")
             compare(textInput.text, data.expectedText)
+        }
+
+        function test_selection_data() {
+            return [
+                { initText: "Hello cruel world", selectionStart: 2, selectionEnd: 9, expectHandlesToBeVisible: true },
+                { initText: "Hello cruel world", selectionStart: 9, selectionEnd: 9, expectHandlesToBeVisible: false },
+                { initText: "Hello cruel world", selectionStart: 2, selectionEnd: 9, expectHandlesToBeVisible: true },
+                { initText: "Hello cruel world", selectionStart: 0, selectionEnd: 17, expectHandlesToBeVisible: true },
+            ]
+        }
+
+        function test_selection(data) {
+            waitForRendering(textInput)
+            prepareTest(data)
+            compare(inputPanel.cursorHandle.visible, data.expectHandlesToBeVisible)
+            compare(inputPanel.anchorHandle.visible, data.expectHandlesToBeVisible)
+            if (data.expectHandlesToBeVisible) {
+                var cursorHandlePointsTo = Qt.point(inputPanel.cursorHandle.x + inputPanel.cursorHandle.width/2, inputPanel.cursorHandle.y)
+                var anchorHandlePointsTo = Qt.point(inputPanel.anchorHandle.x + inputPanel.anchorHandle.width/2, inputPanel.anchorHandle.y)
+                var anchorRect = textInput.positionToRectangle(data.selectionStart)
+                var cursorRect = textInput.positionToRectangle(data.selectionEnd)
+
+                compare(cursorHandlePointsTo.x, cursorRect.x)
+                compare(cursorHandlePointsTo.y, cursorRect.y + cursorRect.height)
+
+                compare(anchorHandlePointsTo.x, anchorRect.x)
+                compare(anchorHandlePointsTo.y, anchorRect.y + anchorRect.height)
+            }
         }
     }
 }

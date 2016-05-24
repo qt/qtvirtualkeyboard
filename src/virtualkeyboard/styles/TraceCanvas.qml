@@ -32,11 +32,11 @@ import "TraceUtils.js" as TraceUtils
 
 /*!
     \qmltype TraceCanvas
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard.Styles
+    \inqmlmodule QtQuick.VirtualKeyboard.Styles
     \brief A specialized Canvas type for rendering Trace objects.
     \ingroup qtvirtualkeyboard-styles-qml
     \inherits Canvas
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
 
     This type provides capabilities for rendering Trace objects on the screen.
 

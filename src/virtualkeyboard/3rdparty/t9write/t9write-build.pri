@@ -5,7 +5,7 @@
 #   T9WRITE_ALPHABETIC_OBJ: Absolute path to the target object file
 #
 
-!isEmpty(CROSS_COMPILE) {
+contains(QT_ARCH, arm) {
     T9WRITE_BUILD_DIR = $$files(build_Android_ARM*)
 } else:linux {
     T9WRITE_BUILD_DIR = $$files(build_Android_x86*)

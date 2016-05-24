@@ -65,6 +65,7 @@ class InputContext : public QObject
     Q_PROPERTY(QObject *inputItem READ inputItem NOTIFY inputItemChanged)
     Q_PROPERTY(QtVirtualKeyboard::ShiftHandler *shiftHandler READ shiftHandler CONSTANT)
     Q_PROPERTY(QtVirtualKeyboard::InputEngine *inputEngine READ inputEngine CONSTANT)
+    Q_PROPERTY(bool selectionControlVisible READ selectionControlVisible NOTIFY selectionControlVisibleChanged)
 
 public:
     explicit InputContext(PlatformInputContext *parent = 0);
@@ -96,6 +97,7 @@ public:
     QObject *inputItem() const;
     ShiftHandler *shiftHandler() const;
     InputEngine *inputEngine() const;
+    bool selectionControlVisible() const;
 
     Q_INVOKABLE void hideInputPanel();
     Q_INVOKABLE void sendKeyClick(int key, const QString &text, int modifiers = 0);
@@ -106,6 +108,9 @@ public:
     // Helper functions
     Q_INVOKABLE bool fileExists(const QUrl &fileUrl);
     Q_INVOKABLE bool hasEnterKeyAction(QObject *item) const;
+
+    // For selection handles
+    Q_INVOKABLE void setSelectionOnFocusObject(const QPointF &anchorPos, const QPointF &cursorPos);
 
 signals:
     void focusChanged();
@@ -124,6 +129,7 @@ signals:
     void animatingChanged();
     void localeChanged();
     void inputItemChanged();
+    void selectionControlVisibleChanged();
     void navigationKeyPressed(int key, bool isAutoRepeat);
     void navigationKeyReleased(int key, bool isAutoRepeat);
 

@@ -32,7 +32,7 @@ import QtQuick.Layouts 1.0
 
 /*!
     \qmltype BaseKey
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \inherits Item
 
@@ -72,7 +72,7 @@ Item {
     */
     property string displayText: text
 
-    /*! \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    /*! \since QtQuick.VirtualKeyboard 2.0
 
         Sets the small text rendered in the corner of the key.
 
@@ -80,7 +80,7 @@ Item {
     */
     property string smallText: effectiveAlternativeKeysHighlightIndex !== -1 ? effectiveAlternativeKeys[effectiveAlternativeKeysHighlightIndex] : ""
 
-    /*! \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    /*! \since QtQuick.VirtualKeyboard 2.0
 
         Sets the visibility of small text.
 
@@ -105,7 +105,7 @@ Item {
     */
     property var alternativeKeys: []
 
-    /*! \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    /*! \since QtQuick.VirtualKeyboard 2.0
 
         This property contains the effective alternative keys presented to user.
 
@@ -119,7 +119,7 @@ Item {
         return alternativeKeys.slice(0, textIndex).concat(alternativeKeys.slice(textIndex + 1))
     }
 
-    /*! \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    /*! \since QtQuick.VirtualKeyboard 2.0
 
         This property contains the index of highlighted item in the \c effectiveAlternativeKeys.
 
@@ -140,7 +140,7 @@ Item {
     */
     property int key: Qt.Key_unknown
 
-    /*! \since QtQuick.Enterprise.VirtualKeyboard 1.3
+    /*! \since QtQuick.VirtualKeyboard 1.3
 
         This property controls whether the key emits key events for input
         method processing. When true, the key events are disabled.
@@ -156,7 +156,7 @@ Item {
     */
     property bool active: false
 
-    /*! \since QtQuick.Enterprise.VirtualKeyboard 1.3
+    /*! \since QtQuick.VirtualKeyboard 1.3
 
         Disables key modifiers on the emitted key.
 
@@ -219,7 +219,7 @@ Item {
     property alias keyPanelDelegate: keyPanel.sourceComponent
 
     /*!
-        \since QtQuick.Enterprise.VirtualKeyboard 1.1
+        \since QtQuick.VirtualKeyboard 1.1
 
         This property holds the sound effect to be played on key press.
 

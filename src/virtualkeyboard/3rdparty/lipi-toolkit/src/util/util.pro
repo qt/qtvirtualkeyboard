@@ -4,4 +4,4 @@ SUBDIRS += \
     lib \
     logger
 
-logger.depends = sub-lib
+logger.depends = lib

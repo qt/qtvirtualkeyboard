@@ -74,7 +74,7 @@ public:
 	~LTKWindowsUtil();
 
 	// @}
-    int loadSharedLib(const string& lipiRoot,
+    int loadSharedLib(const string& lipiLibPath,
                          const string& sharedLibName,
                          void** libHandle);
 

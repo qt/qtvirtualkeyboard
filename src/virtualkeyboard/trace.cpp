@@ -52,7 +52,7 @@ public:
 /*!
     \class QtVirtualKeyboard::Trace
     \inmodule qtvirtualkeyboard
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
     \brief Trace is a data model for touch input data.
 
     Trace provides the data model for coordinate data and other
@@ -114,9 +114,9 @@ public:
 /*!
     \qmltype Trace
     \instantiates QtVirtualKeyboard::Trace
-    \inqmlmodule QtQuick.Enterprise.VirtualKeyboard
+    \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
-    \since QtQuick.Enterprise.VirtualKeyboard 2.0
+    \since QtQuick.VirtualKeyboard 2.0
     \brief Trace is a data model for touch input data.
 
     Trace provides the data model for coordinate data and other

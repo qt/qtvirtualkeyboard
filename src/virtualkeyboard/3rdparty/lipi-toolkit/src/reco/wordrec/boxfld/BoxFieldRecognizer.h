@@ -72,6 +72,9 @@ private:
 	/** Lipi root */
 	string m_lipiRoot;
 
+	/** Lipi libraries */
+	string m_lipiLib;
+
 	/** Isolated shape recognizer project used for recognizing each box */
 	string m_boxedShapeProject;
 

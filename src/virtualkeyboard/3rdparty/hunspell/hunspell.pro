@@ -1,33 +1,10 @@
-TEMPLATE = lib
-QT -= core gui
-DEFINES += BUILDING_LIBHUNSPELL
-CONFIG += dll
-#CONFIG += staticlib
+TARGET = qthunspell
+
+DEFINES += HUNSPELL_STATIC
+CONFIG += static
 CONFIG += precompile_header warn_off
-debug {
+CONFIG(debug, debug|release) {
     DEFINES += HUNSPELL_WARNING_ON
-}
-
-build_pass {
-    CONFIG(debug, debug|release) {
-        SUBPATH = debug
-        win32: TARGET_SUFFIX = d
-    } else {
-        SUBPATH = release
-    }
-} else {
-    debug_and_release: CONFIG += build_all
-    else:win32:CONFIG(debug, debug|release): TARGET_SUFFIX = d
-}
-
-DESTDIR = $$SUBPATH
-
-TARGET = hunspell$$TARGET_SUFFIX
-
-dll {
-    win32: CONFIG += skip_target_version_ext
-    target.path = $$[QT_INSTALL_LIBS]
-    INSTALLS += target
 }
 
 config_file = "/* Version number of package */" "$${LITERAL_HASH}define VERSION \"$$VERSION\""
@@ -75,3 +52,5 @@ OTHER_FILES +=\
     src/hunspell/license.hunspell \
     src/hunspell/license.myspell \
     src/hunspell/utf_info.cxx
+
+load(qt_helper_lib)

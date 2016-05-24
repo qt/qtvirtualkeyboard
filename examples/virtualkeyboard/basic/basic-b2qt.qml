@@ -29,19 +29,20 @@
 
 import QtQuick 2.0
 import QtQuick.Window 2.2
-import QtQuick.Enterprise.VirtualKeyboard 2.0
+import QtQuick.VirtualKeyboard 2.1
 import "content"
 
 Item {
-    implicitWidth: virtualKeyboard.implicitHeight
-    implicitHeight: virtualKeyboard.implicitWidth
+    width: 1280
+    height: 720
+
     Item {
         id: appContainer
         width: Screen.width < Screen.height ? parent.height : parent.width
         height: Screen.width < Screen.height ? parent.width : parent.height
         anchors.centerIn: parent
         rotation: Screen.width < Screen.height ? 90 : 0
-        VirtualKeyboard {
+        Basic {
             id: virtualKeyboard
             anchors.left: parent.left
             anchors.top: parent.top

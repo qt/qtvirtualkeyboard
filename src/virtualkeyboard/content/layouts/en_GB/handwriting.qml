@@ -29,11 +29,11 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
-import QtQuick.Enterprise.VirtualKeyboard 2.0
+import QtQuick.VirtualKeyboard 2.1
 
 KeyboardLayout {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Enterprise.VirtualKeyboard 2.0; HandwritingInputMethod {}', parent)
+        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.1; HandwritingInputMethod {}', parent)
     }
     sharedLayouts: ['symbols']
     inputMode: InputEngine.Latin
