@@ -190,7 +190,7 @@ int LipiSharedRecognizer::loadLipiInterface()
             */
             bool lipiRootVarIsEmpty = qEnvironmentVariableIsEmpty("LIPI_ROOT");
             s_lipiRoot = lipiRootVarIsEmpty ?
-                        QDir(QLibraryInfo::location(QLibraryInfo::PluginsPath) + "/lipi_toolkit").absolutePath() :
+                        QDir(QLibraryInfo::location(QLibraryInfo::DataPath) + "/lipi_toolkit").absolutePath() :
                         qgetenv("LIPI_ROOT");
 
             bool lipiLibVarIsEmpty = qEnvironmentVariableIsEmpty("LIPI_LIB");
