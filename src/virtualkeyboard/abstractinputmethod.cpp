@@ -44,6 +44,7 @@ AbstractInputMethodPrivate::AbstractInputMethodPrivate() :
 
 /*!
     \class QtVirtualKeyboard::AbstractInputMethod
+    \internal
 
     \inmodule qtvirtualkeyboard
 

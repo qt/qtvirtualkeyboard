@@ -98,10 +98,6 @@
     \li \l {User Guide}
     \endlist
 
-    \section1 C++ Classes
-
-    \generatelist {classesbymodule qtvirtualkeyboard}
-
     \section1 QML Types
 
     \annotatedlist qtvirtualkeyboard-qml
@@ -119,14 +115,6 @@
      \list
       \li \l{Qt Virtual Keyboard Examples}
      \endlist
-*/
-
-/*!
-\page qt-virtual-keyboard-classes.html
-\title Qt Virtual Keyboard C++ Classes
-\inmodule qtvirtualkeyboard
-
-\generatelist {classesbymodule qtvirtualkeyboard}
 */
 
 /*!
