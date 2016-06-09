@@ -56,6 +56,7 @@ class InputContext : public QObject
     Q_PROPERTY(QString preeditText READ preeditText WRITE setPreeditText NOTIFY preeditTextChanged)
     Q_PROPERTY(QString surroundingText READ surroundingText NOTIFY surroundingTextChanged)
     Q_PROPERTY(QString selectedText READ selectedText NOTIFY selectedTextChanged)
+    Q_PROPERTY(QRectF anchorRectangle READ anchorRectangle NOTIFY anchorRectangleChanged)
     Q_PROPERTY(QRectF cursorRectangle READ cursorRectangle NOTIFY cursorRectangleChanged)
     Q_PROPERTY(QRectF keyboardRectangle READ keyboardRectangle WRITE setKeyboardRectangle NOTIFY keyboardRectangleChanged)
     Q_PROPERTY(QRectF previewRectangle READ previewRectangle WRITE setPreviewRectangle NOTIFY previewRectangleChanged)
@@ -84,6 +85,7 @@ public:
     void setPreeditText(const QString &text, QList<QInputMethodEvent::Attribute> attributes = QList<QInputMethodEvent::Attribute>(), int replaceFrom = 0, int replaceLength = 0);
     QString surroundingText() const;
     QString selectedText() const;
+    QRectF anchorRectangle() const;
     QRectF cursorRectangle() const;
     QRectF keyboardRectangle() const;
     void setKeyboardRectangle(QRectF rectangle);
@@ -124,6 +126,7 @@ signals:
     void surroundingTextChanged();
     void selectedTextChanged();
     void cursorPositionChanged();
+    void anchorRectangleChanged();
     void cursorRectangleChanged();
     void shiftChanged();
     void capsLockChanged();

@@ -106,6 +106,7 @@ public:
         preeditTextAttributes(),
         surroundingText(),
         selectedText(),
+        anchorRectangle(),
         cursorRectangle(),
         selectionControlVisible(false),
         anchorRectIntersectsClipRect(false),
@@ -134,6 +135,7 @@ public:
     QList<QInputMethodEvent::Attribute> preeditTextAttributes;
     QString surroundingText;
     QString selectedText;
+    QRectF anchorRectangle;
     QRectF cursorRectangle;
     bool selectionControlVisible;
     bool anchorRectIntersectsClipRect;
@@ -280,6 +282,12 @@ QString InputContext::selectedText() const
 {
     Q_D(const InputContext);
     return d->selectedText;
+}
+
+QRectF InputContext::anchorRectangle() const
+{
+    Q_D(const InputContext);
+    return d->anchorRectangle;
 }
 
 QRectF InputContext::cursorRectangle() const
@@ -653,6 +661,7 @@ void InputContext::update(Qt::InputMethodQueries queries)
     Qt::InputMethodHints inputMethodHints = Qt::InputMethodHints(d->inputContext->inputMethodQuery(Qt::ImHints).toInt());
     const int cursorPosition = d->inputContext->inputMethodQuery(Qt::ImCursorPosition).toInt();
     const int anchorPosition = d->inputContext->inputMethodQuery(Qt::ImAnchorPosition).toInt();
+    QRectF anchorRectangle = qApp->inputMethod()->anchorRectangle();
     QRectF cursorRectangle = qApp->inputMethod()->cursorRectangle();
     QString surroundingText = d->inputContext->inputMethodQuery(Qt::ImSurroundingText).toString();
     QString selectedText = d->inputContext->inputMethodQuery(Qt::ImCurrentSelection).toString();
@@ -662,6 +671,7 @@ void InputContext::update(Qt::InputMethodQueries queries)
     bool newSurroundingText = surroundingText != d->surroundingText;
     bool newSelectedText = selectedText != d->selectedText;
     bool newCursorPosition = cursorPosition != d->cursorPosition;
+    bool newAnchorRectangle = anchorRectangle != d->anchorRectangle;
     bool newCursorRectangle = cursorRectangle != d->cursorRectangle;
     bool selectionControlVisible = d->inputContext->isInputPanelVisible() && (cursorPosition != anchorPosition);
     bool newSelectionControlVisible = selectionControlVisible != d->selectionControlVisible;
@@ -681,6 +691,7 @@ void InputContext::update(Qt::InputMethodQueries queries)
     d->surroundingText = surroundingText;
     d->selectedText = selectedText;
     d->cursorPosition = cursorPosition;
+    d->anchorRectangle = anchorRectangle;
     d->cursorRectangle = cursorRectangle;
     d->selectionControlVisible = selectionControlVisible;
     d->anchorRectIntersectsClipRect = anchorRectIntersectsClipRect;
@@ -707,6 +718,9 @@ void InputContext::update(Qt::InputMethodQueries queries)
     }
     if (newCursorPosition) {
         emit cursorPositionChanged();
+    }
+    if (newAnchorRectangle) {
+        emit anchorRectangleChanged();
     }
     if (newCursorRectangle) {
         emit cursorRectangleChanged();
@@ -904,7 +918,21 @@ bool InputContext::filterEvent(const QEvent *event)
 */
 
 /*!
-    \qmlproperty int InputContext::cursorRectangle
+    \qmlproperty rect InputContext::anchorRectangle
+    \since QtQuick.VirtualKeyboard 2.1
+
+    This property is changed when the anchor rectangle changes.
+*/
+
+/*!
+    \property QtVirtualKeyboard::InputContext::anchorRectangle
+    \brief the anchor rectangle.
+
+    This property is changed when the anchor rectangle changes.
+*/
+
+/*!
+    \qmlproperty rect InputContext::cursorRectangle
 
     This property is changed when the cursor rectangle changes.
 */
