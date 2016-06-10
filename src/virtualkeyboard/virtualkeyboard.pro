@@ -312,9 +312,9 @@ lipi-toolkit {
         3rdparty/lipi-toolkit/src/include \
         3rdparty/lipi-toolkit/src/util/lib
     LIBS += -L$$OUT_PWD/../../lib \
-        -lqtshaperecommon$$qtPlatformTargetSuffix() \
-        -lqtltkcommon$$qtPlatformTargetSuffix() \
-        -lqtltkutil$$qtPlatformTargetSuffix()
+        -lshaperecommon$$qtPlatformTargetSuffix() \
+        -lltkcommon$$qtPlatformTargetSuffix() \
+        -lltkutil$$qtPlatformTargetSuffix()
     win32: LIBS += Advapi32.lib
     else: LIBS += -ldl
     record-trace-input: DEFINES += QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT

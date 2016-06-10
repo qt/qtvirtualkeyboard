@@ -107,7 +107,9 @@ public:
         surroundingText(),
         selectedText(),
         cursorRectangle(),
-        selectionControlVisible(false)
+        selectionControlVisible(false),
+        anchorRectIntersectsClipRect(false),
+        cursorRectIntersectsClipRect(false)
 #ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
         , activeNavigationKeys()
 #endif
@@ -134,6 +136,8 @@ public:
     QString selectedText;
     QRectF cursorRectangle;
     bool selectionControlVisible;
+    bool anchorRectIntersectsClipRect;
+    bool cursorRectIntersectsClipRect;
 #ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
     QSet<int> activeNavigationKeys;
 #endif
@@ -562,6 +566,18 @@ void InputContext::setSelectionOnFocusObject(const QPointF &anchorPos, const QPo
     QPlatformInputContext::setSelectionOnFocusObject(anchorPos, cursorPos);
 }
 
+bool InputContext::anchorRectIntersectsClipRect() const
+{
+    Q_D(const InputContext);
+    return d->anchorRectIntersectsClipRect;
+}
+
+bool InputContext::cursorRectIntersectsClipRect() const
+{
+    Q_D(const InputContext);
+    return d->cursorRectIntersectsClipRect;
+}
+
 bool InputContext::selectionControlVisible() const
 {
     Q_D(const InputContext);
@@ -650,6 +666,16 @@ void InputContext::update(Qt::InputMethodQueries queries)
     bool selectionControlVisible = d->inputContext->isInputPanelVisible() && (cursorPosition != anchorPosition);
     bool newSelectionControlVisible = selectionControlVisible != d->selectionControlVisible;
 
+    QRectF inputItemClipRect = d->inputContext->inputMethodQuery(Qt::ImInputItemClipRectangle).toRectF();
+    QRectF anchorRect = d->inputContext->inputMethodQuery(Qt::ImAnchorRectangle).toRectF();
+    QRectF cursorRect = d->inputContext->inputMethodQuery(Qt::ImCursorRectangle).toRectF();
+
+    bool anchorRectIntersectsClipRect = inputItemClipRect.intersects(anchorRect);
+    bool newAnchorRectIntersectsClipRect = anchorRectIntersectsClipRect != d->anchorRectIntersectsClipRect;
+
+    bool cursorRectIntersectsClipRect = inputItemClipRect.intersects(cursorRect);
+    bool newCursorRectIntersectsClipRect = cursorRectIntersectsClipRect != d->cursorRectIntersectsClipRect;
+
     // update
     d->inputMethodHints = inputMethodHints;
     d->surroundingText = surroundingText;
@@ -657,6 +683,8 @@ void InputContext::update(Qt::InputMethodQueries queries)
     d->cursorPosition = cursorPosition;
     d->cursorRectangle = cursorRectangle;
     d->selectionControlVisible = selectionControlVisible;
+    d->anchorRectIntersectsClipRect = anchorRectIntersectsClipRect;
+    d->cursorRectIntersectsClipRect = cursorRectIntersectsClipRect;
 
     // update input engine
     if ((newSurroundingText || newCursorPosition) &&
@@ -686,7 +714,12 @@ void InputContext::update(Qt::InputMethodQueries queries)
     if (newSelectionControlVisible) {
         emit selectionControlVisibleChanged();
     }
-
+    if (newAnchorRectIntersectsClipRect) {
+        emit anchorRectIntersectsClipRectChanged();
+    }
+    if (newCursorRectIntersectsClipRect) {
+        emit cursorRectIntersectsClipRectChanged();
+    }
 
     // word reselection
     if (newInputMethodHints || newSurroundingText || newSelectedText)
