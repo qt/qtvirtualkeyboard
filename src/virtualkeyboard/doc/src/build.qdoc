@@ -181,7 +181,7 @@ the preferred input method to the configuration, e.g., \c CONFIG+="lang-zh_TW zh
 \row
     \li \e static
     \li Enables static builds of the virtual keyboard
-    \li This option enables \l {Static build}{static builds}.
+    \li This option enables \l {Static builds}{static builds}.
 \row
     \li \e retro-style
     \li \e n/a
