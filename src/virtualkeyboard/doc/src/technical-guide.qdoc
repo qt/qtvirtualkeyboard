@@ -56,7 +56,6 @@ The input framework provides the following main interfaces:
     \li InputEngine: exposes an API to integrate user input events (key
         presses, etc.) and acts as a host for input methods.
     \li InputMethod: a base type for QML based input methods.
-    \li \l {QtVirtualKeyboard::AbstractInputMethod} {AbstractInputMethod}: a base type for C++ based input methods.
 \endlist
 
 \section1 The Input Context
@@ -140,8 +139,7 @@ key can be interrupted by using the InputEngine::virtualKeyCancel method.
 Activating an input method is straightforward. The required steps are:
 
 \list
-    \li Instantiate a concrete implementation of InputMethod or
-        \l {QtVirtualKeyboard::AbstractInputMethod} {AbstractInputMethod}
+    \li Instantiate a concrete implementation of InputMethod
     \li Assign the instance to InputEngine::inputMethod
     \li Set the proper input mode with InputEngine::inputMode
 \endlist

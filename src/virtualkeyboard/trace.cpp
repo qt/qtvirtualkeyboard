@@ -103,13 +103,11 @@ public:
     \endcode
 
     Trace objects are owned by their creator, which is the input method in
-    normal case. This means the objects are constructed in
-    \l {AbstractInputMethod::traceBegin()} (C++) or \l {InputMethod::traceBegin()}
-    {InputMethod.traceBegin()} (QML) method.
+    normal case. This means the objects are constructed in the
+    \l {InputMethod.traceBegin()} (QML) method.
 
     By definition, the trace object can be destroyed at earliest in the
-    \l {AbstractInputMethod::traceEnd()} (C++) or \l {InputMethod::traceEnd()}
-    {InputMethod.traceEnd()} (QML) method.
+    \l {InputMethod.traceEnd()} (QML) method.
 */
 
 /*!
@@ -167,13 +165,11 @@ public:
     \endcode
 
     Trace objects are owned by their creator, which is the input method in
-    normal case. This means the objects are constructed in
-    \l {QtVirtualKeyboard::AbstractInputMethod::traceBegin()} (C++) or \l {InputMethod::traceBegin()}
-    {InputMethod.traceBegin()} (QML) method.
+    normal case. This means the objects are constructed in the
+    \l {InputMethod.traceBegin()} (QML) method.
 
     By definition, the trace object can be destroyed at earliest in the
-    \l {QtVirtualKeyboard::AbstractInputMethod::traceEnd()} (C++) or \l {InputMethod::traceEnd()}
-    {InputMethod.traceEnd()} (QML) method.
+    \l {InputMethod.traceEnd()} (QML) method.
 */
 
 /*! \internal */
