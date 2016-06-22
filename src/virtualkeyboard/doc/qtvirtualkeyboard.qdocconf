@@ -15,7 +15,7 @@ exampledirs += ../../../examples/virtualkeyboard \
 examplesinstallpath = virtualkeyboard
 imagedirs += images
 
-depends += qtcore qtgui qtquick
+depends += qtcore qtgui qtqml qtquick
 
 qhp.projects = QtVirtualKeyboard
 

@@ -577,7 +577,9 @@ style name, the virtual keyboard falls back in the default built-in style.
 \section2 Adding Custom Styles
 
 The process of creating a new style begins by creating a new subdirectory
-for the style in the virtual keyboard \e Styles directory. The directory
+for the style in a QML import path under the URL-based directory structure
+QtQuick/VirtualKeyboard/Styles/. See \l {QML Import Path}
+for information about QML import paths. The directory
 name can not contain spaces or special characters other than underscore.
 Also, the directory name can not be the same as one of the built-in style,
 which currently includes "default" and "retro".

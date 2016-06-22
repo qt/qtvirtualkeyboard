@@ -71,10 +71,7 @@ public:
         for (int i = importPathList.size() - 1; i >= 0; --i) {
             const QString stylesPath = importPathList.at(i)
                 + QStringLiteral("/QtQuick/VirtualKeyboard/Styles/");
-            if (QFileInfo(stylesPath).isDir()) {
-                styleImportPathList += stylesPath;
-                break;
-            }
+            styleImportPathList += stylesPath;
         }
 
         for (const QString &styleImportPath : qAsConst(styleImportPathList)) {
