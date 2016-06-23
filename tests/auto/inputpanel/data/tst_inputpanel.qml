@@ -352,11 +352,6 @@ Rectangle {
             return [
                 { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 0, inputSequence: "aaa bbb", outputText: "Aaa bbb", autoCapitalizationEnabled: true, toggleShiftEnabled: true },
                 { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 1, inputSequence: "aaa bbb", outputText: "aaa bbb", autoCapitalizationEnabled: true, toggleShiftEnabled: true },
-                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 2, inputSequence: "aaa bbb", outputText: "Aaa bbb", autoCapitalizationEnabled: true, toggleShiftEnabled: true },
-                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 3, inputSequence: "aaa bbb", outputText: "AAA BBB", autoCapitalizationEnabled: true, toggleShiftEnabled: true },
-                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 4, inputSequence: "aaa bbb", outputText: "aaa bbb", autoCapitalizationEnabled: true, toggleShiftEnabled: true },
-                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 5, inputSequence: "aaa bbb", outputText: "Aaa bbb", autoCapitalizationEnabled: true, toggleShiftEnabled: true },
-                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 6, inputSequence: "aaa bbb", outputText: "AAA BBB", autoCapitalizationEnabled: true, toggleShiftEnabled: true },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, toggleShiftCount: 0, inputSequence: "aaa bbb", outputText: "aaa bbb", autoCapitalizationEnabled: false, toggleShiftEnabled: true },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, toggleShiftCount: 1, inputSequence: "aaa bbb", outputText: "AAA BBB", autoCapitalizationEnabled: false, toggleShiftEnabled: true },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, toggleShiftCount: 2, inputSequence: "aaa bbb", outputText: "aaa bbb", autoCapitalizationEnabled: false, toggleShiftEnabled: true },
@@ -375,6 +370,52 @@ Rectangle {
                 inputPanel.toggleShift()
             }
             for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
+            }
+
+            Qt.inputMethod.commit()
+            waitForRendering(inputPanel)
+            compare(textInput.text, data.outputText)
+        }
+
+        function test_shiftCapsLock_data() {
+            return [
+                { initInputMethodHints: Qt.ImhNoPredictiveText, capsLock: false, inputSequence: "aa bbb", outputText: "Aaa bbb", toggleShiftEnabled: true, beginLowerCase: false, midUpperCase: false },
+                { initInputMethodHints: Qt.ImhNoPredictiveText, capsLock: true, inputSequence: "aa bbb", outputText: "AAA BBB", toggleShiftEnabled: true, beginLowerCase: false, midUpperCase: false },
+                { initInputMethodHints: Qt.ImhNoPredictiveText, capsLock: false, inputSequence: "aa bbb", outputText: "aaa bbb", toggleShiftEnabled: true, beginLowerCase: true, midUpperCase: false },
+                { initInputMethodHints: Qt.ImhNoPredictiveText, capsLock: false, inputSequence: "aa bbb", outputText: "aaa Bbb", toggleShiftEnabled: true, beginLowerCase: true, midUpperCase: true },
+                { initInputMethodHints: Qt.ImhNoPredictiveText, capsLock: false, inputSequence: "aa bbb", outputText: "Aaa BBB", toggleShiftEnabled: true, beginLowerCase: false, midUpperCase: true }
+            ]
+        }
+
+        function test_shiftCapsLock(data) {
+            prepareTest(data)
+
+            compare(inputPanel.toggleShiftEnabled, data.toggleShiftEnabled)
+
+            // Toggle shift when the first letter should be a lower case
+            if (data.beginLowerCase) {
+                inputPanel.toggleShift()
+            }
+
+            verify(inputPanel.virtualKeyClick("a"))
+
+            // Toggle shift when the caps lock should be enabled
+            if (data.capsLock) {
+                inputPanel.toggleShift()
+                wait(300)
+                inputPanel.toggleShift()
+            }
+
+            for (var inputIndex in data.inputSequence) {
+                if (inputIndex == 3 && data.beginLowerCase && data.midUpperCase) {
+                    inputPanel.toggleShift()
+                }
+
+                else if (data.inputSequence[inputIndex] == "b" && !data.beginLowerCase && data.midUpperCase) {
+                    inputPanel.toggleShift()
+                }
+
                 verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
             }
 

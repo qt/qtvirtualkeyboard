@@ -32,6 +32,9 @@
 #include "inputengine.h"
 #include <QtCore/private/qobject_p.h>
 #include <QSet>
+#include <QGuiApplication>
+#include <QTime>
+#include <QStyleHints>
 
 namespace QtVirtualKeyboard {
 
@@ -50,6 +53,7 @@ public:
         noAutoUppercaseInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::FullwidthLatin << InputEngine::Pinyin << InputEngine::Cangjie << InputEngine::Zhuyin),
         allCapsInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::Hiragana << InputEngine::Katakana)
     {
+        timer.start();
     }
 
     InputContext *inputContext;
@@ -58,6 +62,7 @@ public:
     bool toggleShiftEnabled;
     bool shiftChanged;
     QLocale locale;
+    QTime timer;
     const QSet<QLocale::Language> manualShiftLanguageFilter;
     const QSet<InputEngine::InputMode> manualCapsInputModeFilter;
     const QSet<InputEngine::InputMode> noAutoUppercaseInputModeFilter;
@@ -169,7 +174,18 @@ void ShiftHandler::toggleShift()
         d->inputContext->setCapsLock(!capsLock);
         d->inputContext->setShift(!capsLock);
     } else {
-        d->inputContext->setCapsLock(!d->inputContext->capsLock() && d->inputContext->shift() && !d->shiftChanged);
+        if (d->inputContext->capsLock()) {
+            d->inputContext->setCapsLock(!d->inputContext->capsLock() && d->inputContext->shift() && !d->shiftChanged);
+        }
+
+        QStyleHints *style = QGuiApplication::styleHints();
+
+        if (d->timer.elapsed() > style->mouseDoubleClickInterval()) {
+            d->timer.restart();
+        } else if (d->timer.elapsed() < style->mouseDoubleClickInterval() && !d->inputContext->capsLock()) {
+            d->inputContext->setCapsLock(!d->inputContext->capsLock() && d->inputContext->shift() && !d->shiftChanged);
+        }
+
         d->inputContext->setShift(d->inputContext->capsLock() || !d->inputContext->shift());
         d->shiftChanged = false;
     }
