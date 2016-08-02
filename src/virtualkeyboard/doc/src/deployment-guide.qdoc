@@ -144,4 +144,79 @@ as it would then overlap with the contents of the application. Also, the
 input panel height will be automatically updated according to the available
 width; the aspect ratio of the input panel is constant.
 
+\section1 Environment Variables
+
+There are several environment variables defined by the module that are listed below:
+
+\table
+    \header
+        \li Variable
+        \li Purpose
+    \row
+        \li QT_VIRTUALKEYBOARD_HUNSPELL_DATA_PATH
+        \li Overrides the location of the Hunspell data files.
+
+            The default location depends on the value of
+            \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            For example, for Qt libraries built from source,
+            it could be \c {qtbase/qtvirtualkeyboard/hunspell}.
+
+            See \l {Hunspell Integration} for more information.
+    \row
+        \li QT_VIRTUALKEYBOARD_PINYIN_DICTIONARY
+        \li Overrides the location of the Pinyin dictionary.
+
+            The default location depends on the value of
+            \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            For example, for Qt libraries built from source,
+            it could be \c {qtbase/qtvirtualkeyboard/pinyin/dict_pinyin.dat}.
+    \row
+        \li QT_VIRTUALKEYBOARD_CANGJIE_DICTIONARY
+        \li Overrides the location of the Cangjie dictionary.
+
+            The default location depends on the value of
+            \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            For example, for Qt libraries built from source,
+            it could be \c {qtbase/qtvirtualkeyboard/tcime/dict_cangjie.dat}.
+    \row
+        \li QT_VIRTUALKEYBOARD_ZHUYIN_DICTIONARY
+        \li Overrides the location of the Zhuyin dictionary.
+
+            The default location depends on the value of
+            \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            For example, for Qt libraries built from source,
+            it could be \c {qtbase/qtvirtualkeyboard/tcime/dict_zhuyin.dat}.
+    \row
+        \li QT_VIRTUALKEYBOARD_PHRASE_DICTIONARY
+        \li Overrides the location of the phrase dictionary.
+
+            The default location depends on the value of
+            \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            For example, for Qt libraries built from source,
+            it could be \c {qtbase/qtvirtualkeyboard/tcime/dict_phrases.dat}.
+    \row
+        \li QT_VIRTUALKEYBOARD_STYLE
+        \li Specifies the location of the style to use with the virtual keyboard.
+
+            This can also be specified in QML by setting \l {VirtualKeyboardSettings::styleName},
+            or at build time by using the \l {Advanced Configuration Options}{qmake configuration options}.
+    \row
+        \li LIPI_ROOT
+        \li Specifies the location of lipi-toolkit.
+
+            The default location depends on the value of
+            \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            For example, for Qt libraries built from source,
+            it could be \c {qtbase/qtvirtualkeyboard/lipi_toolkit}.
+    \row
+        \li LIPI_LIB
+        \li Specifies the location of lipi-toolkit plugins.
+
+            The default location depends on \c LIPI_ROOT:
+            \list
+            \li \c {LIPI_ROOT + "/lib"} if \c LIPI_ROOT is set.
+            \li \c {QLibraryInfo::location(QLibraryInfo::PluginsPath) + "/lipi_toolkit"} if \c LIPI_ROOT is not set.
+            \endlist
+\endtable
+
 */
