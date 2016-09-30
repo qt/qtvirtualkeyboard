@@ -221,9 +221,8 @@ qtquickcompiler: DEFINES += COMPILING_QML
     exists(3rdparty/hunspell/src/hunspell/hunspell.h) {
         SOURCES += hunspellinputmethod.cpp hunspellinputmethod_p.cpp hunspellworker.cpp
         HEADERS += hunspellinputmethod.h hunspellinputmethod_p.h hunspellworker.h
-        DEFINES += HAVE_HUNSPELL HUNSPELL_STATIC
-        INCLUDEPATH += 3rdparty/hunspell/src
-        LIBS += -L$$OUT_PWD/../../lib -lqthunspell$$qtPlatformTargetSuffix()
+        DEFINES += HAVE_HUNSPELL
+        QMAKE_USE += hunspell
         exists(3rdparty/hunspell/data) {
             hunspell_data.files = 3rdparty/hunspell/data/*.dic 3rdparty/hunspell/data/*.aff
             hunspell_data.path = $$DATAPATH/hunspell
@@ -251,8 +250,7 @@ pinyin {
         pinyininputmethod.h \
         pinyindecoderservice.h
     DEFINES += HAVE_PINYIN
-    INCLUDEPATH += 3rdparty/pinyin/include
-    LIBS += -L$$OUT_PWD/../../lib -lqtpinyin$$qtPlatformTargetSuffix()
+    QMAKE_USE += pinyin
     pinyin_data.files = $$PWD/3rdparty/pinyin/data/dict_pinyin.dat
     pinyin_data.path = $$DATAPATH/pinyin
     INSTALLS += pinyin_data
@@ -267,8 +265,7 @@ tcime {
     DEFINES += HAVE_TCIME
     cangjie: DEFINES += HAVE_TCIME_CANGJIE
     zhuyin: DEFINES += HAVE_TCIME_ZHUYIN
-    INCLUDEPATH += 3rdparty/tcime
-    LIBS += -L$$OUT_PWD/../../lib -lqttcime$$qtPlatformTargetSuffix()
+    QMAKE_USE += tcime
     tcime_data.files = \
         $$PWD/3rdparty/tcime/data/qt/dict_phrases.dat
     cangjie: tcime_data.files += \
@@ -294,9 +291,7 @@ openwnn {
     SOURCES += openwnninputmethod.cpp
     HEADERS += openwnninputmethod.h
     DEFINES += HAVE_OPENWNN
-    INCLUDEPATH += 3rdparty/openwnn/wnnEngine/include
-    # OpenWNN engine
-    LIBS += -L$$OUT_PWD/../../lib -lqtopenwnn$$qtPlatformTargetSuffix()
+    QMAKE_USE += openwnn
 }
 
 lipi-toolkit:t9write: \
@@ -338,8 +333,8 @@ t9write {
         t9writeinputmethod.h \
         t9writeworker.h
     DEFINES += HAVE_T9WRITE
+    QMAKE_USE += t9write_db
     INCLUDEPATH += $$T9WRITE_INCLUDE_DIRS
-    LIBS += -L$$OUT_PWD/../../lib -lqtt9write_db$$qtPlatformTargetSuffix()
     LIBS += $$T9WRITE_ALPHABETIC_LIBS
 }
 

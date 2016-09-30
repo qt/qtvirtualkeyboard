@@ -4,8 +4,7 @@ VERSION = 1.0.0
 CONFIG += static
 CONFIG += warn_off
 
-INCLUDEPATH += \
-    include
+MODULE_INCLUDEPATH = $$PWD/include
 
 SOURCES += \
     share/dictbuilder.cpp \

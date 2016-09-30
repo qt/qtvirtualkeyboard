@@ -22,6 +22,8 @@ OTHER_FILES += \
     data/dict_cangjie.dat \
     data/dict_phrases.dat
 
+MODULE_INCLUDEPATH = $$PWD
+
 load(qt_helper_lib)
 
 CONFIG += qt
