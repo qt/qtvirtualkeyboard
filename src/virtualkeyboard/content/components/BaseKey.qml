@@ -191,12 +191,6 @@ Item {
     */
     property bool showPreview: enabled && !functionKey && !keyboard.navigationModeActive
 
-    /*! Sets the enabled attribute.
-
-        The default is true.
-    */
-    property bool enabled: true
-
     /*! This property holds the pressed status of the key.
 
         The pressed status can only be true if the key is both enabled and active.
