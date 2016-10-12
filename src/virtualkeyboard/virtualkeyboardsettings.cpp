@@ -108,7 +108,7 @@ public:
     \since QtQuick.VirtualKeyboard 1.2
     \brief Provides settings for virtual keyboard.
 
-    This module provides VirtualKeyboarSettings singleton instance,
+    This type provides a VirtualKeyboardSettings singleton instance,
     which can be used to configure the virtual keyboard settings.
 
     Please note that the settings have only effect in the current
