@@ -97,8 +97,17 @@ public:
 
 /*!
     \qmlmodule QtQuick.VirtualKeyboard.Settings 2.0
+    \title Qt Quick Virtual Keyboard Settings QML Types
+    \ingroup qmlmodules
 
-    This module provides settings components for Qt Virtual Keyboard.
+    \brief Provides settings for Qt Virtual Keyboard.
+
+    The QML types can be imported into your application using the following
+    import statements in your .qml file:
+
+    \badcode
+    import QtQuick.VirtualKeyboard.Settings 2.0
+    \endcode
 */
 
 /*!

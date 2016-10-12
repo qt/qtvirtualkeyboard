@@ -83,7 +83,7 @@ public:
 /*!
     \class QtVirtualKeyboard::SelectionListModel
 
-    \inmodule InputFramework
+    \inmodule QtVirtualKeyboard
 
     \brief List model for selection lists.
 

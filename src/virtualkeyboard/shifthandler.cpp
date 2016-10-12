@@ -74,7 +74,7 @@ public:
 
 /*!
     \class QtVirtualKeyboard::ShiftHandler
-    \inmodule InputFramework
+    \inmodule QtVirtualKeyboard
     \brief Manages the shift state.
 */
 

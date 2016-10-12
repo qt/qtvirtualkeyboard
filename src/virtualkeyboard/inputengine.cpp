@@ -131,7 +131,7 @@ private:
 
 /*!
     \class QtVirtualKeyboard::InputEngine
-    \inmodule InputFramework
+    \inmodule QtVirtualKeyboard
     \brief The InputEngine class provides an input engine
     that supports C++ and QML integration.
 
