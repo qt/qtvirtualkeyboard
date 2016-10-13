@@ -549,6 +549,9 @@ bool InputContext::hasEnterKeyAction(QObject *item) const
     return item != 0 && qmlAttachedPropertiesObject<EnterKeyAction>(item, false);
 }
 
+/*!
+    \internal
+*/
 void InputContext::setSelectionOnFocusObject(const QPointF &anchorPos, const QPointF &cursorPos)
 {
     QPlatformInputContext::setSelectionOnFocusObject(anchorPos, cursorPos);
