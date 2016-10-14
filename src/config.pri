@@ -37,6 +37,7 @@ lang-all: CONFIG += \
     lang-nb_NO \
     lang-pl_PL \
     lang-pt_PT \
+    lang-ro_RO \
     lang-ru_RU \
     lang-sv_SE \
     lang-zh_CN \
