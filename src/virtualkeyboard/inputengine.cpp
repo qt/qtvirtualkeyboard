@@ -135,6 +135,8 @@ private:
     \brief The InputEngine class provides an input engine
     that supports C++ and QML integration.
 
+    \internal
+
     The input engine is responsible for routing input events to input
     methods. The actual input logic is implemented by the input methods.
 

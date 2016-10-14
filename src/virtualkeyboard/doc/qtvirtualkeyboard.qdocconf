@@ -29,12 +29,12 @@ qhp.QtVirtualKeyboard.filterAttributes                  = qtvirtualkeyboard $QT_
 qhp.QtVirtualKeyboard.customFilters.Qt.name             = QtVirtualKeyboard $QT_VERSION
 qhp.QtVirtualKeyboard.customFilters.Qt.filterAttributes = qtvirtualkeyboard $QT_VERSION
 
-qhp.QtVirtualKeyboard.subprojects = classes qmltypes examples
+qhp.QtVirtualKeyboard.subprojects = qmltypes examples # classes
 
-qhp.QtVirtualKeyboard.subprojects.classes.title = C++ Classes
-qhp.QtVirtualKeyboard.subprojects.classes.indexTitle = Qt Virtual Keyboard C++ Classes
-qhp.QtVirtualKeyboard.subprojects.classes.selectors = class
-qhp.QtVirtualKeyboard.subprojects.classes.sortPages = true
+# qhp.QtVirtualKeyboard.subprojects.classes.title = C++ Classes
+# qhp.QtVirtualKeyboard.subprojects.classes.indexTitle = Qt Virtual Keyboard C++ Classes
+# qhp.QtVirtualKeyboard.subprojects.classes.selectors = class
+# qhp.QtVirtualKeyboard.subprojects.classes.sortPages = true
 
 qhp.QtVirtualKeyboard.subprojects.qmltypes.title      = QML Types
 qhp.QtVirtualKeyboard.subprojects.qmltypes.indexTitle = Qt Virtual Keyboard QML Types
@@ -48,4 +48,4 @@ qhp.QtVirtualKeyboard.subprojects.examples.sortPages = true
 
 navigation.landingpage = "Qt Virtual Keyboard"
 navigation.qmltypespage = "Qt Virtual Keyboard QML Types"
-navigation.cppclassespage = "Qt Virtual Keyboard C++ Classes"
+# navigation.cppclassespage = "Qt Virtual Keyboard C++ Classes"

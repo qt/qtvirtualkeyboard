@@ -58,6 +58,7 @@ QT_END_NAMESPACE
     \inmodule QtVirtualKeyboard
 
     \brief Namespace for the Qt Virtual Keyboard C++ API.
+    \internal
 */
 
 namespace QtVirtualKeyboard {
@@ -146,6 +147,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(InputContextPrivate::StateFlags)
     \class QtVirtualKeyboard::InputContext
     \inmodule QtVirtualKeyboard
     \brief Provides access to an input context.
+    \internal
 */
 
 /*!
