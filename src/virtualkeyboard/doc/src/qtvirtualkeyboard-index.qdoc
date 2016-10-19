@@ -116,6 +116,17 @@
      \list
       \li \l{Qt Virtual Keyboard Examples}
      \endlist
+
+    \section1 Licenses and Attributions
+
+    Qt Virtual Keyboard is available under commercial licenses from \l{The Qt Company}.
+    In addition, it is available under the \l{GNU General Public License, version 3}.
+    See \l{Qt Licensing} for further details.
+
+    Furthermore Qt Virtual Keyboard potentially contains third party
+    modules under following permissive licenses:
+
+    \generatelist{groupsbymodule attributions-qtvirtualkeyboard}
 */
 
 /*!
