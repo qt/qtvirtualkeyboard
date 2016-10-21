@@ -60,16 +60,14 @@ RESOURCES += \
     content/styles/retro/retro_style.qrc \
     content/content.qrc
 
-LAYOUT_FILES += \
-    content/layouts/en_GB/dialpad.qml \
-    content/layouts/en_GB/digits.qml \
-    content/layouts/en_GB/handwriting.qml \
-    content/layouts/en_GB/numbers.qml \
-    content/layouts/en_GB/symbols.qml
-
 contains(CONFIG, lang-en.*) {
     LAYOUT_FILES += \
-        content/layouts/en_GB/main.qml
+        content/layouts/en_GB/main.qml \
+        content/layouts/en_GB/dialpad.qml \
+        content/layouts/en_GB/digits.qml \
+        content/layouts/en_GB/handwriting.qml \
+        content/layouts/en_GB/numbers.qml \
+        content/layouts/en_GB/symbols.qml
 }
 contains(CONFIG, lang-ar.*) {
     LAYOUT_FILES += \
@@ -193,6 +191,8 @@ retro-style {
 } else {
     DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"default\\\"
 }
+
+DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_LAYOUTS_DIR=\\\"qrc:/QtQuick/VirtualKeyboard/content/layouts\\\"
 
 OTHER_FILES += \
     content/styles/default/*.qml \
@@ -345,7 +345,10 @@ arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
 
 include(generateresource.pri)
 
-RESOURCES += $$generate_resource(layouts.qrc, $$LAYOUT_FILES, /QtQuick/VirtualKeyboard)
+!disable-layouts {
+    RESOURCES += $$generate_resource(layouts.qrc, $$LAYOUT_FILES, /QtQuick/VirtualKeyboard)
+    DEFINES += HAVE_LAYOUTS
+}
 
 PLUGIN_TYPE = platforminputcontexts
 PLUGIN_EXTENDS = -

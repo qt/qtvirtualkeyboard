@@ -124,7 +124,9 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
 #ifdef HAVE_T9WRITE
     Q_INIT_RESOURCE(t9write_db);
 #endif
+#ifdef HAVE_LAYOUTS
     Q_INIT_RESOURCE(layouts);
+#endif
 
     if (!qEnvironmentVariableIsSet(inputMethodEnvVarName) || qgetenv(inputMethodEnvVarName) != pluginName)
         return Q_NULLPTR;

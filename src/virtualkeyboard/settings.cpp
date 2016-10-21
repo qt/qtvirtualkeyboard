@@ -41,7 +41,8 @@ public:
         styleName(),
         locale(),
         availableLocales(),
-        activeLocales()
+        activeLocales(),
+        layoutPath()
     {}
 
     QString style;
@@ -49,6 +50,7 @@ public:
     QString locale;
     QStringList availableLocales;
     QStringList activeLocales;
+    QUrl layoutPath;
 };
 
 static QScopedPointer<Settings> s_settingsInstance;
@@ -142,6 +144,21 @@ void Settings::setActiveLocales(const QStringList &activeLocales)
     if (d->activeLocales != activeLocales) {
         d->activeLocales = activeLocales;
         emit activeLocalesChanged();
+    }
+}
+
+QUrl Settings::layoutPath() const
+{
+    Q_D(const Settings);
+    return d->layoutPath;
+}
+
+void Settings::setLayoutPath(const QUrl &layoutPath)
+{
+    Q_D(Settings);
+    if (d->layoutPath != layoutPath) {
+        d->layoutPath = layoutPath;
+        emit layoutPathChanged();
     }
 }
 

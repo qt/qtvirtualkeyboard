@@ -41,6 +41,7 @@ class VirtualKeyboardSettings : public QObject
     Q_OBJECT
     Q_DECLARE_PRIVATE(VirtualKeyboardSettings)
     Q_PROPERTY(QUrl style READ style NOTIFY styleChanged)
+    Q_PROPERTY(QUrl layoutPath READ layoutPath WRITE setLayoutPath NOTIFY layoutPathChanged)
     Q_PROPERTY(QString styleName READ styleName WRITE setStyleName NOTIFY styleNameChanged)
     Q_PROPERTY(QString locale READ locale WRITE setLocale NOTIFY localeChanged)
     Q_PROPERTY(QStringList availableLocales READ availableLocales NOTIFY availableLocalesChanged)
@@ -52,6 +53,9 @@ public:
     explicit VirtualKeyboardSettings(QQmlEngine *engine);
 
     QString style() const;
+
+    QUrl layoutPath() const;
+    void setLayoutPath(const QUrl &layoutPath);
 
     QString styleName() const;
     void setStyleName(const QString &styleName);
@@ -70,9 +74,11 @@ signals:
     void localeChanged();
     void availableLocalesChanged();
     void activeLocalesChanged();
+    void layoutPathChanged();
 
 private:
     void resetStyle();
+    void resetLayoutPath();
 };
 
 }

@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2016 Pelagicore AB
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -27,54 +27,22 @@
 **
 ****************************************************************************/
 
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#include <QtCore/qscopedpointer.h>
+#include <QtCore/QString>
+#include <QtQml/qqmlcomponent.h>
+#include <QtQml/qqmlengine.h>
+#include <QtQuick/qquickwindow.h>
 
-#include <QObject>
-#include <QUrl>
-
-namespace QtVirtualKeyboard {
-
-class SettingsPrivate;
-
-class Settings : public QObject
+class LayoutTestHelper : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY(Settings)
-    Q_DECLARE_PRIVATE(Settings)
-
-    Settings(QObject *parent = 0);
 
 public:
-    static Settings *instance();
+    LayoutTestHelper();
 
-    QString style() const;
-    void setStyle(const QString &style);
+    QScopedPointer<QQmlComponent> component;
+    QScopedPointer<QQuickWindow> window;
 
-    QString styleName() const;
-    void setStyleName(const QString &name);
-
-    QString locale() const;
-    void setLocale(const QString &locale);
-
-    QStringList availableLocales() const;
-    void setAvailableLocales(const QStringList &availableLocales);
-
-    QStringList activeLocales() const;
-    void setActiveLocales(const QStringList &activeLocales);
-
-    QUrl layoutPath() const;
-    void setLayoutPath(const QUrl &layoutPath);
-
-signals:
-    void styleChanged();
-    void styleNameChanged();
-    void localeChanged();
-    void availableLocalesChanged();
-    void activeLocalesChanged();
-    void layoutPathChanged();
+private:
+    QQmlEngine engine;
 };
-
-} // namespace QtVirtualKeyboard
-
-#endif // SETTINGS_H

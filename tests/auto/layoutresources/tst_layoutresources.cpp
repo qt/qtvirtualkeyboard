@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2016 Pelagicore AB
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -27,54 +27,44 @@
 **
 ****************************************************************************/
 
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#include "layouttesthelper.h"
 
-#include <QObject>
-#include <QUrl>
+#include <QtTest/qtest.h>
 
-namespace QtVirtualKeyboard {
+static bool moduleEnv = qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
-class SettingsPrivate;
-
-class Settings : public QObject
+class tst_layoutresources : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY(Settings)
-    Q_DECLARE_PRIVATE(Settings)
-
-    Settings(QObject *parent = 0);
 
 public:
-    static Settings *instance();
 
-    QString style() const;
-    void setStyle(const QString &style);
-
-    QString styleName() const;
-    void setStyleName(const QString &name);
-
-    QString locale() const;
-    void setLocale(const QString &locale);
-
-    QStringList availableLocales() const;
-    void setAvailableLocales(const QStringList &availableLocales);
-
-    QStringList activeLocales() const;
-    void setActiveLocales(const QStringList &activeLocales);
-
-    QUrl layoutPath() const;
-    void setLayoutPath(const QUrl &layoutPath);
-
-signals:
-    void styleChanged();
-    void styleNameChanged();
-    void localeChanged();
-    void availableLocalesChanged();
-    void activeLocalesChanged();
-    void layoutPathChanged();
+private slots:
+    void layouts();
 };
 
-} // namespace QtVirtualKeyboard
+void tst_layoutresources::layouts()
+{
+    QString layoutPath("qrc:/resource/layouts");
 
-#endif // SETTINGS_H
+    qputenv("QT_VIRTUALKEYBOARD_LAYOUT_PATH", qPrintable(layoutPath));
+
+    LayoutTestHelper layoutTestHelper;
+
+    layoutTestHelper.window->show();
+    QVERIFY(QTest::qWaitForWindowExposed(layoutTestHelper.window.data()));
+
+    QObject *layout = layoutTestHelper.window->findChild<QObject*>("en_GB");
+    QVERIFY(layout);
+
+    QObject *settings = layoutTestHelper.window->property("settings").value<QObject*>();
+    QVERIFY(settings);
+    // availableLocales is based off of FolderListModel, which uses a QThread to
+    // offload the work of getting the contents of a directory. Being
+    // asynchronous, it can take a varying amount of time.
+    QTRY_COMPARE(settings->property("availableLocales").toStringList(), QStringList() << "en_GB");
+}
+
+QTEST_MAIN(tst_layoutresources)
+
+#include "tst_layoutresources.moc"

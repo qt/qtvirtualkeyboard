@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2016 Pelagicore AB
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -27,54 +27,10 @@
 **
 ****************************************************************************/
 
-#ifndef SETTINGS_H
-#define SETTINGS_H
+import QtQuick 2.0
+import QtQuick.VirtualKeyboard 2.1
 
-#include <QObject>
-#include <QUrl>
-
-namespace QtVirtualKeyboard {
-
-class SettingsPrivate;
-
-class Settings : public QObject
-{
-    Q_OBJECT
-    Q_DISABLE_COPY(Settings)
-    Q_DECLARE_PRIVATE(Settings)
-
-    Settings(QObject *parent = 0);
-
-public:
-    static Settings *instance();
-
-    QString style() const;
-    void setStyle(const QString &style);
-
-    QString styleName() const;
-    void setStyleName(const QString &name);
-
-    QString locale() const;
-    void setLocale(const QString &locale);
-
-    QStringList availableLocales() const;
-    void setAvailableLocales(const QStringList &availableLocales);
-
-    QStringList activeLocales() const;
-    void setActiveLocales(const QStringList &activeLocales);
-
-    QUrl layoutPath() const;
-    void setLayoutPath(const QUrl &layoutPath);
-
-signals:
-    void styleChanged();
-    void styleNameChanged();
-    void localeChanged();
-    void availableLocalesChanged();
-    void activeLocalesChanged();
-    void layoutPathChanged();
-};
-
-} // namespace QtVirtualKeyboard
-
-#endif // SETTINGS_H
+KeyboardLayout {
+    objectName: "en_GB"
+    inputMode: InputEngine.Latin
+}

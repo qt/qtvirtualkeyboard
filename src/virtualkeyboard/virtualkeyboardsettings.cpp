@@ -144,11 +144,14 @@ VirtualKeyboardSettings::VirtualKeyboardSettings(QQmlEngine *engine) :
     Settings *settings = Settings::instance();
     if (settings->styleName().isEmpty())
         resetStyle();
+    if (settings->layoutPath().isEmpty())
+        resetLayoutPath();
     connect(settings, SIGNAL(styleChanged()), SIGNAL(styleChanged()));
     connect(settings, SIGNAL(styleNameChanged()), SIGNAL(styleNameChanged()));
     connect(settings, SIGNAL(localeChanged()), SIGNAL(localeChanged()));
     connect(settings, SIGNAL(availableLocalesChanged()), SIGNAL(availableLocalesChanged()));
     connect(settings, SIGNAL(activeLocalesChanged()), SIGNAL(activeLocalesChanged()));
+    connect(settings, SIGNAL(layoutPathChanged()), SIGNAL(layoutPathChanged()));
 }
 
 /*!
@@ -181,6 +184,53 @@ void VirtualKeyboardSettings::setStyleName(const QString &styleName)
     }
     settings->setStyleName(styleName);
     settings->setStyle(style);
+}
+
+/*!
+    \internal
+*/
+QUrl VirtualKeyboardSettings::layoutPath() const
+{
+    return Settings::instance()->layoutPath();
+}
+
+/*!
+    \internal
+*/
+void VirtualKeyboardSettings::setLayoutPath(const QUrl &layoutPath)
+{
+    Settings *settings = Settings::instance();
+    QDir layoutDirectory(layoutPath.toLocalFile());
+    if (!layoutDirectory.exists()) {
+        qWarning() << "WARNING: Cannot find layout path" << layoutPath;
+        return;
+    }
+    settings->setLayoutPath(layoutPath);
+}
+
+void VirtualKeyboardSettings::resetLayoutPath()
+{
+    Settings *settings = Settings::instance();
+    QUrl layoutPath(QT_VIRTUALKEYBOARD_DEFAULT_LAYOUTS_DIR);
+    const QString customLayoutPath(QDir::fromNativeSeparators(qgetenv("QT_VIRTUALKEYBOARD_LAYOUT_PATH")));
+    if (!customLayoutPath.isEmpty()) {
+        bool found = false;
+        QDir customLayoutDirectory(customLayoutPath);
+        if (customLayoutDirectory.exists()) {
+            found = true;
+            layoutPath = QUrl::fromLocalFile(customLayoutPath);
+        } else {
+            customLayoutDirectory = QDir(QUrl(customLayoutPath).toLocalFile());
+            if (customLayoutDirectory.exists()) {
+                found = true;
+                layoutPath = QUrl(customLayoutPath);
+            }
+        }
+        if (!found) {
+            qWarning() << "WARNING: Cannot assign custom layout path" << customLayoutPath << "- fallback:" << layoutPath;
+        }
+    }
+    settings->setLayoutPath(layoutPath);
 }
 
 QString VirtualKeyboardSettings::locale() const

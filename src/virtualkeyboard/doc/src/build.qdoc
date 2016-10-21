@@ -167,6 +167,16 @@ the preferred input method to the configuration, e.g., \c CONFIG+="lang-zh_TW zh
         keyboard will not create the desktop input panel if the application creates
         InputPanel before the focus is set to an input field.
 \row
+    \li \e disable-layouts
+    \li \e n/a
+    \li Disables built-in layouts
+    \li By default, the virtual keyboard plugin contains the English keyboard layout.
+        By specifiying the \e disable-layouts configuration flag, the built-in layout(s)
+        are excluded from the virtual keyboard plugin.
+        \note In this scenario, the \c QT_VIRTUALKEYBOARD_LAYOUT_PATH environment
+        variable should be set to the file system directory containing the custom keyboard
+        layouts before running the application.
+\row
     \li \e disable-xcb
     \li \e n/a
     \li Disables X11 integration

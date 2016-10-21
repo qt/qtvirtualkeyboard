@@ -327,12 +327,7 @@ Item {
     FolderListModel {
         id: layoutsModel
         nameFilters: ["$"]
-        Component.onCompleted: {
-            if (InputContext.fileExists("qrc:/QtQuick/VirtualKeyboard/content/layouts"))
-                layoutsModel.folder = "qrc:/QtQuick/VirtualKeyboard/content/layouts"
-            else
-                layoutsModel.folder = "../layouts"
-        }
+        folder: VirtualKeyboardSettings.layoutPath
     }
     Connections {
         target: layoutsModel

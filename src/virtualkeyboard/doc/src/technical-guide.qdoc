@@ -555,6 +555,22 @@ Both the main and handwriting layouts should contain a key to activate
 and deactivate the handwriting input mode. This can be done by adding a
 HandwritingModeKey to the layout.
 
+\section2 Adding Custom Layouts
+
+The virtual keyboard layouts system supports built-in layouts as well
+as custom layouts. The built-in layouts are embedded as \l {The Qt Resource System}{Qt Resources}
+into the plugin binary. Custom layouts are located in the file system, so
+that they can be installed without recompiling the virtual keyboard itself, or they can be located in a resource file.
+
+The selection of layouts at runtime is affected by the \c QT_VIRTUALKEYBOARD_LAYOUT_PATH environment variable.
+
+In case the environment variable is not set, or contains an invalid
+directory, the virtual keyboard falls back to the default built-in layouts.
+
+To prevent the built-in layouts from being built into the virtual keyboard
+plugin when using custom layouts, add \c disable-layouts to the \c CONFIG qmake variable.
+For more information, see \l {Advanced Configuration Options}.
+
 \section1 Keyboard Styles
 
 The virtual keyboard styling system supports built-in styles as well
