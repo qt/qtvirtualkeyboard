@@ -24,6 +24,7 @@ SOURCES += platforminputcontext.cpp \
     shifthandler.cpp \
     plugin.cpp \
     inputmethod.cpp \
+    inputselectionhandle.cpp \
     selectionlistmodel.cpp \
     defaultinputmethod.cpp \
     abstractinputpanel.cpp \
@@ -32,6 +33,7 @@ SOURCES += platforminputcontext.cpp \
     settings.cpp \
     virtualkeyboardsettings.cpp \
     trace.cpp \
+    desktopinputselectioncontrol.cpp
 
 HEADERS += platforminputcontext.h \
     inputcontext.h \
@@ -40,6 +42,7 @@ HEADERS += platforminputcontext.h \
     inputengine.h \
     shifthandler.h \
     inputmethod.h \
+    inputselectionhandle.h \
     selectionlistmodel.h \
     defaultinputmethod.h \
     abstractinputpanel.h \
@@ -50,6 +53,7 @@ HEADERS += platforminputcontext.h \
     virtualkeyboardsettings.h \
     plugin.h \
     trace.h \
+    desktopinputselectioncontrol.h
 
 RESOURCES += \
     content/styles/default/default_style.qrc \

@@ -34,6 +34,8 @@
 #include <qpa/qplatforminputcontext.h>
 #include <QPointer>
 #include <QLocale>
+#include "inputselectionhandle.h"
+#include "desktopinputselectioncontrol.h"
 
 namespace QtVirtualKeyboard {
 
@@ -89,6 +91,7 @@ private:
     friend class InputContext;
     QPointer<InputContext> m_inputContext;
     QPointer<AbstractInputPanel> m_inputPanel;
+    QPointer<DesktopInputSelectionControl> m_selectionControl;
     QPointer<QObject> m_focusObject;
     QLocale m_locale;
     Qt::LayoutDirection m_inputDirection;

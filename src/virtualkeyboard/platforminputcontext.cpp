@@ -88,6 +88,8 @@ void PlatformInputContext::update(Qt::InputMethodQueries queries)
     if (enabled && !m_inputPanel) {
         m_inputPanel = new DesktopInputPanel(this);
         m_inputPanel->createView();
+        m_selectionControl = new DesktopInputSelectionControl(this, m_inputContext);
+        m_selectionControl->createHandles();
     }
 #endif
 
@@ -254,11 +256,13 @@ void PlatformInputContext::updateInputPanelVisible()
     if (!m_inputPanel)
         return;
 
-    if (m_visible && !m_inputPanel->isVisible()) {
-        m_inputPanel->show();
-        emitInputPanelVisibleChanged();
-    } else if (!m_visible && m_inputPanel->isVisible()) {
-        m_inputPanel->hide();
+    if (m_visible != m_inputPanel->isVisible()) {
+        if (m_visible)
+            m_inputPanel->show();
+        else
+            m_inputPanel->hide();
+        if (m_selectionControl)
+            m_selectionControl->setEnabled(m_visible);
         emitInputPanelVisibleChanged();
     }
 }
