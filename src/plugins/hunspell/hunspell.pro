@@ -1,11 +1,12 @@
 TEMPLATE = subdirs
 
-include(../../config.pri)
+QT_FOR_CONFIG += virtualkeyboard-private
 
 SUBDIRS += \
     hunspellinputmethod \
     plugin
-hunspell-library {
+
+qtConfig(3rdparty-hunspell) {
     SUBDIRS += 3rdparty/hunspell
     hunspellinputmethod.depends += 3rdparty/hunspell
 }

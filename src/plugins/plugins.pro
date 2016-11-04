@@ -1,19 +1,19 @@
 TEMPLATE = subdirs
 
-include(../config.pri)
+QT_FOR_CONFIG += virtualkeyboard-private
 
-hangul: SUBDIRS += hangul
-hunspell: SUBDIRS += hunspell
-lipi-toolkit: {
+qtConfig(hangul): SUBDIRS += hangul
+qtConfig(hunspell): SUBDIRS += hunspell
+qtConfig(lipi-toolkit) {
     SUBDIRS += lipi-toolkit
-    !disable-hunspell: lipi-toolkit.depends += hunspell
+    qtConfig(hunspell): lipi-toolkit.depends += hunspell
 }
-openwnn: SUBDIRS += openwnn
-pinyin: SUBDIRS += pinyin
-t9write: SUBDIRS += t9write
-tcime: SUBDIRS += tcime
-myscript: SUBDIRS += myscript
-thai: {
+qtConfig(openwnn): SUBDIRS += openwnn
+qtConfig(pinyin): SUBDIRS += pinyin
+qtConfig(t9write): SUBDIRS += t9write
+qtConfig(tcime): SUBDIRS += tcime
+qtConfig(vkb-myscript): SUBDIRS += myscript
+qtConfig(thai) {
     SUBDIRS += thai
-    !disable-hunspell: thai.depends += hunspell
+    qtConfig(hunspell): thai.depends += hunspell
 }

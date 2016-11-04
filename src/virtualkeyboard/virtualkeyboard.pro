@@ -2,15 +2,20 @@ TARGET  = QtVirtualKeyboard
 MODULE = virtualkeyboard
 MODULE_PLUGIN_TYPES = virtualkeyboard
 
+include(../shared.pri)
+
 QMAKE_DOCS = $$PWD/doc/qtvirtualkeyboard.qdocconf
 include(doc/doc.pri)
 
 QT += qml quick gui gui-private core-private
 CONFIG += qtquickcompiler
 
-DEFINES += QVIRTUALKEYBOARD_LIBRARY
+qtConfig(vkb-sensitive-debug) {
+    MODULE_DEFINES += SENSITIVE_DEBUG
+}
 
-include(../config.pri)
+
+DEFINES += QVIRTUALKEYBOARD_LIBRARY
 
 SOURCES += \
     platforminputcontext.cpp \
@@ -63,6 +68,7 @@ HEADERS += \
     gesturerecognizer_p.h \
     handwritinggesturerecognizer_p.h \
     qvirtualkeyboard_global.h \
+    qvirtualkeyboard_global_p.h \
     qvirtualkeyboardextensionplugin.h \
     qvirtualkeyboard_staticplugin_p.h
 
@@ -80,7 +86,7 @@ LAYOUT_FILES += \
     content/layouts/fallback/numbers.qml \
     content/layouts/fallback/main.qml \
     content/layouts/fallback/symbols.qml
-contains(CONFIG, lang-en(_GB)?) {
+qtConfig(vkb-lang-en_GB) {
     LAYOUT_FILES += \
         content/layouts/en_GB/dialpad.fallback \
         content/layouts/en_GB/digits.fallback \
@@ -88,7 +94,7 @@ contains(CONFIG, lang-en(_GB)?) {
         content/layouts/en_GB/numbers.fallback \
         content/layouts/en_GB/symbols.fallback
 }
-contains(CONFIG, lang-en(_US)?) {
+qtConfig(vkb-lang-en_US) {
     LAYOUT_FILES += \
         content/layouts/en_US/dialpad.fallback \
         content/layouts/en_US/digits.fallback \
@@ -96,7 +102,7 @@ contains(CONFIG, lang-en(_US)?) {
         content/layouts/en_US/numbers.fallback \
         content/layouts/en_US/symbols.fallback
 }
-contains(CONFIG, lang-ar.*) {
+qtConfig(vkb-lang-ar_AR) {
     LAYOUT_FILES += \
         content/layouts/ar_AR/dialpad.fallback \
         content/layouts/ar_AR/digits.qml \
@@ -104,7 +110,7 @@ contains(CONFIG, lang-ar.*) {
         content/layouts/ar_AR/numbers.qml \
         content/layouts/ar_AR/symbols.qml
 }
-contains(CONFIG, lang-bg.*) {
+qtConfig(vkb-lang-bg_BG) {
     LAYOUT_FILES += \
         content/layouts/bg_BG/dialpad.fallback \
         content/layouts/bg_BG/digits.fallback \
@@ -112,7 +118,7 @@ contains(CONFIG, lang-bg.*) {
         content/layouts/bg_BG/numbers.fallback \
         content/layouts/bg_BG/symbols.fallback
 }
-contains(CONFIG, lang-cs.*) {
+qtConfig(vkb-lang-cs_CZ) {
     LAYOUT_FILES += \
         content/layouts/cs_CZ/dialpad.fallback \
         content/layouts/cs_CZ/digits.fallback \
@@ -120,7 +126,7 @@ contains(CONFIG, lang-cs.*) {
         content/layouts/cs_CZ/numbers.fallback \
         content/layouts/cs_CZ/symbols.fallback
 }
-contains(CONFIG, lang-da.*) {
+qtConfig(vkb-lang-da_DK) {
     LAYOUT_FILES += \
         content/layouts/da_DK/dialpad.fallback \
         content/layouts/da_DK/digits.fallback \
@@ -128,7 +134,7 @@ contains(CONFIG, lang-da.*) {
         content/layouts/da_DK/numbers.fallback \
         content/layouts/da_DK/symbols.fallback
 }
-contains(CONFIG, lang-de.*) {
+qtConfig(vkb-lang-de_DE) {
     LAYOUT_FILES += \
         content/layouts/de_DE/dialpad.fallback \
         content/layouts/de_DE/digits.fallback \
@@ -136,7 +142,7 @@ contains(CONFIG, lang-de.*) {
         content/layouts/de_DE/numbers.fallback \
         content/layouts/de_DE/symbols.fallback
 }
-contains(CONFIG, lang-el.*) {
+qtConfig(vkb-lang-el_GR) {
     LAYOUT_FILES += \
         content/layouts/el_GR/dialpad.fallback \
         content/layouts/el_GR/digits.fallback \
@@ -144,7 +150,7 @@ contains(CONFIG, lang-el.*) {
         content/layouts/el_GR/numbers.fallback \
         content/layouts/el_GR/symbols.fallback
 }
-contains(CONFIG, lang-es(_ES)?) {
+qtConfig(vkb-lang-es_ES) {
     LAYOUT_FILES += \
         content/layouts/es_ES/dialpad.fallback \
         content/layouts/es_ES/digits.fallback \
@@ -152,7 +158,7 @@ contains(CONFIG, lang-es(_ES)?) {
         content/layouts/es_ES/numbers.fallback \
         content/layouts/es_ES/symbols.qml
 }
-contains(CONFIG, lang-es(_MX)?) {
+qtConfig(vkb-lang-es_MX) {
     LAYOUT_FILES += \
         content/layouts/es_MX/dialpad.fallback \
         content/layouts/es_MX/digits.fallback \
@@ -160,7 +166,7 @@ contains(CONFIG, lang-es(_MX)?) {
         content/layouts/es_MX/numbers.fallback \
         content/layouts/es_MX/symbols.qml
 }
-contains(CONFIG, lang-et.*) {
+qtConfig(vkb-lang-et_EE) {
     LAYOUT_FILES += \
         content/layouts/et_EE/dialpad.fallback \
         content/layouts/et_EE/digits.fallback \
@@ -168,7 +174,7 @@ contains(CONFIG, lang-et.*) {
         content/layouts/et_EE/numbers.fallback \
         content/layouts/et_EE/symbols.fallback
 }
-contains(CONFIG, lang-fa.*) {
+qtConfig(vkb-lang-fa_FA) {
     LAYOUT_FILES += \
         content/layouts/fa_FA/dialpad.fallback \
         content/layouts/fa_FA/digits.qml \
@@ -176,7 +182,7 @@ contains(CONFIG, lang-fa.*) {
         content/layouts/fa_FA/numbers.qml \
         content/layouts/fa_FA/symbols.qml
 }
-contains(CONFIG, lang-fi.*) {
+qtConfig(vkb-lang-fi_FI) {
     LAYOUT_FILES += \
         content/layouts/fi_FI/dialpad.fallback \
         content/layouts/fi_FI/digits.fallback \
@@ -184,7 +190,7 @@ contains(CONFIG, lang-fi.*) {
         content/layouts/fi_FI/numbers.fallback \
         content/layouts/fi_FI/symbols.fallback
 }
-contains(CONFIG, lang-fr(_CA)?) {
+qtConfig(vkb-lang-fr_CA) {
     LAYOUT_FILES += \
         content/layouts/fr_CA/dialpad.fallback \
         content/layouts/fr_CA/digits.fallback \
@@ -192,7 +198,7 @@ contains(CONFIG, lang-fr(_CA)?) {
         content/layouts/fr_CA/numbers.fallback \
         content/layouts/fr_CA/symbols.fallback
 }
-contains(CONFIG, lang-fr(_FR)?) {
+qtConfig(vkb-lang-fr_FR) {
     LAYOUT_FILES += \
         content/layouts/fr_FR/dialpad.fallback \
         content/layouts/fr_FR/digits.fallback \
@@ -200,7 +206,7 @@ contains(CONFIG, lang-fr(_FR)?) {
         content/layouts/fr_FR/numbers.fallback \
         content/layouts/fr_FR/symbols.fallback
 }
-contains(CONFIG, lang-he.*) {
+qtConfig(vkb-lang-he_IL) {
     LAYOUT_FILES += \
         content/layouts/he_IL/dialpad.fallback \
         content/layouts/he_IL/digits.fallback \
@@ -208,7 +214,7 @@ contains(CONFIG, lang-he.*) {
         content/layouts/he_IL/numbers.fallback \
         content/layouts/he_IL/symbols.qml
 }
-contains(CONFIG, lang-hi.*) {
+qtConfig(vkb-lang-hi_IN) {
     LAYOUT_FILES += \
         content/layouts/hi_IN/dialpad.fallback \
         content/layouts/hi_IN/digits.fallback \
@@ -216,7 +222,7 @@ contains(CONFIG, lang-hi.*) {
         content/layouts/hi_IN/numbers.fallback \
         content/layouts/hi_IN/symbols.qml
 }
-contains(CONFIG, lang-hr.*) {
+qtConfig(vkb-lang-hr_HR) {
     LAYOUT_FILES += \
         content/layouts/hr_HR/dialpad.fallback \
         content/layouts/hr_HR/digits.fallback \
@@ -224,7 +230,7 @@ contains(CONFIG, lang-hr.*) {
         content/layouts/hr_HR/numbers.fallback \
         content/layouts/hr_HR/symbols.fallback
 }
-contains(CONFIG, lang-hu.*) {
+qtConfig(vkb-lang-hu_HU) {
     LAYOUT_FILES += \
         content/layouts/hu_HU/dialpad.fallback \
         content/layouts/hu_HU/digits.fallback \
@@ -232,7 +238,7 @@ contains(CONFIG, lang-hu.*) {
         content/layouts/hu_HU/numbers.fallback \
         content/layouts/hu_HU/symbols.fallback
 }
-contains(CONFIG, lang-id.*) {
+qtConfig(vkb-lang-id_ID) {
     LAYOUT_FILES += \
         content/layouts/id_ID/dialpad.fallback \
         content/layouts/id_ID/digits.fallback \
@@ -240,7 +246,7 @@ contains(CONFIG, lang-id.*) {
         content/layouts/id_ID/numbers.fallback \
         content/layouts/id_ID/symbols.fallback
 }
-contains(CONFIG, lang-it.*) {
+qtConfig(vkb-lang-it_IT) {
     LAYOUT_FILES += \
         content/layouts/it_IT/dialpad.fallback \
         content/layouts/it_IT/digits.fallback \
@@ -248,7 +254,7 @@ contains(CONFIG, lang-it.*) {
         content/layouts/it_IT/numbers.fallback \
         content/layouts/it_IT/symbols.fallback
 }
-contains(CONFIG, lang-nb.*) {
+qtConfig(vkb-lang-nb_NO) {
     LAYOUT_FILES += \
         content/layouts/nb_NO/dialpad.fallback \
         content/layouts/nb_NO/digits.fallback \
@@ -256,7 +262,7 @@ contains(CONFIG, lang-nb.*) {
         content/layouts/nb_NO/numbers.fallback \
         content/layouts/nb_NO/symbols.fallback
 }
-contains(CONFIG, lang-ms.*) {
+qtConfig(vkb-lang-ms_MY) {
     LAYOUT_FILES += \
         content/layouts/ms_MY/dialpad.fallback \
         content/layouts/ms_MY/digits.fallback \
@@ -264,7 +270,7 @@ contains(CONFIG, lang-ms.*) {
         content/layouts/ms_MY/numbers.fallback \
         content/layouts/ms_MY/symbols.fallback
 }
-contains(CONFIG, lang-nl.*) {
+qtConfig(vkb-lang-nl_NL) {
     LAYOUT_FILES += \
         content/layouts/nl_NL/dialpad.fallback \
         content/layouts/nl_NL/digits.fallback \
@@ -272,7 +278,7 @@ contains(CONFIG, lang-nl.*) {
         content/layouts/nl_NL/numbers.fallback \
         content/layouts/nl_NL/symbols.fallback
 }
-contains(CONFIG, lang-pl.*) {
+qtConfig(vkb-lang-pl_PL) {
     LAYOUT_FILES += \
         content/layouts/pl_PL/dialpad.fallback \
         content/layouts/pl_PL/digits.fallback \
@@ -280,7 +286,7 @@ contains(CONFIG, lang-pl.*) {
         content/layouts/pl_PL/numbers.fallback \
         content/layouts/pl_PL/symbols.fallback
 }
-contains(CONFIG, lang-pt(_BR)?) {
+qtConfig(vkb-lang-pt_BR) {
     LAYOUT_FILES += \
         content/layouts/pt_BR/dialpad.fallback \
         content/layouts/pt_BR/digits.fallback \
@@ -288,7 +294,7 @@ contains(CONFIG, lang-pt(_BR)?) {
         content/layouts/pt_BR/numbers.fallback \
         content/layouts/pt_BR/symbols.fallback
 }
-contains(CONFIG, lang-pt(_PT)?) {
+qtConfig(vkb-lang-pt_PT) {
     LAYOUT_FILES += \
         content/layouts/pt_PT/dialpad.fallback \
         content/layouts/pt_PT/digits.fallback \
@@ -296,7 +302,7 @@ contains(CONFIG, lang-pt(_PT)?) {
         content/layouts/pt_PT/numbers.fallback \
         content/layouts/pt_PT/symbols.fallback
 }
-contains(CONFIG, lang-ro.*) {
+qtConfig(vkb-lang-ro_RO) {
     LAYOUT_FILES += \
         content/layouts/ro_RO/dialpad.fallback \
         content/layouts/ro_RO/digits.fallback \
@@ -304,7 +310,7 @@ contains(CONFIG, lang-ro.*) {
         content/layouts/ro_RO/numbers.fallback \
         content/layouts/ro_RO/symbols.fallback
 }
-contains(CONFIG, lang-ru.*) {
+qtConfig(vkb-lang-ru_RU) {
     LAYOUT_FILES += \
         content/layouts/ru_RU/dialpad.fallback \
         content/layouts/ru_RU/digits.fallback \
@@ -312,7 +318,7 @@ contains(CONFIG, lang-ru.*) {
         content/layouts/ru_RU/numbers.fallback \
         content/layouts/ru_RU/symbols.fallback
 }
-contains(CONFIG, lang-sk.*) {
+qtConfig(vkb-lang-sk_SK) {
     LAYOUT_FILES += \
         content/layouts/sk_SK/dialpad.fallback \
         content/layouts/sk_SK/digits.fallback \
@@ -320,7 +326,7 @@ contains(CONFIG, lang-sk.*) {
         content/layouts/sk_SK/numbers.fallback \
         content/layouts/sk_SK/symbols.fallback
 }
-contains(CONFIG, lang-sl.*) {
+qtConfig(vkb-lang-sl_SI) {
     LAYOUT_FILES += \
         content/layouts/sl_SI/dialpad.fallback \
         content/layouts/sl_SI/digits.fallback \
@@ -328,7 +334,7 @@ contains(CONFIG, lang-sl.*) {
         content/layouts/sl_SI/numbers.fallback \
         content/layouts/sl_SI/symbols.fallback
 }
-contains(CONFIG, lang-sq.*) {
+qtConfig(vkb-lang-sq_AL) {
     LAYOUT_FILES += \
         content/layouts/sq_AL/dialpad.fallback \
         content/layouts/sq_AL/digits.fallback \
@@ -336,7 +342,7 @@ contains(CONFIG, lang-sq.*) {
         content/layouts/sq_AL/numbers.fallback \
         content/layouts/sq_AL/symbols.fallback
 }
-contains(CONFIG, lang-sr.*) {
+qtConfig(vkb-lang-sr_SP) {
     LAYOUT_FILES += \
         content/layouts/sr_SP/dialpad.fallback \
         content/layouts/sr_SP/digits.fallback \
@@ -344,7 +350,7 @@ contains(CONFIG, lang-sr.*) {
         content/layouts/sr_SP/numbers.fallback \
         content/layouts/sr_SP/symbols.fallback
 }
-contains(CONFIG, lang-sv.*) {
+qtConfig(vkb-lang-sv_SE) {
     LAYOUT_FILES += \
         content/layouts/sv_SE/dialpad.fallback \
         content/layouts/sv_SE/digits.fallback \
@@ -352,7 +358,7 @@ contains(CONFIG, lang-sv.*) {
         content/layouts/sv_SE/numbers.fallback \
         content/layouts/sv_SE/symbols.fallback
 }
-contains(CONFIG, lang-tr.*) {
+qtConfig(vkb-lang-tr_TR) {
     LAYOUT_FILES += \
         content/layouts/tr_TR/dialpad.fallback \
         content/layouts/tr_TR/digits.fallback \
@@ -360,7 +366,7 @@ contains(CONFIG, lang-tr.*) {
         content/layouts/tr_TR/numbers.fallback \
         content/layouts/tr_TR/symbols.fallback
 }
-contains(CONFIG, lang-uk.*) {
+qtConfig(vkb-lang-uk_UA) {
     LAYOUT_FILES += \
         content/layouts/uk_UA/dialpad.fallback \
         content/layouts/uk_UA/digits.fallback \
@@ -368,7 +374,7 @@ contains(CONFIG, lang-uk.*) {
         content/layouts/uk_UA/numbers.fallback \
         content/layouts/uk_UA/symbols.fallback
 }
-contains(CONFIG, lang-vi.*) {
+qtConfig(vkb-lang-vi_VN) {
     LAYOUT_FILES += \
         content/layouts/vi_VN/dialpad.fallback \
         content/layouts/vi_VN/digits.fallback \
@@ -377,9 +383,9 @@ contains(CONFIG, lang-vi.*) {
         content/layouts/vi_VN/symbols.qml
 }
 
-no-builtin-style {
+qtConfig(vkb-no-builtin-style){
     DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"\\\"
-} else:retro-style {
+} else:qtConfig(vkb-retro-style) {
     DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"retro\\\"
 } else {
     DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"default\\\"
@@ -401,29 +407,27 @@ OTHER_FILES += \
     qtvirtualkeyboard.json \
     $$LAYOUT_FILES
 
-!disable-desktop:isEmpty(CROSS_COMPILE):!android-embedded:!qnx {
+qtConfig(vkb-desktop) {
     SOURCES += desktopinputpanel.cpp inputview.cpp
     HEADERS += desktopinputpanel_p.h inputview_p.h
     DEFINES += QT_VIRTUALKEYBOARD_DESKTOP
-    !no-pkg-config:packagesExist(xcb) {
-        PKGCONFIG += xcb xcb-xfixes
-        DEFINES += QT_VIRTUALKEYBOARD_HAVE_XCB
-    }
+    qtConfig(vkb-xcb): \
+        QMAKE_USE += xcb-xfixes
 }
 
-record-trace-input {
+qtConfig(vkb-record-trace-input) {
     SOURCES += unipentrace.cpp
     HEADERS += unipentrace_p.h
     MODULE_DEFINES += QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
 }
 
-arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
+qtConfig(vkb-arrow-keynavigation): \
+    DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
 
-!disable-layouts {
+qtConfig(vkb-layouts) {
     virtualkeyboard_layouts.files = $$LAYOUT_FILES
     virtualkeyboard_layouts.prefix = $$LAYOUTS_PREFIX
     RESOURCES += virtualkeyboard_layouts
-    DEFINES += HAVE_LAYOUTS
 }
 
 load(qt_module)

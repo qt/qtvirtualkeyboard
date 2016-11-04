@@ -1,5 +1,7 @@
 TEMPLATE = subdirs
 
+include(../../../shared.pri)
+
 SUBDIRS += \
     3rdparty/openwnn \
     plugin

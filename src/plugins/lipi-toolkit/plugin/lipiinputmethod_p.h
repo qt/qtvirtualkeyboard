@@ -41,7 +41,8 @@
 // We mean it.
 //
 
-#ifdef QT_HUNSPELLINPUTMETHOD_LIB
+#include <QtVirtualKeyboard/private/qvirtualkeyboard_global_p.h>
+#if QT_CONFIG(hunspell)
 #include <QtHunspellInputMethod/private/hunspellinputmethod_p.h>
 #define LipiInputMethodBase HunspellInputMethod
 #else

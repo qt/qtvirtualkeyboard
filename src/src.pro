@@ -1,6 +1,5 @@
 TEMPLATE = subdirs
 
-include(config.pri)
 
 SUBDIRS += \
     virtualkeyboard \

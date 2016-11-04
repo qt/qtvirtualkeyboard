@@ -1,0 +1,497 @@
+{
+    "module": "virtualkeyboard",
+    "testDir": "../../config.tests",
+
+    "commandline": {
+        "options": {
+            "vkb-sensitive-debug": "boolean",
+            "vkb-arrow-keynavigation": "boolean",
+            "vkb-enable": { "type": "enableLang" },
+            "vkb-disable": { "type": "disableLang" },
+            "vkb-desktop": "boolean",
+            "vkb-cangjie": { "type": "boolean", "value": "cangjie" },
+            "vkb-zhuyin": { "type": "boolean", "value": "zhuyin" },
+            "vkb-hunspell": { "type": "enum", "values": [ "no", "3rdparty", "system" ] },
+            "vkb-handwriting": { "type": "optionalString", "values": [ "yes", "no", "t9write", "lipi" ] },
+            "vkb-style": { "type": "string", "values": [ "standard", "retro" , "none"] }
+        }
+    },
+
+    "libraries": {
+        "hunspell": {
+            "label": "Hunspell",
+            "test": "hunspell",
+            "sources": [
+                { "type": "pkgConfig", "args": "hunspell" },
+                { "includedir": "/usr/include/hunspell", "libs": "-lhunspell-1.3" }
+            ]
+        },
+        "xcb": {
+            "label": "XCB",
+            "headers": "xcb/xcb.h",
+            "sources": [
+                { "type": "pkgConfig", "args": "xcb" },
+                "-lxcb"
+            ]
+        },
+        "xcb-xfixes": {
+            "label": "XCB Xfixes",
+            "headers": "xcb/xfixes.h",
+            "sources": [
+                { "type": "pkgConfig", "args": "xcb-xfixes" },
+                "-lxcb-xfixes"
+            ],
+            "use": "xcb"
+        }
+    },
+
+    "tests": {
+        "3rdparty-hunspell": {
+            "label": "Hunspell copy under 3rdparty/",
+            "type": "3rdpartyHunspell"
+        },
+        "t9write-alphabetic": {
+            "label" : "T9Write Alphabetic Support",
+            "type"  : "t9write-alphabetic"
+        },
+        "t9write-cjk": {
+            "label" : "T9Write CJK Support",
+            "type"  : "t9write-cjk"
+        }
+    },
+
+    "features": {
+        "vkb-record-trace-input": {
+            "label": "Input trace recording",
+            "autoDetect": "false",
+            "output": [ "publicFeature" ]
+        },
+        "vkb-arrow-keynavigation": {
+            "label": "Key navigation",
+            "autoDetect": "false",
+            "output": [ "publicFeature" ]
+        },
+        "vkb-desktop": {
+            "label": "Desktop integration",
+            "condition": "!config.cross_compile",
+            "output": [ "publicFeature" ]
+        },
+        "vkb-xcb": {
+            "label": "XCB integration",
+            "condition": "libs.xcb && libs.xcb-xfixes",
+            "output": [ "publicFeature" ]
+        },
+        "vkb-layouts": {
+            "label": "Built-in layouts",
+            "output": [ "publicFeature" ]
+        },
+        "vkb-no-builtin-style": {
+            "label": "Disable builtin styles",
+            "autoDetect": false,
+            "enable": "input.vkb-style == 'none'",
+            "output": [ "publicFeature" ]
+        },
+        "vkb-retro-style": {
+            "label": "Retro style as default",
+            "autoDetect": false,
+            "enable": "input.vkb-style == 'retro'",
+            "output": [ "publicFeature" ]
+        },
+        "vkb-default-style": {
+            "label": "Default style",
+            "autoDetect": true,
+            "condition": "!features.vkb-retro-style && !features.vkb-no-builtin-style",
+            "enable": "input.vkb-style == 'default'",
+            "output": [ "publicFeature" ]
+        },
+        "vkb-sensitive-debug": {
+            "label": "Sensitive Debug",
+            "autoDetect": false,
+            "output": [ "privateFeature" ]
+        },
+
+        "t9write-alphabetic": {
+            "label": "  Alphabetic",
+            "condition": "tests.t9write-alphabetic",
+            "output": [ "privateFeature" ]
+        },
+        "t9write-cjk": {
+            "label": "  CJK",
+            "condition": "tests.t9write-cjk",
+            "output": [ "privateFeature" ]
+        },
+        "t9write": {
+            "label": "T9Write handwriting",
+            "enable": "input.vkb-handwriting == 't9write'",
+            "disable": "input.vkb-handwriting == 'no' || input.vkb-handwriting == 'lipi'",
+            "condition": "features.t9write-alphabetic || features.t9write-cjk",
+            "output": [ "privateFeature" ]
+        },
+        "lipi-toolkit": {
+            "label": "Lipi handwriting",
+            "autoDetect": false,
+            "enable": "input.vkb-handwriting == 'lipi'",
+            "disable": "input.vkb-handwriting == 'no' || input.vkb-handwriting == 't9write'",
+            "output": [ "privateFeature" ]
+        },
+        "system-hunspell": {
+            "label": "System Hunspell",
+            "condition": "libs.hunspell",
+            "output": [ "privateFeature" ]
+        },
+        "3rdparty-hunspell": {
+            "label": "  Using Hunspell copy from 3rdparty/",
+            "disable": "input.vkb-hunspell == 'no' || input.vkb-hunspell == 'system'",
+            "condition": "tests.3rdparty-hunspell",
+            "output": [ "privateFeature" ]
+        },
+        "hunspell": {
+            "label": "Hunspell",
+            "condition": "features.3rdparty-hunspell || features.system-hunspell",
+            "output": [ "privateFeature" ]
+        },
+        "openwnn": {
+            "label": "OpenWnn",
+            "autoDetect": "input.lang-ja_JP != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-myscript": {
+            "label": "MyScript",
+            "autoDetect": false,
+            "output": [ "privateFeature" ]
+        },
+        "pinyin": {
+            "label": "libpinyin",
+            "autoDetect": "input.lang-ch_CN != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "tcime": {
+            "label": "Traditional Chinese IME (tcime)",
+            "autoDetect": "input.lang-ch_TW != 'no'",
+            "condition": "features.zhuyin || features.cangjie",
+            "output": [ "privateFeature" ]
+        },
+        "zhuyin": {
+            "label": "Zhuyin",
+            "autoDetect": "input.lang-zh_TW != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "cangjie": {
+            "label": "Cangjie",
+            "autoDetect": "input.lang-zh_TW != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "hangul": {
+            "label": "Hangul",
+            "autoDectect": "input.lang-ko_KR != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "thai": {
+           "label": "Thai",
+           "autoDectect": "input.lang-th_TH != 'no'",
+           "output": [ "privateFeature" ]
+        },
+        "vkb-lang-ar_AR": {
+            "label": "Arabic",
+            "autoDetect": "input.lang-ar_AR != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-bg_BG": {
+            "label": "Bulgarian",
+            "autoDetect": "input.lang-bg_BG != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-cs_CZ": {
+            "label": "Czech",
+            "autoDetect": "input.lang-cs_CZ != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-da_DK": {
+            "label": "Danish",
+            "autoDetect": "input.lang-da_DK != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-de_DE": {
+            "label": "German",
+            "autoDetect": "input.lang-de_DE != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-el_GR": {
+            "label": "Greek",
+            "autoDetect": "input.lang-el_GR != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-en_GB": {
+            "label": "English GB",
+            "autoDetect": "input.lang-en_GB != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-en_US": {
+            "label": "English US",
+            "autoDetect": "input.lang-en_US != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-es_ES": {
+            "label": "Spanish",
+            "autoDetect": "input.lang-es_ES != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-es_MX": {
+            "label": "Spanish Mexico",
+            "autoDetect": "input.lang-es_MX != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-et_EE": {
+            "label": "Estonian",
+            "autoDetect": "input.lang-et_EE != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-fa_FA": {
+            "label": "Farsi",
+            "autoDetect": "input.lang-fa_FA != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-fi_FI": {
+            "label": "Finnish",
+            "autoDetect": "input.lang-fi_FI != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-fr_CA": {
+            "label": "French Canada",
+            "autoDetect": "input.lang-fr_CA != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-fr_FR": {
+            "label": "French France",
+            "autoDetect": "input.lang-fr_FR != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-he_IL": {
+            "label": "Hebrew",
+            "autoDetect": "input.lang-he_IL != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-hi_IN": {
+            "label": "Hindi",
+            "autoDetect": "input.lang-hi_IN != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-hr_HR": {
+            "label": "Croatian",
+            "autoDetect": "input.lang-hr_HR != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-hu_HU": {
+            "label": "Hungarian",
+            "autoDetect": "input.lang-hu_HU != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-id_ID": {
+            "label": "Indonesian",
+            "autoDetect": "input.lang-id_ID != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-it_IT": {
+            "label": "Italian",
+            "autoDetect": "input.lang-it_IT != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-ja_JP": {
+            "label": "Japanese",
+            "condition": "features.openwnn",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-ko_KR": {
+            "label": "Korean",
+            "autoDetect": "input.lang-ko_KR != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-ms_MY": {
+            "label": "Malay",
+            "autoDetect": "input.lang-ms_MY != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-nb_NO": {
+            "label": "Norwegian",
+            "autoDetect": "input.lang-nb_NO != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-nl_NL": {
+            "label": "Dutch",
+            "autoDetect": "input.lang-nl_NL != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-pl_PL": {
+            "label": "Polish",
+            "autoDetect": "input.lang-pl_PL != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-pt_BR": {
+            "label": "Portuguese Brazil",
+            "autoDetect": "input.lang-pt_BR != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-pt_PT": {
+            "label": "Portuguese Portugal",
+            "autoDetect": "input.lang-pt_PT != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-ro_RO": {
+            "label": "Romanian",
+            "autoDetect": "input.lang-ro_RO != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-ru_RU": {
+            "label": "Russian",
+            "autoDetect": "input.lang-ru_RU != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-sk_SK": {
+            "label": "Slovak",
+            "autoDetect": "input.lang-sk_SK != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-sl_SI": {
+            "label": "Slovenian",
+            "autoDetect": "input.lang-sl_SI != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-sq_AL": {
+            "label": "Albanian",
+            "autoDetect": "input.lang-sq_AL != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-sr_SP": {
+            "label": "Serbian",
+            "autoDetect": "input.lang-sr_SP != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-sv_SE": {
+            "label": "Swedish",
+            "autoDetect": "input.lang-sv_SE != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-th_TH": {
+            "label": "Thai",
+            "condition": "features.thai",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-tr_TR": {
+            "label": "Turkish",
+            "autoDetect": "input.lang-tr_TR != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-uk_UA": {
+            "label": "Ukrainian",
+            "autoDetect": "input.lang-uk_UA != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-vi_VN": {
+            "label": "Vietnamese",
+            "autoDetect": "input.lang-vi_VN != 'no'",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-zh_CN": {
+            "label": "Simplified Chinese",
+            "autoDetect": "input.lang-zh_CN != 'no'",
+            "condition": "features.pinyin",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-zh_TW": {
+            "label": "Traditional Chinese",
+            "autoDetect": "input.lang-zh_TW != 'no'",
+            "condition": "features.tcime || features.zhuyin || features.cangjie",
+            "output": [ "privateFeature" ]
+        }
+    },
+
+    "report": [
+        {
+            "type": "error",
+            "condition": "input.vkb-handwriting == 't9write' && !features.t9write",
+            "message": "T9Write SDK could not be found. For more information,
+see the documentation in 'Building Qt Virtual Keyboard'."
+        },
+        {
+            "type": "note",
+            "condition": "!features.hunspell",
+            "message": "Hunspell disabled. Spelling correction will not be available."
+        }
+    ],
+
+    "summary": [
+        {
+            "section": "Qt Virtualkeyboard",
+            "entries": [
+                "vkb-desktop",
+                "vkb-layouts",
+                "vkb-arrow-keynavigation",
+                "vkb-retro-style",
+                "vkb-sensitive-debug",
+                "t9write",
+                "t9write-alphabetic",
+                "t9write-cjk",
+                "lipi-toolkit",
+                "hunspell",
+                "3rdparty-hunspell",
+                "openwnn",
+                "vkb-myscript",
+                {
+                    "section": "Language support enabled for",
+                    "entries": [
+                        "vkb-lang-ar_AR",
+                        "vkb-lang-bg_BG",
+                        "vkb-lang-cs_CZ",
+                        "vkb-lang-da_DK",
+                        "vkb-lang-de_DE",
+                        "vkb-lang-el_GR",
+                        "vkb-lang-en_GB",
+                        "vkb-lang-en_US",
+                        "vkb-lang-es_ES",
+                        "vkb-lang-es_MX",
+                        "vkb-lang-et_EE",
+                        "vkb-lang-fa_FA",
+                        "vkb-lang-fi_FI",
+                        "vkb-lang-fr_CA",
+                        "vkb-lang-fr_FR",
+                        "vkb-lang-he_IL",
+                        "vkb-lang-hi_IN",
+                        "vkb-lang-hr_HR",
+                        "vkb-lang-hu_HU",
+                        "vkb-lang-id_ID",
+                        "vkb-lang-it_IT",
+                        "vkb-lang-ja_JP",
+                        "vkb-lang-ko_KR",
+                        "vkb-lang-ms_MY",
+                        "vkb-lang-nb_NO",
+                        "vkb-lang-nl_NL",
+                        "vkb-lang-pl_PL",
+                        "vkb-lang-pt_BR",
+                        "vkb-lang-pt_PT",
+                        "vkb-lang-ro_RO",
+                        "vkb-lang-ru_RU",
+                        "vkb-lang-sk_SK",
+                        "vkb-lang-sl_SI",
+                        "vkb-lang-sq_AL",
+                        "vkb-lang-sr_SP",
+                        "vkb-lang-sv_SE",
+                        "vkb-lang-th_TH",
+                        "vkb-lang-tr_TR",
+                        "vkb-lang-uk_UA",
+                        "vkb-lang-vi_VN",
+                        "vkb-lang-zh_CN",
+                        "vkb-lang-zh_TW"
+                    ]
+                },
+                {
+                    "section": "Traditional chinese input methods",
+                    "condition": "features.vkb-lang-zh_TW",
+                    "entries": [
+                        "zhuyin",
+                        "cangjie"
+                    ]
+                }
+            ]
+        }
+    ]
+}

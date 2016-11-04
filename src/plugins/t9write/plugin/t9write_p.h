@@ -41,11 +41,13 @@
 // We mean it.
 //
 
+#include <QtVirtualKeyboard/private/qvirtualkeyboard_global_p.h>
+
 #include "t9write_api_version.h"
-#ifdef HAVE_T9WRITE_ALPHABETIC
+#if QT_CONFIG(t9write_alphabetic)
 #include "decuma_hwr.h"
 #endif
-#ifdef HAVE_T9WRITE_CJK
+#if QT_CONFIG(t9write_cjk)
 #include "decuma_hwr_cjk.h"
 #endif
 #include "decumaFunctionalSupport.h"

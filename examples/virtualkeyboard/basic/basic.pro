@@ -1,6 +1,9 @@
 TEMPLATE = app
 TARGET = basic
 QT += qml quick
+
+QT_FOR_CONFIG += virtualkeyboard
+
 SOURCES += main.cpp
 CONFIG += link_pkgconfig
 static {
@@ -22,12 +25,7 @@ OTHER_FILES += \
     content/TextArea.qml \
     content/TextField.qml \
 
-disable-xcb {
-    message("The disable-xcb option has been deprecated. Please use disable-desktop instead.")
-    CONFIG += disable-desktop
-}
-
-disable-desktop|android-embedded|!isEmpty(CROSS_COMPILE)|qnx {
+!qtConfig(vkb-desktop) {
     DEFINES += MAIN_QML=\\\"basic-b2qt.qml\\\"
 } else {
     DEFINES += MAIN_QML=\\\"Basic.qml\\\"

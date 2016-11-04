@@ -30,11 +30,11 @@
 #include "tcinputmethod_p.h"
 #include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
-#if defined(HAVE_TCIME_CANGJIE)
+#if QT_CONFIG(cangjie)
 #include "cangjiedictionary.h"
 #include "cangjietable.h"
 #endif
-#if defined(HAVE_TCIME_ZHUYIN)
+#if QT_CONFIG(zhuyin)
 #include "zhuyindictionary.h"
 #include "zhuyintable.h"
 #endif
@@ -105,12 +105,12 @@ public:
         QVirtualKeyboardInputContext *ic = q->inputContext();
         switch (inputMode)
         {
-#if defined(HAVE_TCIME_CANGJIE)
+#if QT_CONFIG(cangjie)
         case QVirtualKeyboardInputEngine::InputMode::Cangjie:
             accept = composeCangjie(ic, c);
             break;
 #endif
-#if defined(HAVE_TCIME_ZHUYIN)
+#if QT_CONFIG(zhuyin)
         case QVirtualKeyboardInputEngine::InputMode::Zhuyin:
             accept = composeZhuyin(ic, c);
             break;
@@ -122,7 +122,7 @@ public:
         return accept;
     }
 
-#if defined(HAVE_TCIME_CANGJIE)
+#if QT_CONFIG(cangjie)
     bool composeCangjie(QVirtualKeyboardInputContext *ic, const QChar &c)
     {
         bool accept = false;
@@ -200,7 +200,7 @@ public:
     }
 #endif
 
-#if defined(HAVE_TCIME_ZHUYIN)
+#if QT_CONFIG(zhuyin)
     bool composeZhuyin(QVirtualKeyboardInputContext *ic, const QChar &c)
     {
         if (ZhuyinTable::isTone(c)) {
@@ -294,10 +294,10 @@ public:
 
     TCInputMethod *q_ptr;
     QVirtualKeyboardInputEngine::InputMode inputMode;
-#if defined(HAVE_TCIME_CANGJIE)
+#if QT_CONFIG(cangjie)
     CangjieDictionary cangjieDictionary;
 #endif
-#if defined(HAVE_TCIME_ZHUYIN)
+#if QT_CONFIG(zhuyin)
     ZhuyinDictionary zhuyinDictionary;
 #endif
     PhraseDictionary phraseDictionary;
@@ -324,7 +324,7 @@ TCInputMethod::~TCInputMethod()
 
 bool TCInputMethod::simplified() const
 {
-#if defined(HAVE_TCIME_CANGJIE)
+#if QT_CONFIG(cangjie)
     Q_D(const TCInputMethod);
     return d->cangjieDictionary.simplified();
 #else
@@ -335,7 +335,7 @@ bool TCInputMethod::simplified() const
 void TCInputMethod::setSimplified(bool simplified)
 {
     qCDebug(lcTCIme) << "TCInputMethod::setSimplified(): " << simplified;
-#if defined(HAVE_TCIME_CANGJIE)
+#if QT_CONFIG(cangjie)
     Q_D(TCInputMethod);
     if (d->cangjieDictionary.simplified() != simplified) {
         d->reset();
@@ -354,10 +354,10 @@ QList<QVirtualKeyboardInputEngine::InputMode> TCInputMethod::inputModes(const QS
 {
     Q_UNUSED(locale)
     return QList<QVirtualKeyboardInputEngine::InputMode>()
-#if defined(HAVE_TCIME_ZHUYIN)
+#if QT_CONFIG(zhuyin)
             << QVirtualKeyboardInputEngine::InputMode::Zhuyin
 #endif
-#if defined(HAVE_TCIME_CANGJIE)
+#if QT_CONFIG(cangjie)
            << QVirtualKeyboardInputEngine::InputMode::Cangjie
 #endif
                ;
@@ -373,7 +373,7 @@ bool TCInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEng
     bool result = false;
     d->inputMode = inputMode;
     d->wordDictionary = nullptr;
-#if defined(HAVE_TCIME_CANGJIE)
+#if QT_CONFIG(cangjie)
     if (inputMode == QVirtualKeyboardInputEngine::InputMode::Cangjie) {
         if (d->cangjieDictionary.isEmpty()) {
             QString cangjieDictionary(qEnvironmentVariable("QT_VIRTUALKEYBOARD_CANGJIE_DICTIONARY"));
@@ -387,7 +387,7 @@ bool TCInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEng
         d->wordDictionary = &d->cangjieDictionary;
     }
 #endif
-#if defined(HAVE_TCIME_ZHUYIN)
+#if QT_CONFIG(zhuyin)
     if (inputMode == QVirtualKeyboardInputEngine::InputMode::Zhuyin) {
         if (d->zhuyinDictionary.isEmpty()) {
             QString zhuyinDictionary(qEnvironmentVariable("QT_VIRTUALKEYBOARD_ZHUYIN_DICTIONARY"));
@@ -463,14 +463,14 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
         if (!d->input.isEmpty()) {
             d->input.remove(d->input.length() - 1, 1);
             ic->setPreeditText(d->input);
-#if defined(HAVE_TCIME_CANGJIE)
+#if QT_CONFIG(cangjie)
             if (!d->checkSpecialCharInput()) {
 #endif
                 if (d->setCandidates(d->wordDictionary->getWords(d->input), true)) {
                     emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
                     emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->highlightIndex);
                 }
-#if defined(HAVE_TCIME_CANGJIE)
+#if QT_CONFIG(cangjie)
             }
 #endif
             accept = true;

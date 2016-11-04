@@ -31,6 +31,7 @@
 #define QVIRTUALKEYBOARD_GLOBAL_H
 
 #include <QtCore/qglobal.h>
+#include <QtVirtualKeyboard/qtvirtualkeyboard-config.h>
 
 QT_BEGIN_NAMESPACE
 

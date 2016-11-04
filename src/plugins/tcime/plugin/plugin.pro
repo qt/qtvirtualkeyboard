@@ -1,5 +1,7 @@
 TARGET = qtvirtualkeyboard_tcime
-QT += qml virtualkeyboard
+QT += qml virtualkeyboard-private
+
+include(../../../shared.pri)
 
 HEADERS += \
     tcinputmethod_p.h \
@@ -16,8 +18,6 @@ DEFINES += \
     QT_NO_CAST_FROM_ASCII \
     QT_NO_CAST_FROM_BYTEARRAY
 
-include(../../../config.pri)
-
 LAYOUT_FILES += \
     $$LAYOUTS_BASE/content/layouts/zh_TW/dialpad.fallback \
     $$LAYOUTS_BASE/content/layouts/zh_TW/digits.fallback \
@@ -30,14 +30,12 @@ virtualkeyboard_tcime_layouts.base = $$LAYOUTS_BASE
 virtualkeyboard_tcime_layouts.prefix = $$LAYOUTS_PREFIX
 RESOURCES += virtualkeyboard_tcime_layouts
 
-cangjie: DEFINES += HAVE_TCIME_CANGJIE
-zhuyin: DEFINES += HAVE_TCIME_ZHUYIN
 QMAKE_USE += tcime
 !no-bundle-tcime {
     TCIME_FILES += ../3rdparty/tcime/data/qt/dict_phrases.dat
-    cangjie: TCIME_FILES += \
+    qtConfig(cangjie): TCIME_FILES += \
         ../3rdparty/tcime/data/qt/dict_cangjie.dat
-    zhuyin: TCIME_FILES += \
+    qtConfig(zhuyin): TCIME_FILES += \
         ../3rdparty/tcime/data/qt/dict_zhuyin.dat
     tcime.files = $$TCIME_FILES
     tcime.base = $$PWD/..
@@ -46,9 +44,9 @@ QMAKE_USE += tcime
 } else {
     tcime_data.files = \
         $$PWD/../3rdparty/tcime/data/qt/dict_phrases.dat
-    cangjie: tcime_data.files += \
+    qtConfig(cangjie): tcime_data.files += \
         $$PWD/../3rdparty/tcime/data/qt/dict_cangjie.dat
-    zhuyin: tcime_data.files += \
+    qtConfig(zhuyin): tcime_data.files += \
         $$PWD/../3rdparty/tcime/data/qt/dict_zhuyin.dat
     tcime_data.path = $$VIRTUALKEYBOARD_INSTALL_DATA/tcime
     INSTALLS += tcime_data

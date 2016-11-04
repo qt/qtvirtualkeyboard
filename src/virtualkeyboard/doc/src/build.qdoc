@@ -87,90 +87,98 @@ keyboard features.
 
 \table
 \header
-    \li CONFIG
+    \li Option
+    \li Arguments
     \li Description
     \li Remarks
 \row
-    \li \e lang-<code>
+    \li \e {-vkb-enable <code>[,<code>]*}"
+    \li Supported language codes or 'all'
     \li Enables the specified language
-    \li The specified language can be activated using \e lang-<code> option, which
-        has the format "language[_country]", where:
+    \li The specified languages can be explicitly enabled using this option.
+        Each language code has the format \e {language[_country]}, where:
         \list
-            \li language is a lowercase, two-letter, ISO 639 language code
-            \li country is an uppercase, two-letter, ISO 3166 country code
+            \li \e language is a lowercase, two-letter, ISO 639 language code
+            \li \e country is an uppercase, two-letter, ISO 3166 country code
         \endlist
 
-        This option can be used to define the language support as required. The virtual
-        keyboard can support one or more languages at a time.
+        This option can be used to define the language support as required.
+        The virtual keyboard can support one or more languages at a time.
 
-        For example, \c CONFIG+=lang-fi_FI activates the Finnish language.
+        For example, \c {-vkb-enable de_DE,fi_FI} enables support for the
+        German and Finnish languages.
 
-        The virtual keyboard automatically includes all languages if no other languages
-        are specified.
+        The virtual keyboard automatically includes all supported languages
+        if no other languages are specified.
 \row
-    \li \e lang-all
-    \li Enables all the languages
-    \li Enables all the languages supported by the virtual keyboard. This flag is essentially
-        an alias for \c {CONFIG+="lang-ar_AR lang-da_DK ..."}
-
-        This option is enabled by default. To build only a specific language, use the
-        \c lang-<code> option above.
+    \li \e -vkb-handwriting
+    \li [yes|no|t9write|lipi]
+    \li Enables or disabled handwriting input
+    \li This flag enables handwriting input. By default, the first engine
+        available at build time is used. The engines are chosen in the
+        following order: \c t9write, \c lipi-toolkit. To force handwriting
+        input using to use a specific engine, specify the engine to be used;
+        for example, \c {-vkb-handwriting lipi}.
 \row
-    \li \e handwriting
-    \li Enables handwriting input
-    \li This flag enables handwriting input using the first engine available at
-        build time in the following order: \c myscript, \c t9write, \c lipi-toolkit. To enable handwriting
-        input using a specific engine, use the feature-specific configuration instead.
-        For example, \c CONFIG+=lipi-toolkit.
+    \li \e [-no]-vkb-arrow-keynavigation
+    \li
+    \li Enables or disables arrow key navigation for the keyboard
+    \li Allows controlling the keyboard using the arrow and return keys. This
+        feature is off by default.
 \row
-    \li \e arrow-key-navigation
-    \li Enables arrow key navigation for the keyboard
-    \li Allows controlling the keyboard using the arrow and return keys.
+    \li \e -vkb-style
+    \li \e [standard|retro]
+    \li Choose the style of the virtual keyboard
+    \li The Qt Virtual Keyboard supports two styles, standard and retro. Both
+        styles will be included in the package, but this option allows you to
+        change the built-in default style.
+\row
+    \li \e [-no]-vkb-cangjie
+    \li
+    \li Enables or disables the Cangjie input method for Traditional Chinese.
+    \li This option enables or disables the Cangjie input method for the
+        Traditional Chinese language. The input method is enabled by default
+        if support for Traditional Chinese is enabled.
+\row
+    \li \e [-no]-vkb-zhuyin
+    \li
+    \li Enables or disables the Zhuyin input method for Traditional Chinese.
+    \li This option enables or disables the Zhuyin input method for the
+        Traditional Chinese language. The input method is enabled by default if
+        support for Traditional Chinese is enabled.
+\row
+    \li \e [-no]-vkb-desktop
+    \li
+    \li Enables or disables Desktop integration
+    \li By default, the desktop integration is enabled when the target
+        environment is X11 or Windows desktop. With this option, the desktop
+        integration can be disabled.
+        \note For embedded integration, where the InputPanel is instantitated
+        by the application, there is no need to use this option explicitly. The
+        virtual keyboard will not create the desktop input panel if the
+        application creates InputPanel before the focus is set to an input field.
+\row
+    \li \e [-no]-vkb-layouts
+    \li
+    \li Enables or disables built-in layouts
+    \li By default, the virtual keyboard plugin contains the English keyboard layout.
+        By specifiying \e -no-vkb-layouts, the built-in layout(s) are excluded from
+        the virtual keyboard plugin.
+        \note In this scenario, the \c QT_VIRTUALKEYBOARD_LAYOUT_PATH environment
+        variable should be set to the file system directory containing the custom
+        keyboard layouts before running the application.
 \endtable
 
-\section3 Advanced Configuration Options
+These options can be passed to configure when doing a full build of Qt.
+Alternatively, when building only the Qt Virtual Keyboard, you can configure
+the keyboard using the following command (where SRCDIR points to the source
+directory of QtVirtualKeyboard):
 
-The table below shows the advanced configuration options that will be applied
-automatically when activating a certain top-level feature. The options can also be
-used for enabling or disabling a specific feature.
-
-In most cases, these options are not needed, but there are also cases where their use is
-justified. For example, the Traditional Chinese language (CONFIG=lang-zh_TW) will include
-both Zhuyin and Cangjie input methods by default. This behavior can be changed by adding
-the preferred input method to the configuration, e.g., \c CONFIG+="lang-zh_TW zhuyin".
+\badcode
+qmake $SRCDIR -- [options]
+\endcode
 
 \table
-\header
-    \li Advanced CONFIG
-    \li Top-level CONFIG
-    \li Description
-    \li Remarks
-\row
-    \li \e disable-desktop
-    \li \e n/a
-    \li Disables Desktop integration
-    \li By default, the desktop integration is enabled when the target environment
-        is X11 or Windows desktop. With this option, the desktop integration can be
-        disabled.
-        \note For embedded integration, where the InputPanel is instantitated by
-        the application, there is no need to use this option explicitly. The virtual
-        keyboard will not create the desktop input panel if the application creates
-        InputPanel before the focus is set to an input field.
-\row
-    \li \e disable-layouts
-    \li \e n/a
-    \li Disables built-in layouts
-    \li By default, the virtual keyboard plugin contains the English keyboard layout.
-        By specifiying the \e disable-layouts configuration flag, the built-in layout(s)
-        are excluded from the virtual keyboard plugin.
-        \note In this scenario, the \c QT_VIRTUALKEYBOARD_LAYOUT_PATH environment
-        variable should be set to the file system directory containing the custom keyboard
-        layouts before running the application.
-\row
-    \li \e disable-xcb
-    \li \e n/a
-    \li Disables X11 integration
-    \li \note Deprecated since 1.3. Use \e disable-desktop instead.
 \row
     \li \e disable-hunspell
     \li \e n/a
@@ -191,22 +199,6 @@ the preferred input method to the configuration, e.g., \c CONFIG+="lang-zh_TW zh
     \li This option excludes tcime resources from the plugin binary. This option may be
         used to reduce the plugin binary size.
 \row
-    \li \e static
-    \li Enables static builds of the virtual keyboard
-    \li This option enables \l {Static builds}{static builds}.
-\row
-    \li \e retro-style
-    \li \e n/a
-    \li Enables Retro style
-    \li Changes the default keyboard style to the Retro style. Both styles are still
-        included in the package, but this option allows you to change the built-in
-        default style.
-\row
-    \li \e no-builtin-style
-    \li \e n/a
-    \li Disables bunding of styles
-    \li This option excludes styles from the plugin binary.
-\row
     \li \e pinyin
     \li \e lang-zh_CN
     \li Enables the Pinyin input method for Simplified Chinese.
@@ -223,29 +215,6 @@ the preferred input method to the configuration, e.g., \c CONFIG+="lang-zh_TW zh
 
         \include build.qdocinc input-method-language-option-note
 \row
-    \li \e cangjie
-    \li \e lang-zh_TW
-    \li Enables the Cangjie input method for Traditional Chinese.
-    \li This option activates the Cangjie input method for the Traditional Chinese
-        language.
-
-        \include build.qdocinc input-method-language-option-note
-\row
-    \li \e zhuyin
-    \li \e lang-zh_TW
-    \li Enables the Zhuyin input method for Traditional Chinese.
-    \li This option activates the Zhuyin input method for the Traditional Chinese
-        language.
-
-        \include build.qdocinc input-method-language-option-note
-\row
-    \li \e hangul
-    \li \e lang-ko_KR
-    \li Enables the Hangul input method for Korean.
-    \li This option activates the Hangul input method for the Korean language.
-
-    \include build.qdocinc input-method-language-option-note
-\row
     \li \e openwnn
     \li \e lang-ja_JP
     \li Enables the OpenWnn input method for Japanese.
@@ -257,16 +226,6 @@ the preferred input method to the configuration, e.g., \c CONFIG+="lang-zh_TW zh
     \li \e handwriting
     \li Enables the handwriting input method using Lipi Toolkit.
     \li Handwriting recognition is based on the open source Lipi Toolkit.
-\row
-    \li \e t9write
-    \li \e handwriting
-    \li Enables the handwriting input method using T9 Write.
-    \li Handwriting recognition is based on the commercial T9 Write product from Nuance Communications.
-\row
-    \li \e myscript
-    \li \e handwriting
-    \li Enables the handwriting input method using MyScript Text SDK.
-    \li Handwriting recognition is based on the most recent commercial Text Recognition SDK product from MyScript.
 \endtable
 
 \section2 Building Documentation

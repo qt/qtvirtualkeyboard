@@ -1,6 +1,8 @@
 TARGET = qtvirtualkeyboard_hunspell
 QT += qml virtualkeyboard hunspellinputmethod-private
 
+include(../../../shared.pri)
+
 HEADERS += \
     hunspellplugin.h
 SOURCES += \
@@ -14,9 +16,7 @@ DEFINES += \
     QT_NO_CAST_FROM_ASCII \
     QT_NO_CAST_FROM_BYTEARRAY
 
-include(../../../config.pri)
-
-hunspell-library {
+qtConfig(3rdparty-hunspell) {
     exists(../3rdparty/hunspell/data) {
         hunspell_data.files = \
             $$PWD/../3rdparty/hunspell/data/*.dic \

@@ -1,6 +1,8 @@
 TARGET = qtvirtualkeyboard_pinyin
 QT += qml virtualkeyboard
 
+include(../../../shared.pri)
+
 HEADERS += \
     pinyindecoderservice_p.h \
     pinyininputmethod_p.h \
@@ -17,8 +19,6 @@ DEFINES += \
     QT_ASCII_CAST_WARNINGS \
     QT_NO_CAST_FROM_ASCII \
     QT_NO_CAST_FROM_BYTEARRAY
-
-include(../../../config.pri)
 
 LAYOUT_FILES += \
     $$LAYOUTS_BASE/content/layouts/zh_CN/dialpad.fallback \

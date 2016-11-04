@@ -27,6 +27,7 @@
 **
 ****************************************************************************/
 
+#include <QtVirtualKeyboard/private/qvirtualkeyboard_global_p.h>
 #include <QtVirtualKeyboard/private/desktopinputpanel_p.h>
 #include <QtVirtualKeyboard/private/appinputpanel_p_p.h>
 #include <QtVirtualKeyboard/private/inputview_p.h>
@@ -37,7 +38,7 @@
 #include <QQmlEngine>
 #include <QScreen>
 #include <QtVirtualKeyboard/private/virtualkeyboarddebug_p.h>
-#if defined(QT_VIRTUALKEYBOARD_HAVE_XCB)
+#if QT_CONFIG(vkb_xcb)
 #include <xcb/xcb.h>
 #include <xcb/xfixes.h>
 #endif
@@ -225,7 +226,7 @@ void DesktopInputPanel::previewVisibleChanged()
         updateInputRegion();
 }
 
-#if defined(QT_VIRTUALKEYBOARD_HAVE_XCB)
+#if QT_CONFIG(vkb_xcb)
 static inline xcb_rectangle_t qRectToXCBRectangle(const QRect &r)
 {
     xcb_rectangle_t result;
@@ -250,7 +251,7 @@ void DesktopInputPanel::updateInputRegion()
 
     switch (d->windowingSystem) {
     case DesktopInputPanelPrivate::Xcb:
-#if defined(QT_VIRTUALKEYBOARD_HAVE_XCB)
+#if QT_CONFIG(vkb_xcb)
         {
             QVector<xcb_rectangle_t> rects;
             rects.push_back(qRectToXCBRectangle(d->keyboardRect.toRect()));

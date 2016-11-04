@@ -1,6 +1,10 @@
 TARGET = qtvirtualkeyboard_thai
 QT += qml virtualkeyboard
 
+QT_FOR_CONFIG += virtualkeyboard-private
+
+include(../../../shared.pri)
+
 HEADERS += \
     thaiinputmethod_p.h \
     thaiplugin.h
@@ -16,9 +20,8 @@ DEFINES += \
     QT_NO_CAST_FROM_ASCII \
     QT_NO_CAST_FROM_BYTEARRAY
 
-include(../../../config.pri)
 
-!disable-hunspell {
+qtConfig(hunspell) {
     QT += hunspellinputmethod-private
 }
 

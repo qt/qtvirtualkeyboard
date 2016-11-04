@@ -22,9 +22,7 @@ DEFINES += \
     QT_NO_CAST_FROM_ASCII \
     QT_NO_CAST_FROM_BYTEARRAY
 
-include(../../../config.pri)
-
-hunspell-library: QMAKE_USE += hunspell
-else:hunspell-package: PKGCONFIG += hunspell
+qtConfig(system-hunspell):QMAKE_USE += hunspell
+else:qtConfig(3rdparty-hunspell): PKGCONFIG += hunspell
 
 load(qt_module)
