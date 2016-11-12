@@ -20,6 +20,7 @@
 ******************************************************************************/
 
 import QtQuick 2.0
+import QtQuick.Enterprise.VirtualKeyboard 2.0
 
 Item {
     property bool active
@@ -36,7 +37,7 @@ Item {
 
     onActiveKeyChanged: {
         if (activeKey && characterPreview.item !== null) {
-            characterPreview.item.text = keyboard.uppercased ? activeKey.text.toUpperCase() : activeKey.text
+            characterPreview.item.text = InputContext.shift ? activeKey.text.toUpperCase() : activeKey.text
             width = activeKey.width
             height = activeKey.height
             var position = keyboard.mapFromItem(activeKey, 0, 0)
