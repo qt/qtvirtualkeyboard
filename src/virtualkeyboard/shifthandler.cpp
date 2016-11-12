@@ -32,6 +32,7 @@
 #include "inputengine.h"
 #include <QtCore/private/qobject_p.h>
 #include <QSet>
+#include <QGuiApplication>
 
 namespace QtVirtualKeyboard {
 
@@ -45,6 +46,7 @@ public:
         autoCapitalizationEnabled(false),
         toggleShiftEnabled(false),
         shiftChanged(false),
+        resetWhenVisible(false),
         manualShiftLanguageFilter(QSet<QLocale::Language>() << QLocale::Arabic << QLocale::Persian << QLocale::Hindi << QLocale::Korean),
         manualCapsInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::Cangjie << InputEngine::Zhuyin),
         noAutoUppercaseInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::FullwidthLatin << InputEngine::Pinyin << InputEngine::Cangjie << InputEngine::Zhuyin),
@@ -57,6 +59,7 @@ public:
     bool autoCapitalizationEnabled;
     bool toggleShiftEnabled;
     bool shiftChanged;
+    bool resetWhenVisible;
     QLocale locale;
     const QSet<QLocale::Language> manualShiftLanguageFilter;
     const QSet<InputEngine::InputMode> manualCapsInputModeFilter;
@@ -95,6 +98,7 @@ ShiftHandler::ShiftHandler(InputContext *parent) :
         connect(d->inputContext, SIGNAL(shiftChanged()), SLOT(shiftChanged()));
         connect(d->inputContext, SIGNAL(capsLockChanged()), SLOT(shiftChanged()));
         connect(d->inputContext, SIGNAL(localeChanged()), SLOT(localeChanged()));
+        connect(qGuiApp->inputMethod(), SIGNAL(visibleChanged()), SLOT(inputMethodVisibleChanged()));
         d->locale = QLocale(d->inputContext->locale());
     }
 }
@@ -239,6 +243,11 @@ void ShiftHandler::autoCapitalize()
 
 void ShiftHandler::restart()
 {
+    Q_D(ShiftHandler);
+    if (!qGuiApp->inputMethod()->isVisible()) {
+        d->resetWhenVisible = true;
+        return;
+    }
     reset();
 }
 
@@ -253,6 +262,15 @@ void ShiftHandler::localeChanged()
     Q_D(ShiftHandler);
     d->locale = QLocale(d->inputContext->locale());
     restart();
+}
+
+void ShiftHandler::inputMethodVisibleChanged()
+{
+    Q_D(ShiftHandler);
+    if (d->resetWhenVisible && qGuiApp->inputMethod()->isVisible()) {
+        d->resetWhenVisible = false;
+        reset();
+    }
 }
 
 void ShiftHandler::setAutoCapitalizationEnabled(bool enabled)
