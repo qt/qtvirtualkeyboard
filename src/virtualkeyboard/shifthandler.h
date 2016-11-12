@@ -61,6 +61,7 @@ private slots:
     void restart();
     void localeChanged();
     void shiftChanged();
+    void inputMethodVisibleChanged();
 
 private:
     void setAutoCapitalizationEnabled(bool enabled);
