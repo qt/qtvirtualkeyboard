@@ -72,6 +72,7 @@ InputPanel {
     property alias soundEffectSpy: soundEffectSpy
     property alias inputMethodResultSpy: inputMethodResultSpy
     property alias wordCandidateListChangedSpy: wordCandidateListChangedSpy
+    property alias shiftStateSpy: shiftStateSpy
 
     signal inputMethodResult(var text)
 
@@ -149,6 +150,12 @@ InputPanel {
         id: wordCandidateListChangedSpy
         target: wordCandidateView.model
         signalName: "dataChanged"
+    }
+
+    SignalSpy {
+        id: shiftStateSpy
+        target: InputContext
+        signalName: "onShiftChanged"
     }
 
     function findChildByProperty(parent, propertyName, propertyValue, compareCb) {
