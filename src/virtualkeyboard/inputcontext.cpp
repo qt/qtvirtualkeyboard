@@ -197,6 +197,8 @@ void InputContext::setShift(bool enable)
     if (d->shift != enable) {
         d->shift = enable;
         emit shiftChanged();
+        if (!d->capsLock)
+            emit uppercaseChanged();
     }
 }
 
@@ -212,7 +214,15 @@ void InputContext::setCapsLock(bool enable)
     if (d->capsLock != enable) {
         d->capsLock = enable;
         emit capsLockChanged();
+        if (!d->shift)
+            emit uppercaseChanged();
     }
+}
+
+bool InputContext::uppercase() const
+{
+    Q_D(const InputContext);
+    return d->shift || d->capsLock;
 }
 
 int InputContext::cursorPosition() const
@@ -841,6 +851,20 @@ bool InputContext::filterEvent(const QEvent *event)
     \brief the caps lock status.
 
     This property is changed when the caps lock status changes.
+*/
+
+/*!
+    \qmlproperty bool InputContext::uppercase
+    \since QtQuick.VirtualKeyboard 2.2
+
+    This property is \c true when either \l shift or \l capsLock is \c true.
+*/
+
+/*!
+    \property QtVirtualKeyboard::InputContext::uppercase
+    \brief the uppercase status.
+
+    This property is \c true when either \l shift or \l capsLock is \c true.
 */
 
 /*!
