@@ -38,11 +38,13 @@ import QtQuick.Enterprise.VirtualKeyboard 2.0
 Item {
     id: inputPanel
 
-    /*! \qmlproperty bool Active state of the input panel
+    /*!
+        \qmlproperty bool InputPanel::active
         \since QtQuick.Enterprise.VirtualKeyboard 2.0
 
         This property reflects the active status of the input panel.
-        The keyboard should be made visible to user when the active is true.
+        The keyboard should be made visible to the user when this property is
+        \c true.
     */
     property alias active: keyboard.active
 
