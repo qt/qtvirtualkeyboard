@@ -384,6 +384,27 @@ Rectangle {
             compare(textInput.text, data.outputText)
         }
 
+        function test_focusAndShiftState() {
+            prepareTest()
+
+            // Initial focus is set to textInput, shift state should not change
+            // when focus is set to container
+            inputPanel.shiftStateSpy.clear()
+            container.forceActiveFocus()
+            compare(inputPanel.shiftStateSpy.count, 0, "Unexpected number of shift state changes after focus change (ImhNone -> ImhNone)")
+
+            // Change to lower case
+            inputPanel.shiftStateSpy.clear()
+            inputPanel.toggleShift()
+            compare(inputPanel.shiftStateSpy.count, 1, "Unexpected number of shift state changes after shift key press")
+
+            // Set focus back to textInput, and expect that shift state is changed
+            // to auto upper case
+            inputPanel.shiftStateSpy.clear()
+            textInput.forceActiveFocus()
+            compare(inputPanel.shiftStateSpy.count, 1, "Unexpected number of shift state changes after focus change (auto upper case)")
+        }
+
         function test_symbolMode() {
             prepareTest({ initInputMethodHints: Qt.ImhNoPredictiveText })
 
