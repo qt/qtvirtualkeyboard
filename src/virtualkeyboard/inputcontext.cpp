@@ -54,24 +54,11 @@ bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMeth
 QT_END_NAMESPACE
 
 /*!
-    \qmlmodule QtQuick.VirtualKeyboard 2.0
-
-    This module provides a collection of QML components for Qt Virtual Keyboard.
-*/
-
-/*!
-    \module InputFramework
-
-    \title Input Framework
-
-    \brief Contains classes for integrating input methods.
-*/
-
-/*!
     \namespace QtVirtualKeyboard
-    \inmodule InputFramework
+    \inmodule QtVirtualKeyboard
 
     \brief Namespace for the Qt Virtual Keyboard C++ API.
+    \internal
 */
 
 namespace QtVirtualKeyboard {
@@ -160,8 +147,9 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(InputContextPrivate::StateFlags)
 
 /*!
     \class QtVirtualKeyboard::InputContext
-    \inmodule InputFramework
+    \inmodule QtVirtualKeyboard
     \brief Provides access to an input context.
+    \internal
 */
 
 /*!
@@ -569,6 +557,9 @@ bool InputContext::hasEnterKeyAction(QObject *item) const
     return item != 0 && qmlAttachedPropertiesObject<EnterKeyAction>(item, false);
 }
 
+/*!
+    \internal
+*/
 void InputContext::setSelectionOnFocusObject(const QPointF &anchorPos, const QPointF &cursorPos)
 {
     QPlatformInputContext::setSelectionOnFocusObject(anchorPos, cursorPos);

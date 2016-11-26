@@ -99,17 +99,11 @@
     \li \l {User Guide}
     \endlist
 
-    \section1 QML Types
+    \section1 API Reference
 
-    \annotatedlist qtvirtualkeyboard-qml
-
-    Styling components:
-
-    \annotatedlist qtvirtualkeyboard-styles-qml
-
-    Settings components:
-
-    \annotatedlist qtvirtualkeyboard-settings-qml
+    \list
+        \li \l{Qt Virtual Keyboard QML Types}{QML Types}
+    \endlist
 
     \section1 Examples
 
@@ -130,17 +124,29 @@
 */
 
 /*!
-\page qt-virtual-keyboard-qmltypes.html
+\qmlmodule QtQuick.VirtualKeyboard 2.0
 \title Qt Virtual Keyboard QML Types
-\inmodule qtvirtualkeyboard
+\ingroup qmlmodules
+\brief Provides QML types for an input framework and a reference keyboard front
+end.
 
-\annotatedlist qtvirtualkeyboard-qml
+    The QML types can be imported into your application using the following
+    import statements in your .qml file:
 
-Styling components:
+    \badcode
+    import QtQuick.VirtualKeyboard 2.0
+    import QtQuick.VirtualKeyboard.Styles 2.0
+    import QtQuick.VirtualKeyboard.Settings 2.0
+    \endcode
 
-\annotatedlist qtvirtualkeyboard-styles-qml
+Styling:
 
-Settings components:
+\generatelist qmltypesbymodule QtQuick.VirtualKeyboard.Styles
 
-\annotatedlist qtvirtualkeyboard-settings-qml
+Settings:
+
+\generatelist qmltypesbymodule QtQuick.VirtualKeyboard.Settings
+
+Input framework and keys:
+
 */

@@ -35,8 +35,17 @@
 
 /*!
     \qmlmodule QtQuick.VirtualKeyboard.Styles 2.0
+    \title Qt Quick Virtual Keyboard Styles QML Types
+    \ingroup qmlmodules
 
-    This module provides styling components for the Qt Virtual Keyboard.
+    \brief Provides styling for Qt Virtual Keyboard.
+
+    The QML types can be imported into your application using the following
+    import statements in your .qml file:
+
+    \badcode
+    import QtQuick.VirtualKeyboard.Styles 2.0
+    \endcode
 */
 
 void QtVirtualKeyboardStylesPlugin::registerTypes(const char *uri)
