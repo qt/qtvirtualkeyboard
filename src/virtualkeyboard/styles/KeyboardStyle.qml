@@ -39,7 +39,7 @@ import QtQuick 2.0
     the InputPanel to decorate the virtual keyboard.
 
     The design size specifies the aspect ratio of the virtual keyboard.
-    Styles are scalable according to KeyboardStyle.scaleHint, which is
+    Styles are scalable according to \l scaleHint, which is
     calculated from the keyboard's actual height and design height.
 */
 
@@ -166,7 +166,7 @@ QtObject {
     /*! Template for the generic mode key.
 
         This template provides a visualization of the key in which the state
-        can be on / off. This template is used in situations where the key label
+        can be on or off. This template is used in situations where the key label
         will remain the same regardless of status.
 
         The current state is available in the \c control.mode property.

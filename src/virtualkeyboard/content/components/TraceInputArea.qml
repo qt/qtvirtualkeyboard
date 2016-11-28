@@ -42,8 +42,9 @@ import QtQuick.VirtualKeyboard 2.1
 
     This type handles the trace interaction between the touch screen and the input engine.
 
-    The traces are rendered using the delegate from the current style
-    \l {KeyboardStyle::traceCanvasDelegate} {KeyboardStyle.traceCanvasDelegate}.
+    The traces are rendered using the delegate from the
+    \l {KeyboardStyle::}{traceCanvasDelegate} property of the current
+    \l KeyboardStyle.
 */
 
 MultiPointTouchArea {
@@ -59,7 +60,7 @@ MultiPointTouchArea {
 
         The rulers are defined as a number of pixels from the top edge of the boundingBox.
 
-        Here is an example how to define rulers:
+        Here is an example that demonstrates how to define rulers:
 
         \code
             horizontalRulers: [boundingBox.height / 3, boundingBox.height / 3 * 2]
@@ -89,8 +90,8 @@ MultiPointTouchArea {
     /*! Canvas type of this trace input area.
 
         This property can be used to distinguish between different types of canvases.
-        For example, in full screen handwriting mode this property is set to "fullscreen", and
-        in keyboard handwriting mode this property is set to "keyboard".
+        For example, in full screen handwriting mode this property is set to \c "fullscreen", and
+        in keyboard handwriting mode this property is set to \c "keyboard".
     */
     property string canvasType
 

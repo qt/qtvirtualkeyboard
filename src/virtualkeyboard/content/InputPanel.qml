@@ -38,9 +38,9 @@ import QtQuick.VirtualKeyboard 2.1
     \ingroup qtvirtualkeyboard-qml
 
     The keyboard size is automatically calculated from the available
-    width, i.e. the keyboard maintains the aspect ratio specified by the current
-    style. Therefore the application should only set the \c width and \c y
-    coordinates of the InputPanel, and not the height.
+    width; that is, the keyboard maintains the aspect ratio specified by the current
+    style. Therefore the application should only set the \l {Item::}{width} and \l {Item::}{y}
+    coordinates of the InputPanel, and not the \l {Item::}{height}.
 */
 
 Item {
