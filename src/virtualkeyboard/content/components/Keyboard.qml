@@ -71,6 +71,7 @@ Item {
     property bool inputMethodNeedsReset: true
     property bool inputModeNeedsReset: true
     property bool navigationModeActive: false
+    readonly property bool languagePopupListActive: languagePopupList.enabled
     property alias soundEffect: soundEffect
 
     function initDefaultInputMethod() {
@@ -83,6 +84,7 @@ Item {
     width: keyboardBackground.width
     height: wordCandidateView.height + keyboardBackground.height
     onActiveChanged: {
+        hideLanguagePopup()
         keyboardInputArea.reset()
     }
     onActiveKeyChanged: {
@@ -101,7 +103,10 @@ Item {
                 localeIndex = defaultLocaleIndex
         }
     }
+    onAvailableLocaleIndicesChanged: hideLanguagePopup()
+    onAvailableCustomLocaleIndicesChanged: hideLanguagePopup()
     onLocaleChanged: {
+        hideLanguagePopup()
         inputMethodNeedsReset = true
         inputModeNeedsReset = true
         updateLayout()
@@ -110,6 +115,7 @@ Item {
         if (Qt.locale(inputLocale).name !== "C")
             InputContext.locale = inputLocale
     }
+    onLayoutChanged: hideLanguagePopup()
     onLayoutTypeChanged: {
         updateAvailableLocaleIndices()
         updateLayout()
@@ -127,9 +133,14 @@ Item {
     }
     onHandwritingModeChanged: if (!keyboard.handwritingMode) keyboard.fullScreenHandwritingMode = false
     onFullScreenHandwritingModeChanged: if (keyboard.fullScreenHandwritingMode) keyboard.handwritingMode = true
+    onLanguagePopupListActiveChanged: {
+        if (languagePopupListActive && navigationModeActive)
+            keyboardInputArea.initialKey = null
+    }
 
     Connections {
         target: InputContext
+        onInputItemChanged: keyboard.hideLanguagePopup()
         onFocusChanged: {
             if (InputContext.focus)
                 updateInputMethod()
@@ -143,6 +154,12 @@ Item {
             switch (key) {
             case Qt.Key_Left:
                 if (keyboard.navigationModeActive && !keyboardInputArea.initialKey) {
+                    if (languagePopupListActive) {
+                        hideLanguagePopup()
+                        keyboardInputArea.setActiveKey(null)
+                        keyboardInputArea.navigateToNextKey(0, 0, false)
+                        break
+                    }
                     if (alternativeKeys.active) {
                         if (alternativeKeys.listView.currentIndex > 0) {
                             alternativeKeys.listView.decrementCurrentIndex()
@@ -185,7 +202,17 @@ Item {
                 }
                 break
             case Qt.Key_Up:
-                if (alternativeKeys.active) {
+                if (languagePopupListActive) {
+                    if (languagePopupList.currentIndex > 0) {
+                        languagePopupList.decrementCurrentIndex()
+                    } else if (languagePopupList.keyNavigationWraps) {
+                        languagePopupList.currentIndex = languagePopupList.count - 1
+                    } else {
+                        hideLanguagePopup()
+                        keyboardInputArea.setActiveKey(null)
+                        keyboardInputArea.navigateToNextKey(0, 0, false)
+                    }
+                } else if (alternativeKeys.active) {
                     alternativeKeys.close()
                     keyboardInputArea.setActiveKey(null)
                     keyboardInputArea.navigateToNextKey(0, 0, false)
@@ -205,6 +232,12 @@ Item {
                 break
             case Qt.Key_Right:
                 if (keyboard.navigationModeActive && !keyboardInputArea.initialKey) {
+                    if (languagePopupListActive) {
+                        hideLanguagePopup()
+                        keyboardInputArea.setActiveKey(null)
+                        keyboardInputArea.navigateToNextKey(0, 0, false)
+                        break
+                    }
                     if (alternativeKeys.active) {
                         if (alternativeKeys.listView.currentIndex + 1 < alternativeKeys.listView.count) {
                             alternativeKeys.listView.incrementCurrentIndex()
@@ -247,7 +280,17 @@ Item {
                 }
                 break
             case Qt.Key_Down:
-                if (alternativeKeys.active) {
+                if (languagePopupListActive) {
+                    if (languagePopupList.currentIndex + 1 < languagePopupList.count) {
+                        languagePopupList.incrementCurrentIndex()
+                    } else if (languagePopupList.keyNavigationWraps) {
+                        languagePopupList.currentIndex = 0
+                    } else {
+                        hideLanguagePopup()
+                        keyboardInputArea.setActiveKey(null)
+                        keyboardInputArea.navigateToNextKey(0, 0, false)
+                    }
+                } else if (alternativeKeys.active) {
                     alternativeKeys.close()
                     keyboardInputArea.setActiveKey(null)
                     keyboardInputArea.navigateToNextKey(0, 0, false)
@@ -268,7 +311,13 @@ Item {
             case Qt.Key_Return:
                 if (!keyboard.navigationModeActive)
                     break
-                if (alternativeKeys.active) {
+                if (languagePopupListActive) {
+                    if (!isAutoRepeat) {
+                        languagePopupList.model.selectItem(languagePopupList.currentIndex)
+                        keyboardInputArea.reset()
+                        keyboardInputArea.navigateToNextKey(0, 0, false)
+                    }
+                } else if (alternativeKeys.active) {
                     if (!isAutoRepeat) {
                         alternativeKeys.clicked()
                         keyboardInputArea.reset()
@@ -293,14 +342,17 @@ Item {
         onNavigationKeyReleased: {
             switch (key) {
             case Qt.Key_Return:
-                if (!keyboard.navigationModeActive)
+                if (!keyboard.navigationModeActive) {
+                    if (languagePopupListActive)
+                        languagePopupList.model.selectItem(languagePopupList.currentIndex)
                     break
-                if (!alternativeKeys.active && keyboard.activeKey && !isAutoRepeat) {
+                }
+                if (!languagePopupListActive && !alternativeKeys.active && keyboard.activeKey && !isAutoRepeat) {
                     keyboardInputArea.release(keyboard.activeKey)
                     pressAndHoldTimer.stop()
                     alternativeKeys.close()
                     keyboardInputArea.setActiveKey(null)
-                    if (keyboardInputArea.navigationCursor !== Qt.point(-1, -1))
+                    if (!languagePopupListActive && keyboardInputArea.navigationCursor !== Qt.point(-1, -1))
                         keyboardInputArea.navigateToNextKey(0, 0, false)
                 }
                 break
@@ -403,17 +455,29 @@ Item {
                                            keyboard.y + characterPreview.y,
                                            characterPreview.width,
                                            characterPreview.height)
-        onVisibleChanged: {
-            if (visible)
-                InputContext.previewRectangle = Qt.binding(function() {return previewRect})
-            InputContext.previewVisible = visible
-        }
     }
     Binding {
         target: InputContext
         property: "keyboardRectangle"
         value: Qt.rect(keyboard.x, keyboard.y, keyboard.width, keyboard.height)
         when: keyboard.active && !InputContext.animating
+    }
+    Binding {
+        target: InputContext
+        property: "previewRectangle"
+        value: characterPreview.previewRect
+        when: characterPreview.visible
+    }
+    Binding {
+        target: InputContext
+        property: "previewRectangle"
+        value: languagePopupList.previewRect
+        when: languagePopupListActive
+    }
+    Binding {
+        target: InputContext
+        property: "previewVisible"
+        value: characterPreview.visible || languagePopupListActive
     }
     Loader {
         id: styleLoader
@@ -431,6 +495,8 @@ Item {
             if (keyboard.navigationModeActive) {
                 if (keyboardInputArea.initialKey) {
                     return keyboardInputArea.initialKey
+                } else if (languagePopupListActive) {
+                    return languagePopupList.highlightItem
                 } else if (alternativeKeys.listView.count > 0) {
                     return alternativeKeys.listView.highlightItem
                 } else if (wordCandidateView.count > 0) {
@@ -843,6 +909,80 @@ Item {
         }
     }
 
+    Item {
+        z: 1
+        anchors.fill: parent
+
+        MouseArea {
+            onPressed: keyboard.hideLanguagePopup()
+            anchors.fill: parent
+            enabled: languagePopupList.enabled
+        }
+
+        LanguagePopupList {
+            id: languagePopupList
+            z: 2
+            anchors.left: parent.left
+            anchors.top: parent.top
+            enabled: false
+            model: languageListModel
+            property rect previewRect: Qt.rect(keyboard.x + languagePopupList.x,
+                                               keyboard.y + languagePopupList.y,
+                                               languagePopupList.width,
+                                               languagePopupList.height)
+        }
+
+        ListModel {
+            id: languageListModel
+
+            function selectItem(index) {
+                languagePopupList.currentIndex = index
+                keyboard.soundEffect.play(languagePopupList.currentItem.soundEffect)
+                changeLanguageTimer.newLocaleIndex = languageListModel.get(index).localeIndex
+                changeLanguageTimer.start()
+            }
+        }
+
+        Timer {
+            id: changeLanguageTimer
+            interval: 1
+            property int newLocaleIndex
+            onTriggered: {
+                if (languagePopupListActive) {
+                    hideLanguagePopup()
+                    start()
+                } else {
+                    localeIndex = newLocaleIndex
+                }
+            }
+        }
+    }
+
+    function showLanguagePopup(parentItem, customLayoutsOnly) {
+        if (!languagePopupList.enabled) {
+            var locales = keyboard.listLocales(customLayoutsOnly)
+            languageListModel.clear()
+            for (var i = 0; i < locales.length; i++) {
+                languageListModel.append({localeName: locales[i].name, displayName: locales[i].locale.nativeLanguageName, localeIndex: locales[i].index})
+                if (locales[i].index === keyboard.localeIndex)
+                    languagePopupList.currentIndex = i
+            }
+            languagePopupList.positionViewAtIndex(languagePopupList.currentIndex, ListView.Center)
+            languagePopupList.anchors.leftMargin = Qt.binding(function() {return Math.round(keyboard.mapFromItem(parentItem, (parentItem.width - languagePopupList.width) / 2, 0).x)})
+            languagePopupList.anchors.topMargin = Qt.binding(function() {return Math.round(keyboard.mapFromItem(parentItem, 0, -languagePopupList.height).y)})
+        }
+        languagePopupList.enabled = true
+    }
+
+    function hideLanguagePopup() {
+        if (languagePopupList.enabled) {
+            languagePopupList.enabled = false
+            languagePopupList.anchors.leftMargin = undefined
+            languagePopupList.anchors.topMargin = undefined
+            languageListModel.clear()
+        }
+    }
+
     function updateInputMethod() {
         if (!keyboardLayoutLoader.item)
             return
@@ -1014,6 +1154,16 @@ Item {
                 newIndices.push(availableLocaleIndices[i])
         }
         availableCustomLocaleIndices = newIndices
+    }
+
+    function listLocales(customLayoutsOnly) {
+        var locales = []
+        var localeIndices = customLayoutsOnly ? availableCustomLocaleIndices : availableLocaleIndices
+        for (var i = 0; i < localeIndices.length; i++) {
+            var layoutFolder = layoutsModel.get(localeIndices[i], "fileName")
+            locales.push({locale:Qt.locale(layoutFolder), index:localeIndices[i], name:layoutFolder})
+        }
+        return locales
     }
 
     function nextLocaleIndex(customLayoutsOnly) {

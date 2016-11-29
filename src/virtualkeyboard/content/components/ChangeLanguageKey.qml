@@ -28,6 +28,8 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtQuick.VirtualKeyboard 2.1
+import QtQuick.VirtualKeyboard.Styles 2.1
 
 /*!
     \qmltype ChangeLanguageKey
@@ -37,8 +39,17 @@ import QtQuick 2.0
 
     \brief Change language key for keyboard layouts.
 
-    Changes the current input language to the next one in the list of supported
-    languages.
+    This key changes the current input language in the list of supported
+    languages. The key has two function modes:
+
+    \list
+        \li Popup mode
+        \li Toggle mode
+    \endlist
+
+    The popup mode is enabled by \l {KeyboardStyle.languagePopupListEnabled} property.
+    If enabled, a key press will open a popup list with available languages. Otherwise
+    it will cycle to the next available input language.
 */
 
 BaseKey {
@@ -53,9 +64,16 @@ BaseKey {
     */
     property bool customLayoutsOnly: false
 
+    id: changeLanguageKey
+    objectName: "changeLanguageKey"
     functionKey: true
     displayText: keyboard.locale.split("_")[0]
     keyPanelDelegate: keyboard.style ? keyboard.style.languageKeyPanel : undefined
-    onClicked: keyboard.changeInputLanguage(customLayoutsOnly)
+    onClicked: {
+        if (keyboard.style.languagePopupListEnabled)
+            keyboard.showLanguagePopup(changeLanguageKey, customLayoutsOnly)
+        else
+            keyboard.changeInputLanguage(customLayoutsOnly)
+    }
     enabled: keyboard.canChangeInputLanguage(customLayoutsOnly)
 }

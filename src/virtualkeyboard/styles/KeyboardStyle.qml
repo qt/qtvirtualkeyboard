@@ -236,7 +236,7 @@ QtObject {
 
     /*! Template for the alternative keys list item.
 
-        \note The delegate is used as \c ListView.delegate.
+        \note The delegate is used in a \l ListView.
     */
     property Component alternateKeysListDelegate: null
 
@@ -254,8 +254,8 @@ QtObject {
 
     /*! Template for the selection list item.
 
-        \note The delegate is used as \c ListView.delegate.
-        \note The delegate must be based on the SelectionListItem type.
+        \note The delegate is used in a \l ListView.
+        \note The delegate must be based on the \l SelectionListItem type.
 
         The following properties are available to the item:
         \list
@@ -323,8 +323,8 @@ QtObject {
 
         Template for the popup list item.
 
-        \note The delegate is used as \c ListView.delegate.
-        \note The delegate must be based on the SelectionListItem type.
+        \note The delegate is used in a \l ListView.
+        \note The delegate must be based on the \l SelectionListItem type.
 
         The following properties are available to the item:
         \list
@@ -361,6 +361,59 @@ QtObject {
         are removed from the popup list view.
     */
     property Transition popupListRemove
+
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
+
+        This property determines whether a popup list will be shown when the
+        language key is clicked. If this property is \c false, clicking the
+        language key cycles through the available languages one at a time.
+
+        The default value is \c false.
+    */
+    property bool languagePopupListEnabled: false
+
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
+
+        Template for the language list item.
+
+        \note The delegate is used in a \l ListView.
+        \note The delegate must be based on the \l SelectionListItem type.
+
+        The following properties are available to the item:
+        \list
+            \li \c display Display text for the current item.
+            \li \c wordCompletionLength Word completion length measured from the end of the display text.
+        \endlist
+    */
+    property Component languageListDelegate: null
+
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
+
+        Template for the language list highlight.
+
+        \note The delegate is used as \c ListView.highlight.
+    */
+    property Component languageListHighlight: null
+
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
+
+        Template for the language list background.
+    */
+    property Component languageListBackground: null
+
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
+
+        This property holds the transition to apply to items that
+        are added to the language list view.
+    */
+    property Transition languageListAdd
+
+    /*! \since QtQuick.VirtualKeyboard.Styles 2.1
+
+        This property holds the transition to apply to items that
+        are removed from the language list view.
+    */
+    property Transition languageListRemove
 
     /*!
         \since QtQuick.VirtualKeyboard.Styles 2.1

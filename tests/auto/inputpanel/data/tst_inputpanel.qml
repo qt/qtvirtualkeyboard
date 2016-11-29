@@ -1461,5 +1461,90 @@ Rectangle {
                 compare(anchorHandlePointsTo.y, anchorRect.y + anchorRect.height)
             }
         }
+
+        function test_languagePopupListToggle() {
+            prepareTest()
+            if (inputPanel.availableLocales.length < 2)
+                skip("Input language can not be changed")
+            var changeLanguageKey = inputPanel.findObjectByName("changeLanguageKey")
+            var languagePopupList = inputPanel.findObjectByName("languagePopupList")
+            inputPanel.virtualKeyClick(changeLanguageKey)
+            compare(languagePopupList.visible, true)
+            inputPanel.virtualKeyClick(changeLanguageKey)
+            compare(languagePopupList.visible, false)
+        }
+
+        function test_languagePopupListHideOnFocusChange() {
+            prepareTest()
+            if (inputPanel.availableLocales.length < 2)
+                skip("Input language can not be changed")
+            var changeLanguageKey = inputPanel.findObjectByName("changeLanguageKey")
+            var languagePopupList = inputPanel.findObjectByName("languagePopupList")
+            inputPanel.virtualKeyClick(changeLanguageKey)
+            compare(languagePopupList.visible, true)
+            container.forceActiveFocus()
+            textInput.forceActiveFocus()
+            compare(languagePopupList.visible, false)
+        }
+
+        function test_languagePopupListHideOnKeyboardHide() {
+            prepareTest()
+            if (inputPanel.availableLocales.length < 2)
+                skip("Input language can not be changed")
+            var changeLanguageKey = inputPanel.findObjectByName("changeLanguageKey")
+            var languagePopupList = inputPanel.findObjectByName("languagePopupList")
+            inputPanel.virtualKeyClick(changeLanguageKey)
+            compare(languagePopupList.visible, true)
+            Qt.inputMethod.hide()
+            Qt.inputMethod.show()
+            compare(languagePopupList.visible, false)
+        }
+
+        function test_languagePopupListActiveLocales_data() {
+            return [
+                { activeLocales: ["fi_FI"], initLocale: "fi_FI", languagePopupVisible: false },
+                { activeLocales: ["en_GB", "fi_FI", "ar_AR"], selectLocale: "ar_AR", languagePopupVisible: true },
+            ]
+        }
+
+        function test_languagePopupListActiveLocales(data) {
+            prepareTest(data)
+
+            for (var i = 0; i < data.activeLocales.length; ++i) {
+                if (!inputPanel.isLocaleSupported(data.activeLocales[i])) {
+                    expectFail("", "Input locale not available (%1)".arg(data.activeLocales[i]))
+                    break
+                }
+            }
+
+            var changeLanguageKey = inputPanel.findObjectByName("changeLanguageKey")
+            var languagePopupList = inputPanel.findObjectByName("languagePopupList")
+            inputPanel.virtualKeyClick(changeLanguageKey)
+
+            compare(languagePopupList.visible, data.languagePopupVisible)
+            if (!data.languagePopupVisible)
+                return
+
+            compare(data.activeLocales.length, languagePopupList.model.count)
+            for (i = 0; i < languagePopupList.model.count; ++i) {
+                verify(data.activeLocales.indexOf(languagePopupList.model.get(i).localeName) !== -1)
+            }
+
+            if (data.hasOwnProperty("selectLocale")) {
+                for (i = 0; i < languagePopupList.model.count; ++i) {
+                    if (languagePopupList.model.get(i).localeName === data.selectLocale) {
+                        inputPanel.keyboardLayoutLoaderItemSpy.clear()
+                        languagePopupList.model.selectItem(i)
+                        inputPanel.keyboardLayoutLoaderItemSpy.wait()
+                        break
+                    }
+                }
+                compare(inputPanel.locale, data.selectLocale, "Language popup select %1".arg(data.selectLocale))
+            } else {
+                inputPanel.virtualKeyClick(changeLanguageKey)
+            }
+
+            compare(languagePopupList.visible, false)
+        }
     }
 }

@@ -258,8 +258,12 @@ InputPanel {
         return Utils.findChildByProperty(keyboardLayoutLoader, "effectiveAlternativeKeys", key, function(propertyValue, key) { return propertyValue.indexOf(key) !== -1 })
     }
 
+    function findObjectByName(objectName) {
+        return Utils.findChildByProperty(keyboard, "objectName", objectName, null)
+    }
+
     function virtualKeyPressOnCurrentLayout(key) {
-        var keyObj = findVirtualKey(key)
+        var keyObj = typeof key == "object" && key.hasOwnProperty("key") ? key : findVirtualKey(key)
         var alternativeKey = false
         if (!keyObj && typeof key == "string") {
             keyObj = findVirtualKeyAlternative(key)

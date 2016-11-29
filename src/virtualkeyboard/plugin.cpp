@@ -241,6 +241,7 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     qmlRegisterType(QUrl(componentsPath + QLatin1String("TraceInputArea.qml")), pluginUri, 2, 0, "TraceInputArea");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("TraceInputKey.qml")), pluginUri, 2, 0, "TraceInputKey");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("WordCandidatePopupList.qml")), pluginUri, 2, 0, "WordCandidatePopupList");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("LanguagePopupList.qml")), pluginUri, 2, 1, "LanguagePopupList");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("SelectionControl.qml")), pluginUri, 2, 1, "SelectionControl");
 
     if (system.compare(system, QLatin1String(pluginName), Qt::CaseInsensitive) == 0) {

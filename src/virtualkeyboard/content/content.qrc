@@ -27,6 +27,7 @@
         <file>components/TraceInputArea.qml</file>
         <file>components/HandwritingModeKey.qml</file>
         <file>components/WordCandidatePopupList.qml</file>
+        <file>components/LanguagePopupList.qml</file>
         <file>components/SelectionControl.qml</file>
     </qresource>
 </RCC>

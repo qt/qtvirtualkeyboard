@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.7
 import QtQuick.VirtualKeyboard 2.1
 import QtQuick.VirtualKeyboard.Styles 2.1
 
@@ -879,6 +879,74 @@ KeyboardStyle {
     }
 
     popupListRemove: Transition {
+        NumberAnimation { property: "opacity"; to: 0; duration: 200 }
+    }
+
+    languagePopupListEnabled: true
+
+    languageListDelegate: SelectionListItem {
+        id: languageListItem
+        width: languageNameTextMetrics.width * 17
+        height: languageNameTextMetrics.height + languageListLabel.anchors.topMargin + languageListLabel.anchors.bottomMargin
+        Text {
+            id: languageListLabel
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.leftMargin: languageNameTextMetrics.height / 2
+            anchors.rightMargin: anchors.leftMargin
+            anchors.topMargin: languageNameTextMetrics.height / 3
+            anchors.bottomMargin: anchors.topMargin
+            text: languageNameFormatter.elidedText
+            color: "#5CAA15"
+            font {
+                family: fontFamily
+                weight: Font.Normal
+                pixelSize: 44 * scaleHint
+            }
+        }
+        TextMetrics {
+            id: languageNameTextMetrics
+            font {
+                family: fontFamily
+                weight: Font.Normal
+                pixelSize: 44 * scaleHint
+            }
+            text: "X"
+        }
+        TextMetrics {
+            id: languageNameFormatter
+            font {
+                family: fontFamily
+                weight: Font.Normal
+                pixelSize: 44 * scaleHint
+            }
+            elide: Text.ElideRight
+            elideWidth: languageListItem.width - languageListLabel.anchors.leftMargin - languageListLabel.anchors.rightMargin
+            text: displayName
+        }
+        states: State {
+            name: "current"
+            when: languageListItem.ListView.isCurrentItem
+            PropertyChanges {
+                target: languageListLabel
+                color: "black"
+            }
+        }
+    }
+
+    languageListBackground: Rectangle {
+        color: "white"
+        border {
+            width: 1
+            color: "#929495"
+        }
+    }
+
+    languageListAdd: Transition {
+        NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 200 }
+    }
+
+    languageListRemove: Transition {
         NumberAnimation { property: "opacity"; to: 0; duration: 200 }
     }
 
