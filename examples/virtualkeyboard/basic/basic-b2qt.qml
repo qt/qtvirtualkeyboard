@@ -122,6 +122,7 @@ Item {
                 }
             }
             transitions: Transition {
+                id: inputPanelTransition
                 from: ""
                 to: "visible"
                 reversible: true
@@ -132,6 +133,11 @@ Item {
                         easing.type: Easing.InOutQuad
                     }
                 }
+            }
+            Binding {
+                target: InputContext
+                property: "animating"
+                value: inputPanelTransition.running
             }
             AutoScroller {}
         }

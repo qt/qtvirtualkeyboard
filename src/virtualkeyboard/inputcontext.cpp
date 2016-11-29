@@ -350,6 +350,7 @@ void InputContext::setAnimating(bool animating)
 {
     Q_D(InputContext);
     if (d->animating != animating) {
+        VIRTUALKEYBOARD_DEBUG() << "InputContext::setAnimating():" << animating;
         d->animating = animating;
         emit animatingChanged();
         d->inputContext->emitAnimatingChanged();
@@ -657,6 +658,10 @@ void InputContext::update(Qt::InputMethodQueries queries)
 {
     Q_D(InputContext);
     Q_UNUSED(queries);
+
+    // No need to fetch input clip rectangle during animation
+    if (!(queries & ~Qt::ImInputItemClipRectangle) && d->animating)
+        return;
 
     // fetch
     QInputMethodQueryEvent imQueryEvent(Qt::InputMethodQueries(Qt::ImHints |
