@@ -4,8 +4,8 @@ CONFIG -= qt
 CONFIG += exceptions
 CONFIG += warn_off
 
-qtConfig(debug_and_release): CONFIG += debug_and_release
-qtConfig(build_all): CONFIG += build_all
+contains(QT_CONFIG, debug_and_release): CONFIG += debug_and_release
+contains(QT_CONFIG, build_all): CONFIG += build_all
 
 INCLUDEPATH += $$PWD/include
 
