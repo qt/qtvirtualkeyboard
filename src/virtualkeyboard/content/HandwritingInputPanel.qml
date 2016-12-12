@@ -42,23 +42,23 @@ import QtQuick.VirtualKeyboard 2.1
     The HandwritingInputPanel is an add-on component for the InputPanel, which
     enables full-screen handwriting input for the application.
 
-    HandwritingInputPanel is designed to be anchored to full screen alongside
+    HandwritingInputPanel is designed to be anchored full screen alongside
     the InputPanel. The operating principle is that when the handwriting panel
     is "available", the InputPanel is invisible. This functionality is built-in,
-    and requires no more than a reference to InputPanel instance.
+    and requires no more than a reference to the InputPanel instance.
 
-    The panel is set into operation by setting the \l {HandwritingInputPanel::available} {HandwritingInputPanel.available}
-    property to true. When the panel is in operation, the keyboard remains hidden
-    when the input focus is set. When the available is true, handwriting input is
-    activated by setting the \l {HandwritingInputPanel::active} {HandwritingInputPanel.active} property to true.
+    The panel is set into operation by setting the \l {HandwritingInputPanel::}{available}
+    property to \c true. When the panel is in operation, the keyboard remains hidden
+    when the input focus is set. When \c available is \c true, handwriting input is
+    activated by setting the \l {HandwritingInputPanel::}{active} property to \c true.
 
     The user interface, which provides controls for handwriting mode and the
-    visibility of the keyboard, is application specific. One suggested implementation
-    is to use a floating button on the handwriting panel where single click toggles
-    the handwriting mode (changes the \l {HandwritingInputPanel::active} {active}  property), and double-click toggles
-    the visibility of the keyboard (changes the \l {HandwritingInputPanel::available} {available} property).
+    visibility of the keyboard, is application-specific. One suggested implementation
+    is to use a floating button on the handwriting panel, where single click toggles
+    the handwriting mode (changes the \l {HandwritingInputPanel::}{active} property), and double-click toggles
+    the visibility of the keyboard (changes the \l {HandwritingInputPanel::}{available} property).
 
-    HandwritingInputPanel also provides word candidate popup which allows the user
+    HandwritingInputPanel also provides a word candidate popup which allows the user
     to select an alternative word candidate from the list of suggestions generated
     by the handwriting input method.
 */
@@ -74,15 +74,15 @@ Item {
 
     /*! This property controls the availability status of the handwriting input method.
 
-        Setting the property to true prepares the handwriting input method and inhibits
+        Setting the property to \c true prepares the handwriting input method and inhibits
         the display of keyboard.
     */
     property bool available
 
     /*! This property controls the active status of the handwriting input method.
 
-        Setting the property to true activates the handwriting input method. When the
-        handwriting input method is active, all the touch input is captured by the
+        Setting the property to \c true activates the handwriting input method. When the
+        handwriting input method is active, all touch input is captured by the
         handwriting input panel and redirected to input engine for processing.
     */
     property bool active

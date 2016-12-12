@@ -51,6 +51,7 @@ class InputContext : public QObject
     Q_PROPERTY(bool focus READ focus NOTIFY focusChanged)
     Q_PROPERTY(bool shift READ shift WRITE setShift NOTIFY shiftChanged)
     Q_PROPERTY(bool capsLock READ capsLock WRITE setCapsLock NOTIFY capsLockChanged)
+    Q_PROPERTY(bool uppercase READ uppercase NOTIFY uppercaseChanged)
     Q_PROPERTY(int cursorPosition READ cursorPosition NOTIFY cursorPositionChanged)
     Q_PROPERTY(Qt::InputMethodHints inputMethodHints READ inputMethodHints NOTIFY inputMethodHintsChanged)
     Q_PROPERTY(QString preeditText READ preeditText WRITE setPreeditText NOTIFY preeditTextChanged)
@@ -79,6 +80,7 @@ public:
     void setShift(bool enable);
     bool capsLock() const;
     void setCapsLock(bool enable);
+    bool uppercase() const;
     int cursorPosition() const;
     Qt::InputMethodHints inputMethodHints() const;
     QString preeditText() const;
@@ -130,6 +132,7 @@ signals:
     void cursorRectangleChanged();
     void shiftChanged();
     void capsLockChanged();
+    void uppercaseChanged();
     void keyboardRectangleChanged();
     void previewRectangleChanged();
     void previewVisibleChanged();

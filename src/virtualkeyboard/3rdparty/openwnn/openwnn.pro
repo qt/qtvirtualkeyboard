@@ -4,9 +4,8 @@ VERSION = 1.3.6
 CONFIG += static
 CONFIG += warn_off
 
-INCLUDEPATH += \
-    wnnDictionary/include \
-    wnnEngine/include
+MODULE_INCLUDEPATH = $$PWD/wnnEngine/include
+INCLUDEPATH += wnnDictionary/include
 
 SOURCES += \
     wnnDictionary/engine/ndapi.c \

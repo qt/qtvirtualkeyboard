@@ -1,6 +1,5 @@
 TARGET = qthunspell
 
-DEFINES += HUNSPELL_STATIC
 CONFIG += static
 CONFIG += precompile_header warn_off
 CONFIG(debug, debug|release) {
@@ -10,9 +9,8 @@ CONFIG(debug, debug|release) {
 config_file = "/* Version number of package */" "$${LITERAL_HASH}define VERSION \"$$VERSION\""
 write_file($$PWD/config.h, config_file)
 
-INCLUDEPATH += \
-    ./ \
-    src/hunspell
+MODULE_DEFINES += HUNSPELL_STATIC
+MODULE_INCLUDEPATH = $$PWD/src/hunspell
 
 SOURCES += \
     src/hunspell/affentry.cxx \

@@ -38,19 +38,21 @@ import QtQuick.VirtualKeyboard 2.1
     \ingroup qtvirtualkeyboard-qml
 
     The keyboard size is automatically calculated from the available
-    width, i.e. the keyboard maintains the aspect ratio specified by the current
-    style. Therefore the application should only set the \c width and \c y
-    coordinates of the InputPanel, and not the height.
+    width; that is, the keyboard maintains the aspect ratio specified by the current
+    style. Therefore the application should only set the \l {Item::}{width} and \l {Item::}{y}
+    coordinates of the InputPanel, and not the \l {Item::}{height}.
 */
 
 Item {
     id: inputPanel
 
-    /*! \qmlproperty bool Active state of the input panel
+    /*!
+        \qmlproperty bool InputPanel::active
         \since QtQuick.VirtualKeyboard 2.0
 
         This property reflects the active status of the input panel.
-        The keyboard should be made visible to user when the active is true.
+        The keyboard should be made visible to the user when this property is
+        \c true.
     */
     property alias active: keyboard.active
 

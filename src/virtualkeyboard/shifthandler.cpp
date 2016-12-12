@@ -79,8 +79,10 @@ public:
 
 /*!
     \class QtVirtualKeyboard::ShiftHandler
-    \inmodule InputFramework
+    \inmodule QtVirtualKeyboard
     \brief Manages the shift state.
+
+    \internal
 */
 
 ShiftHandler::ShiftHandler(InputContext *parent) :
@@ -215,10 +217,13 @@ void ShiftHandler::reset()
             autoCapitalizationEnabled = false;
             toggleShiftEnabled = false;
         }
-        d->inputContext->setShift(preferUpperCase);
-        d->inputContext->setCapsLock(preferUpperCase);
         setToggleShiftEnabled(toggleShiftEnabled);
         setAutoCapitalizationEnabled(autoCapitalizationEnabled);
+        d->inputContext->setCapsLock(preferUpperCase);
+        if (preferUpperCase)
+            d->inputContext->setShift(preferUpperCase);
+        else
+            autoCapitalize();
     }
 }
 
@@ -251,7 +256,6 @@ void ShiftHandler::autoCapitalize()
 void ShiftHandler::restart()
 {
     reset();
-    autoCapitalize();
 }
 
 void ShiftHandler::shiftChanged()

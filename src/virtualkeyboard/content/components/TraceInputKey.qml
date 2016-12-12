@@ -65,7 +65,7 @@ Item {
 
         The rulers are defined as a number of pixels from the top edge of the bounding box.
 
-        Here is an example how to define rulers:
+        Here is an example that demonstrates how to define rulers:
 
         \code
             horizontalRulers: [boundingBox.height / 3, boundingBox.height / 3 * 2]
@@ -90,7 +90,7 @@ Item {
     /*! Canvas type of this trace input area.
 
         This property can be used to distinguish between different types of canvases.
-        The default value is "keyboard".
+        The default value is \c "keyboard".
     */
     property alias canvasType: traceInputArea.canvasType
 
