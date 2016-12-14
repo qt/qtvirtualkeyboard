@@ -164,7 +164,8 @@ t9write: LAYOUT_FILES += \
 contains(CONFIG, lang-ro.*) {
     LAYOUT_FILES += \
         content/layouts/ro_RO/main.qml \
-        content/layouts/ro_RO/symbols.qml \
+        content/layouts/ro_RO/symbols.qml
+t9write: LAYOUT_FILES += \
         content/layouts/ro_RO/handwriting.qml
 }
 contains(CONFIG, lang-ru.*) {
