@@ -319,6 +319,10 @@ lipi-toolkit {
     win32: LIBS += Advapi32.lib
     else: LIBS += -ldl
     record-trace-input: DEFINES += QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
+    ltk_projects.files = $$PWD/3rdparty/lipi-toolkit/projects
+    ltk_projects.path = $$[QT_INSTALL_DATA]/qtvirtualkeyboard/lipi_toolkit
+    INSTALLS += ltk_projects
+    !prefix_build: COPIES += ltk_projects
 }
 
 t9write {
