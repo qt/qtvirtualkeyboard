@@ -54,16 +54,16 @@ ListView {
     Binding {
         target: wordCandidatePopupList
         property: "x"
-        value: Qt.inputMethod.cursorRectangle.x -
+        value: Math.round(Qt.inputMethod.cursorRectangle.x -
                (wordCandidatePopupList.currentItem ?
                     (wordCandidatePopupList.currentItem.hasOwnProperty("cursorAnchor") ?
-                         wordCandidatePopupList.currentItem.cursorAnchor : wordCandidatePopupList.currentItem.width) : 0)
+                         wordCandidatePopupList.currentItem.cursorAnchor : wordCandidatePopupList.currentItem.width) : 0))
         when: wordCandidatePopupList.visible
     }
     Binding {
         target: wordCandidatePopupList
         property: "y"
-        value: wordCandidatePopupList.flipVertical ? Qt.inputMethod.cursorRectangle.y - wordCandidatePopupList.height : Qt.inputMethod.cursorRectangle.y + Qt.inputMethod.cursorRectangle.height
+        value: Math.round(wordCandidatePopupList.flipVertical ? Qt.inputMethod.cursorRectangle.y - wordCandidatePopupList.height : Qt.inputMethod.cursorRectangle.y + Qt.inputMethod.cursorRectangle.height)
         when: wordCandidatePopupList.visible
     }
     orientation: ListView.Vertical
