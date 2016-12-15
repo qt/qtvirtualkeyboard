@@ -33,7 +33,7 @@
 #include "trace.h"
 #include "t9writeworker.h"
 #include "virtualkeyboarddebug.h"
-#include "QDirIterator"
+#include <QDirIterator>
 #ifdef QT_VIRTUALKEYBOARD_DEBUG
 #include <QTime>
 #endif

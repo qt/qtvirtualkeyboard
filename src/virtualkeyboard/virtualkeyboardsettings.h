@@ -30,7 +30,7 @@
 #ifndef VIRTUALKEYBOARDSETTINGS_H
 #define VIRTUALKEYBOARDSETTINGS_H
 
-#include "qqml.h"
+#include <qqml.h>
 
 namespace QtVirtualKeyboard {
 
