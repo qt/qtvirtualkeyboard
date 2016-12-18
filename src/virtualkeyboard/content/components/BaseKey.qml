@@ -204,7 +204,7 @@ Item {
 
         By default, this property reflects the uppercase status of the keyboard.
     */
-    property bool uppercased: InputContext.shift && !noModifier
+    property bool uppercased: InputContext.uppercase && !noModifier
 
     /*! Sets the key panel delegate for the key.
 

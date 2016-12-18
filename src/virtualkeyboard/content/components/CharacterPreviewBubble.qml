@@ -45,7 +45,7 @@ Item {
 
     onActiveKeyChanged: {
         if (activeKey && characterPreview.item !== null) {
-            characterPreview.item.text = InputContext.shift ? activeKey.text.toUpperCase() : activeKey.text
+            characterPreview.item.text = InputContext.uppercase ? activeKey.text.toUpperCase() : activeKey.text
             width = activeKey.width
             height = activeKey.height
             var position = keyboard.mapFromItem(activeKey, 0, 0)

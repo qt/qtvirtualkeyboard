@@ -85,7 +85,7 @@ Item {
         if (active && listView.currentIndex >= 0 && listView.currentIndex < listView.model.count) {
             var activeKey = listView.model.get(listView.currentIndex)
             InputContext.inputEngine.virtualKeyClick(keyCode, activeKey.text,
-                                                     InputContext.shift ? Qt.ShiftModifier : 0)
+                                                     InputContext.uppercase ? Qt.ShiftModifier : 0)
         }
     }
 
@@ -94,7 +94,7 @@ Item {
         var alternativeKeys = key.effectiveAlternativeKeys
         if (alternativeKeys.length > 0) {
             for (var i = 0; i < alternativeKeys.length; i++) {
-                listModel.append({ "text": InputContext.shift ? alternativeKeys[i].toUpperCase() : alternativeKeys[i] })
+                listModel.append({ "text": InputContext.uppercase ? alternativeKeys[i].toUpperCase() : alternativeKeys[i] })
             }
             listView.width = keyboard.style.alternateKeysListItemWidth * listModel.count
             listView.forceLayout()
