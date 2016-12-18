@@ -48,9 +48,5 @@ BaseKey {
     highlighted: InputContext.capsLock
     functionKey: true
     keyPanelDelegate: keyboard.style ? keyboard.style.shiftKeyPanel : undefined
-    /*! \internal */
-    property bool capsLock: InputContext.capsLock
-    /*! \internal */
-    property bool shift: InputContext.shift
     onClicked: InputContext.shiftHandler.toggleShift()
 }
