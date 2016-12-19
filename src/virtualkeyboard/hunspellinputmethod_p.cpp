@@ -29,7 +29,7 @@
 
 #include "hunspellinputmethod_p.h"
 #include "inputcontext.h"
-#include <hunspell.h>
+#include <hunspell/hunspell.h>
 #include <QStringList>
 #include <QDir>
 #include "virtualkeyboarddebug.h"

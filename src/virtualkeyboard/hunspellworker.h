@@ -35,7 +35,7 @@
 #include <QMutex>
 #include <QStringList>
 #include <QSharedPointer>
-#include <hunspell.h>
+#include <hunspell/hunspell.h>
 
 QT_BEGIN_NAMESPACE
 class QTextCodec;
