@@ -10,7 +10,7 @@ config_file = "/* Version number of package */" "$${LITERAL_HASH}define VERSION 
 write_file($$PWD/config.h, config_file)
 
 MODULE_DEFINES += HUNSPELL_STATIC
-MODULE_INCLUDEPATH = $$PWD/src/hunspell
+MODULE_INCLUDEPATH = $$PWD/src
 
 SOURCES += \
     src/hunspell/affentry.cxx \
