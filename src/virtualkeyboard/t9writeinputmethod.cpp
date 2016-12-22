@@ -334,6 +334,10 @@ public:
                     symbolCategories.append(DECUMA_CATEGORY_CYRILLIC);
                     break;
 
+                case QLocale::GreekScript:
+                    symbolCategories.append(DECUMA_CATEGORY_GREEK);
+                    break;
+
                 default:
                     qWarning() << "Handwriting input does not support the language" << locale.name();
                     return false;
