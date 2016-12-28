@@ -494,6 +494,29 @@ Rectangle {
             compare(textInput.text, "+")
         }
 
+        function test_symbolModeResetOnHide() {
+            prepareTest()
+
+            verify(inputPanel.keyboard.symbolMode === false)
+            inputPanel.virtualKeyClick(Qt.Key_Context1)
+            waitForRendering(inputPanel)
+            verify(inputPanel.keyboard.symbolMode === true)
+            Qt.inputMethod.hide()
+            Qt.inputMethod.show()
+            verify(inputPanel.keyboard.symbolMode === false)
+        }
+
+        function test_symbolModeResetOnInputItemChange() {
+            prepareTest()
+
+            verify(inputPanel.keyboard.symbolMode === false)
+            inputPanel.virtualKeyClick(Qt.Key_Context1)
+            waitForRendering(inputPanel)
+            verify(inputPanel.keyboard.symbolMode === true)
+            container.forceActiveFocus()
+            verify(inputPanel.keyboard.symbolMode === false)
+        }
+
         function test_themeChange() {
             prepareTest()
 

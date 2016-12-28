@@ -85,6 +85,8 @@ Item {
     height: wordCandidateView.height + keyboardBackground.height
     onActiveChanged: {
         hideLanguagePopup()
+        if (active && symbolMode && !preferNumbers)
+            symbolMode = false
         keyboardInputArea.reset()
     }
     onActiveKeyChanged: {
@@ -140,7 +142,11 @@ Item {
 
     Connections {
         target: InputContext
-        onInputItemChanged: keyboard.hideLanguagePopup()
+        onInputItemChanged: {
+            keyboard.hideLanguagePopup()
+            if (active && symbolMode && !preferNumbers)
+                symbolMode = false
+        }
         onFocusChanged: {
             if (InputContext.focus)
                 updateInputMethod()
