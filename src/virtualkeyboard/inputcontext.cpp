@@ -659,13 +659,16 @@ void InputContext::update(Qt::InputMethodQueries queries)
     Q_UNUSED(queries);
 
     // fetch
-    Qt::InputMethodHints inputMethodHints = Qt::InputMethodHints(d->inputContext->inputMethodQuery(Qt::ImHints).toInt());
-    const int cursorPosition = d->inputContext->inputMethodQuery(Qt::ImCursorPosition).toInt();
-    const int anchorPosition = d->inputContext->inputMethodQuery(Qt::ImAnchorPosition).toInt();
+    QInputMethodQueryEvent imQueryEvent(Qt::InputMethodQueries(Qt::ImHints |
+                    Qt::ImQueryInput | Qt::ImInputItemClipRectangle));
+    d->inputContext->sendEvent(&imQueryEvent);
+    Qt::InputMethodHints inputMethodHints = Qt::InputMethodHints(imQueryEvent.value(Qt::ImHints).toInt());
+    const int cursorPosition = imQueryEvent.value(Qt::ImCursorPosition).toInt();
+    const int anchorPosition = imQueryEvent.value(Qt::ImAnchorPosition).toInt();
     QRectF anchorRectangle = qApp->inputMethod()->anchorRectangle();
     QRectF cursorRectangle = qApp->inputMethod()->cursorRectangle();
-    QString surroundingText = d->inputContext->inputMethodQuery(Qt::ImSurroundingText).toString();
-    QString selectedText = d->inputContext->inputMethodQuery(Qt::ImCurrentSelection).toString();
+    QString surroundingText = imQueryEvent.value(Qt::ImSurroundingText).toString();
+    QString selectedText = imQueryEvent.value(Qt::ImCurrentSelection).toString();
 
     // check against changes
     bool newInputMethodHints = inputMethodHints != d->inputMethodHints;
@@ -677,9 +680,9 @@ void InputContext::update(Qt::InputMethodQueries queries)
     bool selectionControlVisible = d->inputContext->isInputPanelVisible() && (cursorPosition != anchorPosition);
     bool newSelectionControlVisible = selectionControlVisible != d->selectionControlVisible;
 
-    QRectF inputItemClipRect = d->inputContext->inputMethodQuery(Qt::ImInputItemClipRectangle).toRectF();
-    QRectF anchorRect = d->inputContext->inputMethodQuery(Qt::ImAnchorRectangle).toRectF();
-    QRectF cursorRect = d->inputContext->inputMethodQuery(Qt::ImCursorRectangle).toRectF();
+    QRectF inputItemClipRect = imQueryEvent.value(Qt::ImInputItemClipRectangle).toRectF();
+    QRectF anchorRect = imQueryEvent.value(Qt::ImAnchorRectangle).toRectF();
+    QRectF cursorRect = imQueryEvent.value(Qt::ImCursorRectangle).toRectF();
 
     bool anchorRectIntersectsClipRect = inputItemClipRect.intersects(anchorRect);
     bool newAnchorRectIntersectsClipRect = anchorRectIntersectsClipRect != d->anchorRectIntersectsClipRect;
