@@ -90,6 +90,7 @@ class WordCandidateListSettings : public QObject
     Q_OBJECT
     Q_PROPERTY(int autoHideDelay READ autoHideDelay WRITE setAutoHideDelay NOTIFY autoHideDelayChanged)
     Q_PROPERTY(bool alwaysVisible READ alwaysVisible WRITE setAlwaysVisible NOTIFY alwaysVisibleChanged)
+    Q_PROPERTY(bool autoCommitWord READ autoCommitWord WRITE setAutoCommitWord NOTIFY autoCommitWordChanged)
 
     explicit WordCandidateListSettings(QObject *parent = 0);
     friend class VirtualKeyboardSettingsPrivate;
@@ -101,9 +102,13 @@ public:
     bool alwaysVisible() const;
     void setAlwaysVisible(bool alwaysVisible);
 
+    bool autoCommitWord() const;
+    void setAutoCommitWord(bool autoCommitWord);
+
 signals:
     void autoHideDelayChanged();
     void alwaysVisibleChanged();
+    void autoCommitWordChanged();
 };
 
 }

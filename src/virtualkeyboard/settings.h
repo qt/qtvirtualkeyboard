@@ -72,6 +72,9 @@ public:
     bool wclAlwaysVisible() const;
     void setWclAlwaysVisible(bool wclAlwaysVisible);
 
+    bool wclAutoCommitWord() const;
+    void setWclAutoCommitWord(bool wclAutoCommitWord);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -81,6 +84,7 @@ signals:
     void layoutPathChanged();
     void wclAutoHideDelayChanged();
     void wclAlwaysVisibleChanged();
+    void wclAutoCommitWordChanged();
 };
 
 } // namespace QtVirtualKeyboard

@@ -80,6 +80,7 @@ Rectangle {
         function prepareTest(data) {
             inputPanel.setWclAutoHideDelay(data !== undefined && data.hasOwnProperty("wclAutoHideDelay") ? data.wclAutoHideDelay : 5000)
             inputPanel.setWclAlwaysVisible(data !== undefined && data.hasOwnProperty("wclAlwaysVisible") && data.wclAlwaysVisible)
+            inputPanel.setWclAutoCommitWord(data !== undefined && data.hasOwnProperty("wclAutoCommitWord") && data.wclAutoCommitWord)
             container.forceActiveFocus()
             if (data !== undefined && data.hasOwnProperty("initText")) {
                 textInput.text = data.initText
@@ -181,7 +182,8 @@ Rectangle {
                                property var availableLocales: VirtualKeyboardSettings.availableLocales; \
                                property var activeLocales: VirtualKeyboardSettings.activeLocales; \
                                property var wclAutoHideDelay: VirtualKeyboardSettings.wordCandidateList.autoHideDelay; \
-                               property var wclAlwaysVisible: VirtualKeyboardSettings.wordCandidateList.alwaysVisible; }" },
+                               property var wclAlwaysVisible: VirtualKeyboardSettings.wordCandidateList.alwaysVisible; \
+                               property var wclAutoCommitWord: VirtualKeyboardSettings.wordCandidateList.autoCommitWord }" },
             ]
         }
 
@@ -728,10 +730,10 @@ Rectangle {
 
             if (inputPanel.wordCandidateListVisibleHint) {
                 if (data.hasOwnProperty("expectedSuggestion")) {
-                    verify(inputPanel.selectionListSearchSuggestion(data.expectedSuggestion, 1000), "The expected spell correction suggestion \"%1\" was not found".arg(data.expectedSuggestion))
+                    tryVerify(function() {return inputPanel.selectionListSearchSuggestion(data.expectedSuggestion)}, 1000, "The expected spell correction suggestion \"%1\" was not found".arg(data.expectedSuggestion))
                     verify(inputPanel.selectionListSelectCurrentItem(), "Word candidate not selected")
                 } else if (data.hasOwnProperty("unexpectedSuggestion")) {
-                    verify(!inputPanel.selectionListSearchSuggestion(data.unexpectedSuggestion, 1000), "An unexpected spell correction suggestion \"%1\" was found".arg(data.unexpectedSuggestion))
+                    tryVerify(function() {return !inputPanel.selectionListSearchSuggestion(data.unexpectedSuggestion)}, 1000, "An unexpected spell correction suggestion \"%1\" was found".arg(data.unexpectedSuggestion))
                     inputPanel.selectionListSelectCurrentItem()
                 } else {
                     Qt.inputMethod.commit()
@@ -1181,10 +1183,10 @@ Rectangle {
 
             if (inputPanel.wordCandidateListVisibleHint) {
                 if (data.hasOwnProperty("expectedSuggestion")) {
-                    verify(inputPanel.selectionListSearchSuggestion(data.expectedSuggestion, 1000), "The expected spell correction suggestion \"%1\" was not found".arg(data.expectedSuggestion))
+                    tryVerify(function() {return inputPanel.selectionListSearchSuggestion(data.expectedSuggestion)}, 1000, "The expected spell correction suggestion \"%1\" was not found".arg(data.expectedSuggestion))
                     verify(inputPanel.selectionListSelectCurrentItem(), "Word candidate not selected")
                 } else if (data.hasOwnProperty("unexpectedSuggestion")) {
-                    verify(!inputPanel.selectionListSearchSuggestion(data.unexpectedSuggestion, 1000), "An unexpected spell correction suggestion \"%1\" was found".arg(data.unexpectedSuggestion))
+                    tryVerify(function() {return !inputPanel.selectionListSearchSuggestion(data.unexpectedSuggestion)}, 1000, "An unexpected spell correction suggestion \"%1\" was found".arg(data.unexpectedSuggestion))
                     inputPanel.selectionListSelectCurrentItem()
                 } else {
                     Qt.inputMethod.commit()
@@ -1611,6 +1613,40 @@ Rectangle {
                 inputPanel.wordCandidateListVisibleSpy.wait(data.wclAutoHideDelay + 500)
             waitForRendering(inputPanel)
             compare(inputPanel.wordCandidateView.visibleCondition, data.wclAlwaysVisible)
+        }
+
+        function test_wclAutoCommitWordSetting_data() {
+            return [
+                { wclAutoCommitWord: true },
+                { wclAutoCommitWord: false },
+            ]
+        }
+
+        function test_wclAutoCommitWordSetting(data) {
+            prepareTest(data)
+
+            if (!inputPanel.wordCandidateListVisibleHint)
+                skip("Prediction/spell correction not enabled")
+
+            for (var len = 1; len <= 5; ++len) {
+                inputPanel.wordCandidateListChangedSpy.clear()
+                inputPanel.virtualKeyClick("z")
+                waitForRendering(inputPanel)
+                if (len >= 3) {
+                    if (data.wclAutoCommitWord)
+                        tryVerify(function() { return inputPanel.wordCandidateView.model.count === 0 }, 500)
+                    else
+                        wait(500)
+                    if (inputPanel.wordCandidateView.model.count <= 1)
+                        break
+                }
+            }
+            waitForRendering(inputPanel)
+
+            if (data.wclAutoCommitWord)
+                compare(inputPanel.wordCandidateView.model.count, 0)
+            else
+                verify(inputPanel.wordCandidateView.model.count >= 1)
         }
     }
 }

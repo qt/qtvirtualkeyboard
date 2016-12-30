@@ -44,7 +44,8 @@ public:
         activeLocales(),
         layoutPath(),
         wclAutoHideDelay(5000),
-        wclAlwaysVisible(false)
+        wclAlwaysVisible(false),
+        wclAutoCommitWord(false)
     {}
 
     QString style;
@@ -55,6 +56,7 @@ public:
     QUrl layoutPath;
     int wclAutoHideDelay;
     bool wclAlwaysVisible;
+    bool wclAutoCommitWord;
 };
 
 static QScopedPointer<Settings> s_settingsInstance;
@@ -193,6 +195,21 @@ void Settings::setWclAlwaysVisible(bool wclAlwaysVisible)
     if (d->wclAlwaysVisible != wclAlwaysVisible) {
         d->wclAlwaysVisible = wclAlwaysVisible;
         emit wclAlwaysVisibleChanged();
+    }
+}
+
+bool Settings::wclAutoCommitWord() const
+{
+    Q_D(const Settings);
+    return d->wclAutoCommitWord;
+}
+
+void Settings::setWclAutoCommitWord(bool wclAutoCommitWord)
+{
+    Q_D(Settings);
+    if (d->wclAutoCommitWord != wclAutoCommitWord) {
+        d->wclAutoCommitWord = wclAutoCommitWord;
+        emit wclAutoCommitWordChanged();
     }
 }
 

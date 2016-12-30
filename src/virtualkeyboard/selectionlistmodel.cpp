@@ -29,6 +29,7 @@
 
 #include "selectionlistmodel.h"
 #include "abstractinputmethod.h"
+#include "settings.h"
 #include <QtCore/private/qabstractitemmodel_p.h>
 
 namespace QtVirtualKeyboard {
@@ -40,7 +41,8 @@ public:
         QAbstractItemModelPrivate(),
         dataSource(0),
         type(SelectionListModel::WordCandidateList),
-        rowCount(0)
+        rowCount(0),
+        wclAutoCommitWord(false)
     {
     }
 
@@ -48,6 +50,7 @@ public:
     AbstractInputMethod *dataSource;
     SelectionListModel::Type type;
     int rowCount;
+    bool wclAutoCommitWord;
 };
 
 /*!
@@ -258,6 +261,10 @@ void SelectionListModel::selectionListChanged(int type)
             d->rowCount = 0;
             endResetModel();
         }
+        if (type == SelectionListModel::WordCandidateList)
+            d->wclAutoCommitWord = ((oldCount > 1 || (oldCount == 1 && d->wclAutoCommitWord)) && newCount == 1 &&
+                                 Settings::instance()->wclAutoCommitWord() &&
+                                 dataAt(0).toString().length() > 1);
         if (d->rowCount != oldCount)
             emit countChanged();
     }
@@ -269,8 +276,10 @@ void SelectionListModel::selectionListChanged(int type)
 void SelectionListModel::selectionListActiveItemChanged(int type, int index)
 {
     Q_D(SelectionListModel);
-    if (static_cast<Type>(type) == d->type) {
+    if (static_cast<Type>(type) == d->type && index < d->rowCount) {
         emit activeItemChanged(index);
+        if (index == 0 && d->wclAutoCommitWord)
+            selectItem(0);
     }
 }
 

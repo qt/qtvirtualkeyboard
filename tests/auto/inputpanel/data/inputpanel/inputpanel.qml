@@ -222,6 +222,10 @@ InputPanel {
         VirtualKeyboardSettings.wordCandidateList.alwaysVisible = wclAlwaysVisible
     }
 
+    function setWclAutoCommitWord(wclAutoCommitWord) {
+        VirtualKeyboardSettings.wordCandidateList.autoCommitWord = wclAutoCommitWord
+    }
+
     function mapInputMode(inputModeName) {
         if (inputModeName === "Latin")
             return InputEngine.Latin
@@ -479,24 +483,9 @@ InputPanel {
         VirtualKeyboardSettings.styleName = style
     }
 
-    function selectionListSearchSuggestion(suggestion, timeout) {
+    function selectionListSearchSuggestion(suggestion) {
         if (wordCandidateListVisibleHint === false)
             return false
-
-        if (timeout !== undefined && timeout > 0) {
-            // Note: Not using SignalSpy.wait() since it causes the test case to fail in case the signal is not emitted
-            wordCandidateListChangedSpy.clear()
-            var dt = new Date()
-            var startTime = dt.getTime()
-            while (wordCandidateListChangedSpy.count == 0) {
-                dt = new Date()
-                var elapsedTime = dt.getTime() - startTime
-                if (elapsedTime >= timeout)
-                    break
-                var maxWait = Math.min(timeout - elapsedTime, 50)
-                testcase.wait(maxWait)
-            }
-        }
 
         if (inputPanel.wordCandidateView.count === 0)
             return false;

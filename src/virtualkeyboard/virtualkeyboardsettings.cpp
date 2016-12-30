@@ -165,6 +165,7 @@ VirtualKeyboardSettings::VirtualKeyboardSettings(QQmlEngine *engine) :
     connect(settings, SIGNAL(layoutPathChanged()), SIGNAL(layoutPathChanged()));
     connect(settings, SIGNAL(wclAutoHideDelayChanged()), &d->wordCandidateListSettings, SIGNAL(autoHideDelayChanged()));
     connect(settings, SIGNAL(wclAlwaysVisibleChanged()), &d->wordCandidateListSettings, SIGNAL(alwaysVisibleChanged()));
+    connect(settings, SIGNAL(wclAutoCommitWordChanged()), &d->wordCandidateListSettings, SIGNAL(autoCommitWordChanged()));
 }
 
 /*!
@@ -383,6 +384,17 @@ void VirtualKeyboardSettings::resetStyle()
             remain visible.
 
             The default value is \c false.
+    \row
+        \li autoCommitWord
+        \li This property enables the automatic commit feature that is activated
+            when the word candidate list is narrowed down to a single candidate.
+
+            The automatic commit feature takes effect when the word candidate
+            list initially contains multiple words and is reduced to single word
+            after additional input. This word will be selected and committed
+            automatically without user interaction.
+
+            This property is set to \c false by default.
     \endtable
 */
 
@@ -409,6 +421,16 @@ bool WordCandidateListSettings::alwaysVisible() const
 void WordCandidateListSettings::setAlwaysVisible(bool alwaysVisible)
 {
     Settings::instance()->setWclAlwaysVisible(alwaysVisible);
+}
+
+bool WordCandidateListSettings::autoCommitWord() const
+{
+    return Settings::instance()->wclAutoCommitWord();
+}
+
+void WordCandidateListSettings::setAutoCommitWord(bool autoCommitWord)
+{
+    Settings::instance()->setWclAutoCommitWord(autoCommitWord);
 }
 
 } // namespace QtVirtualKeyboard
