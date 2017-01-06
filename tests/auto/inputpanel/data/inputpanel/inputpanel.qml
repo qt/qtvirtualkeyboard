@@ -30,7 +30,7 @@
 import QtTest 1.0
 import QtQuick 2.0
 import QtQuick.VirtualKeyboard 2.1
-import QtQuick.VirtualKeyboard.Settings 2.1
+import QtQuick.VirtualKeyboard.Settings 2.2
 import "handwriting.js" as Handwriting
 import "utils.js" as Utils
 
@@ -83,6 +83,7 @@ InputPanel {
     property alias soundEffectSpy: soundEffectSpy
     property alias inputMethodResultSpy: inputMethodResultSpy
     property alias wordCandidateListChangedSpy: wordCandidateListChangedSpy
+    property alias wordCandidateListVisibleSpy: wordCandidateListVisibleSpy
     property alias shiftStateSpy: shiftStateSpy
 
     signal inputMethodResult(var text)
@@ -164,6 +165,12 @@ InputPanel {
     }
 
     SignalSpy {
+        id: wordCandidateListVisibleSpy
+        target: wordCandidateView
+        signalName: "onVisibleConditionChanged"
+    }
+
+    SignalSpy {
         id: shiftStateSpy
         target: InputContext
         signalName: "onShiftChanged"
@@ -205,6 +212,14 @@ InputPanel {
 
     function setActiveLocales(activeLocales) {
         VirtualKeyboardSettings.activeLocales = activeLocales
+    }
+
+    function setWclAutoHideDelay(wclAutoHideDelay) {
+        VirtualKeyboardSettings.wordCandidateList.autoHideDelay = wclAutoHideDelay
+    }
+
+    function setWclAlwaysVisible(wclAlwaysVisible) {
+        VirtualKeyboardSettings.wordCandidateList.alwaysVisible = wclAlwaysVisible
     }
 
     function mapInputMode(inputModeName) {

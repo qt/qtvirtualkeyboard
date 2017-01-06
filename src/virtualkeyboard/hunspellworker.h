@@ -65,6 +65,10 @@ public:
 
     void run();
 
+signals:
+    void completed(bool success);
+
+public:
     Hunhandle **hunspellPtr;
     const QString locale;
     const QStringList searchPaths;

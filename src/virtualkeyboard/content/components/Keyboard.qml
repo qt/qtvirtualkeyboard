@@ -31,7 +31,7 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.VirtualKeyboard 2.1
 import QtQuick.VirtualKeyboard.Styles 2.1
-import QtQuick.VirtualKeyboard.Settings 2.1
+import QtQuick.VirtualKeyboard.Settings 2.2
 import Qt.labs.folderlistmodel 2.0
 
 Item {
@@ -82,12 +82,13 @@ Item {
     }
 
     width: keyboardBackground.width
-    height: wordCandidateView.height + keyboardBackground.height
+    height: keyboardBackground.height + (VirtualKeyboardSettings.wordCandidateList.alwaysVisible ? wordCandidateView.height : 0)
     onActiveChanged: {
         hideLanguagePopup()
         if (active && symbolMode && !preferNumbers)
             symbolMode = false
         keyboardInputArea.reset()
+        wordCandidateViewAutoHideTimer.stop()
     }
     onActiveKeyChanged: {
         if (InputContext.inputEngine.activeKey !== Qt.Key_unknown)
@@ -465,7 +466,7 @@ Item {
     Binding {
         target: InputContext
         property: "keyboardRectangle"
-        value: Qt.rect(keyboard.x, keyboard.y, keyboard.width, keyboard.height)
+        value: Qt.rect(keyboard.x, keyboard.y + wordCandidateView.currentYOffset, keyboard.width, keyboard.height - wordCandidateView.currentYOffset)
         when: keyboard.active && !InputContext.animating
     }
     Binding {
@@ -544,9 +545,15 @@ Item {
         id: wordCandidateView
         objectName: "wordCandidateView"
         clip: true
+        z: -2
+        property bool empty: true
+        readonly property bool visibleCondition: (((!wordCandidateView.empty || wordCandidateViewAutoHideTimer.running) &&
+                                                   InputContext.inputEngine.wordCandidateListVisibleHint) || VirtualKeyboardSettings.wordCandidateList.alwaysVisible) &&
+                                                 keyboard.active
+        readonly property real visibleYOffset: VirtualKeyboardSettings.wordCandidateList.alwaysVisible ? 0 : -height
+        readonly property real currentYOffset: visibleCondition || wordCandidateViewTransition.running ? visibleYOffset : 0
         height: Math.round(style.selectionListHeight)
         anchors.left: parent.left
-        anchors.top: parent.top
         anchors.right: parent.right
         spacing: 0
         orientation: ListView.Horizontal
@@ -564,6 +571,24 @@ Item {
             target: wordCandidateView.model ? wordCandidateView.model : null
             onActiveItemChanged: wordCandidateView.currentIndex = index
             onItemSelected: if (wordCandidateView.currentItem) soundEffect.play(wordCandidateView.currentItem.soundEffect)
+            onCountChanged: {
+                var empty = wordCandidateView.model.count === 0
+                if (empty)
+                    wordCandidateViewAutoHideTimer.restart()
+                wordCandidateView.empty = empty
+            }
+        }
+        Connections {
+            target: InputContext
+            onInputItemChanged: wordCandidateViewAutoHideTimer.stop()
+        }
+        Connections {
+            target: InputContext.inputEngine
+            onWordCandidateListVisibleHintChanged: wordCandidateViewAutoHideTimer.stop()
+        }
+        Timer {
+            id: wordCandidateViewAutoHideTimer
+            interval: VirtualKeyboardSettings.wordCandidateList.autoHideDelay
         }
         Loader {
             sourceComponent: style.selectionListBackground
@@ -573,6 +598,27 @@ Item {
         Component {
             id: defaultHighlight
             Item {}
+        }
+        states: State {
+            name: "visible"
+            when: wordCandidateView.visibleCondition
+            PropertyChanges {
+                target: wordCandidateView
+                y: wordCandidateView.visibleYOffset
+            }
+        }
+        transitions: Transition {
+            id: wordCandidateViewTransition
+            to: "visible"
+            enabled: !InputContext.animating && !VirtualKeyboardSettings.wordCandidateList.alwaysVisible
+            reversible: true
+            ParallelAnimation {
+                NumberAnimation {
+                    properties: "y"
+                    duration: 250
+                    easing.type: Easing.InOutQuad
+                }
+            }
         }
     }
 
@@ -625,8 +671,8 @@ Item {
         id: keyboardBackground
         z: -1
         anchors.left: parent.left
-        anchors.top: wordCandidateView.bottom
         anchors.right: parent.right
+        anchors.bottom: parent.bottom
         height: keyboardInnerContainer.height
         sourceComponent: style.keyboardBackground
 

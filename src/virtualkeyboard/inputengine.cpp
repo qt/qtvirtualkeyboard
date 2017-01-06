@@ -157,6 +157,7 @@ InputEngine::InputEngine(InputContext *parent) :
     if (d->inputContext) {
         connect(d->inputContext, SIGNAL(shiftChanged()), SLOT(shiftChanged()));
         connect(d->inputContext, SIGNAL(localeChanged()), SLOT(update()));
+        QObject::connect(d->inputContext, &InputContext::inputMethodHintsChanged, this, &InputEngine::updateSelectionListModels);
     }
     d->defaultInputMethod = new DefaultInputMethod(this);
     if (d->defaultInputMethod)
@@ -364,43 +365,18 @@ void InputEngine::setInputMethod(AbstractInputMethod *inputMethod)
     if (d->inputMethod != inputMethod) {
         update();
         if (d->inputMethod) {
+            QObject::disconnect(d->inputMethod.data(), &AbstractInputMethod::selectionListsChanged, this, &InputEngine::updateSelectionListModels);
             d->inputMethod->setInputEngine(0);
         }
         d->inputMethod = inputMethod;
         if (d->inputMethod) {
             d->inputMethod->setInputEngine(this);
+            QObject::connect(d->inputMethod.data(), &AbstractInputMethod::selectionListsChanged, this, &InputEngine::updateSelectionListModels);
 
             // Set current text case
             d->inputMethod->setTextCase(d->textCase);
 
-            // Allocate selection lists for the input method
-            const QList<SelectionListModel::Type> activeSelectionLists = d->inputMethod->selectionLists();
-            QList<SelectionListModel::Type> inactiveSelectionLists = d->selectionListModels.keys();
-            for (const SelectionListModel::Type &selectionListType : activeSelectionLists) {
-                auto it = d->selectionListModels.find(selectionListType);
-                if (it == d->selectionListModels.end()) {
-                    it = d->selectionListModels.insert(selectionListType, new SelectionListModel(this));
-                    if (selectionListType == SelectionListModel::WordCandidateList) {
-                        emit wordCandidateListModelChanged();
-                    }
-                }
-                it.value()->setDataSource(inputMethod, selectionListType);
-                if (selectionListType == SelectionListModel::WordCandidateList) {
-                    emit wordCandidateListVisibleHintChanged();
-                }
-                inactiveSelectionLists.removeAll(selectionListType);
-            }
-
-            // Deallocate inactive selection lists
-            for (const SelectionListModel::Type &selectionListType : qAsConst(inactiveSelectionLists)) {
-                const auto it = d->selectionListModels.constFind(selectionListType);
-                if (it != d->selectionListModels.cend()) {
-                    it.value()->setDataSource(0, selectionListType);
-                    if (selectionListType == SelectionListModel::WordCandidateList) {
-                        emit wordCandidateListVisibleHintChanged();
-                    }
-                }
-            }
+            updateSelectionListModels();
         }
         emit inputMethodChanged();
         emit inputModesChanged();
@@ -637,6 +613,41 @@ void InputEngine::shiftChanged()
         d->textCase = newCase;
         if (d->inputMethod) {
             d->inputMethod->setTextCase(d->textCase);
+        }
+    }
+}
+
+/*!
+    \internal
+*/
+void InputEngine::updateSelectionListModels()
+{
+    Q_D(InputEngine);
+    QList<SelectionListModel::Type> inactiveSelectionLists = d->selectionListModels.keys();
+    if (d->inputMethod) {
+        // Allocate selection lists for the input method
+        const QList<SelectionListModel::Type> activeSelectionLists = d->inputMethod->selectionLists();
+        for (const SelectionListModel::Type &selectionListType : activeSelectionLists) {
+            auto it = d->selectionListModels.find(selectionListType);
+            if (it == d->selectionListModels.end()) {
+                it = d->selectionListModels.insert(selectionListType, new SelectionListModel(this));
+                if (selectionListType == SelectionListModel::WordCandidateList)
+                    emit wordCandidateListModelChanged();
+            }
+            it.value()->setDataSource(d->inputMethod, selectionListType);
+            if (selectionListType == SelectionListModel::WordCandidateList)
+                emit wordCandidateListVisibleHintChanged();
+            inactiveSelectionLists.removeAll(selectionListType);
+        }
+    }
+
+    // Deallocate inactive selection lists
+    for (const SelectionListModel::Type &selectionListType : qAsConst(inactiveSelectionLists)) {
+        const auto it = d->selectionListModels.constFind(selectionListType);
+        if (it != d->selectionListModels.cend()) {
+            it.value()->setDataSource(0, selectionListType);
+            if (selectionListType == SelectionListModel::WordCandidateList)
+                emit wordCandidateListVisibleHintChanged();
         }
     }
 }

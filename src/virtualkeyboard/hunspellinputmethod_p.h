@@ -43,6 +43,12 @@ public:
     HunspellInputMethodPrivate(HunspellInputMethod *q_ptr);
     ~HunspellInputMethodPrivate();
 
+    enum DictionaryState {
+        DictionaryNotLoaded,
+        DictionaryLoading,
+        DictionaryReady
+    };
+
     bool createHunspell(const QString &locale);
     void reset();
     bool updateSuggestions();
@@ -61,6 +67,7 @@ public:
     int wordCompletionPoint;
     bool ignoreUpdate;
     bool autoSpaceAllowed;
+    DictionaryState dictionaryState;
 };
 
 } // namespace QtVirtualKeyboard

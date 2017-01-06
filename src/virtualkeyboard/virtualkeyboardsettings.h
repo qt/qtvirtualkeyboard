@@ -34,6 +34,7 @@
 
 namespace QtVirtualKeyboard {
 
+class WordCandidateListSettings;
 class VirtualKeyboardSettingsPrivate;
 
 class VirtualKeyboardSettings : public QObject
@@ -46,6 +47,7 @@ class VirtualKeyboardSettings : public QObject
     Q_PROPERTY(QString locale READ locale WRITE setLocale NOTIFY localeChanged)
     Q_PROPERTY(QStringList availableLocales READ availableLocales NOTIFY availableLocalesChanged)
     Q_PROPERTY(QStringList activeLocales READ activeLocales WRITE setActiveLocales NOTIFY activeLocalesChanged)
+    Q_PROPERTY(WordCandidateListSettings *wordCandidateList READ wordCandidateList CONSTANT)
 
 public:
     static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine);
@@ -68,6 +70,8 @@ public:
     void setActiveLocales(const QStringList &activeLocales);
     QStringList activeLocales() const;
 
+    WordCandidateListSettings *wordCandidateList() const;
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -79,6 +83,27 @@ signals:
 private:
     void resetStyle();
     void resetLayoutPath();
+};
+
+class WordCandidateListSettings : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(int autoHideDelay READ autoHideDelay WRITE setAutoHideDelay NOTIFY autoHideDelayChanged)
+    Q_PROPERTY(bool alwaysVisible READ alwaysVisible WRITE setAlwaysVisible NOTIFY alwaysVisibleChanged)
+
+    explicit WordCandidateListSettings(QObject *parent = 0);
+    friend class VirtualKeyboardSettingsPrivate;
+
+public:
+    int autoHideDelay() const;
+    void setAutoHideDelay(int autoHideDelay);
+
+    bool alwaysVisible() const;
+    void setAlwaysVisible(bool alwaysVisible);
+
+signals:
+    void autoHideDelayChanged();
+    void alwaysVisibleChanged();
 };
 
 }

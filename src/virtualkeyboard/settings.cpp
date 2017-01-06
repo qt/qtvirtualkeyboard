@@ -42,7 +42,9 @@ public:
         locale(),
         availableLocales(),
         activeLocales(),
-        layoutPath()
+        layoutPath(),
+        wclAutoHideDelay(5000),
+        wclAlwaysVisible(false)
     {}
 
     QString style;
@@ -51,6 +53,8 @@ public:
     QStringList availableLocales;
     QStringList activeLocales;
     QUrl layoutPath;
+    int wclAutoHideDelay;
+    bool wclAlwaysVisible;
 };
 
 static QScopedPointer<Settings> s_settingsInstance;
@@ -159,6 +163,36 @@ void Settings::setLayoutPath(const QUrl &layoutPath)
     if (d->layoutPath != layoutPath) {
         d->layoutPath = layoutPath;
         emit layoutPathChanged();
+    }
+}
+
+int Settings::wclAutoHideDelay() const
+{
+    Q_D(const Settings);
+    return d->wclAutoHideDelay;
+}
+
+void Settings::setWclAutoHideDelay(int wclAutoHideDelay)
+{
+    Q_D(Settings);
+    if (d->wclAutoHideDelay != wclAutoHideDelay) {
+        d->wclAutoHideDelay = wclAutoHideDelay;
+        emit wclAutoHideDelayChanged();
+    }
+}
+
+bool Settings::wclAlwaysVisible() const
+{
+    Q_D(const Settings);
+    return d->wclAlwaysVisible;
+}
+
+void Settings::setWclAlwaysVisible(bool wclAlwaysVisible)
+{
+    Q_D(Settings);
+    if (d->wclAlwaysVisible != wclAlwaysVisible) {
+        d->wclAlwaysVisible = wclAlwaysVisible;
+        emit wclAlwaysVisibleChanged();
     }
 }
 

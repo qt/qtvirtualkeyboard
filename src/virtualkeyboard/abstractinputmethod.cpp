@@ -274,8 +274,13 @@ bool AbstractInputMethod::reselect(int cursorPosition, const InputEngine::Resele
     Returns the list of selection lists used by this input method.
 
     This method is called by input engine when the input method is being
-    activated. The input method can reserve the selection lists for its use
-    by returning a list of selection list types required.
+    activated and every time the input method hints are updated. The input method
+    can reserve selection lists by returning the desired selection list types.
+
+    The input method may request the input engine to update the selection lists
+    at any time by emitting selectionListsChanged() signal. This signal will
+    trigger a call to this method, allowing the input method to update the selection
+    list types.
 */
 
 /*!
@@ -312,6 +317,15 @@ bool AbstractInputMethod::reselect(int cursorPosition, const InputEngine::Resele
 
     The input method emits this signal when the current \a index has changed
     in the selection list identified by \a type.
+*/
+
+/*!
+    \fn void AbstractInputMethod::selectionListsChanged()
+    \since QtQuick.VirtualKeyboard 2.2
+
+    The input method emits this signal when the selection list types have
+    changed. This signal will trigger a call to selectionLists() method,
+    allowing the input method to update the selection list types.
 */
 
 } // namespace QtVirtualKeyboard

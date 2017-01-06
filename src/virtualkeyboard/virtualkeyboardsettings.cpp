@@ -42,7 +42,8 @@ class VirtualKeyboardSettingsPrivate : public QObjectPrivate
 public:
     VirtualKeyboardSettingsPrivate() :
         QObjectPrivate(),
-        engine() {}
+        engine()
+    {}
 
     QString buildStyleImportPath(const QString &path, const QString &name) const
     {
@@ -90,10 +91,11 @@ public:
     }
 
     QPointer<QQmlEngine> engine;
+    WordCandidateListSettings wordCandidateListSettings;
 };
 
 /*!
-    \qmlmodule QtQuick.VirtualKeyboard.Settings 2.0
+    \qmlmodule QtQuick.VirtualKeyboard.Settings 2.2
     \title Qt Quick Virtual Keyboard Settings QML Types
     \ingroup qmlmodules
 
@@ -102,8 +104,8 @@ public:
     The QML types can be imported into your application using the following
     import statements in your .qml file:
 
-    \badcode
-    import QtQuick.VirtualKeyboard.Settings 2.0
+    \code
+    import QtQuick.VirtualKeyboard.Settings 2.2
     \endcode
 */
 
@@ -161,6 +163,8 @@ VirtualKeyboardSettings::VirtualKeyboardSettings(QQmlEngine *engine) :
     connect(settings, SIGNAL(availableLocalesChanged()), SIGNAL(availableLocalesChanged()));
     connect(settings, SIGNAL(activeLocalesChanged()), SIGNAL(activeLocalesChanged()));
     connect(settings, SIGNAL(layoutPathChanged()), SIGNAL(layoutPathChanged()));
+    connect(settings, SIGNAL(wclAutoHideDelayChanged()), &d->wordCandidateListSettings, SIGNAL(autoHideDelayChanged()));
+    connect(settings, SIGNAL(wclAlwaysVisibleChanged()), &d->wordCandidateListSettings, SIGNAL(alwaysVisibleChanged()));
 }
 
 /*!
@@ -267,6 +271,12 @@ QStringList VirtualKeyboardSettings::activeLocales() const
     return Settings::instance()->activeLocales();
 }
 
+WordCandidateListSettings *VirtualKeyboardSettings::wordCandidateList() const
+{
+    Q_D(const VirtualKeyboardSettings);
+    return const_cast<WordCandidateListSettings *>(&d->wordCandidateListSettings);
+}
+
 void VirtualKeyboardSettings::resetStyle()
 {
     Q_D(VirtualKeyboardSettings);
@@ -345,5 +355,60 @@ void VirtualKeyboardSettings::resetStyle()
     The list of active languages is a subset of the available languages, and can be
     used to limit the list of available languages in the application lifetime.
 */
+
+/*!
+    \since QtQuick.VirtualKeyboard.Settings 2.2
+    \qmlpropertygroup QtQuick.VirtualKeyboard::VirtualKeyboardSettings::wordCandidateList
+    \qmlproperty int QtQuick.VirtualKeyboard::VirtualKeyboardSettings::wordCandidateList.autoHideDelay
+    \qmlproperty bool QtQuick.VirtualKeyboard::VirtualKeyboardSettings::wordCandidateList.alwaysVisible
+
+    \table
+    \header
+        \li Name
+        \li Description
+    \row
+        \li autoHideDelay
+        \li This property defines the delay, in milliseconds, after which the
+            word candidate list is hidden if empty.
+
+            If the value is \c 0, the list is immediately hidden when cleared.
+
+            If the value is \c -1, the list is visible until input focus
+            changes, or the input panel is hidden.
+
+            The default value is \c 5000 milliseconds.
+    \row
+        \li alwaysVisible
+        \li This property defines whether the word candidate list should always
+            remain visible.
+
+            The default value is \c false.
+    \endtable
+*/
+
+WordCandidateListSettings::WordCandidateListSettings(QObject *parent) :
+    QObject(parent)
+{
+}
+
+int WordCandidateListSettings::autoHideDelay() const
+{
+    return Settings::instance()->wclAutoHideDelay();
+}
+
+void WordCandidateListSettings::setAutoHideDelay(int autoHideDelay)
+{
+    Settings::instance()->setWclAutoHideDelay(autoHideDelay);
+}
+
+bool WordCandidateListSettings::alwaysVisible() const
+{
+    return Settings::instance()->wclAlwaysVisible();
+}
+
+void WordCandidateListSettings::setAlwaysVisible(bool alwaysVisible)
+{
+    Settings::instance()->setWclAlwaysVisible(alwaysVisible);
+}
 
 } // namespace QtVirtualKeyboard

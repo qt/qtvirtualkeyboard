@@ -187,6 +187,7 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 1, 2, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
     qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 2, 0, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
     qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 2, 1, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
+    qmlRegisterUncreatableType<WordCandidateListSettings>(pluginSettingsUri, 2, 2, "WordCandidateListSettings", QLatin1String("Cannot create word candidate list settings"));
 
     const QString path(QStringLiteral("qrc:///QtQuick/VirtualKeyboard/content/"));
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 0, "InputPanel");

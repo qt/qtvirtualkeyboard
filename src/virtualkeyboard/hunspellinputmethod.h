@@ -64,6 +64,7 @@ public:
 
 protected slots:
     void updateSuggestions(const QStringList &wordList, int activeWordIndex);
+    void dictionaryLoadCompleted(bool success);
 };
 
 } // namespace QtVirtualKeyboard

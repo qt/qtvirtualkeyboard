@@ -44,6 +44,7 @@ class SelectionListModel : public QAbstractListModel
     Q_ENUMS(Type)
     Q_ENUMS(Role)
     Q_DECLARE_PRIVATE(SelectionListModel)
+    Q_PROPERTY(int count READ count NOTIFY countChanged)
 
     explicit SelectionListModel(QObject *parent = 0);
 
@@ -65,10 +66,13 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QHash<int,QByteArray> roleNames() const;
 
+    int count() const;
+
     Q_INVOKABLE void selectItem(int index);
     Q_INVOKABLE QVariant dataAt(int index, int role = Qt::DisplayRole) const;
 
 signals:
+    void countChanged();
     void activeItemChanged(int index);
     void itemSelected(int index);
 

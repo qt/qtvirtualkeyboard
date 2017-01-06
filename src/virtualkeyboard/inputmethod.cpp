@@ -121,9 +121,14 @@ namespace QtVirtualKeyboard {
 
     Returns the list of selection types used for this input method.
 
-    This method is called by the input engine when the input method is being
-    activated. The input method can reserve the selection lists for its use
-    by returning a list of selection list types required.
+    This method is called by input engine when the input method is being
+    activated and every time the input method hints are updated. The input method
+    can reserve selection lists by returning the desired selection list types.
+
+    The input method may request the input engine to update the selection lists
+    at any time by emitting selectionListsChanged() signal. This signal will
+    trigger a call to this method, allowing the input method to update the selection
+    list types.
 */
 
 /*!
@@ -160,6 +165,15 @@ namespace QtVirtualKeyboard {
 
     The input method emits this signal when the current \a index has changed
     in the selection list identified by \a type.
+*/
+
+/*!
+    \qmlsignal InputMethod::selectionListsChanged()
+    \since QtQuick.VirtualKeyboard 2.2
+
+    The input method emits this signal when the selection list types have
+    changed. This signal will trigger a call to selectionLists() method,
+    allowing the input method to update the selection list types.
 */
 
 /*!

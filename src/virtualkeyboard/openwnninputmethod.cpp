@@ -356,7 +356,7 @@ public:
 
     void fitInputType()
     {
-        enablePrediction = true;
+        Q_Q(OpenWnnInputMethod);
         enableConverter = true;
 
         Qt::InputMethodHints inputMethodHints = inputEngine->inputContext()->inputMethodHints();
@@ -370,13 +370,17 @@ public:
             enableConverter = false;
         }
 
-        if (inputMethodHints.testFlag(Qt::ImhHiddenText) ||
-            inputMethodHints.testFlag(Qt::ImhSensitiveData)) {
-            enablePrediction = false;
-        }
-
-        if (inputMethodHints.testFlag(Qt::ImhNoPredictiveText)) {
-            enablePrediction = false;
+        if (inputMode != InputEngine::Hiragana ||
+            inputMethodHints.testFlag(Qt::ImhHiddenText) ||
+            inputMethodHints.testFlag(Qt::ImhSensitiveData) ||
+            inputMethodHints.testFlag(Qt::ImhNoPredictiveText)) {
+            if (enablePrediction) {
+                enablePrediction = false;
+                emit q->selectionListsChanged();
+            }
+        } else if (inputMode == InputEngine::Hiragana && !enablePrediction) {
+            enablePrediction = true;
+            emit q->selectionListsChanged();
         }
 
         activeConvertType = CONVERT_TYPE_NONE;
@@ -640,6 +644,7 @@ bool OpenWnnInputMethod::setInputMode(const QString &locale, InputEngine::InputM
         break;
     }
     d->inputMode = inputMode;
+    d->fitInputType();
     return true;
 }
 
@@ -758,6 +763,9 @@ bool OpenWnnInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
 
 QList<SelectionListModel::Type> OpenWnnInputMethod::selectionLists()
 {
+    Q_D(OpenWnnInputMethod);
+    if (!d->enablePrediction)
+        return QList<SelectionListModel::Type>();
     return QList<SelectionListModel::Type>() << SelectionListModel::WordCandidateList;
 }
 

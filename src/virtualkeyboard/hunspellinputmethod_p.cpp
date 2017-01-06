@@ -53,7 +53,8 @@ HunspellInputMethodPrivate::HunspellInputMethodPrivate(HunspellInputMethod *q_pt
     activeWordIndex(-1),
     wordCompletionPoint(2),
     ignoreUpdate(false),
-    autoSpaceAllowed(false)
+    autoSpaceAllowed(false),
+    dictionaryState(DictionaryNotLoaded)
 {
     if (hunspellWorker)
         hunspellWorker->start();
@@ -65,6 +66,7 @@ HunspellInputMethodPrivate::~HunspellInputMethodPrivate()
 
 bool HunspellInputMethodPrivate::createHunspell(const QString &locale)
 {
+    Q_Q(HunspellInputMethod);
     if (!hunspellWorker)
         return false;
     if (this->locale != locale) {
@@ -90,6 +92,8 @@ bool HunspellInputMethodPrivate::createHunspell(const QString &locale)
                 searchPaths.append(defaultPath);
         }
         QSharedPointer<HunspellLoadDictionaryTask> loadDictionaryTask(new HunspellLoadDictionaryTask(locale, searchPaths));
+        QObject::connect(loadDictionaryTask.data(), &HunspellLoadDictionaryTask::completed, q, &HunspellInputMethod::dictionaryLoadCompleted);
+        dictionaryState = HunspellInputMethodPrivate::DictionaryLoading;
         hunspellWorker->addTask(loadDictionaryTask);
         this->locale = locale;
     }
@@ -110,7 +114,7 @@ void HunspellInputMethodPrivate::reset()
 bool HunspellInputMethodPrivate::updateSuggestions()
 {
     bool wordCandidateListChanged = false;
-    if (!word.isEmpty()) {
+    if (!word.isEmpty() && dictionaryState != HunspellInputMethodPrivate::DictionaryNotLoaded) {
         if (hunspellWorker)
             hunspellWorker->removeAllTasksExcept<HunspellLoadDictionaryTask>();
         if (wordCandidates.isEmpty()) {

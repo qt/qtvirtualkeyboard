@@ -79,6 +79,7 @@ public:
 signals:
     void selectionListChanged(int type);
     void selectionListActiveItemChanged(int type, int index);
+    void selectionListsChanged();
 
 public slots:
     virtual void reset();

@@ -192,6 +192,15 @@ QHash<int,QByteArray> SelectionListModel::roleNames() const
     return d->roles;
 }
 
+/*!
+    \internal
+*/
+int SelectionListModel::count() const
+{
+    Q_D(const SelectionListModel);
+    return d->rowCount;
+}
+
 /*! \qmlmethod void SelectionListModel::selectItem(int index)
 
     This method should be called when the user selects an item at position
@@ -249,6 +258,8 @@ void SelectionListModel::selectionListChanged(int type)
             d->rowCount = 0;
             endResetModel();
         }
+        if (d->rowCount != oldCount)
+            emit countChanged();
     }
 }
 

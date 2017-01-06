@@ -43,7 +43,7 @@
     The QML types can be imported into your application using the following
     import statements in your .qml file:
 
-    \badcode
+    \code
     import QtQuick.VirtualKeyboard.Styles 2.0
     \endcode
 */

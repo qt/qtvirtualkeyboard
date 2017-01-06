@@ -88,26 +88,26 @@ void HunspellLoadDictionaryTask::run()
         affPath.clear();
     }
 
-    if (affPath.isEmpty() || dicPath.isEmpty()) {
+    if (!affPath.isEmpty() && !dicPath.isEmpty()) {
         VIRTUALKEYBOARD_DEBUG() << "Hunspell dictionary is missing for the" << locale << "language. Search paths" << searchPaths;
-        return;
-    }
-
-    *hunspellPtr = Hunspell_create(affPath.toUtf8().constData(), dicPath.toUtf8().constData());
-    if (*hunspellPtr) {
-        /*  Make sure the encoding used by the dictionary is supported
-            by the QTextCodec.
-        */
-        if (!QTextCodec::codecForName(Hunspell_get_dic_encoding(*hunspellPtr))) {
-            qWarning() << "The Hunspell dictionary" << dicPath << "cannot be used because it uses an unknown text codec" << QString(Hunspell_get_dic_encoding(*hunspellPtr));
-            Hunspell_destroy(*hunspellPtr);
-            *hunspellPtr = 0;
+        *hunspellPtr = Hunspell_create(affPath.toUtf8().constData(), dicPath.toUtf8().constData());
+        if (*hunspellPtr) {
+            /*  Make sure the encoding used by the dictionary is supported
+                by the QTextCodec.
+            */
+            if (!QTextCodec::codecForName(Hunspell_get_dic_encoding(*hunspellPtr))) {
+                qWarning() << "The Hunspell dictionary" << dicPath << "cannot be used because it uses an unknown text codec" << QString(Hunspell_get_dic_encoding(*hunspellPtr));
+                Hunspell_destroy(*hunspellPtr);
+                *hunspellPtr = 0;
+            }
         }
-    }
 
 #ifdef QT_VIRTUALKEYBOARD_DEBUG
-    VIRTUALKEYBOARD_DEBUG() << "HunspellLoadDictionaryTask::run(): time:" << perf.elapsed() << "ms";
+        VIRTUALKEYBOARD_DEBUG() << "HunspellLoadDictionaryTask::run(): time:" << perf.elapsed() << "ms";
 #endif
+    }
+
+    emit completed(*hunspellPtr != 0);
 }
 
 /*!

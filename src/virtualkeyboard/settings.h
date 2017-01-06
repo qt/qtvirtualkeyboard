@@ -66,6 +66,12 @@ public:
     QUrl layoutPath() const;
     void setLayoutPath(const QUrl &layoutPath);
 
+    int wclAutoHideDelay() const;
+    void setWclAutoHideDelay(int wclAutoHideDelay);
+
+    bool wclAlwaysVisible() const;
+    void setWclAlwaysVisible(bool wclAlwaysVisible);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -73,6 +79,8 @@ signals:
     void availableLocalesChanged();
     void activeLocalesChanged();
     void layoutPathChanged();
+    void wclAutoHideDelayChanged();
+    void wclAlwaysVisibleChanged();
 };
 
 } // namespace QtVirtualKeyboard

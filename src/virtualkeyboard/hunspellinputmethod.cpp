@@ -98,6 +98,10 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
     default:
         if (inputMethodHints.testFlag(Qt::ImhNoPredictiveText))
             break;
+        if (d->dictionaryState == HunspellInputMethodPrivate::DictionaryNotLoaded) {
+            update();
+            break;
+        }
         if (text.length() > 0) {
             QChar c = text.at(0);
             bool addToWord = d->isValidInputChar(c) && (!d->word.isEmpty() || !d->isJoiner(c));
@@ -157,6 +161,10 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
 
 QList<SelectionListModel::Type> HunspellInputMethod::selectionLists()
 {
+    Q_D(const HunspellInputMethod);
+    Qt::InputMethodHints inputMethodHints = inputContext()->inputMethodHints();
+    if (d->dictionaryState != HunspellInputMethodPrivate::DictionaryReady || inputMethodHints.testFlag(Qt::ImhNoPredictiveText) || inputMethodHints.testFlag(Qt::ImhHiddenText))
+        return QList<SelectionListModel::Type>();
     return QList<SelectionListModel::Type>() << SelectionListModel::WordCandidateList;
 }
 
@@ -204,6 +212,9 @@ bool HunspellInputMethod::reselect(int cursorPosition, const InputEngine::Resele
 {
     Q_D(HunspellInputMethod);
     Q_ASSERT(d->word.isEmpty());
+
+    if (d->dictionaryState == HunspellInputMethodPrivate::DictionaryNotLoaded)
+        return false;
 
     InputContext *ic = inputContext();
     if (!ic)
@@ -299,6 +310,10 @@ void HunspellInputMethod::update()
 void HunspellInputMethod::updateSuggestions(const QStringList &wordList, int activeWordIndex)
 {
     Q_D(HunspellInputMethod);
+    if (d->dictionaryState == HunspellInputMethodPrivate::DictionaryNotLoaded) {
+        update();
+        return;
+    }
     d->wordCandidates.clear();
     d->wordCandidates.append(wordList);
     // Make sure the exact match is up-to-date
@@ -307,6 +322,14 @@ void HunspellInputMethod::updateSuggestions(const QStringList &wordList, int act
     d->activeWordIndex = activeWordIndex;
     emit selectionListChanged(SelectionListModel::WordCandidateList);
     emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->activeWordIndex);
+}
+
+void HunspellInputMethod::dictionaryLoadCompleted(bool success)
+{
+    Q_D(HunspellInputMethod);
+    d->dictionaryState = success ? HunspellInputMethodPrivate::DictionaryReady :
+                                   HunspellInputMethodPrivate::DictionaryNotLoaded;
+    emit selectionListsChanged();
 }
 
 } // namespace QtVirtualKeyboard

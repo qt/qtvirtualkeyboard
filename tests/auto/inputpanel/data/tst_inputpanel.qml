@@ -78,6 +78,8 @@ Rectangle {
         }
 
         function prepareTest(data) {
+            inputPanel.setWclAutoHideDelay(data !== undefined && data.hasOwnProperty("wclAutoHideDelay") ? data.wclAutoHideDelay : 5000)
+            inputPanel.setWclAlwaysVisible(data !== undefined && data.hasOwnProperty("wclAlwaysVisible") && data.wclAlwaysVisible)
             container.forceActiveFocus()
             if (data !== undefined && data.hasOwnProperty("initText")) {
                 textInput.text = data.initText
@@ -172,6 +174,14 @@ Rectangle {
                                property var locale: VirtualKeyboardSettings.locale; \
                                property var availableLocales: VirtualKeyboardSettings.availableLocales; \
                                property var activeLocales: VirtualKeyboardSettings.activeLocales }" },
+                { qml: "import QtQuick 2.7; \
+                        import QtQuick.VirtualKeyboard.Settings 2.2; \
+                        Item { property var styleName: VirtualKeyboardSettings.styleName; \
+                               property var locale: VirtualKeyboardSettings.locale; \
+                               property var availableLocales: VirtualKeyboardSettings.availableLocales; \
+                               property var activeLocales: VirtualKeyboardSettings.activeLocales; \
+                               property var wclAutoHideDelay: VirtualKeyboardSettings.wordCandidateList.autoHideDelay; \
+                               property var wclAlwaysVisible: VirtualKeyboardSettings.wordCandidateList.alwaysVisible; }" },
             ]
         }
 
@@ -1568,6 +1578,39 @@ Rectangle {
             }
 
             compare(languagePopupList.visible, false)
+        }
+
+        function test_wclAutoHide_data() {
+            return [
+                { wclAutoHideDelay: 100, wclAlwaysVisible: false },
+                { wclAutoHideDelay: 0, wclAlwaysVisible: true },
+                { wclAutoHideDelay: 0, wclAlwaysVisible: false },
+            ]
+        }
+
+        function test_wclAutoHide(data) {
+            prepareTest(data)
+            inputPanel.wordCandidateListChangedSpy.clear()
+            Qt.inputMethod.show()
+            waitForRendering(inputPanel)
+            compare(inputPanel.wordCandidateView.visibleCondition, data.wclAlwaysVisible)
+            inputPanel.virtualKeyClick("a")
+            inputPanel.virtualKeyClick("u")
+            inputPanel.virtualKeyClick("t")
+            inputPanel.virtualKeyClick("o")
+            waitForRendering(inputPanel)
+            if (!inputPanel.wordCandidateListVisibleHint)
+                skip("Prediction/spell correction not enabled")
+            inputPanel.wordCandidateListChangedSpy.wait(1000)
+            compare(inputPanel.wordCandidateView.visibleCondition, true)
+            inputPanel.wordCandidateListVisibleSpy.clear()
+            inputPanel.selectionListSelectCurrentItem()
+            if (data.wclAlwaysVisible)
+                wait(data.wclAutoHideDelay + 250)
+            else
+                inputPanel.wordCandidateListVisibleSpy.wait(data.wclAutoHideDelay + 500)
+            waitForRendering(inputPanel)
+            compare(inputPanel.wordCandidateView.visibleCondition, data.wclAlwaysVisible)
         }
     }
 }
