@@ -59,6 +59,7 @@
 #include "enterkeyactionattachedtype.h"
 #include "virtualkeyboardsettings.h"
 #include "trace.h"
+#include "shadowinputcontext.h"
 #if defined(QT_STATICPLUGIN)
 #include <QtPlugin>
 // This macro is similar to Q_IMPORT_PLUGIN, except it does not
@@ -182,6 +183,8 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     qmlRegisterType<EnterKeyAction>(pluginUri, 1, 0, "EnterKeyAction");
     qmlRegisterType<EnterKeyAction>(pluginUri, 2, 0, "EnterKeyAction");
     qmlRegisterType<Trace>(pluginUri, 2, 0, "Trace");
+    qRegisterMetaType<QtVirtualKeyboard::ShadowInputContext *>("ShadowInputContext*");
+    qmlRegisterUncreatableType<ShadowInputContext>(pluginUri, 2, 2, "ShadowInputContext", QLatin1String("Cannot create shadow input context"));
     qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 1, 0, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
     qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 1, 1, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
     qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 1, 2, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
@@ -195,6 +198,7 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 1, 3, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 0, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 1, "InputPanel");
+    qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 2, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("HandwritingInputPanel.qml")), pluginUri, 2, 0, "HandwritingInputPanel");
     const QString componentsPath = path + QStringLiteral("components/");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("AlternativeKeys.qml")), pluginUri, 1, 0, "AlternativeKeys");

@@ -33,7 +33,8 @@ SOURCES += platforminputcontext.cpp \
     settings.cpp \
     virtualkeyboardsettings.cpp \
     trace.cpp \
-    desktopinputselectioncontrol.cpp
+    desktopinputselectioncontrol.cpp \
+    shadowinputcontext.cpp
 
 HEADERS += platforminputcontext.h \
     inputcontext.h \
@@ -53,7 +54,8 @@ HEADERS += platforminputcontext.h \
     virtualkeyboardsettings.h \
     plugin.h \
     trace.h \
-    desktopinputselectioncontrol.h
+    desktopinputselectioncontrol.h \
+    shadowinputcontext.h
 
 RESOURCES += \
     content/styles/default/default_style.qrc \

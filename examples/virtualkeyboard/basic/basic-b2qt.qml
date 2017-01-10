@@ -29,7 +29,8 @@
 
 import QtQuick 2.0
 import QtQuick.Window 2.2
-import QtQuick.VirtualKeyboard 2.1
+import QtQuick.VirtualKeyboard 2.2
+import QtQuick.VirtualKeyboard.Settings 2.2
 import "content"
 
 Item {
@@ -80,7 +81,7 @@ Item {
             double-click changes the availability of the full screen handwriting input.
         */
         Item {
-            z: 89
+            z: 99
             visible: handwritingInputPanel.enabled && Qt.inputMethod.visible
             anchors { left: parent.left; top: parent.top; right: parent.right; bottom: inputPanel.top; }
             HandwritingModeButton {
@@ -104,7 +105,7 @@ Item {
         */
         InputPanel {
             id: inputPanel
-            z: 99
+            z: 89
             y: appContainer.height
             anchors.left: parent.left
             anchors.right: parent.right
@@ -126,6 +127,7 @@ Item {
                 from: ""
                 to: "visible"
                 reversible: true
+                enabled: !VirtualKeyboardSettings.fullScreenMode
                 ParallelAnimation {
                     NumberAnimation {
                         properties: "y"
@@ -140,6 +142,12 @@ Item {
                 value: inputPanelTransition.running
             }
             AutoScroller {}
+        }
+
+        Binding {
+            target: VirtualKeyboardSettings
+            property: "fullScreenMode"
+            value: appContainer.height > 0 && (appContainer.width / appContainer.height) > (16.0 / 9.0)
         }
     }
 }

@@ -166,6 +166,7 @@ VirtualKeyboardSettings::VirtualKeyboardSettings(QQmlEngine *engine) :
     connect(settings, SIGNAL(wclAutoHideDelayChanged()), &d->wordCandidateListSettings, SIGNAL(autoHideDelayChanged()));
     connect(settings, SIGNAL(wclAlwaysVisibleChanged()), &d->wordCandidateListSettings, SIGNAL(alwaysVisibleChanged()));
     connect(settings, SIGNAL(wclAutoCommitWordChanged()), &d->wordCandidateListSettings, SIGNAL(autoCommitWordChanged()));
+    connect(settings, SIGNAL(fullScreenModeChanged()), SIGNAL(fullScreenModeChanged()));
 }
 
 /*!
@@ -278,6 +279,16 @@ WordCandidateListSettings *VirtualKeyboardSettings::wordCandidateList() const
     return const_cast<WordCandidateListSettings *>(&d->wordCandidateListSettings);
 }
 
+bool VirtualKeyboardSettings::fullScreenMode() const
+{
+    return Settings::instance()->fullScreenMode();
+}
+
+void VirtualKeyboardSettings::setFullScreenMode(bool fullScreenMode)
+{
+    return Settings::instance()->setFullScreenMode(fullScreenMode);
+}
+
 void VirtualKeyboardSettings::resetStyle()
 {
     Q_D(VirtualKeyboardSettings);
@@ -355,6 +366,28 @@ void VirtualKeyboardSettings::resetStyle()
 
     The list of active languages is a subset of the available languages, and can be
     used to limit the list of available languages in the application lifetime.
+*/
+
+/*!
+    \qmlproperty bool VirtualKeyboardSettings::fullScreenMode
+    \since QtQuick.VirtualKeyboard.Settings 2.2
+
+    This property enables the fullscreen mode for the virtual keyboard.
+
+    In fullscreen mode, the virtual keyboard replicates the contents of the
+    focused input field to the fullscreen input field located at the top of the
+    keyboard.
+
+    For example, to activate the fullscreen mode when the screen aspect ratio
+    is greater than 16:9:
+
+    \code
+        Binding {
+            target: VirtualKeyboardSettings
+            property: "fullScreenMode"
+            value: (Screen.width / Screen.height) > (16.0 / 9.0)
+        }
+    \endcode
 */
 
 /*!

@@ -426,4 +426,102 @@ QtObject {
         \l {Integration Method}{application-based integration method}.
     */
     property Component selectionHandle: null
+
+    /*!
+        \since QtQuick.VirtualKeyboard.Styles 2.2
+
+        This property holds the delegate for the background of the full screen
+        input container.
+    */
+    property Component fullScreenInputContainerBackground: null
+
+    /*!
+        \since QtQuick.VirtualKeyboard.Styles 2.2
+
+        This property holds the delegate for the background of the full screen
+        input.
+    */
+    property Component fullScreenInputBackground: null
+
+    /*!
+        \since QtQuick.VirtualKeyboard.Styles 2.2
+
+        This property holds the margins around the full screen input field.
+
+        The default value is \c 0.
+    */
+    property real fullScreenInputMargins: 0
+
+    /*!
+        \since QtQuick.VirtualKeyboard.Styles 2.2
+
+        This property holds the padding around the full screen input content.
+
+        The default value is \c 0.
+    */
+    property real fullScreenInputPadding: 0
+
+    /*!
+        \since QtQuick.VirtualKeyboard.Styles 2.2
+
+        This property holds the delegate for the cursor in the full screen input
+        field.
+
+        The delegate should toggle the visibility of the cursor according to
+        the \c {parent.blinkStatus} property defined for the full screen input
+        field. For example:
+
+        \code
+        fullScreenInputCursor: Rectangle {
+            width: 1
+            color: "#000"
+            visible: parent.blinkStatus
+        }
+        \endcode
+    */
+    property Component fullScreenInputCursor: null
+
+    /*!
+        \since QtQuick.VirtualKeyboard.Styles 2.2
+
+        This property holds the \c font for the full screen input field.
+    */
+    property font fullScreenInputFont
+
+    /*!
+        \since QtQuick.VirtualKeyboard.Styles 2.2
+
+        This property holds the password mask character for the full screen
+        input field.
+    */
+    property string fullScreenInputPasswordCharacter: "\u2022"
+
+    /*!
+        \since QtQuick.VirtualKeyboard.Styles 2.2
+
+        This property holds the text color for the full screen input field.
+
+        The default color is black.
+    */
+    property color fullScreenInputColor: "#000"
+
+    /*!
+        \since QtQuick.VirtualKeyboard.Styles 2.2
+
+        This property holds the selection color for the full screen input
+        field.
+
+        The default color is semi-transparent black.
+    */
+    property color fullScreenInputSelectionColor: Qt.rgba(0, 0, 0, 0.15)
+
+    /*!
+        \since QtQuick.VirtualKeyboard.Styles 2.2
+
+        This property holds the selected text color for the full screen input
+        field.
+
+        The default color is set to \l full screenInputColor.
+    */
+    property color fullScreenInputSelectedTextColor: fullScreenInputColor
 }

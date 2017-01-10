@@ -34,7 +34,7 @@
 #include <QtCore/QLibraryInfo>
 
 /*!
-    \qmlmodule QtQuick.VirtualKeyboard.Styles 2.0
+    \qmlmodule QtQuick.VirtualKeyboard.Styles 2.2
     \title Qt Quick Virtual Keyboard Styles QML Types
     \ingroup qmlmodules
 
@@ -44,7 +44,7 @@
     import statements in your .qml file:
 
     \code
-    import QtQuick.VirtualKeyboard.Styles 2.0
+    import QtQuick.VirtualKeyboard.Styles 2.2
     \endcode
 */
 
@@ -58,6 +58,7 @@ void QtVirtualKeyboardStylesPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 1, 3, "KeyboardStyle");
     qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 2, 0, "KeyboardStyle");
     qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 2, 1, "KeyboardStyle");
+    qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 2, 2, "KeyboardStyle");
     qmlRegisterType(QUrl(path + QLatin1String("KeyIcon.qml")), uri, 1, 0, "KeyIcon");
     qmlRegisterType(QUrl(path + QLatin1String("KeyIcon.qml")), uri, 2, 0, "KeyIcon");
     qmlRegisterType(QUrl(path + QLatin1String("KeyPanel.qml")), uri, 1, 0, "KeyPanel");

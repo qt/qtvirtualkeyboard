@@ -124,7 +124,7 @@
 */
 
 /*!
-\qmlmodule QtQuick.VirtualKeyboard 2.0
+\qmlmodule QtQuick.VirtualKeyboard 2.2
 \title Qt Virtual Keyboard QML Types
 \ingroup qmlmodules
 \brief Provides QML types for an input framework and a reference keyboard front
@@ -134,8 +134,8 @@ end.
     import statements in your .qml file:
 
     \code
-    import QtQuick.VirtualKeyboard 2.0
-    import QtQuick.VirtualKeyboard.Styles 2.0
+    import QtQuick.VirtualKeyboard 2.2
+    import QtQuick.VirtualKeyboard.Styles 2.2
     import QtQuick.VirtualKeyboard.Settings 2.2
     \endcode
 

@@ -48,6 +48,7 @@ class VirtualKeyboardSettings : public QObject
     Q_PROPERTY(QStringList availableLocales READ availableLocales NOTIFY availableLocalesChanged)
     Q_PROPERTY(QStringList activeLocales READ activeLocales WRITE setActiveLocales NOTIFY activeLocalesChanged)
     Q_PROPERTY(WordCandidateListSettings *wordCandidateList READ wordCandidateList CONSTANT)
+    Q_PROPERTY(bool fullScreenMode READ fullScreenMode WRITE setFullScreenMode NOTIFY fullScreenModeChanged)
 
 public:
     static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine);
@@ -72,6 +73,9 @@ public:
 
     WordCandidateListSettings *wordCandidateList() const;
 
+    bool fullScreenMode() const;
+    void setFullScreenMode(bool fullScreenMode);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -79,6 +83,7 @@ signals:
     void availableLocalesChanged();
     void activeLocalesChanged();
     void layoutPathChanged();
+    void fullScreenModeChanged();
 
 private:
     void resetStyle();

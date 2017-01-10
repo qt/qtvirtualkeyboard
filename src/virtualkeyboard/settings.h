@@ -75,6 +75,9 @@ public:
     bool wclAutoCommitWord() const;
     void setWclAutoCommitWord(bool wclAutoCommitWord);
 
+    bool fullScreenMode() const;
+    void setFullScreenMode(bool fullScreenMode);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -85,6 +88,7 @@ signals:
     void wclAutoHideDelayChanged();
     void wclAlwaysVisibleChanged();
     void wclAutoCommitWordChanged();
+    void fullScreenModeChanged();
 };
 
 } // namespace QtVirtualKeyboard

@@ -29,5 +29,6 @@
         <file>components/WordCandidatePopupList.qml</file>
         <file>components/LanguagePopupList.qml</file>
         <file>components/SelectionControl.qml</file>
+        <file>components/ShadowInputControl.qml</file>
     </qresource>
 </RCC>
