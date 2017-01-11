@@ -235,12 +235,12 @@ public:
                     attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, 0, highlightEnd, textFormat));
                 }
 
-                if (highlightEnd != 0) {
+                if (highlightEnd != 0 && highlightEnd < displayText.length()) {
                     /* highlights remaining text */
                     QTextCharFormat textFormat;
                     textFormat.setBackground(QBrush(QColor(0xF0, 0xFF, 0xFF)));
                     textFormat.setForeground(QBrush(Qt::black));
-                    attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, highlightEnd, composingText.toString(layer).length(), textFormat));
+                    attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, highlightEnd, displayText.length() - highlightEnd, textFormat));
                 }
             }
 
