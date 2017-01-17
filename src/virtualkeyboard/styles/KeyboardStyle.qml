@@ -44,7 +44,7 @@ import QtQuick 2.0
 */
 
 QtObject {
-    /*! The current size of the keyboard. */
+    /*! The current height of the keyboard. */
     property real keyboardHeight
 
     /*! The design width of the keyboard. */
@@ -53,8 +53,8 @@ QtObject {
     /*! The design height of the keyboard. */
     property real keyboardDesignHeight
 
-    /*! The keyboard style scale hint. This value is determined by the
-        physical size and the design size of the keyboard. All pixel
+    /*! The keyboard style scale hint. This value is determined by dividing
+        \l keyboardHeight by \l keyboardDesignHeight. All pixel
         dimensions must be proportional to this value.
     */
     readonly property real scaleHint: keyboardHeight / keyboardDesignHeight
