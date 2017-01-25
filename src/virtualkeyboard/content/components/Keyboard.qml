@@ -59,7 +59,6 @@ Item {
         return "main"
     }
     property bool active: Qt.inputMethod.visible
-    property bool uppercased: InputContext.shift
     property bool handwritingMode
     property bool fullScreenHandwritingMode
     property bool symbolMode
@@ -748,7 +747,7 @@ Item {
                     function click(key) {
                         if (key && key.enabled) {
                             if (!key.noKeyEvent)
-                                InputContext.inputEngine.virtualKeyClick(key.key, keyboard.uppercased ? key.text.toUpperCase() : key.text, keyboard.uppercased ? Qt.ShiftModifier : 0)
+                                InputContext.inputEngine.virtualKeyClick(key.key, InputContext.uppercase ? key.text.toUpperCase() : key.text, InputContext.uppercase ? Qt.ShiftModifier : 0)
                             key.clicked()
                         }
                     }

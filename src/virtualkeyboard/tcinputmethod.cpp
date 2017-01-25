@@ -238,7 +238,7 @@ public:
             // Compose back the text after the finals replacement.
             input.clear();
             for (int i = 0; i < decomposed.length(); ++i) {
-                if (decomposed[i] != 0)
+                if (!decomposed[i].isNull())
                     input.append(decomposed[i]);
             }
         } else {
