@@ -41,6 +41,11 @@ import QtQuick.VirtualKeyboard 2.1
     width; that is, the keyboard maintains the aspect ratio specified by the current
     style. Therefore the application should only set the \l {Item::}{width} and \l {Item::}{y}
     coordinates of the InputPanel, and not the \l {Item::}{height}.
+
+    As with \l {Qt Virtual Keyboard QML Types}{all other QML types} provided by
+    the module, the \c QT_IM_MODULE environment variable must be set to
+    \c qtvirtualkeyboard before using InputPanel. For more information, see
+    \l {Loading the Plugin}.
 */
 
 Item {

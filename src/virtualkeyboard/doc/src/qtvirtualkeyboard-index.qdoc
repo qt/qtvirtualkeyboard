@@ -139,6 +139,10 @@ end.
     import QtQuick.VirtualKeyboard.Settings 2.2
     \endcode
 
+    In addition to importing the types, the \c QT_IM_MODULE environment
+    variable must be set to \c qtvirtualkeyboard. For more information, see
+    \l {Loading the Plugin}.
+
 Styling:
 
 \generatelist qmltypesbymodule QtQuick.VirtualKeyboard.Styles
