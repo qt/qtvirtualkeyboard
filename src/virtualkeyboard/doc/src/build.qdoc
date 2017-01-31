@@ -264,6 +264,23 @@ then the dictionary files must also be copied into the
 \e src/virtualkeyboard/3rdparty/hunspell/data directory. Furthermore, if Hunspell
 sources are used, \e hunspell.pro will be used for all targets.
 
+An example of how the directory structure should look after copying in the
+Hunspell sources and dictionary files is listed below:
+
+\badcode
+3rdparty
+└── hunspell
+    ├── data
+    │   ├── en_GB.aff
+    │   └── en_GB.dic
+    ├── hunspell.pro
+    └── src
+        └── hunspell
+            ├── affentry.cxx
+            ├── affentry.hxx
+            (etc.)
+\endcode
+
 \section2 Static builds
 
 The virtual keyboard can be built and linked statically against the application.
