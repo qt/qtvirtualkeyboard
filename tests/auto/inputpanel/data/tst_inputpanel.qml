@@ -81,6 +81,7 @@ Rectangle {
             inputPanel.setWclAutoHideDelay(data !== undefined && data.hasOwnProperty("wclAutoHideDelay") ? data.wclAutoHideDelay : 5000)
             inputPanel.setWclAlwaysVisible(data !== undefined && data.hasOwnProperty("wclAlwaysVisible") && data.wclAlwaysVisible)
             inputPanel.setWclAutoCommitWord(data !== undefined && data.hasOwnProperty("wclAutoCommitWord") && data.wclAutoCommitWord)
+            inputPanel.setFullScreenMode(data !== undefined && data.hasOwnProperty("fullScreenMode") && data.fullScreenMode)
             container.forceActiveFocus()
             if (data !== undefined && data.hasOwnProperty("initText")) {
                 textInput.text = data.initText
@@ -183,7 +184,8 @@ Rectangle {
                                property var activeLocales: VirtualKeyboardSettings.activeLocales; \
                                property var wclAutoHideDelay: VirtualKeyboardSettings.wordCandidateList.autoHideDelay; \
                                property var wclAlwaysVisible: VirtualKeyboardSettings.wordCandidateList.alwaysVisible; \
-                               property var wclAutoCommitWord: VirtualKeyboardSettings.wordCandidateList.autoCommitWord }" },
+                               property var wclAutoCommitWord: VirtualKeyboardSettings.wordCandidateList.autoCommitWord; \
+                               property var fullScreenMode: VirtualKeyboardSettings.fullScreenMode; }" },
             ]
         }
 
@@ -1648,5 +1650,171 @@ Rectangle {
             else
                 verify(inputPanel.wordCandidateView.model.count >= 1)
         }
+
+        function test_fullScreenModeActivation() {
+            prepareTest()
+
+            textInput.text = "Hello"
+
+            inputPanel.shadowInputControlVisibleSpy.clear()
+            inputPanel.setFullScreenMode(true)
+            waitForRendering(inputPanel)
+            inputPanel.shadowInputControlVisibleSpy.wait()
+
+            compare(inputPanel.shadowInput.text, textInput.text)
+
+            inputPanel.shadowInputControlVisibleSpy.clear()
+            inputPanel.setFullScreenMode(false)
+            waitForRendering(inputPanel)
+            inputPanel.shadowInputControlVisibleSpy.wait()
+        }
+
+        function test_fullScreenModeInput_data() {
+            return [
+                { fullScreenMode: true, initInputMethodHints: Qt.ImhNoPredictiveText, initText: "Hello ", inputSequence: "world", outputText: "Hello world" },
+                { fullScreenMode: true, initInputMethodHints: Qt.ImhNone, initText: "Hello ", inputSequence: "world", outputText: "Hello world" },
+            ]
+        }
+
+        function test_fullScreenModeInput(data) {
+            prepareTest(data)
+
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
+            }
+            compare(inputPanel.shadowInput.text, textInput.text)
+            compare(inputPanel.shadowInput.cursorPosition, textInput.cursorPosition)
+            compare(inputPanel.shadowInput.preeditText, textInput.preeditText)
+
+            Qt.inputMethod.commit()
+            waitForRendering(inputPanel)
+            compare(textInput.text, data.outputText)
+            compare(inputPanel.shadowInput.text, textInput.text)
+            compare(inputPanel.shadowInput.cursorPosition, textInput.cursorPosition)
+            compare(inputPanel.shadowInput.preeditText, textInput.preeditText)
+        }
+
+        function test_fullScreenModeTextSelection_data() {
+            return [
+                { fullScreenMode: true, initText: "Hello world", select: function(){ textInput.selectAll() } },
+                { fullScreenMode: true, initText: "Hello world", initCursorPosition: 0, select: function(){  textInput.moveCursorSelection("Hello".length) } },
+                { fullScreenMode: true, initText: "Hello world", initCursorPosition: "Hello".length, select: function(){ textInput.moveCursorSelection(0) } }
+            ]
+        }
+
+        function test_fullScreenModeTextSelection(data) {
+            prepareTest(data)
+
+            data.select()
+            waitForRendering(textInput)
+            compare(inputPanel.shadowInput.text, textInput.text)
+            compare(inputPanel.shadowInput.cursorPosition, textInput.cursorPosition)
+            compare(inputPanel.shadowInput.selectedText, textInput.selectedText)
+            compare(inputPanel.shadowInput.selectionStart, textInput.selectionStart)
+            compare(inputPanel.shadowInput.selectionEnd, textInput.selectionEnd)
+        }
+
+        function test_fullScreenModeWordReselection_data() {
+            return [
+                { initText: "hello", clickPositions: [5], expectedPreeditText: "", expectedCursorPosition: 5, expectedText: "hello" },
+                { initText: "hello", clickPositions: [4], expectedPreeditText: "hello", expectedCursorPosition: 0, expectedText: "" },
+                { initText: "hello", clickPositions: [1], expectedPreeditText: "hello", expectedCursorPosition: 0, expectedText: "" },
+                { initText: "hello", clickPositions: [0], expectedPreeditText: "", expectedCursorPosition: 0, expectedText: "hello" },
+                { initText: "hello", clickPositions: [4, 3], expectedPreeditText: "hel", expectedCursorPosition: 0, expectedText: "lo" },
+                // 5
+                { initText: "hello", clickPositions: [4, 2], expectedPreeditText: "he", expectedCursorPosition: 0, expectedText: "llo" },
+                { initText: "hello", clickPositions: [4, 1], expectedPreeditText: "h", expectedCursorPosition: 0, expectedText: "ello" },
+                { initText: "hello", clickPositions: [4, 0], expectedPreeditText: "", expectedCursorPosition: 0, expectedText: "hello" },
+                { initText: "hello", clickPositions: [1, 2], expectedPreeditText: "he", expectedCursorPosition: 0, expectedText: "llo" },
+                { initText: "hello", clickPositions: [1, 2, 2], expectedPreeditText: "", expectedCursorPosition: 2, expectedText: "hello" },
+                // 10
+                { initText: "hello", clickPositions: [1, 5], expectedPreeditText: "", expectedCursorPosition: 5, expectedText: "hello" },
+                { initText: "hel-lo", clickPositions: [3], expectedPreeditText: "hel-lo", expectedCursorPosition: 0, expectedText: "" },
+                { initText: "hel-lo", clickPositions: [4], expectedPreeditText: "hel-lo", expectedCursorPosition: 0, expectedText: "" },
+                { initText: "hel-lo", clickPositions: [4, 4], expectedPreeditText: "", expectedCursorPosition: 4, expectedText: "hel-lo" },
+                { initText: "hel-lo", clickPositions: [5], expectedPreeditText: "hel-lo", expectedCursorPosition: 0, expectedText: "" },
+                // 15
+                { initText: "hel-lo", clickPositions: [5], initInputMethodHints: Qt.ImhNoPredictiveText, expectedPreeditText: "", expectedCursorPosition: 5, expectedText: "hel-lo" },
+                { initText: "isn'", clickPositions: [2], expectedPreeditText: "isn", expectedCursorPosition: 0, expectedText: "'" },
+                { initText: "isn't", clickPositions: [2], expectedPreeditText: "isn't", expectedCursorPosition: 0, expectedText: "" },
+                { initText: "-hello", clickPositions: [2], expectedPreeditText: "hello", expectedCursorPosition: 1, expectedText: "-" },
+                { initText: "aa http://www.example.com bb", clickPositions: [4], expectedPreeditText: "http", expectedCursorPosition: 3, expectedText: "aa ://www.example.com bb" },
+                // 20
+                { initText: "aa http://www.example.com bb", initInputMethodHints: Qt.ImhUrlCharactersOnly, clickPositions: [4], expectedPreeditText: "http://www.example.com", expectedCursorPosition: 3, expectedText: "aa  bb" },
+                { initText: "aa username@example.com bb", clickPositions: [4], expectedPreeditText: "username", expectedCursorPosition: 3, expectedText: "aa @example.com bb" },
+                { initText: "aa username@example.com bb", initInputMethodHints: Qt.ImhEmailCharactersOnly, clickPositions: [4], expectedPreeditText: "username@example.com", expectedCursorPosition: 3, expectedText: "aa  bb" },
+            ]
+        }
+
+        function test_fullScreenModeWordReselection(data) {
+            prepareTest(data)
+            inputPanel.setFullScreenMode(true)
+
+            var cursorRects = []
+            for (var i = 0; i < data.clickPositions.length; i++) {
+                var clickPos = inputPanel.shadowInput.positionToRectangle(data.clickPositions[i])
+                // Could this be a bug in TextInput; padding not accounted in positionToRectangle()?
+                clickPos.x += inputPanel.shadowInput.leftPadding
+                cursorRects.push(clickPos)
+            }
+
+            for (i = 0; i < data.clickPositions.length; i++) {
+                var cursorRect = cursorRects[i]
+                mousePress(inputPanel.shadowInput, cursorRect.x, cursorRect.y + cursorRect.height / 2, Qt.LeftButton, Qt.NoModifier, 20)
+                mouseRelease(inputPanel.shadowInput, cursorRect.x, cursorRect.y + cursorRect.height / 2, Qt.LeftButton, Qt.NoModifier, 20)
+                waitForRendering(inputPanel.shadowInput)
+            }
+
+            if (!inputPanel.wordCandidateListVisibleHint && inputPanel.preeditText !== data.expectedPreeditText)
+                expectFail("", "Prediction/spell correction not enabled")
+            compare(inputPanel.preeditText, data.expectedPreeditText)
+            compare(inputPanel.shadowInput.preeditText, data.expectedPreeditText)
+
+            if (!inputPanel.wordCandidateListVisibleHint && inputPanel.cursorPosition !== data.expectedCursorPosition)
+                expectFail("", "Prediction/spell correction not enabled")
+            compare(inputPanel.cursorPosition, data.expectedCursorPosition)
+            compare(inputPanel.shadowInput.cursorPosition, data.expectedCursorPosition)
+
+            if (!inputPanel.wordCandidateListVisibleHint && textInput.text !== data.expectedText)
+                expectFail("", "Prediction/spell correction not enabled")
+            compare(textInput.text, data.expectedText)
+            compare(inputPanel.shadowInput.text, data.expectedText)
+        }
+
+        function test_fullScreenModeSelectionHandles_data() {
+            return [
+                { fullScreenMode: true, initText: "Hello cruel world", selectionStart: 2, selectionEnd: 9, expectHandlesToBeVisible: true },
+                { fullScreenMode: true, initText: "Hello cruel world", selectionStart: 9, selectionEnd: 9, expectHandlesToBeVisible: false },
+                { fullScreenMode: true, initText: "Hello cruel world", selectionStart: 2, selectionEnd: 9, expectHandlesToBeVisible: true },
+                { fullScreenMode: true, initText: "Hello cruel world", selectionStart: 0, selectionEnd: 17, expectHandlesToBeVisible: true },
+            ]
+        }
+
+        function test_fullScreenModeSelectionHandles(data) {
+            prepareTest(data)
+            compare(inputPanel.cursorHandle.visible, false)
+            compare(inputPanel.anchorHandle.visible, false)
+            compare(inputPanel.fullScreenModeCursorHandle.visible, data.expectHandlesToBeVisible)
+            compare(inputPanel.fullScreenModeAnchorHandle.visible, data.expectHandlesToBeVisible)
+            if (data.expectHandlesToBeVisible) {
+                waitForRendering(inputPanel.fullScreenModeCursorHandle)
+                var cursorHandlePointsTo = Qt.point(inputPanel.fullScreenModeCursorHandle.x + inputPanel.fullScreenModeCursorHandle.width/2, inputPanel.fullScreenModeCursorHandle.y)
+                var anchorHandlePointsTo = Qt.point(inputPanel.fullScreenModeAnchorHandle.x + inputPanel.fullScreenModeAnchorHandle.width/2, inputPanel.fullScreenModeAnchorHandle.y)
+                var anchorRect = inputPanel.shadowInput.positionToRectangle(data.selectionStart)
+                var cursorRect = inputPanel.shadowInput.positionToRectangle(data.selectionEnd)
+                anchorRect = container.mapFromItem(inputPanel.shadowInput, anchorRect.x, anchorRect.y, anchorRect.width, anchorRect.height)
+                cursorRect = container.mapFromItem(inputPanel.shadowInput, cursorRect.x, cursorRect.y, cursorRect.width, cursorRect.height)
+                // Could this be a bug in TextInput; padding not accounted in positionToRectangle()?
+                anchorRect.x += inputPanel.shadowInput.leftPadding
+                cursorRect.x += inputPanel.shadowInput.leftPadding
+
+                compare(cursorHandlePointsTo.x, cursorRect.x)
+                compare(cursorHandlePointsTo.y, cursorRect.y + cursorRect.height)
+
+                compare(anchorHandlePointsTo.x, anchorRect.x)
+                compare(anchorHandlePointsTo.y, anchorRect.y + anchorRect.height)
+            }
+        }
+
     }
 }

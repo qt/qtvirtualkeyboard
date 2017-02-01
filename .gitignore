@@ -30,4 +30,8 @@ qrc_*.cpp
 Makefile*
 *.html
 *~
-.qmake.cache
+.qmake.*
+
+tst_*
+!tst_*.*
+tst_*.exe

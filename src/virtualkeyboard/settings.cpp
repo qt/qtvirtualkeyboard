@@ -45,7 +45,8 @@ public:
         layoutPath(),
         wclAutoHideDelay(5000),
         wclAlwaysVisible(false),
-        wclAutoCommitWord(false)
+        wclAutoCommitWord(false),
+        fullScreenMode(false)
     {}
 
     QString style;
@@ -57,6 +58,7 @@ public:
     int wclAutoHideDelay;
     bool wclAlwaysVisible;
     bool wclAutoCommitWord;
+    bool fullScreenMode;
 };
 
 static QScopedPointer<Settings> s_settingsInstance;
@@ -210,6 +212,21 @@ void Settings::setWclAutoCommitWord(bool wclAutoCommitWord)
     if (d->wclAutoCommitWord != wclAutoCommitWord) {
         d->wclAutoCommitWord = wclAutoCommitWord;
         emit wclAutoCommitWordChanged();
+    }
+}
+
+bool Settings::fullScreenMode() const
+{
+    Q_D(const Settings);
+    return d->fullScreenMode;
+}
+
+void Settings::setFullScreenMode(bool fullScreenMode)
+{
+    Q_D(Settings);
+    if (d->fullScreenMode != fullScreenMode) {
+        d->fullScreenMode = fullScreenMode;
+        emit fullScreenModeChanged();
     }
 }
 

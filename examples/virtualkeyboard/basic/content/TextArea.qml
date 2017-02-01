@@ -68,8 +68,8 @@ TextBase {
         cursorVisible: activeFocus
         height: Math.max(implicitHeight, 60)
         font.pixelSize: textArea.fontPixelSize
-        selectionColor: Qt.rgba(1.0, 1.0, 1.0, 0.5)
-        selectedTextColor: Qt.rgba(0.0, 0.0, 0.0, 0.8)
+        selectionColor: Qt.rgba(0, 0, 0, 0.15)
+        selectedTextColor: color
         selectByMouse: true
         anchors { left: parent.left; right: parent.right; margins: 12 }
     }

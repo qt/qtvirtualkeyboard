@@ -31,6 +31,7 @@
 #include "inputengine.h"
 #include "shifthandler.h"
 #include "platforminputcontext.h"
+#include "shadowinputcontext.h"
 #include "virtualkeyboarddebug.h"
 #include "enterkeyaction.h"
 #include "settings.h"
@@ -70,7 +71,8 @@ public:
         ReselectEventState = 0x1,
         InputMethodEventState = 0x2,
         KeyEventState = 0x4,
-        InputMethodClickState = 0x8
+        InputMethodClickState = 0x8,
+        SyncShadowInputState = 0x10
     };
     Q_DECLARE_FLAGS(StateFlags, StateFlag)
 
@@ -87,6 +89,8 @@ public:
         shift(false),
         capsLock(false),
         cursorPosition(0),
+        anchorPosition(0),
+        forceAnchorPosition(-1),
         forceCursorPosition(-1),
         inputMethodHints(Qt::ImhNone),
         preeditText(),
@@ -116,6 +120,8 @@ public:
     bool capsLock;
     StateFlags stateFlags;
     int cursorPosition;
+    int anchorPosition;
+    int forceAnchorPosition;
     int forceCursorPosition;
     Qt::InputMethodHints inputMethodHints;
     QString preeditText;
@@ -131,6 +137,7 @@ public:
     QSet<int> activeNavigationKeys;
 #endif
     QSet<quint32> activeKeys;
+    ShadowInputContext shadow;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(InputContextPrivate::StateFlags)
@@ -162,6 +169,7 @@ InputContext::InputContext(PlatformInputContext *parent) :
 {
     Q_D(InputContext);
     d->inputContext = parent;
+    d->shadow.setInputContext(this);
     if (d->inputContext) {
         d->inputContext->setInputContext(this);
         connect(d->inputContext, SIGNAL(focusObjectChanged()), SLOT(onInputItemChanged()));
@@ -225,6 +233,12 @@ bool InputContext::uppercase() const
     return d->shift || d->capsLock;
 }
 
+int InputContext::anchorPosition() const
+{
+    Q_D(const InputContext);
+    return d->anchorPosition;
+}
+
 int InputContext::cursorPosition() const
 {
     Q_D(const InputContext);
@@ -247,27 +261,22 @@ void InputContext::setPreeditText(const QString &text, QList<QInputMethodEvent::
 {
     // Add default attributes
     if (!text.isEmpty()) {
-        bool containsTextFormat = false;
-        for (QList<QInputMethodEvent::Attribute>::ConstIterator attribute = attributes.constBegin();
-             attribute != attributes.constEnd(); attribute++) {
-            if (attribute->type == QInputMethodEvent::TextFormat) {
-                containsTextFormat = true;
-                break;
-            }
-        }
-        if (!containsTextFormat) {
+        if (!testAttribute(attributes, QInputMethodEvent::TextFormat)) {
             QTextCharFormat textFormat;
             textFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
             attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, 0, text.length(), textFormat));
         }
     } else {
-        Q_D(InputContext);
-        if (d->forceCursorPosition != -1)
-            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Selection, d->forceCursorPosition, 0, QVariant()));
-        d->forceCursorPosition = -1;
+        addSelectionAttribute(attributes);
     }
 
     sendPreedit(text, attributes, replaceFrom, replaceLength);
+}
+
+QList<QInputMethodEvent::Attribute> InputContext::preeditTextAttributes() const
+{
+    Q_D(const InputContext);
+    return d->preeditTextAttributes;
 }
 
 QString InputContext::surroundingText() const
@@ -491,13 +500,11 @@ void InputContext::commit(const QString &text, int replaceFrom, int replaceLengt
     VIRTUALKEYBOARD_DEBUG() << "InputContext::commit():" << text << replaceFrom << replaceLength;
     bool preeditChanged = !d->preeditText.isEmpty();
     d->preeditText.clear();
+    d->preeditTextAttributes.clear();
 
     if (d->inputContext) {
         QList<QInputMethodEvent::Attribute> attributes;
-        if (d->forceCursorPosition != -1) {
-            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Selection, d->forceCursorPosition, 0, QVariant()));
-            d->forceCursorPosition = -1;
-        }
+        addSelectionAttribute(attributes);
         QInputMethodEvent inputEvent(QString(), attributes);
         inputEvent.setCommitString(text, replaceFrom, replaceLength);
         d->stateFlags |= InputContextPrivate::InputMethodEventState;
@@ -524,13 +531,11 @@ void InputContext::clear()
     Q_D(InputContext);
     bool preeditChanged = !d->preeditText.isEmpty();
     d->preeditText.clear();
+    d->preeditTextAttributes.clear();
 
     if (d->inputContext) {
         QList<QInputMethodEvent::Attribute> attributes;
-        if (d->forceCursorPosition != -1) {
-            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Selection, d->forceCursorPosition, 0, QVariant()));
-            d->forceCursorPosition = -1;
-        }
+        addSelectionAttribute(attributes);
         QInputMethodEvent event(QString(), attributes);
         d->stateFlags |= InputContextPrivate::InputMethodEventState;
         d->inputContext->sendEvent(&event);
@@ -576,6 +581,42 @@ void InputContext::setSelectionOnFocusObject(const QPointF &anchorPos, const QPo
     QPlatformInputContext::setSelectionOnFocusObject(anchorPos, cursorPos);
 }
 
+/*!
+    \internal
+*/
+void InputContext::forceCursorPosition(int anchorPosition, int cursorPosition)
+{
+    Q_D(InputContext);
+    if (!d->shadow.inputItem())
+        return;
+    if (!d->inputContext->m_visible)
+        return;
+    if (d->stateFlags.testFlag(InputContextPrivate::ReselectEventState))
+        return;
+    if (d->stateFlags.testFlag(InputContextPrivate::SyncShadowInputState))
+        return;
+
+    VIRTUALKEYBOARD_DEBUG() << "InputContext::forceCursorPosition():" << cursorPosition << "anchorPosition:" << anchorPosition;
+    if (!d->preeditText.isEmpty()) {
+        d->forceAnchorPosition = -1;
+        d->forceCursorPosition = cursorPosition;
+        if (cursorPosition > d->cursorPosition)
+            d->forceCursorPosition += d->preeditText.length();
+        d->inputEngine->update();
+    } else {
+        d->forceAnchorPosition = anchorPosition;
+        d->forceCursorPosition = cursorPosition;
+        setPreeditText("");
+        if (!d->inputMethodHints.testFlag(Qt::ImhNoPredictiveText) &&
+                   cursorPosition > 0 && d->selectedText.isEmpty()) {
+            d->stateFlags |= InputContextPrivate::ReselectEventState;
+            if (d->inputEngine->reselect(cursorPosition, InputEngine::WordAtCursor))
+                d->stateFlags |= InputContextPrivate::InputMethodClickState;
+            d->stateFlags &= ~InputContextPrivate::ReselectEventState;
+        }
+    }
+}
+
 bool InputContext::anchorRectIntersectsClipRect() const
 {
     Q_D(const InputContext);
@@ -592,6 +633,12 @@ bool InputContext::selectionControlVisible() const
 {
     Q_D(const InputContext);
     return d->selectionControlVisible;
+}
+
+ShadowInputContext *InputContext::shadow() const
+{
+    Q_D(const InputContext);
+    return const_cast<ShadowInputContext *>(&d->shadow);
 }
 
 void InputContext::onInputItemChanged()
@@ -630,16 +677,30 @@ void InputContext::sendPreedit(const QString &text, const QList<QInputMethodEven
 
         if (d->inputContext) {
             QInputMethodEvent event(text, attributes);
-            if (replaceFrom != 0 || replaceLength > 0)
+            const bool replace = replaceFrom != 0 || replaceLength > 0;
+            if (replace)
                 event.setCommitString(QString(), replaceFrom, replaceLength);
             d->stateFlags |= InputContextPrivate::InputMethodEventState;
             d->inputContext->sendEvent(&event);
             d->stateFlags &= ~InputContextPrivate::InputMethodEventState;
+
+            // Send also to shadow input if only attributes changed.
+            // In this case the update() may not be called, so the shadow
+            // input may be out of sync.
+            if (d->shadow.inputItem() && !replace && !text.isEmpty() &&
+                    !textChanged && attributesChanged) {
+                VIRTUALKEYBOARD_DEBUG() << "InputContext::sendPreedit(shadow):" << text << replaceFrom << replaceLength;
+                event.setAccepted(true);
+                QGuiApplication::sendEvent(d->shadow.inputItem(), &event);
+            }
         }
 
         if (textChanged)
             emit preeditTextChanged();
     }
+
+    if (d->preeditText.isEmpty())
+        d->preeditTextAttributes.clear();
 }
 
 void InputContext::reset()
@@ -679,6 +740,7 @@ void InputContext::update(Qt::InputMethodQueries queries)
     bool newInputMethodHints = inputMethodHints != d->inputMethodHints;
     bool newSurroundingText = surroundingText != d->surroundingText;
     bool newSelectedText = selectedText != d->selectedText;
+    bool newAnchorPosition = anchorPosition != d->anchorPosition;
     bool newCursorPosition = cursorPosition != d->cursorPosition;
     bool newAnchorRectangle = anchorRectangle != d->anchorRectangle;
     bool newCursorRectangle = cursorRectangle != d->cursorRectangle;
@@ -699,6 +761,7 @@ void InputContext::update(Qt::InputMethodQueries queries)
     d->inputMethodHints = inputMethodHints;
     d->surroundingText = surroundingText;
     d->selectedText = selectedText;
+    d->anchorPosition = anchorPosition;
     d->cursorPosition = cursorPosition;
     d->anchorRectangle = anchorRectangle;
     d->cursorRectangle = cursorRectangle;
@@ -724,6 +787,9 @@ void InputContext::update(Qt::InputMethodQueries queries)
     }
     if (newSelectedText) {
         emit selectedTextChanged();
+    }
+    if (newAnchorPosition) {
+        emit anchorPositionChanged();
     }
     if (newCursorPosition) {
         emit cursorPositionChanged();
@@ -754,6 +820,12 @@ void InputContext::update(Qt::InputMethodQueries queries)
         if (d->inputEngine->reselect(d->cursorPosition, InputEngine::WordAtCursor))
             d->stateFlags |= InputContextPrivate::InputMethodClickState;
         d->stateFlags &= ~InputContextPrivate::ReselectEventState;
+    }
+
+    if (!d->stateFlags.testFlag(InputContextPrivate::SyncShadowInputState)) {
+        d->stateFlags |= InputContextPrivate::SyncShadowInputState;
+        d->shadow.update(queries);
+        d->stateFlags &= ~InputContextPrivate::SyncShadowInputState;
     }
 }
 
@@ -822,6 +894,28 @@ bool InputContext::filterEvent(const QEvent *event)
     return false;
 }
 
+void InputContext::addSelectionAttribute(QList<QInputMethodEvent::Attribute> &attributes)
+{
+    Q_D(InputContext);
+    if (!testAttribute(attributes, QInputMethodEvent::Selection) && d->forceCursorPosition != -1) {
+        if (d->forceAnchorPosition != -1)
+            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Selection, d->forceAnchorPosition, d->forceCursorPosition - d->forceAnchorPosition, QVariant()));
+        else
+            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Selection, d->forceCursorPosition, 0, QVariant()));
+    }
+    d->forceAnchorPosition = -1;
+    d->forceCursorPosition = -1;
+}
+
+bool InputContext::testAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const
+{
+    for (const QInputMethodEvent::Attribute &attribute : qAsConst(attributes)) {
+        if (attribute.type == attributeType)
+            return true;
+    }
+    return false;
+}
+
 /*!
     \qmlproperty bool InputContext::focus
 
@@ -873,6 +967,20 @@ bool InputContext::filterEvent(const QEvent *event)
     \brief the uppercase status.
 
     This property is \c true when either \l shift or \l capsLock is \c true.
+*/
+
+/*!
+    \qmlproperty int InputContext::anchorPosition
+    \since QtQuick.VirtualKeyboard 2.2
+
+    This property is changed when the anchor position changes.
+*/
+
+/*!
+    \property QtVirtualKeyboard::InputContext::anchorPosition
+    \brief the anchor position.
+
+    This property is changed when the anchor position changes.
 */
 
 /*!

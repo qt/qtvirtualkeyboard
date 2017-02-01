@@ -19,3 +19,4 @@ load(qt_helper_lib)
 
 # Needed for resources
 CONFIG += qt
+QT = core

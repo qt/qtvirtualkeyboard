@@ -16,7 +16,6 @@ SOURCES += \
     src/hunspell/affentry.cxx \
     src/hunspell/affixmgr.cxx \
     src/hunspell/csutil.cxx \
-    src/hunspell/dictmgr.cxx \
     src/hunspell/filemgr.cxx \
     src/hunspell/hashmgr.cxx \
     src/hunspell/hunspell.cxx \
@@ -32,7 +31,6 @@ HEADERS += \
     src/hunspell/atypes.hxx \
     src/hunspell/baseaffix.hxx \
     src/hunspell/csutil.hxx \
-    src/hunspell/dictmgr.hxx \
     src/hunspell/filemgr.hxx \
     src/hunspell/hashmgr.hxx \
     src/hunspell/htypes.hxx \

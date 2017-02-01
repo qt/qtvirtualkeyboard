@@ -29,6 +29,7 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
+import QtQuick.VirtualKeyboard 2.1
 
 /*!
     \qmltype BaseKey
@@ -203,7 +204,7 @@ Item {
 
         By default, this property reflects the uppercase status of the keyboard.
     */
-    property bool uppercased: keyboard.uppercased && !noModifier
+    property bool uppercased: InputContext.uppercase && !noModifier
 
     /*! Sets the key panel delegate for the key.
 

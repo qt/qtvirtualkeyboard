@@ -52,8 +52,6 @@ Item {
             \li \c control.enabled Set to true when the key is enabled.
             \li \c control.pressed Set to true when the key is currently pressed.
             \li \c control.uppercased Set to true when the key is uppercased.
-            \li \c control.capsLock Set to true when caps lock is enabled.
-            \note Deprecated since 1.2. Use \l {InputContext::capsLock} {InputContext.capsLock} instead.
         \endlist
     */
     property Item control

@@ -33,7 +33,8 @@ SOURCES += platforminputcontext.cpp \
     settings.cpp \
     virtualkeyboardsettings.cpp \
     trace.cpp \
-    desktopinputselectioncontrol.cpp
+    desktopinputselectioncontrol.cpp \
+    shadowinputcontext.cpp
 
 HEADERS += platforminputcontext.h \
     inputcontext.h \
@@ -53,7 +54,8 @@ HEADERS += platforminputcontext.h \
     virtualkeyboardsettings.h \
     plugin.h \
     trace.h \
-    desktopinputselectioncontrol.h
+    desktopinputselectioncontrol.h \
+    shadowinputcontext.h
 
 RESOURCES += \
     content/styles/default/default_style.qrc \
@@ -164,7 +166,8 @@ t9write: LAYOUT_FILES += \
 contains(CONFIG, lang-ro.*) {
     LAYOUT_FILES += \
         content/layouts/ro_RO/main.qml \
-        content/layouts/ro_RO/symbols.qml \
+        content/layouts/ro_RO/symbols.qml
+t9write: LAYOUT_FILES += \
         content/layouts/ro_RO/handwriting.qml
 }
 contains(CONFIG, lang-ru.*) {
@@ -323,6 +326,10 @@ lipi-toolkit {
     win32: LIBS += Advapi32.lib
     else: LIBS += -ldl
     record-trace-input: DEFINES += QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
+    ltk_projects.files = $$PWD/3rdparty/lipi-toolkit/projects
+    ltk_projects.path = $$[QT_INSTALL_DATA]/qtvirtualkeyboard/lipi_toolkit
+    INSTALLS += ltk_projects
+    !prefix_build: COPIES += ltk_projects
 }
 
 t9write {

@@ -29,6 +29,7 @@
 
 #include "platforminputcontext.h"
 #include "inputcontext.h"
+#include "shadowinputcontext.h"
 #include "abstractinputpanel.h"
 #ifdef QT_VIRTUALKEYBOARD_DESKTOP
 #include "desktopinputpanel.h"
@@ -181,6 +182,9 @@ QObject *PlatformInputContext::focusObject()
 void PlatformInputContext::setFocusObject(QObject *object)
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::setFocusObject():" << object;
+    Q_ASSERT(m_inputContext == 0 ||
+             m_inputContext->shadow()->inputItem() == 0 ||
+             m_inputContext->shadow()->inputItem() != object);
     if (m_focusObject != object) {
         if (m_focusObject)
             m_focusObject->removeEventFilter(this);

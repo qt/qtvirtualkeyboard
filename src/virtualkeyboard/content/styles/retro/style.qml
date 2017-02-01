@@ -994,4 +994,28 @@ KeyboardStyle {
         sourceSize.width: 20
         source: resourcePrefix + "images/selectionhandle-bottom.svg"
     }
+
+    fullScreenInputContainerBackground: Rectangle {
+        color: "#FFF"
+    }
+
+    fullScreenInputBackground: Rectangle {
+        color: "#FFF"
+    }
+
+    fullScreenInputMargins: Math.round(15 * scaleHint)
+
+    fullScreenInputPadding: Math.round(30 * scaleHint)
+
+    fullScreenInputCursor: Rectangle {
+        width: 1
+        color: "#000"
+        visible: parent.blinkStatus
+    }
+
+    fullScreenInputFont.pixelSize: 58 * scaleHint
+
+    fullScreenInputPasswordCharacter: "*"
+
+    fullScreenInputSelectionColor: "#B57C47"
 }

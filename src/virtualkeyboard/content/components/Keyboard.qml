@@ -29,7 +29,8 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
-import QtQuick.VirtualKeyboard 2.1
+import QtQuick.Window 2.2
+import QtQuick.VirtualKeyboard 2.2
 import QtQuick.VirtualKeyboard.Styles 2.1
 import QtQuick.VirtualKeyboard.Settings 2.2
 import Qt.labs.folderlistmodel 2.0
@@ -59,10 +60,10 @@ Item {
         return "main"
     }
     property bool active: Qt.inputMethod.visible
-    property bool uppercased: InputContext.shift
     property bool handwritingMode
     property bool fullScreenHandwritingMode
     property bool symbolMode
+    property bool fullScreenMode: VirtualKeyboardSettings.fullScreenMode
     property var defaultInputMethod: initDefaultInputMethod()
     property var plainInputMethod: PlainInputMethod {}
     property var customInputMethod: null
@@ -104,6 +105,10 @@ Item {
             updateDefaultLocale()
             if (!isValidLocale(localeIndex) || VirtualKeyboardSettings.locale)
                 localeIndex = defaultLocaleIndex
+        }
+        onFullScreenModeChanged: {
+            wordCandidateView.disableAnimation = VirtualKeyboardSettings.fullScreenMode
+            keyboard.fullScreenMode = VirtualKeyboardSettings.fullScreenMode
         }
     }
     onAvailableLocaleIndicesChanged: hideLanguagePopup()
@@ -466,7 +471,10 @@ Item {
     Binding {
         target: InputContext
         property: "keyboardRectangle"
-        value: Qt.rect(keyboard.x, keyboard.y + wordCandidateView.currentYOffset, keyboard.width, keyboard.height - wordCandidateView.currentYOffset)
+        value: Qt.rect(keyboard.x,
+                       keyboard.y + wordCandidateView.currentYOffset - (shadowInputControl.visible ? shadowInputControl.height : 0),
+                       keyboard.width,
+                       keyboard.height - wordCandidateView.currentYOffset + (shadowInputControl.visible ? shadowInputControl.height : 0))
         when: keyboard.active && !InputContext.animating
     }
     Binding {
@@ -541,15 +549,58 @@ Item {
         }
     }
 
+    ShadowInputControl {
+        id: shadowInputControl
+        objectName: "shadowInputControl"
+        z: -3
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: wordCandidateView.top
+        height: (keyboard.parent.parent ? keyboard.parent.parent.height : Screen.height) -
+                keyboard.height - (wordCandidateView.visibleCondition ? wordCandidateView.height : 0)
+        visible: fullScreenMode && (shadowInputControlVisibleTimer.running || InputContext.animating)
+
+        Connections {
+            target: keyboard
+            onActiveChanged: {
+                if (keyboard.active)
+                    shadowInputControlVisibleTimer.start()
+                else
+                    shadowInputControlVisibleTimer.stop()
+            }
+        }
+
+        Timer {
+            id: shadowInputControlVisibleTimer
+            interval: 2147483647
+            repeat: true
+        }
+
+        MouseArea {
+            onPressed: keyboard.hideLanguagePopup()
+            anchors.fill: parent
+            enabled: languagePopupList.enabled
+        }
+    }
+
+    SelectionControl {
+        objectName: "fullScreenModeSelectionControl"
+        inputContext: InputContext.shadow
+        anchors.top: shadowInputControl.top
+        anchors.left: shadowInputControl.left
+        enabled: keyboard.enabled && fullScreenMode
+    }
+
     ListView {
         id: wordCandidateView
         objectName: "wordCandidateView"
         clip: true
         z: -2
+        property bool disableAnimation: VirtualKeyboardSettings.fullScreenMode
         property bool empty: true
-        readonly property bool visibleCondition: (((!wordCandidateView.empty || wordCandidateViewAutoHideTimer.running) &&
+        readonly property bool visibleCondition: (((!wordCandidateView.empty || wordCandidateViewAutoHideTimer.running || shadowInputControl.visible) &&
                                                    InputContext.inputEngine.wordCandidateListVisibleHint) || VirtualKeyboardSettings.wordCandidateList.alwaysVisible) &&
-                                                 keyboard.active
+                                                 (keyboard.active || shadowInputControl.visible)
         readonly property real visibleYOffset: VirtualKeyboardSettings.wordCandidateList.alwaysVisible ? 0 : -height
         readonly property real currentYOffset: visibleCondition || wordCandidateViewTransition.running ? visibleYOffset : 0
         height: Math.round(style.selectionListHeight)
@@ -610,7 +661,7 @@ Item {
         transitions: Transition {
             id: wordCandidateViewTransition
             to: "visible"
-            enabled: !InputContext.animating && !VirtualKeyboardSettings.wordCandidateList.alwaysVisible
+            enabled: !InputContext.animating && !VirtualKeyboardSettings.wordCandidateList.alwaysVisible && !wordCandidateView.disableAnimation
             reversible: true
             ParallelAnimation {
                 NumberAnimation {
@@ -748,7 +799,7 @@ Item {
                     function click(key) {
                         if (key && key.enabled) {
                             if (!key.noKeyEvent)
-                                InputContext.inputEngine.virtualKeyClick(key.key, keyboard.uppercased ? key.text.toUpperCase() : key.text, keyboard.uppercased ? Qt.ShiftModifier : 0)
+                                InputContext.inputEngine.virtualKeyClick(key.key, InputContext.uppercase ? key.text.toUpperCase() : key.text, InputContext.uppercase ? Qt.ShiftModifier : 0)
                             key.clicked()
                         }
                     }

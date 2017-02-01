@@ -29,7 +29,7 @@
 
 import QtTest 1.0
 import QtQuick 2.0
-import QtQuick.VirtualKeyboard 2.1
+import QtQuick.VirtualKeyboard 2.2
 import QtQuick.VirtualKeyboard.Settings 2.2
 import "handwriting.js" as Handwriting
 import "utils.js" as Utils
@@ -67,9 +67,14 @@ InputPanel {
                                                         naviationHighlight.widthAnimation.running ||
                                                         naviationHighlight.heightAnimation.running
     readonly property var wordCandidateView: Utils.findChildByProperty(keyboard, "objectName", "wordCandidateView", null)
-    readonly property var selectionControl: Utils.findChild(inputPanel, null, function(obj, param) { return obj.hasOwnProperty("handleIsMoving")})
+    readonly property var shadowInputControl: Utils.findChildByProperty(keyboard, "objectName", "shadowInputControl", null)
+    readonly property var shadowInput: Utils.findChildByProperty(keyboard, "objectName", "shadowInput", null)
+    readonly property var selectionControl: Utils.findChildByProperty(inputPanel, "objectName", "selectionControl", null)
     readonly property var anchorHandle: selectionControl.children[0]
     readonly property var cursorHandle: selectionControl.children[1]
+    readonly property var fullScreenModeSelectionControl: Utils.findChildByProperty(inputPanel, "objectName", "fullScreenModeSelectionControl", null)
+    readonly property var fullScreenModeAnchorHandle: fullScreenModeSelectionControl.children[0]
+    readonly property var fullScreenModeCursorHandle: fullScreenModeSelectionControl.children[1]
     readonly property bool wordCandidateListVisibleHint: InputContext.inputEngine.wordCandidateListVisibleHint
     readonly property bool keyboardLayoutsAvailable: keyboard.availableLocaleIndices.length > 0 && keyboard.availableLocaleIndices.indexOf(-1) === -1
     property alias keyboardLayoutsAvailableSpy: keyboardLayoutsAvailableSpy
@@ -85,6 +90,7 @@ InputPanel {
     property alias wordCandidateListChangedSpy: wordCandidateListChangedSpy
     property alias wordCandidateListVisibleSpy: wordCandidateListVisibleSpy
     property alias shiftStateSpy: shiftStateSpy
+    property alias shadowInputControlVisibleSpy: shadowInputControlVisibleSpy
 
     signal inputMethodResult(var text)
 
@@ -176,6 +182,12 @@ InputPanel {
         signalName: "onShiftChanged"
     }
 
+    SignalSpy {
+        id: shadowInputControlVisibleSpy
+        target: shadowInputControl
+        signalName: "onVisibleChanged"
+    }
+
     function findChildByProperty(parent, propertyName, propertyValue, compareCb) {
         var obj = null
         if (parent === null)
@@ -224,6 +236,10 @@ InputPanel {
 
     function setWclAutoCommitWord(wclAutoCommitWord) {
         VirtualKeyboardSettings.wordCandidateList.autoCommitWord = wclAutoCommitWord
+    }
+
+    function setFullScreenMode(fullScreenMode) {
+        VirtualKeyboardSettings.fullScreenMode = fullScreenMode
     }
 
     function mapInputMode(inputModeName) {

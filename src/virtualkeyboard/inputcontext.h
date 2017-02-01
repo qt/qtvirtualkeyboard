@@ -39,6 +39,7 @@
 namespace QtVirtualKeyboard {
 
 class PlatformInputContext;
+class ShadowInputContext;
 class InputEngine;
 class ShiftHandler;
 class InputContextPrivate;
@@ -52,6 +53,7 @@ class InputContext : public QObject
     Q_PROPERTY(bool shift READ shift WRITE setShift NOTIFY shiftChanged)
     Q_PROPERTY(bool capsLock READ capsLock WRITE setCapsLock NOTIFY capsLockChanged)
     Q_PROPERTY(bool uppercase READ uppercase NOTIFY uppercaseChanged)
+    Q_PROPERTY(int anchorPosition READ anchorPosition NOTIFY anchorPositionChanged)
     Q_PROPERTY(int cursorPosition READ cursorPosition NOTIFY cursorPositionChanged)
     Q_PROPERTY(Qt::InputMethodHints inputMethodHints READ inputMethodHints NOTIFY inputMethodHintsChanged)
     Q_PROPERTY(QString preeditText READ preeditText WRITE setPreeditText NOTIFY preeditTextChanged)
@@ -70,6 +72,7 @@ class InputContext : public QObject
     Q_PROPERTY(bool selectionControlVisible READ selectionControlVisible NOTIFY selectionControlVisibleChanged)
     Q_PROPERTY(bool anchorRectIntersectsClipRect READ anchorRectIntersectsClipRect NOTIFY anchorRectIntersectsClipRectChanged)
     Q_PROPERTY(bool cursorRectIntersectsClipRect READ cursorRectIntersectsClipRect NOTIFY cursorRectIntersectsClipRectChanged)
+    Q_PROPERTY(ShadowInputContext *shadow READ shadow CONSTANT)
 
 public:
     explicit InputContext(PlatformInputContext *parent = 0);
@@ -81,10 +84,12 @@ public:
     bool capsLock() const;
     void setCapsLock(bool enable);
     bool uppercase() const;
+    int anchorPosition() const;
     int cursorPosition() const;
     Qt::InputMethodHints inputMethodHints() const;
     QString preeditText() const;
     void setPreeditText(const QString &text, QList<QInputMethodEvent::Attribute> attributes = QList<QInputMethodEvent::Attribute>(), int replaceFrom = 0, int replaceLength = 0);
+    QList<QInputMethodEvent::Attribute> preeditTextAttributes() const;
     QString surroundingText() const;
     QString selectedText() const;
     QRectF anchorRectangle() const;
@@ -106,6 +111,7 @@ public:
     bool selectionControlVisible() const;
     bool anchorRectIntersectsClipRect() const;
     bool cursorRectIntersectsClipRect() const;
+    ShadowInputContext *shadow() const;
 
     Q_INVOKABLE void hideInputPanel();
     Q_INVOKABLE void sendKeyClick(int key, const QString &text, int modifiers = 0);
@@ -120,6 +126,9 @@ public:
     // For selection handles
     Q_INVOKABLE void setSelectionOnFocusObject(const QPointF &anchorPos, const QPointF &cursorPos);
 
+    // For shadow input
+    Q_INVOKABLE void forceCursorPosition(int anchorPosition, int cursorPosition);
+
 signals:
     void focusChanged();
     void focusEditorChanged();
@@ -127,6 +136,7 @@ signals:
     void inputMethodHintsChanged();
     void surroundingTextChanged();
     void selectedTextChanged();
+    void anchorPositionChanged();
     void cursorPositionChanged();
     void anchorRectangleChanged();
     void cursorRectangleChanged();
@@ -156,6 +166,8 @@ private:
     void update(Qt::InputMethodQueries queries);
     void invokeAction(QInputMethod::Action action, int cursorPosition);
     bool filterEvent(const QEvent *event);
+    void addSelectionAttribute(QList<QInputMethodEvent::Attribute> &attributes);
+    bool testAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const;
 
 private:
     friend class PlatformInputContext;

@@ -65,8 +65,10 @@ Item {
     property alias keyboard: keyboard
 
     SelectionControl {
+        objectName: "selectionControl"
         x: -parent.x
         y: -parent.y
+        enabled: active && !keyboard.fullScreenMode
     }
 
     implicitHeight: keyboard.height
@@ -79,5 +81,6 @@ Item {
     MouseArea {
         z: -1
         anchors.fill: keyboard
+        enabled: active
     }
 }
