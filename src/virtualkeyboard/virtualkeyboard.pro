@@ -318,7 +318,7 @@ lipi-toolkit {
         -lltkcommon$$qtPlatformTargetSuffix() \
         -lltkutil$$qtPlatformTargetSuffix()
     win32: LIBS += Advapi32.lib
-    else: LIBS += -ldl
+    else: QMAKE_USE += libdl
     record-trace-input: DEFINES += QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
     ltk_projects.files = $$PWD/3rdparty/lipi-toolkit/projects
     ltk_projects.path = $$[QT_INSTALL_DATA]/qtvirtualkeyboard/lipi_toolkit
