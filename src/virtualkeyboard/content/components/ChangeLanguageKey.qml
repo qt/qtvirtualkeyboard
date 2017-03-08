@@ -47,7 +47,7 @@ import QtQuick.VirtualKeyboard.Styles 2.1
         \li Toggle mode
     \endlist
 
-    The popup mode is enabled by \l {KeyboardStyle.languagePopupListEnabled} property.
+    The popup mode is enabled by the \l {KeyboardStyle::languagePopupListEnabled} property.
     If enabled, a key press will open a popup list with available languages. Otherwise
     it will cycle to the next available input language.
 */
