@@ -32,6 +32,7 @@
 #include <QVector>
 #include <QTextCodec>
 #include <QFileInfo>
+#include <QRegExp>
 #include <QTime>
 
 namespace QtVirtualKeyboard {
