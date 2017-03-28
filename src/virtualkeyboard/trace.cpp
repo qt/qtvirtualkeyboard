@@ -104,10 +104,10 @@ public:
 
     Trace objects are owned by their creator, which is the input method in
     normal case. This means the objects are constructed in the
-    \l {InputMethod.traceBegin()} (QML) method.
+    \l {InputMethod::traceBegin()}{InputMethod.traceBegin()} (QML) method.
 
     By definition, the trace object can be destroyed at earliest in the
-    \l {InputMethod.traceEnd()} (QML) method.
+    \l {InputMethod::traceEnd()}{InputMethod.traceEnd()} (QML) method.
 */
 
 /*!
@@ -166,10 +166,10 @@ public:
 
     Trace objects are owned by their creator, which is the input method in
     normal case. This means the objects are constructed in the
-    \l {InputMethod.traceBegin()} (QML) method.
+    \l {InputMethod::traceBegin()}{InputMethod.traceBegin()} (QML) method.
 
     By definition, the trace object can be destroyed at earliest in the
-    \l {InputMethod.traceEnd()} (QML) method.
+    \l {InputMethod::traceEnd()}{InputMethod.traceEnd()} (QML) method.
 */
 
 /*! \internal */
