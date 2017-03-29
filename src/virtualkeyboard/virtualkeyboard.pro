@@ -243,6 +243,7 @@ qtquickcompiler: DEFINES += COMPILING_QML
 }
 
 pinyin {
+    LIBS += -pthread
     SOURCES += \
         pinyininputmethod.cpp \
         pinyindecoderservice.cpp
