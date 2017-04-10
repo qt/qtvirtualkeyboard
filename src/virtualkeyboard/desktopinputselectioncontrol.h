@@ -44,6 +44,8 @@ class InputSelectionHandle;
 
 class DesktopInputSelectionControl : public QObject
 {
+    Q_OBJECT
+
 public:
     DesktopInputSelectionControl(QObject *parent, InputContext *inputContext);
     ~DesktopInputSelectionControl() {}
