@@ -62,13 +62,15 @@ RESOURCES += \
     content/styles/retro/retro_style.qrc \
     content/content.qrc
 
+# Fallback for languages which don't have these special layouts
+LAYOUT_FILES += \
+    content/layouts/en_GB/dialpad.qml \
+    content/layouts/en_GB/digits.qml \
+    content/layouts/en_GB/numbers.qml
 contains(CONFIG, lang-en.*) {
     LAYOUT_FILES += \
         content/layouts/en_GB/main.qml \
-        content/layouts/en_GB/dialpad.qml \
-        content/layouts/en_GB/digits.qml \
         content/layouts/en_GB/handwriting.qml \
-        content/layouts/en_GB/numbers.qml \
         content/layouts/en_GB/symbols.qml
 }
 contains(CONFIG, lang-ar.*) {
