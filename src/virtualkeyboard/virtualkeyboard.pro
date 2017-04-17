@@ -74,8 +74,9 @@ LAYOUT_FILES += \
 contains(CONFIG, lang-en.*) {
     LAYOUT_FILES += \
         content/layouts/en_GB/main.qml \
-        content/layouts/en_GB/handwriting.qml \
         content/layouts/en_GB/symbols.qml
+t9write-alphabetic|lipi-toolkit: LAYOUT_FILES += \
+        content/layouts/en_GB/handwriting.qml
 }
 contains(CONFIG, lang-ar.*) {
     LAYOUT_FILES += \
@@ -88,21 +89,21 @@ contains(CONFIG, lang-da.*) {
     LAYOUT_FILES += \
         content/layouts/da_DK/main.qml \
         content/layouts/da_DK/symbols.qml
-t9write: LAYOUT_FILES += \
+t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/da_DK/handwriting.qml
 }
 contains(CONFIG, lang-de.*) {
     LAYOUT_FILES += \
         content/layouts/de_DE/main.qml \
         content/layouts/de_DE/symbols.qml
-t9write: LAYOUT_FILES += \
+t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/de_DE/handwriting.qml
 }
 contains(CONFIG, lang-es.*) {
     LAYOUT_FILES += \
         content/layouts/es_ES/main.qml \
         content/layouts/es_ES/symbols.qml
-t9write: LAYOUT_FILES += \
+t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/es_ES/handwriting.qml
 }
 contains(CONFIG, lang-fa.*) {
@@ -116,14 +117,14 @@ contains(CONFIG, lang-fi.*) {
     LAYOUT_FILES += \
         content/layouts/fi_FI/main.qml \
         content/layouts/fi_FI/symbols.qml
-t9write: LAYOUT_FILES += \
+t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/fi_FI/handwriting.qml
 }
 contains(CONFIG, lang-fr.*) {
     LAYOUT_FILES += \
         content/layouts/fr_FR/main.qml \
         content/layouts/fr_FR/symbols.qml
-t9write: LAYOUT_FILES += \
+t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/fr_FR/handwriting.qml
 }
 contains(CONFIG, lang-hi.*) {
@@ -135,7 +136,7 @@ contains(CONFIG, lang-it.*) {
     LAYOUT_FILES += \
         content/layouts/it_IT/main.qml \
         content/layouts/it_IT/symbols.qml
-t9write: LAYOUT_FILES += \
+t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/it_IT/handwriting.qml
 }
 contains(CONFIG, lang-ja.*) {
@@ -152,48 +153,50 @@ contains(CONFIG, lang-nb.*) {
     LAYOUT_FILES += \
         content/layouts/nb_NO/main.qml \
         content/layouts/nb_NO/symbols.qml
-t9write: LAYOUT_FILES += \
+t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/nb_NO/handwriting.qml
 }
 contains(CONFIG, lang-pl.*) {
     LAYOUT_FILES += \
         content/layouts/pl_PL/main.qml \
         content/layouts/pl_PL/symbols.qml
-t9write: LAYOUT_FILES += \
+t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/pl_PL/handwriting.qml
 }
 contains(CONFIG, lang-pt.*) {
     LAYOUT_FILES += \
         content/layouts/pt_PT/main.qml \
         content/layouts/pt_PT/symbols.qml
-t9write: LAYOUT_FILES += \
+t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/pt_PT/handwriting.qml
 }
 contains(CONFIG, lang-ro.*) {
     LAYOUT_FILES += \
         content/layouts/ro_RO/main.qml \
         content/layouts/ro_RO/symbols.qml
-t9write: LAYOUT_FILES += \
+t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/ro_RO/handwriting.qml
 }
 contains(CONFIG, lang-ru.*) {
     LAYOUT_FILES += \
         content/layouts/ru_RU/main.qml \
         content/layouts/ru_RU/symbols.qml
-t9write: LAYOUT_FILES += \
+t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/ru_RU/handwriting.qml
 }
 contains(CONFIG, lang-sv.*) {
     LAYOUT_FILES += \
         content/layouts/sv_SE/main.qml \
         content/layouts/sv_SE/symbols.qml
-t9write: LAYOUT_FILES += \
+t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/sv_SE/handwriting.qml
 }
 contains(CONFIG, lang-zh(_CN)?) {
     LAYOUT_FILES += \
         content/layouts/zh_CN/main.qml \
         content/layouts/zh_CN/symbols.qml
+t9write-cjk: LAYOUT_FILES += \
+        content/layouts/zh_CN/handwriting.qml
 }
 contains(CONFIG, lang-zh(_TW)?) {
     LAYOUT_FILES += \
@@ -340,18 +343,41 @@ lipi-toolkit {
 t9write {
     include(3rdparty/t9write/t9write-build.pri)
     equals(T9WRITE_FOUND, 0): \
-        error("T9Write SDK could not be found. Please make sure you have extracted" \
-              "the contents of the T9Write SDK to $$PWD/3rdparty/t9write")
+        error("T9Write SDK could not be found. For more information, see" \
+              "the documentation in Building Qt Virtual Keyboard")
     SOURCES += \
         t9writeinputmethod.cpp \
-        t9writeworker.cpp
+        t9writeworker.cpp \
+        t9writedictionary.cpp
     HEADERS += \
         t9writeinputmethod.h \
-        t9writeworker.h
+        t9writeworker.h \
+        t9writedictionary.h \
+        t9write.h
     DEFINES += HAVE_T9WRITE
     QMAKE_USE += t9write_db
     INCLUDEPATH += $$T9WRITE_INCLUDE_DIRS
-    LIBS += $$T9WRITE_ALPHABETIC_LIBS
+    t9write-alphabetic {
+        LIBS += $$T9WRITE_ALPHABETIC_LIBS
+        DEFINES += HAVE_T9WRITE_ALPHABETIC
+        !isEmpty(T9WRITE_ALPHABETIC_BINS) {
+            t9write_alphabetic_bins.files = $$T9WRITE_ALPHABETIC_BINS
+            t9write_alphabetic_bins.path = $$[QT_INSTALL_BINS]
+            INSTALLS += t9write_alphabetic_bins
+            !prefix_build: COPIES += t9write_alphabetic_bins
+        }
+    }
+    t9write-cjk {
+        LIBS += $$T9WRITE_CJK_LIBS
+        DEFINES += HAVE_T9WRITE_CJK
+        !isEmpty(T9WRITE_CJK_BINS) {
+            t9write_cjk_bins.files = $$T9WRITE_CJK_BINS
+            t9write_cjk_bins.path = $$[QT_INSTALL_BINS]
+            INSTALLS += t9write_cjk_bins
+            !prefix_build: COPIES += t9write_cjk_bins
+        }
+    }
+    DEFINES += QT_VIRTUALKEYBOARD_DEBUG
 }
 
 record-trace-input {

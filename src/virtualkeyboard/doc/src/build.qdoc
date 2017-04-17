@@ -281,6 +281,136 @@ Hunspell sources and dictionary files is listed below:
             (etc.)
 \endcode
 
+\section2 T9 Write Integration
+
+T9 Write integration supports the T9 Write Alphabetic and T9 Write CJK engines. Both
+engines are integrated via T9WriteInputMethod. The input method can be initialized
+with either of the engines at runtime. The engine selection happens automatically
+based on input locale and input mode from the keyboard.
+
+\section3 T9 Write Compatibility
+
+Qt Virtual Keyboard is compatible with T9 Write v7.5.0 onward.
+
+The latest tested version is v7.8.1.
+
+\section3 T9 Write Build Preparations
+
+The contents of the SDK must be either manually copied to the directory structure
+described below, or by using the \e unpack.py script found in the t9write directory.
+
+To unpack the SDK using the script:
+
+\badcode
+$ cd src/virtualkeyboard/3rdparty/t9write/
+$ python unpack.py T9Write_Alpha_v7-8-0_SDK.zip .
+\endcode
+
+\badcode
+3rdparty
+└── t9write
+    ├─── api
+    │   ├─── decuma*.h
+    │   ├─── t9write*.h
+    │   └─── xxt9w*.h
+    ├─── data
+    │   ├─── *.bin [T9 Write Alphabetic]
+    │   ├─── *.hdb
+    │   ├─── *.phd
+    │   └─── *.ldb [T9 Write v7.5]
+    └─── lib
+        ├─── arm
+        │   ├─── shared
+        │   │   ├─── alphabetic
+        │   │   │   └─── *.so
+        │   │   └─── cjk
+        │   │       └─── *.so
+        │   └─── static
+        │       ├─── alphabetic
+        │       │   └─── *.a / *.o
+        │       └─── cjk
+        │           └─── *.a / *.o
+        ├─── linux-x86
+        │   ├─── shared
+        │   │   ├─── alphabetic
+        │   │   │   └─── *.so
+        │   │   └─── cjk
+        │   │       └─── *.so
+        │   └─── static
+        │       ├─── alphabetic
+        │       │   └─── *.a / *.o
+        │       └─── cjk
+        │           └─── *.a / *.o
+        └─── win32
+            ├─── shared
+            │   ├─── alphabetic
+            │   │   ├─── *.dll
+            │   │   └─── *.lib
+            │   └─── cjk
+            │       ├─── *.dll
+            │       └─── *.lib
+            └─── static
+                ├─── alphabetic
+                │   └─── *.lib / *.obj
+                └─── cjk
+                    └─── *.lib / *.obj
+\endcode
+
+\note The above files are from the T9 Write demo SDK for Windows; the contents may vary for other
+      platforms.
+
+Where the contents of each directory are:
+
+\table
+\header
+    \li Directory
+    \li Description
+    \li Remarks
+\row
+    \li \e api
+    \li This directory should contain all of the API files
+    \li The API files usually located in the "api" and "public" directories
+        of the SDK, but sometimes in the "demo" directory.
+
+        When using both Alphabetic and CJK engines at the same time, any
+        overlapping files can be copied from either SDK.
+\row
+    \li \e data
+    \li This directory should contain all HWR databases and optionally
+        XT9 databases.
+    \li HWR database for the T9 Write Alphabetic:
+        \list
+            \li \e _databas_le.bin
+        \endlist
+
+        HWR database for the T9 Write CJK:
+        \list
+            \li \e cjk_HK_std_le.hdb HongKong Chinese
+            \li \e cjk_J_std_le.hdb Japanese
+            \li \e cjk_K_mkt_le.hdb Korean
+            \li \e cjk_S_gb18030_le.hdb Simplified Chinese
+            \li \e cjk_T_std_le.hdb Traditional Chinese
+        \endlist
+
+        Language database:
+        \list
+            \li File extension is either \e .ldb or \e .phd
+        \endlist
+\row
+    \li \e lib/<target>/<linkage>/<engine-variant>
+    \li Directory structure holding supported target builds.
+    \li These directories should hold the desired target libraries.
+        If both shared and static libraries are found, shared libraries
+        are preferred.
+
+        For example, to enable a static win32 build, copy
+        \e t9write_alphabetic_rel.obj to \e lib/win32/static/alphabetic
+        directory.
+\endtable
+
+Finally, the SDK is included in the build by adding CONFIG+=t9write to the
+qmake command line.
+
 \section2 Static builds
 
 The virtual keyboard can be built and linked statically against the application.

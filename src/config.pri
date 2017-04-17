@@ -4,6 +4,11 @@ handwriting:!lipi-toolkit:!t9write {
     equals(T9WRITE_FOUND, 1): CONFIG += t9write
     else: CONFIG += lipi-toolkit
 }
+t9write {
+    !handwriting: include(virtualkeyboard/3rdparty/t9write/t9write-build.pri)
+    equals(T9WRITE_CJK_FOUND, 1): CONFIG += t9write-cjk
+    equals(T9WRITE_ALPHABETIC_FOUND, 1): CONFIG += t9write-alphabetic
+}
 
 # Disable built-in layouts
 disable-layouts {

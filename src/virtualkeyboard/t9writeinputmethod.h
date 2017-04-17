@@ -31,10 +31,12 @@
 #define T9WRITEINPUTMETHOD_H
 
 #include "abstractinputmethod.h"
+#include <QSharedPointer>
 
 namespace QtVirtualKeyboard {
 
 class T9WriteInputMethodPrivate;
+class T9WriteDictionary;
 
 class T9WriteInputMethod : public AbstractInputMethod
 {
@@ -70,8 +72,9 @@ protected:
     void timerEvent(QTimerEvent *timerEvent);
 
 protected slots:
-    void dictionaryLoadCompleted(const QString &fileUri, void *dictionary);
+    void dictionaryLoadCompleted(QSharedPointer<T9WriteDictionary> dictionary);
     void resultsAvailable(const QVariantList &resultList);
+    void recognitionError(int status);
 };
 
 }

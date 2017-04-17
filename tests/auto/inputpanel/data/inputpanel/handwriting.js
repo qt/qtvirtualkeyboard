@@ -30,17 +30,23 @@
 .pragma library
 
 .import "unipen_data.js" as UnipenData
+.import "unipen_data_simp_chinese.js" as UnipenDataSimpChinese
 
 function emulate(testcase, hwrInputArea, ch, instant) {
     var chKey = (((typeof ch == "number") ? ch : ch.charCodeAt(0)) + 0x100000000).toString(16).substr(1)
     while (chKey.length > 4 && chKey[0] === '0')
         chKey = chKey.substring(1)
     chKey = "0x" + chKey
-    if (!UnipenData.unipenData.hasOwnProperty(chKey))
+    var unipenData
+    if (UnipenData.unipenData.hasOwnProperty(chKey))
+        unipenData = UnipenData
+    else if (UnipenDataSimpChinese.unipenData.hasOwnProperty(chKey))
+        unipenData = UnipenDataSimpChinese
+    else
         return false
-    var chData = UnipenData.unipenData[chKey]
+    var chData = unipenData.unipenData[chKey]
     var scale = Math.min(hwrInputArea.width / chData[".X_DIM"], hwrInputArea.height / chData[".Y_DIM"])
-    var strokes = UnipenData.unipenData[chKey][".PEN"]
+    var strokes = unipenData.unipenData[chKey][".PEN"]
     var t = 0
     for (var strokeIndex = 0; strokeIndex < strokes.length; strokeIndex++) {
         var stroke = strokes[strokeIndex]

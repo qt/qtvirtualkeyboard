@@ -73,7 +73,8 @@ public:
         Hangul,
         Hiragana,
         Katakana,
-        FullwidthLatin
+        FullwidthLatin,
+        ChineseHandwriting
     };
     enum PatternRecognitionMode {
         PatternRecognitionDisabled,

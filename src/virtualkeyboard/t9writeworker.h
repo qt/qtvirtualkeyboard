@@ -41,7 +41,8 @@
 #include <QMap>
 #include <QVector>
 
-#include "decuma_hwr.h"
+#include "t9write.h"
+#include "t9writedictionary.h"
 
 namespace QtVirtualKeyboard {
 
@@ -59,6 +60,7 @@ public:
 
 protected:
     DECUMA_SESSION *decumaSession;
+    bool cjk;
 
 private:
     QSemaphore runSema;
@@ -68,16 +70,20 @@ class T9WriteDictionaryTask : public T9WriteTask
 {
     Q_OBJECT
 public:
-    explicit T9WriteDictionaryTask(const QString &fileUri,
-                                   const DECUMA_MEM_FUNCTIONS &memFuncs);
+    explicit T9WriteDictionaryTask(QSharedPointer<T9WriteDictionary> dictionary,
+                                   const QString &dictionaryFileName,
+                                   bool convertDictionary,
+                                   const DECUMA_SRC_DICTIONARY_INFO &dictionaryInfo);
 
     void run();
 
-    const QString fileUri;
-    const DECUMA_MEM_FUNCTIONS &memFuncs;
+    QSharedPointer<T9WriteDictionary> dictionary;
+    const QString dictionaryFileName;
+    bool convertDictionary;
+    const DECUMA_SRC_DICTIONARY_INFO dictionaryInfo;
 
 signals:
-    void completed(const QString &fileUri, void *dictionary);
+    void completed(QSharedPointer<T9WriteDictionary> dictionary);
 };
 
 class T9WriteRecognitionResult
@@ -87,12 +93,14 @@ class T9WriteRecognitionResult
 public:
     explicit T9WriteRecognitionResult(int id, int maxResults, int maxCharsPerWord);
 
+    DECUMA_STATUS status;
     QVector<DECUMA_HWR_RESULT> results;
     DECUMA_UINT16 numResults;
     int instantGesture;
     const int id;
     const int maxResults;
     const int maxCharsPerWord;
+
 private:
     QVector<DECUMA_UNICODE> _chars;
     QVector<DECUMA_INT16> _symbolChars;
@@ -135,6 +143,7 @@ public:
 
 signals:
     void resultsAvailable(const QVariantList &resultList);
+    void recognitionError(int status);
 
 private:
     QSharedPointer<T9WriteRecognitionResult> result;
@@ -144,7 +153,7 @@ class T9WriteWorker : public QThread
 {
     Q_OBJECT
 public:
-    explicit T9WriteWorker(DECUMA_SESSION *decumaSession, QObject *parent = 0);
+    explicit T9WriteWorker(DECUMA_SESSION *decumaSession, const bool cjk, QObject *parent = 0);
     ~T9WriteWorker();
 
     void addTask(QSharedPointer<T9WriteTask> task);
@@ -176,6 +185,7 @@ private:
     QMutex taskLock;
     DECUMA_SESSION *decumaSession;
     QAtomicInteger<bool> abort;
+    const bool cjk;
 };
 
 } // namespace QtVirtualKeyboard

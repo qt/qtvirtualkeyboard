@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2017 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -34,15 +34,27 @@
 #include "t9writeworker.h"
 #include "virtualkeyboarddebug.h"
 #include <QDirIterator>
+#include <QCryptographicHash>
 #ifdef QT_VIRTUALKEYBOARD_DEBUG
 #include <QTime>
 #endif
+#include "handwritinggesturerecognizer.h"
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
+#include "unipentrace.h"
+#include <QStandardPaths>
+#endif
 
-#include "decuma_hwr.h"
 #include "decumaStatus.h"
 #include "decumaSymbolCategories.h"
 #include "decumaLanguages.h"
-#include "xxt9wOem.h"
+
+/*  Set to 1 to enable T9 Write log.
+
+    The log is routed to qDebug() and it can be enabled for troubleshooting
+    and when reporting issues. The log must not to be enabled in production
+    build.
+*/
+#define QT_VIRTUALKEYBOARD_T9WRITE_LOG 0
 
 namespace QtVirtualKeyboard {
 
@@ -94,12 +106,26 @@ class T9WriteInputMethodPrivate : public AbstractInputMethodPrivate
     Q_DECLARE_PUBLIC(T9WriteInputMethod)
 public:
 
+    enum EngineMode {
+        EngineUninitialized,
+        Alphabetic,
+        SimplifiedChinese,
+        TraditionalChinese,
+        HongKongChinese,
+        Japanese,
+        Korean
+    };
+
     T9WriteInputMethodPrivate(T9WriteInputMethod *q_ptr) :
         AbstractInputMethodPrivate(),
         q_ptr(q_ptr),
+        cjk(false),
+        engineMode(EngineUninitialized),
+        defaultHwrDbPath(QLatin1String(":/QtQuick/VirtualKeyboard/T9Write/data/")),
+        defaultDictionaryDbPath(defaultHwrDbPath),
         dictionaryLock(QMutex::Recursive),
-        convertedDictionary(0),
         attachedDictionary(0),
+        traceListHardLimit(32),
         resultId(0),
         resultTimer(0),
         decumaSession(0),
@@ -107,6 +133,9 @@ public:
         arcAdditionStarted(false),
         ignoreUpdate(false),
         textCase(InputEngine::Lower)
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
+        , unipenTrace()
+#endif
     {
     }
 
@@ -128,33 +157,73 @@ public:
         free(ptr);
     }
 
-    void initEngine()
+#if QT_VIRTUALKEYBOARD_T9WRITE_LOG
+    static void decumaLogString(void *pUserData, const char *pLogString, DECUMA_UINT32 nLogStringLength)
     {
-        VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::initEngine()";
+        static QMutex s_logMutex;
+        static QByteArray s_logString;
+        Q_UNUSED(pUserData)
+        Q_UNUSED(nLogStringLength)
+        QMutexLocker guard(&s_logMutex);
+        s_logString.append(pLogString, nLogStringLength);
+        if (s_logString.endsWith('\n')) {
+            while (s_logString.endsWith('\n'))
+                s_logString.chop(1);
+            qDebug() << (const char *)s_logString.constData();
+            s_logString.clear();
+        }
+    }
+#endif
+
+    bool initEngine(EngineMode newEngineMode)
+    {
+        if (engineMode == newEngineMode)
+            return engineMode != EngineUninitialized;
+
+        VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::initEngine()" << newEngineMode;
 
         if (decumaSession)
-            return;
+            exitEngine();
 
-        symbolCategories.clear();
-        symbolCategories.append(DECUMA_CATEGORY_ANSI);
-        languageCategories.clear();
-        languageCategories.append(DECUMA_LANG_EN);
+        if (newEngineMode == EngineUninitialized)
+            return false;
+
+        switch (newEngineMode) {
+        case Alphabetic:
+            cjk = false;
+            break;
+        case SimplifiedChinese:
+        case TraditionalChinese:
+        case HongKongChinese:
+        case Japanese:
+        case Korean:
+            cjk = true;
+            break;
+        default:
+            Q_ASSERT(0 && "Invalid EngineMode!");
+            return false;
+        }
+        engineMode = newEngineMode;
 
         memset(&sessionSettings, 0, sizeof(sessionSettings));
 
-        QString latinDb = findLatinDb(":/databases/HWR_LatinCG/");
-        hwrDbFile.setFileName(latinDb);
+        QString hwrDb = findHwrDb(engineMode, defaultHwrDbPath);
+        hwrDbFile.setFileName(hwrDb);
         if (!hwrDbFile.open(QIODevice::ReadOnly)) {
-            qWarning() << "Could not open hwr database file" << latinDb;
-            return;
+            qCritical() << "Could not open HWR database" << hwrDb;
+            exitEngine();
+            return false;
         }
 
         sessionSettings.pStaticDB = (DECUMA_STATIC_DB_PTR)hwrDbFile.map(0, hwrDbFile.size(), QFile::NoOptions);
         if (!sessionSettings.pStaticDB) {
-            hwrDbFile.close();
-            qWarning() << "Could not map hwr database" << latinDb;
-            return;
+            qCritical() << "Could not read HWR database" << hwrDb;
+            exitEngine();
+            return false;
         }
+
+        symbolCategories.append(DECUMA_CATEGORY_ANSI);
+        languageCategories.append(DECUMA_LANG_EN);
 
         sessionSettings.recognitionMode = mcrMode;
         sessionSettings.bMinimizeAddArcPreProcessing = 1;
@@ -164,17 +233,25 @@ public:
         sessionSettings.charSet.pLanguages = languageCategories.data();
         sessionSettings.charSet.nLanguages = languageCategories.size();
 
-        session = QByteArray(decumaGetSessionSize(), 0);
+        session = QByteArray(DECUMA_API(GetSessionSize)(), 0);
         decumaSession = (DECUMA_SESSION *)(!session.isEmpty() ? session.data() : 0);
 
-        DECUMA_STATUS status = decumaBeginSession(decumaSession, &sessionSettings, &memFuncs);
+        DECUMA_STATUS status = DECUMA_API(BeginSession)(decumaSession, &sessionSettings, &memFuncs);
         Q_ASSERT(status == decumaNoError);
         if (status != decumaNoError) {
-            qWarning() << "Could not initialize T9Write engine" << status;
+            qCritical() << "Could not initialize T9Write engine" << status;
+            exitEngine();
+            return false;
         }
 
-        worker.reset(new T9WriteWorker(decumaSession));
+#if QT_VIRTUALKEYBOARD_T9WRITE_LOG
+        DECUMA_API(StartLogging)(decumaSession, 0, decumaLogString);
+#endif
+
+        worker.reset(new T9WriteWorker(decumaSession, cjk));
         worker->start();
+
+        return true;
     }
 
     void exitEngine()
@@ -188,36 +265,62 @@ public:
             hwrDbFile.close();
         }
 
-        detachDictionary(&attachedDictionary);
-        destroyConvertedDictionary(&convertedDictionary);
+        if (attachedDictionary) {
+            detachDictionary(attachedDictionary);
+            attachedDictionary.reset();
+        }
+        loadedDictionary.reset();
 
         if (decumaSession) {
-            decumaEndSession(decumaSession);
+#if QT_VIRTUALKEYBOARD_T9WRITE_LOG
+            DECUMA_API(StopLogging)(decumaSession);
+#endif
+            DECUMA_API(EndSession)(decumaSession);
             decumaSession = 0;
             session.clear();
         }
 
         memset(&sessionSettings, 0, sizeof(sessionSettings));
+
+        symbolCategories.clear();
+        languageCategories.clear();
+
+        engineMode = EngineUninitialized;
+        cjk = false;
     }
 
-    QString findLatinDb(const QString &dir)
+    QString findHwrDb(EngineMode mode, const QString &dir) const
     {
-        QString latinDb;
-        QDirIterator it(dir, QDirIterator::NoIteratorFlags);
-        while (it.hasNext()) {
-            QString fileEntry = it.next();
-
-            if (!fileEntry.endsWith(QLatin1String(".bin")))
-                continue;
-
-            latinDb = fileEntry;
+        QString hwrDbPath(dir);
+        switch (mode) {
+        case Alphabetic:
+            hwrDbPath.append(QLatin1String("_databas_le.bin"));
             break;
+        case SimplifiedChinese:
+            hwrDbPath.append(QLatin1String("cjk_S_gb18030_le.hdb"));
+            break;
+        case TraditionalChinese:
+            hwrDbPath.append(QLatin1String("cjk_T_std_le.hdb"));
+            break;
+        case HongKongChinese:
+            hwrDbPath.append(QLatin1String("cjk_HK_std_le.hdb"));
+            break;
+        case Japanese:
+            hwrDbPath.append(QLatin1String("cjk_J_std_le.hdb"));
+            break;
+        case Korean:
+            hwrDbPath.append(QLatin1String("cjk_K_mkt_le.hdb"));
+            break;
+        default:
+            return QString();
         }
-        return latinDb;
+        return QFileInfo::exists(hwrDbPath) ? hwrDbPath : QString();
     }
 
-    QString findDictionary(const QString &dir, const QLocale &locale)
+    QString findDictionary(const QString &dir, const QLocale &locale, DECUMA_SRC_DICTIONARY_TYPE &srcType)
     {
+        srcType = numberOfSrcDictionaryTypes;
+
         QStringList languageCountry = locale.name().split("_");
         if (languageCountry.length() != 2)
             return QString();
@@ -227,11 +330,27 @@ public:
         while (it.hasNext()) {
             QString fileEntry = it.next();
 
-            if (!fileEntry.endsWith(QLatin1String(".ldb")))
-                continue;
-
             if (!fileEntry.contains("_" + languageCountry[0].toUpper()))
                 continue;
+
+            if (fileEntry.endsWith(QLatin1String(".ldb"))) {
+#if T9WRITEAPIMAJORVERNUM >= 20
+                qCritical() << "Incompatible T9 Write dictionary" << fileEntry;
+                continue;
+#else
+                srcType = decumaXT9LDB;
+#endif
+            } else if (fileEntry.endsWith(QLatin1String(".phd"))) {
+#if T9WRITEAPIMAJORVERNUM >= 20
+                srcType = decumaPortableHWRDictionary;
+#else
+                qCritical() << "Incompatible T9 Write dictionary" << fileEntry;
+                continue;
+#endif
+            } else {
+                qWarning() << "Incompatible T9 Write dictionary" << fileEntry;
+                continue;
+            }
 
             dictionary = fileEntry;
             break;
@@ -240,201 +359,117 @@ public:
         return dictionary;
     }
 
-    bool attachDictionary(void *dictionary)
+    bool attachDictionary(const QSharedPointer<T9WriteDictionary> &dictionary)
     {
-        VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::attachDictionary():" << dictionary;
-
         QMutexLocker dictionaryGuard(&dictionaryLock);
         Q_ASSERT(decumaSession != 0);
         Q_ASSERT(dictionary != 0);
-
-        DECUMA_STATUS status = decumaAttachConvertedDictionary(decumaSession, dictionary);
-        Q_ASSERT(status == decumaNoError);
+        VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::attachDictionary():" << dictionary->fileName();
+#if T9WRITEAPIMAJORVERNUM >= 20
+        DECUMA_STATUS status = DECUMA_API(AttachDictionary)(decumaSession, dictionary->data(), dictionary->size());
+#else
+        DECUMA_STATUS status = DECUMA_API(AttachConvertedDictionary)(decumaSession, dictionary->data());
+#endif
         return status == decumaNoError;
     }
 
-    void detachDictionary(void **dictionary)
+    void detachDictionary(const QSharedPointer<T9WriteDictionary> &dictionary)
     {
         QMutexLocker dictionaryGuard(&dictionaryLock);
-        Q_ASSERT(decumaSession != 0);
-        if (!dictionary || !*dictionary)
+        if (!dictionary)
             return;
 
-        VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::detachDictionary():" << *dictionary;
+        VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::detachDictionary():" << dictionary->fileName();
 
-        DECUMA_STATUS status = decumaDetachDictionary(decumaSession, *dictionary);
-        Q_UNUSED(status)
-        Q_ASSERT(status == decumaNoError);
-        *dictionary = 0;
-    }
-
-    void destroyConvertedDictionary(void **dictionary)
-    {
-        QMutexLocker dictionaryGuard(&dictionaryLock);
         Q_ASSERT(decumaSession != 0);
-        if (!dictionary || !*dictionary)
-            return;
-
-        VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::destroyConvertedDictionary():" << *dictionary;
-
-        DECUMA_STATUS status = decumaDestroyConvertedDictionary(dictionary, &memFuncs);
+        DECUMA_STATUS status = DECUMA_API(DetachDictionary)(decumaSession, dictionary->data());
         Q_UNUSED(status)
         Q_ASSERT(status == decumaNoError);
-        Q_ASSERT(*dictionary == 0);
     }
 
     bool setInputMode(const QLocale &locale, InputEngine::InputMode inputMode)
     {
+        Q_Q(T9WriteInputMethod);
         VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::setInputMode():" << locale << inputMode;
 
-        Q_Q(T9WriteInputMethod);
-        DECUMA_UINT32 language = mapToDecumaLanguage(locale);
+        finishRecognition();
+
+        if (!initEngine(mapLocaleToEngineMode(locale)))
+            return false;
+
+        DECUMA_UINT32 language = mapToDecumaLanguage(locale, inputMode);
         if (language == DECUMA_LANG_GSMDEFAULT) {
-            qWarning() << "Handwriting input does not support the language" << locale.name();
+            qWarning() << "Handwriting is not supported in" << locale.name();
             return false;
         }
 
         int isLanguageSupported = 0;
-        decumaDatabaseIsLanguageSupported(sessionSettings.pStaticDB, language, &isLanguageSupported);
+        DECUMA_API(DatabaseIsLanguageSupported)(sessionSettings.pStaticDB, language, &isLanguageSupported);
         if (!isLanguageSupported) {
-            qWarning() << "Handwriting input does not support the language" << locale.name();
+            qWarning() << "Handwriting is not supported in" << locale.name();
             return false;
         }
 
-        finishRecognition();
-
-        bool languageChanged = languageCategories.isEmpty() || !languageCategories.contains(language);
+        bool languageChanged = languageCategories.isEmpty() || languageCategories.first() != language;
         if (languageChanged) {
             languageCategories.clear();
             languageCategories.append(language);
+
+            // Add English as secondary language for punctuation
+            if (language == DECUMA_LANG_PRC)
+                languageCategories.append(DECUMA_LANG_EN);
         }
 
-        // Choose the symbol categories by input mode, script and input method hints
-        bool leftToRightGestures = true;
-        Qt::InputMethodHints inputMethodHints = q->inputContext()->inputMethodHints();
-        symbolCategories.clear();
-        switch (inputMode) {
-        case InputEngine::Latin:
-            if (inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly)) {
-                symbolCategories.append(DECUMA_CATEGORY_EMAIL);
-            } else if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly)) {
-                symbolCategories.append(DECUMA_CATEGORY_URL);
-            } else {
-                bool includeDigits = true;
-                bool includeBasicPunctuation = true;
-                switch (locale.script()) {
-                case QLocale::LatinScript:
-                    if (language == DECUMA_LANG_EN)
-                        symbolCategories.append(DECUMA_CATEGORY_ANSI);
-                    else
-                        symbolCategories.append(DECUMA_CATEGORY_ISO8859_1);
-                    break;
-
-                case QLocale::CyrillicScript:
-                    symbolCategories.append(DECUMA_CATEGORY_CYRILLIC);
-                    break;
-
-                case QLocale::GreekScript:
-                    symbolCategories.append(DECUMA_CATEGORY_GREEK);
-                    break;
-
-                default:
-                    qWarning() << "Handwriting input does not support the language" << locale.name();
-                    return false;
-                }
-
-                if (includeDigits)
-                    symbolCategories.append(DECUMA_CATEGORY_DIGIT);
-
-                if (includeBasicPunctuation) {
-                    symbolCategories.append(DECUMA_CATEGORY_BASIC_PUNCTUATIONS);
-                    symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
-                }
-
-                if (language == DECUMA_LANG_ES)
-                    symbolCategories.append(DECUMA_CATEGORY_SPANISH_PUNCTUATIONS);
-            }
-            break;
-
-        case InputEngine::Numeric:
-            symbolCategories.append(DECUMA_CATEGORY_DIGIT);
-            if (!inputMethodHints.testFlag(Qt::ImhDigitsOnly))
-                symbolCategories.append(DECUMA_CATEGORY_NUM_SUP);
-            break;
-
-        case InputEngine::Dialable:
-            symbolCategories.append(DECUMA_CATEGORY_PHONE_NUMBER);
-            break;
-
-        default:
+        if (!updateSymbolCategories(language, locale, inputMode))
             return false;
-        }
+        updateRecognitionMode(language, locale, inputMode);
+        updateDictionary(language, locale, languageChanged);
+        static const QList<DECUMA_UINT32> rtlLanguages = QList<DECUMA_UINT32>()
+                << DECUMA_LANG_AR << DECUMA_LANG_IW << DECUMA_LANG_FA << DECUMA_LANG_UR;
+        sessionSettings.writingDirection = rtlLanguages.contains(language) ? rightToLeft : unknownWriting;
 
-        if (leftToRightGestures) {
-            symbolCategories.append(DECUMA_CATEGORY_BACKSPACE_STROKE);
-            symbolCategories.append(DECUMA_CATEGORY_RETURN_STROKE);
-            symbolCategories.append(DECUMA_CATEGORY_WHITESPACE_STROKE);
-        }
-
-        /*  The dictionary is loaded in the background thread. Once the loading is
-            complete the dictionary will be attached to the current session. The
-            attachment happens in the worker thread context, thus the direct
-            connection for the signal handler and the mutex protecting the
-            converted dictionary for concurrent access.
-
-            The loading operation is blocking for the main thread only if the
-            user starts handwriting input before the operation is complete.
-        */
-        {
-            QMutexLocker dictionaryGuard(&dictionaryLock);
-
-            // Select recognition mode
-            // Note: MCR mode is preferred in all cases, since it eliminates the need
-            //       for recognition timer, thus provides better user experience.
-            sessionSettings.recognitionMode = inputMethodHints.testFlag(Qt::ImhHiddenText) ? scrMode : mcrMode;
-
-            // Detach previous dictionary if the language is being changed
-            // or the recognizer mode is single-character mode
-            if ((languageChanged || inputMethodHints.testFlag(Qt::ImhNoPredictiveText) || sessionSettings.recognitionMode == scrMode) && attachedDictionary) {
-                detachDictionary(&attachedDictionary);
-            }
-
-            // Check if a dictionary needs to be loaded
-            if (languageChanged || !convertedDictionary) {
-                destroyConvertedDictionary(&convertedDictionary);
-                dictionaryFileName = findDictionary(":/databases/XT9_LDBs/", locale);
-                if (!dictionaryFileName.isEmpty()) {
-                    if (dictionaryTask.isNull() || dictionaryTask->fileUri != dictionaryFileName) {
-                        dictionaryTask.reset(new T9WriteDictionaryTask(dictionaryFileName, memFuncs));
-                        q->connect(dictionaryTask.data(), SIGNAL(completed(QString,void*)),
-                                   SLOT(dictionaryLoadCompleted(QString,void*)), Qt::DirectConnection);
-                        worker->addTask(dictionaryTask);
-                    }
-                }
-            }
-
-            // Attach existing dictionary, if necessary
-            if (sessionSettings.recognitionMode == mcrMode && !inputMethodHints.testFlag(Qt::ImhNoPredictiveText) &&
-                    convertedDictionary && !attachedDictionary) {
-                attachDictionary(convertedDictionary);
-                attachedDictionary = convertedDictionary;
-            }
-        }
+        VIRTUALKEYBOARD_DEBUG() << " -> language categories:" << languageCategories;
+        VIRTUALKEYBOARD_DEBUG() << " -> symbol categories:" << symbolCategories;
+        VIRTUALKEYBOARD_DEBUG() << " -> recognition mode:" << sessionSettings.recognitionMode;
 
         // Change session settings
         sessionSettings.charSet.pSymbolCategories = symbolCategories.data();
         sessionSettings.charSet.nSymbolCategories = symbolCategories.size();
         sessionSettings.charSet.pLanguages = languageCategories.data();
         sessionSettings.charSet.nLanguages = languageCategories.size();
-        DECUMA_STATUS status = decumaChangeSessionSettings(decumaSession, &sessionSettings);
+        DECUMA_STATUS status = DECUMA_API(ChangeSessionSettings)(decumaSession, &sessionSettings);
         Q_ASSERT(status == decumaNoError);
 
-        caseFormatter.preferLowercase = inputMethodHints.testFlag(Qt::ImhPreferLowercase);
+        caseFormatter.preferLowercase = q->inputContext()->inputMethodHints().testFlag(Qt::ImhPreferLowercase);
 
         return status == decumaNoError;
     }
 
-    DECUMA_UINT32 mapToDecumaLanguage(const QLocale &locale)
+    EngineMode mapLocaleToEngineMode(const QLocale &locale)
+    {
+#ifdef HAVE_T9WRITE_CJK
+        switch (locale.language()) {
+        case QLocale::Chinese: {
+            if (locale.script() == QLocale::TraditionalChineseScript)
+                return locale.country() == QLocale::HongKong ? HongKongChinese : TraditionalChinese;
+            return SimplifiedChinese;
+            break;
+        }
+        default:
+            break;
+        }
+#else
+        Q_UNUSED(locale)
+#endif
+
+#ifdef HAVE_T9WRITE_ALPHABETIC
+        return T9WriteInputMethodPrivate::Alphabetic;
+#else
+        return T9WriteInputMethodPrivate::EngineUninitialized;
+#endif
+    }
+
+    DECUMA_UINT32 mapToDecumaLanguage(const QLocale &locale, InputEngine::InputMode inputMode)
     {
         static const QLocale::Language maxLanguage = QLocale::Vietnamese;
         static const DECUMA_UINT32 languageMap[maxLanguage + 1] = {
@@ -573,12 +608,307 @@ public:
             DECUMA_LANG_VI                  // Vietnamese = 132
         };
 
+        int localeLanguage = locale.language();
         if (locale.language() > maxLanguage)
             return DECUMA_LANG_GSMDEFAULT;
 
-        DECUMA_UINT32 language = languageMap[locale.language()];
+        DECUMA_UINT32 language = languageMap[localeLanguage];
+        if (language == DECUMA_LANG_PRC) {
+            if (inputMode != InputEngine::ChineseHandwriting)
+                language = DECUMA_LANG_EN;
+        }
 
         return language;
+    }
+
+    void updateRecognitionMode(DECUMA_UINT32 language, const QLocale &locale,
+                               InputEngine::InputMode inputMode)
+    {
+        Q_Q(T9WriteInputMethod);
+        Q_UNUSED(language)
+        Q_UNUSED(locale)
+        Q_UNUSED(inputMode)
+
+        // Select recognition mode
+        // Note: MCR mode is preferred, as it does not require recognition
+        //       timer and provides better user experience.
+        sessionSettings.recognitionMode = mcrMode;
+
+        // Use scrMode with hidden text or with no predictive mode
+        if (inputMode != InputEngine::ChineseHandwriting) {
+            const Qt::InputMethodHints inputMethodHints = q->inputContext()->inputMethodHints();
+            if (inputMethodHints.testFlag(Qt::ImhHiddenText) || inputMethodHints.testFlag(Qt::ImhNoPredictiveText))
+                sessionSettings.recognitionMode = scrMode;
+        }
+    }
+
+    bool updateSymbolCategories(DECUMA_UINT32 language, const QLocale &locale,
+                                InputEngine::InputMode inputMode)
+    {
+        // Handle CJK in separate method
+        if (cjk)
+            return updateSymbolCategoriesCjk(language, locale, inputMode);
+
+        symbolCategories.clear();
+
+        // Choose the symbol categories by input mode, script and input method hints
+        bool leftToRightGestures = true;
+        Q_Q(T9WriteInputMethod);
+        const Qt::InputMethodHints inputMethodHints = q->inputContext()->inputMethodHints();
+        switch (inputMode) {
+        case InputEngine::Latin:
+            if (inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly)) {
+                symbolCategories.append(DECUMA_CATEGORY_EMAIL);
+            } else if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly)) {
+                symbolCategories.append(DECUMA_CATEGORY_URL);
+            } else {
+                bool includeDigits = true;
+                bool includeBasicPunctuation = true;
+                switch (locale.script()) {
+                case QLocale::LatinScript:
+                    if (language == DECUMA_LANG_EN)
+                        symbolCategories.append(DECUMA_CATEGORY_ANSI);
+                    else
+                        symbolCategories.append(DECUMA_CATEGORY_ISO8859_1);
+                    break;
+
+                case QLocale::CyrillicScript:
+                    symbolCategories.append(DECUMA_CATEGORY_CYRILLIC);
+                    break;
+
+                case QLocale::GreekScript:
+                    symbolCategories.append(DECUMA_CATEGORY_GREEK);
+                    break;
+
+                default:
+                    qWarning() << "Handwriting is not supported in" << locale.name();
+                    return false;
+                }
+
+                if (includeDigits)
+                    symbolCategories.append(DECUMA_CATEGORY_DIGIT);
+
+                if (includeBasicPunctuation) {
+                    symbolCategories.append(DECUMA_CATEGORY_BASIC_PUNCTUATIONS);
+                    symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
+                }
+
+                if (language == DECUMA_LANG_ES)
+                    symbolCategories.append(DECUMA_CATEGORY_SPANISH_PUNCTUATIONS);
+            }
+            break;
+
+        case InputEngine::Numeric:
+            symbolCategories.append(DECUMA_CATEGORY_DIGIT);
+            if (!inputMethodHints.testFlag(Qt::ImhDigitsOnly))
+                symbolCategories.append(DECUMA_CATEGORY_NUM_SUP);
+            break;
+
+        case InputEngine::Dialable:
+            symbolCategories.append(DECUMA_CATEGORY_PHONE_NUMBER);
+            break;
+
+        default:
+            qWarning() << "Handwriting is not supported in" << locale.name();
+            return false;
+        }
+
+        if (leftToRightGestures) {
+            symbolCategories.append(DECUMA_CATEGORY_BACKSPACE_STROKE);
+            symbolCategories.append(DECUMA_CATEGORY_RETURN_STROKE);
+            symbolCategories.append(DECUMA_CATEGORY_WHITESPACE_STROKE);
+        }
+
+        return true;
+    }
+
+    bool updateSymbolCategoriesCjk(DECUMA_UINT32 language, const QLocale &locale,
+                                   InputEngine::InputMode inputMode)
+    {
+        Q_UNUSED(language)
+        Q_ASSERT(cjk);
+
+        symbolCategories.clear();
+
+        switch (inputMode) {
+        case InputEngine::Latin:
+            symbolCategories.append(DECUMA_CATEGORY_ANSI);
+            symbolCategories.append(DECUMA_CATEGORY_CJK_SYMBOL);
+            symbolCategories.append(DECUMA_CATEGORY_PUNCTUATIONS);
+            break;
+
+        case InputEngine::Numeric:
+            symbolCategories.append(DECUMA_CATEGORY_DIGIT);
+            symbolCategories.append(DECUMA_CATEGORY_CJK_SYMBOL);
+            symbolCategories.append(DECUMA_CATEGORY_PUNCTUATIONS);
+            break;
+
+        case InputEngine::Dialable:
+            symbolCategories.append(DECUMA_CATEGORY_DIGIT);
+            symbolCategories.append(DECUMA_CATEGORY_CJK_SYMBOL);
+            break;
+
+        case InputEngine::ChineseHandwriting:
+            switch (locale.script()) {
+            case QLocale::SimplifiedChineseScript:
+                symbolCategories.append(DECUMA_CATEGORY_GB2312_A);
+                symbolCategories.append(DECUMA_CATEGORY_GB2312_B_CHARS_ONLY);
+                symbolCategories.append(DECUMA_CATEGORY_GBK_3);
+                symbolCategories.append(DECUMA_CATEGORY_GBK_4);
+                symbolCategories.append(DECUMA_CATEGORY_CJK_SYMBOL);
+                symbolCategories.append(DECUMA_CATEGORY_CJK_GENERAL_PUNCTUATIONS);
+                symbolCategories.append(DECUMA_CATEGORY_PUNCTUATIONS);
+                break;
+
+            case QLocale::TraditionalChineseScript:
+                symbolCategories.append(DECUMA_CATEGORY_BIGFIVE);
+                if (language == DECUMA_LANG_HK)
+                    symbolCategories.append(DECUMA_CATEGORY_HKSCS_CHARS_ONLY);
+                symbolCategories.append(DECUMA_CATEGORY_CJK_SYMBOL);
+                symbolCategories.append(DECUMA_CATEGORY_CJK_GENERAL_PUNCTUATIONS);
+                symbolCategories.append(DECUMA_CATEGORY_PUNCTUATIONS);
+                break;
+
+            default:
+                qWarning() << "Chinese handwriting is not supported in" << locale.name();
+                return false;
+            }
+            break;
+
+        default:
+            return false;
+        }
+
+        return true;
+    }
+
+    void updateDictionary(DECUMA_UINT32 language, const QLocale &locale, bool languageChanged)
+    {
+        Q_Q(T9WriteInputMethod);
+
+        /*  The dictionary is loaded in the background thread. Once the loading is
+            complete the dictionary will be attached to the current session. The
+            attachment happens in the worker thread context, thus the direct
+            connection for the signal handler and the mutex protecting the
+            converted dictionary for concurrent access.
+            The loading operation is blocking for the main thread only if the
+            user starts handwriting input before the operation is complete.
+        */
+        QMutexLocker dictionaryGuard(&dictionaryLock);
+
+        // Detach previous dictionary if the language is being changed
+        // or the recognizer mode is single-character mode
+        const Qt::InputMethodHints inputMethodHints = q->inputContext()->inputMethodHints();
+        if ((languageChanged || inputMethodHints.testFlag(Qt::ImhNoPredictiveText) || sessionSettings.recognitionMode == scrMode) && attachedDictionary) {
+            detachDictionary(attachedDictionary);
+            attachedDictionary.reset();
+        }
+
+        // Check if a dictionary needs to be loaded
+        if (languageChanged || !loadedDictionary) {
+            loadedDictionary.reset();
+
+            DECUMA_SRC_DICTIONARY_INFO dictionaryInfo;
+            memset(&dictionaryInfo, 0, sizeof(dictionaryInfo));
+
+            QList<QLocale> decumaLocales;
+            decumaLocales.append(locale);
+
+            // CJK: No dictionary for latin input
+            if (cjk && language == DECUMA_LANG_EN)
+                decumaLocales.clear();
+
+            dictionaryFileName.clear();
+            QLocale decumaLocale;
+            for (QLocale tryLocale : decumaLocales) {
+                dictionaryFileName = findDictionary(defaultDictionaryDbPath, tryLocale, dictionaryInfo.srcType);
+                if (!dictionaryFileName.isEmpty()) {
+                    decumaLocale = tryLocale;
+                    break;
+                }
+            }
+            if (!dictionaryFileName.isEmpty()) {
+                if (dictionaryTask.isNull() || dictionaryTask->dictionaryFileName != dictionaryFileName) {
+                    VIRTUALKEYBOARD_DEBUG() << " -> load dictionary:" << dictionaryFileName;
+
+                    bool convertDictionary = true;
+#if defined(HAVE_T9WRITE_CJK) && T9WRITEAPIMAJORVERNUM >= 20
+                    // Chinese dictionary cannot be converted (PHD)
+                    if (dictionaryInfo.srcType == decumaPortableHWRDictionary && decumaLocale.language() == QLocale::Chinese)
+                        convertDictionary = false;
+#endif
+
+                    QSharedPointer<T9WriteDictionary> newDictionary(new T9WriteDictionary(decumaSession, memFuncs, cjk));
+                    dictionaryTask.reset(new T9WriteDictionaryTask(newDictionary, dictionaryFileName, convertDictionary, dictionaryInfo));
+
+                    QObject::connect(dictionaryTask.data(), &T9WriteDictionaryTask::completed,
+                                     q, &T9WriteInputMethod::dictionaryLoadCompleted, Qt::DirectConnection);
+                    worker->addTask(dictionaryTask);
+                }
+            }
+        }
+
+        // Attach existing dictionary, if available
+        if (sessionSettings.recognitionMode == mcrMode && !inputMethodHints.testFlag(Qt::ImhNoPredictiveText) &&
+                loadedDictionary && !attachedDictionary) {
+            if (attachDictionary(loadedDictionary))
+                attachedDictionary = loadedDictionary;
+        }
+    }
+
+    QByteArray getContext(InputEngine::PatternRecognitionMode patternRecognitionMode,
+                          const QVariantMap &traceCaptureDeviceInfo,
+                          const QVariantMap &traceScreenInfo) const
+    {
+        QCryptographicHash hash(QCryptographicHash::Md5);
+
+        hash.addData((const char *)&patternRecognitionMode, sizeof(patternRecognitionMode));
+
+        QByteArray mapData;
+        QDataStream ds(&mapData, QIODevice::WriteOnly);
+        ds << traceCaptureDeviceInfo;
+        ds << traceScreenInfo;
+        hash.addData(mapData);
+
+        return hash.result();
+    }
+
+    void setContext(InputEngine::PatternRecognitionMode patternRecognitionMode,
+                    const QVariantMap &traceCaptureDeviceInfo,
+                    const QVariantMap &traceScreenInfo)
+    {
+        QByteArray context = getContext(patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
+        if (context == currentContext)
+            return;
+        currentContext = context;
+
+        VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::setContext():" << QString(context.toHex());
+
+        finishRecognition();
+
+        const int dpi = traceCaptureDeviceInfo.value("dpi", 96).toInt();
+        static const int INSTANT_GESTURE_WIDTH_THRESHOLD_MM = 25;
+        static const int INSTANT_GESTURE_HEIGHT_THRESHOLD_MM = 25;
+        instantGestureSettings.widthThreshold = INSTANT_GESTURE_WIDTH_THRESHOLD_MM / 25.4 * dpi;
+        instantGestureSettings.heightThreshold = INSTANT_GESTURE_HEIGHT_THRESHOLD_MM / 25.4 * dpi;
+
+        gestureRecognizer.setDpi(dpi);
+
+        QVariantList horizontalRulers(traceScreenInfo.value("horizontalRulers", QVariantList()).toList());
+        if (horizontalRulers.count() >= 2) {
+            sessionSettings.baseline = horizontalRulers.last().toInt();
+            sessionSettings.helpline = 0;
+            sessionSettings.topline = horizontalRulers.first().toInt();
+            sessionSettings.supportLineSet = baselineAndTopline;
+        } else {
+            sessionSettings.baseline = 0;
+            sessionSettings.helpline = 0;
+            sessionSettings.topline = 0;
+            sessionSettings.supportLineSet = baselineAndTopline;
+        }
+
+        DECUMA_STATUS status = DECUMA_API(ChangeSessionSettings)(decumaSession, &sessionSettings);
+        Q_ASSERT(status == decumaNoError);
     }
 
     Trace *traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
@@ -586,8 +916,10 @@ public:
     {
         Q_UNUSED(traceId)
         Q_UNUSED(patternRecognitionMode)
-        Q_UNUSED(traceCaptureDeviceInfo)
         Q_UNUSED(traceScreenInfo)
+
+        if (!worker)
+            return 0;
 
         stopResultTimer();
 
@@ -606,30 +938,34 @@ public:
             recognitionTask.reset();
         }
 
-        const int dpi = traceCaptureDeviceInfo.value("dpi", 96).toInt();
-        static const int INSTANT_GESTURE_WIDTH_THRESHOLD_MM = 25;
-        static const int INSTANT_GESTURE_HEIGHT_THRESHOLD_MM = 25;
-        instantGestureSettings.widthThreshold = INSTANT_GESTURE_WIDTH_THRESHOLD_MM / 25.4 * dpi;
-        instantGestureSettings.heightThreshold = INSTANT_GESTURE_HEIGHT_THRESHOLD_MM / 25.4 * dpi;
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
+        if (!unipenTrace)
+            unipenTrace.reset(new UnipenTrace(traceCaptureDeviceInfo, traceScreenInfo));
+#endif
+
+        setContext(patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
 
         DECUMA_STATUS status;
 
         if (!arcAdditionStarted) {
-            status = decumaBeginArcAddition(decumaSession);
+            status = DECUMA_API(BeginArcAddition)(decumaSession);
             Q_ASSERT(status == decumaNoError);
             arcAdditionStarted = true;
         }
 
         DECUMA_UINT32 arcID = (DECUMA_UINT32)traceId;
-        status = decumaStartNewArc(decumaSession, arcID);
+        status = DECUMA_API(StartNewArc)(decumaSession, arcID);
         Q_ASSERT(status == decumaNoError);
         if (status != decumaNoError) {
-            decumaEndArcAddition(decumaSession);
+            DECUMA_API(EndArcAddition)(decumaSession);
             arcAdditionStarted = false;
             return NULL;
         }
 
         Trace *trace = new Trace();
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
+        trace->setChannels(QStringList("t"));
+#endif
         traceList.append(trace);
 
         return trace;
@@ -638,7 +974,7 @@ public:
     void traceEnd(Trace *trace)
     {
         if (trace->isCanceled()) {
-            decumaCancelArc(decumaSession, trace->traceId());
+            DECUMA_API(CancelArc)(decumaSession, trace->traceId());
             traceList.removeOne(trace);
             delete trace;
         } else {
@@ -646,10 +982,16 @@ public:
         }
         if (!traceList.isEmpty()) {
             Q_ASSERT(arcAdditionStarted);
-            if (countActiveTraces() == 0)
+            if (countActiveTraces() == 0) {
                 restartRecognition();
+                if (cjk) {
+                    // For some reason gestures don't seem to work in CJK mode
+                    // Using our own gesture recognizer as fallback
+                    handleGesture();
+                }
+            }
         } else if (arcAdditionStarted) {
-            decumaEndArcAddition(decumaSession);
+            DECUMA_API(EndArcAddition)(decumaSession);
             arcAdditionStarted = false;
         }
     }
@@ -675,17 +1017,26 @@ public:
         Q_ASSERT(decumaSession != 0);
 
         const QVariantList points = trace->points();
+        Q_ASSERT(!points.isEmpty());
         DECUMA_UINT32 arcID = (DECUMA_UINT32)trace->traceId();
         DECUMA_STATUS status;
 
         for (const QVariant &p : points) {
             const QPoint pt(p.toPointF().toPoint());
-            status = decumaAddPoint(decumaSession, (DECUMA_COORD)pt.x(),(DECUMA_COORD)pt.y(), arcID);
-            Q_ASSERT(status == decumaNoError);
+            status = DECUMA_API(AddPoint)(decumaSession, (DECUMA_COORD)pt.x(),(DECUMA_COORD)pt.y(), arcID);
+            if (status != decumaNoError) {
+                VIRTUALKEYBOARD_DEBUG() << "decumaAddPoint failed" << status;
+                finishRecognition();
+                return;
+            }
         }
 
-        status = decumaCommitArc(decumaSession, arcID);
-        Q_ASSERT(status == decumaNoError);
+        status = DECUMA_API(CommitArc)(decumaSession, arcID);
+        if (status != decumaNoError) {
+            VIRTUALKEYBOARD_DEBUG() << "decumaCommitArc failed" << status;
+            finishRecognition();
+            return;
+        }
     }
 
     void noteSelected(int index)
@@ -696,7 +1047,7 @@ public:
         VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::noteSelected():" << index;
         Q_ASSERT(index >= 0 && index < wordCandidatesHwrResultIndex.length());
         int resultIndex = wordCandidatesHwrResultIndex[index];
-        DECUMA_STATUS status = decumaNoteSelectedCandidate(decumaSession, resultIndex);
+        DECUMA_STATUS status = DECUMA_API(NoteSelectedCandidate)(decumaSession, resultIndex);
         Q_UNUSED(status)
         Q_ASSERT(status == decumaNoError);
     }
@@ -723,6 +1074,8 @@ public:
     bool finishRecognition(bool emitSelectionListChanged = true)
     {
         VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::finishRecognition()";
+        if (!worker)
+            return false;
 
         bool result = !traceList.isEmpty();
 
@@ -742,7 +1095,7 @@ public:
         }
 
         if (arcAdditionStarted) {
-            decumaEndArcAddition(decumaSession);
+            DECUMA_API(EndArcAddition)(decumaSession);
             arcAdditionStarted = false;
         }
 
@@ -762,11 +1115,18 @@ public:
         scrResult.clear();
         caseFormatter.clear();
 
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
+        unipenTrace.reset();
+#endif
+
         return result;
     }
 
     bool select(int index = -1)
     {
+        if (!worker)
+            return false;
+
         if (sessionSettings.recognitionMode == mcrMode && wordCandidates.isEmpty()) {
             finishRecognition();
             return false;
@@ -783,6 +1143,25 @@ public:
             index = index >= 0 ? index : activeWordIndex;
             noteSelected(index);
             QString finalWord = wordCandidates.at(index);
+
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
+            // Record trace
+            if (unipenTrace) {
+                if (finalWord.length() == 1) {
+                    // In recording mode, the text case must match with the current text case
+                    QChar ch(finalWord.at(0));
+                    if (!ch.isLetter() || (ch.isUpper() == (textCase == InputEngine::Upper))) {
+                        QStringList homeLocations = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+                        if (!homeLocations.isEmpty()) {
+                            unipenTrace->setDirectory(QStringLiteral("%1/%2").arg(homeLocations.at(0)).arg("VIRTUAL_KEYBOARD_TRACES"));
+                            unipenTrace->record(traceList);
+                            unipenTrace->save(ch.unicode(), 100);
+                        }
+                    }
+                }
+            }
+#endif
+
             finishRecognition();
             q->inputContext()->commit(finalWord);
         } else if (sessionSettings.recognitionMode == scrMode) {
@@ -865,8 +1244,11 @@ public:
 
         bool wordCandidatesChanged = wordCandidates != newWordCandidates;
 
+#ifndef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
         // Delete trace history
-        if (sessionSettings.recognitionMode == mcrMode && !symbolStrokes.isEmpty()) {
+        const InputEngine::InputMode inputMode = q->inputEngine()->inputMode();
+        if (sessionSettings.recognitionMode == mcrMode && !symbolStrokes.isEmpty() &&
+                inputMode != InputEngine::ChineseHandwriting) {
             int activeTraces = symbolStrokes.at(symbolStrokes.count() - 1).toInt();
             if (symbolStrokes.count() > 1)
                 activeTraces += symbolStrokes.at(symbolStrokes.count() - 2).toInt();
@@ -874,7 +1256,14 @@ public:
                 delete traceList.takeFirst();
         }
 
-        // Look for a gesture at the end of first result
+        // Enforce hard limit for number of traces
+        if (traceList.count() >= traceListHardLimit) {
+            VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::processResult(): Clearing traces (hard limit):" << traceList.count();
+            clearTraces();
+        }
+#endif
+
+        // Find a gesture at the end of the first result
         if (!gesture.isEmpty()) {
 
             DECUMA_UNICODE gestureSymbol = gesture.at(0).unicode();
@@ -892,8 +1281,8 @@ public:
                 break;
 
             default:
-                finishRecognition();
                 ic->commit(ic->preeditText());
+                finishRecognition();
                 break;
             }
 
@@ -918,6 +1307,85 @@ public:
             emit q->selectionListChanged(SelectionListModel::WordCandidateList);
             emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, activeWordIndex);
         }
+    }
+
+    bool handleGesture()
+    {
+        if (countActiveTraces() > 0)
+            return false;
+
+        QVariantMap gesture(gestureRecognizer.recognize(traceList.mid(traceList.length() - 1, 1)));
+        if (gesture.isEmpty())
+            return false;
+
+        VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::handleGesture():" << gesture;
+
+        if (gesture[QLatin1String("type")].toString() == QLatin1String("swipe")) {
+
+            static const int SWIPE_ANGLE_THRESHOLD = 15;    // degrees +-
+
+            qreal swipeLength = gesture[QLatin1String("length")].toReal();
+            if (swipeLength >= instantGestureSettings.widthThreshold) {
+
+                Q_Q(T9WriteInputMethod);
+                InputContext *ic = q->inputContext();
+                if (!ic)
+                    return false;
+
+                qreal swipeAngle = gesture[QLatin1String("angle_degrees")].toReal();
+                int swipeTouchCount = gesture[QLatin1String("touch_count")].toInt();
+
+                // Swipe left
+                if (swipeAngle <= 180 + SWIPE_ANGLE_THRESHOLD && swipeAngle >= 180 - SWIPE_ANGLE_THRESHOLD) {
+                    if (swipeTouchCount == 1) {
+                        // Single swipe: backspace
+                        ic->inputEngine()->virtualKeyClick(Qt::Key_Backspace, QString(), Qt::NoModifier);
+                        return true;
+                    }
+                    return false;
+                }
+
+                // Swipe right
+                const InputEngine::InputMode inputMode = q->inputEngine()->inputMode();
+                if (inputMode != InputEngine::ChineseHandwriting) {
+                    if (swipeAngle <= SWIPE_ANGLE_THRESHOLD || swipeAngle >= 360 - SWIPE_ANGLE_THRESHOLD) {
+                        if (swipeTouchCount == 1) {
+                            // Single swipe: space
+                            ic->inputEngine()->virtualKeyClick(Qt::Key_Space, QString(" "), Qt::NoModifier);
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+
+                // Swipe up
+                if (swipeAngle <= 270 + SWIPE_ANGLE_THRESHOLD && swipeAngle >= 270 - SWIPE_ANGLE_THRESHOLD) {
+                    if (swipeTouchCount == 1) {
+                        // Single swipe: toggle input mode
+                        select();
+                        if (!(ic->inputMethodHints() & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly))) {
+                            QList<int> inputModes = ic->inputEngine()->inputModes();
+                            // Filter out duplicate numeric mode (in favor of Numeric)
+                            int indexOfNumericInputMode = inputModes.indexOf(InputEngine::Numeric);
+                            int indexOfDialableInputMode = inputModes.indexOf(InputEngine::Dialable);
+                            if (indexOfNumericInputMode != -1 && indexOfDialableInputMode != -1)
+                                inputModes.removeAt(inputMode != InputEngine::Dialable ?
+                                            indexOfDialableInputMode :
+                                            indexOfNumericInputMode);
+                            if (inputModes.count() > 1) {
+                                int inputModeIndex = inputModes.indexOf((int)inputMode) + 1;
+                                if (inputModeIndex >= inputModes.count())
+                                    inputModeIndex = 0;
+                                ic->inputEngine()->setInputMode((InputEngine::InputMode)inputModes.at(inputModeIndex));
+                            }
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     bool isValidInputChar(const QChar &c) const
@@ -948,17 +1416,23 @@ public:
 
     T9WriteInputMethod *q_ptr;
     static const DECUMA_MEM_FUNCTIONS memFuncs;
+    bool cjk;
+    EngineMode engineMode;
+    QByteArray currentContext;
     DECUMA_SESSION_SETTINGS sessionSettings;
     DECUMA_INSTANT_GESTURE_SETTINGS instantGestureSettings;
+    QString defaultHwrDbPath;
+    QString defaultDictionaryDbPath;
     QFile hwrDbFile;
     QVector<DECUMA_UINT32> languageCategories;
     QVector<DECUMA_UINT32> symbolCategories;
     QScopedPointer<T9WriteWorker> worker;
     QList<Trace *> traceList;
+    int traceListHardLimit;
     QMutex dictionaryLock;
     QString dictionaryFileName;
-    void *convertedDictionary;
-    void *attachedDictionary;
+    QSharedPointer<T9WriteDictionary> loadedDictionary;
+    QSharedPointer<T9WriteDictionary> attachedDictionary;
     QSharedPointer<T9WriteDictionaryTask> dictionaryTask;
     QSharedPointer<T9WriteRecognitionTask> recognitionTask;
     int resultId;
@@ -974,6 +1448,10 @@ public:
     bool ignoreUpdate;
     InputEngine::TextCase textCase;
     T9WriteCaseFormatter caseFormatter;
+    HandwritingGestureRecognizer gestureRecognizer;
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
+    QScopedPointer<UnipenTrace> unipenTrace;
+#endif
 };
 
 const DECUMA_MEM_FUNCTIONS T9WriteInputMethodPrivate::memFuncs = {
@@ -991,8 +1469,6 @@ const DECUMA_MEM_FUNCTIONS T9WriteInputMethodPrivate::memFuncs = {
 T9WriteInputMethod::T9WriteInputMethod(QObject *parent) :
     AbstractInputMethod(*new T9WriteInputMethodPrivate(this), parent)
 {
-    Q_D(T9WriteInputMethod);
-    d->initEngine();
 }
 
 T9WriteInputMethod::~T9WriteInputMethod()
@@ -1003,18 +1479,58 @@ T9WriteInputMethod::~T9WriteInputMethod()
 
 QList<InputEngine::InputMode> T9WriteInputMethod::inputModes(const QString &locale)
 {
-    Q_UNUSED(locale)
-    return QList<InputEngine::InputMode>()
-            << InputEngine::Latin
-            << InputEngine::Numeric
-            << InputEngine::Dialable;
+    Q_D(T9WriteInputMethod);
+    QList<InputEngine::InputMode> availableInputModes;
+    const Qt::InputMethodHints inputMethodHints(inputContext()->inputMethodHints());
+    T9WriteInputMethodPrivate::EngineMode mode = d->mapLocaleToEngineMode(QLocale(locale));
+
+    // Add primary input mode
+    switch (mode) {
+#ifdef HAVE_T9WRITE_ALPHABETIC
+    case T9WriteInputMethodPrivate::Alphabetic:
+        if (d->findHwrDb(T9WriteInputMethodPrivate::Alphabetic, d->defaultHwrDbPath).isEmpty())
+            return availableInputModes;
+        if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
+            availableInputModes.append(InputEngine::Latin);
+        break;
+#endif
+#ifdef HAVE_T9WRITE_CJK
+    case T9WriteInputMethodPrivate::SimplifiedChinese:
+    case T9WriteInputMethodPrivate::TraditionalChinese:
+    case T9WriteInputMethodPrivate::HongKongChinese:
+        if (d->findHwrDb(mode, d->defaultHwrDbPath).isEmpty())
+            return availableInputModes;
+        if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
+            availableInputModes.append(InputEngine::ChineseHandwriting);
+        break;
+#endif
+    default:
+        return availableInputModes;
+    }
+
+    // Add exclusive input modes
+    if (inputMethodHints.testFlag(Qt::ImhDialableCharactersOnly) || inputMethodHints.testFlag(Qt::ImhDigitsOnly)) {
+        availableInputModes.append(InputEngine::Dialable);
+    } else if (inputMethodHints.testFlag(Qt::ImhFormattedNumbersOnly)) {
+        availableInputModes.append(InputEngine::Numeric);
+    } else if (inputMethodHints.testFlag(Qt::ImhLatinOnly)) {
+        availableInputModes.append(InputEngine::Latin);
+    } else {
+        // Add other input modes
+        Q_ASSERT(!availableInputModes.isEmpty());
+        if (!availableInputModes.contains(InputEngine::Latin))
+            availableInputModes.append(InputEngine::Latin);
+        availableInputModes.append(InputEngine::Numeric);
+    }
+
+    return availableInputModes;
 }
 
 bool T9WriteInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
 {
     Q_D(T9WriteInputMethod);
     d->select();
-    return d->setInputMode(locale, inputMode);
+    return d->setInputMode(QLocale(locale), inputMode);
 }
 
 bool T9WriteInputMethod::setTextCase(InputEngine::TextCase textCase)
@@ -1045,6 +1561,13 @@ bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
             if (preeditText.length() > 1) {
                 preeditText.chop(1);
                 ic->setPreeditText(preeditText);
+                // WA:  T9Write CJK may crash in some cases with long stringStart.
+                //      Therefore we commit the current input and finish the recognition.
+                if (d->cjk) {
+                    ic->commit();
+                    d->finishRecognition();
+                    return true;
+                }
                 d->caseFormatter.ensureLength(preeditText.length(), d->textCase);
                 T9WriteCaseFormatter caseFormatter(d->caseFormatter);
                 d->finishRecognition(false);
@@ -1182,11 +1705,13 @@ bool T9WriteInputMethod::reselect(int cursorPosition, const InputEngine::Reselec
     if (!ic)
         return false;
 
+    const InputEngine::InputMode inputMode = inputEngine()->inputMode();
+    const int maxLength = inputMode == InputEngine::ChineseHandwriting ? 0 : 32;
     const QString surroundingText = ic->surroundingText();
     int replaceFrom = 0;
 
     if (reselectFlags.testFlag(InputEngine::WordBeforeCursor)) {
-        for (int i = cursorPosition - 1; i >= 0; --i) {
+        for (int i = cursorPosition - 1; i >= 0 && d->stringStart.length() < maxLength; --i) {
             QChar c = surroundingText.at(i);
             if (!d->isValidInputChar(c))
                 break;
@@ -1206,7 +1731,7 @@ bool T9WriteInputMethod::reselect(int cursorPosition, const InputEngine::Reselec
     }
 
     if (reselectFlags.testFlag(InputEngine::WordAfterCursor)) {
-        for (int i = cursorPosition; i < surroundingText.length(); ++i) {
+        for (int i = cursorPosition; i < surroundingText.length() && d->stringStart.length() < maxLength; ++i) {
             QChar c = surroundingText.at(i);
             if (!d->isValidInputChar(c))
                 break;
@@ -1224,7 +1749,7 @@ bool T9WriteInputMethod::reselect(int cursorPosition, const InputEngine::Reselec
     if (d->stringStart.isEmpty())
         return false;
 
-    if (reselectFlags.testFlag(InputEngine::WordAtCursor) && replaceFrom == -d->stringStart.length()) {
+    if (reselectFlags.testFlag(InputEngine::WordAtCursor) && replaceFrom == -d->stringStart.length() && d->stringStart.length() < maxLength) {
         d->stringStart.clear();
         return false;
     }
@@ -1258,35 +1783,38 @@ void T9WriteInputMethod::timerEvent(QTimerEvent *timerEvent)
     if (timerId == d->resultTimer) {
         if (d->sessionSettings.recognitionMode == mcrMode) {
             d->stopResultTimer();
-            d->clearTraces();
+#ifndef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
+            const InputEngine::InputMode inputMode = inputEngine()->inputMode();
+            if (inputMode != InputEngine::ChineseHandwriting)
+                d->clearTraces();
+#endif
         } else if (d->sessionSettings.recognitionMode == scrMode) {
             d->select();
         }
     }
 }
 
-void T9WriteInputMethod::dictionaryLoadCompleted(const QString &fileUri, void *dictionary)
+void T9WriteInputMethod::dictionaryLoadCompleted(QSharedPointer<T9WriteDictionary> dictionary)
 {
     Q_D(T9WriteInputMethod);
     // Note: This method is called in worker thread context
     QMutexLocker dictionaryGuard(&d->dictionaryLock);
 
-    VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethod::dictionaryLoadCompleted():" << fileUri << dictionary;
-
     if (!dictionary)
         return;
 
+    VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethod::dictionaryLoadCompleted():"
+                            << dictionary->fileName() << dictionary->data() << dictionary->size();
+
     InputContext *ic = inputContext();
-    if (ic && fileUri == d->dictionaryFileName) {
-        d->convertedDictionary = dictionary;
+    if (ic && dictionary->fileName() == d->dictionaryFileName) {
+        d->loadedDictionary = dictionary;
         if (d->sessionSettings.recognitionMode == mcrMode &&
                 !ic->inputMethodHints().testFlag(Qt::ImhNoPredictiveText) &&
                 !d->attachedDictionary) {
-            d->attachDictionary(d->convertedDictionary);
-            d->attachedDictionary = d->convertedDictionary;
+            if (d->attachDictionary(d->loadedDictionary))
+                d->attachedDictionary = d->loadedDictionary;
         }
-    } else {
-        d->destroyConvertedDictionary(&dictionary);
     }
 }
 
@@ -1313,6 +1841,12 @@ void T9WriteInputMethod::resultsAvailable(const QVariantList &resultList)
 #endif
     Q_D(T9WriteInputMethod);
     d->resultsAvailable(resultList);
+}
+
+void T9WriteInputMethod::recognitionError(int status)
+{
+    VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethod::recognitionError():" << status;
+    reset();
 }
 
 } // namespace QtVirtualKeyboard

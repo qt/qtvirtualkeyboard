@@ -1152,7 +1152,7 @@ Item {
                         inputMode = InputEngine.Dialable
                     else if ((InputContext.inputMethodHints & (Qt.ImhFormattedNumbersOnly | Qt.ImhDigitsOnly)) && inputModes.indexOf(InputEngine.Numeric) !== -1)
                         inputMode = InputEngine.Numeric
-                    else
+                    else if (keyboardLayoutLoader.item.inputMode === -1)
                         inputMode = inputModes[0]
                 }
 

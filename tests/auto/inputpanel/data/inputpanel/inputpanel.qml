@@ -29,7 +29,7 @@
 
 import QtTest 1.0
 import QtQuick 2.0
-import QtQuick.VirtualKeyboard 2.2
+import QtQuick.VirtualKeyboard 2.3
 import QtQuick.VirtualKeyboard.Settings 2.2
 import "handwriting.js" as Handwriting
 import "utils.js" as Utils
@@ -263,6 +263,8 @@ InputPanel {
             return InputEngine.Katakana
         else if (inputModeName === "FullwidthLatin")
             return InputEngine.FullwidthLatin
+        else if (inputModeName === "ChineseHandwriting")
+            return InputEngine.ChineseHandwriting
         else
             return -1
     }

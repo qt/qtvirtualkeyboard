@@ -58,10 +58,14 @@ void T9WriteTask::wait()
     \internal
 */
 
-T9WriteDictionaryTask::T9WriteDictionaryTask(const QString &fileUri,
-                                             const DECUMA_MEM_FUNCTIONS &memFuncs) :
-    fileUri(fileUri),
-    memFuncs(memFuncs)
+T9WriteDictionaryTask::T9WriteDictionaryTask(QSharedPointer<T9WriteDictionary> dictionary,
+                                             const QString &dictionaryFileName,
+                                             bool convertDictionary,
+                                             const DECUMA_SRC_DICTIONARY_INFO &dictionaryInfo) :
+    dictionary(dictionary),
+    dictionaryFileName(dictionaryFileName),
+    convertDictionary(convertDictionary),
+    dictionaryInfo(dictionaryInfo)
 {
 }
 
@@ -74,33 +78,19 @@ void T9WriteDictionaryTask::run()
     perf.start();
 #endif
 
-    void *dictionary = 0;
-
-    QFile dictionaryFile(fileUri);
-    if (dictionaryFile.open(QIODevice::ReadOnly)) {
-        uchar *dictionaryData = dictionaryFile.map(0, dictionaryFile.size(), QFile::NoOptions);
-        if (dictionaryData) {
-
-            DECUMA_SRC_DICTIONARY_INFO dictionaryInfo;
-            memset(&dictionaryInfo, 0, sizeof(dictionaryInfo));
-            dictionaryInfo.srcType = decumaXT9LDB;
-            DECUMA_UINT32 dictionarySize = 0;
-            DECUMA_STATUS status = decumaConvertDictionary(&dictionary, dictionaryData, dictionaryFile.size(), &dictionaryInfo, &dictionarySize, &memFuncs);
-            Q_UNUSED(status)
-            Q_ASSERT(status == decumaNoError);
-            dictionaryFile.unmap(dictionaryData);
-        } else {
-            qWarning() << "Could not map dictionary file" << fileUri;
-        }
-    } else {
-        qWarning() << "Could not open dictionary file" << fileUri;
+    bool result = false;
+    if (dictionary) {
+        result = dictionary->load(dictionaryFileName);
+        if (result && convertDictionary)
+            result = dictionary->convert(dictionaryInfo);
     }
 
 #ifdef QT_VIRTUALKEYBOARD_DEBUG
     VIRTUALKEYBOARD_DEBUG() << "T9WriteDictionaryTask::run(): time:" << perf.elapsed() << "ms";
 #endif
 
-    emit completed(fileUri, dictionary);
+    if (result)
+        emit completed(dictionary);
 }
 
 /*!
@@ -109,6 +99,7 @@ void T9WriteDictionaryTask::run()
 */
 
 T9WriteRecognitionResult::T9WriteRecognitionResult(int id, int maxResults, int maxCharsPerWord) :
+    status(decumaNoError),
     numResults(0),
     instantGesture(0),
     id(id),
@@ -176,16 +167,18 @@ void T9WriteRecognitionTask::run()
     perf.start();
 #endif
 
-    DECUMA_STATUS status = decumaIndicateInstantGesture(decumaSession, &result->instantGesture, &instantGestureSettings);
-    Q_ASSERT(status == decumaNoError);
+    DECUMA_STATUS status;
+    if (!cjk) {
+        status = DECUMA_API(IndicateInstantGesture)(decumaSession, &result->instantGesture, &instantGestureSettings);
+        Q_ASSERT(status == decumaNoError);
+    }
 
     DECUMA_INTERRUPT_FUNCTIONS interruptFunctions;
     interruptFunctions.pShouldAbortRecognize = shouldAbortRecognize;
     interruptFunctions.pUserData = (void *)this;
-    status = decumaRecognize(decumaSession, result->results.data(), result->results.size(), &result->numResults, result->maxCharsPerWord, &recSettings, &interruptFunctions);
-    if (status == decumaAbortRecognitionUnsupported)
-        status = decumaRecognize(decumaSession, result->results.data(), result->results.size(), &result->numResults, result->maxCharsPerWord, &recSettings, NULL);
-    Q_ASSERT(status == decumaNoError);
+    result->status = DECUMA_API(Recognize)(decumaSession, result->results.data(), result->results.size(), &result->numResults, result->maxCharsPerWord, &recSettings, &interruptFunctions);
+    if (result->status == decumaAbortRecognitionUnsupported)
+        result->status = DECUMA_API(Recognize)(decumaSession, result->results.data(), result->results.size(), &result->numResults, result->maxCharsPerWord, &recSettings, NULL);
 
     QStringList resultList;
     QString gesture;
@@ -261,6 +254,11 @@ void T9WriteRecognitionResultsTask::run()
     if (!result)
         return;
 
+    if (result->status != decumaNoError) {
+        emit recognitionError(result->status);
+        return;
+    }
+
     QVariantList resultList;
     for (int i = 0; i < result->numResults; i++)
     {
@@ -306,12 +304,13 @@ void T9WriteRecognitionResultsTask::run()
     \internal
 */
 
-T9WriteWorker::T9WriteWorker(DECUMA_SESSION *decumaSession, QObject *parent) :
+T9WriteWorker::T9WriteWorker(DECUMA_SESSION *decumaSession, const bool cjk, QObject *parent) :
     QThread(parent),
     taskSema(),
     taskLock(),
     decumaSession(decumaSession),
-    abort(false)
+    abort(false),
+    cjk(cjk)
 {
 }
 
@@ -369,6 +368,7 @@ void T9WriteWorker::run()
         }
         if (currentTask) {
             currentTask->decumaSession = decumaSession;
+            currentTask->cjk  = cjk;
             currentTask->run();
             currentTask->runSema.release();
         }

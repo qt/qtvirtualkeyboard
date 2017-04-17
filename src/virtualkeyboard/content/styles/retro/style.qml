@@ -871,7 +871,17 @@ KeyboardStyle {
         Text {
             id: hwrInputModeIndicator
             visible: control.patternRecognitionMode === InputEngine.HandwritingRecoginition
-            text: InputContext.inputEngine.inputMode === InputEngine.Latin ? "Abc" : "123"
+            text: {
+                switch (InputContext.inputEngine.inputMode) {
+                case InputEngine.Numeric:
+                case InputEngine.Dialable:
+                    return "123"
+                case InputEngine.ChineseHandwriting:
+                    return "中文"
+                default:
+                    return "Abc"
+                }
+            }
             color: "black"
             anchors.left: parent.left
             anchors.top: parent.top
@@ -899,11 +909,25 @@ KeyboardStyle {
                 ctx.strokeStyle = Qt.rgba(0xFF, 0xFF, 0xFF)
                 ctx.clearRect(0, 0, width, height)
                 var i
+                var margin = Math.round(30 * scaleHint)
                 if (control.horizontalRulers) {
                     for (i = 0; i < control.horizontalRulers.length; i++) {
                         ctx.beginPath()
-                        ctx.moveTo(0, control.horizontalRulers[i])
-                        ctx.lineTo(width, control.horizontalRulers[i])
+                        var y = Math.round(control.horizontalRulers[i])
+                        var rightMargin = Math.round(width - margin)
+                        if (i + 1 === control.horizontalRulers.length) {
+                            ctx.moveTo(margin, y)
+                            ctx.lineTo(rightMargin, y)
+                        } else {
+                            var dashLen = Math.round(20 * scaleHint)
+                            for (var dash = margin, dashCount = 0;
+                                 dash < rightMargin; dash += dashLen, dashCount++) {
+                                if ((dashCount & 1) === 0) {
+                                    ctx.moveTo(dash, y)
+                                    ctx.lineTo(Math.min(dash + dashLen, rightMargin), y)
+                                }
+                            }
+                        }
                         ctx.stroke()
                     }
                 }
@@ -915,6 +939,11 @@ KeyboardStyle {
                         ctx.stroke()
                     }
                 }
+            }
+            Connections {
+                target: control
+                onHorizontalRulersChanged: traceInputKeyGuideLines.requestPaint()
+                onVerticalRulersChanged: traceInputKeyGuideLines.requestPaint()
             }
         }
     }

@@ -105,6 +105,11 @@ Rectangle {
             verify(inputPanel.setLocale(locale))
             if (localeChanged && !(textInput.inputMethodHints & Qt.ImhNoPredictiveText))
                 wait(300)
+            if (data !== undefined && data.hasOwnProperty("initHwrMode") && data.initHwrMode) {
+                if (!inputPanel.setHandwritingMode(true))
+                    expectFail("", "Handwriting not enabled")
+                verify(inputPanel.handwritingMode === true)
+            }
             if (data !== undefined && data.hasOwnProperty("initInputMode")) {
                 var inputMode = inputPanel.mapInputMode(data.initInputMode)
                 if (!inputPanel.isInputModeSupported(inputMode))
@@ -1093,18 +1098,15 @@ Rectangle {
 
         function test_hwrInputSequence_data() {
             return [
-                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 0, inputSequence: "abcdefghij", outputText: "Abcdefghij" },
-                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 1, inputSequence: "klmnopqrst", outputText: "klmnopqrst" },
-                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 3, inputSequence: "uvwxyz", outputText: "UVWXYZ" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 0, inputSequence: "abcdefghij", outputText: "Abcdefghij" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 1, inputSequence: "klmnopqrst", outputText: "klmnopqrst" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 3, inputSequence: "uvwxyz", outputText: "UVWXYZ" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", initInputMode: "ChineseHandwriting", inputSequence: "\u4e2d\u6587", outputText: "\u4e2d\u6587" },
             ]
         }
 
         function test_hwrInputSequence(data) {
             prepareTest(data)
-
-            if (!inputPanel.setHandwritingMode(true))
-                expectFail("", "Handwriting not enabled")
-            verify(inputPanel.handwritingMode === true)
 
             for (var i = 0; i < data.toggleShiftCount; i++) {
                 inputPanel.toggleShift()
@@ -1126,19 +1128,19 @@ Rectangle {
 
         function test_hwrNumericInputSequence_data() {
             return [
-                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhPreferNumbers, modeSwitchAllowed: true, inputSequence: "0123456789", outputText: "0123456789" },
-                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly, modeSwitchAllowed: false, inputSequence: "1234567890", outputText: "1234567890" },
-                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhFormattedNumbersOnly, modeSwitchAllowed: false, inputSequence: "1234567890+", outputText: "1234567890+" },
-                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDialableCharactersOnly, modeSwitchAllowed: false, inputSequence: "1234567890+", outputText: "1234567890+" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhPreferNumbers, modeSwitchAllowed: true, inputSequence: "0123456789", outputText: "0123456789" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly, modeSwitchAllowed: false, inputSequence: "1234567890", outputText: "1234567890" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhFormattedNumbersOnly, modeSwitchAllowed: false, inputSequence: "1234567890+", outputText: "1234567890+" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDialableCharactersOnly, modeSwitchAllowed: false, inputSequence: "1234567890+", outputText: "1234567890+" },
+                { initHwrMode: true, initLocale: "zh_CN", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhPreferNumbers, modeSwitchAllowed: true, inputSequence: "0123456789", outputText: "0123456789" },
+                { initHwrMode: true, initLocale: "zh_CN", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly, modeSwitchAllowed: false, inputSequence: "1234567890", outputText: "1234567890" },
+                { initHwrMode: true, initLocale: "zh_CN", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhFormattedNumbersOnly, modeSwitchAllowed: false, inputSequence: "1234567890+", outputText: "1234567890+" },
+                { initHwrMode: true, initLocale: "zh_CN", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDialableCharactersOnly, modeSwitchAllowed: false, inputSequence: "1234567890+", outputText: "1234567890+" },
             ]
         }
 
         function test_hwrNumericInputSequence(data) {
             prepareTest(data)
-
-            if (!inputPanel.setHandwritingMode(true))
-                expectFail("", "Handwriting not enabled")
-            verify(inputPanel.handwritingMode === true)
 
             for (var inputIndex in data.inputSequence) {
                 verify(inputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
@@ -1265,6 +1267,7 @@ Rectangle {
         function test_hwrFullScreenGestures_data() {
             return [
                 { initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: ["a","b","c",Qt.Key_Backspace,Qt.Key_Space,"c"], outputText: "Ab c" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", initInputMode: "ChineseHandwriting", inputSequence: ["\u4e2d", "\u6587", Qt.Key_Backspace], outputText: "\u4e2d" },
             ]
         }
 
@@ -1298,7 +1301,8 @@ Rectangle {
             prepareTest(data)
 
             if (!handwritingInputPanel.enabled)
-                skip("Handwriting not enabled")
+                expectFail("", "Handwriting not enabled")
+            verify(handwritingInputPanel.enabled)
             handwritingInputPanel.available = true
             if (!inputPanel.wordCandidateListVisibleHint)
                 skip("Word candidates not available (spell correction/hwr suggestions)")
