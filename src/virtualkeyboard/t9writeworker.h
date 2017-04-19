@@ -175,7 +175,7 @@ private:
     QSemaphore taskSema;
     QMutex taskLock;
     DECUMA_SESSION *decumaSession;
-    bool abort;
+    QAtomicInteger<bool> abort;
 };
 
 } // namespace QtVirtualKeyboard
