@@ -34,7 +34,9 @@ SOURCES += platforminputcontext.cpp \
     virtualkeyboardsettings.cpp \
     trace.cpp \
     desktopinputselectioncontrol.cpp \
-    shadowinputcontext.cpp
+    shadowinputcontext.cpp \
+    gesturerecognizer.cpp \
+    handwritinggesturerecognizer.cpp
 
 HEADERS += platforminputcontext.h \
     inputcontext.h \
@@ -55,7 +57,9 @@ HEADERS += platforminputcontext.h \
     plugin.h \
     trace.h \
     desktopinputselectioncontrol.h \
-    shadowinputcontext.h
+    shadowinputcontext.h \
+    gesturerecognizer.h \
+    handwritinggesturerecognizer.h
 
 RESOURCES += \
     content/styles/default/default_style.qrc \
