@@ -32,12 +32,20 @@
 
 #include <QQmlExtensionPlugin>
 
+static void initResources()
+{
+#ifdef QT_STATIC
+    Q_INIT_RESOURCE(qmake_QtQuick_VirtualKeyboard_Styles);
+#endif
+}
+
 class QtVirtualKeyboardStylesPlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
 
 public:
+    QtVirtualKeyboardStylesPlugin(QObject *parent = 0) : QQmlExtensionPlugin(parent) { initResources(); }
     void registerTypes(const char *uri);
     void initializeEngine(QQmlEngine *engine, const char *uri);
 };
