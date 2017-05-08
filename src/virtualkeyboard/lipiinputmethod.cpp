@@ -50,10 +50,9 @@
 
 #include <QCryptographicHash>
 
-#ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
+#include "unipentrace.h"
 #include <QStandardPaths>
-#include <QFileInfo>
-#include <QDir>
 #endif
 
 #ifdef HAVE_HUNSPELL
@@ -77,6 +76,9 @@ public:
         q_ptr(q_ptr),
         recognizeTimer(0),
         textCase(InputEngine::Lower)
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
+        , unipenTrace(0)
+#endif
     {
     }
 
@@ -166,6 +168,13 @@ public:
             delayedResult.clear();
         }
 
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
+        if (!unipenTrace) {
+            Q_Q(LipiInputMethod);
+            unipenTrace = new UnipenTrace(traceCaptureDeviceInfo, traceScreenInfo, q);
+        }
+#endif
+
         Trace *trace = new Trace();
         trace->setChannels(QStringList("t"));
         traceList.append(trace);
@@ -228,7 +237,7 @@ public:
                 if (swipeAngle <= 180 + SWIPE_ANGLE_THRESHOLD && swipeAngle >= 180 - SWIPE_ANGLE_THRESHOLD) {
                     if (swipeTouchCount == 1) {
                         // Single swipe: backspace
-#ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
                         dumpTraces();
                         saveTraces(Qt::Key_Backspace, 100);
 #endif
@@ -251,7 +260,7 @@ public:
                 if (swipeAngle <= SWIPE_ANGLE_THRESHOLD || swipeAngle >= 360 - SWIPE_ANGLE_THRESHOLD) {
                     if (swipeTouchCount == 1) {
                         // Single swipe: space
-#ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
                         dumpTraces();
                         saveTraces(Qt::Key_Space, 100);
 #endif
@@ -275,7 +284,7 @@ public:
                 if (swipeAngle <= 270 + SWIPE_ANGLE_THRESHOLD && swipeAngle >= 270 - SWIPE_ANGLE_THRESHOLD) {
                     if (swipeTouchCount == 1) {
                         // Single swipe: toggle input mode
-#ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
                         dumpTraces();
                         saveTraces(Qt::Key_Mode_switch, 100);
 #endif
@@ -334,7 +343,7 @@ public:
 
     void finishRecognition()
     {
-#ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
         dumpTraces();
 #endif
         stopRecognizeTimer();
@@ -403,11 +412,14 @@ public:
     {
         const QChar ch = result["unicode"].toChar();
         const QChar chUpper = ch.toUpper();
-#ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
         // In recording mode, the text case must match with the current text case
-        if (ch.isLetter() && (ch.isUpper() != (textCase == InputEngine::Upper)))
-            return;
-        saveTraces(ch.unicode(), qRound(result["confidence"].toDouble() * 100));
+        if (unipenTrace) {
+            if (!ch.isLetter() || (ch.isUpper() == (textCase == InputEngine::Upper)))
+                saveTraces(ch.unicode(), qRound(result["confidence"].toDouble() * 100));
+            delete unipenTrace;
+            unipenTrace = 0;
+        }
 #endif
         Q_Q(LipiInputMethod);
         q->inputContext()->inputEngine()->virtualKeyClick((Qt::Key)chUpper.unicode(),
@@ -415,72 +427,23 @@ public:
                     Qt::NoModifier);
     }
 
-#ifdef QT_VIRTUALKEYBOARD_LIPI_RECORD_TRACE_INPUT
-    QStringList recordedData;
-
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
     void dumpTraces()
     {
-        recordedData.clear();
-        recordedData.append(QStringLiteral(".VERSION 1.0"));
-        recordedData.append(QStringLiteral(".HIERARCHY CHARACTER"));
-        recordedData.append(QStringLiteral(".COORD X Y T"));
-        recordedData.append(QStringLiteral(".SEGMENT CHARACTER"));
-        recordedData.append(QStringLiteral(".X_DIM %1").arg(qRound(screenContext->getBboxRight())));
-        recordedData.append(QStringLiteral(".Y_DIM %1").arg(qRound(screenContext->getBboxBottom())));
-        recordedData.append(QStringLiteral(".X_POINTS_PER_INCH %1").arg(deviceInfo->getXDPI()));
-        recordedData.append(QStringLiteral(".Y_POINTS_PER_INCH %1").arg(deviceInfo->getYDPI()));
-        recordedData.append(QStringLiteral(".POINTS_PER_SECOND %1").arg(deviceInfo->getSamplingRate()));
-
-        qlonglong t0 = 0;
-        for (const Trace *trace : qAsConst(traceList)) {
-            const QVariantList &points = trace->points();
-            const bool hasTime = trace->channels().contains("t");
-            const QVariantList timeData = hasTime ? trace->channelData("t") : QVariantList();
-            QVariantList::ConstIterator t = timeData.constBegin();
-            if (t0 == 0 && hasTime)
-                t0 = t->toLongLong();
-
-            recordedData.append(QStringLiteral(".PEN_DOWN"));
-
-            for (const QVariant &point : points) {
-                const QPointF pt(point.toPointF());
-                QString pointStr(QStringLiteral("%1 %2 ").arg(qRound(pt.x())).arg(qRound(pt.y())));
-                if (hasTime) {
-                    pointStr.append(QString::number(t->toLongLong() - t0));
-                    t++;
-                } else {
-                    pointStr.append(QStringLiteral("0"));
-                }
-                recordedData.append(pointStr);
-            }
-
-            recordedData.append(QStringLiteral(".PEN_UP"));
-        }
+        if (unipenTrace)
+            unipenTrace->record(traceList);
     }
 
     void saveTraces(uint unicode, uint confidence)
     {
-        QString fileName;
+        if (!unipenTrace)
+            return;
+
         QStringList homeLocations = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
         if (!homeLocations.isEmpty()) {
             QString filePath = QStringLiteral("%1/%2").arg(homeLocations.at(0)).arg("VIRTUAL_KEYBOARD_TRACES");
-            QDir fileDir(filePath);
-            if (!fileDir.exists())
-                fileDir.mkpath(filePath);
-            if (fileDir.exists()) {
-                int fileIndex = 0;
-                do {
-                    fileName = fileDir.absoluteFilePath(QStringLiteral("%1_%2_%3.txt").arg(unicode).arg(confidence, 3, 10, QLatin1Char('0')).arg(fileIndex++));
-                } while (QFileInfo::exists(fileName));
-            }
-        }
-        QString dataStr(recordedData.join('\n'));
-        dataStr.append('\n');
-        QFile file(fileName);
-        if (file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-            file.write(dataStr.toUtf8().constData());
-        } else {
-            qWarning() << "Cannot open file for writing" << fileName;
+            unipenTrace->setDirectory(filePath);
+            unipenTrace->save(unicode, confidence);
         }
     }
 #endif
@@ -498,6 +461,9 @@ public:
     vector<int> subsetOfClasses;
     QVariantMap delayedResult;
     HandwritingGestureRecognizer gestureRecognizer;
+#ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
+    UnipenTrace *unipenTrace;
+#endif
 };
 
 /*!
