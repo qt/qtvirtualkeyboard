@@ -46,9 +46,6 @@ class InputEngine : public QObject
     Q_OBJECT
     Q_DISABLE_COPY(InputEngine)
     Q_DECLARE_PRIVATE(InputEngine)
-    Q_ENUMS(TextCase)
-    Q_ENUMS(InputMode)
-    Q_ENUMS(PatternRecognitionMode)
     Q_FLAGS(ReselectFlags)
     Q_PROPERTY(Qt::Key activeKey READ activeKey NOTIFY activeKeyChanged)
     Q_PROPERTY(Qt::Key previousKey READ previousKey NOTIFY previousKeyChanged)
@@ -87,6 +84,10 @@ public:
         WordAfterCursor = 0x2,
         WordAtCursor = WordBeforeCursor | WordAfterCursor
     };
+
+    Q_ENUM(TextCase)
+    Q_ENUM(InputMode)
+    Q_ENUM(PatternRecognitionMode)
     Q_DECLARE_FLAGS(ReselectFlags, ReselectFlag)
 
 public:

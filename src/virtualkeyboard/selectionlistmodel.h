@@ -41,8 +41,6 @@ class SelectionListModelPrivate;
 class SelectionListModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_ENUMS(Type)
-    Q_ENUMS(Role)
     Q_DECLARE_PRIVATE(SelectionListModel)
     Q_PROPERTY(int count READ count NOTIFY countChanged)
 
@@ -58,6 +56,9 @@ public:
         DisplayRole = Qt::DisplayRole,
         WordCompletionLengthRole = Qt::UserRole + 1
     };
+
+    Q_ENUM(Type)
+    Q_ENUM(Role)
 
     ~SelectionListModel();
     void setDataSource(AbstractInputMethod *dataSource, Type type);
