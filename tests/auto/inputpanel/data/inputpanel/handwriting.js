@@ -41,14 +41,12 @@ function emulate(testcase, hwrInputArea, ch, instant) {
     var chData = UnipenData.unipenData[chKey]
     var scale = Math.min(hwrInputArea.width / chData[".X_DIM"], hwrInputArea.height / chData[".Y_DIM"])
     var strokes = UnipenData.unipenData[chKey][".PEN"]
-    var boundingBox = calculateBoundingBox(strokes)
-    var boxOffset = Qt.point(-boundingBox.x * scale + (hwrInputArea.width - boundingBox.width * scale) / 2, -boundingBox.y * scale + (hwrInputArea.height - boundingBox.height * scale) / 2)
     var t = 0
     for (var strokeIndex = 0; strokeIndex < strokes.length; strokeIndex++) {
         var stroke = strokes[strokeIndex]
         for (var i = 0; i < stroke.length; i++) {
             var strokeData = stroke[i]
-            var pt = Qt.point(strokeData[0] * scale + boxOffset.x, strokeData[1] * scale + boxOffset.y)
+            var pt = Qt.point(strokeData[0] * scale, strokeData[1] * scale)
             if (instant)
                 t = strokeData[2]
             if (i == 0) {
@@ -63,30 +61,4 @@ function emulate(testcase, hwrInputArea, ch, instant) {
         }
     }
     return true
-}
-
-function calculateBoundingBox(unipenStrokes) {
-    var bboxLeft = 2147483647
-    var bboxRight = -2147483647
-    var bboxTop = 2147483647
-    var bboxBottom = -2147483647
-    for (var strokeIndex = 0; strokeIndex < unipenStrokes.length; strokeIndex++) {
-        var stroke = unipenStrokes[strokeIndex]
-        for (var i = 0; i < stroke.length; i++) {
-            var strokeData = stroke[i]
-            var x = strokeData[0]
-            if (bboxLeft > x)
-                bboxLeft = x
-            if (bboxRight < x)
-                bboxRight = x
-            var y = strokeData[1]
-            if (bboxTop > y)
-                bboxTop = y
-            if (bboxBottom < y)
-                bboxBottom = y
-        }
-    }
-    if (bboxLeft > bboxRight || bboxTop > bboxBottom)
-        return Qt.rect(0, 0, 0, 0)
-    return Qt.rect(bboxLeft, bboxTop, bboxRight - bboxLeft, bboxBottom -bboxTop)
 }
