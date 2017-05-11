@@ -89,7 +89,6 @@ void HunspellLoadDictionaryTask::run()
     }
 
     if (!affPath.isEmpty() && !dicPath.isEmpty()) {
-        VIRTUALKEYBOARD_DEBUG() << "Hunspell dictionary is missing for the" << locale << "language. Search paths" << searchPaths;
         *hunspellPtr = Hunspell_create(affPath.toUtf8().constData(), dicPath.toUtf8().constData());
         if (*hunspellPtr) {
             /*  Make sure the encoding used by the dictionary is supported
@@ -105,6 +104,8 @@ void HunspellLoadDictionaryTask::run()
 #ifdef QT_VIRTUALKEYBOARD_DEBUG
         VIRTUALKEYBOARD_DEBUG() << "HunspellLoadDictionaryTask::run(): time:" << perf.elapsed() << "ms";
 #endif
+    } else {
+        VIRTUALKEYBOARD_DEBUG() << "Hunspell dictionary is missing for" << locale << ". Search paths" << searchPaths;
     }
 
     emit completed(*hunspellPtr != 0);

@@ -163,7 +163,7 @@ QList<SelectionListModel::Type> HunspellInputMethod::selectionLists()
 {
     Q_D(const HunspellInputMethod);
     Qt::InputMethodHints inputMethodHints = inputContext()->inputMethodHints();
-    if (d->dictionaryState != HunspellInputMethodPrivate::DictionaryReady || inputMethodHints.testFlag(Qt::ImhNoPredictiveText) || inputMethodHints.testFlag(Qt::ImhHiddenText))
+    if (d->dictionaryState == HunspellInputMethodPrivate::DictionaryNotLoaded || inputMethodHints.testFlag(Qt::ImhNoPredictiveText) || inputMethodHints.testFlag(Qt::ImhHiddenText))
         return QList<SelectionListModel::Type>();
     return QList<SelectionListModel::Type>() << SelectionListModel::WordCandidateList;
 }
