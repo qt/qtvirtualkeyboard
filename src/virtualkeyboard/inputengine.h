@@ -137,6 +137,7 @@ private slots:
     void update();
     void shiftChanged();
     void updateSelectionListModels();
+    void updateInputModes();
 
 protected:
     void timerEvent(QTimerEvent *timerEvent);

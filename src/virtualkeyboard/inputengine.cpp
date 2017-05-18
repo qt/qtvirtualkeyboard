@@ -85,6 +85,7 @@ public:
     AbstractInputMethod *defaultInputMethod;
     InputEngine::TextCase textCase;
     InputEngine::InputMode inputMode;
+    QList<int> inputModes;
     QMap<SelectionListModel::Type, SelectionListModel *> selectionListModels;
     Qt::Key activeKey;
     QString activeKeyText;
@@ -158,6 +159,8 @@ InputEngine::InputEngine(InputContext *parent) :
         connect(d->inputContext, SIGNAL(shiftChanged()), SLOT(shiftChanged()));
         connect(d->inputContext, SIGNAL(localeChanged()), SLOT(update()));
         QObject::connect(d->inputContext, &InputContext::inputMethodHintsChanged, this, &InputEngine::updateSelectionListModels);
+        QObject::connect(d->inputContext, &InputContext::localeChanged, this, &InputEngine::updateInputModes);
+        QObject::connect(this, &InputEngine::inputMethodChanged, this, &InputEngine::updateInputModes);
     }
     d->defaultInputMethod = new DefaultInputMethod(this);
     if (d->defaultInputMethod)
@@ -379,7 +382,6 @@ void InputEngine::setInputMethod(AbstractInputMethod *inputMethod)
             updateSelectionListModels();
         }
         emit inputMethodChanged();
-        emit inputModesChanged();
         emit patternRecognitionModesChanged();
     }
 }
@@ -390,18 +392,7 @@ void InputEngine::setInputMethod(AbstractInputMethod *inputMethod)
 QList<int> InputEngine::inputModes() const
 {
     Q_D(const InputEngine);
-    QList<InputMode> inputModeList;
-    if (d->inputMethod) {
-        inputModeList = d->inputMethod->inputModes(d->inputContext->locale());
-    }
-    QList<int> resultList;
-    if (inputModeList.isEmpty()) {
-        return resultList;
-    }
-    resultList.reserve(inputModeList.size());
-    for (const InputMode &inputMode : qAsConst(inputModeList))
-        resultList.append(inputMode);
-    return resultList;
+    return d->inputModes;
 }
 
 InputEngine::InputMode InputEngine::inputMode() const
@@ -415,16 +406,22 @@ void InputEngine::setInputMode(InputEngine::InputMode inputMode)
     Q_D(InputEngine);
     VIRTUALKEYBOARD_DEBUG() << "InputEngine::setInputMode():" << inputMode;
     if (d->inputMethod) {
-        const QString locale(d->inputContext->locale());
-        QList<InputEngine::InputMode> inputModeList(d->inputMethod->inputModes(locale));
-        if (inputModeList.contains(inputMode)) {
-            d->inputMethod->setInputMode(locale, inputMode);
+#ifdef QT_DEBUG
+        // Cached input modes should be in sync with the input method
+        // If the assert below fails, we have missed an update somewhere
+        QList<int> cachedInputModes(d->inputModes);
+        updateInputModes();
+        Q_ASSERT(cachedInputModes == d->inputModes);
+#endif
+        if (d->inputModes.contains(inputMode)) {
+            d->inputMethod->setInputMode(d->inputContext->locale(), inputMode);
             if (d->inputMode != inputMode) {
                 d->inputMode = inputMode;
                 emit inputModeChanged();
             }
         } else {
-            qWarning() << "the input mode" << inputMode << "is not valid";
+            qWarning() << "Input mode" << inputMode <<
+                          "is not in the list of available input modes" << d->inputModes;
         }
     }
 }
@@ -581,7 +578,10 @@ void InputEngine::reset()
         RecursiveMethodGuard guard(d->recursiveMethodLock);
         if (!guard.locked()) {
             emit inputMethodReset();
+            updateInputModes();
         }
+    } else {
+        updateInputModes();
     }
 }
 
@@ -649,6 +649,29 @@ void InputEngine::updateSelectionListModels()
             if (selectionListType == SelectionListModel::WordCandidateList)
                 emit wordCandidateListVisibleHintChanged();
         }
+    }
+}
+
+/*!
+    \internal
+*/
+void InputEngine::updateInputModes()
+{
+    Q_D(InputEngine);
+    QList<int> newInputModes;
+    if (d->inputMethod) {
+        QList<InputMode> tmpList(d->inputMethod->inputModes(d->inputContext->locale()));
+        if (!tmpList.isEmpty()) {
+            std::transform(tmpList.constBegin(), tmpList.constEnd(),
+                           std::back_inserter(newInputModes),
+                           [tmpList] (InputMode inputMode) {
+                               return static_cast<int>(inputMode);
+                           });
+        }
+    }
+    if (d->inputModes != newInputModes) {
+        d->inputModes = newInputModes;
+        emit inputModesChanged();
     }
 }
 
