@@ -30,5 +30,6 @@
         <file>components/LanguagePopupList.qml</file>
         <file>components/SelectionControl.qml</file>
         <file>components/ShadowInputControl.qml</file>
+        <file>components/InputModeKey.qml</file>
     </qresource>
 </RCC>

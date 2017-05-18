@@ -29,11 +29,11 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
-import QtQuick.VirtualKeyboard 2.1
+import QtQuick.VirtualKeyboard 2.3
 
 KeyboardLayout {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.1; HandwritingInputMethod {}', parent)
+        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.3; HandwritingInputMethod {}', parent)
     }
     sharedLayouts: ['symbols']
     inputMode: InputEngine.Latin
@@ -66,15 +66,8 @@ KeyboardLayout {
         id: bottomRow
         Layout.preferredHeight: 1
         keyWeight: 154
-        Key {
+        InputModeKey {
             weight: 217
-            key: Qt.Key_Mode_switch
-            noKeyEvent: true
-            functionKey: true
-            text: InputContext.inputEngine.inputMode === InputEngine.Latin ? "123" : "ABC"
-            onClicked: InputContext.inputEngine.inputMode = InputContext.inputEngine.inputMode === InputEngine.Latin ? InputEngine.Numeric : InputEngine.Latin
-            enabled: !(InputContext.inputMethodHints & (Qt.ImhDialableCharactersOnly | Qt.ImhFormattedNumbersOnly | Qt.ImhDigitsOnly))
-            keyPanelDelegate: keyboard.style ? keyboard.style.symbolKeyPanel : undefined
         }
         ChangeLanguageKey {
             weight: 154

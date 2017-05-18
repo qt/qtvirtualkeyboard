@@ -28,11 +28,11 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.VirtualKeyboard 2.1
+import QtQuick.VirtualKeyboard 2.3
 
 KeyboardLayoutLoader {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.1; JapaneseInputMethod {}', parent, "japaneseInputMethod")
+        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.3; JapaneseInputMethod {}', parent, "japaneseInputMethod")
     }
     sharedLayouts: ['symbols']
     sourceComponent: InputContext.inputEngine.inputMode === InputEngine.FullwidthLatin ? page2 : page1
@@ -129,38 +129,20 @@ KeyboardLayoutLoader {
             }
             KeyboardRow {
                 keyWeight: 156
-                Key {
-                    key: Qt.Key_Mode_switch
-                    noKeyEvent: true
-                    functionKey: true
+                InputModeKey {
                     enabled: !(InputContext.inputMethodHints & Qt.ImhLatinOnly)
-                    displayText: {
-                        switch (InputContext.inputEngine.inputMode) {
-                        case InputEngine.Latin:
-                            return "\u534A\u89D2"
-                        case InputEngine.Hiragana:
-                            return "\u3042"
-                        case InputEngine.Katakana:
-                            return "\u30AB"
-                        default:
-                            return ""
-                        }
-                    }
-                    onClicked: {
-                        switch (InputContext.inputEngine.inputMode) {
-                        case InputEngine.Latin:
-                            InputContext.inputEngine.inputMode = InputEngine.FullwidthLatin
-                            break
-                        case InputEngine.Hiragana:
-                            InputContext.inputEngine.inputMode = InputEngine.Katakana
-                            break
-                        case InputEngine.Katakana:
-                            InputContext.inputEngine.inputMode = InputEngine.Latin
-                            break
-                        default:
-                            break
-                        }
-                    }
+                    inputModeNameList: [
+                        "半角",  // InputEngine.Latin
+                        "",     // InputEngine.Numeric
+                        "",     // InputEngine.Dialable
+                        "",     // InputEngine.Pinyin
+                        "",     // InputEngine.Cangjie
+                        "",     // InputEngine.Zhuyin
+                        "",     // InputEngine.Hangul
+                        "あ",    // InputEngine.Hiragana
+                        "カ",    // InputEngine.Katakana
+                        "全角",  // InputEngine.FullwidthLatin
+                    ]
                 }
                 Key {
                     key: Qt.Key_Z
@@ -349,12 +331,7 @@ KeyboardLayoutLoader {
             }
             KeyboardRow {
                 keyWeight: 156
-                Key {
-                    key: Qt.Key_Mode_switch
-                    noKeyEvent: true
-                    functionKey: true
-                    displayText: "\u5168\u89D2"
-                    onClicked: InputContext.inputEngine.inputMode = InputEngine.Hiragana
+                InputModeKey {
                 }
                 Key {
                     key: Qt.Key_Z

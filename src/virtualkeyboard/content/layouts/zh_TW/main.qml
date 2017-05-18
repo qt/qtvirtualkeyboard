@@ -29,11 +29,11 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
-import QtQuick.VirtualKeyboard 2.1
+import QtQuick.VirtualKeyboard 2.3
 
 KeyboardLayoutLoader {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.1; TCInputMethod {}', parent, "tcInputMethod")
+        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.3; TCInputMethod {}', parent, "tcInputMethod")
     }
     sharedLayouts: ['symbols']
     sourceComponent: InputContext.inputEngine.inputMode === InputEngine.Cangjie ? pageCangjie : pageZhuyin
@@ -197,11 +197,8 @@ KeyboardLayoutLoader {
                 ChangeLanguageKey {
                     weight: 154
                 }
-                ModeKey {
+                InputModeKey {
                     visible: InputContext.inputEngine.inputModes.indexOf(InputEngine.Zhuyin) !== -1
-                    // Cangjie
-                    displayText: "\u5009\u9821"
-                    onClicked: InputContext.inputEngine.inputMode = InputEngine.Zhuyin
                 }
                 SpaceKey {
                     weight: 864
@@ -423,11 +420,8 @@ KeyboardLayoutLoader {
                 ChangeLanguageKey {
                     weight: 154
                 }
-                ModeKey {
+                InputModeKey {
                     visible: InputContext.inputEngine.inputModes.indexOf(InputEngine.Cangjie) !== -1
-                    // Zhuyin
-                    displayText: "\u6CE8\u97F3"
-                    onClicked: InputContext.inputEngine.inputMode = InputEngine.Cangjie
                 }
                 SpaceKey {
                     weight: 864

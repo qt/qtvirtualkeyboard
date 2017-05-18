@@ -199,6 +199,7 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 0, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 1, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 2, "InputPanel");
+    qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 3, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("HandwritingInputPanel.qml")), pluginUri, 2, 0, "HandwritingInputPanel");
     const QString componentsPath = path + QStringLiteral("components/");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("AlternativeKeys.qml")), pluginUri, 1, 0, "AlternativeKeys");
@@ -248,6 +249,7 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     qmlRegisterType(QUrl(componentsPath + QLatin1String("WordCandidatePopupList.qml")), pluginUri, 2, 0, "WordCandidatePopupList");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("LanguagePopupList.qml")), pluginUri, 2, 1, "LanguagePopupList");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("SelectionControl.qml")), pluginUri, 2, 1, "SelectionControl");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("InputModeKey.qml")), pluginUri, 2, 3, "InputModeKey");
 
     if (system.compare(system, QLatin1String(pluginName), Qt::CaseInsensitive) == 0) {
         platformInputContext = new PlatformInputContext();
