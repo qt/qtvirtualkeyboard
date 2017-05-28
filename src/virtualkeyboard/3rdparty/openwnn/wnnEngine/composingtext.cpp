@@ -22,7 +22,6 @@
 #include "composingtext.h"
 
 #include <QtCore/private/qobject_p.h>
-#include <QDebug>
 
 class ComposingTextPrivate : public QObjectPrivate
 {
@@ -208,14 +207,11 @@ void ComposingText::debugout() const
 {
     Q_D(const ComposingText);
     for (int i = LAYER0; i < MAX_LAYER; i++) {
-        qDebug() << QString("ComposingText[%1]").arg(i);
-        qDebug() << "  cur =" << d->mCursor[i];
         QString tmp;
         for (QList<StrSegment>::ConstIterator it = d->mStringLayer[i].constBegin();
              it != d->mStringLayer[i].constEnd(); it++) {
             tmp += QString("(%1,%2,%3)").arg(it->string).arg(it->from).arg(it->to);
         }
-        qDebug() << "  str =" << tmp;
     }
 }
 
