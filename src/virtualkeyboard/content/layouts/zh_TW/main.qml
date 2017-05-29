@@ -197,6 +197,9 @@ KeyboardLayoutLoader {
                 ChangeLanguageKey {
                     weight: 154
                 }
+                HandwritingModeKey {
+                    weight: 154
+                }
                 InputModeKey {
                     visible: InputContext.inputEngine.inputModes.indexOf(InputEngine.Zhuyin) !== -1
                 }
@@ -418,6 +421,9 @@ KeyboardLayoutLoader {
                     weight: 217
                 }
                 ChangeLanguageKey {
+                    weight: 154
+                }
+                HandwritingModeKey {
                     weight: 154
                 }
                 InputModeKey {

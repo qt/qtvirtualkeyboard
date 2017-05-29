@@ -202,6 +202,8 @@ contains(CONFIG, lang-zh(_TW)?) {
     LAYOUT_FILES += \
         content/layouts/zh_TW/main.qml \
         content/layouts/zh_TW/symbols.qml
+t9write-cjk: LAYOUT_FILES += \
+        content/layouts/zh_TW/handwriting.qml
 }
 
 retro-style {

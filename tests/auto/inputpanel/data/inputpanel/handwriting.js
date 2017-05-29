@@ -31,6 +31,7 @@
 
 .import "unipen_data.js" as UnipenData
 .import "unipen_data_simp_chinese.js" as UnipenDataSimpChinese
+.import "unipen_data_trad_chinese.js" as UnipenDataTradChinese
 
 function emulate(testcase, hwrInputArea, ch, instant) {
     var chKey = (((typeof ch == "number") ? ch : ch.charCodeAt(0)) + 0x100000000).toString(16).substr(1)
@@ -42,6 +43,8 @@ function emulate(testcase, hwrInputArea, ch, instant) {
         unipenData = UnipenData
     else if (UnipenDataSimpChinese.unipenData.hasOwnProperty(chKey))
         unipenData = UnipenDataSimpChinese
+    else if (UnipenDataTradChinese.unipenData.hasOwnProperty(chKey))
+        unipenData = UnipenDataTradChinese
     else
         return false
     var chData = unipenData.unipenData[chKey]

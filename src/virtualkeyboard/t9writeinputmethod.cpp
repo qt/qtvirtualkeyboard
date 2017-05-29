@@ -616,6 +616,8 @@ public:
         if (language == DECUMA_LANG_PRC) {
             if (inputMode != InputEngine::ChineseHandwriting)
                 language = DECUMA_LANG_EN;
+            else if (locale.script() == QLocale::TraditionalChineseScript)
+                language = (locale.country() == QLocale::HongKong) ? DECUMA_LANG_HK : DECUMA_LANG_TW;
         }
 
         return language;
