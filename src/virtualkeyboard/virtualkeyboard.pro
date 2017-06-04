@@ -148,6 +148,8 @@ contains(CONFIG, lang-ko.*) {
     LAYOUT_FILES += \
         content/layouts/ko_KR/main.qml \
         content/layouts/ko_KR/symbols.qml
+t9write-cjk: LAYOUT_FILES += \
+        content/layouts/ko_KR/handwriting.qml
 }
 contains(CONFIG, lang-nb.*) {
     LAYOUT_FILES += \

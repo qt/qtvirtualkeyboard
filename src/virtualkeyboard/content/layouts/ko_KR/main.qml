@@ -152,6 +152,9 @@ KeyboardLayoutLoader {
                 ChangeLanguageKey {
                     weight: 154
                 }
+                HandwritingModeKey {
+                    weight: 154
+                }
                 SpaceKey {
                     weight: 864
                 }
@@ -284,6 +287,9 @@ KeyboardLayoutLoader {
                     weight: 217
                 }
                 ChangeLanguageKey {
+                    weight: 154
+                }
+                HandwritingModeKey {
                     weight: 154
                 }
                 SpaceKey {

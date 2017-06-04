@@ -455,6 +455,8 @@ public:
             return SimplifiedChinese;
             break;
         }
+        case QLocale::Korean:
+            return Korean;
         default:
             break;
         }
@@ -618,6 +620,9 @@ public:
                 language = DECUMA_LANG_EN;
             else if (locale.script() == QLocale::TraditionalChineseScript)
                 language = (locale.country() == QLocale::HongKong) ? DECUMA_LANG_HK : DECUMA_LANG_TW;
+        } else if (language == DECUMA_LANG_KO) {
+            if (inputMode != InputEngine::KoreanHandwriting)
+                language = DECUMA_LANG_EN;
         }
 
         return language;
@@ -637,7 +642,7 @@ public:
         sessionSettings.recognitionMode = mcrMode;
 
         // Use scrMode with hidden text or with no predictive mode
-        if (inputMode != InputEngine::ChineseHandwriting) {
+        if (inputMode != InputEngine::ChineseHandwriting && inputMode != InputEngine::KoreanHandwriting) {
             const Qt::InputMethodHints inputMethodHints = q->inputContext()->inputMethodHints();
             if (inputMethodHints.testFlag(Qt::ImhHiddenText) || inputMethodHints.testFlag(Qt::ImhNoPredictiveText))
                 sessionSettings.recognitionMode = scrMode;
@@ -775,6 +780,14 @@ public:
                 qWarning() << "Chinese handwriting is not supported in" << locale.name();
                 return false;
             }
+            break;
+
+        case InputEngine::KoreanHandwriting:
+            symbolCategories.append(DECUMA_CATEGORY_HANGUL_1001_A);
+            symbolCategories.append(DECUMA_CATEGORY_HANGUL_1001_B);
+            symbolCategories.append(DECUMA_CATEGORY_CJK_SYMBOL);
+            symbolCategories.append(DECUMA_CATEGORY_CJK_GENERAL_PUNCTUATIONS);
+            symbolCategories.append(DECUMA_CATEGORY_PUNCTUATIONS);
             break;
 
         default:
@@ -1250,7 +1263,7 @@ public:
         // Delete trace history
         const InputEngine::InputMode inputMode = q->inputEngine()->inputMode();
         if (sessionSettings.recognitionMode == mcrMode && !symbolStrokes.isEmpty() &&
-                inputMode != InputEngine::ChineseHandwriting) {
+                inputMode != InputEngine::ChineseHandwriting && inputMode != InputEngine::KoreanHandwriting) {
             int activeTraces = symbolStrokes.at(symbolStrokes.count() - 1).toInt();
             if (symbolStrokes.count() > 1)
                 activeTraces += symbolStrokes.at(symbolStrokes.count() - 2).toInt();
@@ -1349,7 +1362,7 @@ public:
 
                 // Swipe right
                 const InputEngine::InputMode inputMode = q->inputEngine()->inputMode();
-                if (inputMode != InputEngine::ChineseHandwriting) {
+                if (inputMode != InputEngine::ChineseHandwriting && inputMode != InputEngine::KoreanHandwriting) {
                     if (swipeAngle <= SWIPE_ANGLE_THRESHOLD || swipeAngle >= 360 - SWIPE_ANGLE_THRESHOLD) {
                         if (swipeTouchCount == 1) {
                             // Single swipe: space
@@ -1504,6 +1517,12 @@ QList<InputEngine::InputMode> T9WriteInputMethod::inputModes(const QString &loca
             return availableInputModes;
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
             availableInputModes.append(InputEngine::ChineseHandwriting);
+        break;
+    case T9WriteInputMethodPrivate::Korean:
+        if (d->findHwrDb(T9WriteInputMethodPrivate::Korean, d->defaultHwrDbPath).isEmpty())
+            return availableInputModes;
+        if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
+            availableInputModes.append(InputEngine::KoreanHandwriting);
         break;
 #endif
     default:
@@ -1708,7 +1727,8 @@ bool T9WriteInputMethod::reselect(int cursorPosition, const InputEngine::Reselec
         return false;
 
     const InputEngine::InputMode inputMode = inputEngine()->inputMode();
-    const int maxLength = inputMode == InputEngine::ChineseHandwriting ? 0 : 32;
+    const int maxLength = (inputMode == InputEngine::ChineseHandwriting ||
+            inputMode == InputEngine::KoreanHandwriting) ? 0 : 32;
     const QString surroundingText = ic->surroundingText();
     int replaceFrom = 0;
 
@@ -1787,7 +1807,7 @@ void T9WriteInputMethod::timerEvent(QTimerEvent *timerEvent)
             d->stopResultTimer();
 #ifndef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
             const InputEngine::InputMode inputMode = inputEngine()->inputMode();
-            if (inputMode != InputEngine::ChineseHandwriting)
+            if (inputMode != InputEngine::ChineseHandwriting && inputMode != InputEngine::KoreanHandwriting)
                 d->clearTraces();
 #endif
         } else if (d->sessionSettings.recognitionMode == scrMode) {

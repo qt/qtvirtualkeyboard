@@ -765,6 +765,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
         \li \c InputEngine.Katakana Katakana input mode for Japanese.
         \li \c InputEngine.FullwidthLatin Fullwidth latin input mode for East Asian languages.
         \li \c InputEngine.ChineseHandwriting Chinese handwriting.
+        \li \c InputEngine.KoreanHandwriting Korean handwriting.
     \endlist
 */
 

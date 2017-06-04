@@ -69,6 +69,7 @@ Key {
         "カ",    // InputEngine.Katakana
         "全角",  // InputEngine.FullwidthLatin
         "中文",  // InputEngine.ChineseHandwriting
+        "한국어", // InputEngine.KoreanHandwriting
     ]
 
     function __nextInputMode(inputMode) {
