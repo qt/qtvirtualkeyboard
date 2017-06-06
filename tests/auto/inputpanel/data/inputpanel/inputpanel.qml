@@ -368,6 +368,8 @@ InputPanel {
     }
 
     function virtualKeyPress(key) {
+        if (!key)
+            return false
         return multiLayoutKeyActionHelper(key, virtualKeyPressOnCurrentLayout)
     }
 
