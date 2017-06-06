@@ -189,10 +189,11 @@ KeyboardLayoutLoader {
             KeyboardRow {
                 keyWeight: 154
                 SymbolModeKey {
-                    weight: 217
+                    weight: 194
                 }
                 ChangeLanguageKey {
-                    weight: 174
+                }
+                HandwritingModeKey {
                 }
                 Key {
                     key: Qt.Key_Left
@@ -378,10 +379,11 @@ KeyboardLayoutLoader {
             KeyboardRow {
                 keyWeight: 154
                 SymbolModeKey {
-                    weight: 217
+                    weight: 194
                 }
                 ChangeLanguageKey {
-                    weight: 174
+                }
+                HandwritingModeKey {
                 }
                 Key {
                     key: Qt.Key_Left

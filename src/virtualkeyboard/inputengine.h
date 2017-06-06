@@ -75,6 +75,7 @@ public:
         Katakana,
         FullwidthLatin,
         ChineseHandwriting,
+        JapaneseHandwriting,
         KoreanHandwriting
     };
     enum PatternRecognitionMode {

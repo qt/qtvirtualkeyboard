@@ -764,6 +764,8 @@ KeyboardStyle {
                         return "123"
                     case InputEngine.ChineseHandwriting:
                         return "中文"
+                    case InputEngine.JapaneseHandwriting:
+                        return "日本語"
                     case InputEngine.KoreanHandwriting:
                         return "한국어"
                     default:

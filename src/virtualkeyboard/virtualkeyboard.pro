@@ -143,6 +143,8 @@ contains(CONFIG, lang-ja.*) {
     LAYOUT_FILES += \
         content/layouts/ja_JP/main.qml \
         content/layouts/ja_JP/symbols.qml
+t9write-cjk: LAYOUT_FILES += \
+        content/layouts/ja_JP/handwriting.qml
 }
 contains(CONFIG, lang-ko.*) {
     LAYOUT_FILES += \
