@@ -1,0 +1,6 @@
+# QTBUG-61279
+# Test fails if hunspell support is enabled in qtvirtualkeyboard
+# and hunspell-en-gb is installed to the system
+[tst_plugin::test_wclAutoCommitWordSetting:row 0]
+b2qt
+
