@@ -75,17 +75,22 @@ for using the plugin:
     \li \c Desktop: Qt Virtual Keyboard is integrated with Qt 5 and requires no
         changes to existing applications. The Qt Virtual Keyboard input method
         is available to all of the Qt 5 applications in the system.
+
+        In this integration method, the keyboard is shown in a dedicated
+        top-level window.
     \li \c Application: Qt Virtual Keyboard is integrated with Qt 5, but
         requires changes to particular applications using Qt Virtual Keyboard.
         This method is mandatory in a Boot2Qt environment, but can be used in
         desktop applications too.
+
+        In this integration method, the keyboard is shown in the same Qt Quick
+        scene as the application.
 \endlist
 
 The integration method is automatically selected by the project files.
 However, in desktop environments, it is possible to override the desktop
-integration method and use the application integration method instead.
-This happens by adding the \c CONFIG+=disable-desktop to the \c qmake
-command line.
+integration method and use the application integration method instead,
+by adding \c CONFIG+=disable-desktop to the \c qmake command line.
 
 \note The desktop integration method is not currently available in Boot2Qt
 environments.

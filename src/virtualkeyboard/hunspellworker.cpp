@@ -32,6 +32,7 @@
 #include <QVector>
 #include <QTextCodec>
 #include <QFileInfo>
+#include <QRegExp>
 #include <QTime>
 
 namespace QtVirtualKeyboard {
@@ -78,9 +79,9 @@ void HunspellLoadDictionaryTask::run()
     QString affPath;
     QString dicPath;
     for (const QString &searchPath : searchPaths) {
-        affPath = QStringLiteral("%1/%2.aff").arg(searchPath).arg(locale);
+        affPath = QStringLiteral("%1/%2.aff").arg(searchPath, locale);
         if (QFileInfo::exists(affPath)) {
-            dicPath = QStringLiteral("%1/%2.dic").arg(searchPath).arg(locale);
+            dicPath = QStringLiteral("%1/%2.dic").arg(searchPath, locale);
             if (QFileInfo::exists(dicPath))
                 break;
             dicPath.clear();

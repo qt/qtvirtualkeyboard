@@ -39,7 +39,6 @@ class EnterKeyActionAttachedType;
 class EnterKeyAction : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(Id)
 
 public:
     enum Id {
@@ -50,6 +49,8 @@ public:
         Next,
         Done
     };
+
+    Q_ENUM(Id)
 
 public:
     static EnterKeyActionAttachedType *qmlAttachedProperties(QObject *object);

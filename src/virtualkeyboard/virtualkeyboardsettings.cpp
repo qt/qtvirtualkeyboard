@@ -33,6 +33,7 @@
 #include <QQmlEngine>
 #include <QFileInfo>
 #include <QDir>
+#include <QRegExp>
 #include <QtCore/private/qobject_p.h>
 
 namespace QtVirtualKeyboard {

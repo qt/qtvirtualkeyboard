@@ -732,8 +732,15 @@ void InputContext::update(Qt::InputMethodQueries queries)
     Qt::InputMethodHints inputMethodHints = Qt::InputMethodHints(imQueryEvent.value(Qt::ImHints).toInt());
     const int cursorPosition = imQueryEvent.value(Qt::ImCursorPosition).toInt();
     const int anchorPosition = imQueryEvent.value(Qt::ImAnchorPosition).toInt();
-    QRectF anchorRectangle = qApp->inputMethod()->anchorRectangle();
-    QRectF cursorRectangle = qApp->inputMethod()->cursorRectangle();
+    QRectF anchorRectangle;
+    QRectF cursorRectangle;
+    if (const QGuiApplication *app = qApp) {
+        anchorRectangle = app->inputMethod()->anchorRectangle();
+        cursorRectangle = app->inputMethod()->cursorRectangle();
+    } else {
+        anchorRectangle = d->anchorRectangle;
+        cursorRectangle = d->cursorRectangle;
+    }
     QString surroundingText = imQueryEvent.value(Qt::ImSurroundingText).toString();
     QString selectedText = imQueryEvent.value(Qt::ImCurrentSelection).toString();
 

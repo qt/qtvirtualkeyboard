@@ -180,7 +180,10 @@ void DesktopInputSelectionControl::createHandles()
         m_cursorSelectionHandle.reset(new InputSelectionHandle(this, focusWindow));
 
         reloadGraphics();
-        connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &DesktopInputSelectionControl::destroyHandles);
+        if (QCoreApplication *app = QCoreApplication::instance()) {
+            connect(app, &QCoreApplication::aboutToQuit,
+                    this, &DesktopInputSelectionControl::destroyHandles);
+        }
     }
 }
 

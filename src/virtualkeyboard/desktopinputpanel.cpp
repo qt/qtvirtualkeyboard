@@ -152,7 +152,8 @@ void DesktopInputPanel::createView()
         }
         d->view->setColor(QColor(Qt::transparent));
         d->view->setSource(QUrl("qrc:///QtQuick/VirtualKeyboard/content/InputPanel.qml"));
-        connect(qGuiApp, SIGNAL(aboutToQuit()), SLOT(destroyView()));
+        if (QGuiApplication *app = qGuiApp)
+            connect(app, SIGNAL(aboutToQuit()), SLOT(destroyView()));
     }
 }
 

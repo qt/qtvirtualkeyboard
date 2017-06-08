@@ -216,7 +216,7 @@ OTHER_FILES += \
     content/components/*.qml \
     qtvirtualkeyboard.json
 
-!disable-desktop:isEmpty(CROSS_COMPILE):!qnx {
+!disable-desktop:isEmpty(CROSS_COMPILE):!android-embedded:!qnx {
     SOURCES += desktopinputpanel.cpp inputview.cpp
     HEADERS += desktopinputpanel.h inputview.h
     DEFINES += QT_VIRTUALKEYBOARD_DESKTOP
@@ -330,7 +330,7 @@ lipi-toolkit {
         -lltkcommon$$qtPlatformTargetSuffix() \
         -lltkutil$$qtPlatformTargetSuffix()
     win32: LIBS += Advapi32.lib
-    else: LIBS += -ldl
+    else: QMAKE_USE += libdl
     ltk_projects.files = $$PWD/3rdparty/lipi-toolkit/projects
     ltk_projects.path = $$[QT_INSTALL_DATA]/qtvirtualkeyboard/lipi_toolkit
     INSTALLS += ltk_projects

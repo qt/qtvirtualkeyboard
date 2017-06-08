@@ -54,4 +54,6 @@ load(qt_helper_lib)
 win32 {
     CONFIG += qt
     QT = core
+} else {
+    LIBS += -pthread
 }

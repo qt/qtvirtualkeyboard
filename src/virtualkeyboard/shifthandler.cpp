@@ -259,7 +259,8 @@ void ShiftHandler::autoCapitalize()
 void ShiftHandler::restart()
 {
     Q_D(ShiftHandler);
-    if (!qGuiApp->inputMethod()->isVisible()) {
+    const QGuiApplication *app = qGuiApp;
+    if (!app || !app->inputMethod()->isVisible()) {
         d->resetWhenVisible = true;
         return;
     }
@@ -282,7 +283,11 @@ void ShiftHandler::localeChanged()
 void ShiftHandler::inputMethodVisibleChanged()
 {
     Q_D(ShiftHandler);
-    if (d->resetWhenVisible && qGuiApp->inputMethod()->isVisible()) {
+    if (!d->resetWhenVisible)
+        return;
+
+    const QGuiApplication *app = qGuiApp;
+    if (app && app->inputMethod()->isVisible()) {
         d->resetWhenVisible = false;
         reset();
     }

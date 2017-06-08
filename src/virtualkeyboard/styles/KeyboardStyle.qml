@@ -521,7 +521,7 @@ QtObject {
         This property holds the selected text color for the full screen input
         field.
 
-        The default color is set to \l full screenInputColor.
+        The default color is set to \c fullScreenInputColor.
     */
     property color fullScreenInputSelectedTextColor: fullScreenInputColor
 }

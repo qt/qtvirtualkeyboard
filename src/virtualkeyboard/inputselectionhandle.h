@@ -42,13 +42,15 @@ class DesktopInputSelectionControl;
 
 class InputSelectionHandle : public QRasterWindow
 {
+    Q_OBJECT
+
 public:
     InputSelectionHandle(DesktopInputSelectionControl *control, QWindow *eventWindow);
     void applyImage(const QSize &windowSize);
 
 protected:
     void paintEvent(QPaintEvent *pe) Q_DECL_OVERRIDE;
-    bool event(QEvent *event);
+    bool event(QEvent *event) Q_DECL_OVERRIDE;
 
 private:
     DesktopInputSelectionControl *m_control;

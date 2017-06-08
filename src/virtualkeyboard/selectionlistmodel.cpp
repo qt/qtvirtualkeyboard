@@ -246,7 +246,7 @@ void SelectionListModel::selectionListChanged(int type)
         if (newCount) {
             int changedCount = qMin(oldCount, newCount);
             if (changedCount)
-                dataChanged(index(0), index(changedCount - 1));
+                emit dataChanged(index(0), index(changedCount - 1));
             if (oldCount > newCount) {
                 beginRemoveRows(QModelIndex(), newCount, oldCount - 1);
                 d->rowCount = newCount;
