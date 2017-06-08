@@ -375,9 +375,8 @@ void InputEngine::setInputMethod(AbstractInputMethod *inputMethod)
 
             // Set current text case
             d->inputMethod->setTextCase(d->textCase);
-
-            updateSelectionListModels();
         }
+        updateSelectionListModels();
         emit inputMethodChanged();
         emit inputModesChanged();
         emit patternRecognitionModesChanged();
