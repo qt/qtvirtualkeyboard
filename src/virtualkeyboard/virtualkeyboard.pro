@@ -160,6 +160,13 @@ contains(CONFIG, lang-nb.*) {
 t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/nb_NO/handwriting.qml
 }
+contains(CONFIG, lang-nl.*) {
+    LAYOUT_FILES += \
+        content/layouts/nl_NL/main.qml \
+        content/layouts/nl_NL/symbols.qml
+t9write-alphabetic|lipi-toolkit: LAYOUT_FILES += \
+        content/layouts/nl_NL/handwriting.qml
+}
 contains(CONFIG, lang-pl.*) {
     LAYOUT_FILES += \
         content/layouts/pl_PL/main.qml \

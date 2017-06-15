@@ -681,7 +681,7 @@ public:
                 bool includeBasicPunctuation = true;
                 switch (locale.script()) {
                 case QLocale::LatinScript:
-                    if (language == DECUMA_LANG_EN)
+                    if (language == DECUMA_LANG_EN || language == DECUMA_LANG_NL)
                         symbolCategories.append(DECUMA_CATEGORY_ANSI);
                     else
                         symbolCategories.append(DECUMA_CATEGORY_ISO8859_1);

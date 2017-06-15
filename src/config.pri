@@ -44,6 +44,7 @@ disable-layouts {
         lang-ja_JP \
         lang-ko_KR \
         lang-nb_NO \
+        lang-nl_NL \
         lang-pl_PL \
         lang-pt_PT \
         lang-ro_RO \
