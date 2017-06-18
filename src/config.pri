@@ -36,6 +36,7 @@ disable-layouts {
         lang-de_DE \
         lang-en_GB \
         lang-es_ES \
+        lang-et_EE \
         lang-fa_FA \
         lang-fi_FI \
         lang-fr_FR \

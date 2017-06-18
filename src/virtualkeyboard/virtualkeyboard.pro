@@ -106,6 +106,13 @@ contains(CONFIG, lang-es.*) {
 t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/es_ES/handwriting.qml
 }
+contains(CONFIG, lang-et.*) {
+    LAYOUT_FILES += \
+        content/layouts/et_EE/main.qml \
+        content/layouts/et_EE/symbols.qml
+t9write-alphabetic: LAYOUT_FILES += \
+        content/layouts/et_EE/handwriting.qml
+}
 contains(CONFIG, lang-fa.*) {
     LAYOUT_FILES += \
         content/layouts/fa_FA/digits.qml \
