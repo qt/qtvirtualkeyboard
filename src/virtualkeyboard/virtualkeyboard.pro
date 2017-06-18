@@ -99,6 +99,13 @@ contains(CONFIG, lang-de.*) {
 t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/de_DE/handwriting.qml
 }
+contains(CONFIG, lang-el.*) {
+    LAYOUT_FILES += \
+        content/layouts/el_GR/main.qml \
+        content/layouts/el_GR/symbols.qml
+t9write-alphabetic: LAYOUT_FILES += \
+        content/layouts/el_GR/handwriting.qml
+}
 contains(CONFIG, lang-es.*) {
     LAYOUT_FILES += \
         content/layouts/es_ES/main.qml \

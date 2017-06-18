@@ -74,6 +74,7 @@ public:
         Hiragana,
         Katakana,
         FullwidthLatin,
+        Greek,
         ChineseHandwriting,
         JapaneseHandwriting,
         KoreanHandwriting

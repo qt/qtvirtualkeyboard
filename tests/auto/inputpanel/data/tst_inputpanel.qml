@@ -317,6 +317,7 @@ Rectangle {
                 { initLocale: "fa_FA", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "\u0633\u0644\u0627\u0645", outputText: "\u0633\u0644\u0627\u0645" },
                 { initLocale: "da_DK", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hej", outputText: "Hej" },
                 { initLocale: "de_DE", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hallo", outputText: "Hallo" },
+                { initLocale: "el_GR", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "\u03C7\u03B1\u03AF\u03C1\u03B5\u03C4\u03B5", outputText: "\u03A7\u03B1\u03AF\u03C1\u03B5\u03C4\u03B5" },
                 { initLocale: "en_GB", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hello", outputText: "Hello" },
                 { initLocale: "es_ES", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hola", outputText: "Hola" },
                 { initLocale: "et_EE", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "tere", outputText: "Tere" },
@@ -355,6 +356,10 @@ Rectangle {
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly, inputSequence: "1234567890" + decmialPoint, outputText: "1234567890" + decmialPoint },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhFormattedNumbersOnly, inputSequence: "1234567890+-,.()", outputText: "1234567890+-,.()" },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDialableCharactersOnly, inputSequence: "1234567890+*#", outputText: "1234567890+*#" },
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhEmailCharactersOnly, inputSequence: "a@b.c", outputText: "a@b.c" },
+                // Note: The Greek keyboard also contains a QWERTY layout
+                { initLocale: "el_GR", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhEmailCharactersOnly, inputSequence: "a@b.c", outputText: "a@b.c" },
+                { initLocale: "el_GR", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhLatinOnly, inputSequence: "abc", outputText: "Abc" },
             ]
         }
 
@@ -1107,6 +1112,7 @@ Rectangle {
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", initInputMode: "ChineseHandwriting", inputSequence: "\u570b", outputText: "\u570b" },
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "ja_JP", initInputMode: "JapaneseHandwriting", inputSequence: "\u65E5\u672C\u8A9E", outputText: "\u65E5\u672C\u8A9E" },
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "ko_KR", initInputMode: "KoreanHandwriting", inputSequence: "\uD55C\uAD6D\uC5B4", outputText: "\uD55C\uAD6D\uC5B4" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "el_GR", initInputMode: "Greek", inputSequence: "\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC", outputText: "\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC" },
             ]
         }
 

@@ -49,13 +49,17 @@ PlainInputMethod::~PlainInputMethod()
 
 QList<InputEngine::InputMode> PlainInputMethod::inputModes(const QString &locale)
 {
-    Q_UNUSED(locale)
-    // Supports all input modes
-    return QList<InputEngine::InputMode>()
-            << InputEngine::Latin
-            << InputEngine::Numeric
-            << InputEngine::Dialable
-            << InputEngine::Pinyin;
+    QList<InputEngine::InputMode> result;
+    switch (QLocale(locale).script()) {
+    case QLocale::GreekScript:
+        result.append(InputEngine::Greek);
+        break;
+    default:
+        break;
+    }
+    result.append(InputEngine::Latin);
+    result.append(InputEngine::Numeric);
+    return result;
 }
 
 bool PlainInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)

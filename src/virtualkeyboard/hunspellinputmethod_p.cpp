@@ -174,7 +174,7 @@ bool HunspellInputMethodPrivate::isAutoSpaceAllowed() const
     Q_Q(const HunspellInputMethod);
     if (!autoSpaceAllowed)
         return false;
-    if (q->inputEngine()->inputMode() != InputEngine::Latin)
+    if (q->inputEngine()->inputMode() == InputEngine::Numeric)
         return false;
     InputContext *ic = q->inputContext();
     if (!ic)

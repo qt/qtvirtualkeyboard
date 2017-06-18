@@ -411,14 +411,14 @@ public:
         }
 
         bool languageChanged = languageCategories.isEmpty() || languageCategories.first() != language;
-        if (languageChanged) {
-            languageCategories.clear();
-            languageCategories.append(language);
+        languageCategories.clear();
+        languageCategories.append(language);
 
-            // Add English as secondary language for punctuation
-            if (language == DECUMA_LANG_PRC)
-                languageCategories.append(DECUMA_LANG_EN);
-        }
+        // Add English as secondary language for non-latin languages.
+        // T9 Write requires it for punctuation and latin symbols if
+        // included in the symbol categories.
+        if (locale.script() != QLocale::LatinScript)
+            languageCategories.append(DECUMA_LANG_EN);
 
         if (!updateSymbolCategories(language, locale, inputMode))
             return false;
@@ -677,37 +677,13 @@ public:
             } else if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly)) {
                 symbolCategories.append(DECUMA_CATEGORY_URL);
             } else {
-                bool includeDigits = true;
-                bool includeBasicPunctuation = true;
-                switch (locale.script()) {
-                case QLocale::LatinScript:
-                    if (language == DECUMA_LANG_EN || language == DECUMA_LANG_NL)
-                        symbolCategories.append(DECUMA_CATEGORY_ANSI);
-                    else
-                        symbolCategories.append(DECUMA_CATEGORY_ISO8859_1);
-                    break;
-
-                case QLocale::CyrillicScript:
-                    symbolCategories.append(DECUMA_CATEGORY_CYRILLIC);
-                    break;
-
-                case QLocale::GreekScript:
-                    symbolCategories.append(DECUMA_CATEGORY_GREEK);
-                    break;
-
-                default:
-                    qWarning() << "Handwriting is not supported in" << locale.name();
-                    return false;
-                }
-
-                if (includeDigits)
-                    symbolCategories.append(DECUMA_CATEGORY_DIGIT);
-
-                if (includeBasicPunctuation) {
-                    symbolCategories.append(DECUMA_CATEGORY_BASIC_PUNCTUATIONS);
-                    symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
-                }
-
+                if (language == DECUMA_LANG_EN || language == DECUMA_LANG_NL)
+                    symbolCategories.append(DECUMA_CATEGORY_ANSI);
+                else
+                    symbolCategories.append(DECUMA_CATEGORY_ISO8859_1);
+                symbolCategories.append(DECUMA_CATEGORY_DIGIT);
+                symbolCategories.append(DECUMA_CATEGORY_BASIC_PUNCTUATIONS);
+                symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
                 if (language == DECUMA_LANG_ES)
                     symbolCategories.append(DECUMA_CATEGORY_SPANISH_PUNCTUATIONS);
             }
@@ -721,6 +697,15 @@ public:
 
         case InputEngine::Dialable:
             symbolCategories.append(DECUMA_CATEGORY_PHONE_NUMBER);
+            break;
+
+        case InputEngine::Greek:
+            symbolCategories.append(DECUMA_CATEGORY_GREEK);
+            symbolCategories.append(DECUMA_CATEGORY_QUEST_EXCL_MARK_PUNCTUATIONS);
+            symbolCategories.append(DECUMA_CATEGORY_PERIOD_COMMA_PUNCTUATIONS);
+            symbolCategories.append(DECUMA_CATEGORY_COLON_PUNCTUATIONS);
+            symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
+            symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
             break;
 
         default:
@@ -1537,7 +1522,8 @@ QList<InputEngine::InputMode> T9WriteInputMethod::inputModes(const QString &loca
     Q_D(T9WriteInputMethod);
     QList<InputEngine::InputMode> availableInputModes;
     const Qt::InputMethodHints inputMethodHints(inputContext()->inputMethodHints());
-    T9WriteInputMethodPrivate::EngineMode mode = d->mapLocaleToEngineMode(QLocale(locale));
+    const QLocale loc(locale);
+    T9WriteInputMethodPrivate::EngineMode mode = d->mapLocaleToEngineMode(loc);
 
     // Add primary input mode
     switch (mode) {
@@ -1545,8 +1531,16 @@ QList<InputEngine::InputMode> T9WriteInputMethod::inputModes(const QString &loca
     case T9WriteInputMethodPrivate::Alphabetic:
         if (d->findHwrDb(T9WriteInputMethodPrivate::Alphabetic, d->defaultHwrDbPath).isEmpty())
             return availableInputModes;
-        if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
+        if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly))) {
+            switch (loc.script()) {
+            case QLocale::GreekScript:
+                availableInputModes.append(InputEngine::Greek);
+                break;
+            default:
+                break;
+            }
             availableInputModes.append(InputEngine::Latin);
+        }
         break;
 #endif
 #ifdef HAVE_T9WRITE_CJK

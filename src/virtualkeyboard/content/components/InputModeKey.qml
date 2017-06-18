@@ -68,6 +68,7 @@ Key {
         "あ",    // InputEngine.Hiragana
         "カ",    // InputEngine.Katakana
         "全角",  // InputEngine.FullwidthLatin
+        "ΑΒΓ",  // InputEngine.Greek
         "中文",  // InputEngine.ChineseHandwriting
         "日本語", // InputEngine.JapaneseHandwriting
         "한국어", // InputEngine.KoreanHandwriting

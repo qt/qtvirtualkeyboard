@@ -34,6 +34,7 @@ disable-layouts {
         lang-ar_AR \
         lang-da_DK \
         lang-de_DE \
+        lang-el_GR \
         lang-en_GB \
         lang-es_ES \
         lang-et_EE \

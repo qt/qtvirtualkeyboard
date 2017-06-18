@@ -762,6 +762,8 @@ KeyboardStyle {
                     case InputEngine.Numeric:
                     case InputEngine.Dialable:
                         return "123"
+                    case InputEngine.Greek:
+                        return "ΑΒΓ"
                     case InputEngine.ChineseHandwriting:
                         return "中文"
                     case InputEngine.JapaneseHandwriting:

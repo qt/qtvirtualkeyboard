@@ -53,8 +53,17 @@ HunspellInputMethod::~HunspellInputMethod()
 
 QList<InputEngine::InputMode> HunspellInputMethod::inputModes(const QString &locale)
 {
-    Q_UNUSED(locale)
-    return QList<InputEngine::InputMode>() << InputEngine::Latin << InputEngine::Numeric;
+    QList<InputEngine::InputMode> result;
+    switch (QLocale(locale).script()) {
+    case QLocale::GreekScript:
+        result.append(InputEngine::Greek);
+        break;
+    default:
+        break;
+    }
+    result.append(InputEngine::Latin);
+    result.append(InputEngine::Numeric);
+    return result;
 }
 
 bool HunspellInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
