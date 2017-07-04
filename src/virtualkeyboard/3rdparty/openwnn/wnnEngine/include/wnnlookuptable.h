@@ -3,8 +3,7 @@
  * This file is part of the Qt Virtual Keyboard module.
  * Contact: http://www.qt.io/licensing/
  *
- * Copyright (C) 2015  The Qt Company
- * Copyright (C) 2008-2012  OMRON SOFTWARE Co., Ltd.
+ * Copyright (C) 2017  The Qt Company
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,26 +18,30 @@
  * limitations under the License.
  */
 
-#ifndef ROMKAN_H
-#define ROMKAN_H
+#ifndef WNNLOOKUPTABLE_H
+#define WNNLOOKUPTABLE_H
 
-#include "letterconverter.h"
+#include <QString>
+#if WNN_LOOKUP_TABLE_CREATE
 #include <QMap>
+#endif
 
-class WnnLookupTable;
-
-class Romkan : public LetterConverter
+class WnnLookupTable
 {
-    Q_OBJECT
-    Q_DISABLE_COPY(Romkan)
 public:
-    explicit Romkan(QObject *parent = 0);
-    ~Romkan();
+    explicit WnnLookupTable(const char **keys, const char **values, const int length);
 
-    bool convert(ComposingText &text) const;
+    const QString value(const QString &what) const;
+    inline const QString operator[](const QString &what) const { return value(what); }
 
-protected:
-    bool convertImpl(ComposingText &text, const WnnLookupTable &table) const;
+#if WNN_LOOKUP_TABLE_CREATE
+    static void create(const QMap<QString, QString> &map, const QString &privatePrefix, const QString &fileName);
+#endif
+
+private:
+    const char **keys;
+    const char **values;
+    const int length;
 };
 
-#endif // ROMKAN_H
+#endif // WNNLOOKUPTABLE_H
