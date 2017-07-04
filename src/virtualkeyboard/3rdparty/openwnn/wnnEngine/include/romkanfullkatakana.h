@@ -24,13 +24,10 @@
 
 #include "romkan.h"
 
-class RomkanFullKatakanaPrivate;
-
 class RomkanFullKatakana : public Romkan
 {
     Q_OBJECT
     Q_DISABLE_COPY(RomkanFullKatakana)
-    Q_DECLARE_PRIVATE(RomkanFullKatakana)
 public:
     explicit RomkanFullKatakana(QObject *parent = 0);
     ~RomkanFullKatakana();

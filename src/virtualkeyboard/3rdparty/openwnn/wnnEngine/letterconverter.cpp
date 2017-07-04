@@ -21,11 +21,6 @@
 
 #include "letterconverter.h"
 
-LetterConverter::LetterConverter(QObjectPrivate &dd, QObject *parent) :
-    QObject(dd, parent)
-{
-}
-
 LetterConverter::LetterConverter(QObject *parent) :
     QObject(parent)
 {

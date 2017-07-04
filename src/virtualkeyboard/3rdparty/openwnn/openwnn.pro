@@ -26,7 +26,8 @@ SOURCES += \
     wnnEngine/letterconverter.cpp \
     wnnEngine/romkan.cpp \
     wnnEngine/romkanfullkatakana.cpp \
-    wnnEngine/romkanhalfkatakana.cpp
+    wnnEngine/romkanhalfkatakana.cpp \
+    wnnEngine/wnnlookuptable.cpp
 
 HEADERS += \
     wnnDictionary/include/nj_dic.h \
@@ -46,7 +47,8 @@ HEADERS += \
     wnnEngine/include/letterconverter.h \
     wnnEngine/include/romkan.h \
     wnnEngine/include/romkanfullkatakana.h \
-    wnnEngine/include/romkanhalfkatakana.h
+    wnnEngine/include/romkanhalfkatakana.h \
+    wnnEngine/include/wnnlookuptable.h
 
 load(qt_helper_lib)
 
