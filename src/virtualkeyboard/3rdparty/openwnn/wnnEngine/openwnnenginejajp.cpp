@@ -115,7 +115,7 @@ public:
             if (!convResult.isEmpty()) {
                 for (QList<WnnClause>::ConstIterator it = convResult.constBegin();
                      it != convResult.constEnd(); it++) {
-                    addCandidate(QSharedPointer<WnnWord>(new WnnWord(*it)));
+                    addCandidate(QSharedPointer<WnnWord>::create(*it));
                 }
             }
             /* end of candidates by single clause conversion */
@@ -128,7 +128,7 @@ public:
 
             for (QList<WnnWord>::ConstIterator it = addCandidateList.constBegin();
                  it != addCandidateList.constEnd(); it++) {
-                addCandidate(QSharedPointer<WnnWord>(new WnnWord(*it)));
+                addCandidate(QSharedPointer<WnnWord>::create(*it));
             }
 
             mGetCandidateFrom = 3;
@@ -282,7 +282,7 @@ int OpenWnnEngineJAJP::convert(ComposingText &text)
         if (headCandidates.isEmpty()) {
             return 0;
         }
-        head.reset(new WnnClause(input, headCandidates.first()));
+        head = QSharedPointer<WnnClause>::create(input, headCandidates.first());
 
         /* set the rest of input string */
         input = text.toString(ComposingText::LAYER1, cursor, text.size(ComposingText::LAYER1) - 1);
@@ -296,7 +296,7 @@ int OpenWnnEngineJAJP::convert(ComposingText &text)
         sentence = d->mClauseConverter.consecutiveClauseConvert(input);
     }
     if (!head.isNull()) {
-        sentence.reset(new WnnSentence(*head, sentence.data()));
+        sentence = QSharedPointer<WnnSentence>::create(*head, sentence.data());
     }
     if (sentence.isNull()) {
         return 0;
@@ -356,7 +356,7 @@ bool OpenWnnEngineJAJP::learn(WnnWord &word)
         }
     } else {
         ret = dict.learnWord(word, d->mPreviousWord.data());
-        d->mPreviousWord.reset(new WnnWord(word));
+        d->mPreviousWord = QSharedPointer<WnnWord>::create(word);
         d->mClauseConverter.setDictionary(&dict);
     }
 

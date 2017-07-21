@@ -879,7 +879,7 @@ QSharedPointer<WnnWord> OpenWnnDictionary::getNextWord(int length)
     /* Get the result from fixed dictionary */
     int res = d->getNextWord(length);
     if (res > 0)
-        return QSharedPointer<WnnWord>(new WnnWord(d->getCandidate(), d->getStroke(), WnnPOS(d->getLeftPartOfSpeech(), d->getRightPartOfSpeech()), d->getFrequency()));
+        return QSharedPointer<WnnWord>::create(d->getCandidate(), d->getStroke(), WnnPOS(d->getLeftPartOfSpeech(), d->getRightPartOfSpeech()), d->getFrequency());
     return QSharedPointer<WnnWord>();
 }
 

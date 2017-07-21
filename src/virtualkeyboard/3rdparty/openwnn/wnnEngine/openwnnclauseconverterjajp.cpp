@@ -93,12 +93,12 @@ public:
         /* check if the part of speech is valid */
         if (fzk == NULL) {
             if (connectible(stem.partOfSpeech.right, terminal.left)) {
-                clause.reset(new WnnClause(input, stem));
+                clause = QSharedPointer<WnnClause>::create(input, stem);
             }
         } else {
             if (connectible(stem.partOfSpeech.right, fzk->partOfSpeech.left)
                 && connectible(fzk->partOfSpeech.right, terminal.left)) {
-                clause.reset(new WnnClause(input, stem, *fzk));
+                clause = QSharedPointer<WnnClause>::create(input, stem, *fzk);
             }
         }
         if (clause == NULL) {
