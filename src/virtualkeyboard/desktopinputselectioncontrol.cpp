@@ -176,8 +176,8 @@ void DesktopInputSelectionControl::createHandles()
         Settings *settings = Settings::instance();
         connect(settings, &Settings::styleChanged, this, &DesktopInputSelectionControl::reloadGraphics);
 
-        m_anchorSelectionHandle.reset(new InputSelectionHandle(this, focusWindow));
-        m_cursorSelectionHandle.reset(new InputSelectionHandle(this, focusWindow));
+        m_anchorSelectionHandle = QSharedPointer<InputSelectionHandle>::create(this, focusWindow);
+        m_cursorSelectionHandle = QSharedPointer<InputSelectionHandle>::create(this, focusWindow);
 
         reloadGraphics();
         if (QCoreApplication *app = QCoreApplication::instance()) {
