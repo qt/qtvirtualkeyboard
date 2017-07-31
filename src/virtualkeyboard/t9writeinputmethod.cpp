@@ -919,7 +919,23 @@ public:
 
         VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::setContext():" << QString(context.toHex());
 
-        finishRecognition();
+        // Finish recognition, but preserve current input
+        Q_Q(T9WriteInputMethod);
+        QString preeditText = q->inputContext()->preeditText();
+        // WA:  T9Write CJK may crash in some cases with long stringStart.
+        //      Therefore we don't restore the current input in this mode.
+        bool preserveCurrentInput = !preeditText.isEmpty() && !cjk;
+        T9WriteCaseFormatter oldCaseFormatter(caseFormatter);
+        finishRecognition(!preserveCurrentInput);
+
+        if (preserveCurrentInput) {
+            caseFormatter = oldCaseFormatter;
+            stringStart = preeditText;
+            wordCandidates.append(preeditText);
+            activeWordIndex = 0;
+            emit q->selectionListChanged(SelectionListModel::WordCandidateList);
+            emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, activeWordIndex);
+        }
 
         const int dpi = traceCaptureDeviceInfo.value("dpi", 96).toInt();
         static const int INSTANT_GESTURE_WIDTH_THRESHOLD_MM = 25;
