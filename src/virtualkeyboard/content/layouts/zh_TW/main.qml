@@ -246,7 +246,8 @@ KeyboardLayoutLoader {
                         }
                         Key {
                             text: "\u02CB"
-                            alternativeKeys: "\u02CB4"
+                            alternativeKeys: "4"
+                            displayText: "`"
                         }
                         Key {
                             text: "\u3113"
@@ -254,7 +255,8 @@ KeyboardLayoutLoader {
                         }
                         Key {
                             text: "\u02CA"
-                            alternativeKeys: "\u02CA6"
+                            alternativeKeys: "6"
+                            displayText: "´"
                         }
                         Key {
                             text: "\u02D9"
