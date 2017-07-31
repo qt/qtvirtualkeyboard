@@ -92,9 +92,9 @@ KeyboardStyle {
                 verticalAlignment: Text.AlignVCenter
                 anchors.fill: parent
                 anchors.leftMargin: keyContentMargin
-                anchors.topMargin: control.smallTextVisible ? keyContentMargin * 1.2 : keyContentMargin
+                anchors.topMargin: keyContentMargin
                 anchors.rightMargin: keyContentMargin
-                anchors.bottomMargin: control.smallTextVisible ? keyContentMargin * 0.8 : keyContentMargin
+                anchors.bottomMargin: keyContentMargin
                 font {
                     family: fontFamily
                     weight: Font.Normal
