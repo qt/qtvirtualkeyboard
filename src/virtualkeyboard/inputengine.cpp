@@ -766,6 +766,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
         \li \c InputEngine.FullwidthLatin Fullwidth latin input mode for East Asian languages.
         \li \c InputEngine.Greek Greek input mode.
         \li \c InputEngine.Cyrillic Cyrillic input mode.
+        \li \c InputEngine.Arabic Arabic input mode.
         \li \c InputEngine.ChineseHandwriting Chinese handwriting.
         \li \c InputEngine.JapaneseHandwriting Japanese handwriting.
         \li \c InputEngine.KoreanHandwriting Korean handwriting.
@@ -840,6 +841,8 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
            Greek input mode.
     \value Cyrillic
            Cyrillic input mode.
+    \value Arabic
+           Arabic input mode.
 */
 
 /*!

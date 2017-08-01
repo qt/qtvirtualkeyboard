@@ -84,6 +84,8 @@ contains(CONFIG, lang-ar.*) {
         content/layouts/ar_AR/main.qml \
         content/layouts/ar_AR/numbers.qml \
         content/layouts/ar_AR/symbols.qml
+t9write-alphabetic: LAYOUT_FILES += \
+        content/layouts/ar_AR/handwriting.qml
 }
 contains(CONFIG, lang-bg.*) {
     LAYOUT_FILES += \

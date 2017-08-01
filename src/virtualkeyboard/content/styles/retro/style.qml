@@ -874,12 +874,17 @@ KeyboardStyle {
             text: {
                 switch (InputContext.inputEngine.inputMode) {
                 case InputEngine.Numeric:
+                    if (["ar", "fa"].indexOf(InputContext.locale.substring(0, 2)) !== -1)
+                        return "\u0660\u0661\u0662"
+                    // Fallthrough
                 case InputEngine.Dialable:
                     return "123"
                 case InputEngine.Greek:
                     return "ΑΒΓ"
                 case InputEngine.Cyrillic:
                     return "АБВ"
+                case InputEngine.Arabic:
+                    return "\u0623\u200C\u0628\u200C\u062C"
                 case InputEngine.ChineseHandwriting:
                     return "中文"
                 case InputEngine.JapaneseHandwriting:

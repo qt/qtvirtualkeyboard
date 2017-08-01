@@ -57,6 +57,9 @@ QList<InputEngine::InputMode> PlainInputMethod::inputModes(const QString &locale
     case QLocale::CyrillicScript:
         result.append(InputEngine::Cyrillic);
         break;
+    case QLocale::ArabicScript:
+        result.append(InputEngine::Arabic);
+        break;
     default:
         break;
     }

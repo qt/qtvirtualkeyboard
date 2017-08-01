@@ -76,6 +76,7 @@ public:
         FullwidthLatin,
         Greek,
         Cyrillic,
+        Arabic,
         ChineseHandwriting,
         JapaneseHandwriting,
         KoreanHandwriting

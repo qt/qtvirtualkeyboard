@@ -70,6 +70,7 @@ Key {
         "全角",  // InputEngine.FullwidthLatin
         "ΑΒΓ",  // InputEngine.Greek
         "АБВ",  // InputEngine.Cyrillic
+        "\u0623\u200C\u0628\u200C\u062C",  // InputEngine.Arabic
         "中文",  // InputEngine.ChineseHandwriting
         "日本語", // InputEngine.JapaneseHandwriting
         "한국어", // InputEngine.KoreanHandwriting

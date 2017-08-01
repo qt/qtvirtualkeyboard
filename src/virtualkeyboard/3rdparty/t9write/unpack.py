@@ -90,6 +90,9 @@ UNPACK_RULES = {
     '*/xxt9wApiOem.h',
     '*/xxt9wOem.h',
 ],
+'data/arabic': [
+    '*/Arabic/_databas_le.bin',
+],
 'data': [
     '*/_databas_le.bin',
     '*/*.hdb',

@@ -109,6 +109,7 @@ public:
     enum EngineMode {
         EngineUninitialized,
         Alphabetic,
+        Arabic,
         SimplifiedChinese,
         TraditionalChinese,
         HongKongChinese,
@@ -190,6 +191,7 @@ public:
 
         switch (newEngineMode) {
         case Alphabetic:
+        case Arabic:
             cjk = false;
             break;
         case SimplifiedChinese:
@@ -295,6 +297,9 @@ public:
         switch (mode) {
         case Alphabetic:
             hwrDbPath.append(QLatin1String("_databas_le.bin"));
+            break;
+        case Arabic:
+            hwrDbPath.append(QLatin1String("arabic/_databas_le.bin"));
             break;
         case SimplifiedChinese:
             hwrDbPath.append(QLatin1String("cjk_S_gb18030_le.hdb"));
@@ -468,6 +473,8 @@ public:
 #endif
 
 #ifdef HAVE_T9WRITE_ALPHABETIC
+        if (locale.script() == QLocale::ArabicScript)
+            return T9WriteInputMethodPrivate::Arabic;
         return T9WriteInputMethodPrivate::Alphabetic;
 #else
         return T9WriteInputMethodPrivate::EngineUninitialized;
@@ -632,6 +639,9 @@ public:
         } else if (language == DECUMA_LANG_SRCY) {
             if (inputMode != InputEngine::Cyrillic)
                 language = DECUMA_LANG_SRLA;
+        } else if (language == DECUMA_LANG_AR) {
+            if (inputMode != InputEngine::Arabic && inputMode != InputEngine::Numeric)
+                language = DECUMA_LANG_EN;
         }
 
         return language;
@@ -693,6 +703,12 @@ public:
             break;
 
         case InputEngine::Numeric:
+            if (language == DECUMA_LANG_AR) {
+                symbolCategories.append(DECUMA_CATEGORY_ARABIC_NUM_MODE);
+                symbolCategories.append(DECUMA_CATEGORY_ARABIC_GESTURES);
+                leftToRightGestures = false;
+                break;
+            }
             symbolCategories.append(DECUMA_CATEGORY_DIGIT);
             if (!inputMethodHints.testFlag(Qt::ImhDigitsOnly))
                 symbolCategories.append(DECUMA_CATEGORY_NUM_SUP);
@@ -718,6 +734,12 @@ public:
             // Ukrainian needs contraction mark, but not Russian or Bulgarian
             if (language == DECUMA_LANG_UK)
                 symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
+            break;
+
+        case InputEngine::Arabic:
+            symbolCategories.append(DECUMA_CATEGORY_ARABIC_ISOLATED_LETTER_MODE);
+            symbolCategories.append(DECUMA_CATEGORY_ARABIC_GESTURES);
+            leftToRightGestures = false;
             break;
 
         default:
@@ -1556,6 +1578,12 @@ QList<InputEngine::InputMode> T9WriteInputMethod::inputModes(const QString &loca
             }
             availableInputModes.append(InputEngine::Latin);
         }
+        break;
+    case T9WriteInputMethodPrivate::Arabic:
+        if (d->findHwrDb(T9WriteInputMethodPrivate::Arabic, d->defaultHwrDbPath).isEmpty())
+            return availableInputModes;
+        if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
+            availableInputModes.append(InputEngine::Arabic);
         break;
 #endif
 #ifdef HAVE_T9WRITE_CJK

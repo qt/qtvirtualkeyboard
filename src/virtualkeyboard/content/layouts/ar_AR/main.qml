@@ -28,10 +28,10 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.VirtualKeyboard 2.1
+import QtQuick.VirtualKeyboard 2.3
 
 KeyboardLayoutLoader {
-    inputMode: InputEngine.Latin
+    inputMode: InputEngine.Arabic
     sourceComponent: InputContext.shift ? page2 : page1
     Component {
         id: page1
@@ -163,13 +163,16 @@ KeyboardLayoutLoader {
                 ChangeLanguageKey {
                     weight: 154
                 }
+                HandwritingModeKey {
+                    weight: 154
+                }
                 SpaceKey {
                     weight: 864
                 }
                 Key {
                     key: 0x060C
                     text: "\u060C"
-                    alternativeKeys: ".,\u060C\u061F"
+                    alternativeKeys: "\"\u061F\u060C.!:\u061B\u066B\u066C\u066D"
                 }
                 Key {
                     key: 0xE000
@@ -310,6 +313,9 @@ KeyboardLayoutLoader {
                     displayText: "\u0661\u0662\u0663\u061F"
                 }
                 ChangeLanguageKey {
+                    weight: 154
+                }
+                HandwritingModeKey {
                     weight: 154
                 }
                 SpaceKey {
