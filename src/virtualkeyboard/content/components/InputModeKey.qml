@@ -50,7 +50,7 @@ Key {
               inputModeNameList[InputContext.inputEngine.inputMode] : "ABC"
     onClicked: InputContext.inputEngine.inputMode = __nextInputMode(InputContext.inputEngine.inputMode)
     keyPanelDelegate: keyboard.style ? keyboard.style.symbolKeyPanel : undefined
-    enabled: InputContext.inputEngine.inputModes.length > 1
+    enabled: inputModeCount > 1
 
     /*!
         List of input mode names.
@@ -73,13 +73,46 @@ Key {
         "한국어", // InputEngine.KoreanHandwriting
     ]
 
+    /*!
+        List of input modes to toggle.
+
+        This property allows to define a custom list of input modes to
+        toggle.
+
+        The default list contains all the available input modes.
+    */
+    property var inputModes: InputContext.inputEngine.inputModes
+
+    /*!
+        This read-only property reflects the actual number of input modes
+        the user can cycle through this key.
+    */
+    readonly property int inputModeCount: __inputModes !== undefined ? __inputModes.length : 0
+
+    property var __inputModes: __filterInputModes([].concat(InputContext.inputEngine.inputModes), inputModes)
+
+    onInputModesChanged: {
+        // Check that the current input mode is included in our list
+        if (keyboard.active && InputContext.inputEngine.inputMode !== -1 &&
+                __inputModes !== undefined && __inputModes.length > 0 &&
+                __inputModes.indexOf(InputContext.inputEngine.inputMode) === -1)
+            InputContext.inputEngine.inputMode = __inputModes[0]
+    }
+
     function __nextInputMode(inputMode) {
-        var inputModes = InputContext.inputEngine.inputModes
-        if (inputModes.length < 2)
+        if (!enabled)
             return inputMode
-        var inputModeIndex = inputModes.indexOf(inputMode) + 1
-        if (inputModeIndex >= inputModes.length)
+        var inputModeIndex = __inputModes.indexOf(inputMode) + 1
+        if (inputModeIndex >= __inputModes.length)
             inputModeIndex = 0
-        return inputModes[inputModeIndex]
+        return __inputModes[inputModeIndex]
+    }
+
+    function __filterInputModes(inputModes, filter) {
+        for (var i = 0; i < inputModes.length; i++) {
+            if (filter.indexOf(inputModes[i]) === -1)
+                inputModes.splice(i, 1)
+        }
+        return inputModes
     }
 }

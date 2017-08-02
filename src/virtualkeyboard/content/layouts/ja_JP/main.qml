@@ -130,7 +130,7 @@ KeyboardLayoutLoader {
             KeyboardRow {
                 keyWeight: 156
                 InputModeKey {
-                    enabled: !(InputContext.inputMethodHints & Qt.ImhLatinOnly)
+                    enabled: !(InputContext.inputMethodHints & Qt.ImhLatinOnly) && inputModeCount > 1
                     inputModeNameList: [
                         "半角",  // InputEngine.Latin
                         "",     // InputEngine.Numeric
