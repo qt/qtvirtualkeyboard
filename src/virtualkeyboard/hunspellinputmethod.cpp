@@ -58,6 +58,9 @@ QList<InputEngine::InputMode> HunspellInputMethod::inputModes(const QString &loc
     case QLocale::GreekScript:
         result.append(InputEngine::Greek);
         break;
+    case QLocale::CyrillicScript:
+        result.append(InputEngine::Cyrillic);
+        break;
     default:
         break;
     }

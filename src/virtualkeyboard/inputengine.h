@@ -75,6 +75,7 @@ public:
         Katakana,
         FullwidthLatin,
         Greek,
+        Cyrillic,
         ChineseHandwriting,
         JapaneseHandwriting,
         KoreanHandwriting

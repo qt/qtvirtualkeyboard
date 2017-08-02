@@ -708,6 +708,15 @@ public:
             symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
             break;
 
+        case InputEngine::Cyrillic:
+            symbolCategories.append(DECUMA_CATEGORY_CYRILLIC);
+            symbolCategories.append(DECUMA_CATEGORY_QUEST_EXCL_MARK_PUNCTUATIONS);
+            symbolCategories.append(DECUMA_CATEGORY_PERIOD_COMMA_PUNCTUATIONS);
+            // Ukrainian needs contraction mark, but not Russian or Bulgarian
+            if (language == DECUMA_LANG_UK)
+                symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
+            break;
+
         default:
             qWarning() << "Handwriting is not supported in" << locale.name();
             return false;
@@ -1535,6 +1544,9 @@ QList<InputEngine::InputMode> T9WriteInputMethod::inputModes(const QString &loca
             switch (loc.script()) {
             case QLocale::GreekScript:
                 availableInputModes.append(InputEngine::Greek);
+                break;
+            case QLocale::CyrillicScript:
+                availableInputModes.append(InputEngine::Cyrillic);
                 break;
             default:
                 break;

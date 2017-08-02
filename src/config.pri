@@ -32,6 +32,7 @@ disable-layouts {
     # Flag for activating all languages
     lang-all: CONFIG += \
         lang-ar_AR \
+        lang-bg_BG \
         lang-da_DK \
         lang-de_DE \
         lang-el_GR \

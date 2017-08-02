@@ -1113,6 +1113,7 @@ Rectangle {
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "ja_JP", initInputMode: "JapaneseHandwriting", inputSequence: "\u65E5\u672C\u8A9E", outputText: "\u65E5\u672C\u8A9E" },
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "ko_KR", initInputMode: "KoreanHandwriting", inputSequence: "\uD55C\uAD6D\uC5B4", outputText: "\uD55C\uAD6D\uC5B4" },
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "el_GR", initInputMode: "Greek", inputSequence: "\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC", outputText: "\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "bg_BG", initInputMode: "Cyrillic", inputSequence: "\u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438", outputText: "\u0411\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438" },
             ]
         }
 

@@ -878,6 +878,8 @@ KeyboardStyle {
                     return "123"
                 case InputEngine.Greek:
                     return "ΑΒΓ"
+                case InputEngine.Cyrillic:
+                    return "АВЗ"
                 case InputEngine.ChineseHandwriting:
                     return "中文"
                 case InputEngine.JapaneseHandwriting:

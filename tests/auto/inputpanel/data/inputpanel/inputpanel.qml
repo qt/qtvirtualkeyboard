@@ -265,6 +265,8 @@ InputPanel {
             return InputEngine.FullwidthLatin
         else if (inputModeName === "Greek")
             return InputEngine.Greek
+        else if (inputModeName === "Cyrillic")
+            return InputEngine.Cyrillic
         else if (inputModeName === "ChineseHandwriting")
             return InputEngine.ChineseHandwriting
         else if (inputModeName === "JapaneseHandwriting")
