@@ -1045,6 +1045,8 @@ Rectangle {
                 { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Return], outputText: "\u306B\u307B\u3093\u3054" },
                 // Hiragana to Kanjie conversion
                 { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Space,Qt.Key_Return], outputText: "\u65E5\u672C\u8A9E" },
+                // Hiragana to Kanjie conversion plus a smiley
+                { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["n","i","h","o","n","g","o",0xE000,Qt.Key_Space,Qt.Key_Return,Qt.Key_Return], outputText: "\u65E5\u672C\u8A9E\uFF1A\u30FC\uFF09" },
                 // Correction to Hiragana sequence using exact match mode
                 { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: [
                                 // Write part of the text leaving out "ni" from the beginning
