@@ -48,14 +48,17 @@ Item {
     property string locale: localeIndex >= 0 && localeIndex < layoutsModel.count ? layoutsModel.get(localeIndex, "fileName") : ""
     property string inputLocale
     property int defaultLocaleIndex: -1
-    property bool latinOnly: InputContext.inputMethodHints & Qt.ImhLatinOnly
-    property bool preferNumbers: InputContext.inputMethodHints & Qt.ImhPreferNumbers
+    readonly property bool latinOnly: InputContext.inputMethodHints & (Qt.ImhLatinOnly | Qt.ImhEmailCharactersOnly | Qt.ImhUrlCharactersOnly)
+    readonly property bool preferNumbers: InputContext.inputMethodHints & Qt.ImhPreferNumbers
+    readonly property bool dialableCharactersOnly: InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly
+    readonly property bool formattedNumbersOnly: InputContext.inputMethodHints & Qt.ImhFormattedNumbersOnly
+    readonly property bool digitsOnly: InputContext.inputMethodHints & Qt.ImhDigitsOnly
     property string layout
     property string layoutType: {
         if (keyboard.handwritingMode) return "handwriting"
-        if (InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly) return "dialpad"
-        if (InputContext.inputMethodHints & Qt.ImhFormattedNumbersOnly) return "numbers"
-        if (InputContext.inputMethodHints & Qt.ImhDigitsOnly) return "digits"
+        if (keyboard.dialableCharactersOnly) return "dialpad"
+        if (keyboard.formattedNumbersOnly) return "numbers"
+        if (keyboard.digitsOnly) return "digits"
         if (keyboard.symbolMode) return "symbols"
         return "main"
     }
@@ -128,17 +131,14 @@ Item {
         updateAvailableLocaleIndices()
         updateLayout()
     }
-    onLatinOnlyChanged: {
-        if (!latinOnly)
-            inputModeNeedsReset = true
-        updateInputMethod()
-    }
+    onLatinOnlyChanged: inputModeNeedsReset = true
     onPreferNumbersChanged: {
         keyboard.symbolMode = !keyboard.handwritingMode && preferNumbers
-        if (!preferNumbers)
-            inputModeNeedsReset = true
-        updateInputMethod()
+        inputModeNeedsReset = true
     }
+    onDialableCharactersOnlyChanged: inputModeNeedsReset = true
+    onFormattedNumbersOnlyChanged: inputModeNeedsReset = true
+    onDigitsOnlyChanged: inputModeNeedsReset = true
     onHandwritingModeChanged: if (!keyboard.handwritingMode) keyboard.fullScreenHandwritingMode = false
     onFullScreenHandwritingModeChanged: if (keyboard.fullScreenHandwritingMode) keyboard.handwritingMode = true
     onLanguagePopupListActiveChanged: {
@@ -751,6 +751,12 @@ Item {
                     when: keyboard.layout.length > 0
                 }
 
+                onItemChanged: {
+                    // Reset input mode if the new layout wants to override it
+                    if (item && item.inputMode !== -1)
+                        inputModeNeedsReset = true
+                }
+
                 MultiPointTouchArea {
                     id: keyboardInputArea
                     objectName: "keyboardInputArea"
@@ -1139,28 +1145,29 @@ Item {
             var inputModes = InputContext.inputEngine.inputModes
             if (inputModes.length > 0) {
                 // Reset to default input mode if the input locale has changed
-                if (inputModeNeedsReset)
+                if (inputModeNeedsReset) {
                     inputMode = inputModes[0]
 
-                // Check the current layout for input mode override
-                if (keyboardLayoutLoader.item.inputMode !== -1)
-                    inputMode = keyboardLayoutLoader.item.inputMode
+                    // Check the current layout for input mode override
+                    if (keyboardLayoutLoader.item.inputMode !== -1)
+                        inputMode = keyboardLayoutLoader.item.inputMode
 
-                // Update input mode automatically in handwriting mode
-                if (keyboard.handwritingMode) {
-                    if ((InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly) && inputModes.indexOf(InputEngine.Dialable) !== -1)
-                        inputMode = InputEngine.Dialable
-                    else if ((InputContext.inputMethodHints & (Qt.ImhFormattedNumbersOnly | Qt.ImhDigitsOnly)) && inputModes.indexOf(InputEngine.Numeric) !== -1)
+                    // Update input mode automatically in handwriting mode
+                    if (keyboard.handwritingMode) {
+                        if (keyboard.dialableCharactersOnly && inputModes.indexOf(InputEngine.Dialable) !== -1)
+                            inputMode = InputEngine.Dialable
+                        else if ((keyboard.formattedNumbersOnly || keyboard.digitsOnly) && inputModes.indexOf(InputEngine.Numeric) !== -1)
+                            inputMode = InputEngine.Numeric
+                        else if (keyboardLayoutLoader.item.inputMode === -1)
+                            inputMode = inputModes[0]
+                    }
+
+                    // Check the input method hints for input mode overrides
+                    if (latinOnly)
+                        inputMode = InputEngine.Latin
+                    if (preferNumbers)
                         inputMode = InputEngine.Numeric
-                    else if (keyboardLayoutLoader.item.inputMode === -1)
-                        inputMode = inputModes[0]
                 }
-
-                // Check the input method hints for input mode overrides
-                if (latinOnly)
-                    inputMode = InputEngine.Latin
-                if (preferNumbers)
-                    inputMode = InputEngine.Numeric
 
                 // Make sure the input mode is supported by the current input method
                 if (inputModes.indexOf(inputMode) === -1)
@@ -1348,5 +1355,11 @@ Item {
 
     function isHandwritingAvailable() {
         return VirtualKeyboardInputMethods.indexOf("HandwritingInputMethod") !== -1 && layoutExists(locale, "handwriting")
+    }
+
+    function setHandwritingMode(enabled, resetInputMode) {
+        if (enabled && resetInputMode)
+            inputModeNeedsReset = true
+        handwritingMode = enabled
     }
 }

@@ -49,6 +49,6 @@ Key {
     displayText: "HWR"
     functionKey: true
     visible: keyboard.isHandwritingAvailable()
-    onClicked: keyboard.handwritingMode = !keyboard.handwritingMode
+    onClicked: keyboard.setHandwritingMode(!keyboard.handwritingMode)
     keyPanelDelegate: keyboard.style ? keyboard.style.handwritingKeyPanel : undefined
 }

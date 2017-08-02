@@ -555,7 +555,7 @@ InputPanel {
     function setHandwritingMode(enabled) {
         if (inputPanel.keyboard.handwritingMode !== enabled) {
             if (!enabled || inputPanel.keyboard.isHandwritingAvailable())
-                inputPanel.keyboard.handwritingMode = enabled
+                inputPanel.keyboard.setHandwritingMode(enabled, true)
         }
         return inputPanel.keyboard.handwritingMode === enabled
     }

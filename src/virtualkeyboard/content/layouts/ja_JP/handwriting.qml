@@ -36,23 +36,6 @@ KeyboardLayout {
         return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.3; HandwritingInputMethod {}', parent)
     }
     sharedLayouts: ['symbols']
-    inputMode: preferredInputMode()
-
-    Connections {
-        target: InputContext
-        onInputMethodHintsChanged: {
-            var newInputMode = preferredInputMode()
-            if (InputContext.inputEngine.inputModes.indexOf(newInputMode) !== -1)
-                InputContext.inputEngine.inputMode = newInputMode
-        }
-    }
-
-    function preferredInputMode() {
-        return InputContext.inputMethodHints &
-                (Qt.ImhPreferLatin | Qt.ImhEmailCharactersOnly | Qt.ImhUrlCharactersOnly |
-                 Qt.ImhLatinOnly) ? InputEngine.Latin : InputEngine.JapaneseHandwriting
-    }
-
     KeyboardRow {
         Layout.preferredHeight: 3
         KeyboardColumn {
