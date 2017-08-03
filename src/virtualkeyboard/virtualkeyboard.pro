@@ -153,6 +153,13 @@ contains(CONFIG, lang-hi.*) {
         content/layouts/hi_IN/main.qml \
         content/layouts/hi_IN/symbols.qml
 }
+contains(CONFIG, lang-hr.*) {
+    LAYOUT_FILES += \
+        content/layouts/hr_HR/main.qml \
+        content/layouts/hr_HR/symbols.qml
+t9write-alphabetic: LAYOUT_FILES += \
+        content/layouts/hr_HR/handwriting.qml
+}
 contains(CONFIG, lang-it.*) {
     LAYOUT_FILES += \
         content/layouts/it_IT/main.qml \

@@ -43,6 +43,7 @@ disable-layouts {
         lang-fi_FI \
         lang-fr_FR \
         lang-hi_IN \
+        lang-hr_HR \
         lang-it_IT \
         lang-ja_JP \
         lang-ko_KR \
