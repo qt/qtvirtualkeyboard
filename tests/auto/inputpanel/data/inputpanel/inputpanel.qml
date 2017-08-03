@@ -289,14 +289,21 @@ InputPanel {
         return Utils.findChild(keyboardLayoutLoader, key, function(obj, param) {
             if (!obj.hasOwnProperty("key") || !obj.hasOwnProperty("text"))
                 return false
-            return (typeof param == "number") ? obj.key === param :  obj.text === param
+            return (typeof param == "number") ? obj.key === param : obj.text.toUpperCase() === param.toUpperCase()
         })
     }
 
     function findVirtualKeyAlternative(key) {
         if (typeof key != "string")
             return null
-        return Utils.findChildByProperty(keyboardLayoutLoader, "effectiveAlternativeKeys", key, function(propertyValue, key) { return propertyValue.indexOf(key) !== -1 })
+        return Utils.findChildByProperty(keyboardLayoutLoader, "effectiveAlternativeKeys", key.toUpperCase(),
+                 function(propertyValue, key) {
+                     if (typeof propertyValue == "string")
+                         return propertyValue.toUpperCase().indexOf(key) !== -1
+                     return propertyValue.filter(function(value) {
+                         return key === value.toUpperCase()
+                     }).length > 0
+                 })
     }
 
     function findObjectByName(objectName) {
