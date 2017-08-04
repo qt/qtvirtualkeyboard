@@ -483,10 +483,19 @@ LipiInputMethod::~LipiInputMethod()
 QList<InputEngine::InputMode> LipiInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<InputEngine::InputMode>()
-            << InputEngine::Latin
-            << InputEngine::Numeric
-            << InputEngine::Dialable;
+    QList<InputEngine::InputMode> availableInputModes;
+    const Qt::InputMethodHints inputMethodHints(inputContext()->inputMethodHints());
+
+    if (inputMethodHints.testFlag(Qt::ImhDialableCharactersOnly) || inputMethodHints.testFlag(Qt::ImhDigitsOnly)) {
+        availableInputModes.append(InputEngine::Dialable);
+    } else if (inputMethodHints.testFlag(Qt::ImhFormattedNumbersOnly)) {
+        availableInputModes.append(InputEngine::Numeric);
+    } else {
+        availableInputModes.append(InputEngine::Latin);
+        availableInputModes.append(InputEngine::Numeric);
+    }
+
+    return availableInputModes;
 }
 
 bool LipiInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
