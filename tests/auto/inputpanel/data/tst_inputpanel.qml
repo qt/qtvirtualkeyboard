@@ -315,6 +315,7 @@ Rectangle {
             return [
                 { initLocale: "ar_AR", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "\u0645\u0631\u062D\u0628\u0627", outputText: "\u0645\u0631\u062D\u0628\u0627" },
                 { initLocale: "fa_FA", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "\u0633\u0644\u0627\u0645", outputText: "\u0633\u0644\u0627\u0645" },
+                { initLocale: "cs_CZ", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "ahoj", outputText: "Ahoj" },
                 { initLocale: "da_DK", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hej", outputText: "Hej" },
                 { initLocale: "de_DE", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hallo", outputText: "Hallo" },
                 { initLocale: "el_GR", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "\u03C7\u03B1\u03AF\u03C1\u03B5\u03C4\u03B5", outputText: "\u03A7\u03B1\u03AF\u03C1\u03B5\u03C4\u03B5" },
@@ -1115,6 +1116,7 @@ Rectangle {
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "ko_KR", initInputMode: "KoreanHandwriting", inputSequence: "\uD55C\uAD6D\uC5B4", outputText: "\uD55C\uAD6D\uC5B4" },
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "el_GR", initInputMode: "Greek", inputSequence: "\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC", outputText: "\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC" },
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "bg_BG", initInputMode: "Cyrillic", inputSequence: "\u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438", outputText: "\u0411\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "cs_CZ", initInputMode: "Latin", inputSequence: "ahoj", outputText: "Ahoj" },
             ]
         }
 

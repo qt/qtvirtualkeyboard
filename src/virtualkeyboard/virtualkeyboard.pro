@@ -92,6 +92,13 @@ contains(CONFIG, lang-bg.*) {
 t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/bg_BG/handwriting.qml
 }
+contains(CONFIG, lang-cs.*) {
+    LAYOUT_FILES += \
+        content/layouts/cs_CZ/main.qml \
+        content/layouts/cs_CZ/symbols.qml
+t9write-alphabetic: LAYOUT_FILES += \
+        content/layouts/cs_CZ/handwriting.qml
+}
 contains(CONFIG, lang-da.*) {
     LAYOUT_FILES += \
         content/layouts/da_DK/main.qml \

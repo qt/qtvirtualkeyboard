@@ -33,6 +33,7 @@ disable-layouts {
     lang-all: CONFIG += \
         lang-ar_AR \
         lang-bg_BG \
+        lang-cs_CZ \
         lang-da_DK \
         lang-de_DE \
         lang-el_GR \
