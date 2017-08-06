@@ -578,7 +578,7 @@ public:
             DECUMA_LANG_GSMDEFAULT,         // Samoan = 97
             DECUMA_LANG_GSMDEFAULT,         // Sango = 98
             DECUMA_LANG_GSMDEFAULT,         // Sanskrit = 99
-            DECUMA_LANG_SR,                 // Serbian = 100
+            DECUMA_LANG_SRCY,               // Serbian = 100
             DECUMA_LANG_GSMDEFAULT,         // Ossetic = 101
             DECUMA_LANG_ST,                 // SouthernSotho = 102
             DECUMA_LANG_GSMDEFAULT,         // Tswana = 103
@@ -629,6 +629,9 @@ public:
         } else if (language == DECUMA_LANG_KO) {
             if (inputMode != InputEngine::KoreanHandwriting)
                 language = DECUMA_LANG_EN;
+        } else if (language == DECUMA_LANG_SRCY) {
+            if (inputMode != InputEngine::Cyrillic)
+                language = DECUMA_LANG_SRLA;
         }
 
         return language;
