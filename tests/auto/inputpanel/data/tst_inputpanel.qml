@@ -324,6 +324,7 @@ Rectangle {
                 { initLocale: "et_EE", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "tere", outputText: "Tere" },
                 { initLocale: "hi_IN", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "\u0928\u092E\u0938\u094D\u0915\u093E\u0930", outputText: "\u0928\u092E\u0938\u094D\u0915\u093E\u0930" },
                 { initLocale: "hr_HR", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "zdravo", outputText: "Zdravo" },
+                { initLocale: "hu_HU", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "helló", outputText: "Helló" },
                 { initLocale: "fi_FI", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hei", outputText: "Hei" },
                 { initLocale: "fr_FR", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "bonjour", outputText: "Bonjour" },
                 { initLocale: "it_IT", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "ciao", outputText: "Ciao" },

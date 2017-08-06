@@ -167,6 +167,13 @@ contains(CONFIG, lang-hr.*) {
 t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/hr_HR/handwriting.qml
 }
+contains(CONFIG, lang-hu.*) {
+    LAYOUT_FILES += \
+        content/layouts/hu_HU/main.qml \
+        content/layouts/hu_HU/symbols.qml
+t9write-alphabetic: LAYOUT_FILES += \
+        content/layouts/hu_HU/handwriting.qml
+}
 contains(CONFIG, lang-it.*) {
     LAYOUT_FILES += \
         content/layouts/it_IT/main.qml \

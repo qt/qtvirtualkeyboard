@@ -45,6 +45,7 @@ disable-layouts {
         lang-fr_FR \
         lang-hi_IN \
         lang-hr_HR \
+        lang-hu_HU \
         lang-it_IT \
         lang-ja_JP \
         lang-ko_KR \
