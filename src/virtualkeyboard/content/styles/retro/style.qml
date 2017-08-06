@@ -910,11 +910,11 @@ KeyboardStyle {
         Canvas {
             id: traceInputKeyGuideLines
             anchors.fill: traceInputKeyPanelBackground
-            opacity: 0.1
+            opacity: 0.4
             onPaint: {
                 var ctx = getContext("2d")
                 ctx.lineWidth = 1
-                ctx.strokeStyle = Qt.rgba(0xFF, 0xFF, 0xFF)
+                ctx.strokeStyle = Qt.rgba(0, 0, 0)
                 ctx.clearRect(0, 0, width, height)
                 var i
                 var margin = Math.round(30 * scaleHint)
