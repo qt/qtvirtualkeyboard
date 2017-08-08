@@ -45,7 +45,7 @@ Item {
         Behavior on opacity {
             NumberAnimation { duration: 200 }
         }
-        opacity: inputContext.anchorRectIntersectsClipRect ? 1.0 : 0.0
+        opacity: inputContext !== null && inputContext.anchorRectIntersectsClipRect ? 1.0 : 0.0
 
         MouseArea {
             width: parent.width * 2
@@ -77,7 +77,7 @@ Item {
         Behavior on opacity {
             NumberAnimation { duration: 200 }
         }
-        opacity: inputContext.cursorRectIntersectsClipRect ? 1.0 : 0.0
+        opacity: inputContext !== null && inputContext.cursorRectIntersectsClipRect ? 1.0 : 0.0
 
         MouseArea {
             width: parent.width * 2
