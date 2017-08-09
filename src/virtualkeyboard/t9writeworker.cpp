@@ -310,9 +310,9 @@ T9WriteWorker::T9WriteWorker(DECUMA_SESSION *decumaSession, QObject *parent) :
     QThread(parent),
     taskSema(),
     taskLock(),
-    decumaSession(decumaSession),
-    abort(false)
+    decumaSession(decumaSession)
 {
+    abort = false;
 }
 
 T9WriteWorker::~T9WriteWorker()
