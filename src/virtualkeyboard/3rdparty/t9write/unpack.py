@@ -234,6 +234,7 @@ def unpack(zip_list, zip_dir, out_dir):
                         dst = os.path.join(dst_dir, os.path.basename(zip_name)).replace('\\', '/')
                         print(zip_name + ' -> ' + dst)
                         shutil.copy2(src, dst)
+                        zip_list.remove(zip_name)
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
