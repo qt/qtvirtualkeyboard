@@ -42,6 +42,7 @@ import fnmatch
 # structure for Qt Virtual Keyboard.
 #
 # Usage: unpack.py <filename.zip> <target dir>
+#        unpack.py <input dir> <target dir>
 #
 # The script will happily overwrite existing files, so be careful.
 #
@@ -165,6 +166,23 @@ def blacklist(file_list):
 
 def unzip(zip_file, target_dir):
     zip_list = []
+    if os.path.isdir(zip_file):
+        base_dir, sdk_dir = os.path.split(zip_file.replace('\\', '/').rstrip('/'))
+        base_dir_length = len(base_dir) + 1 if base_dir else 0
+        if not 'T9Write' in sdk_dir:
+            print("Error: The input directory name '" + sdk_dir + "' does not contain 'T9Write'.")
+            print("Please unzip the file to a directory named after the zip file and try again.")
+            return zip_list
+        for root, dirs, files in os.walk(zip_file):
+            for file_name in files:
+                sub_dir = root[base_dir_length:]
+                dst_dir = os.path.join(target_dir, sub_dir)
+                if not os.path.exists(dst_dir):
+                    os.makedirs(dst_dir)
+                shutil.copy2(os.path.join(root, file_name), dst_dir)
+                os.chmod(os.path.join(dst_dir, file_name), 0644)
+                zip_list.append(os.path.join(sub_dir, file_name).replace('\\', '/'))
+        return zip_list
     with zipfile.ZipFile(zip_file, 'r') as z:
         zip_list = sorted(blacklist(z.namelist()))
         zip_basename = os.path.splitext(os.path.basename(zip_file))[0]
@@ -227,5 +245,7 @@ if __name__ == '__main__':
 
     try:
         unpack(unzip(sys.argv[1], zip_dir), zip_dir, out_dir)
+    except Exception as e:
+        print(e)
     finally:
         shutil.rmtree(zip_dir)
