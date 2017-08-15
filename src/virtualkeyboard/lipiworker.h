@@ -140,7 +140,7 @@ private:
     QSemaphore taskSema;
     QMutex taskLock;
     LTKShapeRecognizer *shapeRecognizer;
-    QAtomicInteger<bool> abort;
+    QBasicAtomicInt abort;
 };
 
 } // namespace QtVirtualKeyboard

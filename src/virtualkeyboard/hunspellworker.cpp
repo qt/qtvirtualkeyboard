@@ -260,9 +260,9 @@ HunspellWorker::HunspellWorker(QObject *parent) :
     QThread(parent),
     taskSema(),
     taskLock(),
-    hunspell(0),
-    abort(false)
+    hunspell(0)
 {
+    abort = false;
 }
 
 HunspellWorker::~HunspellWorker()

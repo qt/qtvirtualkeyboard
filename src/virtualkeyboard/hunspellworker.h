@@ -147,7 +147,7 @@ private:
     QSemaphore taskSema;
     QMutex taskLock;
     Hunhandle *hunspell;
-    QAtomicInteger<bool> abort;
+    QBasicAtomicInt abort;
 };
 
 } // namespace QtVirtualKeyboard

@@ -188,9 +188,9 @@ LipiWorker::LipiWorker(LTKShapeRecognizer *shapeRecognizer, QObject *parent) :
     QThread(parent),
     taskSema(),
     taskLock(),
-    shapeRecognizer(shapeRecognizer),
-    abort(false)
+    shapeRecognizer(shapeRecognizer)
 {
+    abort = false;
 }
 
 LipiWorker::~LipiWorker()

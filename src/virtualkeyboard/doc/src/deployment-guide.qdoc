@@ -41,11 +41,8 @@ with Qt 5 applications.
 
 \section1 Deployment
 
-The Qt Virtual Keyboard plugin must be properly deployed before it can be used.
-The easiest approach to deployment is to add a deployment step
-in Qt Creator that executes the \c {make install} command.
-
-\c {make install} deploys the files in the following locations:
+The various Qt Virtual Keyboard plugins and files are deployed in the following
+locations:
 
 \table
 \header
