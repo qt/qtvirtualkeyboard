@@ -728,15 +728,19 @@ bool OpenWnnInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
 
     default:
         if (key < Qt::Key_Escape && !text.isEmpty() && text.at(0).isPrint()) {
-            if (d->composingText.size(ComposingText::LAYER1) < OpenWnnInputMethodPrivate::MAX_COMPOSING_TEXT) {
+            if (d->composingText.size(ComposingText::LAYER1) + text.size() > OpenWnnInputMethodPrivate::MAX_COMPOSING_TEXT)
+                return true;
+            const int last = text.size() - 1;
+            for (int i = 0; i <= last; ++i) {
                 if (d->isEnableL2Converter()) {
                     d->commitConvertingText();
-                    d->composingText.insertStrSegment(ComposingText::LAYER0, ComposingText::LAYER1, text);
+                    d->composingText.insertStrSegment(ComposingText::LAYER0, ComposingText::LAYER1, text.mid(i, 1));
                     if (d->preConverter != NULL)
                         d->preConverter->convert(d->composingText);
-                    d->updateViewStatusForPrediction(true, true);
+                    if (i == last)
+                        d->updateViewStatusForPrediction(true, true);
                 } else {
-                    d->composingText.insertStrSegment(ComposingText::LAYER0, ComposingText::LAYER1, text);
+                    d->composingText.insertStrSegment(ComposingText::LAYER0, ComposingText::LAYER1, text.mid(i, 1));
                     QString layer1 = d->composingText.toString(ComposingText::LAYER1);
                     if (!d->isAlphabetLast(layer1)) {
                         d->commitText(false);
@@ -745,7 +749,8 @@ bool OpenWnnInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
                         if (completed) {
                             d->commitTextWithoutLastAlphabet();
                         } else {
-                            d->updateViewStatusForPrediction(true, true);
+                            if (i == last)
+                                d->updateViewStatusForPrediction(true, true);
                         }
                     }
                 }

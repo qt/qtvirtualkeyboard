@@ -309,9 +309,9 @@ T9WriteWorker::T9WriteWorker(DECUMA_SESSION *decumaSession, const bool cjk, QObj
     taskSema(),
     taskLock(),
     decumaSession(decumaSession),
-    abort(false),
     cjk(cjk)
 {
+    abort = false;
 }
 
 T9WriteWorker::~T9WriteWorker()

@@ -184,7 +184,7 @@ private:
     QSemaphore taskSema;
     QMutex taskLock;
     DECUMA_SESSION *decumaSession;
-    QAtomicInteger<bool> abort;
+    QBasicAtomicInt abort;
     const bool cjk;
 };
 
