@@ -79,7 +79,7 @@ Item {
 
         The default value based on the default item in the effective alternative keys.
     */
-    property string smallText: effectiveAlternativeKeysHighlightIndex !== -1 ? effectiveAlternativeKeys[effectiveAlternativeKeysHighlightIndex] : ""
+    property string smallText: effectiveAlternativeKeys && effectiveAlternativeKeysHighlightIndex !== -1 ? effectiveAlternativeKeys[effectiveAlternativeKeysHighlightIndex] : ""
 
     /*! \since QtQuick.VirtualKeyboard 2.0
 
