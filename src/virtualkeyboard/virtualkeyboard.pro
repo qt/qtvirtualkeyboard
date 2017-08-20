@@ -142,6 +142,8 @@ contains(CONFIG, lang-fa.*) {
         content/layouts/fa_FA/main.qml \
         content/layouts/fa_FA/numbers.qml \
         content/layouts/fa_FA/symbols.qml
+t9write-alphabetic: LAYOUT_FILES += \
+        content/layouts/fa_FA/handwriting.qml
 }
 contains(CONFIG, lang-fi.*) {
     LAYOUT_FILES += \

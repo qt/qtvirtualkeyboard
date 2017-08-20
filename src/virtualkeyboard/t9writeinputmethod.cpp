@@ -639,7 +639,7 @@ public:
         } else if (language == DECUMA_LANG_SRCY) {
             if (inputMode != InputEngine::Cyrillic)
                 language = DECUMA_LANG_SRLA;
-        } else if (language == DECUMA_LANG_AR) {
+        } else if (language == DECUMA_LANG_AR || language == DECUMA_LANG_FA) {
             if (inputMode != InputEngine::Arabic && inputMode != InputEngine::Numeric)
                 language = DECUMA_LANG_EN;
         }
@@ -703,7 +703,7 @@ public:
             break;
 
         case InputEngine::Numeric:
-            if (language == DECUMA_LANG_AR) {
+            if (language == DECUMA_LANG_AR || language == DECUMA_LANG_FA) {
                 symbolCategories.append(DECUMA_CATEGORY_ARABIC_NUM_MODE);
                 symbolCategories.append(DECUMA_CATEGORY_ARABIC_GESTURES);
                 leftToRightGestures = false;

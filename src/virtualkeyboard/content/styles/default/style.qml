@@ -770,6 +770,8 @@ KeyboardStyle {
                     case InputEngine.Cyrillic:
                         return "АБВ"
                     case InputEngine.Arabic:
+                        if (InputContext.locale.substring(0, 2) === "fa")
+                            return "\u0627\u200C\u0628\u200C\u067E"
                         return "\u0623\u200C\u0628\u200C\u062C"
                     case InputEngine.ChineseHandwriting:
                         return "中文"
