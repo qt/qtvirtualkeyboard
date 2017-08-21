@@ -57,6 +57,7 @@ public:
     bool toggleShiftEnabled() const;
 
     Q_INVOKABLE void toggleShift();
+    Q_INVOKABLE void clearToggleShiftTimer();
 
 signals:
     void sentenceEndingCharactersChanged();

@@ -1179,6 +1179,9 @@ Item {
                 inputModeNeedsReset = false
             }
         }
+
+        // Clear the toggle shift timer
+        InputContext.shiftHandler.clearToggleShiftTimer()
     }
 
     function updateLayout() {

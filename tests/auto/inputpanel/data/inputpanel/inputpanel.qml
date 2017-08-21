@@ -361,12 +361,14 @@ InputPanel {
                         testcase.waitForRendering(inputPanel)
                         success = keyActionOnCurrentLayoutCb(key)
                     }
-                } else {
+                } else if (typeof key != "number" || key !== Qt.Key_Shift) {
                     // Some layouts (such as Arabic, Hindi) may have a second layout
-                    InputContext.shiftHandler.toggleShift()
+                    virtualKeyPress(Qt.Key_Shift)
+                    InputContext.shiftHandler.clearToggleShiftTimer()
                     testcase.waitForRendering(inputPanel)
                     success = keyActionOnCurrentLayoutCb(key)
-                    InputContext.shiftHandler.toggleShift()
+                    virtualKeyPress(Qt.Key_Shift)
+                    InputContext.shiftHandler.clearToggleShiftTimer()
                 }
                 if (success)
                     break
