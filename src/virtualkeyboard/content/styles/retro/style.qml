@@ -887,6 +887,8 @@ KeyboardStyle {
                     if (InputContext.locale.substring(0, 2) === "fa")
                         return "\u0627\u200C\u0628\u200C\u067E"
                     return "\u0623\u200C\u0628\u200C\u062C"
+                case InputEngine.Hebrew:
+                    return "\u05D0\u05D1\u05D2"
                 case InputEngine.ChineseHandwriting:
                     return "中文"
                 case InputEngine.JapaneseHandwriting:

@@ -37,6 +37,7 @@
 .import "unipen_data_greek.js" as UnipenDataGreek
 .import "unipen_data_cyrillic.js" as UnipenDataCyrillic
 .import "unipen_data_arabic.js" as UnipenDataArabic
+.import "unipen_data_hebrew.js" as UnipenDataHebrew
 
 function emulate(testcase, hwrInputArea, ch, instant) {
     var chKey = (((typeof ch == "number") ? ch : ch.charCodeAt(0)) + 0x100000000).toString(16).substr(1)
@@ -60,6 +61,8 @@ function emulate(testcase, hwrInputArea, ch, instant) {
         unipenData = UnipenDataCyrillic
     else if (UnipenDataArabic.unipenData.hasOwnProperty(chKey))
         unipenData = UnipenDataArabic
+    else if (UnipenDataHebrew.unipenData.hasOwnProperty(chKey))
+        unipenData = UnipenDataHebrew
     else
         return false
     var chData = unipenData.unipenData[chKey]

@@ -767,6 +767,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
         \li \c InputEngine.Greek Greek input mode.
         \li \c InputEngine.Cyrillic Cyrillic input mode.
         \li \c InputEngine.Arabic Arabic input mode.
+        \li \c InputEngine.Hebrew Hebrew input mode.
         \li \c InputEngine.ChineseHandwriting Chinese handwriting.
         \li \c InputEngine.JapaneseHandwriting Japanese handwriting.
         \li \c InputEngine.KoreanHandwriting Korean handwriting.
@@ -843,6 +844,8 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
            Cyrillic input mode.
     \value Arabic
            Arabic input mode.
+    \value Hebrew
+           Hebrew input mode.
 */
 
 /*!

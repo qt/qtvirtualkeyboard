@@ -77,6 +77,7 @@ public:
         Greek,
         Cyrillic,
         Arabic,
+        Hebrew,
         ChineseHandwriting,
         JapaneseHandwriting,
         KoreanHandwriting

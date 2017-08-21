@@ -50,7 +50,7 @@
         \li Automatic capitalization and space insertion.
         \li Scalability to different resolutions.
         \li Support for different character sets (Latin, Simplified/Traditional Chinese,
-            Hindi, Japanese, Arabic, Korean, and others).
+            Hindi, Japanese, Arabic, Hebrew, Korean, and others).
         \li Support for most common input \l {Supported Languages}{languages},
             with possibility to easily extend the language support.
         \li Left-to-right and right-to-left input.
@@ -77,6 +77,7 @@
         \li French
         \li German
         \li Greek
+        \li Hebrew
         \li Hindi
         \li Hungarian
         \li Italian

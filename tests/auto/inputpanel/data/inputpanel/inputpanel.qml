@@ -269,6 +269,8 @@ InputPanel {
             return InputEngine.Cyrillic
         else if (inputModeName === "Arabic")
             return InputEngine.Arabic
+        else if (inputModeName === "Hebrew")
+            return InputEngine.Hebrew
         else if (inputModeName === "ChineseHandwriting")
             return InputEngine.ChineseHandwriting
         else if (inputModeName === "JapaneseHandwriting")

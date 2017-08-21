@@ -361,9 +361,11 @@ Rectangle {
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhFormattedNumbersOnly, inputSequence: "1234567890+-,.()", outputText: "1234567890+-,.()" },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDialableCharactersOnly, inputSequence: "1234567890+*#", outputText: "1234567890+*#" },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhEmailCharactersOnly, inputSequence: "a@b.c", outputText: "a@b.c" },
-                // Note: The Greek keyboard also contains a QWERTY layout
+                // Note: Some non-latin keyboards provide a QWERTY layout
                 { initLocale: "el_GR", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhEmailCharactersOnly, inputSequence: "a@b.c", outputText: "a@b.c" },
                 { initLocale: "el_GR", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhLatinOnly, inputSequence: "abc", outputText: "Abc" },
+                { initLocale: "he_IL", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhEmailCharactersOnly, inputSequence: "a@b.c", outputText: "a@b.c" },
+                { initLocale: "he_IL", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhLatinOnly, inputSequence: "abc", outputText: "Abc" },
             ]
         }
 
@@ -1123,6 +1125,7 @@ Rectangle {
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "cs_CZ", initInputMode: "Latin", inputSequence: "ahoj", outputText: "Ahoj" },
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "ar_AR", initInputMode: "Arabic", inputSequence: "\u0643\u062A\u0627\u0628", outputText: "\u0643\u062A\u0627\u0628" },
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "fa_FA", initInputMode: "Arabic", inputSequence: "\u0686\u0627\u06CC", outputText: "\u0686\u0627\u06CC" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "he_IL", initInputMode: "Hebrew", inputSequence: "\u05D0\u05D5\u05D8\u05D5", outputText: "\u05D0\u05D5\u05D8\u05D5" },
             ]
         }
 

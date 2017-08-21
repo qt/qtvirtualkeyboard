@@ -60,6 +60,9 @@ QList<InputEngine::InputMode> PlainInputMethod::inputModes(const QString &locale
     case QLocale::ArabicScript:
         result.append(InputEngine::Arabic);
         break;
+    case QLocale::HebrewScript:
+        result.append(InputEngine::Hebrew);
+        break;
     default:
         break;
     }

@@ -93,6 +93,9 @@ UNPACK_RULES = {
 'data/arabic': [
     '*/Arabic/_databas_le.bin',
 ],
+'data/hebrew': [
+    '*/Hebrew/_databas_le.bin',
+],
 'data': [
     '*/_databas_le.bin',
     '*/*.hdb',

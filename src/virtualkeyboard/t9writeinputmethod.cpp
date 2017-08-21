@@ -110,6 +110,7 @@ public:
         EngineUninitialized,
         Alphabetic,
         Arabic,
+        Hebrew,
         SimplifiedChinese,
         TraditionalChinese,
         HongKongChinese,
@@ -192,6 +193,7 @@ public:
         switch (newEngineMode) {
         case Alphabetic:
         case Arabic:
+        case Hebrew:
             cjk = false;
             break;
         case SimplifiedChinese:
@@ -300,6 +302,9 @@ public:
             break;
         case Arabic:
             hwrDbPath.append(QLatin1String("arabic/_databas_le.bin"));
+            break;
+        case Hebrew:
+            hwrDbPath.append(QLatin1String("hebrew/_databas_le.bin"));
             break;
         case SimplifiedChinese:
             hwrDbPath.append(QLatin1String("cjk_S_gb18030_le.hdb"));
@@ -473,9 +478,14 @@ public:
 #endif
 
 #ifdef HAVE_T9WRITE_ALPHABETIC
-        if (locale.script() == QLocale::ArabicScript)
+        switch (locale.script()) {
+        case QLocale::ArabicScript:
             return T9WriteInputMethodPrivate::Arabic;
-        return T9WriteInputMethodPrivate::Alphabetic;
+        case QLocale::HebrewScript:
+            return T9WriteInputMethodPrivate::Hebrew;
+        default:
+            return T9WriteInputMethodPrivate::Alphabetic;
+        }
 #else
         return T9WriteInputMethodPrivate::EngineUninitialized;
 #endif
@@ -642,6 +652,9 @@ public:
         } else if (language == DECUMA_LANG_AR || language == DECUMA_LANG_FA) {
             if (inputMode != InputEngine::Arabic && inputMode != InputEngine::Numeric)
                 language = DECUMA_LANG_EN;
+        } else if (language == DECUMA_LANG_IW) {
+            if (inputMode != InputEngine::Hebrew)
+                language = DECUMA_LANG_EN;
         }
 
         return language;
@@ -738,6 +751,14 @@ public:
 
         case InputEngine::Arabic:
             symbolCategories.append(DECUMA_CATEGORY_ARABIC_ISOLATED_LETTER_MODE);
+            symbolCategories.append(DECUMA_CATEGORY_ARABIC_GESTURES);
+            leftToRightGestures = false;
+            break;
+
+        case InputEngine::Hebrew:
+            symbolCategories.append(DECUMA_CATEGORY_HEBREW_GL_HEBREW_CURSIVE_MODE);
+            symbolCategories.append(DECUMA_CATEGORY_HEBREW_GL_HEBREW_LETTERSYMBOLS);
+            symbolCategories.append(DECUMA_CATEGORY_HEBREW_SHEQEL);
             symbolCategories.append(DECUMA_CATEGORY_ARABIC_GESTURES);
             leftToRightGestures = false;
             break;
@@ -1584,6 +1605,12 @@ QList<InputEngine::InputMode> T9WriteInputMethod::inputModes(const QString &loca
             return availableInputModes;
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
             availableInputModes.append(InputEngine::Arabic);
+        break;
+    case T9WriteInputMethodPrivate::Hebrew:
+        if (d->findHwrDb(T9WriteInputMethodPrivate::Hebrew, d->defaultHwrDbPath).isEmpty())
+            return availableInputModes;
+        if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
+            availableInputModes.append(InputEngine::Hebrew);
         break;
 #endif
 #ifdef HAVE_T9WRITE_CJK

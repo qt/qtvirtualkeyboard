@@ -4,6 +4,7 @@ CONFIG += static
 
 T9WRITE_RESOURCE_FILES = \
     $$files(data/arabic/*.bin) \
+    $$files(data/hebrew/*.bin) \
     $$files(data/*.bin) \
     $$files(data/*.ldb) \
     $$files(data/*.hdb) \

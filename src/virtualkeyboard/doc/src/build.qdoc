@@ -316,6 +316,8 @@ $ python unpack.py T9Write_Alpha_v7-8-0_SDK.zip .
     ├─── data
     │   ├─── arabic
     │   │   └─── *.bin [T9 Write Arabic]
+    │   ├─── hebrew
+    │   │   └─── *.bin [T9 Write Hebrew]
     │   ├─── *.bin [T9 Write Alphabetic]
     │   ├─── *.hdb
     │   ├─── *.phd
