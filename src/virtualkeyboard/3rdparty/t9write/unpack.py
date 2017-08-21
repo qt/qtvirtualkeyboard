@@ -180,7 +180,7 @@ def unzip(zip_file, target_dir):
                 if not os.path.exists(dst_dir):
                     os.makedirs(dst_dir)
                 shutil.copy2(os.path.join(root, file_name), dst_dir)
-                os.chmod(os.path.join(dst_dir, file_name), 0644)
+                os.chmod(os.path.join(dst_dir, file_name), 0o644)
                 zip_list.append(os.path.join(sub_dir, file_name).replace('\\', '/'))
         return zip_list
     with zipfile.ZipFile(zip_file, 'r') as z:
