@@ -100,14 +100,14 @@ UNPACK_RULES = [
 ],
 }, { # Data: Arabic and Hebrew database must be copied first (the file name collides with Alphabetic database)
 'data/arabic': [
-    '*/Arabic/_databas_le.bin',
+    '*/Arabic/*_le.bin',
 ],
 'data/hebrew': [
-    '*/Hebrew/_databas_le.bin',
+    '*/Hebrew/*_le.bin',
 ],
 }, { # Data: Alphabetic and CJK databases
 'data': [
-    '*/_databas_le.bin',
+    '*/*_le.bin',
     '*/*.hdb',
     '*/*.phd',
     '*/*.ldb',

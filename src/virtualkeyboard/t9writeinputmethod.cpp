@@ -47,6 +47,7 @@
 #include "decumaStatus.h"
 #include "decumaSymbolCategories.h"
 #include "decumaLanguages.h"
+#include "xxt9wOem.h"
 
 /*  Set to 1 to enable T9 Write log.
 
@@ -298,13 +299,25 @@ public:
         QString hwrDbPath(dir);
         switch (mode) {
         case Alphabetic:
+#if T9WRITEAPIMAJORVERNUM >= 21
+            hwrDbPath.append(QLatin1String("hwrDB_le.bin"));
+#else
             hwrDbPath.append(QLatin1String("_databas_le.bin"));
+#endif
             break;
         case Arabic:
+#if T9WRITEAPIMAJORVERNUM >= 21
+            hwrDbPath.append(QLatin1String("arabic/hwrDB_le.bin"));
+#else
             hwrDbPath.append(QLatin1String("arabic/_databas_le.bin"));
+#endif
             break;
         case Hebrew:
+#if T9WRITEAPIMAJORVERNUM >= 21
+            hwrDbPath.append(QLatin1String("hebrew/hwrDB_le.bin"));
+#else
             hwrDbPath.append(QLatin1String("hebrew/_databas_le.bin"));
+#endif
             break;
         case SimplifiedChinese:
             hwrDbPath.append(QLatin1String("cjk_S_gb18030_le.hdb"));
