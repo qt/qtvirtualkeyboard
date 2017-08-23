@@ -48,15 +48,22 @@ import fnmatch
 #
 
 #
-# Unpack rule map
+# Unpack rule list
+#
+# Each list entry is a dictionary consisting of target directory as
+# key and matching pattern as value. The dictionary can be defined in
+# the following ways:
+#
+# Note: The rules within the dictionary are executed in arbitrary order.
+#       Add a new list entry if the order is significant.
 #
 # Format:
-#   1. <target dir>: [ 'pattern1', 'pattern2', ... ]
+#   1. { 'target dir 1': [ 'pattern1', 'pattern2', ... ], 'target dir 2': ... }
 #       - Each pattern is matched against the zip file contents. The file is
 #         copied to target dir if the pattern matches. Each pattern is handled
 #         independent of each other.
 #
-#   2. <target dir>: [ [ 'file group pattern', 'sub pattern1', ... ] ]
+#   2. { 'target dir 1': [ [ 'file group pattern', 'sub pattern1', ... ] ], 'target dir 2': ... }
 #       - First the file group pattern is matched against the zip file contents.
 #         Then all the sub patterns are matched in the sub directory specified by
 #         the first match. If all the sub patterns match, then first match from
@@ -65,7 +72,8 @@ import fnmatch
 #         files found in the same directory.
 #
 
-UNPACK_RULES = {
+UNPACK_RULES = [
+{ # Header files
 'api': [
     '*/decuma_hwr.h',
     '*/decuma_hwr_cjk.h',
@@ -90,18 +98,21 @@ UNPACK_RULES = {
     '*/xxt9wApiOem.h',
     '*/xxt9wOem.h',
 ],
+}, { # Data: Arabic and Hebrew database must be copied first (the file name collides with Alphabetic database)
 'data/arabic': [
     '*/Arabic/_databas_le.bin',
 ],
 'data/hebrew': [
     '*/Hebrew/_databas_le.bin',
 ],
+}, { # Data: Alphabetic and CJK databases
 'data': [
     '*/_databas_le.bin',
     '*/*.hdb',
     '*/*.phd',
     '*/*.ldb',
 ],
+}, { # Libraries
 'lib/arm/static/alphabetic': [
     '*T9Write_Alpha*/*Android_ARM*/*.a',
     '*T9Write_Alpha*/*Android_ARM*/*.o',
@@ -146,6 +157,7 @@ UNPACK_RULES = {
     [ '*T9Write_Alpha*/*.dll', '*.lib' ],
 ],
 }
+]
 
 #
 # Blacklist
@@ -207,7 +219,11 @@ def unpack(zip_list, zip_dir, out_dir):
     if not zip_list:
         return
 
-    for (target_dir, match_rules) in UNPACK_RULES.items():
+    for unpack_rules in UNPACK_RULES:
+        process_unpack_rules(zip_list, zip_dir, out_dir, unpack_rules)
+
+def process_unpack_rules(zip_list, zip_dir, out_dir, unpack_rules):
+    for (target_dir, match_rules) in unpack_rules.items():
         for match_rule in match_rules:
             # Match
             match_rule_group = match_rule if isinstance(match_rule, list) else [match_rule]
