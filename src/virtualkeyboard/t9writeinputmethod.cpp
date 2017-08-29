@@ -451,6 +451,13 @@ public:
                 << DECUMA_LANG_AR << DECUMA_LANG_IW << DECUMA_LANG_FA << DECUMA_LANG_UR;
         sessionSettings.writingDirection = rtlLanguages.contains(language) ? rightToLeft : unknownWriting;
 
+        // Enable multi-threaded recognition if available.
+#ifdef DECUMA_USE_MULTI_THREAD
+        // Note: This feature requires T9 Write v8.0.0 or later,
+        //       and feature enabled in the SDK.
+        sessionSettings.nMaxThreads = qMax(QThread::idealThreadCount(), 0);
+#endif
+
         VIRTUALKEYBOARD_DEBUG() << " -> language categories:" << languageCategories;
         VIRTUALKEYBOARD_DEBUG() << " -> symbol categories:" << symbolCategories;
         VIRTUALKEYBOARD_DEBUG() << " -> recognition mode:" << sessionSettings.recognitionMode;
