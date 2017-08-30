@@ -87,6 +87,7 @@ UNPACK_RULES = [
     '*/decumaFunctionalSupportCheck.h',
     '*/decumaLanguages.h',
     '*/decumaLiteFunctionalSupport.h',
+    '*/decumaPlusFunctionalSupport.h',
     '*/decumaRuntimeMallocData.h',
     '*/decumaStatus.h',
     '*/decumaStorageSpecifiers.h',

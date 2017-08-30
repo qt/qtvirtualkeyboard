@@ -167,40 +167,15 @@ void T9WriteRecognitionTask::run()
     perf.start();
 #endif
 
-    DECUMA_STATUS status;
-    if (!cjk) {
-        status = DECUMA_API(IndicateInstantGesture)(decumaSession, &result->instantGesture, &instantGestureSettings);
-        Q_ASSERT(status == decumaNoError);
-    }
-
+#if SUPPORTS_ABORTRECOGNITION
     DECUMA_INTERRUPT_FUNCTIONS interruptFunctions;
     interruptFunctions.pShouldAbortRecognize = shouldAbortRecognize;
     interruptFunctions.pUserData = (void *)this;
-    result->status = DECUMA_API(Recognize)(decumaSession, result->results.data(), result->results.size(), &result->numResults, result->maxCharsPerWord, &recSettings, &interruptFunctions);
-    if (result->status == decumaAbortRecognitionUnsupported)
-        result->status = DECUMA_API(Recognize)(decumaSession, result->results.data(), result->results.size(), &result->numResults, result->maxCharsPerWord, &recSettings, NULL);
-
-    QStringList resultList;
-    QString gesture;
-    for (int i = 0; i < result->numResults; i++)
-    {
-        QString resultString;
-        resultString.reserve(result->results[i].nChars);
-        int charPos = 0;
-        for (int symbolIndex = 0; symbolIndex < result->results[i].nSymbols; symbolIndex++) {
-            int symbolLength = result->results[i].pSymbolChars[symbolIndex];
-            QString symbol(QString::fromUtf16(&result->results[i].pChars[charPos], symbolLength));
-            // Do not append gesture symbol to result string
-            if (result->results[i].bGesture && symbolIndex == (result->results[i].nSymbols - 1)) {
-                if (i == 0 && (result->instantGesture || (symbol != QLatin1String(" ") && symbol != QLatin1String("\b"))))
-                    gesture = symbol;
-            } else {
-                resultString.append(symbol);
-            }
-            charPos += symbolLength;
-        }
-        resultList.append(resultString);
-    }
+    DECUMA_INTERRUPT_FUNCTIONS *pInterruptFunctions = &interruptFunctions;
+#else
+    DECUMA_INTERRUPT_FUNCTIONS *pInterruptFunctions = NULL;
+#endif
+    result->status = DECUMA_API(Recognize)(decumaSession, result->results.data(), result->results.size(), &result->numResults, result->maxCharsPerWord, &recSettings, pInterruptFunctions);
 
 #ifdef QT_VIRTUALKEYBOARD_DEBUG
     int perfElapsed = perf.elapsed();
@@ -273,12 +248,11 @@ void T9WriteRecognitionResultsTask::run()
             int symbolLength = hwrResult.pSymbolChars[symbolIndex];
             QString symbol(QString::fromUtf16(&hwrResult.pChars[charPos], symbolLength));
             // Do not append gesture symbol to result string
-            if (hwrResult.bGesture && symbolIndex == (hwrResult.nSymbols - 1)) {
-                if (result->instantGesture || (symbol != QLatin1String(" ") && symbol != QLatin1String("\b")))
-                    gesture = symbol;
-            } else {
-                resultString.append(symbol);
+            if (hwrResult.bGesture) {
+                gesture = symbol.right(1);
+                symbol.chop(1);
             }
+            resultString.append(symbol);
             charPos += symbolLength;
             if (hwrResult.pSymbolStrokes)
                 symbolStrokes.append(QVariant((int)hwrResult.pSymbolStrokes[symbolIndex]));

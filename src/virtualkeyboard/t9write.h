@@ -37,6 +37,7 @@
 #ifdef HAVE_T9WRITE_CJK
 #include "decuma_hwr_cjk.h"
 #endif
+#include "decumaFunctionalSupport.h"
 
 #if defined(HAVE_T9WRITE_CJK) && defined(HAVE_T9WRITE_ALPHABETIC)
 #define DECUMA_API(FUNC_NAME) (cjk ? decumaCJK ## FUNC_NAME : decuma ## FUNC_NAME)
