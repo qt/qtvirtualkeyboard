@@ -448,7 +448,7 @@ public:
         updateDictionary(language, locale, languageChanged);
         static const QList<DECUMA_UINT32> rtlLanguages = QList<DECUMA_UINT32>()
                 << DECUMA_LANG_AR << DECUMA_LANG_IW << DECUMA_LANG_FA << DECUMA_LANG_UR;
-        sessionSettings.writingDirection = rtlLanguages.contains(language) ? rightToLeft : unknownWriting;
+        sessionSettings.writingDirection = rtlLanguages.contains(language) ? rightToLeft : leftToRight;
 
         // Enable multi-threaded recognition if available.
 #ifdef DECUMA_USE_MULTI_THREAD
@@ -683,14 +683,38 @@ public:
                                InputEngine::InputMode inputMode)
     {
         Q_Q(T9WriteInputMethod);
-        Q_UNUSED(language)
         Q_UNUSED(locale)
-        Q_UNUSED(inputMode)
 
         // Select recognition mode
         // Note: MCR mode is preferred, as it does not require recognition
         //       timer and provides better user experience.
         sessionSettings.recognitionMode = mcrMode;
+
+        // T9 Write Alphabetic v8.0.0 supports UCR mode for specific languages
+#if T9WRITEAPIMAJORVERNUM >= 21
+        if (!cjk) {
+            switch (inputMode) {
+            case InputEngine::Latin:
+                switch (language) {
+                case DECUMA_LANG_EN:
+                case DECUMA_LANG_FR:
+                case DECUMA_LANG_IT:
+                case DECUMA_LANG_DE:
+                case DECUMA_LANG_ES:
+                    sessionSettings.recognitionMode = ucrMode;
+                    break;
+                default:
+                    break;
+                }
+                break;
+            case InputEngine::Arabic:
+                sessionSettings.recognitionMode = ucrMode;
+                break;
+            default:
+                break;
+            }
+        }
+#endif
 
         // Use scrMode with hidden text or with no predictive mode
         if (inputMode != InputEngine::ChineseHandwriting &&
@@ -942,7 +966,7 @@ public:
         }
 
         // Attach existing dictionary, if available
-        if (sessionSettings.recognitionMode == mcrMode && !inputMethodHints.testFlag(Qt::ImhNoPredictiveText) &&
+        if (sessionSettings.recognitionMode != scrMode && !inputMethodHints.testFlag(Qt::ImhNoPredictiveText) &&
                 loadedDictionary && !attachedDictionary) {
             if (attachDictionary(loadedDictionary))
                 attachedDictionary = loadedDictionary;
@@ -1163,10 +1187,18 @@ public:
 
         Q_Q(T9WriteInputMethod);
 
+        // Boost dictionary words by default
+        BOOST_LEVEL boostLevel = attachedDictionary ? boostDictWords : noBoost;
+
+        // Disable dictionary boost in UCR mode for URL and E-mail input
+        // Otherwise it will completely mess input
+        const Qt::InputMethodHints inputMethodHints = q->inputContext()->inputMethodHints();
+        if (sessionSettings.recognitionMode == ucrMode && (inputMethodHints & (Qt::ImhUrlCharactersOnly | Qt::ImhEmailCharactersOnly)))
+            boostLevel = noBoost;
+
         QSharedPointer<T9WriteRecognitionResult> recognitionResult(new T9WriteRecognitionResult(++resultId, 9, 64));
         recognitionTask.reset(new T9WriteRecognitionTask(recognitionResult, instantGestureSettings,
-                                                         attachedDictionary ? boostDictWords : noBoost,
-                                                         stringStart));
+                                                         boostLevel, stringStart));
         worker->addTask(recognitionTask);
 
         QSharedPointer<T9WriteRecognitionResultsTask> resultsTask(new T9WriteRecognitionResultsTask(recognitionResult));
@@ -1232,7 +1264,7 @@ public:
         if (!worker)
             return false;
 
-        if (sessionSettings.recognitionMode == mcrMode && wordCandidates.isEmpty()) {
+        if (sessionSettings.recognitionMode != scrMode && wordCandidates.isEmpty()) {
             finishRecognition();
             return false;
         }
@@ -1244,7 +1276,7 @@ public:
         VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::select():" << index;
 
         Q_Q(T9WriteInputMethod);
-        if (sessionSettings.recognitionMode == mcrMode) {
+        if (sessionSettings.recognitionMode != scrMode) {
             index = index >= 0 ? index : activeWordIndex;
             noteSelected(index);
             QString finalWord = wordCandidates.at(index);
@@ -1331,11 +1363,17 @@ public:
         for (int i = 0; i < resultList.size(); i++) {
             QVariantMap result = resultList.at(i).toMap();
             QString resultChars = result["chars"].toString();
-            if (i == 0)
-                caseFormatter.ensureLength(resultChars.length(), textCase);
+            if (i == 0) {
+                if (ic->shift()) {
+                    caseFormatter.ensureLength(1, textCase);
+                    caseFormatter.ensureLength(resultChars.length(), InputEngine::Lower);
+                } else {
+                    caseFormatter.ensureLength(resultChars.length(), textCase);
+                }
+            }
             if (!resultChars.isEmpty()) {
                 resultChars = caseFormatter.formatString(resultChars);
-                if (sessionSettings.recognitionMode == mcrMode) {
+                if (sessionSettings.recognitionMode != scrMode) {
                     newWordCandidates.append(resultChars);
                     newWordCandidatesHwrResultIndex.append(i);
                 }
@@ -1344,7 +1382,7 @@ public:
                 resultString = resultChars;
                 if (result.contains("gesture"))
                     gesture = result["gesture"].toString();
-                if (sessionSettings.recognitionMode == mcrMode && result.contains("symbolStrokes"))
+                if (sessionSettings.recognitionMode != scrMode && result.contains("symbolStrokes"))
                     symbolStrokes = result["symbolStrokes"].toList();
                 if (sessionSettings.recognitionMode == scrMode)
                     break;
@@ -1411,11 +1449,11 @@ public:
             return;
         }
 
-        if (sessionSettings.recognitionMode == mcrMode) {
+        if (sessionSettings.recognitionMode != scrMode) {
             ignoreUpdate = true;
             ic->setPreeditText(resultString);
             ignoreUpdate = false;
-        } else if (sessionSettings.recognitionMode == scrMode) {
+        } else {
             if (resultTimer == 0 && !resultString.isEmpty())
                 ic->inputEngine()->virtualKeyClick((Qt::Key)resultString.at(0).unicode(), resultString, Qt::NoModifier);
             else
@@ -1790,7 +1828,7 @@ bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
         }
 
     default:
-        if (d->sessionSettings.recognitionMode == mcrMode && text.length() > 0) {
+        if (d->sessionSettings.recognitionMode != scrMode && text.length() > 0) {
             InputContext *ic = inputContext();
             QString preeditText = ic->preeditText();
             QChar c = text.at(0);
@@ -1981,9 +2019,18 @@ void T9WriteInputMethod::timerEvent(QTimerEvent *timerEvent)
     int timerId = timerEvent->timerId();
     VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethod::timerEvent():" << timerId;
     if (timerId == d->resultTimer) {
-        if (d->sessionSettings.recognitionMode == mcrMode) {
-            d->stopResultTimer();
+        d->stopResultTimer();
+        if (d->sessionSettings.recognitionMode != scrMode) {
 #ifndef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
+            // Don't clear traces in UCR mode if dictionary is loaded.
+            // In UCR mode the whole purpose is to write the word with
+            // one or few strokes.
+            if (d->sessionSettings.recognitionMode == ucrMode) {
+                QMutexLocker dictionaryGuard(&d->dictionaryLock);
+                if (d->attachedDictionary)
+                    return;
+            }
+
             const InputEngine::InputMode inputMode = inputEngine()->inputMode();
             if (inputMode != InputEngine::ChineseHandwriting &&
                     inputMode != InputEngine::JapaneseHandwriting &&
@@ -1991,7 +2038,7 @@ void T9WriteInputMethod::timerEvent(QTimerEvent *timerEvent)
                 d->clearTraces();
             }
 #endif
-        } else if (d->sessionSettings.recognitionMode == scrMode) {
+        } else {
             d->select();
         }
     }
@@ -2012,7 +2059,7 @@ void T9WriteInputMethod::dictionaryLoadCompleted(QSharedPointer<T9WriteDictionar
     InputContext *ic = inputContext();
     if (ic && dictionary->fileName() == d->dictionaryFileName) {
         d->loadedDictionary = dictionary;
-        if (d->sessionSettings.recognitionMode == mcrMode &&
+        if (d->sessionSettings.recognitionMode != scrMode &&
                 !ic->inputMethodHints().testFlag(Qt::ImhNoPredictiveText) &&
                 !d->attachedDictionary) {
             if (d->attachDictionary(d->loadedDictionary))
