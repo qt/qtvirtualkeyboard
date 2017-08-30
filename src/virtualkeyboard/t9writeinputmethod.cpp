@@ -1268,7 +1268,11 @@ public:
 #endif
 
             finishRecognition();
+            QChar gesture = T9WriteInputMethodPrivate::mapSymbolToGesture(finalWord.right(1).at(0));
+            if (!gesture.isNull())
+                finalWord.chop(1);
             q->inputContext()->commit(finalWord);
+            applyGesture(gesture);
         } else if (sessionSettings.recognitionMode == scrMode) {
             QString finalWord = scrResult;
             finishRecognition();
@@ -1344,6 +1348,31 @@ public:
                     symbolStrokes = result["symbolStrokes"].toList();
                 if (sessionSettings.recognitionMode == scrMode)
                     break;
+            } else {
+                // Add a gesture symbol to the secondary candidate
+                if (sessionSettings.recognitionMode != scrMode && result.contains("gesture")) {
+                    QString gesture2 = result["gesture"].toString();
+                    if (gesture2.length() == 1) {
+                        QChar symbol = T9WriteInputMethodPrivate::mapGestureToSymbol(gesture2.at(0).unicode());
+                        if (!symbol.isNull()) {
+                            // Check for duplicates
+                            bool duplicateFound = false;
+                            for (const QString &wordCandidate : newWordCandidates) {
+                                duplicateFound = wordCandidate.size() == 1 && wordCandidate.at(0) == symbol;
+                                if (duplicateFound)
+                                    break;
+                            }
+                            if (!duplicateFound) {
+                                if (!resultChars.isEmpty()) {
+                                    newWordCandidates.last().append(symbol);
+                                } else {
+                                    newWordCandidates.append(symbol);
+                                    newWordCandidatesHwrResultIndex.append(i);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -1374,23 +1403,9 @@ public:
         if (!gesture.isEmpty()) {
 
             DECUMA_UNICODE gestureSymbol = gesture.at(0).unicode();
-            switch (gestureSymbol) {
-            case '\b':
-                ic->inputEngine()->virtualKeyClick(Qt::Key_Backspace, QString(), Qt::NoModifier);
-                break;
-
-            case '\r':
-                ic->inputEngine()->virtualKeyClick(Qt::Key_Return, QLatin1String("\n"), Qt::NoModifier);
-                break;
-
-            case ' ':
-                ic->inputEngine()->virtualKeyClick(Qt::Key_Space, QLatin1String(" "), Qt::NoModifier);
-                break;
-
-            default:
+            if (!applyGesture(gestureSymbol)) {
                 ic->commit(ic->preeditText());
                 finishRecognition();
-                break;
             }
 
             return;
@@ -1413,6 +1428,46 @@ public:
             activeWordIndex = wordCandidates.isEmpty() ? -1 : 0;
             emit q->selectionListChanged(SelectionListModel::WordCandidateList);
             emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, activeWordIndex);
+        }
+    }
+
+    static QChar mapGestureToSymbol(const QChar &gesture)
+    {
+        switch (gesture.unicode()) {
+        case '\r':
+            return QChar(0x23CE);
+        case ' ':
+            return QChar(0x2423);
+        default:
+            return QChar();
+        }
+    }
+
+    static QChar mapSymbolToGesture(const QChar &symbol)
+    {
+        switch (symbol.unicode()) {
+        case 0x23CE:
+            return QChar('\r');
+        case 0x2423:
+            return QChar(' ');
+        default:
+            return QChar();
+        }
+    }
+
+    bool applyGesture(const QChar &gesture)
+    {
+        Q_Q(T9WriteInputMethod);
+        InputContext *ic = q->inputContext();
+        switch (gesture.unicode()) {
+        case '\b':
+            return ic->inputEngine()->virtualKeyClick(Qt::Key_Backspace, QString(), Qt::NoModifier);
+        case '\r':
+            return ic->inputEngine()->virtualKeyClick(Qt::Key_Return, QLatin1String("\n"), Qt::NoModifier);
+        case ' ':
+            return ic->inputEngine()->virtualKeyClick(Qt::Key_Space, QLatin1String(" "), Qt::NoModifier);
+        default:
+            return false;
         }
     }
 
