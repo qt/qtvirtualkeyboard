@@ -130,6 +130,7 @@ public:
         attachedDictionary(0),
         traceListHardLimit(32),
         resultId(0),
+        lastResultId(0),
         resultTimer(0),
         decumaSession(0),
         activeWordIndex(-1),
@@ -230,7 +231,6 @@ public:
         languageCategories.append(DECUMA_LANG_EN);
 
         sessionSettings.recognitionMode = mcrMode;
-        sessionSettings.bMinimizeAddArcPreProcessing = 1;
         sessionSettings.writingDirection = unknownWriting;
         sessionSettings.charSet.pSymbolCategories = symbolCategories.data();
         sessionSettings.charSet.nSymbolCategories = symbolCategories.size();
@@ -255,12 +255,18 @@ public:
         worker.reset(new T9WriteWorker(decumaSession, cjk));
         worker->start();
 
+        Q_Q(T9WriteInputMethod);
+        processResultConnection = QObject::connect(q, &T9WriteInputMethod::resultListChanged, q, &T9WriteInputMethod::processResult, Qt::QueuedConnection);
+
         return true;
     }
 
     void exitEngine()
     {
         VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::exitEngine()";
+
+        if (processResultConnection)
+            QObject::disconnect(processResultConnection);
 
         worker.reset();
 
@@ -683,6 +689,7 @@ public:
                                InputEngine::InputMode inputMode)
     {
         Q_Q(T9WriteInputMethod);
+        Q_UNUSED(language)
         Q_UNUSED(locale)
 
         // Select recognition mode
@@ -992,9 +999,10 @@ public:
 
     void setContext(InputEngine::PatternRecognitionMode patternRecognitionMode,
                     const QVariantMap &traceCaptureDeviceInfo,
-                    const QVariantMap &traceScreenInfo)
+                    const QVariantMap &traceScreenInfo,
+                    const QByteArray &context)
     {
-        QByteArray context = getContext(patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
+        Q_UNUSED(patternRecognitionMode)
         if (context == currentContext)
             return;
         currentContext = context;
@@ -1050,6 +1058,10 @@ public:
         if (!worker)
             return 0;
 
+        // The result id follows the trace id so that the (previous)
+        // results completed during the handwriting can be rejected.
+        resultId = traceId;
+
         stopResultTimer();
 
         // Dictionary must be completed before the arc addition can begin
@@ -1060,10 +1072,9 @@ public:
 
         // Cancel the current recognition task
         worker->removeAllTasks<T9WriteRecognitionResultsTask>();
+        worker->removeAllTasks<T9WriteRecognitionTask>();
         if (recognitionTask) {
             recognitionTask->cancelRecognition();
-            recognitionTask->wait();
-            worker->removeTask(recognitionTask);
             recognitionTask.reset();
         }
 
@@ -1072,23 +1083,19 @@ public:
             unipenTrace.reset(new UnipenTrace(traceCaptureDeviceInfo, traceScreenInfo));
 #endif
 
-        setContext(patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
+        QByteArray context = getContext(patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
+        if (context != currentContext) {
+            worker->waitForAllTasks();
+            setContext(patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo, context);
+        }
 
         DECUMA_STATUS status;
 
         if (!arcAdditionStarted) {
+            worker->waitForAllTasks();
             status = DECUMA_API(BeginArcAddition)(decumaSession);
             Q_ASSERT(status == decumaNoError);
             arcAdditionStarted = true;
-        }
-
-        DECUMA_UINT32 arcID = (DECUMA_UINT32)traceId;
-        status = DECUMA_API(StartNewArc)(decumaSession, arcID);
-        Q_ASSERT(status == decumaNoError);
-        if (status != decumaNoError) {
-            DECUMA_API(EndArcAddition)(decumaSession);
-            arcAdditionStarted = false;
-            return NULL;
         }
 
         Trace *trace = new Trace();
@@ -1103,25 +1110,21 @@ public:
     void traceEnd(Trace *trace)
     {
         if (trace->isCanceled()) {
-            DECUMA_API(CancelArc)(decumaSession, trace->traceId());
             traceList.removeOne(trace);
             delete trace;
         } else {
-            addPointsToTraceGroup(trace);
+            if (cjk && countActiveTraces() == 0) {
+                // For some reason gestures don't seem to work in CJK mode
+                // Using our own gesture recognizer as fallback
+                if (handleGesture())
+                    return;
+            }
+            worker->addTask(QSharedPointer<T9WriteAddArcTask>(new T9WriteAddArcTask(trace)));
         }
         if (!traceList.isEmpty()) {
             Q_ASSERT(arcAdditionStarted);
-            if (countActiveTraces() == 0) {
+            if (countActiveTraces() == 0)
                 restartRecognition();
-                if (cjk) {
-                    // For some reason gestures don't seem to work in CJK mode
-                    // Using our own gesture recognizer as fallback
-                    handleGesture();
-                }
-            }
-        } else if (arcAdditionStarted) {
-            DECUMA_API(EndArcAddition)(decumaSession);
-            arcAdditionStarted = false;
         }
     }
 
@@ -1137,35 +1140,9 @@ public:
 
     void clearTraces()
     {
+        worker->waitForAllTasks();
         qDeleteAll(traceList);
         traceList.clear();
-    }
-
-    void addPointsToTraceGroup(Trace *trace)
-    {
-        Q_ASSERT(decumaSession != 0);
-
-        const QVariantList points = trace->points();
-        Q_ASSERT(!points.isEmpty());
-        DECUMA_UINT32 arcID = (DECUMA_UINT32)trace->traceId();
-        DECUMA_STATUS status;
-
-        for (const QVariant &p : points) {
-            const QPoint pt(p.toPointF().toPoint());
-            status = DECUMA_API(AddPoint)(decumaSession, (DECUMA_COORD)pt.x(),(DECUMA_COORD)pt.y(), arcID);
-            if (status != decumaNoError) {
-                VIRTUALKEYBOARD_DEBUG() << "decumaAddPoint failed" << status;
-                finishRecognition();
-                return;
-            }
-        }
-
-        status = DECUMA_API(CommitArc)(decumaSession, arcID);
-        if (status != decumaNoError) {
-            VIRTUALKEYBOARD_DEBUG() << "decumaCommitArc failed" << status;
-            finishRecognition();
-            return;
-        }
     }
 
     void noteSelected(int index)
@@ -1187,6 +1164,12 @@ public:
 
         Q_Q(T9WriteInputMethod);
 
+        worker->removeAllTasks<T9WriteRecognitionResultsTask>();
+        if (recognitionTask) {
+            recognitionTask->cancelRecognition();
+            recognitionTask.reset();
+        }
+
         // Boost dictionary words by default
         BOOST_LEVEL boostLevel = attachedDictionary ? boostDictWords : noBoost;
 
@@ -1196,7 +1179,7 @@ public:
         if (sessionSettings.recognitionMode == ucrMode && (inputMethodHints & (Qt::ImhUrlCharactersOnly | Qt::ImhEmailCharactersOnly)))
             boostLevel = noBoost;
 
-        QSharedPointer<T9WriteRecognitionResult> recognitionResult(new T9WriteRecognitionResult(++resultId, 9, 64));
+        QSharedPointer<T9WriteRecognitionResult> recognitionResult(new T9WriteRecognitionResult(resultId, 9, 64));
         recognitionTask.reset(new T9WriteRecognitionTask(recognitionResult, instantGestureSettings,
                                                          boostLevel, stringStart));
         worker->addTask(recognitionTask);
@@ -1206,6 +1189,16 @@ public:
         worker->addTask(resultsTask);
 
         resetResultTimer();
+    }
+
+    void waitForRecognitionResults()
+    {
+        if (!worker)
+            return;
+
+        VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::waitForRecognitionResults()";
+        worker->waitForAllTasks();
+        processResult();
     }
 
     bool finishRecognition(bool emitSelectionListChanged = true)
@@ -1220,16 +1213,15 @@ public:
 
         stopResultTimer();
 
-        clearTraces();
-
+        worker->removeAllTasks<T9WriteAddArcTask>();
         worker->removeAllTasks<T9WriteRecognitionResultsTask>();
         if (recognitionTask) {
             recognitionTask->cancelRecognition();
-            recognitionTask->wait();
-            worker->removeTask(recognitionTask);
             recognitionTask.reset();
             result = true;
         }
+
+        clearTraces();
 
         if (arcAdditionStarted) {
             DECUMA_API(EndArcAddition)(decumaSession);
@@ -1314,12 +1306,12 @@ public:
         return true;
     }
 
-    void resetResultTimer()
+    void resetResultTimer(int interval = 500)
     {
-        VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::resetResultTimer()";
+        VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::resetResultTimer():" << interval;
         Q_Q(T9WriteInputMethod);
         stopResultTimer();
-        resultTimer = q->startTimer(500);
+        resultTimer = q->startTimer(interval);
     }
 
     void stopResultTimer()
@@ -1332,24 +1324,9 @@ public:
         }
     }
 
-    void resultsAvailable(const QVariantList &resultList)
+    void processResult()
     {
-        if (!resultList.isEmpty()) {
-            if (recognitionTask && recognitionTask->resultId() == resultList.first().toMap()["resultId"].toInt())
-                processResult(resultList);
-        }
-    }
-
-    void processResult(const QVariantList &resultList)
-    {
-        if (resultList.isEmpty())
-            return;
-
-        if (resultList.first().toMap()["resultId"] != resultId)
-            return;
-
         VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::processResult()";
-
         Q_Q(T9WriteInputMethod);
         InputContext *ic = q->inputContext();
         if (!ic)
@@ -1360,80 +1337,100 @@ public:
         QString resultString;
         QString gesture;
         QVariantList symbolStrokes;
-        for (int i = 0; i < resultList.size(); i++) {
-            QVariantMap result = resultList.at(i).toMap();
-            QString resultChars = result["chars"].toString();
-            if (i == 0) {
-                if (ic->shift()) {
-                    caseFormatter.ensureLength(1, textCase);
-                    caseFormatter.ensureLength(resultChars.length(), InputEngine::Lower);
+        {
+            QMutexLocker resultListGuard(&resultListLock);
+            if (resultList.isEmpty())
+                return;
+
+            if (resultList.first().toMap()["resultId"] != resultId) {
+                VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::processResult(): resultId mismatch" << resultList.first().toMap()["resultId"] << "(" << resultId << ")";
+                resultList.clear();
+                return;
+            }
+            lastResultId = resultId;
+
+            for (int i = 0; i < resultList.size(); i++) {
+                QVariantMap result = resultList.at(i).toMap();
+                QString resultChars = result["chars"].toString();
+                if (i == 0) {
+                    if (ic->shift()) {
+                        caseFormatter.ensureLength(1, textCase);
+                        caseFormatter.ensureLength(resultChars.length(), InputEngine::Lower);
+                    } else {
+                        caseFormatter.ensureLength(resultChars.length(), textCase);
+                    }
+                }
+                if (!resultChars.isEmpty()) {
+                    resultChars = caseFormatter.formatString(resultChars);
+                    if (sessionSettings.recognitionMode != scrMode) {
+                        newWordCandidates.append(resultChars);
+                        newWordCandidatesHwrResultIndex.append(i);
+                    }
+                }
+                if (i == 0) {
+                    resultString = resultChars;
+                    if (result.contains("gesture"))
+                        gesture = result["gesture"].toString();
+                    if (sessionSettings.recognitionMode != scrMode && result.contains("symbolStrokes"))
+                        symbolStrokes = result["symbolStrokes"].toList();
+                    if (sessionSettings.recognitionMode == scrMode)
+                        break;
                 } else {
-                    caseFormatter.ensureLength(resultChars.length(), textCase);
-                }
-            }
-            if (!resultChars.isEmpty()) {
-                resultChars = caseFormatter.formatString(resultChars);
-                if (sessionSettings.recognitionMode != scrMode) {
-                    newWordCandidates.append(resultChars);
-                    newWordCandidatesHwrResultIndex.append(i);
-                }
-            }
-            if (i == 0) {
-                resultString = resultChars;
-                if (result.contains("gesture"))
-                    gesture = result["gesture"].toString();
-                if (sessionSettings.recognitionMode != scrMode && result.contains("symbolStrokes"))
-                    symbolStrokes = result["symbolStrokes"].toList();
-                if (sessionSettings.recognitionMode == scrMode)
-                    break;
-            } else {
-                // Add a gesture symbol to the secondary candidate
-                if (sessionSettings.recognitionMode != scrMode && result.contains("gesture")) {
-                    QString gesture2 = result["gesture"].toString();
-                    if (gesture2.length() == 1) {
-                        QChar symbol = T9WriteInputMethodPrivate::mapGestureToSymbol(gesture2.at(0).unicode());
-                        if (!symbol.isNull()) {
-                            // Check for duplicates
-                            bool duplicateFound = false;
-                            for (const QString &wordCandidate : newWordCandidates) {
-                                duplicateFound = wordCandidate.size() == 1 && wordCandidate.at(0) == symbol;
-                                if (duplicateFound)
-                                    break;
-                            }
-                            if (!duplicateFound) {
-                                if (!resultChars.isEmpty()) {
-                                    newWordCandidates.last().append(symbol);
-                                } else {
-                                    newWordCandidates.append(symbol);
-                                    newWordCandidatesHwrResultIndex.append(i);
+                    // Add a gesture symbol to the secondary candidate
+                    if (sessionSettings.recognitionMode != scrMode && result.contains("gesture")) {
+                        QString gesture2 = result["gesture"].toString();
+                        if (gesture2.length() == 1) {
+                            QChar symbol = T9WriteInputMethodPrivate::mapGestureToSymbol(gesture2.at(0).unicode());
+                            if (!symbol.isNull()) {
+                                // Check for duplicates
+                                bool duplicateFound = false;
+                                for (const QString &wordCandidate : newWordCandidates) {
+                                    duplicateFound = wordCandidate.size() == 1 && wordCandidate.at(0) == symbol;
+                                    if (duplicateFound)
+                                        break;
+                                }
+                                if (!duplicateFound) {
+                                    if (!resultChars.isEmpty()) {
+                                        newWordCandidates.last().append(symbol);
+                                    } else {
+                                        newWordCandidates.append(symbol);
+                                        newWordCandidatesHwrResultIndex.append(i);
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+
+            resultList.clear();
         }
 
         bool wordCandidatesChanged = wordCandidates != newWordCandidates;
 
 #ifndef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
         // Delete trace history
-        const InputEngine::InputMode inputMode = q->inputEngine()->inputMode();
-        if (sessionSettings.recognitionMode == mcrMode && !symbolStrokes.isEmpty() &&
-                inputMode != InputEngine::ChineseHandwriting &&
-                inputMode != InputEngine::JapaneseHandwriting &&
-                inputMode != InputEngine::KoreanHandwriting) {
-            int activeTraces = symbolStrokes.at(symbolStrokes.count() - 1).toInt();
-            if (symbolStrokes.count() > 1)
-                activeTraces += symbolStrokes.at(symbolStrokes.count() - 2).toInt();
-            while (activeTraces < traceList.count())
-                delete traceList.takeFirst();
-        }
+        // Note: We have to be sure there are no background tasks
+        //       running since the Trace objects consumed there.
+        if (worker->numberOfPendingTasks() == 0) {
 
-        // Enforce hard limit for number of traces
-        if (traceList.count() >= traceListHardLimit) {
-            VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::processResult(): Clearing traces (hard limit):" << traceList.count();
-            clearTraces();
+            const InputEngine::InputMode inputMode = q->inputEngine()->inputMode();
+            if (sessionSettings.recognitionMode == mcrMode && !symbolStrokes.isEmpty() &&
+                    inputMode != InputEngine::ChineseHandwriting &&
+                    inputMode != InputEngine::JapaneseHandwriting &&
+                    inputMode != InputEngine::KoreanHandwriting) {
+                int activeTraces = symbolStrokes.at(symbolStrokes.count() - 1).toInt();
+                if (symbolStrokes.count() > 1)
+                    activeTraces += symbolStrokes.at(symbolStrokes.count() - 2).toInt();
+                while (activeTraces < traceList.count())
+                    delete traceList.takeFirst();
+            }
+
+            // Enforce hard limit for number of traces
+            if (traceList.count() >= traceListHardLimit) {
+                VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethodPrivate::processResult(): Clearing traces (hard limit):" << traceList.count();
+                clearTraces();
+            }
         }
 #endif
 
@@ -1454,10 +1451,7 @@ public:
             ic->setPreeditText(resultString);
             ignoreUpdate = false;
         } else {
-            if (resultTimer == 0 && !resultString.isEmpty())
-                ic->inputEngine()->virtualKeyClick((Qt::Key)resultString.at(0).unicode(), resultString, Qt::NoModifier);
-            else
-                scrResult = resultString;
+            scrResult = resultString;
         }
 
         if (wordCandidatesChanged) {
@@ -1466,6 +1460,11 @@ public:
             activeWordIndex = wordCandidates.isEmpty() ? -1 : 0;
             emit q->selectionListChanged(SelectionListModel::WordCandidateList);
             emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, activeWordIndex);
+        }
+
+        if (arcAdditionStarted && traceList.isEmpty() && worker->numberOfPendingTasks() == 0) {
+            DECUMA_API(EndArcAddition)(decumaSession);
+            arcAdditionStarted = false;
         }
     }
 
@@ -1637,8 +1636,12 @@ public:
     QSharedPointer<T9WriteDictionary> attachedDictionary;
     QSharedPointer<T9WriteDictionaryTask> dictionaryTask;
     QSharedPointer<T9WriteRecognitionTask> recognitionTask;
+    QMutex resultListLock;
+    QVariantList resultList;
     int resultId;
+    int lastResultId;
     int resultTimer;
+    QMetaObject::Connection processResultConnection;
     QByteArray session;
     DECUMA_SESSION *decumaSession;
     QStringList wordCandidates;
@@ -1801,6 +1804,7 @@ bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
                 // WA:  T9Write CJK may crash in some cases with long stringStart.
                 //      Therefore we commit the current input and finish the recognition.
                 if (d->cjk) {
+                    d->waitForRecognitionResults();
                     ic->commit();
                     d->finishRecognition();
                     return true;
@@ -1829,6 +1833,7 @@ bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
 
     default:
         if (d->sessionSettings.recognitionMode != scrMode && text.length() > 0) {
+            d->waitForRecognitionResults();
             InputContext *ic = inputContext();
             QString preeditText = ic->preeditText();
             QChar c = text.at(0);
@@ -2020,6 +2025,13 @@ void T9WriteInputMethod::timerEvent(QTimerEvent *timerEvent)
     VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethod::timerEvent():" << timerId;
     if (timerId == d->resultTimer) {
         d->stopResultTimer();
+
+        // Ignore if the result is not yet available
+        if (d->resultId != d->lastResultId) {
+            VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethod::timerEvent(): Result not yet available";
+            return;
+        }
+
         if (d->sessionSettings.recognitionMode != scrMode) {
 #ifndef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
             // Don't clear traces in UCR mode if dictionary is loaded.
@@ -2090,7 +2102,22 @@ void T9WriteInputMethod::resultsAvailable(const QVariantList &resultList)
     }
 #endif
     Q_D(T9WriteInputMethod);
-    d->resultsAvailable(resultList);
+    QMutexLocker resultListGuard(&d->resultListLock);
+    d->resultList = resultList;
+    emit resultListChanged();
+}
+
+void T9WriteInputMethod::processResult()
+{
+    Q_D(T9WriteInputMethod);
+    bool resultTimerWasRunning = d->resultTimer != 0;
+
+    d->processResult();
+
+    // Restart the result timer now if it stopped before the results were completed
+    if (!resultTimerWasRunning && (!d->scrResult.isEmpty() || !d->wordCandidates.isEmpty()))
+        d->resetResultTimer(0);
+
 }
 
 void T9WriteInputMethod::recognitionError(int status)

@@ -86,6 +86,18 @@ signals:
     void completed(QSharedPointer<T9WriteDictionary> dictionary);
 };
 
+class T9WriteAddArcTask : public T9WriteTask
+{
+    Q_OBJECT
+public:
+    explicit T9WriteAddArcTask(Trace *trace);
+
+    void run();
+
+private:
+    Trace *trace;
+};
+
 class T9WriteRecognitionResult
 {
     Q_DISABLE_COPY(T9WriteRecognitionResult)
@@ -159,6 +171,8 @@ public:
     void addTask(QSharedPointer<T9WriteTask> task);
     int removeTask(QSharedPointer<T9WriteTask> task);
     int removeAllTasks();
+    void waitForAllTasks();
+    int numberOfPendingTasks();
 
     template <class X>
     int removeAllTasks() {
@@ -181,6 +195,7 @@ protected:
 
 private:
     QList<QSharedPointer<T9WriteTask> > taskList;
+    QSemaphore idleSema;
     QSemaphore taskSema;
     QMutex taskLock;
     DECUMA_SESSION *decumaSession;

@@ -93,6 +93,47 @@ void T9WriteDictionaryTask::run()
         emit completed(dictionary);
 }
 
+T9WriteAddArcTask::T9WriteAddArcTask(Trace *trace) :
+    trace(trace)
+{
+}
+
+void T9WriteAddArcTask::run()
+{
+#ifdef QT_VIRTUALKEYBOARD_DEBUG
+    QTime perf;
+    perf.start();
+#endif
+    DECUMA_UINT32 arcID = (DECUMA_UINT32)trace->traceId();
+    DECUMA_STATUS status = DECUMA_API(StartNewArc)(decumaSession, arcID);
+    Q_ASSERT(status == decumaNoError);
+    if (status != decumaNoError) {
+        qWarning() << "T9WriteAddArcTask::run(): Failed to start new arc, status:" << status;
+        return;
+    }
+
+    const QVariantList points = trace->points();
+    Q_ASSERT(!points.isEmpty());
+
+    for (const QVariant &p : points) {
+        const QPoint pt(p.toPointF().toPoint());
+        status = DECUMA_API(AddPoint)(decumaSession, (DECUMA_COORD)pt.x(),(DECUMA_COORD)pt.y(), arcID);
+        if (status != decumaNoError) {
+            qWarning() << "T9WriteAddArcTask::run(): Failed to add point, status:" << status;
+            DECUMA_API(CancelArc)(decumaSession, arcID);
+            return;
+        }
+    }
+
+    status = DECUMA_API(CommitArc)(decumaSession, arcID);
+    if (status != decumaNoError)
+        qWarning() << "T9WriteAddArcTask::run(): Failed to commit arc, status:" << status;
+#ifdef QT_VIRTUALKEYBOARD_DEBUG
+    else
+        VIRTUALKEYBOARD_DEBUG() << "T9WriteAddArcTask::run(): time:" << perf.elapsed() << "ms";
+#endif
+}
+
 /*!
     \class QtVirtualKeyboard::T9WriteRecognitionResult
     \internal
@@ -142,8 +183,6 @@ T9WriteRecognitionTask::T9WriteRecognitionTask(QSharedPointer<T9WriteRecognition
 
 void T9WriteRecognitionTask::run()
 {
-    VIRTUALKEYBOARD_DEBUG() << "T9WriteRecognitionTask::run()";
-
     if (!decumaSession)
         return;
 
@@ -176,6 +215,8 @@ void T9WriteRecognitionTask::run()
     DECUMA_INTERRUPT_FUNCTIONS *pInterruptFunctions = NULL;
 #endif
     result->status = DECUMA_API(Recognize)(decumaSession, result->results.data(), result->results.size(), &result->numResults, result->maxCharsPerWord, &recSettings, pInterruptFunctions);
+    if (result->status != decumaNoError)
+        qWarning() << "T9WriteRecognitionTask::run(): Recognition failed, status:" << result->status;
 
 #ifdef QT_VIRTUALKEYBOARD_DEBUG
     int perfElapsed = perf.elapsed();
@@ -326,12 +367,33 @@ int T9WriteWorker::removeAllTasks()
     return count;
 }
 
+void T9WriteWorker::waitForAllTasks()
+{
+    while (isRunning()) {
+        idleSema.acquire();
+        QMutexLocker guard(&taskLock);
+        if (taskList.isEmpty()) {
+            idleSema.release();
+            break;
+        }
+        idleSema.release();
+    }
+}
+
+int T9WriteWorker::numberOfPendingTasks()
+{
+    QMutexLocker guard(&taskLock);
+    return taskList.count() + !idleSema.available() ? 1 : 0;
+}
+
 void T9WriteWorker::run()
 {
     while (!abort) {
+        idleSema.release();
         taskSema.acquire();
         if (abort)
             break;
+        idleSema.acquire();
         QSharedPointer<T9WriteTask> currentTask;
         {
             QMutexLocker guard(&taskLock);

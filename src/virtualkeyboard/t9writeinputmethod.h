@@ -68,12 +68,16 @@ public:
 
     bool reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags);
 
+signals:
+    void resultListChanged();
+
 protected:
     void timerEvent(QTimerEvent *timerEvent);
 
 protected slots:
     void dictionaryLoadCompleted(QSharedPointer<T9WriteDictionary> dictionary);
     void resultsAvailable(const QVariantList &resultList);
+    void processResult();
     void recognitionError(int status);
 };
 
