@@ -1809,7 +1809,7 @@ bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
                 emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->activeWordIndex);
                 return true;
             } else {
-                ic->clear();
+                ic->commit();
                 d->finishRecognition();
             }
             break;
