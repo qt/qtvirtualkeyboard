@@ -85,7 +85,6 @@ static QPointer<PlatformInputContext> platformInputContext;
 
 static QObject *createInputContextModule(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
-    Q_UNUSED(engine);
     Q_UNUSED(scriptEngine);
     QQmlContext *rootContext = engine->rootContext();
     QStringList inputMethodList = QStringList()

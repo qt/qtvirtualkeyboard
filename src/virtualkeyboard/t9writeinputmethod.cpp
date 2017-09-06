@@ -166,7 +166,6 @@ public:
         static QMutex s_logMutex;
         static QByteArray s_logString;
         Q_UNUSED(pUserData)
-        Q_UNUSED(nLogStringLength)
         QMutexLocker guard(&s_logMutex);
         s_logString.append(pLogString, nLogStringLength);
         if (s_logString.endsWith('\n')) {
@@ -800,7 +799,6 @@ public:
     bool updateSymbolCategoriesCjk(DECUMA_UINT32 language, const QLocale &locale,
                                    InputEngine::InputMode inputMode)
     {
-        Q_UNUSED(language)
         Q_ASSERT(cjk);
 
         symbolCategories.clear();
@@ -1025,10 +1023,6 @@ public:
     Trace *traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
                       const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
     {
-        Q_UNUSED(traceId)
-        Q_UNUSED(patternRecognitionMode)
-        Q_UNUSED(traceScreenInfo)
-
         if (!worker)
             return 0;
 
@@ -1693,7 +1687,6 @@ bool T9WriteInputMethod::setTextCase(InputEngine::TextCase textCase)
 
 bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
-    Q_UNUSED(text)
     Q_UNUSED(modifiers)
     Q_D(T9WriteInputMethod);
     switch (key) {
@@ -1802,7 +1795,6 @@ int T9WriteInputMethod::selectionListItemCount(SelectionListModel::Type type)
 QVariant T9WriteInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
 {
     QVariant result;
-    Q_UNUSED(type)
     Q_D(T9WriteInputMethod);
     switch (role) {
     case SelectionListModel::DisplayRole:

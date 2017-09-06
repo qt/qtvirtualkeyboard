@@ -784,7 +784,6 @@ int OpenWnnInputMethod::selectionListItemCount(SelectionListModel::Type type)
 QVariant OpenWnnInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
 {
     QVariant result;
-    Q_UNUSED(type)
     Q_D(OpenWnnInputMethod);
     switch (role) {
     case SelectionListModel::DisplayRole:

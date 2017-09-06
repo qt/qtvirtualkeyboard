@@ -719,7 +719,6 @@ void InputContext::externalCommit()
 void InputContext::update(Qt::InputMethodQueries queries)
 {
     Q_D(InputContext);
-    Q_UNUSED(queries);
 
     // No need to fetch input clip rectangle during animation
     if (!(queries & ~Qt::ImInputItemClipRectangle) && d->animating)

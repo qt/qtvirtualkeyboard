@@ -90,7 +90,6 @@ bool HunspellInputMethod::setTextCase(InputEngine::TextCase textCase)
 
 bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
-    Q_UNUSED(modifiers)
     Q_D(HunspellInputMethod);
     InputContext *ic = inputContext();
     Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
@@ -196,7 +195,6 @@ int HunspellInputMethod::selectionListItemCount(SelectionListModel::Type type)
 QVariant HunspellInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
 {
     QVariant result;
-    Q_UNUSED(type)
     Q_D(HunspellInputMethod);
     switch (role) {
     case SelectionListModel::DisplayRole:
