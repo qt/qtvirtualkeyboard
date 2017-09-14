@@ -295,7 +295,7 @@ KeyboardStyle {
         Text {
             id: enterKeyText
             visible: text.length !== 0
-            text: control.actionId !== EnterKeyAction.None ? "" : control.displayText
+            text: control.actionId !== EnterKeyAction.None ? control.displayText : ""
             clip: true
             fontSizeMode: Text.HorizontalFit
             horizontalAlignment: Text.AlignHCenter

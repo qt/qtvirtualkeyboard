@@ -263,7 +263,7 @@ KeyboardStyle {
             Text {
                 id: enterKeyText
                 visible: text.length !== 0
-                text: control.actionId !== EnterKeyAction.None ? "" : control.displayText
+                text: control.actionId !== EnterKeyAction.None ? control.displayText : ""
                 clip: true
                 fontSizeMode: Text.HorizontalFit
                 horizontalAlignment: Text.AlignHCenter
@@ -309,7 +309,7 @@ KeyboardStyle {
                 }
                 PropertyChanges {
                     target: enterKeyText
-                    opacity: 0.05
+                    opacity: 0.2
                 }
             }
         ]
