@@ -49,8 +49,8 @@ public:
     void applyImage(const QSize &windowSize);
 
 protected:
-    void paintEvent(QPaintEvent *pe) Q_DECL_OVERRIDE;
-    bool event(QEvent *event) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *pe) override;
+    bool event(QEvent *event) override;
 
 private:
     DesktopInputSelectionControl *m_control;
