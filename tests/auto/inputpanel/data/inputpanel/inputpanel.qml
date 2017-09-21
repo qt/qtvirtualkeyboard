@@ -91,6 +91,7 @@ InputPanel {
     property alias wordCandidateListVisibleSpy: wordCandidateListVisibleSpy
     property alias shiftStateSpy: shiftStateSpy
     property alias shadowInputControlVisibleSpy: shadowInputControlVisibleSpy
+    property alias externalLanguageSwitchSpy: externalLanguageSwitchSpy
 
     signal inputMethodResult(var text)
 
@@ -186,6 +187,12 @@ InputPanel {
         id: shadowInputControlVisibleSpy
         target: shadowInputControl
         signalName: "onVisibleChanged"
+    }
+
+    SignalSpy {
+        id: externalLanguageSwitchSpy
+        target: inputPanel
+        signalName: "onExternalLanguageSwitch"
     }
 
     function findChildByProperty(parent, propertyName, propertyValue, compareCb) {
@@ -291,6 +298,10 @@ InputPanel {
         if (InputContext.inputEngine.inputMode !== inputMode)
             InputContext.inputEngine.inputMode = inputMode
         return true
+    }
+
+    function setExternalLanguageSwitchEnabled(enabled) {
+        externalLanguageSwitchEnabled = enabled
     }
 
     function findVirtualKey(key) {
