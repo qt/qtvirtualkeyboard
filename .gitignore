@@ -1,7 +1,7 @@
 # This file is used to ignore files that should not be committed
 # --------------------------------------------------------------
 
-examples/virtualkeyboard/basic
+examples/virtualkeyboard/basic/basic
 !src/virtualkeyboard/3rdparty/hunspell/hunspell.pro
 src/virtualkeyboard/3rdparty/hunspell/*
 src/virtualkeyboard/3rdparty/hunspell/doc/html
