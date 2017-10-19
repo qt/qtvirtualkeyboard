@@ -182,7 +182,8 @@ QVariantMap HandwritingGestureRecognizer::recognize(const QList<Trace *> traceLi
                 swipeAngle = 2 * M_PI - swipeAngle;
 
             // Calculate an average length of the vector
-            for (++swipeVector; swipeVector != swipeVectors.end(); ++swipeVector)
+            ++swipeVector;
+            for (const auto cend = swipeVectors.cend(); swipeVector != cend; ++swipeVector)
                 swipeLength += swipeVector->length();
             swipeLength /= traceCount;
 
