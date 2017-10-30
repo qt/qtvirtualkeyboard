@@ -31,6 +31,7 @@
 #include "abstractinputmethod.h"
 #include "settings.h"
 #include <QtCore/private/qabstractitemmodel_p.h>
+#include <QtCore/qpointer.h>
 
 namespace QtVirtualKeyboard {
 
@@ -47,7 +48,7 @@ public:
     }
 
     QHash<int, QByteArray> roles;
-    AbstractInputMethod *dataSource;
+    QPointer<AbstractInputMethod> dataSource;
     SelectionListModel::Type type;
     int rowCount;
     bool wclAutoCommitWord;
