@@ -40,7 +40,44 @@
     \ingroup qtvirtualkeyboard-examples
     \image basic-example.png
 
-    The example shows how to build a virtual keyboard UI with support for
-    multiple keyboard layouts using QML, and a QPlatformInputContext bridge
-    for communicating between the keyboard and focused text editor in C++.
+    The example has two implementations: one for the desktop
+    platforms and another for the embedded platforms. The former version
+    enables text input into several text fields using the virtual keyboard,
+    whereas the latter version uses the same UI but with a custom virtual
+    keyboard InputPanel. The following snippet from
+    \c basic.pro shows how the qmake project is set up to choose the
+    appropriate implementation based on the CONFIG options:
+
+    \quotefromfile basic/basic.pro
+    \skipto android-embedded
+    \printuntil /^\}$/
+
+    The example enables the virtual keyboard by setting the \c QT_IM_MODULE
+    environment variable before loading the \c .qml file:
+
+    \quotefromfile basic/main.cpp
+    \skipto #include
+    \printuntil }
+
+    Besides this, it uses custom TextField and TextArea items to configure the
+    \e[ENTER] key behavior using the EnterKeyAction attached property.
+
+    \quotefromfile basic/Basic.qml
+    \skipto import
+    \printuntil Rectangle
+    \dots
+    \skipto TextField
+    \printuntil }
+    \dots
+    \skipto TextArea
+    \printuntil }
+    \skipto /^\}$/
+    \printuntil }
+
+    The TextField and TextArea are inherited from the TextBase custom type,
+    which has \c enterKeyEnabled, \c enterKeyText, and \c enterKeyAction
+    properties. The TextField and TextArea instances in the snippet can
+    set these properties to change the default behavior.
+
+    \include examples-run.qdocinc
 */
