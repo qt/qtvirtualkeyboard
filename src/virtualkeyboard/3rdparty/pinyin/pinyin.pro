@@ -55,5 +55,5 @@ win32 {
     CONFIG += qt
     QT = core
 } else {
-    LIBS += -pthread
+    CONFIG *= thread
 }
