@@ -1048,7 +1048,7 @@ Rectangle {
 
             // Remove Jamos one by one.
             // The number of removed characters must match to the number of Jamos entered.
-            for (; inputIndex >= 0; inputIndex--) {
+            for (inputIndex = data.inputSequence.length - 1; inputIndex >= 0; inputIndex--) {
                 compare(textInput.text, intermediateResult.pop())
                 inputPanel.virtualKeyClick(Qt.Key_Backspace)
             }
