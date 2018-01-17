@@ -600,7 +600,15 @@ InputPanel {
             console.warn("Cannot produce the symbol '%1' in handwriting mode".arg(ch))
             return false
         }
+        if (isSuperimposedHandwriting())
+            return true
         inputMethodResultSpy.wait(3000)
         return inputMethodResultSpy.count > 0
+    }
+
+    function isSuperimposedHandwriting() {
+        if (!inputPanel.keyboard.handwritingMode)
+            return false
+        return inputMethod != null && inputMethod.hasOwnProperty("superimposed") && inputMethod.superimposed
     }
 }

@@ -1,8 +1,16 @@
 # Enable handwriting
-handwriting:!lipi-toolkit:!t9write {
-    include(plugins/t9write/3rdparty/t9write/t9write-build.pri)
-    equals(T9WRITE_FOUND, 1): CONFIG += t9write
-    else: CONFIG += lipi-toolkit
+handwriting:!lipi-toolkit:!t9write:!myscript {
+    include(plugins/myscript/3rdparty/myscript/myscript.pri)
+    equals(MYSCRIPT_FOUND, 1) {
+        CONFIG += myscript
+    } else {
+        include(plugins/t9write/3rdparty/t9write/t9write-build.pri)
+        equals(T9WRITE_FOUND, 1): CONFIG += t9write
+        else: CONFIG += lipi-toolkit
+    }
+}
+myscript {
+    !handwriting: include(plugins/myscript/3rdparty/myscript/myscript.pri)
 }
 t9write {
     !handwriting: include(plugins/t9write/3rdparty/t9write/t9write-build.pri)

@@ -38,6 +38,7 @@ HandwritingInputPanel {
     z: 99
 
     property var testcase
+    readonly property var inputMethod: InputContext.inputEngine.inputMethod
     readonly property var wordCandidatePopupList: Utils.findChildByProperty(handwritingInputPanel, "objectName", "wordCandidatePopupList", null)
 
     anchors.fill: parent
@@ -129,7 +130,15 @@ HandwritingInputPanel {
             console.warn("Cannot produce the symbol '%1' in full screen handwriting mode".arg(ch))
             return false
         }
+        if (isSuperimposedHandwriting())
+            return true;
         inputMethodResultSpy.wait(3000)
         return inputMethodResultSpy.count > 0
+    }
+
+    function isSuperimposedHandwriting() {
+        if (!available)
+            return false
+        return inputMethod != null && inputMethod.hasOwnProperty("superimposed") && inputMethod.superimposed;
     }
 }

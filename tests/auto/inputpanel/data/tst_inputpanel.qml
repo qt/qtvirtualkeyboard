@@ -1174,12 +1174,61 @@ Rectangle {
         function test_hwrInputSequence(data) {
             prepareTest(data, true)
 
+            if (inputPanel.isSuperimposedHandwriting())
+                skip("Not valid test for Superimposed Handwriting")
+
             for (var i = 0; i < data.toggleShiftCount; i++) {
                 inputPanel.toggleShift()
             }
             for (var inputIndex in data.inputSequence) {
                 verify(inputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
             }
+
+            if (inputPanel.wordCandidateView.count > 0) {
+                if (inputPanel.selectionListSearchSuggestion(data.outputText)) {
+                    inputPanel.selectionListSelectCurrentItem()
+                }
+            }
+
+            Qt.inputMethod.commit()
+            waitForRendering(inputPanel)
+            compare(textInput.text, data.outputText)
+        }
+
+        function test_superimposedHwrInputSequence_data() {
+            return [
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "en_GB", inputSequence: "Hellohowareyou?", outputText: "Hello how are you?" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "fr_FR", inputSequence: "Bonjour", outputText: "Bonjour" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "da_DK", inputSequence: "Hej", outputText: "Hej" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "de_DE", inputSequence: "Hallo", outputText: "Hallo" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "es_ES", inputSequence: "Hola", outputText: "Hola" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "et_EE", inputSequence: "Tere", outputText: "Tere" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "hr_HR", inputSequence: "Zdravo", outputText: "Zdravo" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "it_IT", inputSequence: "Ciao", outputText: "Ciao" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "cs_CZ", inputSequence: "Ahoj", outputText: "Ahoj" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "bg_BG", inputSequence: "\u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438", outputText: "\u0411\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "\u4e2d\u6587", outputText: "\u4e2d\u6587" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", inputSequence: "\u570b", outputText: "\u570b" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "ja_JP", inputSequence: "\u65E5\u672C\u8A9E", outputText: "\u65E5\u672C\u8A9E" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "ko_KR", inputSequence: "\uD55C\uAD6D\uC5B4", outputText: "\uD55C\uAD6D\uC5B4" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "el_GR", inputSequence: "\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC", outputText: "\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "he_IL", inputSequence: "\u05D0\u05D5\u05D8\u05D5", outputText: "\u05D0\u05D5\u05D8\u05D5" },
+            ]
+        }
+
+        function test_superimposedHwrInputSequence(data) {
+            prepareTest(data, true)
+
+            if (!inputPanel.isSuperimposedHandwriting())
+                skip("Not valid test for non-Superimposed Handwriting")
+
+            for (var i = 0; i < data.toggleShiftCount; i++) {
+                inputPanel.toggleShift()
+            }
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
+            }
+            wait(2000)
 
             if (inputPanel.wordCandidateView.count > 0) {
                 if (inputPanel.selectionListSearchSuggestion(data.outputText)) {
@@ -1207,6 +1256,9 @@ Rectangle {
 
         function test_hwrNumericInputSequence(data) {
             prepareTest(data, true)
+
+            if (inputPanel.isSuperimposedHandwriting())
+                skip("Not valid test for Superimposed Handwriting")
 
             for (var inputIndex in data.inputSequence) {
                 verify(inputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
@@ -1241,6 +1293,9 @@ Rectangle {
 
         function test_hwrSpellCorrectionSuggestions(data) {
             prepareTest(data, true)
+
+            if (inputPanel.isSuperimposedHandwriting())
+                skip("Not valid test for Superimposed Handwriting")
 
             for (var inputIndex in data.inputSequence) {
                 verify(inputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
@@ -1278,12 +1333,61 @@ Rectangle {
             handwritingInputPanel.available = true
             verify(inputPanel.visible === false)
 
+            if (inputPanel.isSuperimposedHandwriting())
+                skip("Not valid test for Superimposed Handwriting")
+
             for (var i = 0; i < data.toggleShiftCount; i++) {
                 inputPanel.toggleShift()
             }
             for (var inputIndex in data.inputSequence) {
                 verify(handwritingInputPanel.emulateHandwriting(data.inputSequence[inputIndex], true))
             }
+
+            if (handwritingInputPanel.wordCandidatePopupListSearchSuggestion(data.outputText)) {
+                handwritingInputPanel.wordCandidatePopupListSelectCurrentItem()
+            }
+
+            Qt.inputMethod.commit()
+            compare(textInput.text, data.outputText)
+        }
+
+        function test_superimposedHwrFullScreenInputSequence_data() {
+            return [
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "en_GB", inputSequence: "Hellohowareyou", outputText: "Hello how are you" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "fr_FR", inputSequence: "Bonjour", outputText: "Bonjour" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "da_DK", inputSequence: "Hej", outputText: "Hej" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "de_DE", inputSequence: "Hallo", outputText: "Hallo" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "es_ES", inputSequence: "Hola", outputText: "Hola" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "et_EE", inputSequence: "Tere", outputText: "Tere" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "hr_HR", inputSequence: "Zdravo", outputText: "Zdravo" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "it_IT", inputSequence: "Ciao", outputText: "Ciao" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "cs_CZ", inputSequence: "Ahoj", outputText: "Ahoj" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "bg_BG", inputSequence: "\u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438", outputText: "\u0411\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "\u4e2d\u6587", outputText: "\u4e2d\u6587" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "zh_TW", inputSequence: "\u570b", outputText: "\u570b" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "ja_JP", inputSequence: "\u65E5\u672C\u8A9E", outputText: "\u65E5\u672C\u8A9E" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "ko_KR", inputSequence: "\uD55C\uAD6D\uC5B4", outputText: "\uD55C\uAD6D\uC5B4" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "el_GR", inputSequence: "\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC", outputText: "\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "he_IL", inputSequence: "\u05D0\u05D5\u05D8\u05D5", outputText: "\u05D0\u05D5\u05D8\u05D5" },
+            ]
+        }
+
+        function test_superimposedHwrFullScreenInputSequence(data) {
+            prepareTest(data, true)
+
+            handwritingInputPanel.available = true
+            verify(inputPanel.visible === false)
+
+            if (!inputPanel.isSuperimposedHandwriting())
+                skip("Not valid test for non-Superimposed Handwriting")
+
+            for (var i = 0; i < data.toggleShiftCount; i++) {
+                inputPanel.toggleShift()
+            }
+            for (var inputIndex in data.inputSequence) {
+                verify(handwritingInputPanel.emulateHandwriting(data.inputSequence[inputIndex], true))
+            }
+            wait(2000)
 
             if (handwritingInputPanel.wordCandidatePopupListSearchSuggestion(data.outputText)) {
                 handwritingInputPanel.wordCandidatePopupListSelectCurrentItem()
@@ -1307,6 +1411,9 @@ Rectangle {
 
             handwritingInputPanel.available = true
             verify(inputPanel.visible === false)
+
+            if (handwritingInputPanel.isSuperimposedHandwriting())
+                skip("Not valid test for Superimposed Handwriting")
 
             for (var inputIndex in data.inputSequence) {
                 verify(handwritingInputPanel.emulateHandwriting(data.inputSequence.charAt(inputIndex), true))
@@ -1333,6 +1440,9 @@ Rectangle {
             handwritingInputPanel.available = true
             verify(inputPanel.visible === false)
 
+            if (handwritingInputPanel.isSuperimposedHandwriting())
+                skip("Not valid test for Superimposed Handwriting")
+
             for (var inputIndex in data.inputSequence) {
                 verify(handwritingInputPanel.emulateHandwriting(data.inputSequence[inputIndex], true))
             }
@@ -1356,6 +1466,9 @@ Rectangle {
             handwritingInputPanel.available = true
             if (!inputPanel.wordCandidateListVisibleHint)
                 skip("Word candidates not available (spell correction/hwr suggestions)")
+
+            if (handwritingInputPanel.isSuperimposedHandwriting())
+                skip("Not valid test for Superimposed Handwriting")
 
             var numAddedLines = Math.floor(textInput.height / Qt.inputMethod.cursorRectangle.height - data.initLinesToBottom) - 1
             for (var i = 0; i < numAddedLines; i++) {
@@ -1497,6 +1610,9 @@ Rectangle {
 
         function test_hwrWordReselection(data) {
             prepareTest(data, true)
+
+            if (inputPanel.isSuperimposedHandwriting())
+                skip("Not valid test for Superimposed Handwriting")
 
             var cursorRects = []
             for (var i = 0; i < data.clickPositions.length; i++)
