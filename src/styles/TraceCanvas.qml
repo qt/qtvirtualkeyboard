@@ -149,4 +149,13 @@ Canvas {
         onLengthChanged: if (renderFunction) canvas.requestAnimationFrame(renderFunction)
         onFinalChanged: if (renderFunction) canvas.requestAnimationFrame(renderFunction)
     }
+
+    opacity: trace ? trace.opacity : 1.0
+
+    Behavior on opacity {
+        NumberAnimation {
+            duration: 1500
+            easing.type: Easing.InOutQuad
+        }
+    }
 }

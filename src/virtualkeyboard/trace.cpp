@@ -40,7 +40,8 @@ public:
         QObjectPrivate(),
         traceId(0),
         final(false),
-        canceled(false)
+        canceled(false),
+        opacity(1.0)
     { }
 
     int traceId;
@@ -48,6 +49,7 @@ public:
     QMap<QString, QVariantList> channels;
     bool final;
     bool canceled;
+    qreal opacity;
 };
 
 /*!
@@ -368,6 +370,21 @@ void Trace::setCanceled(bool canceled)
     }
 }
 
+qreal Trace::opacity() const
+{
+    Q_D(const Trace);
+    return d->opacity;
+}
+
+void Trace::setOpacity(qreal opacity)
+{
+    Q_D(Trace);
+    if (d->opacity != opacity) {
+        d->opacity = opacity;
+        emit opacityChanged(opacity);
+    }
+}
+
 /*! \qmlproperty int Trace::traceId
 
     Unique id of this Trace.
@@ -423,6 +440,29 @@ void Trace::setCanceled(bool canceled)
 
     The input data should not be processed from the Traces
     whose isCanceled property set to true.
+*/
+
+/*! \qmlproperty qreal Trace::opacity
+    \since QtQuick.VirtualKeyboard 2.4
+
+    This property defines how opaque the Trace is.
+
+    A lower value results in a more transparent trace: \c 0.0 is fully
+    transparent, and \c 1.0 is fully opaque.
+
+    This property is useful for making older traces more transparent as new
+    ones are added.
+*/
+
+/*! \property QtVirtualKeyboard::Trace::opacity
+
+    This property defines how opaque the Trace is.
+
+    A lower value results in a more transparent trace: \c 0.0 is fully
+    transparent, and \c 1.0 is fully opaque.
+
+    This property is useful for making older traces more transparent as new
+    ones are added.
 */
 
 } // namespace QtVirtualKeyboard

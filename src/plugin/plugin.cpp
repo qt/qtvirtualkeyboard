@@ -124,6 +124,7 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     qmlRegisterType<EnterKeyAction>(pluginUri, 2, 0, "EnterKeyAction");
     qRegisterMetaType<Trace *>("Trace*");
     qmlRegisterType<Trace>(pluginUri, 2, 0, "Trace");
+    qmlRegisterType<Trace>(pluginUri, 2, 4, "Trace");
     qRegisterMetaType<ShadowInputContext *>("ShadowInputContext*");
     qmlRegisterUncreatableType<ShadowInputContext>(pluginUri, 2, 2, "ShadowInputContext", QLatin1String("Cannot create shadow input context"));
     qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 1, 0, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
@@ -142,6 +143,7 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 1, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 2, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 3, "InputPanel");
+    qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), pluginUri, 2, 4, "InputPanel");
     qmlRegisterType(QUrl(path + QLatin1String("HandwritingInputPanel.qml")), pluginUri, 2, 0, "HandwritingInputPanel");
     const QString componentsPath = path + QStringLiteral("components/");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("AlternativeKeys.qml")), pluginUri, 1, 0, "AlternativeKeys");
