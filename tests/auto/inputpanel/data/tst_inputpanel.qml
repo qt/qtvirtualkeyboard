@@ -1104,6 +1104,10 @@ Rectangle {
                 { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["n","i","h","o","n","g","o"], outputText: "" },
                 // Latin only
                 { initLocale: "ja_JP", initInputMethodHints: Qt.ImhLatinOnly, inputSequence: "hello", outputText: "Hello" },
+                // Cursor test: 1. Enter hiragana input sequence and move cursor in the middle of input.
+                //              2. Change input mode to Katakana.
+                //              3. The input sequence should be committed leaving the cursor in the middle.
+                { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Left,Qt.Key_Left,Qt.Key_Left,Qt.Key_Mode_switch], outputText: "\u306B\u307B\u3093\u3054", expectedCursorPosition: 2 },
             ]
         }
 
@@ -1116,6 +1120,9 @@ Rectangle {
 
             waitForRendering(inputPanel)
             compare(textInput.text, data.outputText)
+
+            if (data.hasOwnProperty("expectedCursorPosition"))
+                compare(textInput.cursorPosition, data.expectedCursorPosition)
         }
 
         function test_baseKeyNoModifier() {

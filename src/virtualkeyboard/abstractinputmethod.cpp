@@ -232,6 +232,20 @@ bool AbstractInputMethod::reselect(int cursorPosition, const InputEngine::Resele
 }
 
 /*!
+    \since QtQuick.VirtualKeyboard 2.4
+
+    Called when the user clicks on pre-edit text at \a cursorPosition.
+
+    The function should return \c true if it handles the event. Otherwise the input
+    falls back to \l reselect() for further processing.
+*/
+bool AbstractInputMethod::clickPreeditText(int cursorPosition)
+{
+    Q_UNUSED(cursorPosition)
+    return false;
+}
+
+/*!
     \fn QList<QtVirtualKeyboard::InputEngine::InputMode> QtVirtualKeyboard::AbstractInputMethod::inputModes(const QString& locale)
 
     Returns the list of input modes for \a locale.

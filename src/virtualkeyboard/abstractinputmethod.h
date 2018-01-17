@@ -67,6 +67,7 @@ public:
     virtual bool traceEnd(Trace *trace);
 
     virtual bool reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags);
+    virtual bool clickPreeditText(int cursorPosition);
 
 Q_SIGNALS:
     void selectionListChanged(int type);

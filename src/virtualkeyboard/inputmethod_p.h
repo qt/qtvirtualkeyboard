@@ -73,6 +73,7 @@ public:
     bool traceEnd(Trace *trace);
 
     bool reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags);
+    bool clickPreeditText(int cursorPosition);
 
     void reset();
     void update();

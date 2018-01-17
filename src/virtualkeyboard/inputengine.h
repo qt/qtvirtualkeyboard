@@ -128,6 +128,7 @@ public:
     Q_INVOKABLE bool traceEnd(Trace *trace);
 
     Q_INVOKABLE bool reselect(int cursorPosition, const ReselectFlags &reselectFlags);
+    bool clickPreeditText(int cursorPosition);
 
 Q_SIGNALS:
     void virtualKeyClicked(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool isAutoRepeat);

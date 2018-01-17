@@ -170,6 +170,7 @@ private:
     bool filterEvent(const QEvent *event);
     void addSelectionAttribute(QList<QInputMethodEvent::Attribute> &attributes);
     bool testAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const;
+    int findAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const;
 
 private:
     friend class PlatformInputContext;
