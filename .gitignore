@@ -35,3 +35,5 @@ Makefile*
 tst_*
 !tst_*.*
 tst_*.exe
+
+.DS_Store

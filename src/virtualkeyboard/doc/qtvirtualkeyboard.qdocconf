@@ -13,6 +13,9 @@ excludedirs += ../content/layouts \
 exampledirs += ../../../examples/virtualkeyboard \
     snippets
 examplesinstallpath = virtualkeyboard
+
+manifestmeta.highlighted.names = "QtVirtualKeyboard/Qt Quick Virtual Keyboard - Basic Example"
+
 imagedirs += images
 
 depends += qtdoc qtcore qtgui qtqml qtquick

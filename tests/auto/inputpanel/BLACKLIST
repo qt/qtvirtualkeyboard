@@ -4,3 +4,11 @@
 [tst_plugin::test_wclAutoCommitWordSetting:row 0]
 b2qt
 
+# QTBUG-65507
+[tst_plugin::test_inputMethodHints:row 8]
+b2qt
+
+# QTBUG-65507
+[tst_plugin::test_shiftCapsLock:row 1]
+b2qt
+

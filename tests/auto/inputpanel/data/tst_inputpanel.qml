@@ -1199,6 +1199,10 @@ Rectangle {
         }
 
         function test_hwrSpellCorrectionSuggestions(data) {
+            if (Qt.platform.pluginName === "offscreen") {
+                skip("QTBUG-65507");
+            }
+
             prepareTest(data)
 
             if (!inputPanel.setHandwritingMode(true))
