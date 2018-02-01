@@ -31,6 +31,8 @@ Makefile*
 *.html
 *~
 .qmake.*
+*.jsc
+*.qmlc
 
 tst_*
 !tst_*.*
