@@ -79,12 +79,7 @@ public:
         for (const QString &styleImportPath : qAsConst(styleImportPathList)) {
             QString filePath = buildStyleFilePath(styleImportPath, name);
             bool pathExist = false;
-#ifdef COMPILING_QML
-            // qtquickcompiler removes *.qml file paths from qrc file, but keeps directories - QTRD-3268
-            pathExist = QFileInfo(filePath).dir().exists();
-#else
             pathExist = QFileInfo::exists(filePath);
-#endif
             if (pathExist)
                 return buildStyleImportPath(styleImportPath, name);
         }

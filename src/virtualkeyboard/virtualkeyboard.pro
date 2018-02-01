@@ -304,8 +304,6 @@ OTHER_FILES += \
 SOURCES += appinputpanel.cpp
 HEADERS += appinputpanel.h
 
-qtquickcompiler: DEFINES += COMPILING_QML
-
 !disable-hunspell {
     exists(3rdparty/hunspell/src/hunspell/hunspell.h) {
         SOURCES += hunspellinputmethod.cpp hunspellinputmethod_p.cpp hunspellworker.cpp
