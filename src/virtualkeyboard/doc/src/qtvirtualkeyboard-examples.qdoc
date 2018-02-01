@@ -40,8 +40,8 @@
     \ingroup qtvirtualkeyboard-examples
     \image basic-example.png
 
-    The example has two implementations: one for the desktop
-    platforms and another for the embedded platforms. The former version
+    The example has two implementations: one for desktop
+    platforms and another for embedded platforms. The former version
     enables text input into several text fields using the virtual keyboard,
     whereas the latter version uses the same UI but with a custom virtual
     keyboard InputPanel. The following snippet from
@@ -74,10 +74,10 @@
     \skipto /^\}$/
     \printuntil }
 
-    The TextField and TextArea are inherited from the TextBase custom type,
-    which has \c enterKeyEnabled, \c enterKeyText, and \c enterKeyAction
-    properties. The TextField and TextArea instances in the snippet can
-    set these properties to change the default behavior.
+    The TextField and TextArea controls extend the respective
+    \l {Qt Quick Controls 2} types with \c enterKeyEnabled and
+    \c enterKeyAction properties. The TextField and TextArea instances in the
+    snippet can set these properties to change the default behavior.
 
     \include examples-run.qdocinc
 */

@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2018 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -27,59 +27,23 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtQuick.VirtualKeyboard 2.1
+import QtQuick 2.10
+import QtQuick.Controls 2.3 as Controls
+import QtQuick.VirtualKeyboard 2.3
 
-TextBase {
-    id: textField
+Controls.TextField {
+    id: control
+    color: "#2B2C2E"
+    selectionColor: Qt.rgba(0.0, 0.0, 0.0, 0.15)
+    selectedTextColor: color
+    font.pixelSize: Qt.application.font.pixelSize * 2
 
-    property alias color: textInput.color
-    property alias text: textInput.text
-    property alias textWidth: textInput.width
-    property alias readOnly: textInput.readOnly
-    property alias inputMethodHints: textInput.inputMethodHints
-    property alias validator: textInput.validator
-    property alias echoMode: textInput.echoMode
-    property int passwordMaskDelay: 1000
+    property int enterKeyAction: EnterKeyAction.None
+    readonly property bool enterKeyEnabled: enterKeyAction === EnterKeyAction.None || text.length > 0 || inputMethodComposing
 
-    editor: textInput
-
-    Flickable {
-        id: flickable
-
-        x: 12
-        clip: true
-        width: parent.width-24
-        height: parent.height
-        flickableDirection: Flickable.HorizontalFlick
-        interactive: contentWidth - 4 > width
-
-        contentWidth: textInput.width+2
-        contentHeight: textInput.height
-        TextInput {
-            id: textInput
-
-            EnterKeyAction.actionId: textField.enterKeyAction
-            EnterKeyAction.label: textField.enterKeyText
-            EnterKeyAction.enabled: textField.enterKeyEnabled
-
-            y: 6
-            focus: true
-            color: "#2B2C2E"
-            cursorVisible: activeFocus
-            passwordCharacter: "\u2022"
-            font.pixelSize: textField.fontPixelSize
-            selectionColor: Qt.rgba(0.0, 0.0, 0.0, 0.15)
-            selectedTextColor: color
-            selectByMouse: true
-            width: Math.max(flickable.width, implicitWidth)-2
-
-            Binding {
-                target: textInput
-                property: "passwordMaskDelay"
-                value: textField.passwordMaskDelay
-                when: textInput.hasOwnProperty("passwordMaskDelay")
-            }
-        }
+    background: Rectangle {
+        color: "#FFFFFF"
+        border.width: 1
+        border.color: control.activeFocus ? "#5CAA15" : "#BDBEBF"
     }
 }

@@ -1,3 +1,3 @@
 TEMPLATE = subdirs
-SUBDIRS += \
-    basic
+
+qtHaveModule(quickcontrols2): SUBDIRS += basic

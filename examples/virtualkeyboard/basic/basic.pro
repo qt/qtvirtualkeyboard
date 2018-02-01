@@ -19,9 +19,7 @@ OTHER_FILES += \
     basic-b2qt.qml \
     content/AutoScroller.qml \
     content/HandwritingModeButton.qml \
-    content/ScrollBar.qml \
     content/TextArea.qml \
-    content/TextBase.qml \
     content/TextField.qml \
 
 disable-xcb {
