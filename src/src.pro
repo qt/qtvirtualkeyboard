@@ -35,4 +35,5 @@ t9write {
 SUBDIRS += \
     virtualkeyboard \
     virtualkeyboard/import \
+    virtualkeyboard/settings \
     virtualkeyboard/styles
