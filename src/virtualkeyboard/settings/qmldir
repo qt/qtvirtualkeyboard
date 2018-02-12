@@ -1,0 +1,4 @@
+module QtQuick.VirtualKeyboard.Settings
+typeinfo plugins.qmltypes
+depends QtQuick 2.8
+depends QtQuick.VirtualKeyboard 2.1
