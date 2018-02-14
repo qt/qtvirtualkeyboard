@@ -111,6 +111,9 @@ Item {
     /*! \internal */
     property alias keyboard: keyboard
 
+    /*! \internal */
+    readonly property bool __isRootItem: inputPanel.parent != null && inputPanel.parent.parent == null
+
     SelectionControl {
         objectName: "selectionControl"
         x: -parent.x
@@ -129,5 +132,16 @@ Item {
         z: -1
         anchors.fill: keyboard
         enabled: active
+    }
+
+    Binding {
+        target: InputContext
+        property: "keyboardRectangle"
+        value: mapToItem(null,
+                         __isRootItem ? keyboard.x : x,
+                         (__isRootItem ? keyboard.y : y) + keyboard.wordCandidateView.currentYOffset - (keyboard.shadowInputControl.visible ? keyboard.shadowInputControl.height : 0),
+                         keyboard.width,
+                         keyboard.height - keyboard.wordCandidateView.currentYOffset + (keyboard.shadowInputControl.visible ? keyboard.shadowInputControl.height : 0))
+        when: !InputContext.animating
     }
 }

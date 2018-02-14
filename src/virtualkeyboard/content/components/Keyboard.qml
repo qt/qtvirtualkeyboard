@@ -40,6 +40,8 @@ Item {
     objectName: "keyboard"
 
     property alias style: styleLoader.item
+    property alias wordCandidateView: wordCandidateView
+    property alias shadowInputControl: shadowInputControl
     property var activeKey: null
     property TouchPoint activeTouchPoint
     property int localeIndex: -1
@@ -467,15 +469,6 @@ Item {
                                            keyboard.y + characterPreview.y,
                                            characterPreview.width,
                                            characterPreview.height)
-    }
-    Binding {
-        target: InputContext
-        property: "keyboardRectangle"
-        value: Qt.rect(keyboard.x,
-                       keyboard.y + wordCandidateView.currentYOffset - (shadowInputControl.visible ? shadowInputControl.height : 0),
-                       keyboard.width,
-                       keyboard.height - wordCandidateView.currentYOffset + (shadowInputControl.visible ? shadowInputControl.height : 0))
-        when: keyboard.active && !InputContext.animating
     }
     Binding {
         target: InputContext
