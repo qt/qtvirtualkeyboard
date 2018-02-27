@@ -742,7 +742,7 @@ void InputContext::update(Qt::InputMethodQueries queries)
     bool newCursorPosition = cursorPosition != d->cursorPosition;
     bool newAnchorRectangle = anchorRectangle != d->anchorRectangle;
     bool newCursorRectangle = cursorRectangle != d->cursorRectangle;
-    bool selectionControlVisible = d->inputContext->isInputPanelVisible() && (cursorPosition != anchorPosition);
+    bool selectionControlVisible = d->inputContext->isInputPanelVisible() && (cursorPosition != anchorPosition) && !inputMethodHints.testFlag(Qt::ImhNoTextHandles);
     bool newSelectionControlVisible = selectionControlVisible != d->selectionControlVisible;
 
     QRectF inputItemClipRect = imQueryEvent.value(Qt::ImInputItemClipRectangle).toRectF();

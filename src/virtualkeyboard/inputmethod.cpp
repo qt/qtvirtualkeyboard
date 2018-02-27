@@ -96,7 +96,7 @@ namespace QtVirtualKeyboard {
 
     This method returns \c true if the key event was successfully handled.
     If the return value is \c false, the key event is redirected to the default
-    input method for futher processing.
+    input method for further processing.
 */
 
 /*!
