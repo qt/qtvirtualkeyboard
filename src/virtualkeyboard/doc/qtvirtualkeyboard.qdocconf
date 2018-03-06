@@ -4,6 +4,12 @@ project = QtVirtualKeyboard
 description = Qt Virtual Keyboard
 version = $QT_VERSION
 
+# Custom module header passed to clang
+moduleheader = QtVirtualKeyboard_pch.h
+
+# Additional include paths passed to clang
+includepaths = -I .
+
 headerdirs  += ..
 sourcedirs  += ..
 excludedirs += ../content/layouts \
