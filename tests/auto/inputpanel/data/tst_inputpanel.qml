@@ -1858,5 +1858,18 @@ Rectangle {
             }
         }
 
+        function test_fullScreenModeReturnKey() {
+            prepareTest()
+
+            textInput.text = ""
+            textInput.inputMethodHints = Qt.ImhUppercaseOnly
+            inputPanel.setFullScreenMode(true)
+            waitForRendering(inputPanel)
+            inputPanel.shadowInputControlVisibleSpy.wait()
+            verify(inputPanel.virtualKeyClick(Qt.Key_A))
+            verify(inputPanel.virtualKeyClick(Qt.Key_Return))
+            compare(inputPanel.shadowInput.text, "")
+        }
+
     }
 }

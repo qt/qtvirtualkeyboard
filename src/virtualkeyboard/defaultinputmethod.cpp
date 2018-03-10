@@ -63,7 +63,8 @@ bool DefaultInputMethod::setTextCase(InputEngine::TextCase textCase)
 
 bool DefaultInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
-    inputContext()->sendKeyClick(key, text, modifiers);
+    const Qt::KeyboardModifiers mods = (key == Qt::Key_Return) ? Qt::NoModifier : modifiers;
+    inputContext()->sendKeyClick(key, text, mods);
     return true;
 }
 

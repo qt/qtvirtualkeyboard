@@ -5,7 +5,6 @@ QMAKE_DOCS = $$PWD/doc/qtvirtualkeyboard.qdocconf
 include(doc/doc.pri)
 
 QT += qml quick gui gui-private core-private
-CONFIG += qtquickcompiler
 
 win32 {
     CONFIG += no-pkg-config

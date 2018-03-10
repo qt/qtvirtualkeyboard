@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2018 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -27,46 +27,11 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtQuick.VirtualKeyboard 2.1
-
-FocusScope {
-    id: textBase
-
-    property var editor
-    property bool previewTextActive: !editor.activeFocus && text.length === 0
-    property int fontPixelSize: 32
-    property string previewText
-    property int enterKeyAction: EnterKeyAction.None
-    property string enterKeyText
-    property bool enterKeyEnabled: enterKeyAction === EnterKeyAction.None || editor.text.length > 0 || editor.inputMethodComposing
-
-    implicitHeight: editor.height + 12
-
-    signal enterKeyClicked
-
-    Keys.onReleased: {
-        if (event.key === Qt.Key_Return)
-            enterKeyClicked()
-    }
-
-    Rectangle {
-        // background
-        radius: 5.0
-        anchors.fill: parent
-        color: "#FFFFFF"
-        border { width: 1; color: editor.activeFocus ? "#5CAA15" : "#BDBEBF" }
-    }
-    Text {
-        id: previewText
-
-        y: 8
-        clip: true
-        color: "#a0a1a2"
-        visible: previewTextActive
-        text: textBase.previewText
-        font.pixelSize: 28
-        anchors { left: parent.left; right: parent.right; margins: 12 }
-
-    }
-}
+#ifdef Q_CLANG_QDOC
+#include "abstractinputmethod.h"
+#include "abstractinputpanel.h"
+#include "inputcontext.h"
+#include "inputengine.h"
+#include "selectionlistmodel.h"
+#include "shifthandler.h"
+#endif // Q_CLANG_QDOC

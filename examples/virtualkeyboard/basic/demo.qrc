@@ -1,9 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>content/AutoScroller.qml</file>
-        <file>content/ScrollBar.qml</file>
         <file>content/TextArea.qml</file>
-        <file>content/TextBase.qml</file>
         <file>content/TextField.qml</file>
         <file>content/HandwritingModeButton.qml</file>
         <file>content/FloatingButton_Active.svg</file>
