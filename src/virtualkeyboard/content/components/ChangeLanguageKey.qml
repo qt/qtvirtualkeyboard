@@ -71,7 +71,7 @@ BaseKey {
     keyPanelDelegate: keyboard.style ? keyboard.style.languageKeyPanel : undefined
     onClicked: {
         if (keyboard.style.languagePopupListEnabled)
-            keyboard.showLanguagePopup(changeLanguageKey, customLayoutsOnly)
+            keyboard.showLanguagePopup(changeLanguageKey, false)
         else
             keyboard.changeInputLanguage(customLayoutsOnly)
     }

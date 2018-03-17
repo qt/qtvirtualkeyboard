@@ -5,6 +5,7 @@ QMAKE_DOCS = $$PWD/doc/qtvirtualkeyboard.qdocconf
 include(doc/doc.pri)
 
 QT += qml quick gui gui-private core-private
+CONFIG += qtquickcompiler
 
 win32 {
     CONFIG += no-pkg-config
@@ -303,8 +304,6 @@ OTHER_FILES += \
 }
 SOURCES += appinputpanel.cpp
 HEADERS += appinputpanel.h
-
-qtquickcompiler: DEFINES += COMPILING_QML
 
 !disable-hunspell {
     exists(3rdparty/hunspell/src/hunspell/hunspell.h) {

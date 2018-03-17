@@ -82,6 +82,7 @@ Rectangle {
             inputPanel.setWclAlwaysVisible(data !== undefined && data.hasOwnProperty("wclAlwaysVisible") && data.wclAlwaysVisible)
             inputPanel.setWclAutoCommitWord(data !== undefined && data.hasOwnProperty("wclAutoCommitWord") && data.wclAutoCommitWord)
             inputPanel.setFullScreenMode(data !== undefined && data.hasOwnProperty("fullScreenMode") && data.fullScreenMode)
+            inputPanel.setExternalLanguageSwitchEnabled(data !== undefined && data.hasOwnProperty("externalLanguageSwitchEnabled") && data.externalLanguageSwitchEnabled)
             container.forceActiveFocus()
             if (data !== undefined && data.hasOwnProperty("initText")) {
                 textInput.text = data.initText
@@ -1048,7 +1049,7 @@ Rectangle {
 
             // Remove Jamos one by one.
             // The number of removed characters must match to the number of Jamos entered.
-            for (; inputIndex >= 0; inputIndex--) {
+            for (inputIndex = data.inputSequence.length - 1; inputIndex >= 0; inputIndex--) {
                 compare(textInput.text, intermediateResult.pop())
                 inputPanel.virtualKeyClick(Qt.Key_Backspace)
             }
@@ -1531,14 +1532,23 @@ Rectangle {
             }
         }
 
-        function test_languagePopupListToggle() {
-            prepareTest()
+        function test_languagePopupListToggle_data() {
+            return [
+                { externalLanguageSwitchEnabled: true },
+                { externalLanguageSwitchEnabled: false },
+            ]
+        }
+
+        function test_languagePopupListToggle(data) {
+            prepareTest(data)
             if (inputPanel.availableLocales.length < 2)
                 skip("Input language can not be changed")
             var changeLanguageKey = inputPanel.findObjectByName("changeLanguageKey")
             var languagePopupList = inputPanel.findObjectByName("languagePopupList")
+            inputPanel.externalLanguageSwitchSpy.clear()
             inputPanel.virtualKeyClick(changeLanguageKey)
-            compare(languagePopupList.visible, true)
+            compare(languagePopupList.visible, !data.externalLanguageSwitchEnabled)
+            compare(inputPanel.externalLanguageSwitchSpy.count, data.externalLanguageSwitchEnabled ? 1 : 0)
             inputPanel.virtualKeyClick(changeLanguageKey)
             compare(languagePopupList.visible, false)
         }

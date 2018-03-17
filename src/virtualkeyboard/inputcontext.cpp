@@ -40,10 +40,6 @@
 #include <QGuiApplication>
 #include <QtCore/private/qobject_p.h>
 
-#ifdef COMPILING_QML
-#include <private/qqmlmetatype_p.h>
-#endif
-
 QT_BEGIN_NAMESPACE
 bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMethodEvent::Attribute &attribute2)
 {
@@ -550,10 +546,6 @@ void InputContext::clear()
 */
 bool InputContext::fileExists(const QUrl &fileUrl)
 {
-#ifdef COMPILING_QML
-    // workaround that qtquickcompiler removes *.qml file paths from qrc file (QTRD-3268)
-    return QQmlMetaType::findCachedCompilationUnit(fileUrl);
-#else
     QString fileName;
     if (fileUrl.scheme() == QLatin1String("qrc")) {
         fileName = QLatin1Char(':') + fileUrl.path();
@@ -561,7 +553,6 @@ bool InputContext::fileExists(const QUrl &fileUrl)
         fileName = fileUrl.toLocalFile();
     }
     return !fileName.isEmpty() && QFile::exists(fileName);
-#endif
 }
 
 /*!
@@ -719,7 +710,6 @@ void InputContext::externalCommit()
 void InputContext::update(Qt::InputMethodQueries queries)
 {
     Q_D(InputContext);
-    Q_UNUSED(queries);
 
     // No need to fetch input clip rectangle during animation
     if (!(queries & ~Qt::ImInputItemClipRectangle) && d->animating)
@@ -752,7 +742,7 @@ void InputContext::update(Qt::InputMethodQueries queries)
     bool newCursorPosition = cursorPosition != d->cursorPosition;
     bool newAnchorRectangle = anchorRectangle != d->anchorRectangle;
     bool newCursorRectangle = cursorRectangle != d->cursorRectangle;
-    bool selectionControlVisible = d->inputContext->isInputPanelVisible() && (cursorPosition != anchorPosition);
+    bool selectionControlVisible = d->inputContext->isInputPanelVisible() && (cursorPosition != anchorPosition) && !inputMethodHints.testFlag(Qt::ImhNoTextHandles);
     bool newSelectionControlVisible = selectionControlVisible != d->selectionControlVisible;
 
     QRectF inputItemClipRect = imQueryEvent.value(Qt::ImInputItemClipRectangle).toRectF();

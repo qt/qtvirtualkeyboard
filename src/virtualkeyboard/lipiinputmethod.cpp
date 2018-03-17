@@ -500,10 +500,11 @@ QList<InputEngine::InputMode> LipiInputMethod::inputModes(const QString &locale)
 
 bool LipiInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
 {
-    Q_UNUSED(locale)
     Q_D(LipiInputMethod);
 #ifdef HAVE_HUNSPELL
     HunspellInputMethod::setInputMode(locale, inputMode);
+#else
+    Q_UNUSED(locale)
 #endif
     bool result = d->recognizer.setModel(QStringLiteral("SHAPEREC_ALPHANUM"));
     if (!result)

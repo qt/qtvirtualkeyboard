@@ -1069,9 +1069,20 @@ Item {
 
     function showLanguagePopup(parentItem, customLayoutsOnly) {
         if (!languagePopupList.enabled) {
-            var locales = keyboard.listLocales(customLayoutsOnly)
+            var locales = keyboard.listLocales(customLayoutsOnly, parent.externalLanguageSwitchEnabled)
+            if (parent.externalLanguageSwitchEnabled) {
+                var currentIndex = 0
+                for (var i = 0; i < locales.length; i++) {
+                    if (locales[i] === keyboard.locale) {
+                        currentIndex = i
+                        break
+                    }
+                }
+                parent.externalLanguageSwitch(locales, currentIndex)
+                return
+            }
             languageListModel.clear()
-            for (var i = 0; i < locales.length; i++) {
+            for (i = 0; i < locales.length; i++) {
                 languageListModel.append({localeName: locales[i].name, displayName: locales[i].locale.nativeLanguageName, localeIndex: locales[i].index})
                 if (locales[i].index === keyboard.localeIndex)
                     languagePopupList.currentIndex = i
@@ -1269,12 +1280,15 @@ Item {
         availableCustomLocaleIndices = newIndices
     }
 
-    function listLocales(customLayoutsOnly) {
+    function listLocales(customLayoutsOnly, localeNameOnly) {
         var locales = []
         var localeIndices = customLayoutsOnly ? availableCustomLocaleIndices : availableLocaleIndices
         for (var i = 0; i < localeIndices.length; i++) {
             var layoutFolder = layoutsModel.get(localeIndices[i], "fileName")
-            locales.push({locale:Qt.locale(layoutFolder), index:localeIndices[i], name:layoutFolder})
+            if (localeNameOnly)
+                locales.push(layoutFolder)
+            else
+                locales.push({locale:Qt.locale(layoutFolder), index:localeIndices[i], name:layoutFolder})
         }
         return locales
     }
