@@ -359,15 +359,24 @@ tcime {
     cangjie: DEFINES += HAVE_TCIME_CANGJIE
     zhuyin: DEFINES += HAVE_TCIME_ZHUYIN
     QMAKE_USE += tcime
-    tcime_data.files = \
-        $$PWD/3rdparty/tcime/data/qt/dict_phrases.dat
-    cangjie: tcime_data.files += \
-        $$PWD/3rdparty/tcime/data/qt/dict_cangjie.dat
-    zhuyin: tcime_data.files += \
-        $$PWD/3rdparty/tcime/data/qt/dict_zhuyin.dat
-    tcime_data.path = $$DATAPATH/tcime
-    INSTALLS += tcime_data
-    !prefix_build: COPIES += tcime_data
+    !no-bundle-tcime {
+        TCIME_FILES += 3rdparty/tcime/data/qt/dict_phrases.dat
+        cangjie: TCIME_FILES += \
+            3rdparty/tcime/data/qt/dict_cangjie.dat
+        zhuyin: TCIME_FILES += \
+            3rdparty/tcime/data/qt/dict_zhuyin.dat
+        RESOURCES += $$generate_resource(tcime.qrc, $$TCIME_FILES, /QtQuick/VirtualKeyboard)
+    } else {
+        tcime_data.files = \
+            $$PWD/3rdparty/tcime/data/qt/dict_phrases.dat
+        cangjie: tcime_data.files += \
+            $$PWD/3rdparty/tcime/data/qt/dict_cangjie.dat
+        zhuyin: tcime_data.files += \
+            $$PWD/3rdparty/tcime/data/qt/dict_zhuyin.dat
+        tcime_data.path = $$DATAPATH/tcime
+        INSTALLS += tcime_data
+        !prefix_build: COPIES += tcime_data
+    }
 }
 
 hangul {

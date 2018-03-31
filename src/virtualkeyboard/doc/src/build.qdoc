@@ -195,6 +195,12 @@ the preferred input method to the configuration, e.g., \c CONFIG+="lang-zh_TW zh
     \li This option excludes pinyin resources from the plugin binary. This option may be
         used to reduce the plugin binary size.
 \row
+    \li \e no-bundle-tcime
+    \li \e n/a
+    \li Disables bundling of tcime resources
+    \li This option excludes tcime resources from the plugin binary. This option may be
+        used to reduce the plugin binary size.
+\row
     \li \e static
     \li Enables static builds of the virtual keyboard
     \li This option enables \l {Static builds}{static builds}.

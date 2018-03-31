@@ -179,24 +179,33 @@ There are several environment variables defined by the module that are listed be
         \li QT_VIRTUALKEYBOARD_CANGJIE_DICTIONARY
         \li Overrides the location of the Cangjie dictionary.
 
-            The default location depends on the value of
-            \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            By default, the dictionary is bundled into the plugin's resources.
+
+            To disable resource bundling, add \c CONFIG+=no-bundle-tcime in the
+            plugin's qmake command line. In this scenario, the default location
+            depends on the value of \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
             For example, for Qt libraries built from source,
             it could be \c {qtbase/qtvirtualkeyboard/tcime/dict_cangjie.dat}.
     \row
         \li QT_VIRTUALKEYBOARD_ZHUYIN_DICTIONARY
         \li Overrides the location of the Zhuyin dictionary.
 
-            The default location depends on the value of
-            \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            By default, the dictionary is bundled into the plugin's resources.
+
+            To disable resource bundling, add \c CONFIG+=no-bundle-tcime in the
+            plugin's qmake command line. In this scenario, the default location
+            depends on the value of \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
             For example, for Qt libraries built from source,
             it could be \c {qtbase/qtvirtualkeyboard/tcime/dict_zhuyin.dat}.
     \row
         \li QT_VIRTUALKEYBOARD_PHRASE_DICTIONARY
         \li Overrides the location of the phrase dictionary.
 
-            The default location depends on the value of
-            \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            By default, the dictionary is bundled into the plugin's resources.
+
+            To disable resource bundling, add \c CONFIG+=no-bundle-tcime in the
+            plugin's qmake command line. In this scenario, the default location
+            depends on the value of \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
             For example, for Qt libraries built from source,
             it could be \c {qtbase/qtvirtualkeyboard/tcime/dict_phrases.dat}.
     \row
