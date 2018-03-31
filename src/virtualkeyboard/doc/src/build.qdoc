@@ -189,6 +189,12 @@ the preferred input method to the configuration, e.g., \c CONFIG+="lang-zh_TW zh
         system, or if it is built using the local project file. Integration can be
         disabled using this option.
 \row
+    \li \e no-bundle-pinyin
+    \li \e n/a
+    \li Disables bundling of pinyin resources
+    \li This option excludes pinyin resources from the plugin binary. This option may be
+        used to reduce the plugin binary size.
+\row
     \li \e static
     \li Enables static builds of the virtual keyboard
     \li This option enables \l {Static builds}{static builds}.

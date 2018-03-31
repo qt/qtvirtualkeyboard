@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "./dictdef.h"
+#include <QFile>
 
 namespace ime_pinyin {
 
@@ -71,7 +72,7 @@ class NGram {
   static NGram& get_instance();
 
   bool save_ngram(FILE *fp);
-  bool load_ngram(FILE *fp);
+  bool load_ngram(QFile *fp);
 
   // Set the total frequency of all none system dictionaries.
   void set_total_freq_none_sys(size_t freq_none_sys);

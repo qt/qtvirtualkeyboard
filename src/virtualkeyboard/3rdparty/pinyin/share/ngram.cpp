@@ -177,13 +177,13 @@ bool NGram::save_ngram(FILE *fp) {
   return true;
 }
 
-bool NGram::load_ngram(FILE *fp) {
+bool NGram::load_ngram(QFile *fp) {
   if (NULL == fp)
     return false;
 
   initialized_ = false;
 
-  if (fread(&idx_num_, sizeof(uint32), 1, fp) != 1 )
+  if (fp->read((char *)&idx_num_, sizeof(uint32)) != sizeof(uint32) )
     return false;
 
   if (NULL != lma_freq_idx_)
@@ -200,11 +200,11 @@ bool NGram::load_ngram(FILE *fp) {
   if (NULL == lma_freq_idx_ || NULL == freq_codes_)
     return false;
 
-  if (fread(freq_codes_, sizeof(LmaScoreType), kCodeBookSize, fp) !=
-      kCodeBookSize)
+  if (fp->read((char *)freq_codes_, sizeof(LmaScoreType) * kCodeBookSize) !=
+      sizeof(LmaScoreType) * kCodeBookSize)
     return false;
 
-  if (fread(lma_freq_idx_, sizeof(CODEBOOK_TYPE), idx_num_, fp) != idx_num_)
+  if (fp->read((char *)lma_freq_idx_, sizeof(CODEBOOK_TYPE) * idx_num_) != sizeof(CODEBOOK_TYPE) * idx_num_)
     return false;
 
   initialized_ = true;

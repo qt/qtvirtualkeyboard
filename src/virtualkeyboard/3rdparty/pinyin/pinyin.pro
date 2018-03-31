@@ -50,10 +50,8 @@ OTHER_FILES +=\
 
 load(qt_helper_lib)
 
-# On Windows, the library uses Qt for platform abstraction.
-win32 {
-    CONFIG += qt
-    QT = core
-} else {
+CONFIG += qt
+QT = core
+!win32 {
     CONFIG *= thread
 }

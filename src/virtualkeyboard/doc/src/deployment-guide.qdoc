@@ -168,8 +168,11 @@ There are several environment variables defined by the module that are listed be
         \li QT_VIRTUALKEYBOARD_PINYIN_DICTIONARY
         \li Overrides the location of the Pinyin dictionary.
 
-            The default location depends on the value of
-            \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            By default, the dictionary is bundled into the plugin's resources.
+
+            To disable resource bundling, add \c CONFIG+=no-bundle-pinyin in the
+            plugin's qmake command line. In this scenario, the default location
+            depends on the value of \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
             For example, for Qt libraries built from source,
             it could be \c {qtbase/qtvirtualkeyboard/pinyin/dict_pinyin.dat}.
     \row

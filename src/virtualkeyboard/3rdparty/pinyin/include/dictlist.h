@@ -80,7 +80,7 @@ class DictList {
   ~DictList();
 
   bool save_list(FILE *fp);
-  bool load_list(FILE *fp);
+  bool load_list(QFile *fp);
 
 #ifdef ___BUILD_MODEL___
   // Init the list from the LemmaEntry array.

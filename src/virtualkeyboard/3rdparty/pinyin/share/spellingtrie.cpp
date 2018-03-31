@@ -663,20 +663,20 @@ bool SpellingTrie::save_spl_trie(FILE *fp) {
   return true;
 }
 
-bool SpellingTrie::load_spl_trie(FILE *fp) {
+bool SpellingTrie::load_spl_trie(QFile *fp) {
   if (NULL == fp)
     return false;
 
-  if (fread(&spelling_size_, sizeof(uint32), 1, fp) != 1)
+  if (fp->read((char *)&spelling_size_, sizeof(uint32)) != sizeof(uint32))
     return false;
 
-  if (fread(&spelling_num_, sizeof(uint32), 1, fp) != 1)
+  if (fp->read((char *)&spelling_num_, sizeof(uint32)) != sizeof(uint32))
     return false;
 
-  if (fread(&score_amplifier_, sizeof(float), 1, fp) != 1)
+  if (fp->read((char *)&score_amplifier_, sizeof(float)) != sizeof(float))
     return false;
 
-  if (fread(&average_score_, sizeof(unsigned char), 1, fp) != 1)
+  if (fp->read((char *)&average_score_, sizeof(unsigned char)) != sizeof(unsigned char))
     return false;
 
   if (NULL != spelling_buf_)
@@ -686,8 +686,7 @@ bool SpellingTrie::load_spl_trie(FILE *fp) {
   if (NULL == spelling_buf_)
     return false;
 
-  if (fread(spelling_buf_, sizeof(char) * spelling_size_,
-            spelling_num_, fp) != spelling_num_)
+  if (fp->read((char *)spelling_buf_, spelling_size_ * spelling_num_) != spelling_size_ * spelling_num_)
     return false;
 
   return construct(spelling_buf_, spelling_size_, spelling_num_,

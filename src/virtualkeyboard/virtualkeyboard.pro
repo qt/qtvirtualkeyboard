@@ -15,6 +15,7 @@ win32 {
 !no-pkg-config: CONFIG += link_pkgconfig
 
 include(../config.pri)
+include(generateresource.pri)
 
 SOURCES += platforminputcontext.cpp \
     inputcontext.cpp \
@@ -338,10 +339,15 @@ pinyin {
         pinyindecoderservice.h
     DEFINES += HAVE_PINYIN
     QMAKE_USE += pinyin
-    pinyin_data.files = $$PWD/3rdparty/pinyin/data/dict_pinyin.dat
-    pinyin_data.path = $$DATAPATH/pinyin
-    INSTALLS += pinyin_data
-    !prefix_build: COPIES += pinyin_data
+    !no-bundle-pinyin {
+        PINYIN_FILES += 3rdparty/pinyin/data/dict_pinyin.dat
+        RESOURCES += $$generate_resource(pinyin.qrc, $$PINYIN_FILES, /QtQuick/VirtualKeyboard)
+    } else {
+        pinyin_data.files = $$PWD/3rdparty/pinyin/data/dict_pinyin.dat
+        pinyin_data.path = $$DATAPATH/pinyin
+        INSTALLS += pinyin_data
+        !prefix_build: COPIES += pinyin_data
+    }
 }
 
 tcime {
@@ -458,8 +464,6 @@ record-trace-input {
 }
 
 arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
-
-include(generateresource.pri)
 
 !disable-layouts {
     RESOURCES += $$generate_resource(layouts.qrc, $$LAYOUT_FILES, /QtQuick/VirtualKeyboard)

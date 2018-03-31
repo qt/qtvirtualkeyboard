@@ -408,21 +408,21 @@ bool DictList::save_list(FILE *fp) {
   return true;
 }
 
-bool DictList::load_list(FILE *fp) {
+bool DictList::load_list(QFile *fp) {
   if (NULL == fp)
     return false;
 
   initialized_ = false;
 
-  if (fread(&scis_num_, sizeof(uint32), 1, fp) != 1)
+  if (fp->read((char *)&scis_num_, sizeof(uint32)) != sizeof(uint32))
     return false;
 
-  if (fread(start_pos_, sizeof(uint32), kMaxLemmaSize + 1, fp) !=
-      kMaxLemmaSize + 1)
+  if (fp->read((char *)start_pos_, sizeof(uint32) * (kMaxLemmaSize + 1)) !=
+      sizeof(uint32) * (kMaxLemmaSize + 1))
     return false;
 
-  if (fread(start_id_, sizeof(uint32), kMaxLemmaSize + 1, fp) !=
-      kMaxLemmaSize + 1)
+  if (fp->read((char *)start_id_, sizeof(uint32) * (kMaxLemmaSize + 1)) !=
+      sizeof(uint32) * (kMaxLemmaSize + 1))
     return false;
 
   free_resource();
@@ -430,14 +430,14 @@ bool DictList::load_list(FILE *fp) {
   if (!alloc_resource(start_pos_[kMaxLemmaSize], scis_num_))
     return false;
 
-  if (fread(scis_hz_, sizeof(char16), scis_num_, fp) != scis_num_)
+  if (fp->read((char *)scis_hz_, sizeof(char16) * scis_num_) != sizeof(char16) * scis_num_)
     return false;
 
-  if (fread(scis_splid_, sizeof(SpellingId), scis_num_, fp) != scis_num_)
+  if (fp->read((char *)scis_splid_, sizeof(SpellingId) * scis_num_) != sizeof(SpellingId) * scis_num_)
     return false;
 
-  if (fread(buf_, sizeof(char16), start_pos_[kMaxLemmaSize], fp) !=
-      start_pos_[kMaxLemmaSize])
+  if (fp->read((char *)buf_, sizeof(char16) * start_pos_[kMaxLemmaSize]) !=
+      sizeof(char16) * start_pos_[kMaxLemmaSize])
     return false;
 
   initialized_ = true;

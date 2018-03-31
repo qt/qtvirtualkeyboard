@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "./dictdef.h"
+#include <QFile>
 
 namespace ime_pinyin {
 
@@ -233,7 +234,7 @@ class SpellingTrie {
   bool save_spl_trie(FILE *fp);
 
   // Load from the file stream
-  bool load_spl_trie(FILE *fp);
+  bool load_spl_trie(QFile *fp);
 
   // Get the number of spellings
   size_t get_spelling_num();

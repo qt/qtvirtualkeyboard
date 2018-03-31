@@ -165,19 +165,19 @@ bool DictTrie::save_dict(const char *filename) {
 }
 #endif  // ___BUILD_MODEL___
 
-bool DictTrie::load_dict(FILE *fp) {
+bool DictTrie::load_dict(QFile *fp) {
   if (NULL == fp)
     return false;
-  if (fread(&lma_node_num_le0_, sizeof(uint32), 1, fp) != 1)
+  if (fp->read((char *)&lma_node_num_le0_, sizeof(uint32)) != sizeof(uint32))
     return false;
 
-  if (fread(&lma_node_num_ge1_, sizeof(uint32), 1, fp) != 1)
+  if (fp->read((char *)&lma_node_num_ge1_, sizeof(uint32)) != sizeof(uint32))
     return false;
 
-  if (fread(&lma_idx_buf_len_, sizeof(uint32), 1, fp) != 1)
+  if (fp->read((char *)&lma_idx_buf_len_, sizeof(uint32)) != sizeof(uint32))
     return false;
 
-  if (fread(&top_lmas_num_, sizeof(uint32), 1, fp) != 1 ||
+  if (fp->read((char *)&top_lmas_num_, sizeof(uint32)) != sizeof(uint32) ||
      top_lmas_num_ >= lma_idx_buf_len_)
      return false;
 
@@ -206,16 +206,16 @@ bool DictTrie::load_dict(FILE *fp) {
     return false;
   }
 
-  if (fread(root_, sizeof(LmaNodeLE0), lma_node_num_le0_, fp)
-      != lma_node_num_le0_)
+  if (fp->read((char *)root_, sizeof(LmaNodeLE0) * lma_node_num_le0_)
+      != sizeof(LmaNodeLE0) * lma_node_num_le0_)
     return false;
 
-  if (fread(nodes_ge1_, sizeof(LmaNodeGE1), lma_node_num_ge1_, fp)
-      != lma_node_num_ge1_)
+  if (fp->read((char *)nodes_ge1_, sizeof(LmaNodeGE1) * lma_node_num_ge1_)
+      != sizeof(LmaNodeGE1) * lma_node_num_ge1_)
     return false;
 
-  if (fread(lma_idx_buf_, sizeof(unsigned char), lma_idx_buf_len_, fp) !=
-      lma_idx_buf_len_)
+  if (fp->read((char *)lma_idx_buf_, sizeof(unsigned char) * lma_idx_buf_len_) !=
+      sizeof(unsigned char) * lma_idx_buf_len_)
     return false;
 
   // The quick index for the first level sons
@@ -245,15 +245,15 @@ bool DictTrie::load_dict(const char *filename, LemmaIdType start_id,
   if (NULL == filename || end_id <= start_id)
     return false;
 
-  FILE *fp = fopen(filename, "rb");
-  if (NULL == fp)
+  QFile file(filename);
+  if (!file.open(QIODevice::ReadOnly))
     return false;
+  QFile *fp = &file;
 
   free_resource(true);
 
   dict_list_ = new DictList();
   if (NULL == dict_list_) {
-    fclose(fp);
     return false;
   }
 
@@ -264,11 +264,9 @@ bool DictTrie::load_dict(const char *filename, LemmaIdType start_id,
       !load_dict(fp) || !ngram.load_ngram(fp) ||
       total_lma_num_ > end_id - start_id + 1) {
     free_resource(true);
-    fclose(fp);
     return false;
   }
 
-  fclose(fp);
   return true;
 }
 
@@ -278,12 +276,12 @@ bool DictTrie::load_dict_fd(int sys_fd, long start_offset,
   if (start_offset < 0 || length <= 0 || end_id <= start_id)
     return false;
 
-  FILE *fp = fdopen(sys_fd, "rb");
-  if (NULL == fp)
+  QFile file;
+  if (!file.open(sys_fd, QIODevice::ReadOnly))
     return false;
+  QFile *fp = &file;
 
-  if (-1 == fseek(fp, start_offset, SEEK_SET)) {
-    fclose(fp);
+  if (!fp->seek(start_offset)) {
     return false;
   }
 
@@ -291,7 +289,6 @@ bool DictTrie::load_dict_fd(int sys_fd, long start_offset,
 
   dict_list_ = new DictList();
   if (NULL == dict_list_) {
-    fclose(fp);
     return false;
   }
 
@@ -300,14 +297,12 @@ bool DictTrie::load_dict_fd(int sys_fd, long start_offset,
 
   if (!spl_trie.load_spl_trie(fp) || !dict_list_->load_list(fp) ||
       !load_dict(fp) || !ngram.load_ngram(fp) ||
-      ftell(fp) < start_offset + length ||
+      fp->pos() < start_offset + length ||
       total_lma_num_ > end_id - start_id + 1) {
     free_resource(true);
-    fclose(fp);
     return false;
   }
 
-  fclose(fp);
   return true;
 }
 

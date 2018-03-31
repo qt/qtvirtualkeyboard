@@ -22,6 +22,7 @@
 #include "./dictdef.h"
 #include "./dictlist.h"
 #include "./searchutility.h"
+#include <QFile>
 
 namespace ime_pinyin {
 
@@ -105,7 +106,7 @@ class DictTrie : AtomDictBase {
 
   void free_resource(bool free_dict_list);
 
-  bool load_dict(FILE *fp);
+  bool load_dict(QFile *fp);
 
   // Given a LmaNodeLE0 node, extract the lemmas specified by it, and fill
   // them into the lpi_items buffer.
