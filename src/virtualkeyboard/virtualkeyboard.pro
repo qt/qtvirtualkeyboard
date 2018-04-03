@@ -264,6 +264,11 @@ contains(CONFIG, lang-sv.*) {
 t9write-alphabetic: LAYOUT_FILES += \
         content/layouts/sv_SE/handwriting.qml
 }
+contains(CONFIG, lang-vi.*) {
+    LAYOUT_FILES += \
+        content/layouts/vi_VN/main.qml \
+        content/layouts/vi_VN/symbols.qml
+}
 contains(CONFIG, lang-zh(_CN)?) {
     LAYOUT_FILES += \
         content/layouts/zh_CN/main.qml \

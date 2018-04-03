@@ -52,6 +52,7 @@ disable-layouts {
         lang-ru_RU \
         lang-sr_SP \
         lang-sv_SE \
+        lang-vi_VN \
         lang-zh_CN \
         lang-zh_TW
 }

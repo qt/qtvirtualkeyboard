@@ -1113,6 +1113,28 @@ Rectangle {
             compare(textInput.selectedText, "")
         }
 
+        function test_vietnameseInputMethod_data() {
+            return [
+                { initLocale: "vi_VN", inputSequence: "Xin chào", outputText: "Xin chào" },
+                { initLocale: "vi_VN", inputSequence: "Ảo", outputText: "Ảo" },
+                { initLocale: "vi_VN", inputSequence: "Cũng", outputText: "Cũng" },
+                { initLocale: "vi_VN", inputSequence: "Chiếc", outputText: "Chiếc" },
+                { initLocale: "vi_VN", inputSequence: "Giọt", outputText: "Giọt" },
+            ]
+        }
+
+        function test_vietnameseInputMethod(data) {
+            prepareTest(data)
+
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
+            }
+
+            Qt.inputMethod.commit()
+            waitForRendering(inputPanel)
+            compare(textInput.text, data.outputText)
+        }
+
         function test_hwrInputSequence_data() {
             return [
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 0, inputSequence: "abcdefghij", outputText: "Abcdefghij" },

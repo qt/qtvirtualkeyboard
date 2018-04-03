@@ -344,7 +344,7 @@ InputPanel {
             testcase.wait(20)
             if (alternativeKey) {
                 alternativeKeysSpy.wait()
-                var keyIndex = keyObj.effectiveAlternativeKeys.indexOf(key)
+                var keyIndex = keyObj.effectiveAlternativeKeys.indexOf(key.toLowerCase())
                 var itemX = keyIndex * keyboard.style.alternateKeysListItemWidth + keyboard.style.alternateKeysListItemWidth / 2
                 virtualKeyPressPoint.x = inputPanel.mapFromItem(alternativeKeys.listView, itemX, 0).x
                 testcase.mouseMove(inputPanel, virtualKeyPressPoint.x, virtualKeyPressPoint.y)
