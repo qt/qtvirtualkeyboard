@@ -43,8 +43,9 @@ Item {
         height: Screen.width < Screen.height ? parent.width : parent.height
         anchors.centerIn: parent
         rotation: Screen.width < Screen.height ? 90 : 0
+
         Basic {
-            id: virtualKeyboard
+            id: contentContainer
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.right: parent.right
