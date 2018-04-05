@@ -557,7 +557,7 @@ Item {
         anchors.right: parent.right
         anchors.bottom: wordCandidateView.top
         height: (keyboard.parent.parent ? keyboard.parent.parent.height : Screen.height) -
-                keyboard.height - (wordCandidateView.visibleCondition ? wordCandidateView.height : 0)
+                keyboard.height - (wordCandidateView.visibleCondition && !VirtualKeyboardSettings.wordCandidateList.alwaysVisible ? wordCandidateView.height : 0)
         visible: fullScreenMode && (shadowInputControlVisibleTimer.running || InputContext.animating)
 
         Connections {
