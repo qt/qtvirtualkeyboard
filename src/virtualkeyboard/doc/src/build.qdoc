@@ -114,7 +114,7 @@ keyboard features.
         This option can be used to define the language support as required. The virtual
         keyboard can support one or more languages at a time.
 
-        For example, \c CONFIG+=lang-fi activates the Finnish language.
+        For example, \c CONFIG+=lang-fi_FI activates the Finnish language.
 
         The virtual keyboard automatically includes all languages if no other languages
         are specified.
@@ -122,9 +122,7 @@ keyboard features.
     \li \e lang-all
     \li Enables all the languages
     \li Enables all the languages supported by the virtual keyboard. This flag is essentially
-        an alias for \c {CONFIG+="lang-ar_AR lang-da_DK lang-de_DE lang-en_GB lang-es_ES
-        lang-fa_FA lang-fi_FI lang-fr_FR lang-hi_IN lang-it_IT lang-ja_JP lang-ko_KR lang-nb_NO
-        lang-pl_PL lang-pt_PT lang-ru_RU lang-sv_SE lang-zh_CN lang-zh_TW"}
+        an alias for \c {CONFIG+="lang-ar_AR lang-da_DK ..."}
 
         This option is enabled by default. To build only a specific language, use the
         \c lang-<code> option above.
