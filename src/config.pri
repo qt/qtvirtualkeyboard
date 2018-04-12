@@ -20,14 +20,8 @@ disable-layouts {
     pinyin: CONFIG += lang-zh_CN
     tcime|zhuyin|cangjie: CONFIG += lang-zh_TW
 
-    # Default language
-    !contains(CONFIG, lang-.*) {
-        contains(QT_CONFIG, private_tests) { # CI or developer build, use all languages
-            CONFIG += lang-all
-        } else {
-            CONFIG += lang-en_GB
-        }
-    }
+    # Use all languages by default
+    !contains(CONFIG, lang-.*): CONFIG += lang-all
 
     # Flag for activating all languages
     lang-all: CONFIG += \
