@@ -33,10 +33,6 @@
 #include <assert.h>
 #include <ctype.h>
 #include <sys/types.h>
-#ifndef _WIN32
-#include <sys/time.h>
-#endif
-#include <time.h>
 #ifdef _WIN32
 #undef max
 #undef min
