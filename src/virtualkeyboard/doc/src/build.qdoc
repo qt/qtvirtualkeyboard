@@ -114,17 +114,18 @@ keyboard features.
         This option can be used to define the language support as required. The virtual
         keyboard can support one or more languages at a time.
 
-        For example, \c CONFIG+=lang-fi activates the Finnish language.
+        For example, \c CONFIG+=lang-fi_FI activates the Finnish language.
 
-        The virtual keyboard automatically includes the English language if no other languages
+        The virtual keyboard automatically includes all languages if no other languages
         are specified.
 \row
     \li \e lang-all
     \li Enables all the languages
     \li Enables all the languages supported by the virtual keyboard. This flag is essentially
-        an alias for \c {CONFIG+="lang-ar_AR lang-da_DK lang-de_DE lang-en_GB lang-es_ES
-        lang-fa_FA lang-fi_FI lang-fr_FR lang-hi_IN lang-it_IT lang-ja_JP lang-ko_KR lang-nb_NO
-        lang-pl_PL lang-pt_PT lang-ru_RU lang-sv_SE lang-zh_CN lang-zh_TW"}
+        an alias for \c {CONFIG+="lang-ar_AR lang-da_DK ..."}
+
+        This option is enabled by default. To build only a specific language, use the
+        \c lang-<code> option above.
 \row
     \li \e handwriting
     \li Enables handwriting input
@@ -217,34 +218,46 @@ the preferred input method to the configuration, e.g., \c CONFIG+="lang-zh_TW zh
     \li Enables the Pinyin input method for Simplified Chinese.
     \li This option activates the Pinyin input method for the Simplified Chinese
         language.
+
+        \include build.qdocinc input-method-language-option-note
 \row
     \li \e tcime
     \li \e lang-zh_TW
     \li Enables the both Cangjie and Zhuyin input methods for Traditional Chinese.
     \li This option activates the both Cangjie and Zhuyin input methods for the
         Traditional Chinese language.
+
+        \include build.qdocinc input-method-language-option-note
 \row
     \li \e cangjie
     \li \e lang-zh_TW
     \li Enables the Cangjie input method for Traditional Chinese.
     \li This option activates the Cangjie input method for the Traditional Chinese
         language.
+
+        \include build.qdocinc input-method-language-option-note
 \row
     \li \e zhuyin
     \li \e lang-zh_TW
     \li Enables the Zhuyin input method for Traditional Chinese.
     \li This option activates the Zhuyin input method for the Traditional Chinese
         language.
+
+        \include build.qdocinc input-method-language-option-note
 \row
     \li \e hangul
     \li \e lang-ko_KR
     \li Enables the Hangul input method for Korean.
     \li This option activates the Hangul input method for the Korean language.
+
+    \include build.qdocinc input-method-language-option-note
 \row
     \li \e openwnn
     \li \e lang-ja_JP
     \li Enables the OpenWnn input method for Japanese.
     \li This option activates the OpenWnn input method for the Japanese language.
+
+    \include build.qdocinc input-method-language-option-note
 \row
     \li \e lipi-toolkit
     \li \e handwriting

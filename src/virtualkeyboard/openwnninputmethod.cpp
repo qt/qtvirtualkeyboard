@@ -309,9 +309,8 @@ public:
         clearCandidates(true);
 
         QSharedPointer<WnnWord> result;
-        while (result = converter->getNextCandidate()) {
+        while ((result = converter->getNextCandidate()))
             candidateList.append(result);
-        }
 
         Q_Q(OpenWnnInputMethod);
         if (!candidateList.isEmpty() || !wasEmpty)
