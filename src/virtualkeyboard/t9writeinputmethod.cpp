@@ -762,6 +762,8 @@ public:
                 symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
                 if (language == DECUMA_LANG_ES)
                     symbolCategories.append(DECUMA_CATEGORY_SPANISH_PUNCTUATIONS);
+                else if (language == DECUMA_LANG_VI)
+                    symbolCategories.append(DECUMA_CATEGORY_VIETNAMESE_SUPPLEMENTS);
             }
             break;
 

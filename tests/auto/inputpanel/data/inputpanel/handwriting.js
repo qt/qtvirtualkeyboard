@@ -38,14 +38,17 @@
 .import "unipen_data_cyrillic.js" as UnipenDataCyrillic
 .import "unipen_data_arabic.js" as UnipenDataArabic
 .import "unipen_data_hebrew.js" as UnipenDataHebrew
+.import "unipen_data_vietnamese.js" as UnipenDataVietnamese
 
-function emulate(testcase, hwrInputArea, ch, instant) {
+function emulate(testcase, hwrInputArea, ch, instant, locale) {
     var chKey = (((typeof ch == "number") ? ch : ch.charCodeAt(0)) + 0x100000000).toString(16).substr(1)
     while (chKey.length > 4 && chKey[0] === '0')
         chKey = chKey.substring(1)
     chKey = "0x" + chKey
     var unipenData
-    if (UnipenData.unipenData.hasOwnProperty(chKey))
+    if (locale === "vi_VN" && UnipenDataVietnamese.unipenData.hasOwnProperty(chKey))
+        unipenData = UnipenDataVietnamese
+    else if (UnipenData.unipenData.hasOwnProperty(chKey))
         unipenData = UnipenData
     else if (UnipenDataSimpChinese.unipenData.hasOwnProperty(chKey))
         unipenData = UnipenDataSimpChinese

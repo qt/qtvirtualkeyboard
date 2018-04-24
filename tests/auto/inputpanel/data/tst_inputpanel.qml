@@ -1150,6 +1150,7 @@ Rectangle {
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "ar_AR", initInputMode: "Arabic", inputSequence: "\u0643\u062A\u0627\u0628", outputText: "\u0643\u062A\u0627\u0628" },
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "fa_FA", initInputMode: "Arabic", inputSequence: "\u0686\u0627\u06CC", outputText: "\u0686\u0627\u06CC" },
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "he_IL", initInputMode: "Hebrew", inputSequence: "\u05D0\u05D5\u05D8\u05D5", outputText: "\u05D0\u05D5\u05D8\u05D5" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "vi_VN", inputSequence: "Ti\u1EBFng vi\u1EC7t", outputText: "Ti\u1EBFng vi\u1EC7t" },
             ]
         }
 

@@ -593,7 +593,8 @@ InputPanel {
             return false
         var hwrInputArea = Utils.findChildByProperty(keyboard, "objectName", "hwrInputArea", null)
         inputMethodResultSpy.clear()
-        if (!Handwriting.emulate(testcase, hwrInputArea, ch, instant)) {
+        if (!Handwriting.emulate(testcase, hwrInputArea, ch, instant,
+                                 VirtualKeyboardSettings.locale)) {
             if (virtualKeyClick(ch))
                 return true
             console.warn("Cannot produce the symbol '%1' in handwriting mode".arg(ch))
