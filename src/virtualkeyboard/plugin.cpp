@@ -118,15 +118,6 @@ QStringList QVirtualKeyboardPlugin::keys() const
 QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, const QStringList &paramList)
 {
     Q_UNUSED(paramList);
-    Q_INIT_RESOURCE(content);
-    Q_INIT_RESOURCE(default_style);
-    Q_INIT_RESOURCE(retro_style);
-#ifdef HAVE_T9WRITE
-    Q_INIT_RESOURCE(t9write_db);
-#endif
-#ifdef HAVE_LAYOUTS
-    Q_INIT_RESOURCE(layouts);
-#endif
 
     if (!qEnvironmentVariableIsSet(inputMethodEnvVarName) || qgetenv(inputMethodEnvVarName) != pluginName)
         return Q_NULLPTR;
