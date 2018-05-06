@@ -63,9 +63,11 @@ HEADERS += platforminputcontext.h \
     gesturerecognizer.h \
     handwritinggesturerecognizer.h
 
-RESOURCES += \
+!no-builtin-style: RESOURCES += \
     content/styles/default/default_style.qrc \
-    content/styles/retro/retro_style.qrc \
+    content/styles/retro/retro_style.qrc
+
+RESOURCES += \
     content/content.qrc
 
 # Fallback for languages which don't have these special layouts
@@ -286,7 +288,9 @@ t9write-cjk: LAYOUT_FILES += \
         content/layouts/zh_TW/handwriting.qml
 }
 
-retro-style {
+no-builtin-style {
+    DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"\\\"
+} else:retro-style {
     DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"retro\\\"
 } else {
     DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"default\\\"

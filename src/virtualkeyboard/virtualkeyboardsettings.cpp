@@ -66,6 +66,9 @@ public:
 
     QString styleImportPath(const QString &name) const
     {
+        if (name.isEmpty())
+            return QString();
+
         QStringList styleImportPathList;
         styleImportPathList << "qrc:/QtQuick/VirtualKeyboard/content/styles/";
         const QStringList importPathList = engine->importPathList();

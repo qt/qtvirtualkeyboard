@@ -213,6 +213,11 @@ the preferred input method to the configuration, e.g., \c CONFIG+="lang-zh_TW zh
         included in the package, but this option allows you to change the built-in
         default style.
 \row
+    \li \e no-builtin-style
+    \li \e n/a
+    \li Disables bunding of styles
+    \li This option excludes styles from the plugin binary.
+\row
     \li \e pinyin
     \li \e lang-zh_CN
     \li Enables the Pinyin input method for Simplified Chinese.
