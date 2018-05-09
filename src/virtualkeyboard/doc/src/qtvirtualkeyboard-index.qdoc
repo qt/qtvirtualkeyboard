@@ -62,42 +62,7 @@
 
     \section1 Supported Languages
 
-    The Virtual Keyboard supports the following languages:
-
-    \list
-        \li Arabic
-        \li Bulgarian
-        \li Croatian
-        \li Czech
-        \li Danish
-        \li Dutch
-        \li English
-        \li Estonian
-        \li Finnish
-        \li French
-        \li German
-        \li Greek
-        \li Hebrew
-        \li Hindi
-        \li Hungarian
-        \li Italian
-        \li Japanese
-        \li Korean
-        \li Norwegian
-        \li Persian/Farsi
-        \li Polish
-        \li Portugese
-        \li Romanian
-        \li Russian
-        \li Serbian
-        \li Simplified Chinese
-        \li Traditional Chinese
-        \li Spanish
-        \li Swedish
-    \endlist
-
-    To add support for an additional language, see
-    \l {Adding New Keyboard Layouts}.
+    \include layouts.qdocinc layout-list
 
     \section1 Guides
 
