@@ -63,11 +63,12 @@ KeyboardStyle {
     }
 
     keyPanel: KeyPanel {
+        id: keyPanel
         Rectangle {
             id: keyBackground
             radius: 5
             color: "#383533"
-            anchors.fill: parent
+            anchors.fill: keyPanel
             anchors.margins: keyBackgroundMargin
             Text {
                 id: keySmallText
@@ -132,11 +133,12 @@ KeyboardStyle {
     }
 
     backspaceKeyPanel: KeyPanel {
+        id: backspaceKeyPanel
         Rectangle {
             id: backspaceKeyBackground
             radius: 5
             color: "#23211E"
-            anchors.fill: parent
+            anchors.fill: backspaceKeyPanel
             anchors.margins: keyBackgroundMargin
             Image {
                 id: backspaceKeyIcon
@@ -176,11 +178,12 @@ KeyboardStyle {
     }
 
     languageKeyPanel: KeyPanel {
+        id: languageKeyPanel
         Rectangle {
             id: languageKeyBackground
             radius: 5
             color: "#35322f"
-            anchors.fill: parent
+            anchors.fill: languageKeyPanel
             anchors.margins: keyBackgroundMargin
             Image {
                 id: languageKeyIcon
@@ -220,11 +223,12 @@ KeyboardStyle {
     }
 
     enterKeyPanel: KeyPanel {
+        id: enterKeyPanel
         Rectangle {
             id: enterKeyBackground
             radius: 5
             color: "#1e1b18"
-            anchors.fill: parent
+            anchors.fill: enterKeyPanel
             anchors.margins: keyBackgroundMargin
             Image {
                 id: enterKeyIcon
@@ -316,11 +320,12 @@ KeyboardStyle {
     }
 
     hideKeyPanel: KeyPanel {
+        id: hideKeyPanel
         Rectangle {
             id: hideKeyBackground
             radius: 5
             color: "#1e1b18"
-            anchors.fill: parent
+            anchors.fill: hideKeyPanel
             anchors.margins: keyBackgroundMargin
             Image {
                 id: hideKeyIcon
@@ -360,11 +365,12 @@ KeyboardStyle {
     }
 
     shiftKeyPanel: KeyPanel {
+        id: shiftKeyPanel
         Rectangle {
             id: shiftKeyBackground
             radius: 5
             color: "#1e1b18"
-            anchors.fill: parent
+            anchors.fill: shiftKeyPanel
             anchors.margins: keyBackgroundMargin
             Image {
                 id: shiftKeyIcon
@@ -426,11 +432,12 @@ KeyboardStyle {
     }
 
     spaceKeyPanel: KeyPanel {
+        id: spaceKeyPanel
         Rectangle {
             id: spaceKeyBackground
             radius: 5
             color: "#35322f"
-            anchors.fill: parent
+            anchors.fill: spaceKeyPanel
             anchors.margins: keyBackgroundMargin
             Text {
                 id: spaceKeyText
@@ -466,11 +473,12 @@ KeyboardStyle {
     }
 
     symbolKeyPanel: KeyPanel {
+        id: symbolKeyPanel
         Rectangle {
             id: symbolKeyBackground
             radius: 5
             color: "#1e1b18"
-            anchors.fill: parent
+            anchors.fill: symbolKeyPanel
             anchors.margins: keyBackgroundMargin
             Text {
                 id: symbolKeyText
@@ -517,11 +525,12 @@ KeyboardStyle {
     }
 
     modeKeyPanel: KeyPanel {
+        id: modeKeyPanel
         Rectangle {
             id: modeKeyBackground
             radius: 5
             color: "#1e1b18"
-            anchors.fill: parent
+            anchors.fill: modeKeyPanel
             anchors.margins: keyBackgroundMargin
             Text {
                 id: modeKeyText
@@ -581,11 +590,12 @@ KeyboardStyle {
     }
 
     handwritingKeyPanel: KeyPanel {
+        id: handwritingKeyPanel
         Rectangle {
             id: hwrKeyBackground
             radius: 5
             color: "#35322f"
-            anchors.fill: parent
+            anchors.fill: handwritingKeyPanel
             anchors.margins: keyBackgroundMargin
             Image {
                 id: hwrKeyIcon
@@ -747,12 +757,13 @@ KeyboardStyle {
     }
 
     traceInputKeyPanelDelegate: TraceInputKeyPanel {
+        id: traceInputKeyPanel
         traceMargins: keyBackgroundMargin
         Rectangle {
             id: traceInputKeyPanelBackground
             radius: 5
             color: "#35322f"
-            anchors.fill: parent
+            anchors.fill: traceInputKeyPanel
             anchors.margins: keyBackgroundMargin
             Text {
                 id: hwrInputModeIndicator

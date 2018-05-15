@@ -67,11 +67,12 @@ KeyboardStyle {
     }
 
     keyPanel: KeyPanel {
+        id: keyPanel
         Image {
             id: keyBackground
             source: resourcePrefix + "images/key154px_colorA.png"
             fillMode: Image.PreserveAspectFit
-            anchors.fill: parent
+            anchors.fill: keyPanel
             anchors.margins: keyBackgroundMargin
             states: [
                 State {
@@ -98,7 +99,7 @@ KeyboardStyle {
             id: keyText
             text: control.displayText
             color: "#110b05"
-            anchors.fill: parent
+            anchors.fill: keyPanel
             anchors.margins: keyContentMargin
             fontSizeMode: Text.Fit
             horizontalAlignment: Text.AlignHCenter
@@ -151,12 +152,13 @@ KeyboardStyle {
     }
 
     backspaceKeyPanel: KeyPanel {
+        id: backspaceKeyPanel
         BorderImage {
             id: backspaceKeyBackground
             source: resourcePrefix + "images/key154px_black.png"
             width: (parent.width - 2 * keyBackgroundMargin) / scale
             height: sourceSize.height
-            anchors.centerIn: parent
+            anchors.centerIn: backspaceKeyPanel
             border.left: 76
             border.top: 76
             border.right: 76
@@ -166,7 +168,7 @@ KeyboardStyle {
         }
         Image {
             id: backspaceKeyIcon
-            anchors.centerIn: parent
+            anchors.centerIn: backspaceKeyPanel
             sourceSize.width: 159 * keyIconScale
             sourceSize.height: 88 * keyIconScale
             smooth: false
@@ -201,16 +203,17 @@ KeyboardStyle {
     }
 
     languageKeyPanel: KeyPanel {
+        id: languageKeyPanel
         Image {
             id: languageKeyBackground
             source: resourcePrefix + "images/key154px_colorB.png"
             fillMode: Image.PreserveAspectFit
-            anchors.fill: parent
+            anchors.fill: languageKeyPanel
             anchors.margins: keyBackgroundMargin
         }
         Image {
             id: languageKeyIcon
-            anchors.centerIn: parent
+            anchors.centerIn: languageKeyPanel
             sourceSize.width: 144 * keyIconScale
             sourceSize.height: 144 * keyIconScale
             smooth: false
@@ -245,12 +248,13 @@ KeyboardStyle {
     }
 
     enterKeyPanel: KeyPanel {
+        id: enterKeyPanel
         BorderImage {
             id: enterKeyBackground
             source: resourcePrefix + "images/key154px_black.png"
             width: (parent.width - 2 * keyBackgroundMargin) / scale
             height: sourceSize.height
-            anchors.centerIn: parent
+            anchors.centerIn: enterKeyPanel
             border.left: 76
             border.top: 76
             border.right: 76
@@ -261,7 +265,7 @@ KeyboardStyle {
         Image {
             id: enterKeyIcon
             visible: enterKeyText.text.length === 0
-            anchors.centerIn: parent
+            anchors.centerIn: enterKeyPanel
             readonly property size enterKeyIconSize: {
                 switch (control.actionId) {
                 case EnterKeyAction.Go:
@@ -300,7 +304,7 @@ KeyboardStyle {
             fontSizeMode: Text.HorizontalFit
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            anchors.fill: parent
+            anchors.fill: enterKeyPanel
             anchors.leftMargin: keyContentMargin
             anchors.topMargin: Math.round(50 * scaleHint)
             anchors.rightMargin: keyContentMargin
@@ -350,12 +354,13 @@ KeyboardStyle {
     }
 
     hideKeyPanel: KeyPanel {
+        id: hideKeyPanel
         BorderImage {
             id: hideKeyBackground
             source: resourcePrefix + "images/key154px_black.png"
             width: (parent.width - 2 * keyBackgroundMargin) / scale
             height: sourceSize.height
-            anchors.centerIn: parent
+            anchors.centerIn: hideKeyPanel
             border.left: 76
             border.top: 76
             border.right: 76
@@ -365,7 +370,7 @@ KeyboardStyle {
         }
         Image {
             id: hideKeyIcon
-            anchors.centerIn: parent
+            anchors.centerIn: hideKeyPanel
             sourceSize.width: 144 * keyIconScale
             sourceSize.height: 127 * keyIconScale
             smooth: false
@@ -400,12 +405,13 @@ KeyboardStyle {
     }
 
     shiftKeyPanel: KeyPanel {
+        id: shiftKeyPanel
         BorderImage {
             id: shiftKeyBackground
             source: resourcePrefix + "images/key154px_black.png"
             width: (parent.width - 2 * keyBackgroundMargin) / scale
             height: sourceSize.height
-            anchors.centerIn: parent
+            anchors.centerIn: shiftKeyPanel
             border.left: 76
             border.top: 76
             border.right: 76
@@ -441,7 +447,7 @@ KeyboardStyle {
         }
         Image {
             id: shiftKeyIcon
-            anchors.centerIn: parent
+            anchors.centerIn: shiftKeyPanel
             sourceSize.width: 144 * keyIconScale
             sourceSize.height: 134 * keyIconScale
             smooth: false
@@ -476,12 +482,13 @@ KeyboardStyle {
     }
 
     spaceKeyPanel: KeyPanel {
+        id: spaceKeyPanel
         BorderImage {
             id: spaceKeyBackground
             source: resourcePrefix + "images/key154px_colorA.png"
             width: (parent.width - 2 * keyBackgroundMargin) / scale
             height: sourceSize.height
-            anchors.centerIn: parent
+            anchors.centerIn: spaceKeyPanel
             border.left: 76
             border.top: 76
             border.right: 76
@@ -494,7 +501,7 @@ KeyboardStyle {
             text: Qt.locale(InputContext.locale).nativeLanguageName
             color: currentStyle.inputLocaleIndicatorColor
             Behavior on color { PropertyAnimation { duration: 250 } }
-            anchors.centerIn: parent
+            anchors.centerIn: spaceKeyPanel
             font {
                 family: fontFamily
                 weight: Font.Bold
@@ -522,12 +529,13 @@ KeyboardStyle {
     }
 
     symbolKeyPanel: KeyPanel {
+        id: symbolKeyPanel
         BorderImage {
             id: symbolKeyBackground
             source: resourcePrefix + "images/key154px_black.png"
             width: (parent.width - 2 * keyBackgroundMargin) / scale
             height: sourceSize.height
-            anchors.centerIn: parent
+            anchors.centerIn: symbolKeyPanel
             border.left: 76
             border.top: 76
             border.right: 76
@@ -539,7 +547,7 @@ KeyboardStyle {
             id: symbolKeyText
             text: control.displayText
             color: "#c5a96f"
-            anchors.centerIn: parent
+            anchors.centerIn: symbolKeyPanel
             font {
                 family: fontFamily
                 weight: Font.DemiBold
@@ -577,12 +585,13 @@ KeyboardStyle {
     }
 
     modeKeyPanel: KeyPanel {
+        id: modeKeyPanel
         BorderImage {
             id: modeKeyBackground
             source: resourcePrefix + "images/key154px_black.png"
             width: (parent.width - 2 * keyBackgroundMargin) / scale
             height: sourceSize.height
-            anchors.centerIn: parent
+            anchors.centerIn: modeKeyPanel
             border.left: 76
             border.top: 76
             border.right: 76
@@ -604,7 +613,7 @@ KeyboardStyle {
             id: modeKeyText
             text: control.displayText
             color: "#c5a96f"
-            anchors.fill: parent
+            anchors.fill: modeKeyPanel
             anchors.margins: keyContentMargin
             fontSizeMode: Text.Fit
             horizontalAlignment: Text.AlignHCenter
@@ -638,12 +647,13 @@ KeyboardStyle {
     }
 
     handwritingKeyPanel: KeyPanel {
+        id: handwritingKeyPanel
         BorderImage {
             id: hwrKeyBackground
             source: resourcePrefix + "images/key154px_colorB.png"
             width: (parent.width - 2 * hwrKeyBackground) / scale
             height: sourceSize.height
-            anchors.centerIn: parent
+            anchors.centerIn: handwritingKeyPanel
             border.left: 76
             border.top: 76
             border.right: 76
@@ -653,7 +663,7 @@ KeyboardStyle {
         }
         Image {
             id: hwrKeyIcon
-            anchors.centerIn: parent
+            anchors.centerIn: handwritingKeyPanel
             readonly property size hwrKeyIconSize: keyboard.handwritingMode ? Qt.size(124, 96) : Qt.size(156, 104)
             sourceSize.width: hwrKeyIconSize.width * keyIconScale
             sourceSize.height: hwrKeyIconSize.height * keyIconScale
