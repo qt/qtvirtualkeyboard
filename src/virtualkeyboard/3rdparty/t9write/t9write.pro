@@ -14,9 +14,9 @@ T9WRITE_RESOURCE_FILES = \
 QMAKE_RESOURCE_FLAGS += -no-compress
 CONFIG += resources_big
 
-include(../../generateresource.pri)
-
-RESOURCES += $$generate_resource(t9write_db.qrc, $$T9WRITE_RESOURCE_FILES, /QtQuick/VirtualKeyboard/T9Write)
+t9write_db.files = $$T9WRITE_RESOURCE_FILES
+t9write_db.prefix =/QtQuick/VirtualKeyboard/T9Write
+RESOURCES += t9write_db
 
 load(qt_helper_lib)
 

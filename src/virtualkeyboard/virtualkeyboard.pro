@@ -16,7 +16,6 @@ win32 {
 !no-pkg-config: CONFIG += link_pkgconfig
 
 include(../config.pri)
-include(generateresource.pri)
 
 SOURCES += platforminputcontext.cpp \
     inputcontext.cpp \
@@ -353,7 +352,9 @@ pinyin {
     QMAKE_USE += pinyin
     !no-bundle-pinyin {
         PINYIN_FILES += 3rdparty/pinyin/data/dict_pinyin.dat
-        RESOURCES += $$generate_resource(pinyin.qrc, $$PINYIN_FILES, /QtQuick/VirtualKeyboard)
+        pinyin.files = $$PINYIN_FILES
+        pinyin.prefix = /QtQuick/VirtualKeyboard
+        RESOURCES += pinyin
     } else {
         pinyin_data.files = $$PWD/3rdparty/pinyin/data/dict_pinyin.dat
         pinyin_data.path = $$DATAPATH/pinyin
@@ -377,7 +378,9 @@ tcime {
             3rdparty/tcime/data/qt/dict_cangjie.dat
         zhuyin: TCIME_FILES += \
             3rdparty/tcime/data/qt/dict_zhuyin.dat
-        RESOURCES += $$generate_resource(tcime.qrc, $$TCIME_FILES, /QtQuick/VirtualKeyboard)
+        tcime.files = $$TCIME_FILES
+        tcime.prefix = /QtQuick/VirtualKeyboard
+        RESOURCES += tcime
     } else {
         tcime_data.files = \
             $$PWD/3rdparty/tcime/data/qt/dict_phrases.dat
@@ -487,7 +490,9 @@ record-trace-input {
 arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
 
 !disable-layouts {
-    RESOURCES += $$generate_resource(layouts.qrc, $$LAYOUT_FILES, /QtQuick/VirtualKeyboard)
+    layouts.files = $$LAYOUT_FILES
+    layouts.prefix = /QtQuick/VirtualKeyboard
+    RESOURCES += layouts
     DEFINES += HAVE_LAYOUTS
 }
 
