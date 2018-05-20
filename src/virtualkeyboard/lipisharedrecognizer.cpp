@@ -191,11 +191,11 @@ int LipiSharedRecognizer::loadLipiInterface()
             bool lipiRootVarIsEmpty = qEnvironmentVariableIsEmpty("LIPI_ROOT");
             s_lipiRoot = lipiRootVarIsEmpty ?
                         QDir(QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/lipi_toolkit").absolutePath() :
-                        qgetenv("LIPI_ROOT");
+                        qEnvironmentVariable("LIPI_ROOT");
 
             bool lipiLibVarIsEmpty = qEnvironmentVariableIsEmpty("LIPI_LIB");
             if (!lipiLibVarIsEmpty)
-                s_lipiLib = qgetenv("LIPI_LIB");
+                s_lipiLib = qEnvironmentVariable("LIPI_LIB");
             else if (!lipiRootVarIsEmpty)
                 s_lipiLib = s_lipiRoot + "/lib";
             else

@@ -370,7 +370,7 @@ bool TCInputMethod::setInputMode(const QString &locale, InputEngine::InputMode i
 #if defined(HAVE_TCIME_CANGJIE)
     if (inputMode == InputEngine::Cangjie) {
         if (d->cangjieDictionary.isEmpty()) {
-            QString cangjieDictionary(QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_CANGJIE_DICTIONARY").constData()));
+            QString cangjieDictionary(qEnvironmentVariable("QT_VIRTUALKEYBOARD_CANGJIE_DICTIONARY"));
             if (cangjieDictionary.isEmpty())
                 cangjieDictionary = QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/tcime/dict_cangjie.dat";
             d->cangjieDictionary.load(cangjieDictionary);
@@ -381,7 +381,7 @@ bool TCInputMethod::setInputMode(const QString &locale, InputEngine::InputMode i
 #if defined(HAVE_TCIME_ZHUYIN)
     if (inputMode == InputEngine::Zhuyin) {
         if (d->zhuyinDictionary.isEmpty()) {
-            QString zhuyinDictionary(QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_ZHUYIN_DICTIONARY").constData()));
+            QString zhuyinDictionary(qEnvironmentVariable("QT_VIRTUALKEYBOARD_ZHUYIN_DICTIONARY"));
             if (zhuyinDictionary.isEmpty())
                 zhuyinDictionary = QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/tcime/dict_zhuyin.dat";
             d->zhuyinDictionary.load(zhuyinDictionary);
@@ -391,7 +391,7 @@ bool TCInputMethod::setInputMode(const QString &locale, InputEngine::InputMode i
 #endif
     result = d->wordDictionary && !d->wordDictionary->isEmpty();
     if (result && d->phraseDictionary.isEmpty()) {
-        QString phraseDictionary(QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_PHRASE_DICTIONARY").constData()));
+        QString phraseDictionary(qEnvironmentVariable("QT_VIRTUALKEYBOARD_PHRASE_DICTIONARY"));
         if (phraseDictionary.isEmpty())
             phraseDictionary = QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/tcime/dict_phrases.dat";
         d->phraseDictionary.load(phraseDictionary);
