@@ -784,6 +784,10 @@ Rectangle {
         }
 
         function test_spellCorrectionAutomaticSpaceInsertion(data) {
+            if (Qt.platform.pluginName === "offscreen") {
+                skip("QTBUG-68349");
+            }
+
             prepareTest(data)
 
             for (var inputIndex in data.inputSequence) {
