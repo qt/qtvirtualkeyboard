@@ -27,15 +27,16 @@
 **
 ****************************************************************************/
 
-#include "virtualkeyboardsettings.h"
-#include "settings.h"
-#include "virtualkeyboarddebug.h"
+#include "virtualkeyboardsettings_p.h"
+#include "settings_p.h"
+#include "virtualkeyboarddebug_p.h"
 #include <QQmlEngine>
 #include <QFileInfo>
 #include <QDir>
 #include <QRegularExpression>
 #include <QtCore/private/qobject_p.h>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class VirtualKeyboardSettingsPrivate : public QObjectPrivate
@@ -467,3 +468,4 @@ void WordCandidateListSettings::setAutoCommitWord(bool autoCommitWord)
 }
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

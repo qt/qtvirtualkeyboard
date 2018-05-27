@@ -27,9 +27,9 @@
 **
 ****************************************************************************/
 
-#include "shadowinputcontext.h"
+#include "shadowinputcontext_p.h"
 #include "inputcontext.h"
-#include "virtualkeyboarddebug.h"
+#include "virtualkeyboarddebug_p.h"
 
 #include <QtCore/private/qobject_p.h>
 #include <QGuiApplication>
@@ -37,7 +37,6 @@
 
 QT_BEGIN_NAMESPACE
 bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMethodEvent::Attribute &attribute2);
-QT_END_NAMESPACE
 
 namespace QtVirtualKeyboard {
 
@@ -251,3 +250,4 @@ QVariant ShadowInputContext::queryFocusObject(Qt::InputMethodQuery query, QVaria
 }
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

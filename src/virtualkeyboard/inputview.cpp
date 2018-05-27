@@ -27,8 +27,9 @@
 **
 ****************************************************************************/
 
-#include "inputview.h"
+#include "inputview_p.h"
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 /*!
@@ -48,3 +49,4 @@ void InputView::resizeEvent(QResizeEvent *event)
 }
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

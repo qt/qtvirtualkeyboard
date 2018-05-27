@@ -2,15 +2,13 @@
 # --------------------------------------------------------------
 
 examples/virtualkeyboard/basic/basic
-!src/virtualkeyboard/3rdparty/hunspell/hunspell.pro
-src/virtualkeyboard/3rdparty/hunspell/*
-src/virtualkeyboard/3rdparty/hunspell/doc/html
-src/virtualkeyboard/3rdparty/t9write/build_*
-src/virtualkeyboard/3rdparty/t9write/databases
-src/virtualkeyboard/3rdparty/t9write/doc
-src/virtualkeyboard/3rdparty/t9write/example
+!src/plugins/hunspell/3rdparty/hunspell/hunspell.pro
+src/plugins/hunspell/3rdparty/hunspell/*
+src/plugins/hunspell/3rdparty/hunspell/doc/html
+src/plugins/t9write/3rdparty/t9write/api
+src/plugins/t9write/3rdparty/t9write/data
+src/plugins/t9write/3rdparty/t9write/lib
 
-src/virtualkeyboard/layouts.qrc
 *_wrapper.sh
 *_wrapper.bat
 *_resource.rc

@@ -30,6 +30,7 @@
 #include "trace.h"
 #include <QtCore/private/qobject_p.h>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class TracePrivate : public QObjectPrivate
@@ -426,3 +427,4 @@ void Trace::setCanceled(bool canceled)
 */
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

@@ -27,15 +27,16 @@
 **
 ****************************************************************************/
 
-#include "shifthandler.h"
+#include "shifthandler_p.h"
 #include "inputcontext.h"
-#include "inputengine.h"
+#include <QtVirtualKeyboard/inputengine.h>
 #include <QtCore/private/qobject_p.h>
 #include <QSet>
 #include <QGuiApplication>
 #include <QTime>
 #include <QStyleHints>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class ShiftHandlerPrivate : public QObjectPrivate
@@ -378,3 +379,4 @@ void ShiftHandler::setToggleShiftEnabled(bool enabled)
 */
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

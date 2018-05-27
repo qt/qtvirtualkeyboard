@@ -29,13 +29,14 @@
 
 #include "inputengine.h"
 #include "inputcontext.h"
-#include "defaultinputmethod.h"
+#include "fallbackinputmethod_p.h"
 #include "trace.h"
-#include "virtualkeyboarddebug.h"
+#include "virtualkeyboarddebug_p.h"
 
 #include <QTimerEvent>
 #include <QtCore/private/qobject_p.h>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class InputEnginePrivate : public QObjectPrivate
@@ -47,7 +48,7 @@ public:
         QObjectPrivate(),
         q_ptr(q_ptr),
         inputContext(0),
-        defaultInputMethod(0),
+        fallbackInputMethod(0),
         textCase(InputEngine::Lower),
         inputMode(InputEngine::Latin),
         activeKey(Qt::Key_unknown),
@@ -70,7 +71,7 @@ public:
         if (inputMethod) {
             accept = inputMethod->keyEvent(key, text, modifiers);
             if (!accept) {
-                accept = defaultInputMethod->keyEvent(key, text, modifiers);
+                accept = fallbackInputMethod->keyEvent(key, text, modifiers);
             }
             emit q->virtualKeyClicked(key, text, modifiers, isAutoRepeat);
         } else {
@@ -82,7 +83,7 @@ public:
     InputEngine* q_ptr;
     InputContext *inputContext;
     QPointer<AbstractInputMethod> inputMethod;
-    AbstractInputMethod *defaultInputMethod;
+    AbstractInputMethod *fallbackInputMethod;
     InputEngine::TextCase textCase;
     InputEngine::InputMode inputMode;
     QList<int> inputModes;
@@ -162,9 +163,9 @@ InputEngine::InputEngine(InputContext *parent) :
         QObject::connect(d->inputContext, &InputContext::localeChanged, this, &InputEngine::updateInputModes);
         QObject::connect(this, &InputEngine::inputMethodChanged, this, &InputEngine::updateInputModes);
     }
-    d->defaultInputMethod = new DefaultInputMethod(this);
-    if (d->defaultInputMethod)
-        d->defaultInputMethod->setInputEngine(this);
+    d->fallbackInputMethod = new FallbackInputMethod(this);
+    if (d->fallbackInputMethod)
+        d->fallbackInputMethod->setInputEngine(this);
     d->selectionListModels[SelectionListModel::WordCandidateList] = new SelectionListModel(this);
 }
 
@@ -499,8 +500,9 @@ QList<int> InputEngine::patternRecognitionModes() const
 
     The trace interaction is ended by calling the traceEnd() method.
 */
-QtVirtualKeyboard::Trace *InputEngine::traceBegin(int traceId, QtVirtualKeyboard::InputEngine::PatternRecognitionMode patternRecognitionMode,
-                                                  const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
+Trace *InputEngine::traceBegin(
+        int traceId, PatternRecognitionMode patternRecognitionMode,
+        const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
 {
     Q_D(InputEngine);
     VIRTUALKEYBOARD_DEBUG() << "InputEngine::traceBegin():"
@@ -538,7 +540,7 @@ QtVirtualKeyboard::Trace *InputEngine::traceBegin(int traceId, QtVirtualKeyboard
     The function returns true if the trace interaction was accepted (i.e. the touch
     events should not be used for anything else).
 */
-bool InputEngine::traceEnd(QtVirtualKeyboard::Trace *trace)
+bool InputEngine::traceEnd(Trace *trace)
 {
     Q_D(InputEngine);
     VIRTUALKEYBOARD_DEBUG() << "InputEngine::traceEnd():" << trace;
@@ -1028,3 +1030,4 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

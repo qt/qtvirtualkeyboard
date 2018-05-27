@@ -29,18 +29,19 @@
 
 #include "inputcontext.h"
 #include "inputengine.h"
-#include "shifthandler.h"
-#include "platforminputcontext.h"
-#include "shadowinputcontext.h"
-#include "virtualkeyboarddebug.h"
-#include "enterkeyaction.h"
-#include "settings.h"
+#include "shifthandler_p.h"
+#include "platforminputcontext_p.h"
+#include "shadowinputcontext_p.h"
+#include "virtualkeyboarddebug_p.h"
+#include "enterkeyaction_p.h"
+#include "settings_p.h"
 
 #include <QTextFormat>
 #include <QGuiApplication>
 #include <QtCore/private/qobject_p.h>
 
 QT_BEGIN_NAMESPACE
+
 bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMethodEvent::Attribute &attribute2)
 {
     return attribute1.start == attribute2.start &&
@@ -48,7 +49,6 @@ bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMeth
            attribute1.type == attribute2.type &&
            attribute1.value == attribute2.value;
 }
-QT_END_NAMESPACE
 
 /*!
     \namespace QtVirtualKeyboard
@@ -1202,3 +1202,4 @@ bool InputContext::testAttribute(const QList<QInputMethodEvent::Attribute> &attr
 */
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

@@ -30,27 +30,19 @@
 #ifndef ABSTRACTINPUTMETHOD_H
 #define ABSTRACTINPUTMETHOD_H
 
-#include "inputengine.h"
-#include "selectionlistmodel.h"
-#include <QtCore/private/qobject_p.h>
+#include <QtVirtualKeyboard/inputengine.h>
+#include <QtVirtualKeyboard/selectionlistmodel.h>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-class AbstractInputMethodPrivate : public QObjectPrivate
-{
-public:
-    AbstractInputMethodPrivate();
+class AbstractInputMethodPrivate;
 
-    InputEngine *inputEngine;
-};
-
-class AbstractInputMethod : public QObject
+class QVIRTUALKEYBOARD_EXPORT AbstractInputMethod : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(AbstractInputMethod)
 
-protected:
-    AbstractInputMethod(AbstractInputMethodPrivate &dd, QObject *parent = 0);
 public:
     explicit AbstractInputMethod(QObject *parent = 0);
     ~AbstractInputMethod();
@@ -76,12 +68,12 @@ public:
 
     virtual bool reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags);
 
-signals:
+Q_SIGNALS:
     void selectionListChanged(int type);
     void selectionListActiveItemChanged(int type, int index);
     void selectionListsChanged();
 
-public slots:
+public Q_SLOTS:
     virtual void reset();
     virtual void update();
 
@@ -92,5 +84,6 @@ private:
 };
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE
 
 #endif

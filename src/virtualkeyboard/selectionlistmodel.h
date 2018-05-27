@@ -31,14 +31,16 @@
 #define SELECTIONLISTMODEL_H
 
 #include <QAbstractListModel>
+#include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class AbstractInputMethod;
 class InputEngine;
 class SelectionListModelPrivate;
 
-class SelectionListModel : public QAbstractListModel
+class QVIRTUALKEYBOARD_EXPORT SelectionListModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(SelectionListModel)
@@ -72,12 +74,12 @@ public:
     Q_INVOKABLE void selectItem(int index);
     Q_INVOKABLE QVariant dataAt(int index, int role = Qt::DisplayRole) const;
 
-signals:
+Q_SIGNALS:
     void countChanged();
     void activeItemChanged(int index);
     void itemSelected(int index);
 
-protected slots:
+protected Q_SLOTS:
     void selectionListChanged(int type);
     void selectionListActiveItemChanged(int type, int index);
 
@@ -86,8 +88,9 @@ private:
 };
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE
 
-Q_DECLARE_METATYPE(QtVirtualKeyboard::SelectionListModel::Type)
-Q_DECLARE_METATYPE(QtVirtualKeyboard::SelectionListModel::Role)
+Q_DECLARE_METATYPE(QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::SelectionListModel::Type)
+Q_DECLARE_METATYPE(QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::SelectionListModel::Role)
 
 #endif // SELECTIONLISTMODEL_H

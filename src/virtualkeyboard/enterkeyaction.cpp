@@ -27,9 +27,10 @@
 **
 ****************************************************************************/
 
-#include "enterkeyaction.h"
-#include "enterkeyactionattachedtype.h"
+#include "enterkeyaction_p.h"
+#include "enterkeyactionattachedtype_p.h"
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 /*!
@@ -105,3 +106,4 @@ EnterKeyActionAttachedType *EnterKeyAction::qmlAttachedProperties(QObject *objec
 */
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

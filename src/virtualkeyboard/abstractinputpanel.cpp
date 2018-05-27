@@ -27,9 +27,10 @@
 **
 ****************************************************************************/
 
-#include "abstractinputpanel.h"
+#include "abstractinputpanel_p.h"
 #include <QtCore/QRect>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 /*!
@@ -121,3 +122,4 @@ void AbstractInputPanel::destroyView()
 }
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

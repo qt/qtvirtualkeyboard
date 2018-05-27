@@ -299,7 +299,7 @@ of the user interface.
 
 \section2 Data Model for the Handwriting Input
 
-The data collected from the input source is stored in an object named QtVirtualKeyboard::Trace (C++) or \l Trace (QML).
+The data collected from the input source is stored in an object named Trace (C++) or \l Trace (QML).
 
 By definition, \e trace is a set of data collected in one touch. In addition to
 the basic coordinate data, it can also include other types of data, such as
@@ -312,9 +312,9 @@ The trace API consists of the following virtual methods, which the input method
 must implement in order to receive and process touch input data.
 
 \list
-    \li \l { QtVirtualKeyboard::AbstractInputMethod::patternRecognitionModes } { patternRecognitionModes }
-    \li \l { QtVirtualKeyboard::AbstractInputMethod::traceBegin } { traceBegin }
-    \li \l { QtVirtualKeyboard::AbstractInputMethod::traceEnd } { traceEnd }
+    \li \l { AbstractInputMethod::patternRecognitionModes } { patternRecognitionModes }
+    \li \l { AbstractInputMethod::traceBegin } { traceBegin }
+    \li \l { AbstractInputMethod::traceEnd } { traceEnd }
 \endlist
 
 By implementing these methods, the input method can receive and process data
@@ -322,7 +322,7 @@ from a variety of input sources.
 
 The patternRecognitionModes method returns a list of pattern recognition modes,
 which are supported by the input method. A pattern recognition mode, such as
-\l { QtVirtualKeyboard::InputEngine::HandwritingRecoginition } { HandwritingRecoginition },
+\l { InputEngine::HandwritingRecoginition } { HandwritingRecoginition },
 defines the method by which the input method processes the data.
 
 The trace interaction is started when an input source detects a new contact point, and

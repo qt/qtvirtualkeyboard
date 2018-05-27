@@ -29,10 +29,11 @@
 
 #include "selectionlistmodel.h"
 #include "abstractinputmethod.h"
-#include "settings.h"
+#include "settings_p.h"
 #include <QtCore/private/qabstractitemmodel_p.h>
 #include <QtCore/qpointer.h>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class SelectionListModelPrivate : public QAbstractItemModelPrivate
@@ -311,3 +312,4 @@ void SelectionListModel::selectionListActiveItemChanged(int type, int index)
 */
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

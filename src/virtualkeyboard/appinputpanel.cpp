@@ -27,8 +27,10 @@
 **
 ****************************************************************************/
 
-#include "appinputpanel.h"
+#include "appinputpanel_p.h"
+#include "appinputpanel_p_p.h"
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 AppInputPanel::AppInputPanel(AppInputPanelPrivate &dd, QObject *parent) :
@@ -68,3 +70,4 @@ bool AppInputPanel::isVisible() const
 }
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

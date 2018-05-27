@@ -5,4 +5,4 @@ SUBDIRS += \
     styles \
     layoutfilesystem \
     layoutresources \
-
+    cmake \

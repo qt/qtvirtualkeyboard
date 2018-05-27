@@ -27,9 +27,10 @@
 **
 ****************************************************************************/
 
-#include "settings.h"
+#include "settings_p.h"
 #include <QtCore/private/qobject_p.h>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class SettingsPrivate : public QObjectPrivate
@@ -231,3 +232,4 @@ void Settings::setFullScreenMode(bool fullScreenMode)
 }
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

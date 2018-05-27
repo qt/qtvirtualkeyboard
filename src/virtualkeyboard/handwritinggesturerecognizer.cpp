@@ -27,11 +27,12 @@
 **
 ****************************************************************************/
 
-#include "handwritinggesturerecognizer.h"
+#include "handwritinggesturerecognizer_p.h"
 
 #include <QtCore/qmath.h>
 #include <QVector2D>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 HandwritingGestureRecognizer::HandwritingGestureRecognizer(QObject *parent) :
@@ -201,4 +202,5 @@ QVariantMap HandwritingGestureRecognizer::recognize(const QList<Trace *> traceLi
     return QVariantMap();
 }
 
-}
+} // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

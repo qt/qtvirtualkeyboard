@@ -27,14 +27,15 @@
 **
 ****************************************************************************/
 
-#include "desktopinputpanel.h"
-#include "inputview.h"
-#include "platforminputcontext.h"
+#include "desktopinputpanel_p.h"
+#include "appinputpanel_p_p.h"
+#include "inputview_p.h"
+#include "platforminputcontext_p.h"
 #include "inputcontext.h"
 #include <QGuiApplication>
 #include <QQmlEngine>
 #include <QScreen>
-#include "virtualkeyboarddebug.h"
+#include "virtualkeyboarddebug_p.h"
 #if defined(QT_VIRTUALKEYBOARD_HAVE_XCB)
 #include <xcb/xcb.h>
 #include <xcb/xfixes.h>
@@ -43,6 +44,7 @@
 #include <QtCore/private/qobject_p.h>
 #include <QtCore/QLibraryInfo>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class DesktopInputPanelPrivate : public AppInputPanelPrivate
@@ -277,3 +279,4 @@ void DesktopInputPanel::updateInputRegion()
 }
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

@@ -82,7 +82,7 @@ Item {
 
     function initDefaultInputMethod() {
         try {
-            return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.1; HunspellInputMethod {}', keyboard, "defaultInputMethod")
+            return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.3; DefaultInputMethod {}', keyboard, "defaultInputMethod")
         } catch (e) { }
         return plainInputMethod
     }

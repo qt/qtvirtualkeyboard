@@ -52,6 +52,10 @@ locations:
     \li \c $$[QT_INSTALL_PLUGINS]/platforminputcontexts
     \li \c /system/plugins/platforminputcontexts
 \row
+    \li qtvirtualkeyboardextensionplugin
+    \li \c $$[QT_INSTALL_PLUGINS]/virtualkeyboard
+    \li \c /system/plugins/virtualkeyboard
+\row
     \li qtvirtualkeyboardplugin QML files
     \li \c $$[QT_INSTALL_QML]/QtQuick/VirtualKeyboard
     \li \c /system/qml/QtQuick/VirtualKeyboard

@@ -27,8 +27,9 @@
 **
 ****************************************************************************/
 
-#include "enterkeyactionattachedtype.h"
+#include "enterkeyactionattachedtype_p.h"
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 /*!
@@ -84,3 +85,4 @@ void EnterKeyActionAttachedType::setEnabled(bool enabled)
 }
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

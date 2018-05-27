@@ -27,8 +27,9 @@
 **
 ****************************************************************************/
 
-#include "gesturerecognizer.h"
+#include "gesturerecognizer_p.h"
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 GestureRecognizer::GestureRecognizer(QObject *parent) :
@@ -36,4 +37,5 @@ GestureRecognizer::GestureRecognizer(QObject *parent) :
 {
 }
 
-}
+} // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

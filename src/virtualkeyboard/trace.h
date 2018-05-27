@@ -33,12 +33,14 @@
 #include <QObject>
 #include <QVariant>
 #include <QPointF>
+#include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class TracePrivate;
 
-class Trace : public QObject
+class QVIRTUALKEYBOARD_EXPORT Trace : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(Trace)
@@ -71,7 +73,7 @@ public:
     bool isCanceled() const;
     void setCanceled(bool canceled);
 
-signals:
+Q_SIGNALS:
     void traceIdChanged(int traceId);
     void channelsChanged();
     void lengthChanged(int length);
@@ -80,5 +82,6 @@ signals:
 };
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE
 
 #endif // TRACE_H

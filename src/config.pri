@@ -1,14 +1,27 @@
 # Enable handwriting
 handwriting:!lipi-toolkit:!t9write {
-    include(virtualkeyboard/3rdparty/t9write/t9write-build.pri)
+    include(plugins/t9write/3rdparty/t9write/t9write-build.pri)
     equals(T9WRITE_FOUND, 1): CONFIG += t9write
     else: CONFIG += lipi-toolkit
 }
 t9write {
-    !handwriting: include(virtualkeyboard/3rdparty/t9write/t9write-build.pri)
+    !handwriting: include(plugins/t9write/3rdparty/t9write/t9write-build.pri)
     equals(T9WRITE_CJK_FOUND, 1): CONFIG += t9write-cjk
     equals(T9WRITE_ALPHABETIC_FOUND, 1): CONFIG += t9write-alphabetic
 }
+
+# Enable pkgconfig
+win32: CONFIG += no-pkg-config
+!no-pkg-config: CONFIG += link_pkgconfig
+
+# Enable Hunspell
+!disable-hunspell:!hunspell-library:!hunspell-package {
+    exists(plugins/hunspell/3rdparty/hunspell/src/hunspell/hunspell.h): CONFIG += hunspell-library
+    else:link_pkgconfig:packagesExist(hunspell): CONFIG += hunspell-package
+    else: CONFIG += disable-hunspell
+}
+disable-hunspell: CONFIG -= hunspell
+else: CONFIG += hunspell
 
 # Disable built-in layouts
 disable-layouts {
@@ -56,6 +69,11 @@ disable-layouts {
         lang-zh_CN \
         lang-zh_TW
 }
+
+# Common variables
+LAYOUTS_BASE = $$PWD/virtualkeyboard
+LAYOUTS_PREFIX = /QtQuick/VirtualKeyboard
+VIRTUALKEYBOARD_INSTALL_DATA = $$[QT_INSTALL_DATA]/qtvirtualkeyboard
 
 # Enable features by languages
 contains(CONFIG, lang-ja.*)|lang-all: CONFIG += openwnn

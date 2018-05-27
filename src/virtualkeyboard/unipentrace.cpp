@@ -27,12 +27,13 @@
 **
 ****************************************************************************/
 
-#include "unipentrace.h"
+#include "unipentrace_p.h"
 #include <QRectF>
 #include <QDir>
 #include <QFile>
 #include <QDebug>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 UnipenTrace::UnipenTrace(const QVariantMap &traceCaptureDeviceInfo,

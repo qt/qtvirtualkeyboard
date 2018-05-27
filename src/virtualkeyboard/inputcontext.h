@@ -35,7 +35,9 @@
 #include <QLocale>
 #include <QInputMethodEvent>
 #include <QInputMethod>
+#include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class PlatformInputContext;
@@ -44,7 +46,7 @@ class InputEngine;
 class ShiftHandler;
 class InputContextPrivate;
 
-class InputContext : public QObject
+class QVIRTUALKEYBOARD_EXPORT InputContext : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(InputContext)
@@ -67,8 +69,8 @@ class InputContext : public QObject
     Q_PROPERTY(bool animating READ animating WRITE setAnimating NOTIFY animatingChanged)
     Q_PROPERTY(QString locale READ locale WRITE setLocale NOTIFY localeChanged)
     Q_PROPERTY(QObject *inputItem READ inputItem NOTIFY inputItemChanged)
-    Q_PROPERTY(QtVirtualKeyboard::ShiftHandler *shiftHandler READ shiftHandler CONSTANT)
-    Q_PROPERTY(QtVirtualKeyboard::InputEngine *inputEngine READ inputEngine CONSTANT)
+    Q_PROPERTY(ShiftHandler *shiftHandler READ shiftHandler CONSTANT)
+    Q_PROPERTY(InputEngine *inputEngine READ inputEngine CONSTANT)
     Q_PROPERTY(bool selectionControlVisible READ selectionControlVisible NOTIFY selectionControlVisibleChanged)
     Q_PROPERTY(bool anchorRectIntersectsClipRect READ anchorRectIntersectsClipRect NOTIFY anchorRectIntersectsClipRectChanged)
     Q_PROPERTY(bool cursorRectIntersectsClipRect READ cursorRectIntersectsClipRect NOTIFY cursorRectIntersectsClipRectChanged)
@@ -129,7 +131,7 @@ public:
     // For shadow input
     Q_INVOKABLE void forceCursorPosition(int anchorPosition, int cursorPosition);
 
-signals:
+Q_SIGNALS:
     void focusChanged();
     void focusEditorChanged();
     void preeditTextChanged();
@@ -155,7 +157,7 @@ signals:
     void anchorRectIntersectsClipRectChanged();
     void cursorRectIntersectsClipRectChanged();
 
-private slots:
+private Q_SLOTS:
     void onInputItemChanged();
 
 private:
@@ -174,5 +176,6 @@ private:
 };
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE
 
 #endif

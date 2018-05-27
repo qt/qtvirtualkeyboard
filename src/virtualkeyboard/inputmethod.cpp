@@ -27,10 +27,11 @@
 **
 ****************************************************************************/
 
-#include "inputmethod.h"
-#include "trace.h"
+#include "inputmethod_p.h"
+#include <QtVirtualKeyboard/trace.h>
 #include <QVariant>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 /*!
@@ -386,3 +387,4 @@ void InputMethod::update()
 }
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

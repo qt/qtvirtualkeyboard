@@ -27,20 +27,23 @@
 **
 ****************************************************************************/
 
-#include "platforminputcontext.h"
+#include "platforminputcontext_p.h"
 #include "inputcontext.h"
-#include "shadowinputcontext.h"
-#include "abstractinputpanel.h"
+#include "shadowinputcontext_p.h"
+#include "abstractinputpanel_p.h"
 #ifdef QT_VIRTUALKEYBOARD_DESKTOP
-#include "desktopinputpanel.h"
+#include "desktopinputpanel_p.h"
 #endif
-#include "appinputpanel.h"
-#include "virtualkeyboarddebug.h"
+#include "appinputpanel_p.h"
+#include "virtualkeyboarddebug_p.h"
 
 #include <QWindow>
 #include <QGuiApplication>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
+
+Q_LOGGING_CATEGORY(qlcVirtualKeyboard, "qt.virtualkeyboard")
 
 /*!
     \class QtVirtualKeyboard::PlatformInputContext
@@ -272,3 +275,4 @@ void PlatformInputContext::updateInputPanelVisible()
 }
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

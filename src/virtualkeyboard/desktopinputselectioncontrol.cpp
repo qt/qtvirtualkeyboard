@@ -27,17 +27,18 @@
 **
 ****************************************************************************/
 
-#include "desktopinputselectioncontrol.h"
+#include "desktopinputselectioncontrol_p.h"
 #include "inputcontext.h"
-#include "inputselectionhandle.h"
-#include "settings.h"
-#include "platforminputcontext.h"
+#include "inputselectionhandle_p.h"
+#include "settings_p.h"
+#include "platforminputcontext_p.h"
 
 #include <QtCore/qpropertyanimation.h>
 #include <QtGui/qguiapplication.h>
 #include <QtGui/qstylehints.h>
 #include <QtGui/qimagereader.h>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 DesktopInputSelectionControl::DesktopInputSelectionControl(QObject *parent, InputContext *inputContext)
@@ -323,4 +324,6 @@ bool DesktopInputSelectionControl::eventFilter(QObject *object, QEvent *event)
     }
     return false;
 }
-} //    namespace QtVirtualKeyboard
+
+} // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

@@ -27,10 +27,11 @@
 **
 ****************************************************************************/
 
-#include "plaininputmethod.h"
-#include "inputengine.h"
+#include "plaininputmethod_p.h"
+#include <QtVirtualKeyboard/inputengine.h>
 #include "inputcontext.h"
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 /*!
@@ -102,3 +103,4 @@ void PlainInputMethod::update()
 }
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

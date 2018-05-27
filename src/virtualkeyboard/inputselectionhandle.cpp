@@ -27,12 +27,13 @@
 **
 ****************************************************************************/
 
-#include "inputselectionhandle.h"
-#include "desktopinputselectioncontrol.h"
+#include "inputselectionhandle_p.h"
+#include "desktopinputselectioncontrol_p.h"
 
 #include <QtCore/qcoreapplication.h>
 #include <QtGui/QPainter>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 InputSelectionHandle::InputSelectionHandle(DesktopInputSelectionControl *control, QWindow *eventWindow)
     : QRasterWindow()
@@ -82,3 +83,4 @@ bool InputSelectionHandle::event(QEvent *e)
 }
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE

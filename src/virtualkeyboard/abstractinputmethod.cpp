@@ -28,8 +28,18 @@
 ****************************************************************************/
 
 #include "abstractinputmethod.h"
+#include <QtCore/private/qobject_p.h>
 
+QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
+
+class AbstractInputMethodPrivate : public QObjectPrivate
+{
+public:
+    AbstractInputMethodPrivate();
+
+    InputEngine *inputEngine;
+};
 
 /*!
     \class QtVirtualKeyboard::AbstractInputMethodPrivate
@@ -37,7 +47,6 @@ namespace QtVirtualKeyboard {
 */
 
 AbstractInputMethodPrivate::AbstractInputMethodPrivate() :
-    QObjectPrivate(),
     inputEngine(0)
 {
 }
@@ -53,15 +62,6 @@ AbstractInputMethodPrivate::AbstractInputMethodPrivate() :
     Use this class if you want to implement a custom input
     method using C/C++ language.
 */
-
-/*!
-    Constructs an input method with \a dd as the private data
-    from the derived class and \a parent as the parent.
-*/
-AbstractInputMethod::AbstractInputMethod(AbstractInputMethodPrivate &dd, QObject *parent) :
-    QObject(dd, parent)
-{
-}
 
 /*!
     Constructs an input method with \a parent.
@@ -329,3 +329,4 @@ bool AbstractInputMethod::reselect(int cursorPosition, const InputEngine::Resele
 */
 
 } // namespace QtVirtualKeyboard
+QT_END_NAMESPACE
