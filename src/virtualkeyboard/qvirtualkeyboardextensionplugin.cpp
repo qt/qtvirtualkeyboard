@@ -31,10 +31,35 @@
 
 QT_BEGIN_NAMESPACE
 
+/*!
+    \class QVirtualKeyboardExtensionPlugin
+    \inmodule QtVirtualKeyboard
+    \brief Extension plugin for the Qt Virtual Keyboard.
+
+    Extension plugin allows customizing and extending the Qt Virtual Keyboard
+    functionality. Extension plugin can provide additional keyboard layouts and
+    input methods.
+
+    Virtual keyboard loads all the extension plugins at startup. It searches for
+    \c plugins/virtualkeyboard directory and matches the metadata found in the
+    plugin. If there are two or more extension plugins with the same \c Name, it
+    loads the one with the highest \c Version number.
+
+    \sa {Virtual Keyboard Extension Plugin}
+*/
+
 QVirtualKeyboardExtensionPlugin::~QVirtualKeyboardExtensionPlugin()
 {
 }
 
+/*!
+    If the plugin metadata contains \c InputMethod field defining an input method
+    name, Qt Virtual Keyboard will call registerTypes() for registering the input
+    method as QML type. The type must be registered with a \a uri if the input method
+    is used by the default keyboard layouts. If the input method type is only used in
+    private layouts (known only by the plugin), the uri can be omitted and chosen
+    freely.
+*/
 void QVirtualKeyboardExtensionPlugin::registerTypes(const char *uri) const
 {
     Q_UNUSED(uri)

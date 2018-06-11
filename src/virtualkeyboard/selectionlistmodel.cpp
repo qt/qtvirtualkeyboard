@@ -92,8 +92,6 @@ public:
 
     \brief List model for selection lists.
 
-    \internal
-
     This class acts as a bridge between the UI and the
     input method that provides the data for selection
     lists.

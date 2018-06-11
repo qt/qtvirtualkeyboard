@@ -75,6 +75,7 @@
 
     \list
         \li \l{Qt Virtual Keyboard QML Types}{QML Types}
+        \li \l{Qt Virtual Keyboard C++ Classes}{C++ Classes}
     \endlist
 
     \section1 Examples

@@ -52,10 +52,9 @@ public:
 
 /*!
     \class QtVirtualKeyboard::Trace
-    \inmodule qtvirtualkeyboard
+    \inmodule QtVirtualKeyboard
     \since QtQuick.VirtualKeyboard 2.0
     \brief Trace is a data model for touch input data.
-    \internal
 
     Trace provides the data model for coordinate data and other
     optional data associated with a single stroke.

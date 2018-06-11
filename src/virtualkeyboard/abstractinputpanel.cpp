@@ -36,7 +36,7 @@ namespace QtVirtualKeyboard {
 /*!
     \class QtVirtualKeyboard::AbstractInputPanel
     \internal
-    \inmodule qtvirtualkeyboard
+    \inmodule QtVirtualKeyboard
 
     \brief Base class for an input panel.
 

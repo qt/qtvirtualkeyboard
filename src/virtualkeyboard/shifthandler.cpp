@@ -81,10 +81,9 @@ public:
 
 /*!
     \class QtVirtualKeyboard::ShiftHandler
+    \internal
     \inmodule QtVirtualKeyboard
     \brief Manages the shift state.
-
-    \internal
 */
 
 ShiftHandler::ShiftHandler(InputContext *parent) :
@@ -197,6 +196,7 @@ void ShiftHandler::toggleShift()
 }
 
 /*! Clears the toggle shift timer.
+    \internal
 
 */
 void ShiftHandler::clearToggleShiftTimer()

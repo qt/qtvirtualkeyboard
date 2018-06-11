@@ -30,14 +30,13 @@
     \title Qt Virtual Keyboard C++ Classes
     \brief Provides classes to implement input methods for virtual keyboards.
 
-    \internal
-
+    \ingroup modules
     \qtvariable virtualkeyboard
 
     To include the definitions of the module's classes, use the following directive:
 
     \code
-    #include <QVirtualKeyboard>
+    #include <QtVirtualKeyboard>
     \endcode
 
     To link against the module, add this line to your qmake .pro file:

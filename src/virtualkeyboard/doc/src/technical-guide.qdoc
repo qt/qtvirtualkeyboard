@@ -44,21 +44,30 @@ These interfaces allow the plugin to be used as a platform input
 context plugin in Qt 5 applications.
 
 The plugin itself provides an input framework supporting multiple
-input methods as well as a QML UI for the virtual keyboard.
+input methods as well as a QML UI for the virtual keyboard. The input
+framework is extensible through a plugin interface, which allows third-party
+input methods and keyboard layouts to be loaded at runtime.
 
 The input framework provides the following main interfaces:
 
 \list
     \li InputContext: provides contextual information for the virtual keyboard
-        and other input components.
+        and other input components. Acts as an interface to the underlying
+        text input component.
     \li InputEngine: exposes an API to integrate user input events (key
         presses, etc.) and acts as a host for input methods.
-    \li InputMethod: a base type for QML based input methods.
+    \li InputMethod: a base type for QML-based input methods. The input method
+        usually handles key events, but can also handle mouse and touch input
+        events.
+    \li QVirtualKeyboardExtensionPlugin: a plugin interface for virtual keyboard
+        extensions that provide additional functionality.
 \endlist
 
-\section1 The Input Context
+\section1 Input Context
 
-The input context is used by the keyboard as well as concrete input methods.
+The input context is used by the keyboard as well as concrete input methods. InputContext
+is a singleton instance hosted by QML. An application should not directly interact with
+the input context.
 
 \section2 Contextual Information
 
@@ -104,19 +113,14 @@ information through the QInputMethod interface.
 Internally, the current input locale is also updated to the InputEngine
 and the current InputMethod instances.
 
-\section2 UI Animations
+\section1 Input Engine
 
-The keyboard should notify the input context about UI transitions and
-animations. The InputContext::animating property sets the animating property of
-the input context.
+The input engine object is owned by InputContext. Like the InputContext, there is
+only one instance of the InputEngine. The input engine contains API functions which
+the keyboard uses to map user interactions, such as key press and release events,
+to the input method.
 
-\section1 The Input Engine
-
-The input engine object is owned by InputContext. The input engine contains
-API functions which the keyboard can use to map user interactions such as key
-press and key release events.
-
-The input events are mapped through the following methods:
+For example, virtual keyboard key events are mapped through the following methods:
 
 \list
     \li InputEngine::virtualKeyPress
@@ -129,21 +133,137 @@ the methods are not suitable for mapping the physical keystrokes. This is a
 consequence of the fact that the actual action is performed only when the key
 is released.
 
-If the user releases the key without having to perform the actual action, the
-key can be interrupted by using the InputEngine::virtualKeyCancel method.
+If the key press is interrupted before the key release event, the keyboard invokes
+the InputEngine::virtualKeyCancel method.
 
-\section2 Activating an Input Method
+\section2 Input Method
 
-Activating an input method is straightforward. The required steps are:
+The input method is a concrete implementation of the keypress handler. It's main
+function is to handle keypress events and maintain state information for the
+user input. It interacts with the text editor through \l InputContext via
+pre-edit text or key events.
+
+The input method instance can be created in various ways, depending on the use
+case:
 
 \list
-    \li Instantiate a concrete implementation of InputMethod
-    \li Assign the instance to InputEngine::inputMethod
-    \li Set the proper input mode with InputEngine::inputMode
+    \li \c {KeyboardLayout::inputMethod}: the keyboard layout can create an input method
+        instance solely for this keyboard layout. It should be noted that this
+        instance will be destroyed when the keyboard layout changes. Therefore,
+        this method is usually limited to very narrow use cases.
+    \li \c {KeyboardLayout::createInputMethod()}: the keyboard layout can dynamically
+        create an input method that can be used with this layout and also with the
+        \l {KeyboardLayout::sharedLayouts} {shared layouts} (e.g. symbol layout).
+        This is the preferred way for creating specialized input methods, such as
+        those involving complex languages or handwriting.
+    \li \c {DefaultInputMethod}: the virtual keyboard attempts to create this type of
+        input method at startup. This instance will be used as the default input
+        method across all keyboard layouts, unless the keyboard layout uses a
+        custom input method. This instance outlives keyboard layout changes across
+        languages and is the preferred way of creating and overriding the default
+        input method.
 \endlist
 
-When the input method is active, it receives key events from the input engine
-and can produce text.
+\section1 Virtual Keyboard Extension Plugin
+
+An extension plugin allows third-party providers to enhance the functionality
+of the virtual keyboard without recompiling it. Currently the extension plugin
+can provide keyboard layouts and custom input methods. Creating a plugin for
+Qt Virtual Keyboard is similar to the standard way of creating a Qt plugin:
+
+\list
+    \li \b {Link against the virtualkeyboard library}.
+
+        The virtualkeyboard module must be linked against the plugin:
+
+        \badcode
+        QT += virtualkeyboard
+        \endcode
+
+        This allows the plugin to access \l InputContext and other interfaces.
+    \li \b {Implement a subclass of QVirtualKeyboardExtensionPlugin.}
+
+        The plugin provides the virtual keyboard with the necessary metadata,
+        which allows it to sort and load the plugins.
+\endlist
+
+\section2 Adding Keyboard Layouts
+
+The plugin can add keyboard layouts for the virtual keyboard by including
+the layout files in the Qt resources of the plugin binary.
+
+The virtual keyboard searches for the keyboard layouts (per language) from a specific
+path \e /QtQuick/VirtualKeyboard/content/layouts/<language_COUNTRY>, so it is essential
+to use this exact path also in the plugin. Qt resource paths can be overlapped, however,
+the plugin cannot override the existing layouts in the virtual keyboard plugin.
+
+If the extension plugin needs to override the built-in keyboard layout, the virtual
+keyboard must be recompiled with only specific languages (e.g. \e CONFIG+=lang-en) or without
+keyboard layouts at (e.g. \e CONFIG+=disable-layouts). Alternatively, if recompiling is not an
+option, it is possible to override the built-in keyboard layouts and have them loaded directly
+from the file system by using the \e QT_VIRTUALKEYBOARD_LAYOUT_PATH environment variable.
+
+\section2 Adding Input Method
+
+The plugin can register an input method that other keyboard layouts can use by
+default (such as \c DefaultInputMethod) or an input method that is used privately
+in the plugin.
+
+The input method must implement \l {QtVirtualKeyboard::AbstractInputMethod} {AbstractInputMethod} (C++) or InputMethod (QML)
+interface and the plugin must register it as a QML type in
+{QVirtualKeyboardExtensionPlugin::registerTypes} method.
+
+\section2 Metadata for the Extension Plugin
+
+Metadata allows the virtual keyboard to inspect the plugin before loading
+the actual library. It also prevents the virtual keyboard from loading
+conflicting extension plugins, for example, two handwriting extensions.
+
+\table
+    \row
+        \li \c Name
+        \li \c Required
+        \li This field defines the plugin name. There are several built-in
+            plugins available by default:
+
+            \list
+            \li \c hangul
+            \li \c default (Hunspell)
+            \li \c handwriting (T9 Write, Lipi-Toolkit)
+            \li \c japanese (OpenWNN)
+            \li \c pinyin
+            \li \c traditional_chinese
+            \endlist
+    \row
+        \li \c Provider
+        \li \c Optional
+        \li An informative name of the plugin provider. Used mainly for diagnostics.
+    \row
+        \li \c InputMethod
+        \li \c Optional
+        \li This field tells the virtual keyboard the plugin contains an input method.
+            When this field is defined, the virtual keyboard will invoke the
+            \l {QVirtualKeyboardExtensionPlugin::registerTypes} {interface}
+            for registering the QML types.
+            Similar to the \c Name, there can be only one provider for each input method.
+    \row
+        \li \c Version
+        \li \c Required
+        \li An integer defining the version number of the plugin. If there are two or more
+            plugins available of the same \c Name, the one with greatest version number is
+            preferred.
+\endtable
+
+The following metadata example is from the Lipi-Toolkit extension plugin (lipi.json):
+
+\badcode
+{
+    "Name": "handwriting",
+    "Provider": "Qt Lipi-Toolkit Extension",
+    "InputMethod": "HandwritingInputMethod",
+    "Version": 100
+}
+\endcode
 
 \section1 Implementing a Custom Input Method
 
@@ -170,7 +290,7 @@ InputMethod::update() is called when the input context is updated and
 the input state is possibly out of sync. The input method should commit
 the current text.
 
-The keystorke events are handled in InputMethod::keyEvent(). This method handles
+The keystroke events are handled in InputMethod::keyEvent(). This method handles
 a single keystroke event and returns \c true if the event was processed.
 Otherwise the keystroke is handled by the default input method.
 
@@ -274,42 +394,45 @@ InputEngine::wordCandidateListModel property.
 \section1 Integrating Handwriting Recognition
 
 Since version 2.0 of the virtual keyboard, input methods can consume
-touch input data from touch screens or other input devices.
+touch input data from touch screens or other input devices. This allows
+integration of a handwriting recognition engine seamlessly to the virtual
+keyboard, without any changes to the existing keyboard layouts (as
+the virtual keyboard already provides the handwriting keyboard layouts for
+most languages).
 
-Handwriting recognition works on the same principle as handling of
-normal keyboard input, i.e. input data is collected by the keyboard layout
-and transferred by the input engine to the input method for further processing.
+Towards an input method, handwriting recognition works on the same principle
+as handling of normal keyboard input, i.e. input data is collected by the
+keyboard layout and transferred by the input engine to the input method for
+processing.
 
-In case of a regular keyboard, the amount of data transferred from the keyboard
-to input method is minimal (namely the keycode and text), but in the case of
-handwriting recognition the data volume is much bigger. Therefore, the touch
-input is stored in a particular data model.
+\section2 Data Model for Handwriting Input
 
-The input method does not participate in the actual collection of touch data.
-However, the input method has full control over touch input since it can
-either accept or reject touch. This allows for precise control over how many
-fingers can be used simultaneously.
+Virtual keyboard collects the handwriting data in a special data model Trace.
+Each trace represents a collection of data sampled from one touch (e.g.
+a swipe on the screen). There will be as many instances of Trace as there are
+touches on the handwriting input area.
 
-The input method can collect as many traces as it deems necessary and begin
-processing them at will. The processing can even be performed in parallel with
-the touch input, although it is not recommended because of the potential side
-effects. A recommended way is to start processing in a background thread
-after a suitable delay, so that it does not negatively affect the performance
-of the user interface.
+By definition, \e trace is a set of data sampled from one touch. In addition to
+the basic point data, it can also include other types of data, such as
+the time of each point. The input method can define the desired input channels
+in the beginning of a trace event.
 
-\section2 Data Model for the Handwriting Input
+The input method does not participate in the actual collection of trace data.
+However, the input method has full control over the input since it can
+either accept or reject a Trace (e.g. if there are too many instances to handle).
+This also allows for precise control over how many fingers can be used simultaneously.
 
-The data collected from the input source is stored in an object named Trace (C++) or \l Trace (QML).
-
-By definition, \e trace is a set of data collected in one touch. In addition to
-the basic coordinate data, it can also include other types of data, such as
-the time of each data point. The input method can define the desired input channels
-at the beginning of a touch event.
+The input method can collect as many traces as it sees fit and it can begin
+processing them when necessary. The processing can even be performed in parallel while
+sampling the data, although it is not recommended because of the potential performance
+issues. The recommended way is to start processing in a background thread
+after a suitable delay from the last input, so that the processing does not affect
+negatively to the user interface.
 
 \section2 Trace API for Input Methods
 
 The trace API consists of the following virtual methods, which the input method
-must implement in order to receive and process touch input data.
+must implement in order to receive and process trace input data.
 
 \list
     \li \l { AbstractInputMethod::patternRecognitionModes } { patternRecognitionModes }
@@ -318,7 +441,7 @@ must implement in order to receive and process touch input data.
 \endlist
 
 By implementing these methods, the input method can receive and process data
-from a variety of input sources.
+from a variety of input sources (e.g. keyboard layout or full screen).
 
 The patternRecognitionModes method returns a list of pattern recognition modes,
 which are supported by the input method. A pattern recognition mode, such as
