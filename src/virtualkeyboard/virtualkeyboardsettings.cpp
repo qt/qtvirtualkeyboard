@@ -226,7 +226,7 @@ void VirtualKeyboardSettings::resetLayoutPath()
 {
     Settings *settings = Settings::instance();
     QUrl layoutPath(QT_VIRTUALKEYBOARD_DEFAULT_LAYOUTS_DIR);
-    const QString customLayoutPath(QDir::fromNativeSeparators(qgetenv("QT_VIRTUALKEYBOARD_LAYOUT_PATH")));
+    const QString customLayoutPath(QDir::fromNativeSeparators(qEnvironmentVariable("QT_VIRTUALKEYBOARD_LAYOUT_PATH")));
     if (!customLayoutPath.isEmpty()) {
         bool found = false;
         QDir customLayoutDirectory(customLayoutPath);

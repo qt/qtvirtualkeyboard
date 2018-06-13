@@ -71,7 +71,7 @@ bool HunspellInputMethodPrivate::createHunspell(const QString &locale)
         return false;
     if (this->locale != locale) {
         hunspellWorker->removeAllTasks();
-        QString hunspellDataPath(QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_HUNSPELL_DATA_PATH").constData()));
+        QString hunspellDataPath(qEnvironmentVariable("QT_VIRTUALKEYBOARD_HUNSPELL_DATA_PATH"));
         const QString pathListSep(
 #if defined(Q_OS_WIN32)
             QStringLiteral(";")

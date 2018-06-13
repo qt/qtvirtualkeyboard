@@ -75,7 +75,7 @@ bool PinyinDecoderService::init()
     if (initDone)
         return true;
 
-    QString sysDict(QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_PINYIN_DICTIONARY").constData()));
+    QString sysDict(qEnvironmentVariable("QT_VIRTUALKEYBOARD_PINYIN_DICTIONARY"));
     if (!QFileInfo::exists(sysDict)) {
         sysDict = QLatin1String(":///QtQuick/VirtualKeyboard/3rdparty/pinyin/data/dict_pinyin.dat");
         if (!QFileInfo::exists(sysDict))
