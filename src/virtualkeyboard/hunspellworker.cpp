@@ -32,7 +32,7 @@
 #include <QVector>
 #include <QTextCodec>
 #include <QFileInfo>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QTime>
 
 namespace QtVirtualKeyboard {
@@ -197,7 +197,7 @@ bool HunspellBuildSuggestionsTask::spellCheck(const QString &word)
 {
     if (!hunspell)
         return false;
-    if (word.contains(QRegExp("[0-9]")))
+    if (word.contains(QRegularExpression("[0-9]")))
         return true;
     return Hunspell_spell(hunspell, textCodec->fromUnicode(word).constData()) != 0;
 }
