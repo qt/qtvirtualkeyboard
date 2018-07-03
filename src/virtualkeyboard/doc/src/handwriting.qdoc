@@ -1,0 +1,94 @@
+/****************************************************************************
+**
+** Copyright (C) 2018 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+
+\page handwriting.html
+\contentspage {Handwriting Recognition} {Contents}
+
+\title Handwriting Recognition
+
+Qt Virtual Keyboard supports handwriting recognition through open source and
+commercially-licensed engines.
+
+\image handwriting.gif
+
+There are two modes in which to write: using the more compact handwriting panel
+(as shown above), or \l {HandwritingInputPanel}{fullscreen}.
+
+For instructions on how to activate and use the handwriting input mode, see the
+\l {user-guide-handwriting}{User Guide}.
+
+For information about building Qt Virtual Keyboard with a particular
+handwriting engine, see \l {Configuration Options}.
+
+\section1 Lipi Toolkit
+
+\l {http://lipitk.sourceforge.net/lipi-toolkit.htm}{Lipi Toolkit} is an
+open source handwriting recognition engine.
+
+Lipi Toolkit only supports handwriting written in the English language.
+
+\section1 T9 Write
+
+\l {https://www.nuance.com/mobile/mobile-solutions/text-input-solutions/t9-write.html}{T9 Write}
+is a commercial handwriting recognition engine.
+
+T9 Write supports handwriting written in the following languages:
+
+\list
+\li Arabic
+\li Bulgarian
+\li Croatian
+\li Czech
+\li Danish
+\li Dutch
+\li English
+\li Estonian
+\li Finnish
+\li French
+\li German
+\li Greek
+\li Hebrew
+\li Hungarian
+\li Italian
+\li Japanese
+\li Korean
+\li Norwegian
+\li Persian/Farsi
+\li Polish
+\li Portugese
+\li Romanian
+\li Russian
+\li Serbian
+\li Simplified Chinese
+\li Spanish
+\li Swedish
+\li Traditional Chinese
+\endlist
+
+*/
