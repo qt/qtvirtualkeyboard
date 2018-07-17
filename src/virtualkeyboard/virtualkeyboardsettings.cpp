@@ -33,7 +33,7 @@
 #include <QQmlEngine>
 #include <QFileInfo>
 #include <QDir>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QtCore/private/qobject_p.h>
 
 namespace QtVirtualKeyboard {
@@ -297,8 +297,9 @@ void VirtualKeyboardSettings::resetStyle()
     QString customStyleName = qgetenv("QT_VIRTUALKEYBOARD_STYLE");
     if (!customStyleName.isEmpty()) {
         bool found = false;
-        QRegExp styleNameValidator("\\w+");
-        if (styleNameValidator.exactMatch(customStyleName)) {
+        QRegularExpression styleNameValidator("\\A(?:\\w+)\\z");
+        QRegularExpressionMatch match = styleNameValidator.match(customStyleName);
+        if (match.hasMatch()) {
             QString customStyle = d->styleImportPath(customStyleName);
             if (!customStyle.isEmpty()) {
                 styleName = customStyleName;
