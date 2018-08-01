@@ -50,7 +50,7 @@ class QVIRTUALKEYBOARD_EXPORT HandwritingGestureRecognizer : public GestureRecog
 {
     Q_OBJECT
 public:
-    explicit HandwritingGestureRecognizer(QObject *parent = 0);
+    explicit HandwritingGestureRecognizer(QObject *parent = nullptr);
 
     void setDpi(int dpi);
     int dpi() const;

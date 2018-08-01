@@ -41,7 +41,7 @@ class SelectionListModelPrivate : public QAbstractItemModelPrivate
 public:
     SelectionListModelPrivate() :
         QAbstractItemModelPrivate(),
-        dataSource(0),
+        dataSource(nullptr),
         type(SelectionListModel::WordCandidateList),
         rowCount(0),
         wclAutoCommitWord(false)
@@ -147,7 +147,7 @@ void SelectionListModel::setDataSource(AbstractInputMethod *dataSource, Type typ
     }
     d->type = type;
     if (d->dataSource) {
-        d->dataSource = 0;
+        d->dataSource = nullptr;
         selectionListChanged(type);
         selectionListActiveItemChanged(type, -1);
     }

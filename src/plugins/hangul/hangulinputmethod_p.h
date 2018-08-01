@@ -53,7 +53,7 @@ class HangulInputMethod : public AbstractInputMethod
     Q_OBJECT
     Q_DECLARE_PRIVATE(HangulInputMethod)
 public:
-    explicit HangulInputMethod(QObject *parent = 0);
+    explicit HangulInputMethod(QObject *parent = nullptr);
     ~HangulInputMethod();
 
     QList<InputEngine::InputMode> inputModes(const QString &locale);

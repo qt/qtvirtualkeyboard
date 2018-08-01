@@ -67,10 +67,10 @@ public:
         q_ptr(q_ptr),
         inputMode(InputEngine::Latin),
         exactMatchMode(false),
-        converter(0),
+        converter(nullptr),
         converterJAJP(),
         activeConvertType(CONVERT_TYPE_NONE),
-        preConverter(0),
+        preConverter(nullptr),
         enableLearning(true),
         enablePrediction(true),
         enableConverter(true),
@@ -86,22 +86,22 @@ public:
         switch (mode) {
         case ENGINE_MODE_DIRECT:
             /* Full/Half-width number or Full-width alphabet */
-            converter = NULL;
+            converter = nullptr;
             preConverter.reset();
             break;
 
         case ENGINE_MODE_NO_LV2_CONV:
-            converter = NULL;
+            converter = nullptr;
             preConverter.reset(new Romkan());
             break;
 
         case ENGINE_MODE_FULL_KATAKANA:
-            converter = NULL;
+            converter = nullptr;
             preConverter.reset(new RomkanFullKatakana());
             break;
 
         case ENGINE_MODE_HALF_KATAKANA:
-            converter = NULL;
+            converter = nullptr;
             preConverter.reset(new RomkanHalfKatakana());
             break;
 
@@ -126,7 +126,7 @@ public:
 
     bool isEnableL2Converter()
     {
-        return converter != NULL && enableConverter;
+        return converter != nullptr && enableConverter;
     }
 
     void startConvert(ConvertType convertType)
@@ -447,7 +447,7 @@ public:
         }
         QString tmp = composingText.toString(layer, 0, cursor - 1);
 
-        if (converter != NULL) {
+        if (converter != nullptr) {
             if (learn) {
                 if (activeConvertType == CONVERT_TYPE_RENBUN) {
                     learnWord(0); /* select the top of the clauses */
@@ -665,7 +665,7 @@ bool OpenWnnInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
     Q_UNUSED(modifiers)
     Q_D(OpenWnnInputMethod);
 
-    if (d->preConverter == NULL && !d->isEnableL2Converter())
+    if (d->preConverter == nullptr && !d->isEnableL2Converter())
         return false;
 
     switch (key) {
@@ -738,7 +738,7 @@ bool OpenWnnInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
                 if (d->isEnableL2Converter()) {
                     d->commitConvertingText();
                     d->composingText.insertStrSegment(ComposingText::LAYER0, ComposingText::LAYER1, text.mid(i, 1));
-                    if (d->preConverter != NULL)
+                    if (d->preConverter != nullptr)
                         d->preConverter->convert(d->composingText);
                     if (i == last)
                         d->updateViewStatusForPrediction(true, true);

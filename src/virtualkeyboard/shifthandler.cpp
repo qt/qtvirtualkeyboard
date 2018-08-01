@@ -44,7 +44,7 @@ class ShiftHandlerPrivate : public QObjectPrivate
 public:
     ShiftHandlerPrivate() :
         QObjectPrivate(),
-        inputContext(0),
+        inputContext(nullptr),
         sentenceEndingCharacters(QString(".!?") + QChar(Qt::Key_exclamdown) + QChar(Qt::Key_questiondown)),
         autoCapitalizationEnabled(false),
         toggleShiftEnabled(false),

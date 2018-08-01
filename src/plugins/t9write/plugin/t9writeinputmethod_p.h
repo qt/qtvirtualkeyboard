@@ -56,7 +56,7 @@ class T9WriteInputMethod : public AbstractInputMethod
     Q_DECLARE_PRIVATE(T9WriteInputMethod)
 
 public:
-    explicit T9WriteInputMethod(QObject *parent = 0);
+    explicit T9WriteInputMethod(QObject *parent = nullptr);
     ~T9WriteInputMethod();
 
     QList<InputEngine::InputMode> inputModes(const QString &locale);

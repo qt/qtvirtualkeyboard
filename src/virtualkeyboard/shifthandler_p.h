@@ -59,7 +59,7 @@ class QVIRTUALKEYBOARD_EXPORT ShiftHandler : public QObject
     Q_PROPERTY(bool autoCapitalizationEnabled READ autoCapitalizationEnabled NOTIFY autoCapitalizationEnabledChanged)
     Q_PROPERTY(bool toggleShiftEnabled READ toggleShiftEnabled NOTIFY toggleShiftEnabledChanged)
 
-    explicit ShiftHandler(InputContext *parent = 0);
+    explicit ShiftHandler(InputContext *parent = nullptr);
 
 public:
     ~ShiftHandler();

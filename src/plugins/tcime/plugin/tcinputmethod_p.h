@@ -55,7 +55,7 @@ class TCInputMethod : public AbstractInputMethod
     Q_PROPERTY(bool simplified READ simplified WRITE setSimplified NOTIFY simplifiedChanged)
 
 public:
-    explicit TCInputMethod(QObject *parent = 0);
+    explicit TCInputMethod(QObject *parent = nullptr);
     ~TCInputMethod();
 
     bool simplified() const;

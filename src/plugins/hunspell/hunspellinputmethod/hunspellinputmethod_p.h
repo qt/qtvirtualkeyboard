@@ -55,7 +55,7 @@ class HunspellInputMethod : public AbstractInputMethod
 protected:
     HunspellInputMethod(HunspellInputMethodPrivate *d_ptr, QObject *parent);
 public:
-    explicit HunspellInputMethod(QObject *parent = 0);
+    explicit HunspellInputMethod(QObject *parent = nullptr);
     ~HunspellInputMethod();
 
     QList<InputEngine::InputMode> inputModes(const QString &locale);

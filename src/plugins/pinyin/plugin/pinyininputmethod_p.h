@@ -54,7 +54,7 @@ class PinyinInputMethod : public AbstractInputMethod
     Q_DECLARE_PRIVATE(PinyinInputMethod)
 
 public:
-    explicit PinyinInputMethod(QObject *parent = 0);
+    explicit PinyinInputMethod(QObject *parent = nullptr);
     ~PinyinInputMethod();
 
     QList<InputEngine::InputMode> inputModes(const QString &locale);

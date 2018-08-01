@@ -65,7 +65,7 @@ class QVIRTUALKEYBOARD_EXPORT ShadowInputContext : public QObject
     Q_PROPERTY(bool cursorRectIntersectsClipRect READ cursorRectIntersectsClipRect NOTIFY cursorRectIntersectsClipRectChanged)
     Q_PROPERTY(bool selectionControlVisible READ selectionControlVisible NOTIFY selectionControlVisibleChanged)
 
-    explicit ShadowInputContext(QObject *parent = 0);
+    explicit ShadowInputContext(QObject *parent = nullptr);
 
     void setInputContext(InputContext *inputContext);
 

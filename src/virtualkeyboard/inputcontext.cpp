@@ -73,9 +73,9 @@ public:
 
     InputContextPrivate() :
         QObjectPrivate(),
-        inputContext(0),
-        inputEngine(0),
-        shiftHandler(0),
+        inputContext(nullptr),
+        inputEngine(nullptr),
+        shiftHandler(nullptr),
         keyboardRect(),
         previewRect(),
         previewVisible(false),
@@ -391,7 +391,7 @@ void InputContext::updateAvailableLocales(const QStringList &availableLocales)
 QObject *InputContext::inputItem() const
 {
     Q_D(const InputContext);
-    return d->inputContext ? d->inputContext->focusObject() : 0;
+    return d->inputContext ? d->inputContext->focusObject() : nullptr;
 }
 
 ShiftHandler *InputContext::shiftHandler() const
@@ -558,7 +558,7 @@ bool InputContext::fileExists(const QUrl &fileUrl)
 */
 bool InputContext::hasEnterKeyAction(QObject *item) const
 {
-    return item != 0 && qmlAttachedPropertiesObject<EnterKeyAction>(item, false);
+    return item != nullptr && qmlAttachedPropertiesObject<EnterKeyAction>(item, false);
 }
 
 /*!

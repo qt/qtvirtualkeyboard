@@ -54,7 +54,7 @@ class OpenWnnInputMethod : public AbstractInputMethod
     Q_DECLARE_PRIVATE(OpenWnnInputMethod)
 
 public:
-    explicit OpenWnnInputMethod(QObject *parent = 0);
+    explicit OpenWnnInputMethod(QObject *parent = nullptr);
     ~OpenWnnInputMethod();
 
     QList<InputEngine::InputMode> inputModes(const QString &locale);

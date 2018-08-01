@@ -51,7 +51,7 @@ class UnipenTrace : public QObject
 {
     Q_OBJECT
 public:
-    explicit UnipenTrace(const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo, QObject *parent = 0);
+    explicit UnipenTrace(const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo, QObject *parent = nullptr);
 
     void record(const QList<Trace *> &traceList);
     void save(uint unicode, uint confidence);

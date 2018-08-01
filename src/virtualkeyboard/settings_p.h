@@ -56,7 +56,7 @@ class QVIRTUALKEYBOARD_EXPORT Settings : public QObject
     Q_DISABLE_COPY(Settings)
     Q_DECLARE_PRIVATE(Settings)
 
-    Settings(QObject *parent = 0);
+    Settings(QObject *parent = nullptr);
 
 public:
     static Settings *instance();

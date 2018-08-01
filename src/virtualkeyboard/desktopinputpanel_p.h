@@ -56,7 +56,7 @@ class QVIRTUALKEYBOARD_EXPORT DesktopInputPanel : public AppInputPanel
     Q_OBJECT
     Q_DECLARE_PRIVATE(DesktopInputPanel)
 public:
-    explicit DesktopInputPanel(QObject *parent = 0);
+    explicit DesktopInputPanel(QObject *parent = nullptr);
     ~DesktopInputPanel();
 
     void show();

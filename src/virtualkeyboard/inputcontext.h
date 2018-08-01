@@ -77,7 +77,7 @@ class QVIRTUALKEYBOARD_EXPORT InputContext : public QObject
     Q_PROPERTY(ShadowInputContext *shadow READ shadow CONSTANT)
 
 public:
-    explicit InputContext(PlatformInputContext *parent = 0);
+    explicit InputContext(PlatformInputContext *parent = nullptr);
     ~InputContext();
 
     bool focus() const;

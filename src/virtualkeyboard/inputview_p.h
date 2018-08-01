@@ -51,7 +51,7 @@ class QVIRTUALKEYBOARD_EXPORT InputView : public QQuickView
 {
     Q_OBJECT
 public:
-    explicit InputView(QWindow *parent = 0);
+    explicit InputView(QWindow *parent = nullptr);
 
 signals:
     void sizeChanged();

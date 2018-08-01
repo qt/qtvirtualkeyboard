@@ -45,7 +45,7 @@ class ShadowInputContextPrivate : public QObjectPrivate
 public:
     ShadowInputContextPrivate() :
         QObjectPrivate(),
-        inputContext(0),
+        inputContext(nullptr),
         anchorRectIntersectsClipRect(false),
         cursorRectIntersectsClipRect(false),
         selectionControlVisible(false)

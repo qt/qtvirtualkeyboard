@@ -54,12 +54,12 @@ Q_DECLARE_LOGGING_CATEGORY(lcLipi)
 int LipiSharedRecognizer::s_lipiEngineRefCount = 0;
 QString LipiSharedRecognizer::s_lipiRoot;
 QString LipiSharedRecognizer::s_lipiLib;
-void *LipiSharedRecognizer::s_lipiEngineHandle = 0;
-LipiSharedRecognizer::FN_PTR_CREATELTKLIPIENGINE LipiSharedRecognizer::s_createLTKLipiEngine = 0;
-LipiSharedRecognizer::FN_PTR_DELETELTKLIPIENGINE LipiSharedRecognizer::s_deleteLTKLipiEngine = 0;
-LTKLipiEngineInterface *LipiSharedRecognizer::s_lipiEngine = 0;
-LTKShapeRecognizer *LipiSharedRecognizer::s_shapeRecognizer = 0;
-LipiWorker *LipiSharedRecognizer::s_lipiWorker = 0;
+void *LipiSharedRecognizer::s_lipiEngineHandle = nullptr;
+LipiSharedRecognizer::FN_PTR_CREATELTKLIPIENGINE LipiSharedRecognizer::s_createLTKLipiEngine = nullptr;
+LipiSharedRecognizer::FN_PTR_DELETELTKLIPIENGINE LipiSharedRecognizer::s_deleteLTKLipiEngine = nullptr;
+LTKLipiEngineInterface *LipiSharedRecognizer::s_lipiEngine = nullptr;
+LTKShapeRecognizer *LipiSharedRecognizer::s_shapeRecognizer = nullptr;
+LipiWorker *LipiSharedRecognizer::s_lipiWorker = nullptr;
 QMap<int, QChar> LipiSharedRecognizer::s_unicodeMap;
 QString LipiSharedRecognizer::s_activeModel;
 stringStringMap LipiSharedRecognizer::s_lipiEngineConfigEntries;
@@ -252,13 +252,13 @@ void LipiSharedRecognizer::unloadLipiInterface()
         unloadModelData();
         if (s_lipiEngine) {
             s_deleteLTKLipiEngine();
-            s_lipiEngine = 0;
+            s_lipiEngine = nullptr;
         }
-        s_createLTKLipiEngine = 0;
-        s_deleteLTKLipiEngine = 0;
+        s_createLTKLipiEngine = nullptr;
+        s_deleteLTKLipiEngine = nullptr;
         QScopedPointer<LTKOSUtil> osUtil(LTKOSUtilFactory::getInstance());
         osUtil->unloadSharedLib(s_lipiEngineHandle);
-        s_lipiEngineHandle = 0;
+        s_lipiEngineHandle = nullptr;
     }
 }
 
@@ -307,8 +307,8 @@ int LipiSharedRecognizer::loadModelData(const QString &logicalName)
 {
     qCDebug(lcLipi) << "LipiSharedRecognizer::loadModelData():" << logicalName;
 
-    Q_ASSERT(s_shapeRecognizer == 0);
-    Q_ASSERT(s_lipiWorker == 0);
+    Q_ASSERT(s_shapeRecognizer == nullptr);
+    Q_ASSERT(s_lipiWorker == nullptr);
 
     QTime perf;
     perf.start();
@@ -356,11 +356,11 @@ void LipiSharedRecognizer::unloadModelData()
 
     if (s_lipiWorker) {
         delete s_lipiWorker;
-        s_lipiWorker = 0;
+        s_lipiWorker = nullptr;
     }
 
     s_lipiEngine->deleteShapeRecognizer(s_shapeRecognizer);
-    s_shapeRecognizer = 0;
+    s_shapeRecognizer = nullptr;
     s_unicodeMap.clear();
     s_activeModel.clear();
 

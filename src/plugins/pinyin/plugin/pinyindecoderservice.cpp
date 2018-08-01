@@ -69,7 +69,7 @@ PinyinDecoderService *PinyinDecoderService::getInstance()
     if (!_instance)
         _instance.reset(new PinyinDecoderService());
     if (!_instance->init())
-        return 0;
+        return nullptr;
     return _instance.data();
 }
 
@@ -108,7 +108,7 @@ void PinyinDecoderService::setUserDictionary(bool enabled)
         QFileInfo usrDictInfo(usrDictPath + "/qtvirtualkeyboard/pinyin/usr_dict.dat");
         im_init_user_dictionary(usrDictInfo.absoluteFilePath().toUtf8().constData());
     } else {
-        im_init_user_dictionary(NULL);
+        im_init_user_dictionary(nullptr);
     }
 }
 
@@ -224,7 +224,7 @@ void PinyinDecoderService::flushCache()
 QList<QString> PinyinDecoderService::predictionList(const QString &history)
 {
     QList<QString> predictList;
-    char16 (*predictItems)[kMaxPredictSize + 1] = 0;
+    char16 (*predictItems)[kMaxPredictSize + 1] = nullptr;
     int predictNum = int(im_get_predicts(history.utf16(), predictItems));
     predictList.reserve(predictNum);
     for (int i = 0; i < predictNum; i++)

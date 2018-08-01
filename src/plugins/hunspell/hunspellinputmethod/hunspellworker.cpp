@@ -57,7 +57,7 @@ Q_DECLARE_LOGGING_CATEGORY(lcHunspell)
 
 HunspellLoadDictionaryTask::HunspellLoadDictionaryTask(const QString &locale, const QStringList &searchPaths) :
     HunspellTask(),
-    hunspellPtr(0),
+    hunspellPtr(nullptr),
     locale(locale),
     searchPaths(searchPaths)
 {
@@ -65,7 +65,7 @@ HunspellLoadDictionaryTask::HunspellLoadDictionaryTask(const QString &locale, co
 
 void HunspellLoadDictionaryTask::run()
 {
-    Q_ASSERT(hunspellPtr != 0);
+    Q_ASSERT(hunspellPtr != nullptr);
 
     qCDebug(lcHunspell) << "HunspellLoadDictionaryTask::run(): locale:" << locale;
 
@@ -74,7 +74,7 @@ void HunspellLoadDictionaryTask::run()
 
     if (*hunspellPtr) {
         Hunspell_destroy(*hunspellPtr);
-        *hunspellPtr = 0;
+        *hunspellPtr = nullptr;
     }
 
     QString affPath;
@@ -99,7 +99,7 @@ void HunspellLoadDictionaryTask::run()
             if (!QTextCodec::codecForName(Hunspell_get_dic_encoding(*hunspellPtr))) {
                 qCWarning(lcHunspell) << "The Hunspell dictionary" << dicPath << "cannot be used because it uses an unknown text codec" << QString(Hunspell_get_dic_encoding(*hunspellPtr));
                 Hunspell_destroy(*hunspellPtr);
-                *hunspellPtr = 0;
+                *hunspellPtr = nullptr;
             }
         }
 
@@ -108,7 +108,7 @@ void HunspellLoadDictionaryTask::run()
         qCWarning(lcHunspell) << "Hunspell dictionary is missing for" << locale << ". Search paths" << searchPaths;
     }
 
-    emit completed(*hunspellPtr != 0);
+    emit completed(*hunspellPtr != nullptr);
 }
 
 /*!
@@ -132,7 +132,7 @@ void HunspellBuildSuggestionsTask::run()
     if (!textCodec)
         return;
 
-    char **slst = 0;
+    char **slst = nullptr;
     int n = Hunspell_suggest(hunspell, &slst, textCodec->fromUnicode(word).constData());
     if (n > 0) {
         /*  Collect word candidates from the Hunspell suggestions.
@@ -255,7 +255,7 @@ HunspellWorker::HunspellWorker(QObject *parent) :
     QThread(parent),
     taskSema(),
     taskLock(),
-    hunspell(0)
+    hunspell(nullptr)
 {
     abort = false;
 }
@@ -309,7 +309,7 @@ void HunspellWorker::run()
     }
     if (hunspell) {
         Hunspell_destroy(hunspell);
-        hunspell = 0;
+        hunspell = nullptr;
     }
 }
 

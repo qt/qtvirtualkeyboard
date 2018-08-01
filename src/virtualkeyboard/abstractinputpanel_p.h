@@ -51,9 +51,9 @@ class QVIRTUALKEYBOARD_EXPORT AbstractInputPanel : public QObject
 {
     Q_OBJECT
 protected:
-    AbstractInputPanel(QObjectPrivate &dd, QObject *parent = 0);
+    AbstractInputPanel(QObjectPrivate &dd, QObject *parent = nullptr);
 public:
-    explicit AbstractInputPanel(QObject *parent = 0);
+    explicit AbstractInputPanel(QObject *parent = nullptr);
     ~AbstractInputPanel();
 
     virtual void show() = 0;

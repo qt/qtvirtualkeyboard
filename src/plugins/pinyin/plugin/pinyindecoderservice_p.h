@@ -50,7 +50,7 @@ class PinyinDecoderService : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(PinyinDecoderService)
-    explicit PinyinDecoderService(QObject *parent = 0);
+    explicit PinyinDecoderService(QObject *parent = nullptr);
 
 public:
     ~PinyinDecoderService();

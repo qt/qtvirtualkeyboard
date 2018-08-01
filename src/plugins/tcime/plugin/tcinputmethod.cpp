@@ -59,7 +59,7 @@ public:
     TCInputMethodPrivate(TCInputMethod *q_ptr) :
         q_ptr(q_ptr),
         inputMode(InputEngine::Latin),
-        wordDictionary(0),
+        wordDictionary(nullptr),
         highlightIndex(-1)
     {}
 
@@ -370,7 +370,7 @@ bool TCInputMethod::setInputMode(const QString &locale, InputEngine::InputMode i
     update();
     bool result = false;
     d->inputMode = inputMode;
-    d->wordDictionary = 0;
+    d->wordDictionary = nullptr;
 #if defined(HAVE_TCIME_CANGJIE)
     if (inputMode == InputEngine::Cangjie) {
         if (d->cangjieDictionary.isEmpty()) {

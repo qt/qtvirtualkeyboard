@@ -51,12 +51,12 @@ Q_LOGGING_CATEGORY(qlcVirtualKeyboard, "qt.virtualkeyboard")
 */
 
 PlatformInputContext::PlatformInputContext() :
-    m_inputContext(0),
-    m_inputPanel(0),
-    m_focusObject(0),
+    m_inputContext(nullptr),
+    m_inputPanel(nullptr),
+    m_focusObject(nullptr),
     m_locale(),
     m_inputDirection(m_locale.textDirection()),
-    m_filterEvent(0),
+    m_filterEvent(nullptr),
     m_visible(false)
 {
 }
@@ -185,8 +185,8 @@ QObject *PlatformInputContext::focusObject()
 void PlatformInputContext::setFocusObject(QObject *object)
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::setFocusObject():" << object;
-    Q_ASSERT(m_inputContext == 0 ||
-             m_inputContext->shadow()->inputItem() == 0 ||
+    Q_ASSERT(m_inputContext == nullptr ||
+             m_inputContext->shadow()->inputItem() == nullptr ||
              m_inputContext->shadow()->inputItem() != object);
     if (m_focusObject != object) {
         if (m_focusObject)
@@ -216,18 +216,18 @@ void PlatformInputContext::sendEvent(QEvent *event)
     if (m_focusObject) {
         m_filterEvent = event;
         QGuiApplication::sendEvent(m_focusObject, event);
-        m_filterEvent = 0;
+        m_filterEvent = nullptr;
     }
 }
 
 void PlatformInputContext::sendKeyEvent(QKeyEvent *event)
 {
     const QGuiApplication *app = qApp;
-    QWindow *focusWindow = app ? app->focusWindow() : 0;
+    QWindow *focusWindow = app ? app->focusWindow() : nullptr;
     if (focusWindow) {
         m_filterEvent = event;
         QGuiApplication::sendEvent(focusWindow, event);
-        m_filterEvent = 0;
+        m_filterEvent = nullptr;
     }
 }
 
@@ -249,7 +249,7 @@ void PlatformInputContext::setInputContext(InputContext *context)
             m_inputPanel = new AppInputPanel(this);
         connect(m_inputContext, SIGNAL(keyboardRectangleChanged()), SLOT(keyboardRectangleChanged()));
     } else if (m_inputPanel) {
-        m_inputPanel = 0;
+        m_inputPanel = nullptr;
     }
 }
 

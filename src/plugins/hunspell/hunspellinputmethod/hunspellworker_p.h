@@ -57,9 +57,9 @@ class HunspellTask : public QObject
 {
     Q_OBJECT
 public:
-    explicit HunspellTask(QObject *parent = 0) :
+    explicit HunspellTask(QObject *parent = nullptr) :
         QObject(parent),
-        hunspell(0)
+        hunspell(nullptr)
     {}
 
     virtual void run() = 0;
@@ -127,7 +127,7 @@ class HunspellWorker : public QThread
 {
     Q_OBJECT
 public:
-    explicit HunspellWorker(QObject *parent = 0);
+    explicit HunspellWorker(QObject *parent = nullptr);
     ~HunspellWorker();
 
     void addTask(QSharedPointer<HunspellTask> task);

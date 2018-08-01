@@ -47,8 +47,8 @@ public:
     InputEnginePrivate(InputEngine *q_ptr) :
         QObjectPrivate(),
         q_ptr(q_ptr),
-        inputContext(0),
-        fallbackInputMethod(0),
+        inputContext(nullptr),
+        fallbackInputMethod(nullptr),
         textCase(InputEngine::Lower),
         inputMode(InputEngine::Latin),
         activeKey(Qt::Key_unknown),
@@ -368,7 +368,7 @@ void InputEngine::setInputMethod(AbstractInputMethod *inputMethod)
         update();
         if (d->inputMethod) {
             QObject::disconnect(d->inputMethod.data(), &AbstractInputMethod::selectionListsChanged, this, &InputEngine::updateSelectionListModels);
-            d->inputMethod->setInputEngine(0);
+            d->inputMethod->setInputEngine(nullptr);
         }
         d->inputMethod = inputMethod;
         if (d->inputMethod) {
@@ -436,7 +436,7 @@ bool InputEngine::wordCandidateListVisibleHint() const
     const auto it = d->selectionListModels.constFind(SelectionListModel::WordCandidateList);
     if (it == d->selectionListModels.cend())
         return false;
-    return it.value()->dataSource() != 0;
+    return it.value()->dataSource() != nullptr;
 }
 
 /*!
@@ -509,11 +509,11 @@ Trace *InputEngine::traceBegin(
                             << "traceCaptureDeviceInfo:" << traceCaptureDeviceInfo
                             << "traceScreenInfo:" << traceScreenInfo;
     if (!d->inputMethod)
-        return 0;
+        return nullptr;
     if (patternRecognitionMode == PatternRecognitionDisabled)
-        return 0;
+        return nullptr;
     if (!d->inputMethod->patternRecognitionModes().contains(patternRecognitionMode))
-        return 0;
+        return nullptr;
     Trace *trace = d->inputMethod->traceBegin(traceId, patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
     if (trace)
         trace->setTraceId(traceId);
@@ -644,7 +644,7 @@ void InputEngine::updateSelectionListModels()
     for (const SelectionListModel::Type &selectionListType : qAsConst(inactiveSelectionLists)) {
         const auto it = d->selectionListModels.constFind(selectionListType);
         if (it != d->selectionListModels.cend()) {
-            it.value()->setDataSource(0, selectionListType);
+            it.value()->setDataSource(nullptr, selectionListType);
             if (selectionListType == SelectionListModel::WordCandidateList)
                 emit wordCandidateListVisibleHintChanged();
         }

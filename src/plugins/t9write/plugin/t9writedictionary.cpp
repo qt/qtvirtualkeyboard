@@ -41,9 +41,9 @@ T9WriteDictionary::T9WriteDictionary(DECUMA_SESSION *decumaSession,
     decumaSession(decumaSession),
     memFuncs(memFuncs),
     cjk(cjk),
-    sourceData(0),
+    sourceData(nullptr),
     sourceSize(0),
-    convertedData(0),
+    convertedData(nullptr),
     convertedSize(0)
 {
 }
@@ -53,7 +53,7 @@ T9WriteDictionary::~T9WriteDictionary()
     if (convertedData) {
         DECUMA_STATUS status = DECUMA_API(DestroyConvertedDictionary)(&convertedData, &memFuncs);
         Q_ASSERT(status == decumaNoError);
-        Q_ASSERT(convertedData == 0);
+        Q_ASSERT(convertedData == nullptr);
     }
 }
 
@@ -75,7 +75,7 @@ bool T9WriteDictionary::load(const QString &fileName)
         qCWarning(lcT9Write) << "Could not open dictionary file" << fileName;
     }
 
-    return sourceData != 0;
+    return sourceData != nullptr;
 }
 
 bool T9WriteDictionary::convert(const DECUMA_SRC_DICTIONARY_INFO &dictionaryInfo)
@@ -91,7 +91,7 @@ bool T9WriteDictionary::convert(const DECUMA_SRC_DICTIONARY_INFO &dictionaryInfo
         qCWarning(lcT9Write) << "Could not convert dictionary" << file.fileName();
         file.unmap((uchar *)sourceData);
         sourceSize = 0;
-        sourceData = 0;
+        sourceData = nullptr;
     }
 
     return status == decumaNoError;
@@ -114,7 +114,7 @@ qint64 T9WriteDictionary::size() const
 
 bool T9WriteDictionary::isConverted() const
 {
-    return convertedData != 0;
+    return convertedData != nullptr;
 }
 
 } // namespace QtVirtualKeyboard

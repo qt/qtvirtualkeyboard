@@ -65,9 +65,9 @@ class LipiTask : public QObject
 {
     Q_OBJECT
 public:
-    explicit LipiTask(QObject *parent = 0) :
+    explicit LipiTask(QObject *parent = nullptr) :
         QObject(parent),
-        shapeRecognizer(0)
+        shapeRecognizer(nullptr)
     {}
 
     virtual void run() = 0;
@@ -137,7 +137,7 @@ class LipiWorker : public QThread
 {
     Q_OBJECT
 public:
-    explicit LipiWorker(LTKShapeRecognizer *shapeRecognizer, QObject *parent = 0);
+    explicit LipiWorker(LTKShapeRecognizer *shapeRecognizer, QObject *parent = nullptr);
     ~LipiWorker();
 
     void addTask(QSharedPointer<LipiTask> task);

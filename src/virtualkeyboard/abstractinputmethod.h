@@ -44,7 +44,7 @@ class QVIRTUALKEYBOARD_EXPORT AbstractInputMethod : public QObject
     Q_DECLARE_PRIVATE(AbstractInputMethod)
 
 public:
-    explicit AbstractInputMethod(QObject *parent = 0);
+    explicit AbstractInputMethod(QObject *parent = nullptr);
     ~AbstractInputMethod();
 
     InputContext *inputContext() const;

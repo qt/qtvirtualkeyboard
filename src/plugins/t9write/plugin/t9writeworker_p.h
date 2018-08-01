@@ -62,7 +62,7 @@ class T9WriteTask : public QObject
 {
     Q_OBJECT
 public:
-    explicit T9WriteTask(QObject *parent = 0);
+    explicit T9WriteTask(QObject *parent = nullptr);
 
     virtual void run() = 0;
 
@@ -177,7 +177,7 @@ class T9WriteWorker : public QThread
 {
     Q_OBJECT
 public:
-    explicit T9WriteWorker(DECUMA_SESSION *decumaSession, const bool cjk, QObject *parent = 0);
+    explicit T9WriteWorker(DECUMA_SESSION *decumaSession, const bool cjk, QObject *parent = nullptr);
     ~T9WriteWorker();
 
     void addTask(QSharedPointer<T9WriteTask> task);

@@ -51,7 +51,7 @@ class QVIRTUALKEYBOARD_EXPORT PlainInputMethod : public AbstractInputMethod
     Q_OBJECT
 
 public:
-    explicit PlainInputMethod(QObject *parent = 0);
+    explicit PlainInputMethod(QObject *parent = nullptr);
     ~PlainInputMethod();
 
     QList<InputEngine::InputMode> inputModes(const QString &locale);

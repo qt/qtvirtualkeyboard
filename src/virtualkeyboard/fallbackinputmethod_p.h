@@ -51,7 +51,7 @@ class QVIRTUALKEYBOARD_EXPORT FallbackInputMethod : public AbstractInputMethod
     Q_OBJECT
 
 public:
-    explicit FallbackInputMethod(QObject *parent = 0);
+    explicit FallbackInputMethod(QObject *parent = nullptr);
 
     QList<InputEngine::InputMode> inputModes(const QString &locale);
     bool setInputMode(const QString &locale, InputEngine::InputMode inputMode);

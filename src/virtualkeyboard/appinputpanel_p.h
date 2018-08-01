@@ -59,10 +59,10 @@ class QVIRTUALKEYBOARD_EXPORT AppInputPanel : public AbstractInputPanel
     Q_DECLARE_PRIVATE(AppInputPanel)
 
 protected:
-    AppInputPanel(AppInputPanelPrivate &dd, QObject *parent = 0);
+    AppInputPanel(AppInputPanelPrivate &dd, QObject *parent = nullptr);
 
 public:
-    explicit AppInputPanel(QObject *parent = 0);
+    explicit AppInputPanel(QObject *parent = nullptr);
     ~AppInputPanel();
 
     void show();

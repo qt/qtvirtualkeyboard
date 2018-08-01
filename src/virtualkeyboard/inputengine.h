@@ -58,7 +58,7 @@ class QVIRTUALKEYBOARD_EXPORT InputEngine : public QObject
     Q_PROPERTY(SelectionListModel *wordCandidateListModel READ wordCandidateListModel NOTIFY wordCandidateListModelChanged)
     Q_PROPERTY(bool wordCandidateListVisibleHint READ wordCandidateListVisibleHint NOTIFY wordCandidateListVisibleHintChanged)
 
-    explicit InputEngine(InputContext *parent = 0);
+    explicit InputEngine(InputContext *parent = nullptr);
 
 public:
     enum TextCase {

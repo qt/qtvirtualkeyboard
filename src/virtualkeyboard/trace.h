@@ -50,7 +50,7 @@ class QVIRTUALKEYBOARD_EXPORT Trace : public QObject
     Q_PROPERTY(bool isFinal READ isFinal WRITE setFinal NOTIFY finalChanged)
     Q_PROPERTY(bool isCanceled READ isCanceled WRITE setCanceled NOTIFY canceledChanged)
 public:
-    explicit Trace(QObject *parent = 0);
+    explicit Trace(QObject *parent = nullptr);
     ~Trace();
 
     int traceId() const;

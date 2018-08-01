@@ -46,7 +46,7 @@ class QVIRTUALKEYBOARD_EXPORT SelectionListModel : public QAbstractListModel
     Q_DECLARE_PRIVATE(SelectionListModel)
     Q_PROPERTY(int count READ count NOTIFY countChanged)
 
-    explicit SelectionListModel(QObject *parent = 0);
+    explicit SelectionListModel(QObject *parent = nullptr);
 
 public:
     enum Type

@@ -47,7 +47,7 @@ public:
 */
 
 AbstractInputMethodPrivate::AbstractInputMethodPrivate() :
-    inputEngine(0)
+    inputEngine(nullptr)
 {
 }
 
@@ -84,7 +84,7 @@ AbstractInputMethod::~AbstractInputMethod()
 InputContext *AbstractInputMethod::inputContext() const
 {
     Q_D(const AbstractInputMethod);
-    return d->inputEngine ? d->inputEngine->inputContext() : 0;
+    return d->inputEngine ? d->inputEngine->inputContext() : nullptr;
 }
 
 /*!
@@ -197,7 +197,7 @@ Trace *AbstractInputMethod::traceBegin(int traceId, InputEngine::PatternRecognit
     Q_UNUSED(patternRecognitionMode)
     Q_UNUSED(traceCaptureDeviceInfo)
     Q_UNUSED(traceScreenInfo)
-    return 0;
+    return nullptr;
 }
 
 /*!

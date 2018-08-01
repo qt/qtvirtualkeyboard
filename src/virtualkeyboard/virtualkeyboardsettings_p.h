@@ -110,7 +110,7 @@ class QVIRTUALKEYBOARD_EXPORT WordCandidateListSettings : public QObject
     Q_PROPERTY(bool alwaysVisible READ alwaysVisible WRITE setAlwaysVisible NOTIFY alwaysVisibleChanged)
     Q_PROPERTY(bool autoCommitWord READ autoCommitWord WRITE setAutoCommitWord NOTIFY autoCommitWordChanged)
 
-    explicit WordCandidateListSettings(QObject *parent = 0);
+    explicit WordCandidateListSettings(QObject *parent = nullptr);
     friend class VirtualKeyboardSettingsPrivate;
 
 public:

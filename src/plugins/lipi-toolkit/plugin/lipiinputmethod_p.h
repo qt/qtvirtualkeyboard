@@ -59,7 +59,7 @@ class LipiInputMethod : public LipiInputMethodBase
     Q_OBJECT
     Q_DECLARE_PRIVATE(LipiInputMethod)
 public:
-    explicit LipiInputMethod(QObject *parent = 0);
+    explicit LipiInputMethod(QObject *parent = nullptr);
     ~LipiInputMethod();
 
     QList<InputEngine::InputMode> inputModes(const QString &locale);

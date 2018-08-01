@@ -126,13 +126,13 @@ public:
         engineMode(EngineUninitialized),
         defaultHwrDbPath(QLatin1String(":/QtQuick/VirtualKeyboard/T9Write/data/")),
         defaultDictionaryDbPath(defaultHwrDbPath),
-        dictionaryLock(QMutex::Recursive),
-        attachedDictionary(0),
         traceListHardLimit(32),
+        dictionaryLock(QMutex::Recursive),
+        attachedDictionary(nullptr),
         resultId(0),
         lastResultId(0),
         resultTimer(0),
-        decumaSession(0),
+        decumaSession(nullptr),
         activeWordIndex(-1),
         arcAdditionStarted(false),
         ignoreUpdate(false),
@@ -239,7 +239,7 @@ public:
         sessionSettings.charSet.nLanguages = languageCategories.size();
 
         session = QByteArray(DECUMA_API(GetSessionSize)(), 0);
-        decumaSession = (DECUMA_SESSION *)(!session.isEmpty() ? session.data() : 0);
+        decumaSession = (DECUMA_SESSION *)(!session.isEmpty() ? session.data() : nullptr);
 
         DECUMA_STATUS status = DECUMA_API(BeginSession)(decumaSession, &sessionSettings, &memFuncs);
         Q_ASSERT(status == decumaNoError);
@@ -287,7 +287,7 @@ public:
             DECUMA_API(StopLogging)(decumaSession);
 #endif
             DECUMA_API(EndSession)(decumaSession);
-            decumaSession = 0;
+            decumaSession = nullptr;
             session.clear();
         }
 
@@ -391,8 +391,8 @@ public:
     bool attachDictionary(const QSharedPointer<T9WriteDictionary> &dictionary)
     {
         QMutexLocker dictionaryGuard(&dictionaryLock);
-        Q_ASSERT(decumaSession != 0);
-        Q_ASSERT(dictionary != 0);
+        Q_ASSERT(decumaSession != nullptr);
+        Q_ASSERT(dictionary != nullptr);
         qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::attachDictionary():" << dictionary->fileName();
 #if T9WRITEAPIMAJORVERNUM >= 20
         DECUMA_STATUS status = DECUMA_API(AttachDictionary)(decumaSession, dictionary->data(), dictionary->size());
@@ -410,7 +410,7 @@ public:
 
         qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::detachDictionary():" << dictionary->fileName();
 
-        Q_ASSERT(decumaSession != 0);
+        Q_ASSERT(decumaSession != nullptr);
         DECUMA_STATUS status = DECUMA_API(DetachDictionary)(decumaSession, dictionary->data());
         Q_UNUSED(status)
         Q_ASSERT(status == decumaNoError);
@@ -1059,7 +1059,7 @@ public:
                       const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
     {
         if (!worker)
-            return 0;
+            return nullptr;
 
         // The result id follows the trace id so that the (previous)
         // results completed during the handwriting can be rejected.
@@ -1212,7 +1212,7 @@ public:
 
         bool result = !traceList.isEmpty();
 
-        Q_ASSERT(decumaSession != 0);
+        Q_ASSERT(decumaSession != nullptr);
 
         stopResultTimer();
 
@@ -1666,7 +1666,7 @@ const DECUMA_MEM_FUNCTIONS T9WriteInputMethodPrivate::memFuncs = {
     T9WriteInputMethodPrivate::decumaMalloc,
     T9WriteInputMethodPrivate::decumaCalloc,
     T9WriteInputMethodPrivate::decumaFree,
-    NULL
+    nullptr
 };
 
 /*!

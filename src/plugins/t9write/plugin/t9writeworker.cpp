@@ -45,7 +45,7 @@ Q_DECLARE_LOGGING_CATEGORY(lcT9Write)
 
 T9WriteTask::T9WriteTask(QObject *parent) :
     QObject(parent),
-    decumaSession(0),
+    decumaSession(nullptr),
     runSema()
 {
 }
@@ -205,7 +205,7 @@ void T9WriteRecognitionTask::run()
     interruptFunctions.pUserData = (void *)this;
     DECUMA_INTERRUPT_FUNCTIONS *pInterruptFunctions = &interruptFunctions;
 #else
-    DECUMA_INTERRUPT_FUNCTIONS *pInterruptFunctions = NULL;
+    DECUMA_INTERRUPT_FUNCTIONS *pInterruptFunctions = nullptr;
 #endif
     result->status = DECUMA_API(Recognize)(decumaSession, result->results.data(), result->results.size(), &result->numResults, result->maxCharsPerWord, &recSettings, pInterruptFunctions);
     if (result->status != decumaNoError)
@@ -240,7 +240,7 @@ bool T9WriteRecognitionTask::cancelRecognition()
 
 int T9WriteRecognitionTask::resultId() const
 {
-    return result != 0 ? result->id : -1;
+    return result != nullptr ? result->id : -1;
 }
 
 /*!
