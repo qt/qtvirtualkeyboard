@@ -372,7 +372,7 @@ void T9WriteWorker::waitForAllTasks()
 int T9WriteWorker::numberOfPendingTasks()
 {
     QMutexLocker guard(&taskLock);
-    return taskList.count() + !idleSema.available() ? 1 : 0;
+    return taskList.count() + (!idleSema.available() ? 1 : 0);
 }
 
 void T9WriteWorker::run()
