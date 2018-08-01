@@ -45,6 +45,7 @@ t9write-alphabetic {
     contains(CONFIG, lang-pt.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/pt_PT/handwriting.qml
     contains(CONFIG, lang-ro.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/ro_RO/handwriting.qml
     contains(CONFIG, lang-ru.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/ru_RU/handwriting.qml
+    contains(CONFIG, lang-sq.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/sq_AL/handwriting.qml
     contains(CONFIG, lang-sr.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/sr_SP/handwriting.qml
     contains(CONFIG, lang-sv.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/sv_SE/handwriting.qml
     contains(CONFIG, lang-vi.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/vi_VN/handwriting.qml

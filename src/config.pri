@@ -71,6 +71,7 @@ disable-layouts {
         lang-pt_PT \
         lang-ro_RO \
         lang-ru_RU \
+        lang-sq_AL \
         lang-sr_SP \
         lang-sv_SE \
         lang-vi_VN \
