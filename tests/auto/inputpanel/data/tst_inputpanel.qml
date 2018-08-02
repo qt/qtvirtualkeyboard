@@ -349,7 +349,8 @@ Rectangle {
                 { initLocale: "sr_SP", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "\u0437\u0434\u0440\u0430\u0432\u043E", outputText: "\u0417\u0434\u0440\u0430\u0432\u043E" },
                 { initLocale: "sv_SE", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hall\u00E5", outputText: "Hall\u00E5" },
                 { initLocale: "sq_AL", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "përshëndetje", outputText: "Përshëndetje" },
-                { initLocale: "sk_SK", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "ahoj", outputText: "Ahoj" }
+                { initLocale: "sk_SK", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "ahoj", outputText: "Ahoj" },
+                { initLocale: "sl_SI", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "zdravo", outputText: "Zdravo" }
             ]
         }
 

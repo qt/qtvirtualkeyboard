@@ -199,6 +199,11 @@ contains(CONFIG, lang-sk.*) {
         content/layouts/sk_SK/main.qml \
         content/layouts/sk_SK/symbols.qml
 }
+contains(CONFIG, lang-sl.*) {
+    LAYOUT_FILES += \
+        content/layouts/sl_SI/main.qml \
+        content/layouts/sl_SI/symbols.qml
+}
 contains(CONFIG, lang-sq.*) {
     LAYOUT_FILES += \
         content/layouts/sq_AL/main.qml \
