@@ -40,6 +40,7 @@ disable-layouts {
     hangul: CONFIG += lang-ko_KR
     pinyin: CONFIG += lang-zh_CN
     tcime|zhuyin|cangjie: CONFIG += lang-zh_TW
+    thai: CONFIG += lang-th_TH
 
     # Use all languages by default
     !contains(CONFIG, lang-.*): CONFIG += lang-all
@@ -76,6 +77,7 @@ disable-layouts {
         lang-sq_AL \
         lang-sr_SP \
         lang-sv_SE \
+        lang-th_TH \
         lang-vi_VN \
         lang-zh_CN \
         lang-zh_TW
@@ -91,6 +93,7 @@ contains(CONFIG, lang-ja.*)|lang-all: CONFIG += openwnn
 contains(CONFIG, lang-ko.*)|lang-all: CONFIG += hangul
 contains(CONFIG, lang-zh(_CN)?)|lang-all: CONFIG += pinyin
 contains(CONFIG, lang-zh(_TW)?)|lang-all: CONFIG += tcime
+contains(CONFIG, lang-th.*)|lang-all: CONFIG += thai
 
 # Feature dependencies
 tcime {

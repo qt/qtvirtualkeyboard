@@ -189,6 +189,8 @@ bool HunspellInputMethodPrivate::isValidInputChar(const QChar &c) const
         return true;
     if (isJoiner(c))
         return true;
+    if (c.isMark())
+        return true;
     return false;
 }
 
