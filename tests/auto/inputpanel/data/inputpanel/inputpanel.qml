@@ -376,12 +376,15 @@ InputPanel {
                     }
                 } else if (typeof key != "number" || key !== Qt.Key_Shift) {
                     // Some layouts (such as Arabic, Hindi) may have a second layout
-                    virtualKeyPress(Qt.Key_Shift)
+                    virtualKeyClick(Qt.Key_Shift)
                     InputContext.shiftHandler.clearToggleShiftTimer()
                     testcase.waitForRendering(inputPanel)
                     success = keyActionOnCurrentLayoutCb(key)
-                    virtualKeyPress(Qt.Key_Shift)
-                    InputContext.shiftHandler.clearToggleShiftTimer()
+                    if (!success) {
+                        virtualKeyClick(Qt.Key_Shift)
+                        InputContext.shiftHandler.clearToggleShiftTimer()
+                        testcase.waitForRendering(inputPanel)
+                    }
                 }
                 if (success)
                     break
