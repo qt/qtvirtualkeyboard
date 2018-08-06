@@ -224,6 +224,11 @@ contains(CONFIG, lang-tr.*) {
         content/layouts/tr_TR/main.qml \
         content/layouts/tr_TR/symbols.qml
 }
+contains(CONFIG, lang-uk.*) {
+    LAYOUT_FILES += \
+        content/layouts/uk_UA/main.qml \
+        content/layouts/uk_UA/symbols.qml
+}
 contains(CONFIG, lang-vi.*) {
     LAYOUT_FILES += \
         content/layouts/vi_VN/main.qml \

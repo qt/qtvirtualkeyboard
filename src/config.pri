@@ -79,6 +79,7 @@ disable-layouts {
         lang-sv_SE \
         lang-th_TH \
         lang-tr_TR \
+        lang-uk_UA \
         lang-vi_VN \
         lang-zh_CN \
         lang-zh_TW
