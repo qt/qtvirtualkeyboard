@@ -36,7 +36,7 @@ KeyboardLayout {
         return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.3; HandwritingInputMethod {}', parent)
     }
     sharedLayouts: ['symbols']
-    inputMode: InputEngine.Latin
+    inputMode: InputEngine.Cyrillic
 
     KeyboardRow {
         Layout.preferredHeight: 3
