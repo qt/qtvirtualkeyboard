@@ -352,6 +352,7 @@ Rectangle {
                 { initLocale: "sk_SK", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "ahoj", outputText: "Ahoj" },
                 { initLocale: "sl_SI", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "zdravo", outputText: "Zdravo" },
                 { initLocale: "th_TH", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "สวัสดี", outputText: "สวัสดี" },
+                { initLocale: "tr_TR", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "merhaba", outputText: "Merhaba" },
             ]
         }
 
