@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-#include "inputmethod_p.h"
+#include <QtVirtualKeyboard/private/inputmethod_p.h>
 #include <QtVirtualKeyboard/trace.h>
 #include <QVariant>
 

@@ -27,11 +27,11 @@
 **
 ****************************************************************************/
 
-#include "inputengine.h"
-#include "inputcontext.h"
-#include "fallbackinputmethod_p.h"
-#include "trace.h"
-#include "virtualkeyboarddebug_p.h"
+#include <QtVirtualKeyboard/inputengine.h>
+#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/private/fallbackinputmethod_p.h>
+#include <QtVirtualKeyboard/trace.h>
+#include <QtVirtualKeyboard/private/virtualkeyboarddebug_p.h>
 
 #include <QTimerEvent>
 #include <QtCore/private/qobject_p.h>

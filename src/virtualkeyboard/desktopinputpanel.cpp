@@ -27,15 +27,15 @@
 **
 ****************************************************************************/
 
-#include "desktopinputpanel_p.h"
-#include "appinputpanel_p_p.h"
-#include "inputview_p.h"
-#include "platforminputcontext_p.h"
-#include "inputcontext.h"
+#include <QtVirtualKeyboard/private/desktopinputpanel_p.h>
+#include <QtVirtualKeyboard/private/appinputpanel_p_p.h>
+#include <QtVirtualKeyboard/private/inputview_p.h>
+#include <QtVirtualKeyboard/private/platforminputcontext_p.h>
+#include <QtVirtualKeyboard/inputcontext.h>
 #include <QGuiApplication>
 #include <QQmlEngine>
 #include <QScreen>
-#include "virtualkeyboarddebug_p.h"
+#include <QtVirtualKeyboard/private/virtualkeyboarddebug_p.h>
 #if defined(QT_VIRTUALKEYBOARD_HAVE_XCB)
 #include <xcb/xcb.h>
 #include <xcb/xfixes.h>

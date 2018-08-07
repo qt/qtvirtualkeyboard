@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-#include "appinputpanel_p.h"
-#include "appinputpanel_p_p.h"
+#include <QtVirtualKeyboard/private/appinputpanel_p.h>
+#include <QtVirtualKeyboard/private/appinputpanel_p_p.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {

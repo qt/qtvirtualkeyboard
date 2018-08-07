@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-#include "gesturerecognizer_p.h"
+#include <QtVirtualKeyboard/private/gesturerecognizer_p.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {

@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-#include "enterkeyaction_p.h"
-#include "enterkeyactionattachedtype_p.h"
+#include <QtVirtualKeyboard/private/enterkeyaction_p.h>
+#include <QtVirtualKeyboard/private/enterkeyactionattachedtype_p.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {

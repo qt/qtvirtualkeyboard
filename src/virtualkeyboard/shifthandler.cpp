@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-#include "shifthandler_p.h"
-#include "inputcontext.h"
+#include <QtVirtualKeyboard/private/shifthandler_p.h>
+#include <QtVirtualKeyboard/inputcontext.h>
 #include <QtVirtualKeyboard/inputengine.h>
 #include <QtCore/private/qobject_p.h>
 #include <QSet>

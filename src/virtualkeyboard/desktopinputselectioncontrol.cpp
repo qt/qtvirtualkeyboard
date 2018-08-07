@@ -27,11 +27,11 @@
 **
 ****************************************************************************/
 
-#include "desktopinputselectioncontrol_p.h"
-#include "inputcontext.h"
-#include "inputselectionhandle_p.h"
-#include "settings_p.h"
-#include "platforminputcontext_p.h"
+#include <QtVirtualKeyboard/private/desktopinputselectioncontrol_p.h>
+#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/private/inputselectionhandle_p.h>
+#include <QtVirtualKeyboard/private/settings_p.h>
+#include <QtVirtualKeyboard/private/platforminputcontext_p.h>
 
 #include <QtCore/qpropertyanimation.h>
 #include <QtGui/qguiapplication.h>

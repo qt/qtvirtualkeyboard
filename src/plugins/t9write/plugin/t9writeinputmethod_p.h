@@ -41,7 +41,7 @@
 // We mean it.
 //
 
-#include "abstractinputmethod.h"
+#include <QtVirtualKeyboard/abstractinputmethod.h>
 #include <QSharedPointer>
 
 QT_BEGIN_NAMESPACE

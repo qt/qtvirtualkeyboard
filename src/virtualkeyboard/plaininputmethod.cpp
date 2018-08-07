@@ -27,9 +27,9 @@
 **
 ****************************************************************************/
 
-#include "plaininputmethod_p.h"
+#include <QtVirtualKeyboard/private/plaininputmethod_p.h>
 #include <QtVirtualKeyboard/inputengine.h>
-#include "inputcontext.h"
+#include <QtVirtualKeyboard/inputcontext.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {

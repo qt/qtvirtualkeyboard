@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-#include "inputview_p.h"
+#include <QtVirtualKeyboard/private/inputview_p.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {

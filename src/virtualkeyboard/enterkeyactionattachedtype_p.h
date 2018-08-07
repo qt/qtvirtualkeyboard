@@ -42,7 +42,7 @@
 //
 
 #include <QObject>
-#include "enterkeyaction_p.h"
+#include <QtVirtualKeyboard/private/enterkeyaction_p.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE

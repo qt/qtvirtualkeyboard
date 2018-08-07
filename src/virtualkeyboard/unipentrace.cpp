@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-#include "unipentrace_p.h"
+#include <QtVirtualKeyboard/private/unipentrace_p.h>
 #include <QRectF>
 #include <QDir>
 #include <QFile>

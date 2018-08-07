@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-#include "settings_p.h"
+#include <QtVirtualKeyboard/private/settings_p.h>
 #include <QtCore/private/qobject_p.h>
 
 QT_BEGIN_NAMESPACE

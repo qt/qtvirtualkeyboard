@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-#include "abstractinputpanel_p.h"
+#include <QtVirtualKeyboard/private/abstractinputpanel_p.h>
 #include <QtCore/QRect>
 
 QT_BEGIN_NAMESPACE

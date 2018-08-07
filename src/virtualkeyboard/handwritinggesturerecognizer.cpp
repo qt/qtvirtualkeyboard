@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-#include "handwritinggesturerecognizer_p.h"
+#include <QtVirtualKeyboard/private/handwritinggesturerecognizer_p.h>
 
 #include <QtCore/qmath.h>
 #include <QVector2D>

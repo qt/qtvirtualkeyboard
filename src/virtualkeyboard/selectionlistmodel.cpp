@@ -27,9 +27,9 @@
 **
 ****************************************************************************/
 
-#include "selectionlistmodel.h"
-#include "abstractinputmethod.h"
-#include "settings_p.h"
+#include <QtVirtualKeyboard/selectionlistmodel.h>
+#include <QtVirtualKeyboard/abstractinputmethod.h>
+#include <QtVirtualKeyboard/private/settings_p.h>
 #include <QtCore/private/qabstractitemmodel_p.h>
 #include <QtCore/qpointer.h>
 

@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-#include "fallbackinputmethod_p.h"
-#include "inputcontext.h"
+#include <QtVirtualKeyboard/private/fallbackinputmethod_p.h>
+#include <QtVirtualKeyboard/inputcontext.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {

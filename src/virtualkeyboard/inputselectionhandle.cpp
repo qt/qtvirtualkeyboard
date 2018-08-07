@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-#include "inputselectionhandle_p.h"
-#include "desktopinputselectioncontrol_p.h"
+#include <QtVirtualKeyboard/private/inputselectionhandle_p.h>
+#include <QtVirtualKeyboard/private/desktopinputselectioncontrol_p.h>
 
 #include <QtCore/qcoreapplication.h>
 #include <QtGui/QPainter>

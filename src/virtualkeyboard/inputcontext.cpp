@@ -27,14 +27,14 @@
 **
 ****************************************************************************/
 
-#include "inputcontext.h"
-#include "inputengine.h"
-#include "shifthandler_p.h"
-#include "platforminputcontext_p.h"
-#include "shadowinputcontext_p.h"
-#include "virtualkeyboarddebug_p.h"
-#include "enterkeyaction_p.h"
-#include "settings_p.h"
+#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/inputengine.h>
+#include <QtVirtualKeyboard/private/shifthandler_p.h>
+#include <QtVirtualKeyboard/private/platforminputcontext_p.h>
+#include <QtVirtualKeyboard/private/shadowinputcontext_p.h>
+#include <QtVirtualKeyboard/private/virtualkeyboarddebug_p.h>
+#include <QtVirtualKeyboard/private/enterkeyaction_p.h>
+#include <QtVirtualKeyboard/private/settings_p.h>
 
 #include <QTextFormat>
 #include <QGuiApplication>

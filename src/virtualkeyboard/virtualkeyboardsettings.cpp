@@ -27,9 +27,9 @@
 **
 ****************************************************************************/
 
-#include "virtualkeyboardsettings_p.h"
-#include "settings_p.h"
-#include "virtualkeyboarddebug_p.h"
+#include <QtVirtualKeyboard/private/virtualkeyboardsettings_p.h>
+#include <QtVirtualKeyboard/private/settings_p.h>
+#include <QtVirtualKeyboard/private/virtualkeyboarddebug_p.h>
 #include <QQmlEngine>
 #include <QFileInfo>
 #include <QDir>
