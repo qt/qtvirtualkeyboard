@@ -165,6 +165,13 @@ void AbstractInputMethod::selectionListItemSelected(SelectionListModel::Type typ
     Q_UNUSED(index)
 }
 
+bool AbstractInputMethod::selectionListRemoveItem(SelectionListModel::Type type, int index)
+{
+    Q_UNUSED(type)
+    Q_UNUSED(index)
+    return false;
+}
+
 /*!
     \since QtQuick.VirtualKeyboard 2.0
 
@@ -305,7 +312,7 @@ bool AbstractInputMethod::clickPreeditText(int cursorPosition)
 /*!
     \fn QVariant QtVirtualKeyboard::AbstractInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
 
-    Returns item data for the selection list identified by \a type. The \a role
+    Returns item data for the selection list identified by \a type. The \a \l {QtVirtualKeyboard::SelectionListModel::Role}{role}
     parameter specifies which data is requested. The \a index parameter is a
     zero based index into the list.
 */
@@ -315,6 +322,14 @@ bool AbstractInputMethod::clickPreeditText(int cursorPosition)
 
     This method is called when an item at \a index has been selected by the
     user. The selection list is identified by the \a type parameter.
+*/
+
+/*!
+    \fn bool QtVirtualKeyboard::AbstractInputMethod::selectionListRemoveItem(SelectionListModel::Type type, int index)
+
+    This method is called when an item at \a index must be removed from dictionary.
+    The selection list is identified by the \a type parameter.
+    The function returns \c true if the word was successfully removed.
 */
 
 /*!

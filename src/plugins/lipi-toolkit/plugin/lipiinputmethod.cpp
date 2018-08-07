@@ -274,6 +274,7 @@ public:
                         // Double swipe: commit word, or insert space
                         cancelRecognition();
 #ifdef HAVE_HUNSPELL
+                        int activeWordIndex = wordCandidates.index();
                         if (activeWordIndex != -1) {
                             q->selectionListItemSelected(SelectionListModel::WordCandidateList, activeWordIndex);
                             return;

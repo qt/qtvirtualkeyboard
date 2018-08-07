@@ -1820,19 +1820,14 @@ Rectangle {
                 skip("Prediction/spell correction not enabled")
 
             for (var len = 1; len <= 5; ++len) {
-                inputPanel.wordCandidateListChangedSpy.clear()
                 inputPanel.virtualKeyClick("z")
-                waitForRendering(inputPanel)
-                if (len >= 3) {
-                    if (data.wclAutoCommitWord)
-                        tryVerify(function() { return inputPanel.wordCandidateView.model.count === 0 }, 500)
-                    else
-                        wait(500)
+                if (len >= 2) {
+                    inputPanel.wordCandidateListChangedSpy.clear()
+                    inputPanel.wordCandidateListChangedSpy.wait()
                     if (inputPanel.wordCandidateView.model.count <= 1)
                         break
                 }
             }
-            waitForRendering(inputPanel)
 
             if (data.wclAutoCommitWord)
                 compare(inputPanel.wordCandidateView.model.count, 0)
@@ -2018,5 +2013,67 @@ Rectangle {
             compare(inputPanel.shadowInput.text, "")
         }
 
+        function test_userDictionary_data() {
+            return [
+                { inputSequence: ['a','s','d','f'], initShift: false },
+                { inputSequence: ['a','s','d'], initShift: false, expectedSuggestion: "asdf", suggestionIsFromUserDictionary: true },
+                { inputSequence: ['a','s','d'], initShift: true, expectedSuggestion: "Asdf", suggestionIsFromUserDictionary: true },
+                //
+                { inputSequence: ['s','d','f','a'], initShift: true },
+                { inputSequence: ['s','d','f'], initShift: true, expectedSuggestion: "Sdfa", suggestionIsFromUserDictionary: true },
+                { inputSequence: ['s','d','f'], initShift: false, expectedSuggestion: "sdfa", suggestionIsFromUserDictionary: true, removeSuggestion: true },
+                //
+                { inputSequence: ['d','f','a','s'], initCapsLock: true },
+                { inputSequence: ['d','f','a'], initCapsLock: true, expectedSuggestion: "DFAS", suggestionIsFromUserDictionary: true },
+                { inputSequence: ['d','f','a'], initShift: false, unexpectedSuggestion: "dfas", suggestionIsFromUserDictionary: true },
+                //
+                { inputSequence: ['f','a','s','d'], initShift: false, initInputMethodHints: Qt.ImhSensitiveData },
+                { inputSequence: ['f','a','s'], initShift: false, unexpectedSuggestion: "fasd" },
+                { inputSequence: ['f','a','s'], initShift: true, unexpectedSuggestion: "Fasd"},
+                //
+                { initLocale: "en_GB", inputSequence: "windo", expectedSuggestion: "Window", suggestionIsFromUserDictionary: false, removeSuggestion: true },
+                { initLocale: "en_GB", inputSequence: "window", },
+                { initLocale: "en_GB", inputSequence: "windo", expectedSuggestion: "Window", suggestionIsFromUserDictionary: false },
+            ]
+        }
+
+        function test_userDictionary(data) {
+            prepareTest(data, true)
+
+            if (!inputPanel.wordCandidateListVisibleHint)
+                skip("Prediction/spell correction not enabled")
+
+            if (data.hasOwnProperty("initShift"))
+                inputPanel.setShift(data.initShift)
+            if (data.hasOwnProperty("initCapsLock"))
+                inputPanel.setCapsLock(data.initCapsLock)
+
+            for (var inputIndex in data.inputSequence)
+                inputPanel.virtualKeyClick(data.inputSequence[inputIndex])
+
+            if (data.hasOwnProperty("expectedSuggestion")) {
+                tryVerify(function() {return inputPanel.selectionListSearchSuggestion(data.expectedSuggestion)}, 1000, "The expected spell correction suggestion \"%1\" was not found".arg(data.expectedSuggestion))
+                verify(inputPanel.selectionListCurrentIndex() > 0)
+                if (data.hasOwnProperty("suggestionIsFromUserDictionary"))
+                    compare(inputPanel.selectionListSuggestionIsFromUserDictionary(), data.suggestionIsFromUserDictionary)
+                if (data.hasOwnProperty("removeSuggestion") && data.removeSuggestion) {
+                    verify(inputPanel.openWordCandidateContextMenu())
+                    inputPanel.wordCandidateListChangedSpy.clear()
+                    verify(inputPanel.selectItemFromWordCandidateContextMenu(0))
+                    inputPanel.wordCandidateListChangedSpy.wait()
+                    tryVerify(function() {return !inputPanel.selectionListSearchSuggestion(data.expectedSuggestion)}, 1000, "An unexpected spell correction suggestion \"%1\" was found".arg(data.unexpectedSuggestion))
+                } else {
+                    inputPanel.selectionListSelectCurrentItem()
+                }
+            } else if (data.hasOwnProperty("unexpectedSuggestion")) {
+                var oldIndex = inputPanel.selectionListCurrentIndex()
+                tryVerify(function() {return !inputPanel.selectionListSearchSuggestion(data.unexpectedSuggestion)}, 1000, "An unexpected spell correction suggestion \"%1\" was found".arg(data.unexpectedSuggestion))
+                compare(inputPanel.selectionListCurrentIndex(), oldIndex)
+            } else {
+                inputPanel.selectionListSelectCurrentItem()
+            }
+
+            Qt.inputMethod.reset()
+        }
     }
 }

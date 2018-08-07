@@ -28,15 +28,14 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.VirtualKeyboard 2.1
+import QtQuick.VirtualKeyboard 2.3
 
 ListView {
-    id: languagePopupList
-    objectName: "languagePopupList"
-
     property int maxVisibleItems: 5
     readonly property int preferredVisibleItems: count < maxVisibleItems ? count : maxVisibleItems
     readonly property real contentWidth: contentItem.childrenRect.width
+    property alias background: popupListBackground.sourceComponent
+    property alias defaultHighlight: defaultHighlight
 
     clip: true
     visible: enabled && count > 0
@@ -44,12 +43,12 @@ ListView {
     height: currentItem ? currentItem.height * preferredVisibleItems + (spacing * preferredVisibleItems - 1) : 0
     orientation: ListView.Vertical
     snapMode: ListView.SnapToItem
-    delegate: keyboard.style.languageListDelegate
-    highlight: keyboard.style.languageListHighlight ? keyboard.style.languageListHighlight : defaultHighlight
+    delegate: keyboard.style.popupListDelegate
+    highlight: keyboard.style.popupListHighlight ? keyboard.style.popupListHighlight : defaultHighlight
     highlightMoveDuration: 0
     highlightResizeDuration: 0
-    add: keyboard.style.languageListAdd
-    remove: keyboard.style.languageListRemove
+    add: keyboard.style.popupListAdd
+    remove: keyboard.style.popupListRemove
     keyNavigationWraps: true
 
     onCurrentItemChanged: if (currentItem) keyboard.soundEffect.register(currentItem.soundEffect)
@@ -60,7 +59,8 @@ ListView {
     }
 
     Loader {
-        sourceComponent: keyboard.style.languageListBackground
+        id: popupListBackground
+        sourceComponent: keyboard.style.popupListBackground
         anchors.fill: parent
         z: -1
     }

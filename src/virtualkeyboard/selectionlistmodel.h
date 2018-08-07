@@ -56,11 +56,19 @@ public:
     enum Role
     {
         DisplayRole = Qt::DisplayRole,
-        WordCompletionLengthRole = Qt::UserRole + 1
+        WordCompletionLengthRole = Qt::UserRole + 1,
+        DictionaryTypeRole,
+        CanRemoveSuggestionRole,
+    };
+    enum DictionaryType
+    {
+        DefaultDictionary = 0,
+        UserDictionary
     };
 
     Q_ENUM(Type)
     Q_ENUM(Role)
+    Q_ENUM(DictionaryType)
 
     ~SelectionListModel();
     void setDataSource(AbstractInputMethod *dataSource, Type type);
@@ -72,6 +80,7 @@ public:
     int count() const;
 
     Q_INVOKABLE void selectItem(int index);
+    Q_INVOKABLE void removeItem(int index);
     Q_INVOKABLE QVariant dataAt(int index, int role = Qt::DisplayRole) const;
 
 Q_SIGNALS:
@@ -92,5 +101,6 @@ QT_END_NAMESPACE
 
 Q_DECLARE_METATYPE(QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::SelectionListModel::Type)
 Q_DECLARE_METATYPE(QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::SelectionListModel::Role)
+Q_DECLARE_METATYPE(QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::SelectionListModel::DictionaryType)
 
 #endif // SELECTIONLISTMODEL_H

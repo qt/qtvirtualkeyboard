@@ -67,6 +67,7 @@ InputPanel {
                                                         naviationHighlight.widthAnimation.running ||
                                                         naviationHighlight.heightAnimation.running
     readonly property var wordCandidateView: Utils.findChildByProperty(keyboard, "objectName", "wordCandidateView", null)
+    readonly property var wordCandidateContextMenu: Utils.findChildByProperty(keyboard, "objectName", "wordCandidateContextMenu", null)
     readonly property var shadowInputControl: Utils.findChildByProperty(keyboard, "objectName", "shadowInputControl", null)
     readonly property var shadowInput: Utils.findChildByProperty(keyboard, "objectName", "shadowInput", null)
     readonly property var selectionControl: Utils.findChildByProperty(inputPanel, "objectName", "selectionControl", null)
@@ -175,6 +176,12 @@ InputPanel {
         id: wordCandidateListVisibleSpy
         target: wordCandidateView
         signalName: "onVisibleConditionChanged"
+    }
+
+    SignalSpy {
+        id: wordCandidateContextMenuActiveSpy
+        target: wordCandidateContextMenu
+        signalName: "onActiveChanged"
     }
 
     SignalSpy {
@@ -530,6 +537,14 @@ InputPanel {
         InputContext.shiftHandler.toggleShift()
     }
 
+    function setShift(shift) {
+        InputContext.shift = shift
+    }
+
+    function setCapsLock(capsLock) {
+        InputContext.capsLock = capsLock
+    }
+
     function style() {
         return VirtualKeyboardSettings.styleName
     }
@@ -578,6 +593,48 @@ InputPanel {
         var itemPos = inputPanel.mapFromItem(inputPanel.wordCandidateView.currentItem,
                                              inputPanel.wordCandidateView.currentItem.width / 2,
                                              inputPanel.wordCandidateView.currentItem.height / 2)
+        testcase.mouseClick(inputPanel, itemPos.x, itemPos.y, Qt.LeftButton, 0, 20)
+        testcase.waitForRendering(inputPanel)
+        return true
+    }
+
+    function selectionListCurrentIndex() {
+        return inputPanel.wordCandidateView.currentIndex
+    }
+
+    function selectionListSuggestionIsFromUserDictionary() {
+        if (!inputPanel.wordCandidateView.currentItem)
+            return false
+        var dictionaryType = inputPanel.wordCandidateView.model.dataAt(inputPanel.wordCandidateView.currentIndex, SelectionListModel.DictionaryTypeRole)
+        return dictionaryType !== undefined && dictionaryType === SelectionListModel.UserDictionary
+    }
+
+    function openWordCandidateContextMenu() {
+        if (!inputPanel.wordCandidateView.currentItem)
+            return false
+        testcase.wait(200)
+        wordCandidateContextMenuActiveSpy.clear()
+        testcase.mousePress(inputPanel.wordCandidateView.currentItem)
+        wordCandidateContextMenuActiveSpy.wait()
+        testcase.mouseRelease(inputPanel.wordCandidateView.currentItem)
+        return wordCandidateContextMenu.active
+    }
+
+    function selectItemFromWordCandidateContextMenu(index) {
+        if (!inputPanel.wordCandidateView.currentItem)
+            return false
+        if (!wordCandidateContextMenu.active)
+            return false
+        var wordCandidateContextMenuList = Utils.findChildByProperty(keyboard, "objectName", "wordCandidateContextMenuList", null)
+        if (wordCandidateContextMenuList.currentIndex !== index) {
+            wordCandidateContextMenuList.currentIndex = index
+            testcase.waitForRendering(inputPanel)
+        }
+        if (!wordCandidateContextMenuList.currentItem)
+            return false
+        var itemPos = inputPanel.mapFromItem(wordCandidateContextMenuList.currentItem,
+                                             wordCandidateContextMenuList.currentItem.width / 2,
+                                             wordCandidateContextMenuList.currentItem.height / 2)
         testcase.mouseClick(inputPanel, itemPos.x, itemPos.y, Qt.LeftButton, 0, 20)
         testcase.waitForRendering(inputPanel)
         return true

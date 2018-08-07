@@ -46,12 +46,73 @@
 #include <QMutex>
 #include <QStringList>
 #include <QSharedPointer>
+#include <QVector>
+#include <QLoggingCategory>
 #include <hunspell/hunspell.h>
 
 QT_BEGIN_NAMESPACE
 class QTextCodec;
 
 namespace QtVirtualKeyboard {
+
+Q_DECLARE_LOGGING_CATEGORY(lcHunspell)
+
+class HunspellWordList
+{
+public:
+    enum Flag
+    {
+        SpellCheckOk = 0x1,
+        CompoundWord = 0x2
+    };
+    Q_DECLARE_FLAGS(Flags, Flag)
+
+    HunspellWordList(int limit = 0);
+    HunspellWordList(HunspellWordList &other);
+
+    HunspellWordList &operator=(HunspellWordList &other);
+
+    int index() const;
+    void setIndex(int index);
+    bool clear();
+    bool clearSuggestions();
+    bool hasSuggestions() const;
+    int size() const;
+    int isEmpty() const;
+    bool contains(const QString &word);
+    QString findWordCompletion(const QString &word);
+    int indexOfWord(const QString &word);
+    QString wordAt(int index);
+    void wordAt(int index, QString &word, Flags &flags);
+    const Flags &wordFlagsAt(int index);
+    void appendWord(const QString &word, const Flags &flags = Flags());
+    void insertWord(int index, const QString &word, const Flags &flags = Flags());
+    void updateWord(int index, const QString &word, const Flags &flags = Flags());
+    void moveWord(int from, int to);
+    int removeWord(const QString &word);
+    void removeWordAt(int index);
+    void rebuildSearchIndex();
+
+private:
+    class SearchContext {
+    public:
+        SearchContext(const QString &word,
+                      const QStringList &list) :
+            word(word),
+            list(list)
+        {}
+        const QString &word;
+        const QStringList &list;
+    };
+
+private:
+    QMutex _lock;
+    QStringList _list;
+    QVector<Flags> _flags;
+    QVector<int> _searchIndex;
+    int _index;
+    int _limit;
+};
 
 class HunspellTask : public QObject
 {
@@ -84,24 +145,11 @@ public:
     const QStringList searchPaths;
 };
 
-class HunspellWordList
-{
-public:
-    HunspellWordList() :
-        list(),
-        index(-1)
-    {}
-
-    QStringList list;
-    int index;
-};
-
 class HunspellBuildSuggestionsTask : public HunspellTask
 {
     Q_OBJECT
     const QTextCodec *textCodec;
 public:
-    QString word;
     QSharedPointer<HunspellWordList> wordList;
     bool autoCorrect;
 
@@ -120,7 +168,80 @@ public:
     void run();
 
 signals:
-    void updateSuggestions(const QStringList &wordList, int activeWordIndex);
+    void updateSuggestions(const QSharedPointer<HunspellWordList> &wordList, int tag);
+
+public:
+    int tag;
+};
+
+class HunspellAddWordTask : public HunspellTask
+{
+    Q_OBJECT
+public:
+    QSharedPointer<HunspellWordList> wordList;
+
+    void run();
+
+    static bool alternativeForm(const QString &word, QString &alternativeForm);
+};
+
+class HunspellRemoveWordTask : public HunspellTask
+{
+    Q_OBJECT
+public:
+    QSharedPointer<HunspellWordList> wordList;
+
+    void run();
+};
+
+class HunspellLoadWordListTask : public HunspellTask
+{
+    Q_OBJECT
+public:
+    QSharedPointer<HunspellWordList> wordList;
+    QString filePath;
+
+    void run();
+};
+
+class HunspellSaveWordListTask : public HunspellTask
+{
+    Q_OBJECT
+public:
+    QSharedPointer<HunspellWordList> wordList;
+    QString filePath;
+
+    void run();
+};
+
+class HunspellFilterWordTask : public HunspellTask
+{
+    Q_OBJECT
+public:
+    HunspellFilterWordTask() :
+        HunspellTask(),
+        startIndex(1)
+    {}
+
+    QSharedPointer<HunspellWordList> wordList;
+    QSharedPointer<HunspellWordList> filterList;
+    int startIndex;
+
+    void run();
+};
+
+class HunspellBoostWordTask : public HunspellTask
+{
+    Q_OBJECT
+public:
+    HunspellBoostWordTask() :
+        HunspellTask()
+    {}
+
+    QSharedPointer<HunspellWordList> wordList;
+    QSharedPointer<HunspellWordList> boostList;
+
+    void run();
 };
 
 class HunspellWorker : public QThread
@@ -132,16 +253,19 @@ public:
 
     void addTask(QSharedPointer<HunspellTask> task);
     void removeAllTasks();
+    void waitForAllTasks();
 
     template <class X>
-    void removeAllTasksExcept() {
+    void removeAllTasksOfType() {
         QMutexLocker guard(&taskLock);
         for (int i = 0; i < taskList.size();) {
             QSharedPointer<X> task(taskList[i].objectCast<X>());
-            if (!task)
+            if (task) {
+                qCDebug(lcHunspell) << "Remove task" << QLatin1String(task->metaObject()->className());
                 taskList.removeAt(i);
-            else
+            } else {
                 i++;
+            }
         }
     }
 
@@ -154,6 +278,7 @@ private:
 private:
     friend class HunspellLoadDictionaryTask;
     QList<QSharedPointer<HunspellTask> > taskList;
+    QSemaphore idleSema;
     QSemaphore taskSema;
     QMutex taskLock;
     Hunhandle *hunspell;
@@ -162,5 +287,7 @@ private:
 
 } // namespace QtVirtualKeyboard
 QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE(QSharedPointer<QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::HunspellWordList>);
 
 #endif // HUNSPELLWORKER_P_H
