@@ -24,7 +24,7 @@ manifestmeta.highlighted.names = "QtVirtualKeyboard/Qt Quick Virtual Keyboard - 
 
 imagedirs += images
 
-depends += qtdoc qtcore qtgui qtqml qtquick
+depends += qtdoc qtcore qtgui qtwidgets qtwayland qtqml qtquick
 
 qhp.projects = QtVirtualKeyboard
 
