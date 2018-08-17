@@ -221,6 +221,14 @@ contains(CONFIG, lang-nb.*) {
         content/layouts/nb_NO/numbers.fallback \
         content/layouts/nb_NO/symbols.fallback
 }
+contains(CONFIG, lang-ms.*) {
+    LAYOUT_FILES += \
+        content/layouts/ms_MY/dialpad.fallback \
+        content/layouts/ms_MY/digits.fallback \
+        content/layouts/ms_MY/main.fallback \
+        content/layouts/ms_MY/numbers.fallback \
+        content/layouts/ms_MY/symbols.fallback
+}
 contains(CONFIG, lang-nl.*) {
     LAYOUT_FILES += \
         content/layouts/nl_NL/dialpad.fallback \

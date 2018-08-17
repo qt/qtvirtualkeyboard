@@ -754,7 +754,8 @@ public:
             } else if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly)) {
                 symbolCategories.append(DECUMA_CATEGORY_URL);
             } else {
-                if (language == DECUMA_LANG_EN || language == DECUMA_LANG_NL)
+                if (language == DECUMA_LANG_EN || language == DECUMA_LANG_NL ||
+                        language == DECUMA_LANG_MS)
                     symbolCategories.append(DECUMA_CATEGORY_ANSI);
                 else
                     symbolCategories.append(DECUMA_CATEGORY_ISO8859_1);

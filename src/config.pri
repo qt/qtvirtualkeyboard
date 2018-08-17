@@ -66,6 +66,7 @@ disable-layouts {
         lang-it_IT \
         lang-ja_JP \
         lang-ko_KR \
+        lang-ms_MY \
         lang-nb_NO \
         lang-nl_NL \
         lang-pl_PL \

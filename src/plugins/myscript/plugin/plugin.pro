@@ -67,6 +67,7 @@ contains(CONFIG, lang-hu.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/hu_H
 contains(CONFIG, lang-it.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/it_IT/handwriting.fallback
 contains(CONFIG, lang-ja.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/ja_JP/handwriting.qml
 contains(CONFIG, lang-ko.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/ko_KR/handwriting.qml
+contains(CONFIG, lang-ms.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/ms_MY/handwriting.fallback
 contains(CONFIG, lang-nb.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/nb_NO/handwriting.fallback
 contains(CONFIG, lang-nl.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/nl_NL/handwriting.fallback
 contains(CONFIG, lang-pl.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/pl_PL/handwriting.fallback
