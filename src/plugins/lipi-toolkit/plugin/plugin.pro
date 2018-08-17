@@ -37,6 +37,7 @@ INSTALLS += ltk_projects
 
 LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/fallback/handwriting.qml
 contains(CONFIG, lang-en.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/en_GB/handwriting.fallback
+contains(CONFIG, lang-id.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/id_ID/handwriting.fallback
 contains(CONFIG, lang-ms.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/ms_MY/handwriting.fallback
 contains(CONFIG, lang-nl.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/nl_NL/handwriting.fallback
 

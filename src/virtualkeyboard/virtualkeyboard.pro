@@ -205,6 +205,14 @@ contains(CONFIG, lang-hu.*) {
         content/layouts/hu_HU/numbers.fallback \
         content/layouts/hu_HU/symbols.fallback
 }
+contains(CONFIG, lang-id.*) {
+    LAYOUT_FILES += \
+        content/layouts/id_ID/dialpad.fallback \
+        content/layouts/id_ID/digits.fallback \
+        content/layouts/id_ID/main.fallback \
+        content/layouts/id_ID/numbers.fallback \
+        content/layouts/id_ID/symbols.fallback
+}
 contains(CONFIG, lang-it.*) {
     LAYOUT_FILES += \
         content/layouts/it_IT/dialpad.fallback \

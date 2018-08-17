@@ -63,6 +63,7 @@ disable-layouts {
         lang-hi_IN \
         lang-hr_HR \
         lang-hu_HU \
+        lang-id_ID \
         lang-it_IT \
         lang-ja_JP \
         lang-ko_KR \
