@@ -24,7 +24,8 @@ equals(T9WRITE_FOUND, 0): \
 
 LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/fallback/handwriting.qml
 t9write-alphabetic {
-    contains(CONFIG, lang-en.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/en_GB/handwriting.fallback
+    contains(CONFIG, lang-en(_GB)?): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/en_GB/handwriting.fallback
+    contains(CONFIG, lang-en(_US)?): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/en_US/handwriting.fallback
     contains(CONFIG, lang-ar.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/ar_AR/handwriting.qml
     contains(CONFIG, lang-bg.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/bg_BG/handwriting.qml
     contains(CONFIG, lang-cs.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/cs_CZ/handwriting.qml

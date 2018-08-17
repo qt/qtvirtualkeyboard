@@ -54,6 +54,7 @@ disable-layouts {
         lang-de_DE \
         lang-el_GR \
         lang-en_GB \
+        lang-en_US \
         lang-es_ES \
         lang-et_EE \
         lang-fa_FA \

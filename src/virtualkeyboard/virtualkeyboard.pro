@@ -85,6 +85,14 @@ contains(CONFIG, lang-en(_GB)?) {
         content/layouts/en_GB/numbers.fallback \
         content/layouts/en_GB/symbols.fallback
 }
+contains(CONFIG, lang-en(_US)?) {
+    LAYOUT_FILES += \
+        content/layouts/en_US/dialpad.fallback \
+        content/layouts/en_US/digits.fallback \
+        content/layouts/en_US/main.fallback \
+        content/layouts/en_US/numbers.fallback \
+        content/layouts/en_US/symbols.fallback
+}
 contains(CONFIG, lang-ar.*) {
     LAYOUT_FILES += \
         content/layouts/ar_AR/dialpad.fallback \
