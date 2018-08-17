@@ -17,7 +17,10 @@ include(../../../config.pri)
 }
 
 LAYOUT_FILES += \
+    $$LAYOUTS_BASE/content/layouts/th_TH/dialpad.fallback \
+    $$LAYOUTS_BASE/content/layouts/th_TH/digits.fallback \
     $$LAYOUTS_BASE/content/layouts/th_TH/main.qml \
+    $$LAYOUTS_BASE/content/layouts/th_TH/numbers.fallback \
     $$LAYOUTS_BASE/content/layouts/th_TH/symbols.qml
 
 layouts.files = $$LAYOUT_FILES

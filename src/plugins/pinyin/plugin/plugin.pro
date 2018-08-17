@@ -15,7 +15,10 @@ OTHER_FILES += \
 include(../../../config.pri)
 
 LAYOUT_FILES += \
+    $$LAYOUTS_BASE/content/layouts/zh_CN/dialpad.fallback \
+    $$LAYOUTS_BASE/content/layouts/zh_CN/digits.fallback \
     $$LAYOUTS_BASE/content/layouts/zh_CN/main.qml \
+    $$LAYOUTS_BASE/content/layouts/zh_CN/numbers.fallback \
     $$LAYOUTS_BASE/content/layouts/zh_CN/symbols.qml
 
 layouts.files = $$LAYOUT_FILES

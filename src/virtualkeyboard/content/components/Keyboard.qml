@@ -1407,10 +1407,12 @@ Item {
 
     function updateAvailableLocaleIndices() {
         // Update list of all available locales
-        var baseLayoutIndex = findLocale("en_GB", -1)
+        var fallbackIndex = findFallbackIndex()
         var newIndices = []
         var newAvailableLocales = []
         for (var i = 0; i < layoutsModel.count; i++) {
+            if (i === fallbackIndex)
+                continue
             var localeName = layoutsModel.get(i, "fileName")
             if (isValidLocale(i) && newIndices.indexOf(i) === -1 && findLayout(localeName, "main")) {
                 newIndices.push(i)
@@ -1420,17 +1422,14 @@ Item {
 
         // Handle case where the VirtualKeyboardSettings.activeLocales contains no valid entries
         if (newIndices.length === 0) {
-            if (baseLayoutIndex !== -1) {
-                newIndices.push(baseLayoutIndex)
-                newAvailableLocales.push("en_GB")
-            } else {
-                for (i = 0; i < layoutsModel.count; i++) {
-                    localeName = layoutsModel.get(i, "fileName")
-                    if (Qt.locale(localeName).name !== "C" && findLayout(localeName, "main")) {
-                        newIndices.push(i)
-                        newAvailableLocales.push(localeName)
-                        break
-                    }
+            for (i = 0; i < layoutsModel.count; i++) {
+                if (i === fallbackIndex)
+                    continue
+                localeName = layoutsModel.get(i, "fileName")
+                if (Qt.locale(localeName).name !== "C" && findLayout(localeName, "main")) {
+                    newIndices.push(i)
+                    newAvailableLocales.push(localeName)
+                    break
                 }
             }
         }
@@ -1444,9 +1443,7 @@ Item {
         newIndices = []
         for (i = 0; i < availableLocaleIndices.length; i++) {
             if (availableLocaleIndices[i] === localeIndex ||
-                    ((availableLocaleIndices[i] !== baseLayoutIndex ||
-                      (layoutType === "handwriting" && availableLocaleIndices.indexOf(baseLayoutIndex) !== -1)) &&
-                     layoutExists(layoutsModel.get(availableLocaleIndices[i], "fileName"), layoutType)))
+                    layoutExists(layoutsModel.get(availableLocaleIndices[i], "fileName"), layoutType))
                 newIndices.push(availableLocaleIndices[i])
         }
         availableCustomLocaleIndices = newIndices
@@ -1503,6 +1500,15 @@ Item {
         return (languageMatch != -1) ? languageMatch : defaultValue
     }
 
+    function findFallbackIndex() {
+        for (var i = 0; i < layoutsModel.count; i++) {
+            var layoutFolder = layoutsModel.get(i, "fileName")
+            if (layoutFolder === "fallback")
+                return i
+        }
+        return -1
+    }
+
     function isValidLocale(localeNameOrIndex) {
         var localeName
         if (typeof localeNameOrIndex == "number") {
@@ -1512,6 +1518,9 @@ Item {
         } else {
             localeName = localeNameOrIndex
         }
+
+        if (localeName === "fallback")
+            return false
 
         if (Qt.locale(localeName).name === "C")
             return false
@@ -1528,17 +1537,29 @@ Item {
         return layoutsModel.folder + "/" + localeName + "/" + layoutType + ".qml"
     }
 
+    function getFallbackFile(localeName, layoutType) {
+        if (localeName === "" || layoutType === "")
+            return ""
+        return layoutsModel.folder + "/" + localeName + "/" + layoutType + ".fallback"
+    }
+
     function layoutExists(localeName, layoutType) {
-        return InputContext.fileExists(getLayoutFile(localeName, layoutType))
+        var result = InputContext.fileExists(getLayoutFile(localeName, layoutType))
+        if (!result && layoutType === "handwriting")
+            result = InputContext.fileExists(getFallbackFile(localeName, layoutType))
+        return result
     }
 
     function findLayout(localeName, layoutType) {
         var layoutFile = getLayoutFile(localeName, layoutType)
         if (InputContext.fileExists(layoutFile))
             return layoutFile
-        layoutFile = getLayoutFile("en_GB", layoutType)
-        if (InputContext.fileExists(layoutFile))
-            return layoutFile
+        var fallbackFile = getFallbackFile(localeName, layoutType)
+        if (InputContext.fileExists(fallbackFile)) {
+            layoutFile = getLayoutFile("fallback", layoutType)
+            if (InputContext.fileExists(layoutFile))
+                return layoutFile
+        }
         return ""
     }
 

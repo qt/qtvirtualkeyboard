@@ -35,8 +35,9 @@ INSTALLS += ltk_projects
     QT += hunspellinputmethod-private
 }
 
-contains(CONFIG, lang-en.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/en_GB/handwriting.qml
-contains(CONFIG, lang-nl.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/nl_NL/handwriting.qml
+LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/fallback/handwriting.qml
+contains(CONFIG, lang-en.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/en_GB/handwriting.fallback
+contains(CONFIG, lang-nl.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/nl_NL/handwriting.fallback
 
 !isEmpty(LAYOUT_FILES) {
     layouts.files = $$LAYOUT_FILES

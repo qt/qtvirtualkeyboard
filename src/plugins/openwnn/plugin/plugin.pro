@@ -13,7 +13,10 @@ OTHER_FILES += \
 include(../../../config.pri)
 
 LAYOUT_FILES += \
+    $$LAYOUTS_BASE/content/layouts/ja_JP/dialpad.fallback \
+    $$LAYOUTS_BASE/content/layouts/ja_JP/digits.fallback \
     $$LAYOUTS_BASE/content/layouts/ja_JP/main.qml \
+    $$LAYOUTS_BASE/content/layouts/ja_JP/numbers.fallback \
     $$LAYOUTS_BASE/content/layouts/ja_JP/symbols.qml
 
 layouts.files = $$LAYOUT_FILES
