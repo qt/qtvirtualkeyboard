@@ -42,6 +42,9 @@ contains(CONFIG, lang-id.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/id_I
 contains(CONFIG, lang-ms.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/ms_MY/handwriting.fallback
 contains(CONFIG, lang-nl.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/nl_NL/handwriting.fallback
 
+OTHER_FILES += \
+    $$LAYOUT_FILES
+
 !isEmpty(LAYOUT_FILES) {
     layouts.files = $$LAYOUT_FILES
     layouts.base = $$LAYOUTS_BASE

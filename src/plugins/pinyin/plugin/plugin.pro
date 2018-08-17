@@ -21,6 +21,9 @@ LAYOUT_FILES += \
     $$LAYOUTS_BASE/content/layouts/zh_CN/numbers.fallback \
     $$LAYOUTS_BASE/content/layouts/zh_CN/symbols.qml
 
+OTHER_FILES += \
+    $$LAYOUT_FILES
+
 layouts.files = $$LAYOUT_FILES
 layouts.base = $$LAYOUTS_BASE
 layouts.prefix = $$LAYOUTS_PREFIX

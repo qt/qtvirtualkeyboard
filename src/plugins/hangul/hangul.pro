@@ -21,6 +21,9 @@ LAYOUT_FILES += \
     $$LAYOUTS_BASE/content/layouts/ko_KR/numbers.fallback \
     $$LAYOUTS_BASE/content/layouts/ko_KR/symbols.qml
 
+OTHER_FILES += \
+    $$LAYOUT_FILES
+
 layouts.files = $$LAYOUT_FILES
 layouts.base = $$LAYOUTS_BASE
 layouts.prefix = $$LAYOUTS_PREFIX

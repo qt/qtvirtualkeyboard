@@ -87,6 +87,9 @@ contains(CONFIG, lang-vi.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/vi_V
 contains(CONFIG, lang-zh(_CN)?): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/zh_CN/handwriting.qml
 contains(CONFIG, lang-zh(_TW)?): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/zh_TW/handwriting.qml
 
+OTHER_FILES += \
+    $$LAYOUT_FILES
+
 layouts.files = $$LAYOUT_FILES
 layouts.base = $$LAYOUTS_BASE
 layouts.prefix = $$LAYOUTS_PREFIX

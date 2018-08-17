@@ -23,6 +23,9 @@ LAYOUT_FILES += \
     $$LAYOUTS_BASE/content/layouts/th_TH/numbers.fallback \
     $$LAYOUTS_BASE/content/layouts/th_TH/symbols.qml
 
+OTHER_FILES += \
+    $$LAYOUT_FILES
+
 layouts.files = $$LAYOUT_FILES
 layouts.base = $$LAYOUTS_BASE
 layouts.prefix = $$LAYOUTS_PREFIX

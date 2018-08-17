@@ -65,6 +65,9 @@ t9write-cjk {
     contains(CONFIG, lang-zh(_TW)?): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/zh_TW/handwriting.qml
 }
 
+OTHER_FILES += \
+    $$LAYOUT_FILES
+
 layouts.files = $$LAYOUT_FILES
 layouts.base = $$LAYOUTS_BASE
 layouts.prefix = $$LAYOUTS_PREFIX

@@ -365,7 +365,8 @@ OTHER_FILES += \
     content/styles/retro/*.qml \
     content/*.qml \
     content/components/*.qml \
-    qtvirtualkeyboard.json
+    qtvirtualkeyboard.json \
+    $$LAYOUT_FILES
 
 !disable-desktop:isEmpty(CROSS_COMPILE):!android-embedded:!qnx {
     SOURCES += desktopinputpanel.cpp inputview.cpp
