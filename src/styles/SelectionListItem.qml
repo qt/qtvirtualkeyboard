@@ -63,6 +63,8 @@ Item {
         onPressAndHold: {
             if (index === -1)
                 return
+            if (typeof selectionListItem.ListView.view.longPressItem != "function")
+                return
             selectionListItem.ListView.view.longPressItem(index)
         }
     }
