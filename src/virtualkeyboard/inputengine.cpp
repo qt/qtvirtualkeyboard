@@ -568,6 +568,18 @@ bool InputEngine::reselect(int cursorPosition, const ReselectFlags &reselectFlag
 
 /*!
     \internal
+    This method is called when the current preedit text is clicked.
+*/
+bool InputEngine::clickPreeditText(int cursorPosition)
+{
+    Q_D(InputEngine);
+    if (!d->inputMethod)
+        return false;
+    return d->inputMethod->clickPreeditText(cursorPosition);
+}
+
+/*!
+    \internal
     Resets the input method.
 */
 void InputEngine::reset()

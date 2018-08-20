@@ -118,6 +118,22 @@ public:
            the completion part expressed as the
            number of characters counted from the
            end of the string.
+    \value DictionaryTypeRole
+           An integer specifying \ l {QtVirtualKeyboard::SelectionListModel::DictionaryType}{dictionary type}.
+    \value CanRemoveSuggestionRole
+           A boolean value indicating if the word candidate
+           can be removed from dictionary.
+*/
+
+/*!
+    \enum QtVirtualKeyboard::SelectionListModel::DictionaryType
+
+    This enum specifies the dictionary type of a word.
+
+    \value DefaultDictionary
+           The word candidate is from the default dictionary.
+    \value UserDictionary
+           The word candidate is from the user dictionary.
 */
 
 SelectionListModel::SelectionListModel(QObject *parent) :
@@ -223,6 +239,14 @@ void SelectionListModel::selectItem(int index)
     if (index >= 0 && index < d->rowCount && d->dataSource) {
         emit itemSelected(index);
         d->dataSource->selectionListItemSelected(d->type, index);
+    }
+}
+
+void SelectionListModel::removeItem(int index)
+{
+    Q_D(SelectionListModel);
+    if (index >= 0 && index < d->rowCount && d->dataSource) {
+        d->dataSource->selectionListRemoveItem(d->type, index);
     }
 }
 

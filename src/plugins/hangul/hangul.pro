@@ -15,8 +15,14 @@ OTHER_FILES += \
 include(../../config.pri)
 
 LAYOUT_FILES += \
+    $$LAYOUTS_BASE/content/layouts/ko_KR/dialpad.fallback \
+    $$LAYOUTS_BASE/content/layouts/ko_KR/digits.fallback \
     $$LAYOUTS_BASE/content/layouts/ko_KR/main.qml \
+    $$LAYOUTS_BASE/content/layouts/ko_KR/numbers.fallback \
     $$LAYOUTS_BASE/content/layouts/ko_KR/symbols.qml
+
+OTHER_FILES += \
+    $$LAYOUT_FILES
 
 layouts.files = $$LAYOUT_FILES
 layouts.base = $$LAYOUTS_BASE

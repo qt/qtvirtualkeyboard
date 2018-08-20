@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.11
 
 /*!
     \qmltype SelectionListItem
@@ -59,6 +59,13 @@ Item {
                 return
             selectionListItem.ListView.view.currentIndex = index
             selectionListItem.ListView.view.model.selectItem(index)
+        }
+        onPressAndHold: {
+            if (index === -1)
+                return
+            if (typeof selectionListItem.ListView.view.longPressItem != "function")
+                return
+            selectionListItem.ListView.view.longPressItem(index)
         }
     }
 }

@@ -165,6 +165,13 @@ void AbstractInputMethod::selectionListItemSelected(SelectionListModel::Type typ
     Q_UNUSED(index)
 }
 
+bool AbstractInputMethod::selectionListRemoveItem(SelectionListModel::Type type, int index)
+{
+    Q_UNUSED(type)
+    Q_UNUSED(index)
+    return false;
+}
+
 /*!
     \since QtQuick.VirtualKeyboard 2.0
 
@@ -232,6 +239,20 @@ bool AbstractInputMethod::reselect(int cursorPosition, const InputEngine::Resele
 }
 
 /*!
+    \since QtQuick.VirtualKeyboard 2.4
+
+    Called when the user clicks on pre-edit text at \a cursorPosition.
+
+    The function should return \c true if it handles the event. Otherwise the input
+    falls back to \l reselect() for further processing.
+*/
+bool AbstractInputMethod::clickPreeditText(int cursorPosition)
+{
+    Q_UNUSED(cursorPosition)
+    return false;
+}
+
+/*!
     \fn QList<QtVirtualKeyboard::InputEngine::InputMode> QtVirtualKeyboard::AbstractInputMethod::inputModes(const QString& locale)
 
     Returns the list of input modes for \a locale.
@@ -291,7 +312,7 @@ bool AbstractInputMethod::reselect(int cursorPosition, const InputEngine::Resele
 /*!
     \fn QVariant QtVirtualKeyboard::AbstractInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
 
-    Returns item data for the selection list identified by \a type. The \a role
+    Returns item data for the selection list identified by \a type. The \a \l {QtVirtualKeyboard::SelectionListModel::Role}{role}
     parameter specifies which data is requested. The \a index parameter is a
     zero based index into the list.
 */
@@ -301,6 +322,14 @@ bool AbstractInputMethod::reselect(int cursorPosition, const InputEngine::Resele
 
     This method is called when an item at \a index has been selected by the
     user. The selection list is identified by the \a type parameter.
+*/
+
+/*!
+    \fn bool QtVirtualKeyboard::AbstractInputMethod::selectionListRemoveItem(SelectionListModel::Type type, int index)
+
+    This method is called when an item at \a index must be removed from dictionary.
+    The selection list is identified by the \a type parameter.
+    The function returns \c true if the word was successfully removed.
 */
 
 /*!

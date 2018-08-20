@@ -34,9 +34,12 @@
 #include <QDir>
 #include <QTextCodec>
 #include <QtCore/QLibraryInfo>
+#include <QStandardPaths>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
+
+const int HunspellInputMethodPrivate::userDictionaryMaxSize = 100;
 
 /*!
     \class QtVirtualKeyboard::HunspellInputMethodPrivate
@@ -47,13 +50,13 @@ HunspellInputMethodPrivate::HunspellInputMethodPrivate(HunspellInputMethod *q_pt
     q_ptr(q_ptr),
     hunspellWorker(new HunspellWorker()),
     locale(),
-    word(),
-    wordCandidates(),
-    activeWordIndex(-1),
     wordCompletionPoint(2),
     ignoreUpdate(false),
     autoSpaceAllowed(false),
-    dictionaryState(DictionaryNotLoaded)
+    dictionaryState(DictionaryNotLoaded),
+    userDictionaryWords(new HunspellWordList(userDictionaryMaxSize)),
+    blacklistedWords(new HunspellWordList(userDictionaryMaxSize)),
+    wordCandidatesUpdateTag(0)
 {
     if (hunspellWorker)
         hunspellWorker->start();
@@ -69,7 +72,8 @@ bool HunspellInputMethodPrivate::createHunspell(const QString &locale)
     if (!hunspellWorker)
         return false;
     if (this->locale != locale) {
-        hunspellWorker->removeAllTasks();
+        clearSuggestionsRelatedTasks();
+        hunspellWorker->waitForAllTasks();
         QString hunspellDataPath(qEnvironmentVariable("QT_VIRTUALKEYBOARD_HUNSPELL_DATA_PATH"));
         const QString pathListSep(
 #if defined(Q_OS_WIN32)
@@ -96,55 +100,65 @@ bool HunspellInputMethodPrivate::createHunspell(const QString &locale)
         emit q->selectionListsChanged();
         hunspellWorker->addTask(loadDictionaryTask);
         this->locale = locale;
+
+        loadCustomDictionary(userDictionaryWords, QLatin1String("userdictionary"));
+        addToHunspell(userDictionaryWords);
+        loadCustomDictionary(blacklistedWords, QLatin1String("blacklist"));
+        removeFromHunspell(blacklistedWords);
     }
     return true;
 }
 
 void HunspellInputMethodPrivate::reset()
 {
-    if (clearSuggestions()) {
+    if (clearSuggestions(true)) {
         Q_Q(HunspellInputMethod);
         emit q->selectionListChanged(SelectionListModel::WordCandidateList);
-        emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, activeWordIndex);
+        emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, wordCandidates.index());
     }
-    word.clear();
     autoSpaceAllowed = false;
 }
 
 bool HunspellInputMethodPrivate::updateSuggestions()
 {
     bool wordCandidateListChanged = false;
+    QString word = wordCandidates.wordAt(0);
     if (!word.isEmpty() && dictionaryState != HunspellInputMethodPrivate::DictionaryNotLoaded) {
-        if (hunspellWorker)
-            hunspellWorker->removeAllTasksExcept<HunspellLoadDictionaryTask>();
-        if (wordCandidates.isEmpty()) {
-            wordCandidates.append(word);
-            activeWordIndex = 0;
-            wordCandidateListChanged = true;
-        } else if (wordCandidates.at(0) != word) {
-            wordCandidates.replace(0, word);
-            activeWordIndex = 0;
-            wordCandidateListChanged = true;
-        }
+        wordCandidateListChanged = true;
         if (word.length() >= wordCompletionPoint) {
             if (hunspellWorker) {
-                QSharedPointer<HunspellWordList> wordList(new HunspellWordList());
+                QSharedPointer<HunspellWordList> wordList(new HunspellWordList(wordCandidates));
+
+                // Clear obsolete tasks from the worker queue
+                clearSuggestionsRelatedTasks();
+
+                // Build suggestions
                 QSharedPointer<HunspellBuildSuggestionsTask> buildSuggestionsTask(new HunspellBuildSuggestionsTask());
-                buildSuggestionsTask->word = word;
                 buildSuggestionsTask->wordList = wordList;
                 buildSuggestionsTask->autoCorrect = false;
                 hunspellWorker->addTask(buildSuggestionsTask);
+
+                // Filter out blacklisted word (sometimes Hunspell suggests,
+                // e.g. with different text case)
+                QSharedPointer<HunspellFilterWordTask> filterWordTask(new HunspellFilterWordTask());
+                filterWordTask->wordList = wordList;
+                filterWordTask->filterList = blacklistedWords;
+                hunspellWorker->addTask(filterWordTask);
+
+                // Boost words from user dictionary
+                QSharedPointer<HunspellBoostWordTask> boostWordTask(new HunspellBoostWordTask());
+                boostWordTask->wordList = wordList;
+                boostWordTask->boostList = userDictionaryWords;
+                hunspellWorker->addTask(boostWordTask);
+
+                // Update word candidate list
                 QSharedPointer<HunspellUpdateSuggestionsTask> updateSuggestionsTask(new HunspellUpdateSuggestionsTask());
                 updateSuggestionsTask->wordList = wordList;
+                updateSuggestionsTask->tag = ++wordCandidatesUpdateTag;
                 Q_Q(HunspellInputMethod);
-                q->connect(updateSuggestionsTask.data(), SIGNAL(updateSuggestions(QStringList, int)), SLOT(updateSuggestions(QStringList, int)));
+                QObject::connect(updateSuggestionsTask.data(), &HunspellUpdateSuggestionsTask::updateSuggestions, q, &HunspellInputMethod::updateSuggestions);
                 hunspellWorker->addTask(updateSuggestionsTask);
             }
-        } else if (wordCandidates.length() > 1) {
-            wordCandidates.clear();
-            wordCandidates.append(word);
-            activeWordIndex = 0;
-            wordCandidateListChanged = true;
         }
     } else {
         wordCandidateListChanged = clearSuggestions();
@@ -152,20 +166,20 @@ bool HunspellInputMethodPrivate::updateSuggestions()
     return wordCandidateListChanged;
 }
 
-bool HunspellInputMethodPrivate::clearSuggestions()
+bool HunspellInputMethodPrivate::clearSuggestions(bool clearInputWord)
 {
-    if (hunspellWorker)
-        hunspellWorker->removeAllTasksExcept<HunspellLoadDictionaryTask>();
-    if (wordCandidates.isEmpty())
-        return false;
-    wordCandidates.clear();
-    activeWordIndex = -1;
-    return true;
+    clearSuggestionsRelatedTasks();
+    return clearInputWord ? wordCandidates.clear() : wordCandidates.clearSuggestions();
 }
 
-bool HunspellInputMethodPrivate::hasSuggestions() const
+void HunspellInputMethodPrivate::clearSuggestionsRelatedTasks()
 {
-    return !wordCandidates.isEmpty();
+    if (hunspellWorker) {
+        hunspellWorker->removeAllTasksOfType<HunspellBuildSuggestionsTask>();
+        hunspellWorker->removeAllTasksOfType<HunspellFilterWordTask>();
+        hunspellWorker->removeAllTasksOfType<HunspellBoostWordTask>();
+        hunspellWorker->removeAllTasksOfType<HunspellUpdateSuggestionsTask>();
+    }
 }
 
 bool HunspellInputMethodPrivate::isAutoSpaceAllowed() const
@@ -189,6 +203,8 @@ bool HunspellInputMethodPrivate::isValidInputChar(const QChar &c) const
         return true;
     if (isJoiner(c))
         return true;
+    if (c.isMark())
+        return true;
     return false;
 }
 
@@ -207,6 +223,115 @@ bool HunspellInputMethodPrivate::isJoiner(const QChar &c) const
             return true;
     }
     return false;
+}
+
+QString HunspellInputMethodPrivate::customDictionaryLocation(const QString &dictionaryType) const
+{
+    if (dictionaryType.isEmpty() || locale.isEmpty())
+        return QString();
+
+    QString location = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
+    if (location.isEmpty())
+        return QString();
+
+    return QStringLiteral("%1/qtvirtualkeyboard/hunspell/%2-%3.txt")
+                    .arg(location)
+                    .arg(dictionaryType)
+                    .arg(locale);
+}
+
+void HunspellInputMethodPrivate::loadCustomDictionary(const QSharedPointer<HunspellWordList> &wordList,
+                                                      const QString &dictionaryType) const
+{
+    QSharedPointer<HunspellLoadWordListTask> loadWordsTask(new HunspellLoadWordListTask());
+    loadWordsTask->filePath = customDictionaryLocation(dictionaryType);
+    loadWordsTask->wordList = wordList;
+    hunspellWorker->addTask(loadWordsTask);
+}
+
+void HunspellInputMethodPrivate::saveCustomDictionary(const QSharedPointer<HunspellWordList> &wordList,
+                                                      const QString &dictionaryType) const
+{
+    QSharedPointer<HunspellSaveWordListTask> saveWordsTask(new HunspellSaveWordListTask());
+    saveWordsTask->filePath = customDictionaryLocation(dictionaryType);
+    saveWordsTask->wordList = wordList;
+    hunspellWorker->addTask(saveWordsTask);
+}
+
+void HunspellInputMethodPrivate::addToHunspell(const QSharedPointer<HunspellWordList> &wordList) const
+{
+    QSharedPointer<HunspellAddWordTask> addWordTask(new HunspellAddWordTask());
+    addWordTask->wordList = wordList;
+    hunspellWorker->addTask(addWordTask);
+}
+
+void HunspellInputMethodPrivate::removeFromHunspell(const QSharedPointer<HunspellWordList> &wordList) const
+{
+    QSharedPointer<HunspellRemoveWordTask> removeWordTask(new HunspellRemoveWordTask());
+    removeWordTask->wordList = wordList;
+    hunspellWorker->addTask(removeWordTask);
+}
+
+void HunspellInputMethodPrivate::removeFromDictionary(const QString &word)
+{
+    if (userDictionaryWords->removeWord(word) > 0) {
+        saveCustomDictionary(userDictionaryWords, QLatin1String("userdictionary"));
+    } else if (!blacklistedWords->contains(word)) {
+        blacklistedWords->appendWord(word);
+        saveCustomDictionary(blacklistedWords, QLatin1String("blacklist"));
+    }
+
+    QSharedPointer<HunspellWordList> wordList(new HunspellWordList());
+    wordList->appendWord(word);
+    removeFromHunspell(wordList);
+
+    updateSuggestions();
+}
+
+void HunspellInputMethodPrivate::addToDictionary()
+{
+    Q_Q(HunspellInputMethod);
+    // This feature is not allowed when dealing with sensitive information
+    const Qt::InputMethodHints inputMethodHints(q->inputContext()->inputMethodHints());
+    const bool userDictionaryEnabled =
+            !inputMethodHints.testFlag(Qt::ImhHiddenText) &&
+            !inputMethodHints.testFlag(Qt::ImhSensitiveData);
+    if (!userDictionaryEnabled)
+        return;
+
+    if (wordCandidates.isEmpty())
+        return;
+
+    QString word;
+    HunspellWordList::Flags wordFlags;
+    const int activeWordIndex = wordCandidates.index();
+    wordCandidates.wordAt(activeWordIndex, word, wordFlags);
+    if (activeWordIndex == 0) {
+        if (blacklistedWords->removeWord(word) > 0) {
+            saveCustomDictionary(blacklistedWords, QLatin1String("blacklist"));
+        } else if (word.length() > 1 && !wordFlags.testFlag(HunspellWordList::SpellCheckOk) && !userDictionaryWords->contains(word)) {
+            userDictionaryWords->appendWord(word);
+            saveCustomDictionary(userDictionaryWords, QLatin1String("userdictionary"));
+        } else {
+            // Avoid adding words to Hunspell which are too short or passed spell check
+            return;
+        }
+
+        QSharedPointer<HunspellWordList> wordList(new HunspellWordList());
+        wordList->appendWord(word);
+        addToHunspell(wordList);
+    } else {
+        // Check if found in the user dictionary and move as last in the list.
+        // This way the list is always ordered by use.
+        // If userDictionaryMaxSize is greater than zero the number of words in the
+        // list will be limited to that amount. By pushing last used items to end of
+        // list we can avoid (to certain extent) removing frequently used words.
+        int userDictionaryIndex = userDictionaryWords->indexOfWord(word);
+        if (userDictionaryIndex != -1) {
+            userDictionaryWords->moveWord(userDictionaryIndex, userDictionaryWords->size() - 1);
+            saveCustomDictionary(userDictionaryWords, QLatin1String("userdictionary"));
+        }
+    }
 }
 
 } // namespace QtVirtualKeyboard

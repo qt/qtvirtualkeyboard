@@ -87,7 +87,20 @@ from the application. This information includes, but is not limited to:
 
 The list of supported locales is specified by the existence of a locale specific
 layout directory in "layouts/*". Each layout directory may contain one
-or more layouts, for example fi_FI/main.qml or symbols.qml.
+or more layouts, for example fi_FI/main.qml or symbols.qml. If the locale specific
+layout is not different from the fallback locale, then a place holder file \c
+<layout type>.fallback can be added for the layout. This will specify the virtual
+keyboard that a fallback layout can be used instead.
+
+At minimum the layout directory must contain the files:
+
+\list
+    \li \c dialpad.fallback
+    \li \c digits.fallback
+    \li \c main.fallback
+    \li \c numbers.fallback
+    \li \c symbols.fallback
+\endlist
 
 The application can specify the initial layout by changing the default locale.
 However, this needs to be done before the application is initialized and the
@@ -97,8 +110,8 @@ current system locale is used.
 The keyboard locale matching is performed in the following sequence:
 
 \list
-    \li layouts/language_country
-    \li layouts/language_*
+    \li layouts/<language>_<country>
+    \li layouts/<language>_*
     \li layouts/en_GB
 \endlist
 

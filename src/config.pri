@@ -1,8 +1,16 @@
 # Enable handwriting
-handwriting:!lipi-toolkit:!t9write {
-    include(plugins/t9write/3rdparty/t9write/t9write-build.pri)
-    equals(T9WRITE_FOUND, 1): CONFIG += t9write
-    else: CONFIG += lipi-toolkit
+handwriting:!lipi-toolkit:!t9write:!myscript {
+    include(plugins/myscript/3rdparty/myscript/myscript.pri)
+    equals(MYSCRIPT_FOUND, 1) {
+        CONFIG += myscript
+    } else {
+        include(plugins/t9write/3rdparty/t9write/t9write-build.pri)
+        equals(T9WRITE_FOUND, 1): CONFIG += t9write
+        else: CONFIG += lipi-toolkit
+    }
+}
+myscript {
+    !handwriting: include(plugins/myscript/3rdparty/myscript/myscript.pri)
 }
 t9write {
     !handwriting: include(plugins/t9write/3rdparty/t9write/t9write-build.pri)
@@ -32,6 +40,7 @@ disable-layouts {
     hangul: CONFIG += lang-ko_KR
     pinyin: CONFIG += lang-zh_CN
     tcime|zhuyin|cangjie: CONFIG += lang-zh_TW
+    thai: CONFIG += lang-th_TH
 
     # Use all languages by default
     !contains(CONFIG, lang-.*): CONFIG += lang-all
@@ -45,26 +54,38 @@ disable-layouts {
         lang-de_DE \
         lang-el_GR \
         lang-en_GB \
+        lang-en_US \
         lang-es_ES \
+        lang-es_MX \
         lang-et_EE \
         lang-fa_FA \
         lang-fi_FI \
+        lang-fr_CA \
         lang-fr_FR \
         lang-he_IL \
         lang-hi_IN \
         lang-hr_HR \
         lang-hu_HU \
+        lang-id_ID \
         lang-it_IT \
         lang-ja_JP \
         lang-ko_KR \
+        lang-ms_MY \
         lang-nb_NO \
         lang-nl_NL \
         lang-pl_PL \
+        lang-pt_BR \
         lang-pt_PT \
         lang-ro_RO \
         lang-ru_RU \
+        lang-sk_SK \
+        lang-sl_SI \
+        lang-sq_AL \
         lang-sr_SP \
         lang-sv_SE \
+        lang-th_TH \
+        lang-tr_TR \
+        lang-uk_UA \
         lang-vi_VN \
         lang-zh_CN \
         lang-zh_TW
@@ -80,6 +101,7 @@ contains(CONFIG, lang-ja.*)|lang-all: CONFIG += openwnn
 contains(CONFIG, lang-ko.*)|lang-all: CONFIG += hangul
 contains(CONFIG, lang-zh(_CN)?)|lang-all: CONFIG += pinyin
 contains(CONFIG, lang-zh(_TW)?)|lang-all: CONFIG += tcime
+contains(CONFIG, lang-th.*)|lang-all: CONFIG += thai
 
 # Feature dependencies
 tcime {

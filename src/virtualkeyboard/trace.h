@@ -49,6 +49,7 @@ class QVIRTUALKEYBOARD_EXPORT Trace : public QObject
     Q_PROPERTY(int length READ length NOTIFY lengthChanged)
     Q_PROPERTY(bool isFinal READ isFinal WRITE setFinal NOTIFY finalChanged)
     Q_PROPERTY(bool isCanceled READ isCanceled WRITE setCanceled NOTIFY canceledChanged)
+    Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity NOTIFY opacityChanged)
 public:
     explicit Trace(QObject *parent = nullptr);
     ~Trace();
@@ -73,12 +74,16 @@ public:
     bool isCanceled() const;
     void setCanceled(bool canceled);
 
+    qreal opacity() const;
+    void setOpacity(qreal opacity);
+
 Q_SIGNALS:
     void traceIdChanged(int traceId);
     void channelsChanged();
     void lengthChanged(int length);
     void finalChanged(bool isFinal);
     void canceledChanged(bool isCanceled);
+    void opacityChanged(qreal opacity);
 };
 
 } // namespace QtVirtualKeyboard

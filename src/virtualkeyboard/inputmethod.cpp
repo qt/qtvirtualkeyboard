@@ -229,6 +229,16 @@ namespace QtVirtualKeyboard {
 */
 
 /*!
+    \qmlmethod bool InputMethod::clickPreeditText(int cursorPosition)
+    \since QtQuick.VirtualKeyboard 2.4
+
+    Called when the user clicks on pre-edit text at \a cursorPosition.
+
+    The function should return \c true if it handles the event. Otherwise the input
+    falls back to \l reselect() for further processing.
+*/
+
+/*!
     \class QtVirtualKeyboard::InputMethod
     \internal
 */
@@ -373,6 +383,15 @@ bool InputMethod::reselect(int cursorPosition, const InputEngine::ReselectFlags 
                               Q_RETURN_ARG(QVariant, result),
                               Q_ARG(int, cursorPosition),
                               Q_ARG(int, (int)reselectFlags));
+    return result.toBool();
+}
+
+bool InputMethod::clickPreeditText(int cursorPosition)
+{
+    QVariant result;
+    QMetaObject::invokeMethod(this, "clickPreeditText",
+                              Q_RETURN_ARG(QVariant, result),
+                              Q_ARG(int, cursorPosition));
     return result.toBool();
 }
 

@@ -252,6 +252,7 @@ QString InputContext::preeditText() const
 
 void InputContext::setPreeditText(const QString &text, QList<QInputMethodEvent::Attribute> attributes, int replaceFrom, int replaceLength)
 {
+    Q_D(InputContext);
     // Add default attributes
     if (!text.isEmpty()) {
         if (!testAttribute(attributes, QInputMethodEvent::TextFormat)) {
@@ -259,7 +260,7 @@ void InputContext::setPreeditText(const QString &text, QList<QInputMethodEvent::
             textFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
             attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, 0, text.length(), textFormat));
         }
-    } else {
+    } else if (d->forceCursorPosition != -1) {
         addSelectionAttribute(attributes);
     }
 
@@ -442,7 +443,7 @@ void InputContext::sendKeyClick(int key, const QString &text, int modifiers)
     if (d->focus && d->inputContext) {
         QKeyEvent pressEvent(QEvent::KeyPress, key, Qt::KeyboardModifiers(modifiers), text);
         QKeyEvent releaseEvent(QEvent::KeyRelease, key, Qt::KeyboardModifiers(modifiers), text);
-        VIRTUALKEYBOARD_DEBUG() << "InputContext::::sendKeyClick():" << key;
+        VIRTUALKEYBOARD_DEBUG() << "InputContext::sendKeyClick():" << key;
 
         d->stateFlags |= InputContextPrivate::KeyEventState;
         d->inputContext->sendKeyEvent(&pressEvent);
@@ -450,7 +451,8 @@ void InputContext::sendKeyClick(int key, const QString &text, int modifiers)
         if (d->activeKeys.isEmpty())
             d->stateFlags &= ~InputContextPrivate::KeyEventState;
     } else {
-        qWarning() << "InputContext::::sendKeyClick():" << key << "no focus";
+        qWarning() << "InputContext::sendKeyClick(): no focus to send key click" << key << text
+                   << "- QGuiApplication::focusWindow() is:" << QGuiApplication::focusWindow();
     }
 }
 
@@ -492,17 +494,20 @@ void InputContext::commit(const QString &text, int replaceFrom, int replaceLengt
     Q_D(InputContext);
     VIRTUALKEYBOARD_DEBUG() << "InputContext::commit():" << text << replaceFrom << replaceLength;
     bool preeditChanged = !d->preeditText.isEmpty();
-    d->preeditText.clear();
-    d->preeditTextAttributes.clear();
 
     if (d->inputContext) {
         QList<QInputMethodEvent::Attribute> attributes;
         addSelectionAttribute(attributes);
+        d->preeditText.clear();
+        d->preeditTextAttributes.clear();
         QInputMethodEvent inputEvent(QString(), attributes);
         inputEvent.setCommitString(text, replaceFrom, replaceLength);
         d->stateFlags |= InputContextPrivate::InputMethodEventState;
         d->inputContext->sendEvent(&inputEvent);
         d->stateFlags &= ~InputContextPrivate::InputMethodEventState;
+    } else {
+        d->preeditText.clear();
+        d->preeditTextAttributes.clear();
     }
 
     if (preeditChanged)
@@ -831,6 +836,9 @@ void InputContext::invokeAction(QInputMethod::Action action, int cursorPosition)
     switch (action) {
     case QInputMethod::Click:
         if ((int)d->stateFlags == 0) {
+            if (d->inputEngine->clickPreeditText(cursorPosition))
+                break;
+
             bool reselect = !d->inputMethodHints.testFlag(Qt::ImhNoPredictiveText) && d->selectedText.isEmpty() && cursorPosition < d->preeditText.length();
             if (reselect) {
                 d->stateFlags |= InputContextPrivate::ReselectEventState;
@@ -893,11 +901,23 @@ bool InputContext::filterEvent(const QEvent *event)
 void InputContext::addSelectionAttribute(QList<QInputMethodEvent::Attribute> &attributes)
 {
     Q_D(InputContext);
-    if (!testAttribute(attributes, QInputMethodEvent::Selection) && d->forceCursorPosition != -1) {
-        if (d->forceAnchorPosition != -1)
-            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Selection, d->forceAnchorPosition, d->forceCursorPosition - d->forceAnchorPosition, QVariant()));
-        else
-            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Selection, d->forceCursorPosition, 0, QVariant()));
+    if (!testAttribute(attributes, QInputMethodEvent::Selection)) {
+        // Convert Cursor attribute to Selection attribute.
+        // In this case the cursor is set in pre-edit text, but
+        // the cursor is not being forced to specific location.
+        if (d->forceCursorPosition == -1) {
+            int cursorAttributeIndex = findAttribute(d->preeditTextAttributes, QInputMethodEvent::Cursor);
+            if (cursorAttributeIndex != -1 && d->preeditTextAttributes[cursorAttributeIndex].length > 0)
+                d->forceCursorPosition = d->cursorPosition + d->preeditTextAttributes[cursorAttributeIndex].start;
+            d->forceAnchorPosition = -1;
+        }
+
+        if (d->forceCursorPosition != -1) {
+            if (d->forceAnchorPosition != -1)
+                attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Selection, d->forceAnchorPosition, d->forceCursorPosition - d->forceAnchorPosition, QVariant()));
+            else
+                attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Selection, d->forceCursorPosition, 0, QVariant()));
+        }
     }
     d->forceAnchorPosition = -1;
     d->forceCursorPosition = -1;
@@ -910,6 +930,16 @@ bool InputContext::testAttribute(const QList<QInputMethodEvent::Attribute> &attr
             return true;
     }
     return false;
+}
+
+int InputContext::findAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const
+{
+    const int count = attributes.count();
+    for (int i = 0; i < count; ++i) {
+        if (attributes.at(i).type == attributeType)
+            return i;
+    }
+    return -1;
 }
 
 /*!

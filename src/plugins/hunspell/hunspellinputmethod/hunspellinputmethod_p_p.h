@@ -64,22 +64,31 @@ public:
     bool createHunspell(const QString &locale);
     void reset();
     bool updateSuggestions();
-    bool clearSuggestions();
-    bool hasSuggestions() const;
+    bool clearSuggestions(bool clearInputWord = false);
+    void clearSuggestionsRelatedTasks();
     bool isAutoSpaceAllowed() const;
     bool isValidInputChar(const QChar &c) const;
     bool isJoiner(const QChar &c) const;
+    QString customDictionaryLocation(const QString &dictionaryType) const;
+    void loadCustomDictionary(const QSharedPointer<HunspellWordList> &wordList, const QString &dictionaryType) const;
+    void saveCustomDictionary(const QSharedPointer<HunspellWordList> &wordList, const QString &dictionaryType) const;
+    void addToHunspell(const QSharedPointer<HunspellWordList> &wordList) const;
+    void removeFromHunspell(const QSharedPointer<HunspellWordList> &wordList) const;
+    void removeFromDictionary(const QString &word);
+    void addToDictionary();
 
     HunspellInputMethod *q_ptr;
     QScopedPointer<HunspellWorker> hunspellWorker;
     QString locale;
-    QString word;
-    QStringList wordCandidates;
-    int activeWordIndex;
+    HunspellWordList wordCandidates;
     int wordCompletionPoint;
     bool ignoreUpdate;
     bool autoSpaceAllowed;
     DictionaryState dictionaryState;
+    QSharedPointer<HunspellWordList> userDictionaryWords;
+    QSharedPointer<HunspellWordList> blacklistedWords;
+    int wordCandidatesUpdateTag;
+    static const int userDictionaryMaxSize;
 };
 
 } // namespace QtVirtualKeyboard

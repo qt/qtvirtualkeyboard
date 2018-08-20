@@ -65,29 +65,36 @@ The handwriting mode can be activated by pressing the handwriting key:
     \li Gesture
     \li Lipi Toolkit
     \li T9 Write
+    \li MyScript Text SDK
 \row
     \li Backspace
+    \li \image gesture-single-left.png
     \li \image gesture-single-left.png
     \li \image gesture-single-left.png
 \row
     \li Space
     \li \image gesture-single-right.png
     \li \image gesture-single-right.png
+    \li \image gesture-single-left.png
 \row
     \li Enter
     \li Gesture not available
+    \li \image gesture-single-down-left.png
     \li \image gesture-single-down-left.png
 \row
     \li Reset word
     \li \image gesture-double-left.png
     \li Gesture not available
+    \li Gesture not available
 \row
     \li Toggle input mode
     \li \image gesture-single-up.png
     \li Gesture not available
+    \li Gesture not available
 \row
     \li Toggle text case
     \li \image gesture-double-up.png
+    \li Gesture not available
     \li Gesture not available
 \endtable
 

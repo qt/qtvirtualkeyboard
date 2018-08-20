@@ -60,6 +60,7 @@ public:
     virtual int selectionListItemCount(SelectionListModel::Type type);
     virtual QVariant selectionListData(SelectionListModel::Type type, int index, int role);
     virtual void selectionListItemSelected(SelectionListModel::Type type, int index);
+    virtual bool selectionListRemoveItem(SelectionListModel::Type type, int index);
 
     virtual QList<InputEngine::PatternRecognitionMode> patternRecognitionModes() const;
     virtual Trace *traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
@@ -67,6 +68,7 @@ public:
     virtual bool traceEnd(Trace *trace);
 
     virtual bool reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags);
+    virtual bool clickPreeditText(int cursorPosition);
 
 Q_SIGNALS:
     void selectionListChanged(int type);

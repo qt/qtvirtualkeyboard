@@ -164,6 +164,9 @@ KeyboardLayoutLoader {
                 ChangeLanguageKey {
                     weight: 154
                 }
+                HandwritingModeKey {
+                    weight: 154
+                }
                 SpaceKey {
                     weight: 864
                 }
@@ -310,6 +313,9 @@ KeyboardLayoutLoader {
                     displayText: "&\u0967\u0968\u0969"
                 }
                 ChangeLanguageKey {
+                    weight: 154
+                }
+                HandwritingModeKey {
                     weight: 154
                 }
                 SpaceKey {

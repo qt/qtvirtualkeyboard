@@ -28,12 +28,11 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.VirtualKeyboard 2.1
+import QtQuick.VirtualKeyboard 2.3
 
-ListView {
+PopupList {
     id: wordCandidatePopupList
 
-    property int maxVisibleItems: 5
     readonly property int preferredVisibleItems: {
         if (!currentItem)
             return 0
@@ -43,13 +42,10 @@ ListView {
             --result
         return result
     }
-    readonly property real contentWidth: contentItem.childrenRect.width
     readonly property bool flipVertical: currentItem &&
                                          Qt.inputMethod.cursorRectangle.y + (Qt.inputMethod.cursorRectangle.height / 2) > (parent.height / 2) &&
                                          Qt.inputMethod.cursorRectangle.y + Qt.inputMethod.cursorRectangle.height + (currentItem.height * 2) > parent.height
 
-    clip: true
-    visible: enabled && count > 0
     height: currentItem ? currentItem.height * preferredVisibleItems + (spacing * preferredVisibleItems - 1) : 0
     Binding {
         target: wordCandidatePopupList
@@ -66,19 +62,9 @@ ListView {
         value: Math.round(wordCandidatePopupList.flipVertical ? Qt.inputMethod.cursorRectangle.y - wordCandidatePopupList.height : Qt.inputMethod.cursorRectangle.y + Qt.inputMethod.cursorRectangle.height)
         when: wordCandidatePopupList.visible
     }
-    orientation: ListView.Vertical
-    snapMode: ListView.SnapToItem
-    delegate: keyboard.style.popupListDelegate
-    highlight: keyboard.style.popupListHighlight ? keyboard.style.popupListHighlight : null
-    highlightMoveDuration: 0
-    highlightResizeDuration: 0
-    add: keyboard.style.popupListAdd
-    remove: keyboard.style.popupListRemove
-    keyNavigationWraps: true
     model: enabled ? InputContext.inputEngine.wordCandidateListModel : null
 
     onContentWidthChanged: viewResizeTimer.restart()
-    onCurrentItemChanged: if (currentItem) keyboard.soundEffect.register(currentItem.soundEffect)
 
     Timer {
         id: viewResizeTimer
@@ -91,11 +77,5 @@ ListView {
         target: wordCandidatePopupList.model ? wordCandidatePopupList.model : null
         onActiveItemChanged: wordCandidatePopupList.currentIndex = index
         onItemSelected: if (wordCandidatePopupList.currentItem) keyboard.soundEffect.play(wordCandidatePopupList.currentItem.soundEffect)
-    }
-
-    Loader {
-        sourceComponent: keyboard.style.popupListBackground
-        anchors.fill: parent
-        z: -1
     }
 }

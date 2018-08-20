@@ -47,6 +47,7 @@ QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class HunspellInputMethodPrivate;
+class HunspellWordList;
 
 class HunspellInputMethod : public AbstractInputMethod
 {
@@ -68,6 +69,7 @@ public:
     int selectionListItemCount(SelectionListModel::Type type);
     QVariant selectionListData(SelectionListModel::Type type, int index, int role);
     void selectionListItemSelected(SelectionListModel::Type type, int index);
+    bool selectionListRemoveItem(SelectionListModel::Type type, int index);
 
     bool reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags);
 
@@ -75,7 +77,7 @@ public:
     void update();
 
 protected Q_SLOTS:
-    void updateSuggestions(const QStringList &wordList, int activeWordIndex);
+    void updateSuggestions(const QSharedPointer<HunspellWordList> &wordList, int tag);
     void dictionaryLoadCompleted(bool success);
 
 protected:

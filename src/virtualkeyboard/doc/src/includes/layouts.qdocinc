@@ -3,6 +3,7 @@
 The Virtual Keyboard supports the following languages:
 
 \list
+    \li \l {Albanian Layout}{Albanian}
     \li \l {Arabic Layout}{Arabic}
     \li \l {Bulgarian Layout}{Bulgarian}
     \li \l {Bulgarian Layout (Latin)}{Bulgarian (Latin)}
@@ -14,6 +15,7 @@ The Virtual Keyboard supports the following languages:
     \li \l {Estonian Layout}{Estonian}
     \li \l {Finnish Layout}{Finnish}
     \li \l {French Layout}{French}
+    \li \l {French Layout (Canadian)}{French (Canadian)}
     \li \l {German Layout}{German}
     \li \l {Greek Layout}{Greek}
     \li \l {Greek Layout (Latin)}{Greek (Latin)}
@@ -21,12 +23,14 @@ The Virtual Keyboard supports the following languages:
     \li \l {Hebrew Layout (Latin)}{Hebrew (Latin)}
     \li \l {Hindi Layout}{Hindi}
     \li \l {Hungarian Layout}{Hungarian}
+    \li \l {Indonesian Layout}{Indonesian}
     \li \l {Italian Layout}{Italian}
     \li \l {Japanese Layout (Hiragana)}{Japanese (Hiragana)}
     \li \l {Japanese Layout (Katakana)}{Japanese (Katakana)}
     \li \l {Japanese Layout (Full Width Latin)}{Japanese (Full Width Latin)}
     \li \l {Japanese Layout (Latin)}{Japanese (Latin)}
     \li \l {Korean Layout}{Korean}
+    \li \l {Malay Layout}{Malay}
     \li \l {Norwegian Layout}{Norwegian}
     \li \l {Persian/Farsi Layout}{Persian/Farsi}
     \li \l {Polish Layout}{Polish}
@@ -38,8 +42,13 @@ The Virtual Keyboard supports the following languages:
     \li \l {Simplified Chinese Layout}{Simplified Chinese}
     \li \l {Traditional Chinese Layout (Zhuyin)}{Traditional Chinese (Zhuyin)}
     \li \l {Traditional Chinese Layout (Cangjie)}{Traditional Chinese (Cangjie)}
+    \li \l {Slovak Layout}{Slovak}
+    \li \l {Slovenian Layout}{Slovenian}
     \li \l {Spanish Layout}{Spanish}
     \li \l {Swedish Layout}{Swedish}
+    \li \l {Thai Layout}{Thai}
+    \li \l {Turkish Layout}{Turkish}
+    \li \l {Ukrainian Layout}{Ukrainian}
     \li \l {Vietnamese Layout}{Vietnamese}
 \endlist
 
