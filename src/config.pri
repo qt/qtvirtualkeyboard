@@ -59,6 +59,7 @@ disable-layouts {
         lang-et_EE \
         lang-fa_FA \
         lang-fi_FI \
+        lang-fr_CA \
         lang-fr_FR \
         lang-he_IL \
         lang-hi_IN \

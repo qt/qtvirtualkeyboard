@@ -173,7 +173,15 @@ contains(CONFIG, lang-fi.*) {
         content/layouts/fi_FI/numbers.fallback \
         content/layouts/fi_FI/symbols.fallback
 }
-contains(CONFIG, lang-fr.*) {
+contains(CONFIG, lang-fr(_CA)?) {
+    LAYOUT_FILES += \
+        content/layouts/fr_CA/dialpad.fallback \
+        content/layouts/fr_CA/digits.fallback \
+        content/layouts/fr_CA/main.qml \
+        content/layouts/fr_CA/numbers.fallback \
+        content/layouts/fr_CA/symbols.fallback
+}
+contains(CONFIG, lang-fr(_FR)?) {
     LAYOUT_FILES += \
         content/layouts/fr_FR/dialpad.fallback \
         content/layouts/fr_FR/digits.fallback \

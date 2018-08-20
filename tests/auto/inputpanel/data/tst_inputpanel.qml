@@ -338,6 +338,7 @@ Rectangle {
                 { initLocale: "hr_HR", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "zdravo", outputText: "Zdravo" },
                 { initLocale: "hu_HU", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "helló", outputText: "Helló" },
                 { initLocale: "fi_FI", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hei", outputText: "Hei" },
+                { initLocale: "fr_CA", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "bonjour", outputText: "Bonjour" },
                 { initLocale: "fr_FR", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "bonjour", outputText: "Bonjour" },
                 { initLocale: "id_ID", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "halo", outputText: "Halo" },
                 { initLocale: "it_IT", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "ciao", outputText: "Ciao" },
