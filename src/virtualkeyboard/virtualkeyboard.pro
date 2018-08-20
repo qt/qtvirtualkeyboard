@@ -269,7 +269,15 @@ contains(CONFIG, lang-pl.*) {
         content/layouts/pl_PL/numbers.fallback \
         content/layouts/pl_PL/symbols.fallback
 }
-contains(CONFIG, lang-pt.*) {
+contains(CONFIG, lang-pt(_BR)?) {
+    LAYOUT_FILES += \
+        content/layouts/pt_BR/dialpad.fallback \
+        content/layouts/pt_BR/digits.fallback \
+        content/layouts/pt_BR/main.qml \
+        content/layouts/pt_BR/numbers.fallback \
+        content/layouts/pt_BR/symbols.fallback
+}
+contains(CONFIG, lang-pt(_PT)?) {
     LAYOUT_FILES += \
         content/layouts/pt_PT/dialpad.fallback \
         content/layouts/pt_PT/digits.fallback \

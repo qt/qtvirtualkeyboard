@@ -73,6 +73,7 @@ disable-layouts {
         lang-nb_NO \
         lang-nl_NL \
         lang-pl_PL \
+        lang-pt_BR \
         lang-pt_PT \
         lang-ro_RO \
         lang-ru_RU \
