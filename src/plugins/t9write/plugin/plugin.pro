@@ -32,7 +32,8 @@ t9write-alphabetic {
     contains(CONFIG, lang-da.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/da_DK/handwriting.fallback
     contains(CONFIG, lang-de.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/de_DE/handwriting.fallback
     contains(CONFIG, lang-el.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/el_GR/handwriting.qml
-    contains(CONFIG, lang-es.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/es_ES/handwriting.qml
+    contains(CONFIG, lang-es(_ES)?): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/es_ES/handwriting.qml
+    contains(CONFIG, lang-es(_MX)?): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/es_MX/handwriting.qml
     contains(CONFIG, lang-et.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/et_EE/handwriting.fallback
     contains(CONFIG, lang-fa.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/fa_FA/handwriting.qml
     contains(CONFIG, lang-fi.*): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/fi_FI/handwriting.fallback

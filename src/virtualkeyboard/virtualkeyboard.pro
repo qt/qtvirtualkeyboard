@@ -141,13 +141,21 @@ contains(CONFIG, lang-el.*) {
         content/layouts/el_GR/numbers.fallback \
         content/layouts/el_GR/symbols.fallback
 }
-contains(CONFIG, lang-es.*) {
+contains(CONFIG, lang-es(_ES)?) {
     LAYOUT_FILES += \
         content/layouts/es_ES/dialpad.fallback \
         content/layouts/es_ES/digits.fallback \
         content/layouts/es_ES/main.qml \
         content/layouts/es_ES/numbers.fallback \
         content/layouts/es_ES/symbols.qml
+}
+contains(CONFIG, lang-es(_MX)?) {
+    LAYOUT_FILES += \
+        content/layouts/es_MX/dialpad.fallback \
+        content/layouts/es_MX/digits.fallback \
+        content/layouts/es_MX/main.qml \
+        content/layouts/es_MX/numbers.fallback \
+        content/layouts/es_MX/symbols.qml
 }
 contains(CONFIG, lang-et.*) {
     LAYOUT_FILES += \
