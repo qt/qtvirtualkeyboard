@@ -52,7 +52,7 @@ Item {
                 }
                 parent_ = parent_.parent
             }
-            delayedLoading.triggered()
+            delayedLoading.restart()
         }
     }
 
@@ -96,12 +96,9 @@ Item {
     }
     Connections {
         ignoreUnknownSignals: true
-        target: inputItem && !Qt.inputMethod.animating ? Qt.inputMethod : null
-        onKeyboardRectangleChanged: delayedLoading.triggered()
-    }
-    Connections {
-        ignoreUnknownSignals: true
-        target: inputItem && inputItem.activeFocus ? inputItem : null
-        onCursorRectangleChanged: delayedLoading.triggered()
+        target: Qt.inputMethod
+        onAnimatingChanged: if (inputItem && !Qt.inputMethod.animating) delayedLoading.restart()
+        onKeyboardRectangleChanged: if (inputItem) delayedLoading.restart()
+        onCursorRectangleChanged: if (inputItem && inputItem.activeFocus) delayedLoading.restart()
     }
 }
