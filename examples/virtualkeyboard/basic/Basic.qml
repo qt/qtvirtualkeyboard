@@ -41,7 +41,7 @@ Rectangle {
     property bool handwritingInputPanelActive: false
 
     Flickable {
-        id: contentFlickable
+        id: flickable
         anchors.fill: parent
         contentWidth: content.width
         contentHeight: content.height
@@ -54,7 +54,7 @@ Rectangle {
 
         MouseArea  {
             id: content
-            width: contentFlickable.width
+            width: flickable.width
             height: textEditors.height + 24
 
             onClicked: focus = true
