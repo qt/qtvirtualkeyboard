@@ -31,6 +31,7 @@
 #include "lipisharedrecognizer_p.h"
 #include <QtVirtualKeyboard/inputengine.h>
 #include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/private/inputcontext_p.h>
 #include <QtVirtualKeyboard/private/shifthandler_p.h>
 #include <QLoggingCategory>
 #include <QtVirtualKeyboard/trace.h>
@@ -303,7 +304,7 @@ public:
                     } else if (swipeTouchCount == 2) {
                         // Double swipe: toggle text case
                         cancelRecognition();
-                        ic->shiftHandler()->toggleShift();
+                        ic->priv()->shiftHandler()->toggleShift();
                     }
                     return;
                 }

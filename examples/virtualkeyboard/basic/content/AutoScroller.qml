@@ -34,7 +34,7 @@ Item {
 
     property var innerFlickable
     property var outerFlickable
-    property var inputItem: InputContext.inputItem
+    property var inputItem: InputContext.priv.inputItem
 
     onInputItemChanged: {
         innerFlickable = null

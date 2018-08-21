@@ -101,6 +101,7 @@ private slots:
 
 private:
     friend class InputContext;
+    friend class InputContextPrivate;
     QPointer<InputContext> m_inputContext;
     QPointer<AbstractInputPanel> m_inputPanel;
     QPointer<DesktopInputSelectionControl> m_selectionControl;

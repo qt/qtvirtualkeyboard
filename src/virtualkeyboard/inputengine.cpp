@@ -29,6 +29,8 @@
 
 #include <QtVirtualKeyboard/inputengine.h>
 #include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/private/inputcontext_p.h>
+#include <QtVirtualKeyboard/private/shifthandler_p.h>
 #include <QtVirtualKeyboard/private/fallbackinputmethod_p.h>
 #include <QtVirtualKeyboard/trace.h>
 #include <QtVirtualKeyboard/private/virtualkeyboarddebug_p.h>
@@ -154,13 +156,17 @@ InputEngine::InputEngine(InputContext *parent) :
 {
     Q_D(InputEngine);
     d->inputContext = parent;
-    if (d->inputContext) {
-        connect(d->inputContext, SIGNAL(shiftChanged()), SLOT(shiftChanged()));
-        connect(d->inputContext, SIGNAL(localeChanged()), SLOT(update()));
-        QObject::connect(d->inputContext, &InputContext::inputMethodHintsChanged, this, &InputEngine::updateSelectionListModels);
-        QObject::connect(d->inputContext, &InputContext::localeChanged, this, &InputEngine::updateInputModes);
-        QObject::connect(this, &InputEngine::inputMethodChanged, this, &InputEngine::updateInputModes);
-    }
+}
+
+void InputEngine::init()
+{
+    Q_D(InputEngine);
+    ShiftHandler *shiftHandler = d->inputContext->priv()->shiftHandler();
+    QObject::connect(shiftHandler, &ShiftHandler::shiftChanged, this, &InputEngine::shiftChanged);
+    QObject::connect(d->inputContext, &InputContext::localeChanged, this, &InputEngine::update);
+    QObject::connect(d->inputContext, &InputContext::inputMethodHintsChanged, this, &InputEngine::updateSelectionListModels);
+    QObject::connect(d->inputContext, &InputContext::localeChanged, this, &InputEngine::updateInputModes);
+    QObject::connect(this, &InputEngine::inputMethodChanged, this, &InputEngine::updateInputModes);
     d->fallbackInputMethod = new FallbackInputMethod(this);
     if (d->fallbackInputMethod)
         d->fallbackInputMethod->setInputEngine(this);
@@ -619,7 +625,7 @@ void InputEngine::update()
 void InputEngine::shiftChanged()
 {
     Q_D(InputEngine);
-    TextCase newCase = d->inputContext->shift() ? Upper : Lower;
+    TextCase newCase = d->inputContext->priv()->shiftHandler()->shift() ? Upper : Lower;
     if (d->textCase != newCase) {
         d->textCase = newCase;
         if (d->inputMethod) {

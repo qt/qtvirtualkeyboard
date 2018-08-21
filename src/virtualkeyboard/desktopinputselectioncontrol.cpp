@@ -29,6 +29,7 @@
 
 #include <QtVirtualKeyboard/private/desktopinputselectioncontrol_p.h>
 #include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/private/inputcontext_p.h>
 #include <QtVirtualKeyboard/private/inputselectionhandle_p.h>
 #include <QtVirtualKeyboard/private/settings_p.h>
 #include <QtVirtualKeyboard/private/platforminputcontext_p.h>
@@ -123,7 +124,7 @@ void DesktopInputSelectionControl::updateVisibility()
         globalAnchorRectangle.moveTopLeft(tl);
         m_anchorHandleVisible = m_anchorHandleVisible
                 && m_inputContext->anchorRectIntersectsClipRect()
-                && !(m_inputContext->keyboardRectangle().intersects(globalAnchorRectangle));
+                && !(m_inputContext->priv()->keyboardRectangle().intersects(globalAnchorRectangle));
     }
 
     if (wasAnchorVisible != m_anchorHandleVisible) {
@@ -142,7 +143,7 @@ void DesktopInputSelectionControl::updateVisibility()
         globalCursorRectangle.moveTopLeft(tl);
         m_cursorHandleVisible = m_cursorHandleVisible
                 && m_inputContext->cursorRectIntersectsClipRect()
-                && !(m_inputContext->keyboardRectangle().intersects(globalCursorRectangle));
+                && !(m_inputContext->priv()->keyboardRectangle().intersects(globalCursorRectangle));
 
     }
 

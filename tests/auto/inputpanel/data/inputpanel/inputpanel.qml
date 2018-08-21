@@ -47,8 +47,8 @@ InputPanel {
     readonly property int cursorPosition: InputContext.cursorPosition
     readonly property string preeditText: InputContext.preeditText
     readonly property string surroundingText: InputContext.surroundingText
-    readonly property bool autoCapitalizationEnabled: InputContext.shiftHandler.autoCapitalizationEnabled
-    readonly property bool toggleShiftEnabled: InputContext.shiftHandler.toggleShiftEnabled
+    readonly property bool autoCapitalizationEnabled: InputContext.priv.shiftHandler.autoCapitalizationEnabled
+    readonly property bool toggleShiftEnabled: InputContext.priv.shiftHandler.toggleShiftEnabled
     readonly property string locale: keyboard.locale
     readonly property string defaultLocale: VirtualKeyboardSettings.locale
     readonly property var availableLocales: VirtualKeyboardSettings.availableLocales
@@ -384,12 +384,12 @@ InputPanel {
                 } else if (typeof key != "number" || key !== Qt.Key_Shift) {
                     // Some layouts (such as Arabic, Hindi) may have a second layout
                     virtualKeyClick(Qt.Key_Shift)
-                    InputContext.shiftHandler.clearToggleShiftTimer()
+                    InputContext.priv.shiftHandler.clearToggleShiftTimer()
                     testcase.waitForRendering(inputPanel)
                     success = keyActionOnCurrentLayoutCb(key)
                     if (!success) {
                         virtualKeyClick(Qt.Key_Shift)
-                        InputContext.shiftHandler.clearToggleShiftTimer()
+                        InputContext.priv.shiftHandler.clearToggleShiftTimer()
                         testcase.waitForRendering(inputPanel)
                     }
                 }
@@ -534,15 +534,15 @@ InputPanel {
     }
 
     function toggleShift() {
-        InputContext.shiftHandler.toggleShift()
+        InputContext.priv.shiftHandler.toggleShift()
     }
 
     function setShift(shift) {
-        InputContext.shift = shift
+        InputContext.priv.shiftHandler.shift = shift
     }
 
     function setCapsLock(capsLock) {
-        InputContext.capsLock = capsLock
+        InputContext.priv.shiftHandler.capsLock = capsLock
     }
 
     function style() {

@@ -31,6 +31,7 @@
 #include "extensionloader.h"
 #include <QtVirtualKeyboard/inputcontext.h>
 #include <QtVirtualKeyboard/inputengine.h>
+#include <QtVirtualKeyboard/private/inputcontext_p.h>
 #include <QtVirtualKeyboard/private/shifthandler_p.h>
 #include <QtVirtualKeyboard/private/plaininputmethod_p.h>
 #include <QtVirtualKeyboard/private/inputmethod_p.h>
@@ -102,6 +103,8 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
 
     qmlRegisterSingletonType<InputContext>(pluginUri, 1, 0, "InputContext", createInputContextModule);
     qmlRegisterSingletonType<InputContext>(pluginUri, 2, 0, "InputContext", createInputContextModule);
+    qRegisterMetaType<InputContextPrivate *>("InputContextPrivate*");
+    qmlRegisterUncreatableType<InputContextPrivate>(pluginUri, 1, 0, "InputContextPrivate", QLatin1String("Cannot create input context private"));
     qRegisterMetaType<InputEngine *>("InputEngine*");
     qmlRegisterUncreatableType<InputEngine>(pluginUri, 1, 0, "InputEngine", QLatin1String("Cannot create input method engine"));
     qmlRegisterUncreatableType<InputEngine>(pluginUri, 2, 0, "InputEngine", QLatin1String("Cannot create input method engine"));

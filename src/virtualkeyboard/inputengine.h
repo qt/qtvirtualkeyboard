@@ -59,6 +59,7 @@ class QVIRTUALKEYBOARD_EXPORT InputEngine : public QObject
     Q_PROPERTY(bool wordCandidateListVisibleHint READ wordCandidateListVisibleHint NOTIFY wordCandidateListVisibleHintChanged)
 
     explicit InputEngine(InputContext *parent = nullptr);
+    void init();
 
 public:
     enum TextCase {
@@ -155,6 +156,7 @@ protected:
 
 private:
     friend class InputContext;
+    friend class InputContextPrivate;
 };
 
 } // namespace QtVirtualKeyboard

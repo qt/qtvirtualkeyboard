@@ -41,9 +41,7 @@ QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class PlatformInputContext;
-class ShadowInputContext;
 class InputEngine;
-class ShiftHandler;
 class InputContextPrivate;
 
 class QVIRTUALKEYBOARD_EXPORT InputContext : public QObject
@@ -51,9 +49,8 @@ class QVIRTUALKEYBOARD_EXPORT InputContext : public QObject
     Q_OBJECT
     Q_DISABLE_COPY(InputContext)
     Q_DECLARE_PRIVATE(InputContext)
-    Q_PROPERTY(bool focus READ focus NOTIFY focusChanged)
-    Q_PROPERTY(bool shift READ shift WRITE setShift NOTIFY shiftChanged)
-    Q_PROPERTY(bool capsLock READ capsLock WRITE setCapsLock NOTIFY capsLockChanged)
+    Q_PROPERTY(bool shift READ shift NOTIFY shiftChanged)
+    Q_PROPERTY(bool capsLock READ capsLock NOTIFY capsLockChanged)
     Q_PROPERTY(bool uppercase READ uppercase NOTIFY uppercaseChanged)
     Q_PROPERTY(int anchorPosition READ anchorPosition NOTIFY anchorPositionChanged)
     Q_PROPERTY(int cursorPosition READ cursorPosition NOTIFY cursorPositionChanged)
@@ -63,28 +60,20 @@ class QVIRTUALKEYBOARD_EXPORT InputContext : public QObject
     Q_PROPERTY(QString selectedText READ selectedText NOTIFY selectedTextChanged)
     Q_PROPERTY(QRectF anchorRectangle READ anchorRectangle NOTIFY anchorRectangleChanged)
     Q_PROPERTY(QRectF cursorRectangle READ cursorRectangle NOTIFY cursorRectangleChanged)
-    Q_PROPERTY(QRectF keyboardRectangle READ keyboardRectangle WRITE setKeyboardRectangle NOTIFY keyboardRectangleChanged)
-    Q_PROPERTY(QRectF previewRectangle READ previewRectangle WRITE setPreviewRectangle NOTIFY previewRectangleChanged)
-    Q_PROPERTY(bool previewVisible READ previewVisible WRITE setPreviewVisible NOTIFY previewVisibleChanged)
     Q_PROPERTY(bool animating READ animating WRITE setAnimating NOTIFY animatingChanged)
-    Q_PROPERTY(QString locale READ locale WRITE setLocale NOTIFY localeChanged)
-    Q_PROPERTY(QObject *inputItem READ inputItem NOTIFY inputItemChanged)
-    Q_PROPERTY(ShiftHandler *shiftHandler READ shiftHandler CONSTANT)
+    Q_PROPERTY(QString locale READ locale NOTIFY localeChanged)
     Q_PROPERTY(InputEngine *inputEngine READ inputEngine CONSTANT)
     Q_PROPERTY(bool selectionControlVisible READ selectionControlVisible NOTIFY selectionControlVisibleChanged)
     Q_PROPERTY(bool anchorRectIntersectsClipRect READ anchorRectIntersectsClipRect NOTIFY anchorRectIntersectsClipRectChanged)
     Q_PROPERTY(bool cursorRectIntersectsClipRect READ cursorRectIntersectsClipRect NOTIFY cursorRectIntersectsClipRectChanged)
-    Q_PROPERTY(ShadowInputContext *shadow READ shadow CONSTANT)
+    Q_PROPERTY(InputContextPrivate *priv READ priv CONSTANT)
 
 public:
     explicit InputContext(PlatformInputContext *parent = nullptr);
     ~InputContext();
 
-    bool focus() const;
     bool shift() const;
-    void setShift(bool enable);
     bool capsLock() const;
-    void setCapsLock(bool enable);
     bool uppercase() const;
     int anchorPosition() const;
     int cursorPosition() const;
@@ -96,44 +85,24 @@ public:
     QString selectedText() const;
     QRectF anchorRectangle() const;
     QRectF cursorRectangle() const;
-    QRectF keyboardRectangle() const;
-    void setKeyboardRectangle(QRectF rectangle);
-    QRectF previewRectangle() const;
-    void setPreviewRectangle(QRectF rectangle);
-    bool previewVisible() const;
-    void setPreviewVisible(bool visible);
     bool animating() const;
     void setAnimating(bool animating);
     QString locale() const;
-    void setLocale(const QString &locale);
-    Q_INVOKABLE void updateAvailableLocales(const QStringList &availableLocales);
-    QObject *inputItem() const;
-    ShiftHandler *shiftHandler() const;
     InputEngine *inputEngine() const;
     bool selectionControlVisible() const;
     bool anchorRectIntersectsClipRect() const;
     bool cursorRectIntersectsClipRect() const;
-    ShadowInputContext *shadow() const;
+    InputContextPrivate *priv() const;
 
-    Q_INVOKABLE void hideInputPanel();
     Q_INVOKABLE void sendKeyClick(int key, const QString &text, int modifiers = 0);
     Q_INVOKABLE void commit();
     Q_INVOKABLE void commit(const QString &text, int replaceFrom = 0, int replaceLength = 0);
     Q_INVOKABLE void clear();
 
-    // Helper functions
-    Q_INVOKABLE bool fileExists(const QUrl &fileUrl);
-    Q_INVOKABLE bool hasEnterKeyAction(QObject *item) const;
-
     // For selection handles
     Q_INVOKABLE void setSelectionOnFocusObject(const QPointF &anchorPos, const QPointF &cursorPos);
 
-    // For shadow input
-    Q_INVOKABLE void forceCursorPosition(int anchorPosition, int cursorPosition);
-
 Q_SIGNALS:
-    void focusChanged();
-    void focusEditorChanged();
     void preeditTextChanged();
     void inputMethodHintsChanged();
     void surroundingTextChanged();
@@ -145,35 +114,16 @@ Q_SIGNALS:
     void shiftChanged();
     void capsLockChanged();
     void uppercaseChanged();
-    void keyboardRectangleChanged();
-    void previewRectangleChanged();
-    void previewVisibleChanged();
     void animatingChanged();
     void localeChanged();
-    void inputItemChanged();
     void selectionControlVisibleChanged();
-    void navigationKeyPressed(int key, bool isAutoRepeat);
-    void navigationKeyReleased(int key, bool isAutoRepeat);
     void anchorRectIntersectsClipRectChanged();
     void cursorRectIntersectsClipRectChanged();
 
-private Q_SLOTS:
-    void onInputItemChanged();
-
 private:
-    void setFocus(bool enable);
-    void sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes, int replaceFrom, int replaceLength);
-    void reset();
-    void externalCommit();
-    void update(Qt::InputMethodQueries queries);
-    void invokeAction(QInputMethod::Action action, int cursorPosition);
-    bool filterEvent(const QEvent *event);
-    void addSelectionAttribute(QList<QInputMethodEvent::Attribute> &attributes);
-    bool testAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const;
-    int findAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const;
+    friend class InputContextPrivate;
 
-private:
-    friend class PlatformInputContext;
+    QScopedPointer<InputContextPrivate> d_ptr;
 };
 
 } // namespace QtVirtualKeyboard

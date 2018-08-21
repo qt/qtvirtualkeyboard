@@ -126,7 +126,7 @@ Item {
     }
     onInputLocaleChanged: {
         if (Qt.locale(inputLocale).name !== "C")
-            InputContext.locale = inputLocale
+            InputContext.priv.locale = inputLocale
     }
     onLayoutChanged: hideLanguagePopup()
     onLayoutTypeChanged: {
@@ -150,17 +150,20 @@ Item {
 
     Connections {
         target: InputContext
+        onInputMethodHintsChanged: {
+            if (InputContext.priv.focus)
+                updateInputMethod()
+        }
+    }
+    Connections {
+        target: InputContext.priv
         onInputItemChanged: {
             keyboard.hideLanguagePopup()
             if (active && symbolMode && !preferNumbers)
                 symbolMode = false
         }
         onFocusChanged: {
-            if (InputContext.focus)
-                updateInputMethod()
-        }
-        onInputMethodHintsChanged: {
-            if (InputContext.focus)
+            if (InputContext.priv.focus)
                 updateInputMethod()
         }
         onNavigationKeyPressed: {
@@ -424,7 +427,7 @@ Item {
                 keyboard.symbolMode = false
             } else if (key === Qt.Key_Space) {
                 var surroundingText = InputContext.surroundingText.trim()
-                if (InputContext.shiftHandler.sentenceEndingCharacters.indexOf(surroundingText.charAt(surroundingText.length-1)) >= 0)
+                if (InputContext.priv.shiftHandler.sentenceEndingCharacters.indexOf(surroundingText.charAt(surroundingText.length-1)) >= 0)
                     keyboard.symbolMode = false
             }
         }
@@ -453,8 +456,8 @@ Item {
                                            alternativeKeys.listView.height + verticalMargin * 2)
         onVisibleChanged: {
             if (visible)
-                InputContext.previewRectangle = Qt.binding(function() {return previewRect})
-            InputContext.previewVisible = visible
+                InputContext.priv.previewRectangle = Qt.binding(function() {return previewRect})
+            InputContext.priv.previewVisible = visible
         }
     }
     Timer {
@@ -513,19 +516,19 @@ Item {
                                            characterPreview.height)
     }
     Binding {
-        target: InputContext
+        target: InputContext.priv
         property: "previewRectangle"
         value: characterPreview.previewRect
         when: characterPreview.visible
     }
     Binding {
-        target: InputContext
+        target: InputContext.priv
         property: "previewRectangle"
         value: languagePopupList.previewRect
         when: languagePopupListActive
     }
     Binding {
-        target: InputContext
+        target: InputContext.priv
         property: "previewVisible"
         value: characterPreview.visible || languagePopupListActive
     }
@@ -622,7 +625,7 @@ Item {
 
     SelectionControl {
         objectName: "fullScreenModeSelectionControl"
-        inputContext: InputContext.shadow
+        inputContext: InputContext.priv.shadow
         anchors.top: shadowInputControl.top
         anchors.left: shadowInputControl.left
         enabled: keyboard.enabled && fullScreenMode
@@ -668,7 +671,7 @@ Item {
             }
         }
         Connections {
-            target: InputContext
+            target: InputContext.priv
             onInputItemChanged: wordCandidateViewAutoHideTimer.stop()
         }
         Connections {
@@ -1278,7 +1281,7 @@ Item {
     function updateInputMethod() {
         if (!keyboardLayoutLoader.item)
             return
-        if (!InputContext.focus)
+        if (!InputContext.priv.focus)
             return
 
         // Reset the custom input method if it is not included in the list of shared layouts
@@ -1364,7 +1367,7 @@ Item {
         }
 
         // Clear the toggle shift timer
-        InputContext.shiftHandler.clearToggleShiftTimer()
+        InputContext.priv.shiftHandler.clearToggleShiftTimer()
     }
 
     function updateLayout() {
@@ -1437,7 +1440,7 @@ Item {
         newIndices.sort(function(a, b) { return a - b })
         availableLocaleIndices = newIndices
         newAvailableLocales.sort()
-        InputContext.updateAvailableLocales(newAvailableLocales)
+        InputContext.priv.updateAvailableLocales(newAvailableLocales)
 
         // Update list of custom locale indices
         newIndices = []
@@ -1544,20 +1547,20 @@ Item {
     }
 
     function layoutExists(localeName, layoutType) {
-        var result = InputContext.fileExists(getLayoutFile(localeName, layoutType))
+        var result = InputContext.priv.fileExists(getLayoutFile(localeName, layoutType))
         if (!result && layoutType === "handwriting")
-            result = InputContext.fileExists(getFallbackFile(localeName, layoutType))
+            result = InputContext.priv.fileExists(getFallbackFile(localeName, layoutType))
         return result
     }
 
     function findLayout(localeName, layoutType) {
         var layoutFile = getLayoutFile(localeName, layoutType)
-        if (InputContext.fileExists(layoutFile))
+        if (InputContext.priv.fileExists(layoutFile))
             return layoutFile
         var fallbackFile = getFallbackFile(localeName, layoutType)
-        if (InputContext.fileExists(fallbackFile)) {
+        if (InputContext.priv.fileExists(fallbackFile)) {
             layoutFile = getLayoutFile("fallback", layoutType)
-            if (InputContext.fileExists(layoutFile))
+            if (InputContext.priv.fileExists(layoutFile))
                 return layoutFile
         }
         return ""

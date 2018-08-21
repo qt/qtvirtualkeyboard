@@ -15,6 +15,7 @@ include(../config.pri)
 SOURCES += \
     platforminputcontext.cpp \
     inputcontext.cpp \
+    inputcontext_p.cpp \
     abstractinputmethod.cpp \
     plaininputmethod.cpp \
     inputengine.cpp \
@@ -39,6 +40,7 @@ SOURCES += \
 HEADERS += \
     platforminputcontext_p.h \
     inputcontext.h \
+    inputcontext_p.h \
     abstractinputmethod.h \
     plaininputmethod_p.h \
     inputengine.h \

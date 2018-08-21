@@ -135,7 +135,7 @@ Item {
     }
 
     Binding {
-        target: InputContext
+        target: InputContext.priv
         property: "keyboardRectangle"
         value: mapToItem(null,
                          __isRootItem ? keyboard.x : x,

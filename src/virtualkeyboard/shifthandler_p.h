@@ -58,8 +58,12 @@ class QVIRTUALKEYBOARD_EXPORT ShiftHandler : public QObject
     Q_PROPERTY(QString sentenceEndingCharacters READ sentenceEndingCharacters WRITE setSentenceEndingCharacters NOTIFY sentenceEndingCharactersChanged)
     Q_PROPERTY(bool autoCapitalizationEnabled READ autoCapitalizationEnabled NOTIFY autoCapitalizationEnabledChanged)
     Q_PROPERTY(bool toggleShiftEnabled READ toggleShiftEnabled NOTIFY toggleShiftEnabledChanged)
+    Q_PROPERTY(bool shift READ shift WRITE setShift NOTIFY shiftChanged)
+    Q_PROPERTY(bool capsLock READ capsLock WRITE setCapsLock NOTIFY capsLockChanged)
+    Q_PROPERTY(bool uppercase READ uppercase NOTIFY uppercaseChanged)
 
     explicit ShiftHandler(InputContext *parent = nullptr);
+    void init();
 
 public:
     ~ShiftHandler();
@@ -68,6 +72,11 @@ public:
     void setSentenceEndingCharacters(const QString &value);
     bool autoCapitalizationEnabled() const;
     bool toggleShiftEnabled() const;
+    bool shift() const;
+    void setShift(bool enable);
+    bool capsLock() const;
+    void setCapsLock(bool enable);
+    bool uppercase() const;
 
     Q_INVOKABLE void toggleShift();
     Q_INVOKABLE void clearToggleShiftTimer();
@@ -76,13 +85,15 @@ signals:
     void sentenceEndingCharactersChanged();
     void toggleShiftEnabledChanged();
     void autoCapitalizationEnabledChanged();
+    void shiftChanged();
+    void capsLockChanged();
+    void uppercaseChanged();
 
 private slots:
     void reset();
     void autoCapitalize();
     void restart();
     void localeChanged();
-    void shiftChanged();
     void inputMethodVisibleChanged();
 
 private:
@@ -91,6 +102,7 @@ private:
 
 private:
     friend class InputContext;
+    friend class InputContextPrivate;
 };
 
 } // namespace QtVirtualKeyboard
