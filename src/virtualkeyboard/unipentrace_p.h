@@ -43,11 +43,12 @@
 
 #include <QObject>
 #include <QtVirtualKeyboard/trace.h>
+#include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-class UnipenTrace : public QObject
+class QVIRTUALKEYBOARD_EXPORT UnipenTrace : public QObject
 {
     Q_OBJECT
 public:

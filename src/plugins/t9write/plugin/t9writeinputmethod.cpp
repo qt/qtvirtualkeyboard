@@ -38,7 +38,7 @@
 #include <QTime>
 #include <QtVirtualKeyboard/private/handwritinggesturerecognizer_p.h>
 #ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
-#include "unipentrace.h"
+#include <QtVirtualKeyboard/private/unipentrace_p.h>
 #include <QStandardPaths>
 #endif
 
