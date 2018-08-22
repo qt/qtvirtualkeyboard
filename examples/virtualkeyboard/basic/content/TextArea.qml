@@ -42,6 +42,9 @@ Controls.TextArea {
     property int enterKeyAction: EnterKeyAction.None
     readonly property bool enterKeyEnabled: enterKeyAction === EnterKeyAction.None || text.length > 0 || inputMethodComposing
 
+    EnterKeyAction.actionId: control.enterKeyAction
+    EnterKeyAction.enabled: control.enterKeyEnabled
+
     background: Rectangle {
         color: "#FFFFFF"
         border.width: 1
