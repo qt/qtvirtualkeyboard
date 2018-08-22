@@ -42,7 +42,7 @@
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-DesktopInputSelectionControl::DesktopInputSelectionControl(QObject *parent, InputContext *inputContext)
+DesktopInputSelectionControl::DesktopInputSelectionControl(QObject *parent, QVirtualKeyboardInputContext *inputContext)
     : QObject(parent),
       m_inputContext(inputContext),
       m_anchorSelectionHandle(),
@@ -56,7 +56,7 @@ DesktopInputSelectionControl::DesktopInputSelectionControl(QObject *parent, Inpu
 {
     QWindow *focusWindow = QGuiApplication::focusWindow();
     Q_ASSERT(focusWindow);
-    connect(m_inputContext, &InputContext::selectionControlVisibleChanged, this, &DesktopInputSelectionControl::updateVisibility);
+    connect(m_inputContext, &QVirtualKeyboardInputContext::selectionControlVisibleChanged, this, &DesktopInputSelectionControl::updateVisibility);
 }
 
 /*
@@ -202,19 +202,19 @@ void DesktopInputSelectionControl::setEnabled(bool enable)
     m_enabled = enable;
     QWindow *focusWindow = QGuiApplication::focusWindow();
     if (enable) {
-        connect(m_inputContext, &InputContext::anchorRectangleChanged, this, &DesktopInputSelectionControl::updateAnchorHandlePosition);
-        connect(m_inputContext, &InputContext::cursorRectangleChanged, this, &DesktopInputSelectionControl::updateCursorHandlePosition);
-        connect(m_inputContext, &InputContext::anchorRectIntersectsClipRectChanged, this, &DesktopInputSelectionControl::updateVisibility);
-        connect(m_inputContext, &InputContext::cursorRectIntersectsClipRectChanged, this, &DesktopInputSelectionControl::updateVisibility);
+        connect(m_inputContext, &QVirtualKeyboardInputContext::anchorRectangleChanged, this, &DesktopInputSelectionControl::updateAnchorHandlePosition);
+        connect(m_inputContext, &QVirtualKeyboardInputContext::cursorRectangleChanged, this, &DesktopInputSelectionControl::updateCursorHandlePosition);
+        connect(m_inputContext, &QVirtualKeyboardInputContext::anchorRectIntersectsClipRectChanged, this, &DesktopInputSelectionControl::updateVisibility);
+        connect(m_inputContext, &QVirtualKeyboardInputContext::cursorRectIntersectsClipRectChanged, this, &DesktopInputSelectionControl::updateVisibility);
         if (focusWindow)
             focusWindow->installEventFilter(this);
     } else {
         if (focusWindow)
             focusWindow->removeEventFilter(this);
-        disconnect(m_inputContext, &InputContext::cursorRectIntersectsClipRectChanged, this, &DesktopInputSelectionControl::updateVisibility);
-        disconnect(m_inputContext, &InputContext::anchorRectIntersectsClipRectChanged, this, &DesktopInputSelectionControl::updateVisibility);
-        disconnect(m_inputContext, &InputContext::anchorRectangleChanged, this, &DesktopInputSelectionControl::updateAnchorHandlePosition);
-        disconnect(m_inputContext, &InputContext::cursorRectangleChanged, this, &DesktopInputSelectionControl::updateCursorHandlePosition);
+        disconnect(m_inputContext, &QVirtualKeyboardInputContext::cursorRectIntersectsClipRectChanged, this, &DesktopInputSelectionControl::updateVisibility);
+        disconnect(m_inputContext, &QVirtualKeyboardInputContext::anchorRectIntersectsClipRectChanged, this, &DesktopInputSelectionControl::updateVisibility);
+        disconnect(m_inputContext, &QVirtualKeyboardInputContext::anchorRectangleChanged, this, &DesktopInputSelectionControl::updateAnchorHandlePosition);
+        disconnect(m_inputContext, &QVirtualKeyboardInputContext::cursorRectangleChanged, this, &DesktopInputSelectionControl::updateCursorHandlePosition);
     }
     updateVisibility();
 }

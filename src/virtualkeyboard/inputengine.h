@@ -35,30 +35,29 @@
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
-namespace QtVirtualKeyboard {
 
-class InputContext;
-class SelectionListModel;
-class AbstractInputMethod;
-class InputEnginePrivate;
-class Trace;
+class QVirtualKeyboardInputContext;
+class QVirtualKeyboardSelectionListModel;
+class QVirtualKeyboardAbstractInputMethod;
+class QVirtualKeyboardInputEnginePrivate;
+class QVirtualKeyboardTrace;
 
-class QVIRTUALKEYBOARD_EXPORT InputEngine : public QObject
+class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputEngine : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY(InputEngine)
-    Q_DECLARE_PRIVATE(InputEngine)
+    Q_DISABLE_COPY(QVirtualKeyboardInputEngine)
+    Q_DECLARE_PRIVATE(QVirtualKeyboardInputEngine)
     Q_FLAGS(ReselectFlags)
     Q_PROPERTY(Qt::Key activeKey READ activeKey NOTIFY activeKeyChanged)
     Q_PROPERTY(Qt::Key previousKey READ previousKey NOTIFY previousKeyChanged)
-    Q_PROPERTY(AbstractInputMethod *inputMethod READ inputMethod WRITE setInputMethod NOTIFY inputMethodChanged)
+    Q_PROPERTY(QVirtualKeyboardAbstractInputMethod *inputMethod READ inputMethod WRITE setInputMethod NOTIFY inputMethodChanged)
     Q_PROPERTY(QList<int> inputModes READ inputModes NOTIFY inputModesChanged)
     Q_PROPERTY(InputMode inputMode READ inputMode WRITE setInputMode NOTIFY inputModeChanged)
     Q_PROPERTY(QList<int> patternRecognitionModes READ patternRecognitionModes NOTIFY patternRecognitionModesChanged)
-    Q_PROPERTY(SelectionListModel *wordCandidateListModel READ wordCandidateListModel NOTIFY wordCandidateListModelChanged)
+    Q_PROPERTY(QVirtualKeyboardSelectionListModel *wordCandidateListModel READ wordCandidateListModel NOTIFY wordCandidateListModelChanged)
     Q_PROPERTY(bool wordCandidateListVisibleHint READ wordCandidateListVisibleHint NOTIFY wordCandidateListVisibleHintChanged)
 
-    explicit InputEngine(InputContext *parent = nullptr);
+    explicit QVirtualKeyboardInputEngine(QVirtualKeyboardInputContext *parent = nullptr);
     void init();
 
 public:
@@ -101,32 +100,33 @@ public:
     Q_DECLARE_FLAGS(ReselectFlags, ReselectFlag)
 
 public:
-    ~InputEngine();
+    ~QVirtualKeyboardInputEngine();
 
     Q_INVOKABLE bool virtualKeyPress(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool repeat);
     Q_INVOKABLE void virtualKeyCancel();
     Q_INVOKABLE bool virtualKeyRelease(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
     Q_INVOKABLE bool virtualKeyClick(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 
-    InputContext *inputContext() const;
+    QVirtualKeyboardInputContext *inputContext() const;
     Qt::Key activeKey() const;
     Qt::Key previousKey() const;
 
-    AbstractInputMethod *inputMethod() const;
-    void setInputMethod(AbstractInputMethod *inputMethod);
+    QVirtualKeyboardAbstractInputMethod *inputMethod() const;
+    void setInputMethod(QVirtualKeyboardAbstractInputMethod *inputMethod);
 
     QList<int> inputModes() const;
 
     InputMode inputMode() const;
     void setInputMode(InputMode inputMode);
 
-    SelectionListModel *wordCandidateListModel() const;
+    QVirtualKeyboardSelectionListModel *wordCandidateListModel() const;
     bool wordCandidateListVisibleHint() const;
 
     QList<int> patternRecognitionModes() const;
-    Q_INVOKABLE Trace *traceBegin(int traceId, PatternRecognitionMode patternRecognitionMode,
-                                  const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
-    Q_INVOKABLE bool traceEnd(Trace *trace);
+    Q_INVOKABLE QVirtualKeyboardTrace *traceBegin(
+            int traceId, PatternRecognitionMode patternRecognitionMode,
+            const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
+    Q_INVOKABLE bool traceEnd(QVirtualKeyboardTrace *trace);
 
     Q_INVOKABLE bool reselect(int cursorPosition, const ReselectFlags &reselectFlags);
     bool clickPreeditText(int cursorPosition);
@@ -155,15 +155,14 @@ protected:
     void timerEvent(QTimerEvent *timerEvent);
 
 private:
-    friend class InputContext;
-    friend class InputContextPrivate;
+    friend class QVirtualKeyboardInputContext;
+    friend class QVirtualKeyboardInputContextPrivate;
 };
 
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE
 
-Q_DECLARE_METATYPE(QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::InputEngine::TextCase)
-Q_DECLARE_METATYPE(QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::InputEngine::InputMode)
-Q_DECLARE_OPERATORS_FOR_FLAGS(QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::InputEngine::ReselectFlags)
+Q_DECLARE_METATYPE(QVirtualKeyboardInputEngine::TextCase)
+Q_DECLARE_METATYPE(QVirtualKeyboardInputEngine::InputMode)
+Q_DECLARE_OPERATORS_FOR_FLAGS(QVirtualKeyboardInputEngine::ReselectFlags)
 
 #endif

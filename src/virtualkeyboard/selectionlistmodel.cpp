@@ -34,38 +34,39 @@
 #include <QtCore/qpointer.h>
 
 QT_BEGIN_NAMESPACE
-namespace QtVirtualKeyboard {
 
-class SelectionListModelPrivate : public QAbstractItemModelPrivate
+using namespace QtVirtualKeyboard;
+
+class QVirtualKeyboardSelectionListModelPrivate : public QAbstractItemModelPrivate
 {
 public:
-    SelectionListModelPrivate() :
+    QVirtualKeyboardSelectionListModelPrivate() :
         QAbstractItemModelPrivate(),
         dataSource(nullptr),
-        type(SelectionListModel::WordCandidateList),
+        type(QVirtualKeyboardSelectionListModel::WordCandidateList),
         rowCount(0),
         wclAutoCommitWord(false)
     {
     }
 
     QHash<int, QByteArray> roles;
-    QPointer<AbstractInputMethod> dataSource;
-    SelectionListModel::Type type;
+    QPointer<QVirtualKeyboardAbstractInputMethod> dataSource;
+    QVirtualKeyboardSelectionListModel::Type type;
     int rowCount;
     bool wclAutoCommitWord;
 };
 
 /*!
-    \qmltype SelectionListModel
-    \instantiates QtVirtualKeyboard::SelectionListModel
+    \qmltype QVirtualKeyboardSelectionListModel
+    \instantiates QVirtualKeyboardSelectionListModel
     \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \brief Provides a data model for the selection lists.
 
-    The SelectionListModel is a data model for word candidates
+    The QVirtualKeyboardSelectionListModel is a data model for word candidates
     provided by the input method.
 
-    An instance of SelectionListModel cannot be created directly.
+    An instance of QVirtualKeyboardSelectionListModel cannot be created directly.
     Instead, the InputEngine manages the instances and provides
     access to the model by InputEngine::wordCandidateListModel
     property.
@@ -86,7 +87,7 @@ public:
 */
 
 /*!
-    \class QtVirtualKeyboard::SelectionListModel
+    \class QVirtualKeyboardSelectionListModel
 
     \inmodule QtVirtualKeyboard
 
@@ -98,7 +99,7 @@ public:
 */
 
 /*!
-    \enum QtVirtualKeyboard::SelectionListModel::Type
+    \enum QVirtualKeyboardSelectionListModel::Type
 
     This enum specifies the type of selection list.
 
@@ -107,7 +108,7 @@ public:
 */
 
 /*!
-    \enum QtVirtualKeyboard::SelectionListModel::Role
+    \enum QVirtualKeyboardSelectionListModel::Role
 
     This enum specifies a role of the data requested.
 
@@ -119,14 +120,14 @@ public:
            number of characters counted from the
            end of the string.
     \value DictionaryTypeRole
-           An integer specifying \ l {QtVirtualKeyboard::SelectionListModel::DictionaryType}{dictionary type}.
+           An integer specifying \ l {QVirtualKeyboardSelectionListModel::DictionaryType}{dictionary type}.
     \value CanRemoveSuggestionRole
            A boolean value indicating if the word candidate
            can be removed from dictionary.
 */
 
 /*!
-    \enum QtVirtualKeyboard::SelectionListModel::DictionaryType
+    \enum QVirtualKeyboardSelectionListModel::DictionaryType
 
     This enum specifies the dictionary type of a word.
 
@@ -136,10 +137,10 @@ public:
            The word candidate is from the user dictionary.
 */
 
-SelectionListModel::SelectionListModel(QObject *parent) :
-    QAbstractListModel(*new SelectionListModelPrivate(), parent)
+QVirtualKeyboardSelectionListModel::QVirtualKeyboardSelectionListModel(QObject *parent) :
+    QAbstractListModel(*new QVirtualKeyboardSelectionListModelPrivate(), parent)
 {
-    Q_D(SelectionListModel);
+    Q_D(QVirtualKeyboardSelectionListModel);
     d->roles[DisplayRole] = "display";
     d->roles[WordCompletionLengthRole] = "wordCompletionLength";
 }
@@ -147,16 +148,16 @@ SelectionListModel::SelectionListModel(QObject *parent) :
 /*!
     \internal
 */
-SelectionListModel::~SelectionListModel()
+QVirtualKeyboardSelectionListModel::~QVirtualKeyboardSelectionListModel()
 {
 }
 
 /*!
     \internal
 */
-void SelectionListModel::setDataSource(AbstractInputMethod *dataSource, Type type)
+void QVirtualKeyboardSelectionListModel::setDataSource(QVirtualKeyboardAbstractInputMethod *dataSource, Type type)
 {
-    Q_D(SelectionListModel);
+    Q_D(QVirtualKeyboardSelectionListModel);
     if (d->dataSource) {
         disconnect(this, SLOT(selectionListChanged(int)));
         disconnect(this, SLOT(selectionListActiveItemChanged(int, int)));
@@ -177,18 +178,18 @@ void SelectionListModel::setDataSource(AbstractInputMethod *dataSource, Type typ
 /*!
     \internal
 */
-AbstractInputMethod *SelectionListModel::dataSource() const
+QVirtualKeyboardAbstractInputMethod *QVirtualKeyboardSelectionListModel::dataSource() const
 {
-    Q_D(const SelectionListModel);
+    Q_D(const QVirtualKeyboardSelectionListModel);
     return d->dataSource;
 }
 
 /*!
     \internal
 */
-int SelectionListModel::rowCount(const QModelIndex &parent) const
+int QVirtualKeyboardSelectionListModel::rowCount(const QModelIndex &parent) const
 {
-    Q_D(const SelectionListModel);
+    Q_D(const QVirtualKeyboardSelectionListModel);
     Q_UNUSED(parent)
     return d->rowCount;
 }
@@ -196,55 +197,55 @@ int SelectionListModel::rowCount(const QModelIndex &parent) const
 /*!
     \internal
 */
-QVariant SelectionListModel::data(const QModelIndex &index, int role) const
+QVariant QVirtualKeyboardSelectionListModel::data(const QModelIndex &index, int role) const
 {
-    Q_D(const SelectionListModel);
+    Q_D(const QVirtualKeyboardSelectionListModel);
     return d->dataSource ? d->dataSource->selectionListData(d->type, index.row(), role) : QVariant();
 }
 
 /*!
     \internal
 */
-QHash<int,QByteArray> SelectionListModel::roleNames() const
+QHash<int,QByteArray> QVirtualKeyboardSelectionListModel::roleNames() const
 {
-    Q_D(const SelectionListModel);
+    Q_D(const QVirtualKeyboardSelectionListModel);
     return d->roles;
 }
 
 /*!
     \internal
 */
-int SelectionListModel::count() const
+int QVirtualKeyboardSelectionListModel::count() const
 {
-    Q_D(const SelectionListModel);
+    Q_D(const QVirtualKeyboardSelectionListModel);
     return d->rowCount;
 }
 
-/*! \qmlmethod void SelectionListModel::selectItem(int index)
+/*! \qmlmethod void QVirtualKeyboardSelectionListModel::selectItem(int index)
 
     This method should be called when the user selects an item at position
     \a index from the list.
     The selection is forwarded to the input method for further processing.
 */
 /*!
-    \fn void QtVirtualKeyboard::SelectionListModel::selectItem(int index)
+    \fn void QVirtualKeyboardSelectionListModel::selectItem(int index)
 
     This method should be called when the user selects an item at position
     \a index from the list.
     The selection is forwarded to the input method for further processing.
 */
-void SelectionListModel::selectItem(int index)
+void QVirtualKeyboardSelectionListModel::selectItem(int index)
 {
-    Q_D(SelectionListModel);
+    Q_D(QVirtualKeyboardSelectionListModel);
     if (index >= 0 && index < d->rowCount && d->dataSource) {
         emit itemSelected(index);
         d->dataSource->selectionListItemSelected(d->type, index);
     }
 }
 
-void SelectionListModel::removeItem(int index)
+void QVirtualKeyboardSelectionListModel::removeItem(int index)
 {
-    Q_D(SelectionListModel);
+    Q_D(QVirtualKeyboardSelectionListModel);
     if (index >= 0 && index < d->rowCount && d->dataSource) {
         d->dataSource->selectionListRemoveItem(d->type, index);
     }
@@ -253,7 +254,7 @@ void SelectionListModel::removeItem(int index)
 /*!
  * \internal
  */
-QVariant SelectionListModel::dataAt(int index, int role) const
+QVariant QVirtualKeyboardSelectionListModel::dataAt(int index, int role) const
 {
     return data(this->index(index, 0), role);
 }
@@ -261,9 +262,9 @@ QVariant SelectionListModel::dataAt(int index, int role) const
 /*!
     \internal
 */
-void SelectionListModel::selectionListChanged(int type)
+void QVirtualKeyboardSelectionListModel::selectionListChanged(int type)
 {
-    Q_D(SelectionListModel);
+    Q_D(QVirtualKeyboardSelectionListModel);
     if (static_cast<Type>(type) == d->type) {
         int oldCount = d->rowCount;
         int newCount = d->dataSource ? d->dataSource->selectionListItemCount(d->type) : 0;
@@ -285,7 +286,7 @@ void SelectionListModel::selectionListChanged(int type)
             d->rowCount = 0;
             endResetModel();
         }
-        if (type == SelectionListModel::WordCandidateList)
+        if (type == QVirtualKeyboardSelectionListModel::WordCandidateList)
             d->wclAutoCommitWord = ((oldCount > 1 || (oldCount == 1 && d->wclAutoCommitWord)) && newCount == 1 &&
                                  Settings::instance()->wclAutoCommitWord() &&
                                  dataAt(0).toString().length() > 1);
@@ -297,9 +298,9 @@ void SelectionListModel::selectionListChanged(int type)
 /*!
     \internal
 */
-void SelectionListModel::selectionListActiveItemChanged(int type, int index)
+void QVirtualKeyboardSelectionListModel::selectionListActiveItemChanged(int type, int index)
 {
-    Q_D(SelectionListModel);
+    Q_D(QVirtualKeyboardSelectionListModel);
     if (static_cast<Type>(type) == d->type && index < d->rowCount) {
         emit activeItemChanged(index);
         if (index == 0 && d->wclAutoCommitWord)
@@ -308,14 +309,14 @@ void SelectionListModel::selectionListActiveItemChanged(int type, int index)
 }
 
 /*!
-    \qmlsignal void SelectionListModel::activeItemChanged(int index)
+    \qmlsignal void QVirtualKeyboardSelectionListModel::activeItemChanged(int index)
 
     This signal is emitted when the active item in the list changes. The
     UI should react to this signal by highlighting the item at \a index in
     the list.
 */
 /*!
-    \fn void QtVirtualKeyboard::SelectionListModel::activeItemChanged(int index)
+    \fn void QVirtualKeyboardSelectionListModel::activeItemChanged(int index)
 
     This signal is emitted when the active item in the list changes. The
     UI should react to this signal by highlighting the item at \a index in
@@ -323,15 +324,14 @@ void SelectionListModel::selectionListActiveItemChanged(int type, int index)
 */
 
 /*!
-    \qmlsignal void SelectionListModel::itemSelected(int index)
+    \qmlsignal void QVirtualKeyboardSelectionListModel::itemSelected(int index)
 
     This signal is emitted when an item at \a index is selected by the user.
 */
 /*!
-    \fn void QtVirtualKeyboard::SelectionListModel::itemSelected(int index)
+    \fn void QVirtualKeyboardSelectionListModel::itemSelected(int index)
 
     This signal is emitted when an item at \a index is selected by the user.
 */
 
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE

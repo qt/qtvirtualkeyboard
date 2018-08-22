@@ -62,10 +62,10 @@ UnipenTrace::UnipenTrace(const QVariantMap &traceCaptureDeviceInfo,
         m_lines.append(QStringLiteral(".POINTS_PER_SECOND %1").arg(sampleRate));
 }
 
-void UnipenTrace::record(const QList<Trace *> &traceList)
+void UnipenTrace::record(const QList<QVirtualKeyboardTrace *> &traceList)
 {
     qlonglong t0 = 0;
-    for (const Trace *trace : qAsConst(traceList)) {
+    for (const QVirtualKeyboardTrace *trace : qAsConst(traceList)) {
         const QVariantList &points = trace->points();
         const bool hasTime = trace->channels().contains("t");
         const QVariantList timeData = hasTime ? trace->channelData("t") : QVariantList();

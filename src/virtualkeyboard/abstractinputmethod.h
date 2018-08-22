@@ -34,40 +34,40 @@
 #include <QtVirtualKeyboard/selectionlistmodel.h>
 
 QT_BEGIN_NAMESPACE
-namespace QtVirtualKeyboard {
 
-class AbstractInputMethodPrivate;
+class QVirtualKeyboardAbstractInputMethodPrivate;
 
-class QVIRTUALKEYBOARD_EXPORT AbstractInputMethod : public QObject
+class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardAbstractInputMethod : public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(AbstractInputMethod)
+    Q_DECLARE_PRIVATE(QVirtualKeyboardAbstractInputMethod)
 
 public:
-    explicit AbstractInputMethod(QObject *parent = nullptr);
-    ~AbstractInputMethod();
+    explicit QVirtualKeyboardAbstractInputMethod(QObject *parent = nullptr);
+    ~QVirtualKeyboardAbstractInputMethod();
 
-    InputContext *inputContext() const;
-    InputEngine *inputEngine() const;
+    QVirtualKeyboardInputContext *inputContext() const;
+    QVirtualKeyboardInputEngine *inputEngine() const;
 
-    virtual QList<InputEngine::InputMode> inputModes(const QString &locale) = 0;
-    virtual bool setInputMode(const QString &locale, InputEngine::InputMode inputMode) = 0;
-    virtual bool setTextCase(InputEngine::TextCase textCase) = 0;
+    virtual QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale) = 0;
+    virtual bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode) = 0;
+    virtual bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase) = 0;
 
     virtual bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers) = 0;
 
-    virtual QList<SelectionListModel::Type> selectionLists();
-    virtual int selectionListItemCount(SelectionListModel::Type type);
-    virtual QVariant selectionListData(SelectionListModel::Type type, int index, int role);
-    virtual void selectionListItemSelected(SelectionListModel::Type type, int index);
-    virtual bool selectionListRemoveItem(SelectionListModel::Type type, int index);
+    virtual QList<QVirtualKeyboardSelectionListModel::Type> selectionLists();
+    virtual int selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type);
+    virtual QVariant selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, int role);
+    virtual void selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index);
+    virtual bool selectionListRemoveItem(QVirtualKeyboardSelectionListModel::Type type, int index);
 
-    virtual QList<InputEngine::PatternRecognitionMode> patternRecognitionModes() const;
-    virtual Trace *traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
-                              const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
-    virtual bool traceEnd(Trace *trace);
+    virtual QList<QVirtualKeyboardInputEngine::PatternRecognitionMode> patternRecognitionModes() const;
+    virtual QVirtualKeyboardTrace *traceBegin(
+            int traceId, QVirtualKeyboardInputEngine::PatternRecognitionMode patternRecognitionMode,
+            const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
+    virtual bool traceEnd(QVirtualKeyboardTrace *trace);
 
-    virtual bool reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags);
+    virtual bool reselect(int cursorPosition, const QVirtualKeyboardInputEngine::ReselectFlags &reselectFlags);
     virtual bool clickPreeditText(int cursorPosition);
 
 Q_SIGNALS:
@@ -80,12 +80,11 @@ public Q_SLOTS:
     virtual void update();
 
 private:
-    void setInputEngine(InputEngine *inputEngine);
+    void setInputEngine(QVirtualKeyboardInputEngine *inputEngine);
 
-    friend class InputEngine;
+    friend class QVirtualKeyboardInputEngine;
 };
 
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE
 
 #endif

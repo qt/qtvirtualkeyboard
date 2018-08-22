@@ -54,7 +54,7 @@ class QVIRTUALKEYBOARD_EXPORT UnipenTrace : public QObject
 public:
     explicit UnipenTrace(const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo, QObject *parent = nullptr);
 
-    void record(const QList<Trace *> &traceList);
+    void record(const QList<QVirtualKeyboardTrace *> &traceList);
     void save(uint unicode, uint confidence);
 
     QString directory() const;

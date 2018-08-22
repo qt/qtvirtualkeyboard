@@ -113,8 +113,8 @@ void HunspellInputMethodPrivate::reset()
 {
     if (clearSuggestions(true)) {
         Q_Q(HunspellInputMethod);
-        emit q->selectionListChanged(SelectionListModel::WordCandidateList);
-        emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, wordCandidates.index());
+        emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
+        emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, wordCandidates.index());
     }
     autoSpaceAllowed = false;
 }
@@ -187,9 +187,9 @@ bool HunspellInputMethodPrivate::isAutoSpaceAllowed() const
     Q_Q(const HunspellInputMethod);
     if (!autoSpaceAllowed)
         return false;
-    if (q->inputEngine()->inputMode() == InputEngine::Numeric)
+    if (q->inputEngine()->inputMode() == QVirtualKeyboardInputEngine::Numeric)
         return false;
-    InputContext *ic = q->inputContext();
+    QVirtualKeyboardInputContext *ic = q->inputContext();
     if (!ic)
         return false;
     Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
@@ -212,7 +212,7 @@ bool HunspellInputMethodPrivate::isJoiner(const QChar &c) const
 {
     if (c.isPunct() || c.isSymbol()) {
         Q_Q(const HunspellInputMethod);
-        InputContext *ic = q->inputContext();
+        QVirtualKeyboardInputContext *ic = q->inputContext();
         if (ic) {
             Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
             if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly) || inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly))

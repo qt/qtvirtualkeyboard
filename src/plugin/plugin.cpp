@@ -74,7 +74,7 @@ static QObject *createInputContextModule(QQmlEngine *engine, QJSEngine *scriptEn
     Q_UNUSED(scriptEngine);
     QQmlContext *rootContext = engine->rootContext();
     rootContext->setContextProperty(QStringLiteral("VirtualKeyboardInputMethods"), inputMethodList);
-    return new InputContext(platformInputContext);
+    return new QVirtualKeyboardInputContext(platformInputContext);
 }
 
 QStringList QVirtualKeyboardPlugin::keys() const
@@ -101,22 +101,18 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     Q_VKB_IMPORT_PLUGIN(QtVirtualKeyboardStylesPlugin)
 #endif
 
-    qmlRegisterSingletonType<InputContext>(pluginUri, 1, 0, "InputContext", createInputContextModule);
-    qmlRegisterSingletonType<InputContext>(pluginUri, 2, 0, "InputContext", createInputContextModule);
-    qRegisterMetaType<InputContextPrivate *>("InputContextPrivate*");
-    qmlRegisterUncreatableType<InputContextPrivate>(pluginUri, 1, 0, "InputContextPrivate", QLatin1String("Cannot create input context private"));
-    qRegisterMetaType<InputEngine *>("InputEngine*");
-    qmlRegisterUncreatableType<InputEngine>(pluginUri, 1, 0, "InputEngine", QLatin1String("Cannot create input method engine"));
-    qmlRegisterUncreatableType<InputEngine>(pluginUri, 2, 0, "InputEngine", QLatin1String("Cannot create input method engine"));
+    qmlRegisterSingletonType<QVirtualKeyboardInputContext>(pluginUri, 1, 0, "InputContext", createInputContextModule);
+    qmlRegisterSingletonType<QVirtualKeyboardInputContext>(pluginUri, 2, 0, "InputContext", createInputContextModule);
+    qmlRegisterUncreatableType<QVirtualKeyboardInputContextPrivate>(pluginUri, 1, 0, "InputContextPrivate", QLatin1String("Cannot create input context private"));
+    qmlRegisterUncreatableType<QVirtualKeyboardInputEngine>(pluginUri, 1, 0, "InputEngine", QLatin1String("Cannot create input method engine"));
+    qmlRegisterUncreatableType<QVirtualKeyboardInputEngine>(pluginUri, 2, 0, "InputEngine", QLatin1String("Cannot create input method engine"));
     qRegisterMetaType<ShiftHandler *>("ShiftHandler*");
     qmlRegisterUncreatableType<ShiftHandler>(pluginUri, 1, 0, "ShiftHandler", QLatin1String("Cannot create shift handler"));
     qmlRegisterUncreatableType<ShiftHandler>(pluginUri, 2, 0, "ShiftHandler", QLatin1String("Cannot create shift handler"));
-    qRegisterMetaType<SelectionListModel *>("SelectionListModel*");
-    qmlRegisterUncreatableType<SelectionListModel>(pluginUri, 1, 0, "SelectionListModel", QLatin1String("Cannot create selection list model"));
-    qmlRegisterUncreatableType<SelectionListModel>(pluginUri, 2, 0, "SelectionListModel", QLatin1String("Cannot create selection list model"));
-    qRegisterMetaType<AbstractInputMethod *>("AbstractInputMethod*");
-    qmlRegisterUncreatableType<AbstractInputMethod>(pluginUri, 1, 0, "AbstractInputMethod", QLatin1String("Cannot create abstract input method"));
-    qmlRegisterUncreatableType<AbstractInputMethod>(pluginUri, 2, 0, "AbstractInputMethod", QLatin1String("Cannot create abstract input method"));
+    qmlRegisterUncreatableType<QVirtualKeyboardSelectionListModel>(pluginUri, 1, 0, "SelectionListModel", QLatin1String("Cannot create selection list model"));
+    qmlRegisterUncreatableType<QVirtualKeyboardSelectionListModel>(pluginUri, 2, 0, "SelectionListModel", QLatin1String("Cannot create selection list model"));
+    qmlRegisterUncreatableType<QVirtualKeyboardAbstractInputMethod>(pluginUri, 1, 0, "AbstractInputMethod", QLatin1String("Cannot create abstract input method"));
+    qmlRegisterUncreatableType<QVirtualKeyboardAbstractInputMethod>(pluginUri, 2, 0, "AbstractInputMethod", QLatin1String("Cannot create abstract input method"));
     qRegisterMetaType<PlainInputMethod *>("PlainInputMethod*");
     qmlRegisterType<PlainInputMethod>(pluginUri, 1, 0, "PlainInputMethod");
     qmlRegisterType<PlainInputMethod>(pluginUri, 2, 0, "PlainInputMethod");
@@ -125,9 +121,8 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     qmlRegisterType<EnterKeyActionAttachedType>();
     qmlRegisterType<EnterKeyAction>(pluginUri, 1, 0, "EnterKeyAction");
     qmlRegisterType<EnterKeyAction>(pluginUri, 2, 0, "EnterKeyAction");
-    qRegisterMetaType<Trace *>("Trace*");
-    qmlRegisterType<Trace>(pluginUri, 2, 0, "Trace");
-    qmlRegisterType<Trace>(pluginUri, 2, 4, "Trace");
+    qmlRegisterType<QVirtualKeyboardTrace>(pluginUri, 2, 0, "Trace");
+    qmlRegisterType<QVirtualKeyboardTrace>(pluginUri, 2, 4, "Trace");
     qRegisterMetaType<ShadowInputContext *>("ShadowInputContext*");
     qmlRegisterUncreatableType<ShadowInputContext>(pluginUri, 2, 2, "ShadowInputContext", QLatin1String("Cannot create shadow input context"));
     qmlRegisterSingletonType<VirtualKeyboardSettings>(pluginSettingsUri, 1, 0, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);

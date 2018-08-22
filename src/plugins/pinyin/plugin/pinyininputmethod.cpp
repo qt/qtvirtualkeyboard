@@ -51,7 +51,7 @@ public:
 
     PinyinInputMethodPrivate(PinyinInputMethod *q_ptr) :
         q_ptr(q_ptr),
-        inputMode(InputEngine::Pinyin),
+        inputMode(QVirtualKeyboardInputEngine::Pinyin),
         pinyinDecoderService(PinyinDecoderService::getInstance()),
         state(Idle),
         surface(),
@@ -70,7 +70,7 @@ public:
     {
         Q_Q(PinyinInputMethod);
 
-        InputContext *inputContext = q->inputContext();
+        QVirtualKeyboardInputContext *inputContext = q->inputContext();
 
         // Disable the user dictionary when entering sensitive data
         if (inputContext) {
@@ -281,16 +281,16 @@ public:
     void updateCandidateList()
     {
         Q_Q(PinyinInputMethod);
-        emit q->selectionListChanged(SelectionListModel::WordCandidateList);
-        emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList,
+        emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
+        emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList,
                                                totalChoicesNum > 0 && state == PinyinInputMethodPrivate::Input ? 0 : -1);
     }
 
     bool canDoPrediction()
     {
         Q_Q(PinyinInputMethod);
-        InputContext *inputContext = q->inputContext();
-        return inputMode == InputEngine::Pinyin &&
+        QVirtualKeyboardInputContext *inputContext = q->inputContext();
+        return inputMode == QVirtualKeyboardInputEngine::Pinyin &&
                 composingStr.length() == fixedLen &&
                 inputContext &&
                 !inputContext->inputMethodHints().testFlag(Qt::ImhNoPredictiveText);
@@ -303,7 +303,7 @@ public:
             Q_Q(PinyinInputMethod);
             if (state != Predict)
                 resetToIdleState();
-            InputContext *inputContext = q->inputContext();
+            QVirtualKeyboardInputContext *inputContext = q->inputContext();
             int cursorPosition = inputContext->cursorPosition();
             int historyStart = qMax(0, cursorPosition - 3);
             QString history = inputContext->surroundingText().mid(historyStart, cursorPosition - historyStart);
@@ -320,7 +320,7 @@ public:
     }
 
     PinyinInputMethod *q_ptr;
-    InputEngine::InputMode inputMode;
+    QVirtualKeyboardInputEngine::InputMode inputMode;
     QPointer<PinyinDecoderService> pinyinDecoderService;
     State state;
     QString surface;
@@ -365,7 +365,7 @@ private:
 */
 
 PinyinInputMethod::PinyinInputMethod(QObject *parent) :
-    AbstractInputMethod(parent),
+    QVirtualKeyboardAbstractInputMethod(parent),
     d_ptr(new PinyinInputMethodPrivate(this))
 {
 }
@@ -374,29 +374,29 @@ PinyinInputMethod::~PinyinInputMethod()
 {
 }
 
-QList<InputEngine::InputMode> PinyinInputMethod::inputModes(const QString &locale)
+QList<QVirtualKeyboardInputEngine::InputMode> PinyinInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
     Q_D(PinyinInputMethod);
-    QList<InputEngine::InputMode> result;
+    QList<QVirtualKeyboardInputEngine::InputMode> result;
     if (d->pinyinDecoderService)
-        result << InputEngine::Pinyin;
-    result << InputEngine::Latin;
+        result << QVirtualKeyboardInputEngine::Pinyin;
+    result << QVirtualKeyboardInputEngine::Latin;
     return result;
 }
 
-bool PinyinInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
+bool PinyinInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_D(PinyinInputMethod);
     reset();
-    if (inputMode == InputEngine::Pinyin && !d->pinyinDecoderService)
+    if (inputMode == QVirtualKeyboardInputEngine::Pinyin && !d->pinyinDecoderService)
         return false;
     d->inputMode = inputMode;
     return true;
 }
 
-bool PinyinInputMethod::setTextCase(InputEngine::TextCase textCase)
+bool PinyinInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 {
     Q_UNUSED(textCase)
     return true;
@@ -406,7 +406,7 @@ bool PinyinInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardM
 {
     Q_UNUSED(modifiers)
     Q_D(PinyinInputMethod);
-    if (d->inputMode == InputEngine::Pinyin) {
+    if (d->inputMode == QVirtualKeyboardInputEngine::Pinyin) {
         ScopedCandidateListUpdate scopedCandidateListUpdate(d);
         Q_UNUSED(scopedCandidateListUpdate)
         if ((key >= Qt::Key_A && key <= Qt::Key_Z) || (key == Qt::Key_Apostrophe)) {
@@ -440,38 +440,38 @@ bool PinyinInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardM
     return false;
 }
 
-QList<SelectionListModel::Type> PinyinInputMethod::selectionLists()
+QList<QVirtualKeyboardSelectionListModel::Type> PinyinInputMethod::selectionLists()
 {
-    return QList<SelectionListModel::Type>() << SelectionListModel::WordCandidateList;
+    return QList<QVirtualKeyboardSelectionListModel::Type>() << QVirtualKeyboardSelectionListModel::WordCandidateList;
 }
 
-int PinyinInputMethod::selectionListItemCount(SelectionListModel::Type type)
+int PinyinInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
 {
     Q_UNUSED(type)
     Q_D(PinyinInputMethod);
     return d->candidatesCount();
 }
 
-QVariant PinyinInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
+QVariant PinyinInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, int role)
 {
     QVariant result;
     Q_UNUSED(type)
     Q_D(PinyinInputMethod);
     switch (role) {
-    case SelectionListModel::DisplayRole:
+    case QVirtualKeyboardSelectionListModel::DisplayRole:
         result = QVariant(d->candidateAt(index));
         break;
-    case SelectionListModel::WordCompletionLengthRole:
+    case QVirtualKeyboardSelectionListModel::WordCompletionLengthRole:
         result.setValue(0);
         break;
     default:
-        result = AbstractInputMethod::selectionListData(type, index, role);
+        result = QVirtualKeyboardAbstractInputMethod::selectionListData(type, index, role);
         break;
     }
     return result;
 }
 
-void PinyinInputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
+void PinyinInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index)
 {
     Q_UNUSED(type)
     Q_D(PinyinInputMethod);

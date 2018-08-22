@@ -47,9 +47,9 @@ bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMeth
            attribute1.value == attribute2.value;
 }
 
-namespace QtVirtualKeyboard {
+using namespace QtVirtualKeyboard;
 
-InputContextPrivate::InputContextPrivate(InputContext *q_ptr, PlatformInputContext *platformInputContext) :
+QVirtualKeyboardInputContextPrivate::QVirtualKeyboardInputContextPrivate(QVirtualKeyboardInputContext *q_ptr, PlatformInputContext *platformInputContext) :
     QObject(nullptr),
     q_ptr(q_ptr),
     platformInputContext(platformInputContext),
@@ -80,46 +80,46 @@ InputContextPrivate::InputContextPrivate(InputContext *q_ptr, PlatformInputConte
 {
 }
 
-void InputContextPrivate::init()
+void QVirtualKeyboardInputContextPrivate::init()
 {
-    Q_Q(InputContext);
+    Q_Q(QVirtualKeyboardInputContext);
     Q_ASSERT(inputEngine == nullptr);
-    inputEngine = new InputEngine(q);
+    inputEngine = new QVirtualKeyboardInputEngine(q);
     _shiftHandler = new ShiftHandler(q);
     inputEngine->init();
     _shiftHandler->init();
     _shadow.setInputContext(q);
     if (platformInputContext) {
         platformInputContext->setInputContext(q);
-        QObject::connect(platformInputContext, &PlatformInputContext::focusObjectChanged, this, &InputContextPrivate::onInputItemChanged);
-        QObject::connect(platformInputContext, &PlatformInputContext::focusObjectChanged, this, &InputContextPrivate::inputItemChanged);
+        QObject::connect(platformInputContext, &PlatformInputContext::focusObjectChanged, this, &QVirtualKeyboardInputContextPrivate::onInputItemChanged);
+        QObject::connect(platformInputContext, &PlatformInputContext::focusObjectChanged, this, &QVirtualKeyboardInputContextPrivate::inputItemChanged);
     }
 }
 
-InputContextPrivate::~InputContextPrivate()
+QVirtualKeyboardInputContextPrivate::~QVirtualKeyboardInputContextPrivate()
 {
 }
 
-bool InputContextPrivate::focus() const
+bool QVirtualKeyboardInputContextPrivate::focus() const
 {
     return _focus;
 }
 
-void InputContextPrivate::setFocus(bool focus)
+void QVirtualKeyboardInputContextPrivate::setFocus(bool focus)
 {
     if (_focus != focus) {
-        VIRTUALKEYBOARD_DEBUG() << "InputContextPrivate::setFocus():" << focus;
+        VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContextPrivate::setFocus():" << focus;
         _focus = focus;
         emit focusChanged();
     }
 }
 
-QRectF InputContextPrivate::keyboardRectangle() const
+QRectF QVirtualKeyboardInputContextPrivate::keyboardRectangle() const
 {
     return keyboardRect;
 }
 
-void InputContextPrivate::setKeyboardRectangle(QRectF rectangle)
+void QVirtualKeyboardInputContextPrivate::setKeyboardRectangle(QRectF rectangle)
 {
     if (keyboardRect != rectangle) {
         keyboardRect = rectangle;
@@ -128,12 +128,12 @@ void InputContextPrivate::setKeyboardRectangle(QRectF rectangle)
     }
 }
 
-QRectF InputContextPrivate::previewRectangle() const
+QRectF QVirtualKeyboardInputContextPrivate::previewRectangle() const
 {
     return previewRect;
 }
 
-void InputContextPrivate::setPreviewRectangle(QRectF rectangle)
+void QVirtualKeyboardInputContextPrivate::setPreviewRectangle(QRectF rectangle)
 {
     if (previewRect != rectangle) {
         previewRect = rectangle;
@@ -141,12 +141,12 @@ void InputContextPrivate::setPreviewRectangle(QRectF rectangle)
     }
 }
 
-bool InputContextPrivate::previewVisible() const
+bool QVirtualKeyboardInputContextPrivate::previewVisible() const
 {
     return _previewVisible;
 }
 
-void InputContextPrivate::setPreviewVisible(bool visible)
+void QVirtualKeyboardInputContextPrivate::setPreviewVisible(bool visible)
 {
     if (_previewVisible != visible) {
         _previewVisible = visible;
@@ -154,14 +154,14 @@ void InputContextPrivate::setPreviewVisible(bool visible)
     }
 }
 
-QString InputContextPrivate::locale() const
+QString QVirtualKeyboardInputContextPrivate::locale() const
 {
     return platformInputContext->locale().name();
 }
 
-void InputContextPrivate::setLocale(const QString &locale)
+void QVirtualKeyboardInputContextPrivate::setLocale(const QString &locale)
 {
-    VIRTUALKEYBOARD_DEBUG() << "InputContextPrivate::setLocale():" << locale;
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContextPrivate::setLocale():" << locale;
     QLocale newLocale(locale);
     if (newLocale != platformInputContext->locale()) {
         platformInputContext->setLocale(newLocale);
@@ -170,22 +170,22 @@ void InputContextPrivate::setLocale(const QString &locale)
     }
 }
 
-QObject *InputContextPrivate::inputItem() const
+QObject *QVirtualKeyboardInputContextPrivate::inputItem() const
 {
     return platformInputContext ? platformInputContext->focusObject() : nullptr;
 }
 
-ShiftHandler *InputContextPrivate::shiftHandler() const
+ShiftHandler *QVirtualKeyboardInputContextPrivate::shiftHandler() const
 {
     return _shiftHandler;
 }
 
-ShadowInputContext *InputContextPrivate::shadow() const
+ShadowInputContext *QVirtualKeyboardInputContextPrivate::shadow() const
 {
     return const_cast<ShadowInputContext *>(&_shadow);
 }
 
-bool InputContextPrivate::fileExists(const QUrl &fileUrl)
+bool QVirtualKeyboardInputContextPrivate::fileExists(const QUrl &fileUrl)
 {
     QString fileName;
     if (fileUrl.scheme() == QLatin1String("qrc")) {
@@ -196,35 +196,35 @@ bool InputContextPrivate::fileExists(const QUrl &fileUrl)
     return !fileName.isEmpty() && QFile::exists(fileName);
 }
 
-bool InputContextPrivate::hasEnterKeyAction(QObject *item) const
+bool QVirtualKeyboardInputContextPrivate::hasEnterKeyAction(QObject *item) const
 {
     return item != nullptr && qmlAttachedPropertiesObject<EnterKeyAction>(item, false);
 }
 
-void InputContextPrivate::hideInputPanel()
+void QVirtualKeyboardInputContextPrivate::hideInputPanel()
 {
     platformInputContext->hideInputPanel();
 }
 
-void InputContextPrivate::updateAvailableLocales(const QStringList &availableLocales)
+void QVirtualKeyboardInputContextPrivate::updateAvailableLocales(const QStringList &availableLocales)
 {
     Settings *settings = Settings::instance();
     if (settings)
         settings->setAvailableLocales(availableLocales);
 }
 
-void InputContextPrivate::forceCursorPosition(int anchorPosition, int cursorPosition)
+void QVirtualKeyboardInputContextPrivate::forceCursorPosition(int anchorPosition, int cursorPosition)
 {
     if (!_shadow.inputItem())
         return;
     if (!platformInputContext->m_visible)
         return;
-    if (stateFlags.testFlag(InputContextPrivate::ReselectEventState))
+    if (stateFlags.testFlag(QVirtualKeyboardInputContextPrivate::ReselectEventState))
         return;
-    if (stateFlags.testFlag(InputContextPrivate::SyncShadowInputState))
+    if (stateFlags.testFlag(QVirtualKeyboardInputContextPrivate::SyncShadowInputState))
         return;
 
-    VIRTUALKEYBOARD_DEBUG() << "InputContextPrivate::forceCursorPosition():" << cursorPosition << "anchorPosition:" << anchorPosition;
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContextPrivate::forceCursorPosition():" << cursorPosition << "anchorPosition:" << anchorPosition;
     if (!preeditText.isEmpty()) {
         forceAnchorPosition = -1;
         _forceCursorPosition = cursorPosition;
@@ -234,31 +234,31 @@ void InputContextPrivate::forceCursorPosition(int anchorPosition, int cursorPosi
     } else {
         forceAnchorPosition = anchorPosition;
         _forceCursorPosition = cursorPosition;
-        Q_Q(InputContext);
+        Q_Q(QVirtualKeyboardInputContext);
         q->setPreeditText(QString());
         if (!inputMethodHints.testFlag(Qt::ImhNoPredictiveText) &&
                    cursorPosition > 0 && selectedText.isEmpty()) {
-            stateFlags |= InputContextPrivate::ReselectEventState;
-            if (inputEngine->reselect(cursorPosition, InputEngine::WordAtCursor))
-                stateFlags |= InputContextPrivate::InputMethodClickState;
-            stateFlags &= ~InputContextPrivate::ReselectEventState;
+            stateFlags |= QVirtualKeyboardInputContextPrivate::ReselectEventState;
+            if (inputEngine->reselect(cursorPosition, QVirtualKeyboardInputEngine::WordAtCursor))
+                stateFlags |= QVirtualKeyboardInputContextPrivate::InputMethodClickState;
+            stateFlags &= ~QVirtualKeyboardInputContextPrivate::ReselectEventState;
         }
     }
 }
 
-void InputContextPrivate::onInputItemChanged()
+void QVirtualKeyboardInputContextPrivate::onInputItemChanged()
 {
     if (!inputItem() && !activeKeys.isEmpty()) {
         // After losing keyboard focus it is impossible to track pressed keys
         activeKeys.clear();
-        stateFlags &= ~InputContextPrivate::KeyEventState;
+        stateFlags &= ~QVirtualKeyboardInputContextPrivate::KeyEventState;
     }
-    stateFlags &= ~InputContextPrivate::InputMethodClickState;
+    stateFlags &= ~QVirtualKeyboardInputContextPrivate::InputMethodClickState;
 }
 
-void InputContextPrivate::sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes, int replaceFrom, int replaceLength)
+void QVirtualKeyboardInputContextPrivate::sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes, int replaceFrom, int replaceLength)
 {
-    VIRTUALKEYBOARD_DEBUG() << "InputContextPrivate::sendPreedit():" << text << replaceFrom << replaceLength;
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContextPrivate::sendPreedit():" << text << replaceFrom << replaceLength;
 
     bool textChanged = preeditText != text;
     bool attributesChanged = preeditTextAttributes != attributes;
@@ -272,23 +272,23 @@ void InputContextPrivate::sendPreedit(const QString &text, const QList<QInputMet
             const bool replace = replaceFrom != 0 || replaceLength > 0;
             if (replace)
                 event.setCommitString(QString(), replaceFrom, replaceLength);
-            stateFlags |= InputContextPrivate::InputMethodEventState;
+            stateFlags |= QVirtualKeyboardInputContextPrivate::InputMethodEventState;
             platformInputContext->sendEvent(&event);
-            stateFlags &= ~InputContextPrivate::InputMethodEventState;
+            stateFlags &= ~QVirtualKeyboardInputContextPrivate::InputMethodEventState;
 
             // Send also to shadow input if only attributes changed.
             // In this case the update() may not be called, so the shadow
             // input may be out of sync.
             if (_shadow.inputItem() && !replace && !text.isEmpty() &&
                     !textChanged && attributesChanged) {
-                VIRTUALKEYBOARD_DEBUG() << "InputContextPrivate::sendPreedit(shadow):" << text << replaceFrom << replaceLength;
+                VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContextPrivate::sendPreedit(shadow):" << text << replaceFrom << replaceLength;
                 event.setAccepted(true);
                 QGuiApplication::sendEvent(_shadow.inputItem(), &event);
             }
         }
 
         if (textChanged) {
-            Q_Q(InputContext);
+            Q_Q(QVirtualKeyboardInputContext);
             emit q->preeditTextChanged();
         }
     }
@@ -297,19 +297,19 @@ void InputContextPrivate::sendPreedit(const QString &text, const QList<QInputMet
         preeditTextAttributes.clear();
 }
 
-void InputContextPrivate::reset()
+void QVirtualKeyboardInputContextPrivate::reset()
 {
     inputEngine->reset();
 }
 
-void InputContextPrivate::commit()
+void QVirtualKeyboardInputContextPrivate::commit()
 {
     inputEngine->update();
 }
 
-void InputContextPrivate::update(Qt::InputMethodQueries queries)
+void QVirtualKeyboardInputContextPrivate::update(Qt::InputMethodQueries queries)
 {
-    Q_Q(InputContext);
+    Q_Q(QVirtualKeyboardInputContext);
 
     // No need to fetch input clip rectangle during animation
     if (!(queries & ~Qt::ImInputItemClipRectangle) && animating)
@@ -369,7 +369,7 @@ void InputContextPrivate::update(Qt::InputMethodQueries queries)
 
     // update input engine
     if ((newSurroundingText || newCursorPosition) &&
-            !stateFlags.testFlag(InputContextPrivate::InputMethodEventState)) {
+            !stateFlags.testFlag(QVirtualKeyboardInputContextPrivate::InputMethodEventState)) {
         commit();
     }
     if (newInputMethodHints) {
@@ -410,24 +410,24 @@ void InputContextPrivate::update(Qt::InputMethodQueries queries)
 
     // word reselection
     if (newInputMethodHints || newSurroundingText || newSelectedText)
-        stateFlags &= ~InputContextPrivate::InputMethodClickState;
+        stateFlags &= ~QVirtualKeyboardInputContextPrivate::InputMethodClickState;
     if ((newSurroundingText || newCursorPosition) && !newSelectedText && (int)stateFlags == 0 &&
             !inputMethodHints.testFlag(Qt::ImhNoPredictiveText) &&
             cursorPosition > 0 && this->selectedText.isEmpty()) {
-        stateFlags |= InputContextPrivate::ReselectEventState;
-        if (inputEngine->reselect(cursorPosition, InputEngine::WordAtCursor))
-            stateFlags |= InputContextPrivate::InputMethodClickState;
-        stateFlags &= ~InputContextPrivate::ReselectEventState;
+        stateFlags |= QVirtualKeyboardInputContextPrivate::ReselectEventState;
+        if (inputEngine->reselect(cursorPosition, QVirtualKeyboardInputEngine::WordAtCursor))
+            stateFlags |= QVirtualKeyboardInputContextPrivate::InputMethodClickState;
+        stateFlags &= ~QVirtualKeyboardInputContextPrivate::ReselectEventState;
     }
 
-    if (!stateFlags.testFlag(InputContextPrivate::SyncShadowInputState)) {
-        stateFlags |= InputContextPrivate::SyncShadowInputState;
+    if (!stateFlags.testFlag(QVirtualKeyboardInputContextPrivate::SyncShadowInputState)) {
+        stateFlags |= QVirtualKeyboardInputContextPrivate::SyncShadowInputState;
         _shadow.update(queries);
-        stateFlags &= ~InputContextPrivate::SyncShadowInputState;
+        stateFlags &= ~QVirtualKeyboardInputContextPrivate::SyncShadowInputState;
     }
 }
 
-void InputContextPrivate::invokeAction(QInputMethod::Action action, int cursorPosition)
+void QVirtualKeyboardInputContextPrivate::invokeAction(QInputMethod::Action action, int cursorPosition)
 {
     switch (action) {
     case QInputMethod::Click:
@@ -437,16 +437,16 @@ void InputContextPrivate::invokeAction(QInputMethod::Action action, int cursorPo
 
             bool reselect = !inputMethodHints.testFlag(Qt::ImhNoPredictiveText) && selectedText.isEmpty() && cursorPosition < preeditText.length();
             if (reselect) {
-                stateFlags |= InputContextPrivate::ReselectEventState;
+                stateFlags |= QVirtualKeyboardInputContextPrivate::ReselectEventState;
                 _forceCursorPosition = this->cursorPosition + cursorPosition;
                 commit();
-                inputEngine->reselect(this->cursorPosition, InputEngine::WordBeforeCursor);
-                stateFlags &= ~InputContextPrivate::ReselectEventState;
+                inputEngine->reselect(this->cursorPosition, QVirtualKeyboardInputEngine::WordBeforeCursor);
+                stateFlags &= ~QVirtualKeyboardInputContextPrivate::ReselectEventState;
             } else if (!preeditText.isEmpty() && cursorPosition == preeditText.length()) {
                 commit();
             }
         }
-        stateFlags &= ~InputContextPrivate::InputMethodClickState;
+        stateFlags &= ~QVirtualKeyboardInputContextPrivate::InputMethodClickState;
         break;
 
     case QInputMethod::ContextMenu:
@@ -454,7 +454,7 @@ void InputContextPrivate::invokeAction(QInputMethod::Action action, int cursorPo
     }
 }
 
-bool InputContextPrivate::filterEvent(const QEvent *event)
+bool QVirtualKeyboardInputContextPrivate::filterEvent(const QEvent *event)
 {
     QEvent::Type type = event->type();
     if (type == QEvent::KeyPress || type == QEvent::KeyRelease) {
@@ -467,9 +467,9 @@ bool InputContextPrivate::filterEvent(const QEvent *event)
             activeKeys -= keyEvent->nativeScanCode();
 
         if (activeKeys.isEmpty())
-            stateFlags &= ~InputContextPrivate::KeyEventState;
+            stateFlags &= ~QVirtualKeyboardInputContextPrivate::KeyEventState;
         else
-            stateFlags |= InputContextPrivate::KeyEventState;
+            stateFlags |= QVirtualKeyboardInputContextPrivate::KeyEventState;
 
 #ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
         int key = keyEvent->key();
@@ -493,7 +493,7 @@ bool InputContextPrivate::filterEvent(const QEvent *event)
     return false;
 }
 
-void InputContextPrivate::addSelectionAttribute(QList<QInputMethodEvent::Attribute> &attributes)
+void QVirtualKeyboardInputContextPrivate::addSelectionAttribute(QList<QInputMethodEvent::Attribute> &attributes)
 {
     if (!testAttribute(attributes, QInputMethodEvent::Selection)) {
         // Convert Cursor attribute to Selection attribute.
@@ -517,7 +517,7 @@ void InputContextPrivate::addSelectionAttribute(QList<QInputMethodEvent::Attribu
     _forceCursorPosition = -1;
 }
 
-bool InputContextPrivate::testAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const
+bool QVirtualKeyboardInputContextPrivate::testAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const
 {
     for (const QInputMethodEvent::Attribute &attribute : qAsConst(attributes)) {
         if (attribute.type == attributeType)
@@ -526,7 +526,7 @@ bool InputContextPrivate::testAttribute(const QList<QInputMethodEvent::Attribute
     return false;
 }
 
-int InputContextPrivate::findAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const
+int QVirtualKeyboardInputContextPrivate::findAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const
 {
     const int count = attributes.count();
     for (int i = 0; i < count; ++i) {
@@ -536,5 +536,4 @@ int InputContextPrivate::findAttribute(const QList<QInputMethodEvent::Attribute>
     return -1;
 }
 
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE

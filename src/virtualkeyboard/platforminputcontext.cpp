@@ -200,7 +200,7 @@ void PlatformInputContext::setFocusObject(QObject *object)
     update(Qt::ImQueryAll);
 }
 
-InputContext *PlatformInputContext::inputContext() const
+QVirtualKeyboardInputContext *PlatformInputContext::inputContext() const
 {
     return m_inputContext;
 }
@@ -239,7 +239,7 @@ QVariant PlatformInputContext::inputMethodQuery(Qt::InputMethodQuery query)
     return event.value(query);
 }
 
-void PlatformInputContext::setInputContext(InputContext *context)
+void PlatformInputContext::setInputContext(QVirtualKeyboardInputContext *context)
 {
     if (m_inputContext) {
         disconnect(this, SLOT(keyboardRectangleChanged()));
@@ -248,7 +248,7 @@ void PlatformInputContext::setInputContext(InputContext *context)
     if (m_inputContext) {
         if (!m_inputPanel)
             m_inputPanel = new AppInputPanel(this);
-        QObject::connect(m_inputContext->priv(), &InputContextPrivate::keyboardRectangleChanged, this, &PlatformInputContext::keyboardRectangleChanged);
+        QObject::connect(m_inputContext->priv(), &QVirtualKeyboardInputContextPrivate::keyboardRectangleChanged, this, &PlatformInputContext::keyboardRectangleChanged);
     } else if (m_inputPanel) {
         m_inputPanel = nullptr;
     }

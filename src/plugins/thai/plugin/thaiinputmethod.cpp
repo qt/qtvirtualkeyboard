@@ -45,22 +45,22 @@ ThaiInputMethod::ThaiInputMethod(QObject *parent) :
 }
 
 #ifndef HAVE_HUNSPELL
-QList<InputEngine::InputMode> ThaiInputMethod::inputModes(
+QList<QVirtualKeyboardInputEngine::InputMode> ThaiInputMethod::inputModes(
         const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<InputEngine::InputMode>() << InputEngine::Latin;
+    return QList<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::Latin;
 }
 
 bool ThaiInputMethod::setInputMode(const QString &locale,
-                                         InputEngine::InputMode inputMode)
+                                         QVirtualKeyboardInputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_UNUSED(inputMode)
     return true;
 }
 
-bool ThaiInputMethod::setTextCase(InputEngine::TextCase textCase)
+bool ThaiInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 {
     Q_UNUSED(textCase)
     return true;

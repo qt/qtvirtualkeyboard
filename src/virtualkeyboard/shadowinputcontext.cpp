@@ -52,7 +52,7 @@ public:
     {
     }
 
-    InputContext *inputContext;
+    QVirtualKeyboardInputContext *inputContext;
     QPointer<QObject> inputItem;
     QString preeditText;
     QList<QInputMethodEvent::Attribute> preeditTextAttributes;
@@ -68,7 +68,7 @@ ShadowInputContext::ShadowInputContext(QObject *parent) :
 {
 }
 
-void ShadowInputContext::setInputContext(InputContext *inputContext)
+void ShadowInputContext::setInputContext(QVirtualKeyboardInputContext *inputContext)
 {
     Q_D(ShadowInputContext);
     d->inputContext = inputContext;

@@ -39,7 +39,7 @@ import QtQuick.VirtualKeyboard 2.3
 
     \brief Input mode key for keyboard layouts.
 
-    This key toggles between available \l {InputEngine::inputModes} {InputEngine.inputModes}.
+    This key toggles between available \l {QVirtualKeyboardInputEngine::inputModes} {InputEngine.inputModes}.
 */
 
 Key {
@@ -55,7 +55,7 @@ Key {
     /*!
         List of input mode names.
 
-        The default list contains all known input modes for \l {InputEngine::inputMode} {InputEngine.inputMode}.
+        The default list contains all known input modes for \l {QVirtualKeyboardInputEngine::inputMode} {InputEngine.inputMode}.
     */
     property var inputModeNameList: [
         "ABC",  // InputEngine.Latin

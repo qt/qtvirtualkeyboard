@@ -48,9 +48,12 @@
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
+
+class QVirtualKeyboardInputContext;
+class QVirtualKeyboardInputContextPrivate;
+
 namespace QtVirtualKeyboard {
 
-class InputContext;
 class ShadowInputContextPrivate;
 
 class QVIRTUALKEYBOARD_EXPORT ShadowInputContext : public QObject
@@ -67,7 +70,7 @@ class QVIRTUALKEYBOARD_EXPORT ShadowInputContext : public QObject
 
     explicit ShadowInputContext(QObject *parent = nullptr);
 
-    void setInputContext(InputContext *inputContext);
+    void setInputContext(QVirtualKeyboardInputContext *inputContext);
 
 public:
     QObject *inputItem() const;
@@ -94,8 +97,8 @@ private:
     QVariant queryFocusObject(Qt::InputMethodQuery query, QVariant argument);
 
 private:
-    friend class InputContextPrivate;
-    friend class InputContext;
+    friend class ::QVirtualKeyboardInputContextPrivate;
+    friend class ::QVirtualKeyboardInputContext;
 };
 
 } // namespace QtVirtualKeyboard

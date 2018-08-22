@@ -45,9 +45,12 @@
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
+
+class QVirtualKeyboardInputContext;
+class QVirtualKeyboardInputContextPrivate;
+
 namespace QtVirtualKeyboard {
 
-class InputContext;
 class ShiftHandlerPrivate;
 
 class QVIRTUALKEYBOARD_EXPORT ShiftHandler : public QObject
@@ -62,7 +65,7 @@ class QVIRTUALKEYBOARD_EXPORT ShiftHandler : public QObject
     Q_PROPERTY(bool capsLock READ capsLock WRITE setCapsLock NOTIFY capsLockChanged)
     Q_PROPERTY(bool uppercase READ uppercase NOTIFY uppercaseChanged)
 
-    explicit ShiftHandler(InputContext *parent = nullptr);
+    explicit ShiftHandler(QVirtualKeyboardInputContext *parent = nullptr);
     void init();
 
 public:
@@ -101,8 +104,8 @@ private:
     void setToggleShiftEnabled(bool enabled);
 
 private:
-    friend class InputContext;
-    friend class InputContextPrivate;
+    friend class ::QVirtualKeyboardInputContext;
+    friend class ::QVirtualKeyboardInputContextPrivate;
 };
 
 } // namespace QtVirtualKeyboard

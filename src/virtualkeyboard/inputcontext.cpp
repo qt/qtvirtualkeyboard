@@ -44,11 +44,11 @@
 */
 
 QT_BEGIN_NAMESPACE
-namespace QtVirtualKeyboard {
+using namespace QtVirtualKeyboard;
 
 /*!
     \qmltype InputContext
-    \instantiates QtVirtualKeyboard::InputContext
+    \instantiates QVirtualKeyboardInputContext
     \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \brief Provides access to an input context.
@@ -57,7 +57,7 @@ namespace QtVirtualKeyboard {
 */
 
 /*!
-    \class QtVirtualKeyboard::InputContext
+    \class QVirtualKeyboardInputContext
     \inmodule QtVirtualKeyboard
     \brief Provides access to an input context.
 */
@@ -67,70 +67,70 @@ namespace QtVirtualKeyboard {
     Constructs an input context with \a parent as the platform input
     context.
 */
-InputContext::InputContext(PlatformInputContext *parent) :
-    d_ptr(new InputContextPrivate(this, parent))
+QVirtualKeyboardInputContext::QVirtualKeyboardInputContext(QtVirtualKeyboard::PlatformInputContext *parent) :
+    d_ptr(new QVirtualKeyboardInputContextPrivate(this, parent))
 {
-    Q_D(InputContext);
+    Q_D(QVirtualKeyboardInputContext);
     d->init();
-    QObject::connect(d->_shiftHandler, &ShiftHandler::shiftChanged, this, &InputContext::shiftChanged);
-    QObject::connect(d->_shiftHandler, &ShiftHandler::capsLockChanged, this, &InputContext::capsLockChanged);
-    QObject::connect(d->_shiftHandler, &ShiftHandler::uppercaseChanged, this, &InputContext::uppercaseChanged);
-    QObject::connect(d, &InputContextPrivate::localeChanged, this, &InputContext::localeChanged);
+    QObject::connect(d->_shiftHandler, &ShiftHandler::shiftChanged, this, &QVirtualKeyboardInputContext::shiftChanged);
+    QObject::connect(d->_shiftHandler, &ShiftHandler::capsLockChanged, this, &QVirtualKeyboardInputContext::capsLockChanged);
+    QObject::connect(d->_shiftHandler, &ShiftHandler::uppercaseChanged, this, &QVirtualKeyboardInputContext::uppercaseChanged);
+    QObject::connect(d, &QVirtualKeyboardInputContextPrivate::localeChanged, this, &QVirtualKeyboardInputContext::localeChanged);
 }
 
 /*!
     \internal
     Destroys the input context and frees all allocated resources.
 */
-InputContext::~InputContext()
+QVirtualKeyboardInputContext::~QVirtualKeyboardInputContext()
 {
 }
 
-bool InputContext::shift() const
+bool QVirtualKeyboardInputContext::shift() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->_shiftHandler->shift();
 }
 
-bool InputContext::capsLock() const
+bool QVirtualKeyboardInputContext::capsLock() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->_shiftHandler->capsLock();
 }
 
-bool InputContext::uppercase() const
+bool QVirtualKeyboardInputContext::uppercase() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->_shiftHandler->uppercase();
 }
 
-int InputContext::anchorPosition() const
+int QVirtualKeyboardInputContext::anchorPosition() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->anchorPosition;
 }
 
-int InputContext::cursorPosition() const
+int QVirtualKeyboardInputContext::cursorPosition() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->cursorPosition;
 }
 
-Qt::InputMethodHints InputContext::inputMethodHints() const
+Qt::InputMethodHints QVirtualKeyboardInputContext::inputMethodHints() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->inputMethodHints;
 }
 
-QString InputContext::preeditText() const
+QString QVirtualKeyboardInputContext::preeditText() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->preeditText;
 }
 
-void InputContext::setPreeditText(const QString &text, QList<QInputMethodEvent::Attribute> attributes, int replaceFrom, int replaceLength)
+void QVirtualKeyboardInputContext::setPreeditText(const QString &text, QList<QInputMethodEvent::Attribute> attributes, int replaceFrom, int replaceLength)
 {
-    Q_D(InputContext);
+    Q_D(QVirtualKeyboardInputContext);
     // Add default attributes
     if (!text.isEmpty()) {
         if (!d->testAttribute(attributes, QInputMethodEvent::TextFormat)) {
@@ -145,62 +145,62 @@ void InputContext::setPreeditText(const QString &text, QList<QInputMethodEvent::
     d->sendPreedit(text, attributes, replaceFrom, replaceLength);
 }
 
-QList<QInputMethodEvent::Attribute> InputContext::preeditTextAttributes() const
+QList<QInputMethodEvent::Attribute> QVirtualKeyboardInputContext::preeditTextAttributes() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->preeditTextAttributes;
 }
 
-QString InputContext::surroundingText() const
+QString QVirtualKeyboardInputContext::surroundingText() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->surroundingText;
 }
 
-QString InputContext::selectedText() const
+QString QVirtualKeyboardInputContext::selectedText() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->selectedText;
 }
 
-QRectF InputContext::anchorRectangle() const
+QRectF QVirtualKeyboardInputContext::anchorRectangle() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->anchorRectangle;
 }
 
-QRectF InputContext::cursorRectangle() const
+QRectF QVirtualKeyboardInputContext::cursorRectangle() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->cursorRectangle;
 }
 
-bool InputContext::animating() const
+bool QVirtualKeyboardInputContext::animating() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->animating;
 }
 
-void InputContext::setAnimating(bool animating)
+void QVirtualKeyboardInputContext::setAnimating(bool animating)
 {
-    Q_D(InputContext);
+    Q_D(QVirtualKeyboardInputContext);
     if (d->animating != animating) {
-        VIRTUALKEYBOARD_DEBUG() << "InputContext::setAnimating():" << animating;
+        VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContext::setAnimating():" << animating;
         d->animating = animating;
         emit animatingChanged();
         d->platformInputContext->emitAnimatingChanged();
     }
 }
 
-QString InputContext::locale() const
+QString QVirtualKeyboardInputContext::locale() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->locale();
 }
 
-InputEngine *InputContext::inputEngine() const
+QVirtualKeyboardInputEngine *QVirtualKeyboardInputContext::inputEngine() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->inputEngine;
 }
 
@@ -214,21 +214,21 @@ InputEngine *InputContext::inputEngine() const
     Sends a key click event with the given \a key, \a text and \a modifiers to
     the input item that currently has focus.
 */
-void InputContext::sendKeyClick(int key, const QString &text, int modifiers)
+void QVirtualKeyboardInputContext::sendKeyClick(int key, const QString &text, int modifiers)
 {
-    Q_D(InputContext);
+    Q_D(QVirtualKeyboardInputContext);
     if (d->_focus && d->platformInputContext) {
         QKeyEvent pressEvent(QEvent::KeyPress, key, Qt::KeyboardModifiers(modifiers), text);
         QKeyEvent releaseEvent(QEvent::KeyRelease, key, Qt::KeyboardModifiers(modifiers), text);
-        VIRTUALKEYBOARD_DEBUG() << "InputContext::sendKeyClick():" << key;
+        VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContext::sendKeyClick():" << key;
 
-        d->stateFlags |= InputContextPrivate::KeyEventState;
+        d->stateFlags |= QVirtualKeyboardInputContextPrivate::KeyEventState;
         d->platformInputContext->sendKeyEvent(&pressEvent);
         d->platformInputContext->sendKeyEvent(&releaseEvent);
         if (d->activeKeys.isEmpty())
-            d->stateFlags &= ~InputContextPrivate::KeyEventState;
+            d->stateFlags &= ~QVirtualKeyboardInputContextPrivate::KeyEventState;
     } else {
-        qWarning() << "InputContext::sendKeyClick(): no focus to send key click" << key << text
+        qWarning() << "QVirtualKeyboardInputContext::sendKeyClick(): no focus to send key click" << key << text
                    << "- QGuiApplication::focusWindow() is:" << QGuiApplication::focusWindow();
     }
 }
@@ -239,13 +239,13 @@ void InputContext::sendKeyClick(int key, const QString &text, int modifiers)
     Commits the current pre-edit text.
 */
 /*!
-    \fn void QtVirtualKeyboard::InputContext::commit()
+    \fn void QVirtualKeyboardInputContext::commit()
 
     Commits the current pre-edit text.
 */
-void InputContext::commit()
+void QVirtualKeyboardInputContext::commit()
 {
-    Q_D(InputContext);
+    Q_D(QVirtualKeyboardInputContext);
     QString text = d->preeditText;
     commit(text);
 }
@@ -266,10 +266,10 @@ void InputContext::commit()
     contents relative to \a replaceFrom with a length of
     \a replaceLength.
 */
-void InputContext::commit(const QString &text, int replaceFrom, int replaceLength)
+void QVirtualKeyboardInputContext::commit(const QString &text, int replaceFrom, int replaceLength)
 {
-    Q_D(InputContext);
-    VIRTUALKEYBOARD_DEBUG() << "InputContext::commit():" << text << replaceFrom << replaceLength;
+    Q_D(QVirtualKeyboardInputContext);
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContext::commit():" << text << replaceFrom << replaceLength;
     bool preeditChanged = !d->preeditText.isEmpty();
 
     if (d->platformInputContext) {
@@ -279,9 +279,9 @@ void InputContext::commit(const QString &text, int replaceFrom, int replaceLengt
         d->preeditTextAttributes.clear();
         QInputMethodEvent inputEvent(QString(), attributes);
         inputEvent.setCommitString(text, replaceFrom, replaceLength);
-        d->stateFlags |= InputContextPrivate::InputMethodEventState;
+        d->stateFlags |= QVirtualKeyboardInputContextPrivate::InputMethodEventState;
         d->platformInputContext->sendEvent(&inputEvent);
-        d->stateFlags &= ~InputContextPrivate::InputMethodEventState;
+        d->stateFlags &= ~QVirtualKeyboardInputContextPrivate::InputMethodEventState;
     } else {
         d->preeditText.clear();
         d->preeditTextAttributes.clear();
@@ -297,13 +297,13 @@ void InputContext::commit(const QString &text, int replaceFrom, int replaceLengt
     Clears the pre-edit text.
 */
 /*!
-    \fn void QtVirtualKeyboard::InputContext::clear()
+    \fn void QVirtualKeyboardInputContext::clear()
 
     Clears the pre-edit text.
 */
-void InputContext::clear()
+void QVirtualKeyboardInputContext::clear()
 {
-    Q_D(InputContext);
+    Q_D(QVirtualKeyboardInputContext);
     bool preeditChanged = !d->preeditText.isEmpty();
     d->preeditText.clear();
     d->preeditTextAttributes.clear();
@@ -312,9 +312,9 @@ void InputContext::clear()
         QList<QInputMethodEvent::Attribute> attributes;
         d->addSelectionAttribute(attributes);
         QInputMethodEvent event(QString(), attributes);
-        d->stateFlags |= InputContextPrivate::InputMethodEventState;
+        d->stateFlags |= QVirtualKeyboardInputContextPrivate::InputMethodEventState;
         d->platformInputContext->sendEvent(&event);
-        d->stateFlags &= ~InputContextPrivate::InputMethodEventState;
+        d->stateFlags &= ~QVirtualKeyboardInputContextPrivate::InputMethodEventState;
     }
 
     if (preeditChanged)
@@ -324,33 +324,33 @@ void InputContext::clear()
 /*!
     \internal
 */
-void InputContext::setSelectionOnFocusObject(const QPointF &anchorPos, const QPointF &cursorPos)
+void QVirtualKeyboardInputContext::setSelectionOnFocusObject(const QPointF &anchorPos, const QPointF &cursorPos)
 {
     QPlatformInputContext::setSelectionOnFocusObject(anchorPos, cursorPos);
 }
 
-bool InputContext::anchorRectIntersectsClipRect() const
+bool QVirtualKeyboardInputContext::anchorRectIntersectsClipRect() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->anchorRectIntersectsClipRect;
 }
 
-bool InputContext::cursorRectIntersectsClipRect() const
+bool QVirtualKeyboardInputContext::cursorRectIntersectsClipRect() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->cursorRectIntersectsClipRect;
 }
 
-bool InputContext::selectionControlVisible() const
+bool QVirtualKeyboardInputContext::selectionControlVisible() const
 {
-    Q_D(const InputContext);
+    Q_D(const QVirtualKeyboardInputContext);
     return d->selectionControlVisible;
 }
 
-InputContextPrivate *InputContext::priv() const
+QVirtualKeyboardInputContextPrivate *QVirtualKeyboardInputContext::priv() const
 {
-    Q_D(const InputContext);
-    return const_cast<InputContextPrivate *>(d);
+    Q_D(const QVirtualKeyboardInputContext);
+    return const_cast<QVirtualKeyboardInputContextPrivate *>(d);
 }
 
 /*!
@@ -360,7 +360,7 @@ InputContextPrivate *InputContext::priv() const
 */
 
 /*!
-    \property QtVirtualKeyboard::InputContext::shift
+    \property QVirtualKeyboardInputContext::shift
     \brief the shift status.
 
     This property is changed when the shift status changes.
@@ -373,7 +373,7 @@ InputContextPrivate *InputContext::priv() const
 */
 
 /*!
-    \property QtVirtualKeyboard::InputContext::capsLock
+    \property QVirtualKeyboardInputContext::capsLock
     \brief the caps lock status.
 
     This property is changed when the caps lock status changes.
@@ -387,7 +387,7 @@ InputContextPrivate *InputContext::priv() const
 */
 
 /*!
-    \property QtVirtualKeyboard::InputContext::uppercase
+    \property QVirtualKeyboardInputContext::uppercase
     \brief the uppercase status.
 
     This property is \c true when either \l shift or \l capsLock is \c true.
@@ -401,7 +401,7 @@ InputContextPrivate *InputContext::priv() const
 */
 
 /*!
-    \property QtVirtualKeyboard::InputContext::anchorPosition
+    \property QVirtualKeyboardInputContext::anchorPosition
     \brief the anchor position.
 
     This property is changed when the anchor position changes.
@@ -414,7 +414,7 @@ InputContextPrivate *InputContext::priv() const
 */
 
 /*!
-    \property QtVirtualKeyboard::InputContext::cursorPosition
+    \property QVirtualKeyboardInputContext::cursorPosition
     \brief the cursor position.
 
     This property is changed when the cursor position changes.
@@ -427,7 +427,7 @@ InputContextPrivate *InputContext::priv() const
 */
 
 /*!
-    \property QtVirtualKeyboard::InputContext::inputMethodHints
+    \property QVirtualKeyboardInputContext::inputMethodHints
     \brief the input method hints.
 
     This property is changed when the input method hints changes.
@@ -440,7 +440,7 @@ InputContextPrivate *InputContext::priv() const
 */
 
 /*!
-    \property QtVirtualKeyboard::InputContext::preeditText
+    \property QVirtualKeyboardInputContext::preeditText
     \brief the pre-edit text.
 
     This property sets the pre-edit text.
@@ -453,7 +453,7 @@ InputContextPrivate *InputContext::priv() const
 */
 
 /*!
-    \property QtVirtualKeyboard::InputContext::surroundingText
+    \property QVirtualKeyboardInputContext::surroundingText
     \brief the surrounding text around cursor.
 
     This property is changed when the surrounding text around the cursor changes.
@@ -466,7 +466,7 @@ InputContextPrivate *InputContext::priv() const
 */
 
 /*!
-    \property QtVirtualKeyboard::InputContext::selectedText
+    \property QVirtualKeyboardInputContext::selectedText
     \brief the selected text.
 
     This property is changed when the selected text changes.
@@ -480,7 +480,7 @@ InputContextPrivate *InputContext::priv() const
 */
 
 /*!
-    \property QtVirtualKeyboard::InputContext::anchorRectangle
+    \property QVirtualKeyboardInputContext::anchorRectangle
     \brief the anchor rectangle.
 
     This property is changed when the anchor rectangle changes.
@@ -493,7 +493,7 @@ InputContextPrivate *InputContext::priv() const
 */
 
 /*!
-    \property QtVirtualKeyboard::InputContext::cursorRectangle
+    \property QVirtualKeyboardInputContext::cursorRectangle
     \brief the cursor rectangle.
 
     This property is changed when the cursor rectangle changes.
@@ -507,7 +507,7 @@ InputContextPrivate *InputContext::priv() const
 */
 
 /*!
-    \property QtVirtualKeyboard::InputContext::animating
+    \property QVirtualKeyboardInputContext::animating
     \brief the animating status.
 
     Use this property to set the animating status, for example
@@ -521,7 +521,7 @@ InputContextPrivate *InputContext::priv() const
 */
 
 /*!
-    \property QtVirtualKeyboard::InputContext::locale
+    \property QVirtualKeyboardInputContext::locale
     \brief the locale.
 
     This property is changed when the input locale changes.
@@ -534,11 +534,10 @@ InputContextPrivate *InputContext::priv() const
 */
 
 /*!
-    \property QtVirtualKeyboard::InputContext::inputEngine
+    \property QVirtualKeyboardInputContext::inputEngine
     \brief the input engine.
 
     This property stores the input engine.
 */
 
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE

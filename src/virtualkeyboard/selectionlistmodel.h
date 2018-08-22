@@ -34,19 +34,18 @@
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
-namespace QtVirtualKeyboard {
 
-class AbstractInputMethod;
-class InputEngine;
-class SelectionListModelPrivate;
+class QVirtualKeyboardAbstractInputMethod;
+class QVirtualKeyboardInputEngine;
+class QVirtualKeyboardSelectionListModelPrivate;
 
-class QVIRTUALKEYBOARD_EXPORT SelectionListModel : public QAbstractListModel
+class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardSelectionListModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(SelectionListModel)
+    Q_DECLARE_PRIVATE(QVirtualKeyboardSelectionListModel)
     Q_PROPERTY(int count READ count NOTIFY countChanged)
 
-    explicit SelectionListModel(QObject *parent = nullptr);
+    explicit QVirtualKeyboardSelectionListModel(QObject *parent = nullptr);
 
 public:
     enum Type
@@ -70,9 +69,9 @@ public:
     Q_ENUM(Role)
     Q_ENUM(DictionaryType)
 
-    ~SelectionListModel();
-    void setDataSource(AbstractInputMethod *dataSource, Type type);
-    AbstractInputMethod *dataSource() const;
+    ~QVirtualKeyboardSelectionListModel();
+    void setDataSource(QVirtualKeyboardAbstractInputMethod *dataSource, Type type);
+    QVirtualKeyboardAbstractInputMethod *dataSource() const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QHash<int,QByteArray> roleNames() const;
@@ -93,14 +92,13 @@ protected Q_SLOTS:
     void selectionListActiveItemChanged(int type, int index);
 
 private:
-    friend class InputEngine;
+    friend class QVirtualKeyboardInputEngine;
 };
 
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE
 
-Q_DECLARE_METATYPE(QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::SelectionListModel::Type)
-Q_DECLARE_METATYPE(QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::SelectionListModel::Role)
-Q_DECLARE_METATYPE(QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::SelectionListModel::DictionaryType)
+Q_DECLARE_METATYPE(QVirtualKeyboardSelectionListModel::Type)
+Q_DECLARE_METATYPE(QVirtualKeyboardSelectionListModel::Role)
+Q_DECLARE_METATYPE(QVirtualKeyboardSelectionListModel::DictionaryType)
 
 #endif // SELECTIONLISTMODEL_H

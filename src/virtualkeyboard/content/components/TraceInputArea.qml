@@ -52,7 +52,7 @@ MultiPointTouchArea {
 
     /*! Pattern recognition mode of this input area.
 
-        The default value is \l {QtVirtualKeyboard::InputEngine::PatternRecognitionDisabled} {InputEngine.PatternRecognitionDisabled}.
+        The default value is \l {InputEngine::PatternRecognitionDisabled} {InputEngine.PatternRecognitionDisabled}.
     */
     property int patternRecognitionMode: InputEngine.PatternRecognitionDisabled
 

@@ -36,14 +36,13 @@
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
-namespace QtVirtualKeyboard {
 
-class TracePrivate;
+class QVirtualKeyboardTracePrivate;
 
-class QVIRTUALKEYBOARD_EXPORT Trace : public QObject
+class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardTrace : public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(Trace)
+    Q_DECLARE_PRIVATE(QVirtualKeyboardTrace)
     Q_PROPERTY(int traceId READ traceId WRITE setTraceId NOTIFY traceIdChanged)
     Q_PROPERTY(QStringList channels READ channels WRITE setChannels NOTIFY channelsChanged)
     Q_PROPERTY(int length READ length NOTIFY lengthChanged)
@@ -51,8 +50,8 @@ class QVIRTUALKEYBOARD_EXPORT Trace : public QObject
     Q_PROPERTY(bool isCanceled READ isCanceled WRITE setCanceled NOTIFY canceledChanged)
     Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity NOTIFY opacityChanged)
 public:
-    explicit Trace(QObject *parent = nullptr);
-    ~Trace();
+    explicit QVirtualKeyboardTrace(QObject *parent = nullptr);
+    ~QVirtualKeyboardTrace();
 
     int traceId() const;
     void setTraceId(int id);
@@ -86,7 +85,6 @@ Q_SIGNALS:
     void opacityChanged(qreal opacity);
 };
 
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE
 
 #endif // TRACE_H

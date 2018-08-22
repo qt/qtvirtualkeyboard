@@ -46,7 +46,7 @@
 #define LipiInputMethodBase HunspellInputMethod
 #else
 #include <QtVirtualKeyboard/abstractinputmethod.h>
-#define LipiInputMethodBase AbstractInputMethod
+#define LipiInputMethodBase QVirtualKeyboardAbstractInputMethod
 #endif
 
 QT_BEGIN_NAMESPACE
@@ -62,21 +62,22 @@ public:
     explicit LipiInputMethod(QObject *parent = nullptr);
     ~LipiInputMethod();
 
-    QList<InputEngine::InputMode> inputModes(const QString &locale);
-    bool setInputMode(const QString &locale, InputEngine::InputMode inputMode);
-    bool setTextCase(InputEngine::TextCase textCase);
+    QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale);
+    bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode);
+    bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase);
 
     bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 
     void reset();
     void update();
 
-    void selectionListItemSelected(SelectionListModel::Type type, int index);
+    void selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index);
 
-    QList<InputEngine::PatternRecognitionMode> patternRecognitionModes() const;
-    Trace *traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
-                      const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
-    bool traceEnd(Trace *trace);
+    QList<QVirtualKeyboardInputEngine::PatternRecognitionMode> patternRecognitionModes() const;
+    QVirtualKeyboardTrace *traceBegin(
+            int traceId, QVirtualKeyboardInputEngine::PatternRecognitionMode patternRecognitionMode,
+            const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
+    bool traceEnd(QVirtualKeyboardTrace *trace);
 
 protected:
     void timerEvent(QTimerEvent *timerEvent);

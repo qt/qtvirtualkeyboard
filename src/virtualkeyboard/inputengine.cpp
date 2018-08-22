@@ -39,20 +39,20 @@
 #include <QtCore/private/qobject_p.h>
 
 QT_BEGIN_NAMESPACE
-namespace QtVirtualKeyboard {
+using namespace QtVirtualKeyboard;
 
-class InputEnginePrivate : public QObjectPrivate
+class QVirtualKeyboardInputEnginePrivate : public QObjectPrivate
 {
-    Q_DECLARE_PUBLIC(InputEngine)
+    Q_DECLARE_PUBLIC(QVirtualKeyboardInputEngine)
 
 public:
-    InputEnginePrivate(InputEngine *q_ptr) :
+    QVirtualKeyboardInputEnginePrivate(QVirtualKeyboardInputEngine *q_ptr) :
         QObjectPrivate(),
         q_ptr(q_ptr),
         inputContext(nullptr),
         fallbackInputMethod(nullptr),
-        textCase(InputEngine::Lower),
-        inputMode(InputEngine::Latin),
+        textCase(QVirtualKeyboardInputEngine::Lower),
+        inputMode(QVirtualKeyboardInputEngine::Latin),
         activeKey(Qt::Key_unknown),
         activeKeyModifiers(Qt::NoModifier),
         previousKey(Qt::Key_unknown),
@@ -62,13 +62,13 @@ public:
     {
     }
 
-    virtual ~InputEnginePrivate()
+    virtual ~QVirtualKeyboardInputEnginePrivate()
     {
     }
 
     bool virtualKeyClick(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool isAutoRepeat)
     {
-        Q_Q(InputEngine);
+        Q_Q(QVirtualKeyboardInputEngine);
         bool accept = false;
         if (inputMethod) {
             accept = inputMethod->keyEvent(key, text, modifiers);
@@ -82,14 +82,14 @@ public:
         return accept;
     }
 
-    InputEngine* q_ptr;
-    InputContext *inputContext;
-    QPointer<AbstractInputMethod> inputMethod;
-    AbstractInputMethod *fallbackInputMethod;
-    InputEngine::TextCase textCase;
-    InputEngine::InputMode inputMode;
+    QVirtualKeyboardInputEngine* q_ptr;
+    QVirtualKeyboardInputContext *inputContext;
+    QPointer<QVirtualKeyboardAbstractInputMethod> inputMethod;
+    QVirtualKeyboardAbstractInputMethod *fallbackInputMethod;
+    QVirtualKeyboardInputEngine::TextCase textCase;
+    QVirtualKeyboardInputEngine::InputMode inputMode;
     QList<int> inputModes;
-    QMap<SelectionListModel::Type, SelectionListModel *> selectionListModels;
+    QMap<QVirtualKeyboardSelectionListModel::Type, QVirtualKeyboardSelectionListModel *> selectionListModels;
     Qt::Key activeKey;
     QString activeKeyText;
     Qt::KeyboardModifiers activeKeyModifiers;
@@ -122,7 +122,7 @@ private:
     \qmltype InputEngine
     \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
-    \instantiates QtVirtualKeyboard::InputEngine
+    \instantiates QVirtualKeyboardInputEngine
     \brief Maps the user input to the input methods.
 
     The input engine is responsible for routing input events to input
@@ -134,7 +134,7 @@ private:
 */
 
 /*!
-    \class QtVirtualKeyboard::InputEngine
+    \class QVirtualKeyboardInputEngine
     \inmodule QtVirtualKeyboard
     \brief The InputEngine class provides an input engine
     that supports C++ and QML integration.
@@ -151,33 +151,33 @@ private:
     \internal
     Constructs an input engine with input context as \a parent.
 */
-InputEngine::InputEngine(InputContext *parent) :
-    QObject(*new InputEnginePrivate(this), parent)
+QVirtualKeyboardInputEngine::QVirtualKeyboardInputEngine(QVirtualKeyboardInputContext *parent) :
+    QObject(*new QVirtualKeyboardInputEnginePrivate(this), parent)
 {
-    Q_D(InputEngine);
+    Q_D(QVirtualKeyboardInputEngine);
     d->inputContext = parent;
 }
 
-void InputEngine::init()
+void QVirtualKeyboardInputEngine::init()
 {
-    Q_D(InputEngine);
+    Q_D(QVirtualKeyboardInputEngine);
     ShiftHandler *shiftHandler = d->inputContext->priv()->shiftHandler();
-    QObject::connect(shiftHandler, &ShiftHandler::shiftChanged, this, &InputEngine::shiftChanged);
-    QObject::connect(d->inputContext, &InputContext::localeChanged, this, &InputEngine::update);
-    QObject::connect(d->inputContext, &InputContext::inputMethodHintsChanged, this, &InputEngine::updateSelectionListModels);
-    QObject::connect(d->inputContext, &InputContext::localeChanged, this, &InputEngine::updateInputModes);
-    QObject::connect(this, &InputEngine::inputMethodChanged, this, &InputEngine::updateInputModes);
+    QObject::connect(shiftHandler, &ShiftHandler::shiftChanged, this, &QVirtualKeyboardInputEngine::shiftChanged);
+    QObject::connect(d->inputContext, &QVirtualKeyboardInputContext::localeChanged, this, &QVirtualKeyboardInputEngine::update);
+    QObject::connect(d->inputContext, &QVirtualKeyboardInputContext::inputMethodHintsChanged, this, &QVirtualKeyboardInputEngine::updateSelectionListModels);
+    QObject::connect(d->inputContext, &QVirtualKeyboardInputContext::localeChanged, this, &QVirtualKeyboardInputEngine::updateInputModes);
+    QObject::connect(this, &QVirtualKeyboardInputEngine::inputMethodChanged, this, &QVirtualKeyboardInputEngine::updateInputModes);
     d->fallbackInputMethod = new FallbackInputMethod(this);
     if (d->fallbackInputMethod)
         d->fallbackInputMethod->setInputEngine(this);
-    d->selectionListModels[SelectionListModel::WordCandidateList] = new SelectionListModel(this);
+    d->selectionListModels[QVirtualKeyboardSelectionListModel::WordCandidateList] = new QVirtualKeyboardSelectionListModel(this);
 }
 
 /*!
     \internal
     Destroys the input engine and frees all allocated resources.
 */
-InputEngine::~InputEngine()
+QVirtualKeyboardInputEngine::~QVirtualKeyboardInputEngine()
 {
 }
 
@@ -211,10 +211,10 @@ InputEngine::~InputEngine()
 
     \sa virtualKeyCancel(), virtualKeyRelease()
 */
-bool InputEngine::virtualKeyPress(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool repeat)
+bool QVirtualKeyboardInputEngine::virtualKeyPress(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool repeat)
 {
-    Q_D(InputEngine);
-    VIRTUALKEYBOARD_DEBUG() << "InputEngine::virtualKeyPress():" << key << text << modifiers << repeat;
+    Q_D(QVirtualKeyboardInputEngine);
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::virtualKeyPress():" << key << text << modifiers << repeat;
     bool accept = false;
     if (d->activeKey == Qt::Key_unknown || d->activeKey == key) {
         d->activeKey = key;
@@ -239,16 +239,16 @@ bool InputEngine::virtualKeyPress(Qt::Key key, const QString &text, Qt::Keyboard
     the key state needs to be restored.
 */
 /*!
-    \fn void QtVirtualKeyboard::InputEngine::virtualKeyCancel()
+    \fn void QVirtualKeyboardInputEngine::virtualKeyCancel()
 
     Reverts the active key state without emitting the key event.
     This method is useful when the user discards the current key and
     the key state needs to be restored.
 */
-void InputEngine::virtualKeyCancel()
+void QVirtualKeyboardInputEngine::virtualKeyCancel()
 {
-    Q_D(InputEngine);
-    VIRTUALKEYBOARD_DEBUG() << "InputEngine::virtualKeyCancel()";
+    Q_D(QVirtualKeyboardInputEngine);
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::virtualKeyCancel()";
     if (d->activeKey != Qt::Key_unknown) {
         d->activeKey = Qt::Key_unknown;
         d->activeKeyText = QString();
@@ -278,10 +278,10 @@ void InputEngine::virtualKeyCancel()
 
     Returns \c true if the key was accepted by the input engine.
 */
-bool InputEngine::virtualKeyRelease(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
+bool QVirtualKeyboardInputEngine::virtualKeyRelease(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
-    Q_D(InputEngine);
-    VIRTUALKEYBOARD_DEBUG() << "InputEngine::virtualKeyRelease():" << key << text << modifiers;
+    Q_D(QVirtualKeyboardInputEngine);
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::virtualKeyRelease():" << key << text << modifiers;
     bool accept = false;
     if (d->activeKey == key) {
         if (!d->repeatCount) {
@@ -318,10 +318,10 @@ bool InputEngine::virtualKeyRelease(Qt::Key key, const QString &text, Qt::Keyboa
     Emits a key click event for the given \a key, \a text and \a modifiers.
     Returns \c true if the key event was accepted by the input engine.
 */
-bool InputEngine::virtualKeyClick(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
+bool QVirtualKeyboardInputEngine::virtualKeyClick(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
-    Q_D(InputEngine);
-    VIRTUALKEYBOARD_DEBUG() << "InputEngine::virtualKeyClick():" << key << text << modifiers;
+    Q_D(QVirtualKeyboardInputEngine);
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::virtualKeyClick():" << key << text << modifiers;
     return d->virtualKeyClick(key, text, modifiers, false);
 }
 
@@ -329,18 +329,18 @@ bool InputEngine::virtualKeyClick(Qt::Key key, const QString &text, Qt::Keyboard
     Returns the \c InputContext instance associated with the input
     engine.
 */
-InputContext *InputEngine::inputContext() const
+QVirtualKeyboardInputContext *QVirtualKeyboardInputEngine::inputContext() const
 {
-    Q_D(const InputEngine);
+    Q_D(const QVirtualKeyboardInputEngine);
     return d->inputContext;
 }
 
 /*!
     Returns the currently active key, or Qt::Key_unknown if no key is active.
 */
-Qt::Key InputEngine::activeKey() const
+Qt::Key QVirtualKeyboardInputEngine::activeKey() const
 {
-    Q_D(const InputEngine);
+    Q_D(const QVirtualKeyboardInputEngine);
     return d->activeKey;
 }
 
@@ -348,38 +348,38 @@ Qt::Key InputEngine::activeKey() const
     Returns the previously active key, or Qt::Key_unknown if no key has been
     active.
 */
-Qt::Key InputEngine::previousKey() const
+Qt::Key QVirtualKeyboardInputEngine::previousKey() const
 {
-    Q_D(const InputEngine);
+    Q_D(const QVirtualKeyboardInputEngine);
     return d->previousKey;
 }
 
 /*!
     Returns the active input method.
 */
-AbstractInputMethod *InputEngine::inputMethod() const
+QVirtualKeyboardAbstractInputMethod *QVirtualKeyboardInputEngine::inputMethod() const
 {
-    Q_D(const InputEngine);
+    Q_D(const QVirtualKeyboardInputEngine);
     return d->inputMethod;
 }
 
 /*!
     Sets \a inputMethod as the active input method.
 */
-void InputEngine::setInputMethod(AbstractInputMethod *inputMethod)
+void QVirtualKeyboardInputEngine::setInputMethod(QVirtualKeyboardAbstractInputMethod *inputMethod)
 {
-    Q_D(InputEngine);
-    VIRTUALKEYBOARD_DEBUG() << "InputEngine::setInputMethod():" << inputMethod;
+    Q_D(QVirtualKeyboardInputEngine);
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::setInputMethod():" << inputMethod;
     if (d->inputMethod != inputMethod) {
         update();
         if (d->inputMethod) {
-            QObject::disconnect(d->inputMethod.data(), &AbstractInputMethod::selectionListsChanged, this, &InputEngine::updateSelectionListModels);
+            QObject::disconnect(d->inputMethod.data(), &QVirtualKeyboardAbstractInputMethod::selectionListsChanged, this, &QVirtualKeyboardInputEngine::updateSelectionListModels);
             d->inputMethod->setInputEngine(nullptr);
         }
         d->inputMethod = inputMethod;
         if (d->inputMethod) {
             d->inputMethod->setInputEngine(this);
-            QObject::connect(d->inputMethod.data(), &AbstractInputMethod::selectionListsChanged, this, &InputEngine::updateSelectionListModels);
+            QObject::connect(d->inputMethod.data(), &QVirtualKeyboardAbstractInputMethod::selectionListsChanged, this, &QVirtualKeyboardInputEngine::updateSelectionListModels);
 
             // Set current text case
             d->inputMethod->setTextCase(d->textCase);
@@ -393,22 +393,22 @@ void InputEngine::setInputMethod(AbstractInputMethod *inputMethod)
 /*!
     Returns the list of available input modes.
 */
-QList<int> InputEngine::inputModes() const
+QList<int> QVirtualKeyboardInputEngine::inputModes() const
 {
-    Q_D(const InputEngine);
+    Q_D(const QVirtualKeyboardInputEngine);
     return d->inputModes;
 }
 
-InputEngine::InputMode InputEngine::inputMode() const
+QVirtualKeyboardInputEngine::InputMode QVirtualKeyboardInputEngine::inputMode() const
 {
-    Q_D(const InputEngine);
+    Q_D(const QVirtualKeyboardInputEngine);
     return d->inputMode;
 }
 
-void InputEngine::setInputMode(InputEngine::InputMode inputMode)
+void QVirtualKeyboardInputEngine::setInputMode(QVirtualKeyboardInputEngine::InputMode inputMode)
 {
-    Q_D(InputEngine);
-    VIRTUALKEYBOARD_DEBUG() << "InputEngine::setInputMode():" << inputMode;
+    Q_D(QVirtualKeyboardInputEngine);
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::setInputMode():" << inputMode;
     if (d->inputMethod) {
 #ifdef QT_DEBUG
         // Cached input modes should be in sync with the input method
@@ -430,16 +430,16 @@ void InputEngine::setInputMode(InputEngine::InputMode inputMode)
     }
 }
 
-SelectionListModel *InputEngine::wordCandidateListModel() const
+QVirtualKeyboardSelectionListModel *QVirtualKeyboardInputEngine::wordCandidateListModel() const
 {
-    Q_D(const InputEngine);
-    return d->selectionListModels[SelectionListModel::WordCandidateList];
+    Q_D(const QVirtualKeyboardInputEngine);
+    return d->selectionListModels[QVirtualKeyboardSelectionListModel::WordCandidateList];
 }
 
-bool InputEngine::wordCandidateListVisibleHint() const
+bool QVirtualKeyboardInputEngine::wordCandidateListVisibleHint() const
 {
-    Q_D(const InputEngine);
-    const auto it = d->selectionListModels.constFind(SelectionListModel::WordCandidateList);
+    Q_D(const QVirtualKeyboardInputEngine);
+    const auto it = d->selectionListModels.constFind(QVirtualKeyboardSelectionListModel::WordCandidateList);
     if (it == d->selectionListModels.cend())
         return false;
     return it.value()->dataSource() != nullptr;
@@ -448,9 +448,9 @@ bool InputEngine::wordCandidateListVisibleHint() const
 /*!
    Returns list of supported pattern recognition modes.
 */
-QList<int> InputEngine::patternRecognitionModes() const
+QList<int> QVirtualKeyboardInputEngine::patternRecognitionModes() const
 {
-    Q_D(const InputEngine);
+    Q_D(const QVirtualKeyboardInputEngine);
     QList<PatternRecognitionMode> patterRecognitionModeList;
     if (d->inputMethod)
         patterRecognitionModeList = d->inputMethod->patternRecognitionModes();
@@ -464,7 +464,7 @@ QList<int> InputEngine::patternRecognitionModes() const
 }
 
 /*!
-    \qmlmethod Trace InputEngine::traceBegin(int traceId, int patternRecognitionMode, var traceCaptureDeviceInfo, var traceScreenInfo)
+    \qmlmethod QVirtualKeyboardTrace InputEngine::traceBegin(int traceId, int patternRecognitionMode, var traceCaptureDeviceInfo, var traceScreenInfo)
     \since QtQuick.VirtualKeyboard 2.0
 
     Starts a trace interaction with the input engine.
@@ -490,26 +490,26 @@ QList<int> InputEngine::patternRecognitionModes() const
     Starts a trace interaction with the input engine.
 
     The trace is uniquely identified by the \a traceId. The input engine will assign
-    the id to the Trace object if the input method accepts the event.
+    the id to the QVirtualKeyboardTrace object if the input method accepts the event.
 
     The \a patternRecognitionMode specifies the recognition mode used for the pattern.
 
-    If the current input method accepts the event it returns a Trace object associated with this interaction.
+    If the current input method accepts the event it returns a QVirtualKeyboardTrace object associated with this interaction.
     If the input method discards the event, it returns a NULL value.
 
     The \a traceCaptureDeviceInfo provides information about the source device and the \a traceScreenInfo
     provides information about the screen context.
 
-    By definition, the Trace object remains valid until the traceEnd() method is called.
+    By definition, the QVirtualKeyboardTrace object remains valid until the traceEnd() method is called.
 
     The trace interaction is ended by calling the traceEnd() method.
 */
-Trace *InputEngine::traceBegin(
+QVirtualKeyboardTrace *QVirtualKeyboardInputEngine::traceBegin(
         int traceId, PatternRecognitionMode patternRecognitionMode,
         const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
 {
-    Q_D(InputEngine);
-    VIRTUALKEYBOARD_DEBUG() << "InputEngine::traceBegin():"
+    Q_D(QVirtualKeyboardInputEngine);
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::traceBegin():"
                             << "traceId:" << traceId
                             << "patternRecognitionMode:" << patternRecognitionMode
                             << "traceCaptureDeviceInfo:" << traceCaptureDeviceInfo
@@ -520,7 +520,7 @@ Trace *InputEngine::traceBegin(
         return nullptr;
     if (!d->inputMethod->patternRecognitionModes().contains(patternRecognitionMode))
         return nullptr;
-    Trace *trace = d->inputMethod->traceBegin(traceId, patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
+    QVirtualKeyboardTrace *trace = d->inputMethod->traceBegin(traceId, patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
     if (trace)
         trace->setTraceId(traceId);
     return trace;
@@ -544,10 +544,10 @@ Trace *InputEngine::traceBegin(
     The function returns true if the trace interaction was accepted (i.e. the touch
     events should not be used for anything else).
 */
-bool InputEngine::traceEnd(Trace *trace)
+bool QVirtualKeyboardInputEngine::traceEnd(QVirtualKeyboardTrace *trace)
 {
-    Q_D(InputEngine);
-    VIRTUALKEYBOARD_DEBUG() << "InputEngine::traceEnd():" << trace;
+    Q_D(QVirtualKeyboardInputEngine);
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::traceEnd():" << trace;
     Q_ASSERT(trace);
     if (!d->inputMethod)
         return false;
@@ -563,10 +563,10 @@ bool InputEngine::traceEnd(Trace *trace)
 
     The function returns \c true if the word was successfully reselected.
 */
-bool InputEngine::reselect(int cursorPosition, const ReselectFlags &reselectFlags)
+bool QVirtualKeyboardInputEngine::reselect(int cursorPosition, const ReselectFlags &reselectFlags)
 {
-    Q_D(InputEngine);
-    VIRTUALKEYBOARD_DEBUG() << "InputEngine::reselect():" << cursorPosition << reselectFlags;
+    Q_D(QVirtualKeyboardInputEngine);
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::reselect():" << cursorPosition << reselectFlags;
     if (!d->inputMethod || !wordCandidateListVisibleHint())
         return false;
     return d->inputMethod->reselect(cursorPosition, reselectFlags);
@@ -576,9 +576,9 @@ bool InputEngine::reselect(int cursorPosition, const ReselectFlags &reselectFlag
     \internal
     This method is called when the current preedit text is clicked.
 */
-bool InputEngine::clickPreeditText(int cursorPosition)
+bool QVirtualKeyboardInputEngine::clickPreeditText(int cursorPosition)
 {
-    Q_D(InputEngine);
+    Q_D(QVirtualKeyboardInputEngine);
     if (!d->inputMethod)
         return false;
     return d->inputMethod->clickPreeditText(cursorPosition);
@@ -588,9 +588,9 @@ bool InputEngine::clickPreeditText(int cursorPosition)
     \internal
     Resets the input method.
 */
-void InputEngine::reset()
+void QVirtualKeyboardInputEngine::reset()
 {
-    Q_D(InputEngine);
+    Q_D(QVirtualKeyboardInputEngine);
     if (d->inputMethod) {
         RecursiveMethodGuard guard(d->recursiveMethodLock);
         if (!guard.locked()) {
@@ -607,9 +607,9 @@ void InputEngine::reset()
     Updates the input method's state. This method is called whenever the input
     context is changed.
 */
-void InputEngine::update()
+void QVirtualKeyboardInputEngine::update()
 {
-    Q_D(InputEngine);
+    Q_D(QVirtualKeyboardInputEngine);
     if (d->inputMethod) {
         RecursiveMethodGuard guard(d->recursiveMethodLock);
         if (!guard.locked()) {
@@ -622,9 +622,9 @@ void InputEngine::update()
     \internal
     Updates the text case for the input method.
 */
-void InputEngine::shiftChanged()
+void QVirtualKeyboardInputEngine::shiftChanged()
 {
-    Q_D(InputEngine);
+    Q_D(QVirtualKeyboardInputEngine);
     TextCase newCase = d->inputContext->priv()->shiftHandler()->shift() ? Upper : Lower;
     if (d->textCase != newCase) {
         d->textCase = newCase;
@@ -637,33 +637,33 @@ void InputEngine::shiftChanged()
 /*!
     \internal
 */
-void InputEngine::updateSelectionListModels()
+void QVirtualKeyboardInputEngine::updateSelectionListModels()
 {
-    Q_D(InputEngine);
-    QList<SelectionListModel::Type> inactiveSelectionLists = d->selectionListModels.keys();
+    Q_D(QVirtualKeyboardInputEngine);
+    QList<QVirtualKeyboardSelectionListModel::Type> inactiveSelectionLists = d->selectionListModels.keys();
     if (d->inputMethod) {
         // Allocate selection lists for the input method
-        const QList<SelectionListModel::Type> activeSelectionLists = d->inputMethod->selectionLists();
-        for (const SelectionListModel::Type &selectionListType : activeSelectionLists) {
+        const QList<QVirtualKeyboardSelectionListModel::Type> activeSelectionLists = d->inputMethod->selectionLists();
+        for (const QVirtualKeyboardSelectionListModel::Type &selectionListType : activeSelectionLists) {
             auto it = d->selectionListModels.find(selectionListType);
             if (it == d->selectionListModels.end()) {
-                it = d->selectionListModels.insert(selectionListType, new SelectionListModel(this));
-                if (selectionListType == SelectionListModel::WordCandidateList)
+                it = d->selectionListModels.insert(selectionListType, new QVirtualKeyboardSelectionListModel(this));
+                if (selectionListType == QVirtualKeyboardSelectionListModel::WordCandidateList)
                     emit wordCandidateListModelChanged();
             }
             it.value()->setDataSource(d->inputMethod, selectionListType);
-            if (selectionListType == SelectionListModel::WordCandidateList)
+            if (selectionListType == QVirtualKeyboardSelectionListModel::WordCandidateList)
                 emit wordCandidateListVisibleHintChanged();
             inactiveSelectionLists.removeAll(selectionListType);
         }
     }
 
     // Deallocate inactive selection lists
-    for (const SelectionListModel::Type &selectionListType : qAsConst(inactiveSelectionLists)) {
+    for (const QVirtualKeyboardSelectionListModel::Type &selectionListType : qAsConst(inactiveSelectionLists)) {
         const auto it = d->selectionListModels.constFind(selectionListType);
         if (it != d->selectionListModels.cend()) {
             it.value()->setDataSource(nullptr, selectionListType);
-            if (selectionListType == SelectionListModel::WordCandidateList)
+            if (selectionListType == QVirtualKeyboardSelectionListModel::WordCandidateList)
                 emit wordCandidateListVisibleHintChanged();
         }
     }
@@ -672,9 +672,9 @@ void InputEngine::updateSelectionListModels()
 /*!
     \internal
 */
-void InputEngine::updateInputModes()
+void QVirtualKeyboardInputEngine::updateInputModes()
 {
-    Q_D(InputEngine);
+    Q_D(QVirtualKeyboardInputEngine);
     QList<int> newInputModes;
     if (d->inputMethod) {
         QList<InputMode> tmpList(d->inputMethod->inputModes(d->inputContext->locale()));
@@ -695,9 +695,9 @@ void InputEngine::updateInputModes()
 /*!
     \internal
 */
-void InputEngine::timerEvent(QTimerEvent *timerEvent)
+void QVirtualKeyboardInputEngine::timerEvent(QTimerEvent *timerEvent)
 {
-    Q_D(InputEngine);
+    Q_D(QVirtualKeyboardInputEngine);
     if (timerEvent->timerId() == d->repeatTimer) {
         d->repeatTimer = 0;
         d->virtualKeyClick(d->activeKey, d->activeKeyText, d->activeKeyModifiers, true);
@@ -713,7 +713,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \property QtVirtualKeyboard::InputEngine::activeKey
+    \property QVirtualKeyboardInputEngine::activeKey
     \brief the active key.
 
     Currently pressed key.
@@ -725,7 +725,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
     Previously pressed key.
 */
 /*!
-    \property QtVirtualKeyboard::InputEngine::previousKey
+    \property QVirtualKeyboardInputEngine::previousKey
     \brief the previous active key.
 
     Previously pressed key.
@@ -739,7 +739,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \property QtVirtualKeyboard::InputEngine::inputMethod
+    \property QVirtualKeyboardInputEngine::inputMethod
     \brief the active input method.
 
     Use this property to set active the input method, or to monitor when the
@@ -754,7 +754,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \property QtVirtualKeyboard::InputEngine::inputModes
+    \property QVirtualKeyboardInputEngine::inputModes
     \brief the available input modes for active input method.
 
     The list of available input modes is dependent on the input method and
@@ -792,7 +792,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \property QtVirtualKeyboard::InputEngine::inputMode
+    \property QVirtualKeyboardInputEngine::inputMode
     \brief the current input mode.
 
     Use this property to get or set the current input mode. The
@@ -801,14 +801,14 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \qmlproperty SelectionListModel InputEngine::wordCandidateListModel
+    \qmlproperty QVirtualKeyboardSelectionListModel InputEngine::wordCandidateListModel
 
     Use this property to access the list model for the word candidate
     list.
 */
 
 /*!
-    \property QtVirtualKeyboard::InputEngine::wordCandidateListModel
+    \property QVirtualKeyboardInputEngine::wordCandidateListModel
     \brief list model for the word candidate list.
 
     Use this property to access the list model for the word candidate
@@ -823,7 +823,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \property QtVirtualKeyboard::InputEngine::wordCandidateListVisibleHint
+    \property QVirtualKeyboardInputEngine::wordCandidateListVisibleHint
     \brief visible hint for the word candidate list.
 
     Use this property to check if the word candidate list should be visible
@@ -831,7 +831,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \enum QtVirtualKeyboard::InputEngine::InputMode
+    \enum QVirtualKeyboardInputEngine::InputMode
 
     This enum specifies the input mode for the input method.
 
@@ -866,7 +866,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \enum QtVirtualKeyboard::InputEngine::TextCase
+    \enum QVirtualKeyboardInputEngine::TextCase
 
     This enum specifies the text case for the input method.
 
@@ -877,7 +877,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \enum QtVirtualKeyboard::InputEngine::PatternRecognitionMode
+    \enum QVirtualKeyboardInputEngine::PatternRecognitionMode
 
     This enum specifies the input mode for the input method.
 
@@ -888,7 +888,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \enum QtVirtualKeyboard::InputEngine::ReselectFlag
+    \enum QVirtualKeyboardInputEngine::ReselectFlag
 
     This enum specifies the rules for word reselection.
 
@@ -909,7 +909,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \fn void QtVirtualKeyboard::InputEngine::virtualKeyClicked(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool isAutoRepeat)
+    \fn void QVirtualKeyboardInputEngine::virtualKeyClicked(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool isAutoRepeat)
 
     Indicates that the virtual \a key was clicked with the given \a text and
     \a modifiers. The \a isAutoRepeat indicates if the event is automatically
@@ -925,7 +925,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \property QtVirtualKeyboard::InputEngine::patternRecognitionModes
+    \property QVirtualKeyboardInputEngine::patternRecognitionModes
     \since QtQuick.VirtualKeyboard 2.0
     \brief the list of available pattern recognition modes.
 
@@ -939,7 +939,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \fn void QtVirtualKeyboard::InputEngine::activeKeyChanged(Qt::Key key)
+    \fn void QVirtualKeyboardInputEngine::activeKeyChanged(Qt::Key key)
 
     Indicates that the active \a key has changed.
 */
@@ -951,7 +951,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \fn void QtVirtualKeyboard::InputEngine::previousKeyChanged(Qt::Key key)
+    \fn void QVirtualKeyboardInputEngine::previousKeyChanged(Qt::Key key)
 
     Indicates that the previous \a key has changed.
 */
@@ -963,7 +963,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \fn void QtVirtualKeyboard::InputEngine::inputMethodChanged()
+    \fn void QVirtualKeyboardInputEngine::inputMethodChanged()
 
     Indicates that the input method has changed.
 */
@@ -973,30 +973,30 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 
     Emitted when the input method needs to be reset.
 
-    \note This signal is automatically connected to AbstractInputMethod::reset()
+    \note This signal is automatically connected to QVirtualKeyboardAbstractInputMethod::reset()
     and InputMethod::reset() when the input method is activated.
 */
 
 /*!
-    \fn void QtVirtualKeyboard::InputEngine::inputMethodReset()
+    \fn void QVirtualKeyboardInputEngine::inputMethodReset()
 
     Emitted when the input method needs to be reset.
 
-    \note This signal is automatically connected to AbstractInputMethod::reset()
+    \note This signal is automatically connected to QVirtualKeyboardAbstractInputMethod::reset()
     and InputMethod::reset() when the input method is activated.
 */
 
 /*!
     \qmlsignal void InputEngine::inputMethodUpdate()
 
-    \note This signal is automatically connected to AbstractInputMethod::update()
+    \note This signal is automatically connected to QVirtualKeyboardAbstractInputMethod::update()
     and InputMethod::update() when the input method is activated.
 */
 
 /*!
-    \fn void QtVirtualKeyboard::InputEngine::inputMethodUpdate()
+    \fn void QVirtualKeyboardInputEngine::inputMethodUpdate()
 
-    \note This signal is automatically connected to AbstractInputMethod::update()
+    \note This signal is automatically connected to QVirtualKeyboardAbstractInputMethod::update()
     and InputMethod::update() when the input method is activated.
 */
 
@@ -1007,7 +1007,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \fn void QtVirtualKeyboard::InputEngine::inputModesChanged()
+    \fn void QVirtualKeyboardInputEngine::inputModesChanged()
 
     Indicates that the available input modes have changed.
 */
@@ -1019,7 +1019,7 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \fn void QtVirtualKeyboard::InputEngine::inputModeChanged()
+    \fn void QVirtualKeyboardInputEngine::inputModeChanged()
 
     Indicates that the input mode has changed.
 */
@@ -1039,11 +1039,10 @@ void InputEngine::timerEvent(QTimerEvent *timerEvent)
 */
 
 /*!
-    \fn void QtVirtualKeyboard::InputEngine::patternRecognitionModesChanged()
+    \fn void QVirtualKeyboardInputEngine::patternRecognitionModesChanged()
     \since QtQuick.VirtualKeyboard 2.0
 
     Indicates that the available pattern recognition modes have changed.
 */
 
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE

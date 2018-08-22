@@ -38,17 +38,18 @@
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
+
 namespace QtVirtualKeyboard {
-
 class PlatformInputContext;
-class InputEngine;
-class InputContextPrivate;
+}
+class QVirtualKeyboardInputEngine;
+class QVirtualKeyboardInputContextPrivate;
 
-class QVIRTUALKEYBOARD_EXPORT InputContext : public QObject
+class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContext : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY(InputContext)
-    Q_DECLARE_PRIVATE(InputContext)
+    Q_DISABLE_COPY(QVirtualKeyboardInputContext)
+    Q_DECLARE_PRIVATE(QVirtualKeyboardInputContext)
     Q_PROPERTY(bool shift READ shift NOTIFY shiftChanged)
     Q_PROPERTY(bool capsLock READ capsLock NOTIFY capsLockChanged)
     Q_PROPERTY(bool uppercase READ uppercase NOTIFY uppercaseChanged)
@@ -62,15 +63,15 @@ class QVIRTUALKEYBOARD_EXPORT InputContext : public QObject
     Q_PROPERTY(QRectF cursorRectangle READ cursorRectangle NOTIFY cursorRectangleChanged)
     Q_PROPERTY(bool animating READ animating WRITE setAnimating NOTIFY animatingChanged)
     Q_PROPERTY(QString locale READ locale NOTIFY localeChanged)
-    Q_PROPERTY(InputEngine *inputEngine READ inputEngine CONSTANT)
+    Q_PROPERTY(QVirtualKeyboardInputEngine *inputEngine READ inputEngine CONSTANT)
     Q_PROPERTY(bool selectionControlVisible READ selectionControlVisible NOTIFY selectionControlVisibleChanged)
     Q_PROPERTY(bool anchorRectIntersectsClipRect READ anchorRectIntersectsClipRect NOTIFY anchorRectIntersectsClipRectChanged)
     Q_PROPERTY(bool cursorRectIntersectsClipRect READ cursorRectIntersectsClipRect NOTIFY cursorRectIntersectsClipRectChanged)
-    Q_PROPERTY(InputContextPrivate *priv READ priv CONSTANT)
+    Q_PROPERTY(QVirtualKeyboardInputContextPrivate *priv READ priv CONSTANT)
 
 public:
-    explicit InputContext(PlatformInputContext *parent = nullptr);
-    ~InputContext();
+    explicit QVirtualKeyboardInputContext(QtVirtualKeyboard::PlatformInputContext *parent = nullptr);
+    ~QVirtualKeyboardInputContext();
 
     bool shift() const;
     bool capsLock() const;
@@ -88,11 +89,11 @@ public:
     bool animating() const;
     void setAnimating(bool animating);
     QString locale() const;
-    InputEngine *inputEngine() const;
+    QVirtualKeyboardInputEngine *inputEngine() const;
     bool selectionControlVisible() const;
     bool anchorRectIntersectsClipRect() const;
     bool cursorRectIntersectsClipRect() const;
-    InputContextPrivate *priv() const;
+    QVirtualKeyboardInputContextPrivate *priv() const;
 
     Q_INVOKABLE void sendKeyClick(int key, const QString &text, int modifiers = 0);
     Q_INVOKABLE void commit();
@@ -121,12 +122,11 @@ Q_SIGNALS:
     void cursorRectIntersectsClipRectChanged();
 
 private:
-    friend class InputContextPrivate;
+    friend class QVirtualKeyboardInputContextPrivate;
 
-    QScopedPointer<InputContextPrivate> d_ptr;
+    QScopedPointer<QVirtualKeyboardInputContextPrivate> d_ptr;
 };
 
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE
 
 #endif

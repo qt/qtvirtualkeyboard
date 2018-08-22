@@ -31,12 +31,11 @@
 #include <QtCore/private/qobject_p.h>
 
 QT_BEGIN_NAMESPACE
-namespace QtVirtualKeyboard {
 
-class TracePrivate : public QObjectPrivate
+class QVirtualKeyboardTracePrivate : public QObjectPrivate
 {
 public:
-    TracePrivate() :
+    QVirtualKeyboardTracePrivate() :
         QObjectPrivate(),
         traceId(0),
         final(false),
@@ -53,7 +52,7 @@ public:
 };
 
 /*!
-    \class QtVirtualKeyboard::Trace
+    \class QVirtualKeyboardTrace
     \inmodule QtVirtualKeyboard
     \since QtQuick.VirtualKeyboard 2.0
     \brief Trace is a data model for touch input data.
@@ -94,7 +93,7 @@ public:
     each point:
 
     \code
-        Trace *trace = new Trace(this);
+        QVirtualKeyboardTrace *trace = new QVirtualKeyboardTrace(this);
         trace->setChannels(QStringList() << "t");
     \endcode
 
@@ -104,7 +103,7 @@ public:
         QVariantList timeData = trace->channelData("t");
     \endcode
 
-    Trace objects are owned by their creator, which is the input method in
+    QVirtualKeyboardTrace objects are owned by their creator, which is the input method in
     normal case. This means the objects are constructed in the
     \l {InputMethod::traceBegin()}{InputMethod.traceBegin()} (QML) method.
 
@@ -114,7 +113,7 @@ public:
 
 /*!
     \qmltype Trace
-    \instantiates QtVirtualKeyboard::Trace
+    \instantiates QVirtualKeyboardTrace
     \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \since QtQuick.VirtualKeyboard 2.0
@@ -156,7 +155,7 @@ public:
     each point:
 
     \code
-        Trace *trace = new Trace(this);
+        QVirtualKeyboardTrace *trace = new QVirtualKeyboardTrace(this);
         trace->setChannels(QStringList() << "t");
     \endcode
 
@@ -175,40 +174,40 @@ public:
 */
 
 /*! \internal */
-Trace::Trace(QObject *parent) :
-    QObject(*new TracePrivate(), parent)
+QVirtualKeyboardTrace::QVirtualKeyboardTrace(QObject *parent) :
+    QObject(*new QVirtualKeyboardTracePrivate(), parent)
 {
 }
 
 /*! \internal */
-Trace::~Trace()
+QVirtualKeyboardTrace::~QVirtualKeyboardTrace()
 {
 }
 
-int Trace::traceId() const
+int QVirtualKeyboardTrace::traceId() const
 {
-    Q_D(const Trace);
+    Q_D(const QVirtualKeyboardTrace);
     return d->traceId;
 }
 
-void Trace::setTraceId(int id)
+void QVirtualKeyboardTrace::setTraceId(int id)
 {
-    Q_D(Trace);
+    Q_D(QVirtualKeyboardTrace);
     if (d->traceId != id) {
         d->traceId = id;
         emit traceIdChanged(id);
     }
 }
 
-QStringList Trace::channels() const
+QStringList QVirtualKeyboardTrace::channels() const
 {
-    Q_D(const Trace);
+    Q_D(const QVirtualKeyboardTrace);
     return d->channels.keys();
 }
 
-void Trace::setChannels(const QStringList &channels)
+void QVirtualKeyboardTrace::setChannels(const QStringList &channels)
 {
-    Q_D(Trace);
+    Q_D(QVirtualKeyboardTrace);
     Q_ASSERT(d->points.isEmpty());
     if (d->points.isEmpty()) {
         d->channels.clear();
@@ -220,9 +219,9 @@ void Trace::setChannels(const QStringList &channels)
     }
 }
 
-int Trace::length() const
+int QVirtualKeyboardTrace::length() const
 {
-    Q_D(const Trace);
+    Q_D(const QVirtualKeyboardTrace);
     return d->points.size();
 }
 
@@ -248,9 +247,9 @@ int Trace::length() const
     The returned list contains QPointF types.
 */
 
-QVariantList Trace::points(int pos, int count) const
+QVariantList QVirtualKeyboardTrace::points(int pos, int count) const
 {
-    Q_D(const Trace);
+    Q_D(const QVirtualKeyboardTrace);
     return d->points.mid(pos, count);
 }
 
@@ -265,7 +264,7 @@ QVariantList Trace::points(int pos, int count) const
     data with the point using the setChannelData() function.
 */
 
-/*! Adds a \a point to the Trace.
+/*! Adds a \a point to the QVirtualKeyboardTrace.
 
     The method returns index of the point added, or -1 if
     the points cannot be added (i.e. the isFinal is true).
@@ -274,9 +273,9 @@ QVariantList Trace::points(int pos, int count) const
     data with the point using the setChannelData() method.
 */
 
-int Trace::addPoint(const QPointF &point)
+int QVirtualKeyboardTrace::addPoint(const QPointF &point)
 {
-    Q_D(Trace);
+    Q_D(QVirtualKeyboardTrace);
     int index;
     if (!d->final) {
         index = d->points.size();
@@ -304,9 +303,9 @@ int Trace::addPoint(const QPointF &point)
     arbitrary index, i.e., it must be added in synchronously with the point data.
 */
 
-void Trace::setChannelData(const QString &channel, int index, const QVariant &data)
+void QVirtualKeyboardTrace::setChannelData(const QString &channel, int index, const QVariant &data)
 {
-    Q_D(Trace);
+    Q_D(QVirtualKeyboardTrace);
     if (!d->final && (index + 1) == d->points.size() && d->channels.contains(channel)) {
         QVariantList &channelData = d->channels[channel];
         while (index > channelData.size())
@@ -334,51 +333,51 @@ void Trace::setChannelData(const QString &channel, int index, const QVariant &da
     returned.
 */
 
-QVariantList Trace::channelData(const QString &channel, int pos, int count) const
+QVariantList QVirtualKeyboardTrace::channelData(const QString &channel, int pos, int count) const
 {
-    Q_D(const Trace);
+    Q_D(const QVirtualKeyboardTrace);
     return d->channels.value(channel).mid(pos, count);
 }
 
-bool Trace::isFinal() const
+bool QVirtualKeyboardTrace::isFinal() const
 {
-    Q_D(const Trace);
+    Q_D(const QVirtualKeyboardTrace);
     return d->final;
 }
 
-void Trace::setFinal(bool final)
+void QVirtualKeyboardTrace::setFinal(bool final)
 {
-    Q_D(Trace);
+    Q_D(QVirtualKeyboardTrace);
     if (d->final != final) {
         d->final = final;
         emit finalChanged(final);
     }
 }
 
-bool Trace::isCanceled() const
+bool QVirtualKeyboardTrace::isCanceled() const
 {
-    Q_D(const Trace);
+    Q_D(const QVirtualKeyboardTrace);
     return d->canceled;
 }
 
-void Trace::setCanceled(bool canceled)
+void QVirtualKeyboardTrace::setCanceled(bool canceled)
 {
-    Q_D(Trace);
+    Q_D(QVirtualKeyboardTrace);
     if (d->canceled != canceled) {
         d->canceled = canceled;
         emit canceledChanged(canceled);
     }
 }
 
-qreal Trace::opacity() const
+qreal QVirtualKeyboardTrace::opacity() const
 {
-    Q_D(const Trace);
+    Q_D(const QVirtualKeyboardTrace);
     return d->opacity;
 }
 
-void Trace::setOpacity(qreal opacity)
+void QVirtualKeyboardTrace::setOpacity(qreal opacity)
 {
-    Q_D(Trace);
+    Q_D(QVirtualKeyboardTrace);
     if (d->opacity != opacity) {
         d->opacity = opacity;
         emit opacityChanged(opacity);
@@ -390,8 +389,8 @@ void Trace::setOpacity(qreal opacity)
     Unique id of this Trace.
 */
 
-/*! \property QtVirtualKeyboard::Trace::traceId
-    \brief unique id of this Trace.
+/*! \property QVirtualKeyboardTrace::traceId
+    \brief unique id of this QVirtualKeyboardTrace.
 */
 
 /*! \qmlproperty list<strings> Trace::channels
@@ -401,20 +400,20 @@ void Trace::setOpacity(qreal opacity)
     is added.
 */
 
-/*! \property QtVirtualKeyboard::Trace::channels
-    \brief list of data channels in the Trace.
+/*! \property QVirtualKeyboardTrace::channels
+    \brief list of data channels in the QQTrace.
 
     This property must be initialized before the data
     is added.
 */
 
-/*! \qmlproperty int Trace::length
+/*! \qmlproperty int QVirtualKeyboardTrace::length
 
-    The number of points in the Trace.
+    The number of points in the QVirtualKeyboardTrace.
 */
 
-/*! \property QtVirtualKeyboard::Trace::length
-    \brief the number of of points in the Trace.
+/*! \property QVirtualKeyboardTrace::length
+    \brief the number of of points in the QVirtualKeyboardTrace.
 */
 
 /*! \qmlproperty bool Trace::isFinal
@@ -423,8 +422,8 @@ void Trace::setOpacity(qreal opacity)
     If the value is true, no more data is accepted.
 */
 
-/*! \property QtVirtualKeyboard::Trace::isFinal
-    \brief defines whether the Trace can accept more data.
+/*! \property QVirtualKeyboardTrace::isFinal
+    \brief defines whether the QVirtualKeyboardTrace can accept more data.
     If the value is true, no more data is accepted.
 */
 
@@ -435,8 +434,8 @@ void Trace::setOpacity(qreal opacity)
     whose isCanceled property set to true.
 */
 
-/*! \property QtVirtualKeyboard::Trace::isCanceled
-    \brief defines whether the Trace is canceled.
+/*! \property QVirtualKeyboardTrace::isCanceled
+    \brief defines whether the QVirtualKeyboardTrace is canceled.
 
     The input data should not be processed from the Traces
     whose isCanceled property set to true.
@@ -454,9 +453,9 @@ void Trace::setOpacity(qreal opacity)
     ones are added.
 */
 
-/*! \property QtVirtualKeyboard::Trace::opacity
+/*! \property QVirtualKeyboardTrace::opacity
 
-    This property defines how opaque the Trace is.
+    This property defines how opaque the QVirtualKeyboardTrace is.
 
     A lower value results in a more transparent trace: \c 0.0 is fully
     transparent, and \c 1.0 is fully opaque.
@@ -465,5 +464,4 @@ void Trace::setOpacity(qreal opacity)
     ones are added.
 */
 
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE

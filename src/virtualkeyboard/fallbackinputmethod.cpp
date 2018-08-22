@@ -39,24 +39,24 @@ namespace QtVirtualKeyboard {
 */
 
 FallbackInputMethod::FallbackInputMethod(QObject *parent) :
-    AbstractInputMethod(parent)
+    QVirtualKeyboardAbstractInputMethod(parent)
 {
 }
 
-QList<InputEngine::InputMode> FallbackInputMethod::inputModes(const QString &locale)
+QList<QVirtualKeyboardInputEngine::InputMode> FallbackInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<InputEngine::InputMode>();
+    return QList<QVirtualKeyboardInputEngine::InputMode>();
 }
 
-bool FallbackInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
+bool FallbackInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_UNUSED(inputMode)
     return true;
 }
 
-bool FallbackInputMethod::setTextCase(InputEngine::TextCase textCase)
+bool FallbackInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 {
     Q_UNUSED(textCase)
     return true;

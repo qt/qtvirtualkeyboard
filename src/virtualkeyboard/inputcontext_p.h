@@ -48,28 +48,28 @@
 #include <QtVirtualKeyboard/private/shadowinputcontext_p.h>
 
 QT_BEGIN_NAMESPACE
+
 namespace QtVirtualKeyboard {
-
 class PlatformInputContext;
-class ShadowInputContext;
-class InputEngine;
 class ShiftHandler;
-class InputContextPrivate;
+}
+class QVirtualKeyboardInputEngine;
+class QVirtualKeyboardInputContextPrivate;
 
-class QVIRTUALKEYBOARD_EXPORT InputContextPrivate : public QObject
+class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContextPrivate : public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PUBLIC(InputContext)
+    Q_DECLARE_PUBLIC(QVirtualKeyboardInputContext)
     Q_PROPERTY(bool focus READ focus WRITE setFocus NOTIFY focusChanged)
     Q_PROPERTY(QRectF keyboardRectangle READ keyboardRectangle WRITE setKeyboardRectangle NOTIFY keyboardRectangleChanged)
     Q_PROPERTY(QRectF previewRectangle READ previewRectangle WRITE setPreviewRectangle NOTIFY previewRectangleChanged)
     Q_PROPERTY(bool previewVisible READ previewVisible WRITE setPreviewVisible NOTIFY previewVisibleChanged)
     Q_PROPERTY(QString locale READ locale WRITE setLocale NOTIFY localeChanged)
     Q_PROPERTY(QObject *inputItem READ inputItem NOTIFY inputItemChanged)
-    Q_PROPERTY(ShiftHandler *shiftHandler READ shiftHandler CONSTANT)
-    Q_PROPERTY(ShadowInputContext *shadow READ shadow CONSTANT)
+    Q_PROPERTY(QtVirtualKeyboard::ShiftHandler *shiftHandler READ shiftHandler CONSTANT)
+    Q_PROPERTY(QtVirtualKeyboard::ShadowInputContext *shadow READ shadow CONSTANT)
 
-    explicit InputContextPrivate(InputContext *q_ptr, PlatformInputContext *platformInputContext);
+    explicit QVirtualKeyboardInputContextPrivate(QVirtualKeyboardInputContext *q_ptr, QtVirtualKeyboard::PlatformInputContext *platformInputContext);
     void init();
 
 public:
@@ -82,7 +82,7 @@ public:
     };
     Q_DECLARE_FLAGS(StateFlags, StateFlag)
 
-    ~InputContextPrivate();
+    ~QVirtualKeyboardInputContextPrivate();
 
     bool focus() const;
     void setFocus(bool focus);
@@ -95,8 +95,8 @@ public:
     QString locale() const;
     void setLocale(const QString &locale);
     QObject *inputItem() const;
-    ShiftHandler *shiftHandler() const;
-    ShadowInputContext *shadow() const;
+    QtVirtualKeyboard::ShiftHandler *shiftHandler() const;
+    QtVirtualKeyboard::ShadowInputContext *shadow() const;
 
     // Helper functions
     Q_INVOKABLE bool fileExists(const QUrl &fileUrl);
@@ -132,10 +132,10 @@ private:
     int findAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const;
 
 private:
-    InputContext *q_ptr;
-    PlatformInputContext *platformInputContext;
-    InputEngine *inputEngine;
-    ShiftHandler *_shiftHandler;
+    QVirtualKeyboardInputContext *q_ptr;
+    QtVirtualKeyboard::PlatformInputContext *platformInputContext;
+    QVirtualKeyboardInputEngine *inputEngine;
+    QtVirtualKeyboard::ShiftHandler *_shiftHandler;
     QRectF keyboardRect;
     QRectF previewRect;
     bool _previewVisible;
@@ -160,14 +160,13 @@ private:
     QSet<int> activeNavigationKeys;
 #endif
     QSet<quint32> activeKeys;
-    ShadowInputContext _shadow;
+    QtVirtualKeyboard::ShadowInputContext _shadow;
 
-    friend class PlatformInputContext;
+    friend class QtVirtualKeyboard::PlatformInputContext;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(InputContextPrivate::StateFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS(QVirtualKeyboardInputContextPrivate::StateFlags)
 
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE
 
 #endif // INPUTCONTEXT_P_H

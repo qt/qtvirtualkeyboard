@@ -51,11 +51,14 @@ input methods and keyboard layouts to be loaded at runtime.
 The input framework provides the following main interfaces:
 
 \list
-    \li InputContext: provides contextual information for the virtual keyboard
+    \li QVirtualKeyboardInputContext: provides contextual information for the virtual keyboard
         and other input components. Acts as an interface to the underlying
         text input component.
-    \li InputEngine: exposes an API to integrate user input events (key
+    \li QVirtualKeyboardInputEngine: exposes an API to integrate user input events (key
         presses, etc.) and acts as a host for input methods.
+    \li QVirtualKeyboardAbstractInputMethod: a base type for C++-based input methods. The input method
+        usually handles key events, but can also handle mouse and touch input
+        events.
     \li InputMethod: a base type for QML-based input methods. The input method
         usually handles key events, but can also handle mouse and touch input
         events.
@@ -123,21 +126,21 @@ After the locale selection is done, the keyboard updates the input locale and
 input direction to match the current layout. The application can receive this
 information through the QInputMethod interface.
 
-Internally, the current input locale is also updated to the InputEngine
-and the current InputMethod instances.
+Internally, the current input locale is also updated to the QVirtualKeyboardInputEngine
+and the current input method instances.
 
 \section1 Input Engine
 
 The input engine object is owned by InputContext. Like the InputContext, there is
-only one instance of the InputEngine. The input engine contains API functions which
+only one instance of the QVirtualKeyboardInputEngine. The input engine contains API functions which
 the keyboard uses to map user interactions, such as key press and release events,
 to the input method.
 
 For example, virtual keyboard key events are mapped through the following methods:
 
 \list
-    \li InputEngine::virtualKeyPress
-    \li InputEngine::virtualKeyRelease
+    \li QVirtualKeyboardInputEngine::virtualKeyPress
+    \li QVirtualKeyboardInputEngine::virtualKeyRelease
 \endlist
 
 The above-mentioned methods are intended for the integration of the virtual
@@ -147,13 +150,13 @@ consequence of the fact that the actual action is performed only when the key
 is released.
 
 If the key press is interrupted before the key release event, the keyboard invokes
-the InputEngine::virtualKeyCancel method.
+the QVirtualKeyboardInputEngine::virtualKeyCancel method.
 
 \section2 Input Method
 
 The input method is a concrete implementation of the keypress handler. It's main
 function is to handle keypress events and maintain state information for the
-user input. It interacts with the text editor through \l InputContext via
+user input. It interacts with the text editor through \l QVirtualKeyboardInputContext via
 pre-edit text or key events.
 
 The input method instance can be created in various ways, depending on the use
@@ -193,7 +196,7 @@ Qt Virtual Keyboard is similar to the standard way of creating a Qt plugin:
         QT += virtualkeyboard
         \endcode
 
-        This allows the plugin to access \l InputContext and other interfaces.
+        This allows the plugin to access \l QVirtualKeyboardInputContext and other interfaces.
     \li \b {Implement a subclass of QVirtualKeyboardExtensionPlugin.}
 
         The plugin provides the virtual keyboard with the necessary metadata,
@@ -222,7 +225,7 @@ The plugin can register an input method that other keyboard layouts can use by
 default (such as \c DefaultInputMethod) or an input method that is used privately
 in the plugin.
 
-The input method must implement \l {QtVirtualKeyboard::AbstractInputMethod} {AbstractInputMethod} (C++) or InputMethod (QML)
+The input method must implement \l {QVirtualKeyboardAbstractInputMethod} (C++) or InputMethod (QML)
 interface and the plugin must register it as a QML type in
 {QVirtualKeyboardExtensionPlugin::registerTypes} method.
 
@@ -395,15 +398,6 @@ function selectionListItemSelected(type, index) {
 }
 \endcode
 
-\section1 Integrating Selection Lists into the UI
-
-The input engine provides a list model for each selection list type.
-The model is null while the list is not allocated, allowing the UI
-to hide the list if necessary.
-
-The list model's word candidate list is provided by the
-InputEngine::wordCandidateListModel property.
-
 \section1 Integrating Handwriting Recognition
 
 Since version 2.0 of the virtual keyboard, input methods can consume
@@ -420,9 +414,9 @@ processing.
 
 \section2 Data Model for Handwriting Input
 
-Virtual keyboard collects the handwriting data in a special data model Trace.
+Virtual keyboard collects the handwriting data in a special data model QVirtualKeyboardTrace.
 Each trace represents a collection of data sampled from one touch (e.g.
-a swipe on the screen). There will be as many instances of Trace as there are
+a swipe on the screen). There will be as many instances of QVirtualKeyboardTrace as there are
 touches on the handwriting input area.
 
 By definition, \e trace is a set of data sampled from one touch. In addition to
@@ -432,7 +426,7 @@ in the beginning of a trace event.
 
 The input method does not participate in the actual collection of trace data.
 However, the input method has full control over the input since it can
-either accept or reject a Trace (e.g. if there are too many instances to handle).
+either accept or reject a QVirtualKeyboardTrace (e.g. if there are too many instances to handle).
 This also allows for precise control over how many fingers can be used simultaneously.
 
 The input method can collect as many traces as it sees fit and it can begin
@@ -448,9 +442,9 @@ The trace API consists of the following virtual methods, which the input method
 must implement in order to receive and process trace input data.
 
 \list
-    \li \l { AbstractInputMethod::patternRecognitionModes } { patternRecognitionModes }
-    \li \l { AbstractInputMethod::traceBegin } { traceBegin }
-    \li \l { AbstractInputMethod::traceEnd } { traceEnd }
+    \li \l { QVirtualKeyboardAbstractInputMethod::patternRecognitionModes } { patternRecognitionModes }
+    \li \l { QVirtualKeyboardAbstractInputMethod::traceBegin } { traceBegin }
+    \li \l { QVirtualKeyboardAbstractInputMethod::traceEnd } { traceEnd }
 \endlist
 
 By implementing these methods, the input method can receive and process data
@@ -458,7 +452,7 @@ from a variety of input sources (e.g. keyboard layout or full screen).
 
 The patternRecognitionModes method returns a list of pattern recognition modes,
 which are supported by the input method. A pattern recognition mode, such as
-\l { InputEngine::HandwritingRecoginition } { HandwritingRecoginition },
+\l { QVirtualKeyboardInputEngine::HandwritingRecoginition } { HandwritingRecoginition },
 defines the method by which the input method processes the data.
 
 The trace interaction is started when an input source detects a new contact point, and

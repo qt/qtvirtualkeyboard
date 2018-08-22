@@ -172,13 +172,13 @@ void DesktopInputPanel::repositionView(const QRect &rect)
     Q_D(DesktopInputPanel);
     VIRTUALKEYBOARD_DEBUG() << "DesktopInputPanel::repositionView():" << rect;
     if (d->view && d->view->geometry() != rect) {
-        InputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->inputContext();
+        QVirtualKeyboardInputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->inputContext();
         if (inputContext) {
             inputContext->setAnimating(true);
             if (!d->previewBindingActive) {
-                InputContextPrivate *inputContextPrivate = inputContext->priv();
-                QObject::connect(inputContextPrivate, &InputContextPrivate::previewRectangleChanged, this, &DesktopInputPanel::previewRectangleChanged);
-                QObject::connect(inputContextPrivate, &InputContextPrivate::previewVisibleChanged, this, &DesktopInputPanel::previewVisibleChanged);
+                QVirtualKeyboardInputContextPrivate *inputContextPrivate = inputContext->priv();
+                QObject::connect(inputContextPrivate, &QVirtualKeyboardInputContextPrivate::previewRectangleChanged, this, &DesktopInputPanel::previewRectangleChanged);
+                QObject::connect(inputContextPrivate, &QVirtualKeyboardInputContextPrivate::previewVisibleChanged, this, &DesktopInputPanel::previewVisibleChanged);
                 d->previewBindingActive = true;
             }
         }
@@ -201,7 +201,7 @@ void DesktopInputPanel::focusWindowChanged(QWindow *focusWindow)
 void DesktopInputPanel::focusWindowVisibleChanged(bool visible)
 {
     if (!visible) {
-        InputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->inputContext();
+        QVirtualKeyboardInputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->inputContext();
         if (inputContext)
             inputContext->priv()->hideInputPanel();
     }
@@ -210,7 +210,7 @@ void DesktopInputPanel::focusWindowVisibleChanged(bool visible)
 void DesktopInputPanel::previewRectangleChanged()
 {
     Q_D(DesktopInputPanel);
-    InputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->inputContext();
+    QVirtualKeyboardInputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->inputContext();
     d->previewRect = inputContext->priv()->previewRectangle();
     if (d->previewVisible)
         updateInputRegion();
@@ -219,7 +219,7 @@ void DesktopInputPanel::previewRectangleChanged()
 void DesktopInputPanel::previewVisibleChanged()
 {
     Q_D(DesktopInputPanel);
-    InputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->inputContext();
+    QVirtualKeyboardInputContext *inputContext = qobject_cast<PlatformInputContext *>(parent())->inputContext();
     d->previewVisible = inputContext->priv()->previewVisible();
     if (d->view->isVisible())
         updateInputRegion();

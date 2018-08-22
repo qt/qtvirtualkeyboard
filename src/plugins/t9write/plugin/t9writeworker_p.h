@@ -102,12 +102,12 @@ class T9WriteAddArcTask : public T9WriteTask
 {
     Q_OBJECT
 public:
-    explicit T9WriteAddArcTask(Trace *trace);
+    explicit T9WriteAddArcTask(QVirtualKeyboardTrace *trace);
 
     void run();
 
 private:
-    Trace *trace;
+    QVirtualKeyboardTrace *trace;
 };
 
 class T9WriteRecognitionResult

@@ -49,10 +49,14 @@
 #include <QtVirtualKeyboard/private/desktopinputselectioncontrol_p.h>
 
 QT_BEGIN_NAMESPACE
+
+class QVirtualKeyboardInputContext;
+class QVirtualKeyboardInputContextPrivate;
+
 namespace QtVirtualKeyboard {
 
-class InputContext;
 class AbstractInputPanel;
+
 class QVIRTUALKEYBOARD_EXPORT PlatformInputContext : public QPlatformInputContext
 {
     Q_OBJECT
@@ -82,7 +86,7 @@ public:
     QObject *focusObject();
     virtual void setFocusObject(QObject *object);
 
-    InputContext *inputContext() const;
+    QVirtualKeyboardInputContext *inputContext() const;
 
     virtual bool eventFilter(QObject *object, QEvent *event);
 
@@ -93,16 +97,16 @@ protected:
     void sendEvent(QEvent *event);
     void sendKeyEvent(QKeyEvent *event);
     QVariant inputMethodQuery(Qt::InputMethodQuery query);
-    void setInputContext(InputContext *context);
+    void setInputContext(QVirtualKeyboardInputContext *context);
 
 private slots:
     void keyboardRectangleChanged();
     void updateInputPanelVisible();
 
 private:
-    friend class InputContext;
-    friend class InputContextPrivate;
-    QPointer<InputContext> m_inputContext;
+    friend class ::QVirtualKeyboardInputContext;
+    friend class ::QVirtualKeyboardInputContextPrivate;
+    QPointer<QVirtualKeyboardInputContext> m_inputContext;
     QPointer<AbstractInputPanel> m_inputPanel;
     QPointer<DesktopInputSelectionControl> m_selectionControl;
     QPointer<QObject> m_focusObject;

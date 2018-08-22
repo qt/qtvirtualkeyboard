@@ -55,7 +55,7 @@ class QVIRTUALKEYBOARD_EXPORT GestureRecognizer : public QObject
 public:
     explicit GestureRecognizer(QObject *parent = nullptr);
 
-    virtual QVariantMap recognize(const QList<Trace *> traceList) = 0;
+    virtual QVariantMap recognize(const QList<QVirtualKeyboardTrace *> traceList) = 0;
 };
 
 } // namespace QtVirtualKeyboard

@@ -54,13 +54,13 @@ public:
         capsLock(false),
         resetWhenVisible(false),
         manualShiftLanguageFilter(QSet<QLocale::Language>() << QLocale::Arabic << QLocale::Persian << QLocale::Hindi << QLocale::Korean << QLocale::Thai),
-        manualCapsInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::Cangjie << InputEngine::Zhuyin << InputEngine::Hebrew),
-        noAutoUppercaseInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::FullwidthLatin << InputEngine::Pinyin << InputEngine::Cangjie << InputEngine::Zhuyin << InputEngine::ChineseHandwriting << InputEngine::JapaneseHandwriting << InputEngine::KoreanHandwriting),
-        allCapsInputModeFilter(QSet<InputEngine::InputMode>() << InputEngine::Hiragana << InputEngine::Katakana)
+        manualCapsInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::Cangjie << QVirtualKeyboardInputEngine::Zhuyin << QVirtualKeyboardInputEngine::Hebrew),
+        noAutoUppercaseInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::FullwidthLatin << QVirtualKeyboardInputEngine::Pinyin << QVirtualKeyboardInputEngine::Cangjie << QVirtualKeyboardInputEngine::Zhuyin << QVirtualKeyboardInputEngine::ChineseHandwriting << QVirtualKeyboardInputEngine::JapaneseHandwriting << QVirtualKeyboardInputEngine::KoreanHandwriting),
+        allCapsInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::Hiragana << QVirtualKeyboardInputEngine::Katakana)
     {
     }
 
-    InputContext *inputContext;
+    QVirtualKeyboardInputContext *inputContext;
     QString sentenceEndingCharacters;
     bool autoCapitalizationEnabled;
     bool toggleShiftEnabled;
@@ -71,9 +71,9 @@ public:
     QLocale locale;
     QTime timer;
     const QSet<QLocale::Language> manualShiftLanguageFilter;
-    const QSet<InputEngine::InputMode> manualCapsInputModeFilter;
-    const QSet<InputEngine::InputMode> noAutoUppercaseInputModeFilter;
-    const QSet<InputEngine::InputMode> allCapsInputModeFilter;
+    const QSet<QVirtualKeyboardInputEngine::InputMode> manualCapsInputModeFilter;
+    const QSet<QVirtualKeyboardInputEngine::InputMode> noAutoUppercaseInputModeFilter;
+    const QSet<QVirtualKeyboardInputEngine::InputMode> allCapsInputModeFilter;
 };
 
 /*!
@@ -91,7 +91,7 @@ public:
     \brief Manages the shift state.
 */
 
-ShiftHandler::ShiftHandler(InputContext *parent) :
+ShiftHandler::ShiftHandler(QVirtualKeyboardInputContext *parent) :
     QObject(*new ShiftHandlerPrivate(), parent)
 {
     Q_D(ShiftHandler);
@@ -257,7 +257,7 @@ void ShiftHandler::reset()
     Q_D(ShiftHandler);
     if (d->inputContext->priv()->inputItem()) {
         Qt::InputMethodHints inputMethodHints = d->inputContext->inputMethodHints();
-        InputEngine::InputMode inputMode = d->inputContext->inputEngine()->inputMode();
+        QVirtualKeyboardInputEngine::InputMode inputMode = d->inputContext->inputEngine()->inputMode();
         bool preferUpperCase = (inputMethodHints & (Qt::ImhPreferUppercase | Qt::ImhUppercaseOnly));
         bool autoCapitalizationEnabled = !(d->inputContext->inputMethodHints() & (Qt::ImhNoAutoUppercase |
               Qt::ImhUppercaseOnly | Qt::ImhLowercaseOnly | Qt::ImhEmailCharactersOnly |
