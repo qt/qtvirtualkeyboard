@@ -28,7 +28,7 @@
 ****************************************************************************/
 
 #include <QtHunspellInputMethod/private/hunspellinputmethod_p_p.h>
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #include <hunspell/hunspell.h>
 #include <QStringList>
 #include <QDir>

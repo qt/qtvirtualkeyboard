@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-#ifndef INPUTCONTEXT_H
-#define INPUTCONTEXT_H
+#ifndef QVIRTUALKEYBOARDINPUTCONTEXT_H
+#define QVIRTUALKEYBOARDINPUTCONTEXT_H
 
 #include <QObject>
 #include <QRectF>

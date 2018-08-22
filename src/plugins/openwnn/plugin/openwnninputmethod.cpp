@@ -28,7 +28,7 @@
 ****************************************************************************/
 
 #include "openwnninputmethod_p.h"
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #include <QLoggingCategory>
 #include <openwnnenginejajp.h>
 #include <composingtext.h>

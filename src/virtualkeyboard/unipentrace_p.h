@@ -42,7 +42,7 @@
 //
 
 #include <QObject>
-#include <QtVirtualKeyboard/trace.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardtrace.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE

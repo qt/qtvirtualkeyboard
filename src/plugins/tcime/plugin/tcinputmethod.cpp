@@ -28,8 +28,8 @@
 ****************************************************************************/
 
 #include "tcinputmethod_p.h"
-#include <QtVirtualKeyboard/inputengine.h>
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #if defined(HAVE_TCIME_CANGJIE)
 #include "cangjiedictionary.h"
 #include "cangjietable.h"

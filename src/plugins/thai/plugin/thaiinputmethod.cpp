@@ -28,8 +28,8 @@
 ****************************************************************************/
 
 #include "thaiinputmethod_p.h"
-#include <QtVirtualKeyboard/inputengine.h>
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {

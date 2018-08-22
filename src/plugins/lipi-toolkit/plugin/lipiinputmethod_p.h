@@ -45,7 +45,7 @@
 #include <QtHunspellInputMethod/private/hunspellinputmethod_p.h>
 #define LipiInputMethodBase HunspellInputMethod
 #else
-#include <QtVirtualKeyboard/abstractinputmethod.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
 #define LipiInputMethodBase QVirtualKeyboardAbstractInputMethod
 #endif
 

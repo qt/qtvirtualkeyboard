@@ -32,9 +32,9 @@
 #include "myscriptinputmethod_p.h"
 #include "myscriptinputmethod_p_p.h"
 
-#include <QtVirtualKeyboard/inputengine.h>
-#include <QtVirtualKeyboard/inputcontext.h>
-#include <QtVirtualKeyboard/trace.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardtrace.h>
 
 #include <QLoggingCategory>
 

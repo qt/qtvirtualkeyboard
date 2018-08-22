@@ -34,7 +34,7 @@
 #include <QtHunspellInputMethod/private/hunspellinputmethod_p.h>
 #define ThaiInputMethodBase HunspellInputMethod
 #else
-#include <QtVirtualKeyboard/abstractinputmethod.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
 #define ThaiInputMethodBase QVirtualKeyboardAbstractInputMethod
 #endif
 

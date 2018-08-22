@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-#ifndef INPUTENGINE_H
-#define INPUTENGINE_H
+#ifndef QVIRTUALKEYBOARDINPUTENGINE_H
+#define QVIRTUALKEYBOARDINPUTENGINE_H
 
 #include <QObject>
 #include <QPointer>

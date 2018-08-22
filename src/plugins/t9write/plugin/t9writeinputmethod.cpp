@@ -28,9 +28,9 @@
 ****************************************************************************/
 
 #include "t9writeinputmethod_p.h"
-#include <QtVirtualKeyboard/inputengine.h>
-#include <QtVirtualKeyboard/inputcontext.h>
-#include <QtVirtualKeyboard/trace.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardtrace.h>
 #include "t9writeworker_p.h"
 #include <QLoggingCategory>
 #include <QDirIterator>

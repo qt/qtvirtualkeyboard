@@ -29,7 +29,7 @@
 
 #include "pinyininputmethod_p.h"
 #include "pinyindecoderservice_p.h"
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #include <QLoggingCategory>
 
 QT_BEGIN_NAMESPACE

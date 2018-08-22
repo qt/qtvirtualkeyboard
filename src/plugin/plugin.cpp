@@ -29,17 +29,17 @@
 
 #include "plugin.h"
 #include "extensionloader.h"
-#include <QtVirtualKeyboard/inputcontext.h>
-#include <QtVirtualKeyboard/inputengine.h>
-#include <QtVirtualKeyboard/private/inputcontext_p.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
+#include <QtVirtualKeyboard/private/qvirtualkeyboardinputcontext_p.h>
 #include <QtVirtualKeyboard/private/shifthandler_p.h>
 #include <QtVirtualKeyboard/private/plaininputmethod_p.h>
 #include <QtVirtualKeyboard/private/inputmethod_p.h>
-#include <QtVirtualKeyboard/selectionlistmodel.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardselectionlistmodel.h>
 #include <QtVirtualKeyboard/private/enterkeyaction_p.h>
 #include <QtVirtualKeyboard/private/enterkeyactionattachedtype_p.h>
 #include <QtVirtualKeyboard/private/virtualkeyboardsettings_p.h>
-#include <QtVirtualKeyboard/trace.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardtrace.h>
 #include <QtVirtualKeyboard/private/shadowinputcontext_p.h>
 #include <QLoggingCategory>
 #if defined(QT_STATICPLUGIN)

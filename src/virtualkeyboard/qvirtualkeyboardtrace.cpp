@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-#include <QtVirtualKeyboard/trace.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardtrace.h>
 #include <QtCore/private/qobject_p.h>
 
 QT_BEGIN_NAMESPACE

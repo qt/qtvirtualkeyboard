@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-#ifndef INPUTCONTEXT_P_H
-#define INPUTCONTEXT_P_H
+#ifndef QVIRTUALKEYBOARDINPUTCONTEXT_P_H
+#define QVIRTUALKEYBOARDINPUTCONTEXT_P_H
 
 //
 //  W A R N I N G
@@ -44,7 +44,7 @@
 #include <QObject>
 #include <QRectF>
 #include <QInputMethodEvent>
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #include <QtVirtualKeyboard/private/shadowinputcontext_p.h>
 
 QT_BEGIN_NAMESPACE
@@ -169,4 +169,4 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(QVirtualKeyboardInputContextPrivate::StateFlags)
 
 QT_END_NAMESPACE
 
-#endif // INPUTCONTEXT_P_H
+#endif // QVIRTUALKEYBOARDINPUTCONTEXT_P_H

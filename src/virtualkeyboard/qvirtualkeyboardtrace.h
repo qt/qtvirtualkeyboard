@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-#ifndef TRACE_H
-#define TRACE_H
+#ifndef QVIRTUALKEYBOARDTRACE_H
+#define QVIRTUALKEYBOARDTRACE_H
 
 #include <QObject>
 #include <QVariant>
@@ -87,4 +87,4 @@ Q_SIGNALS:
 
 QT_END_NAMESPACE
 
-#endif // TRACE_H
+#endif // QVIRTUALKEYBOARDTRACE_H

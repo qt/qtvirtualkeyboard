@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-#include <QtVirtualKeyboard/inputcontext.h>
-#include <QtVirtualKeyboard/private/inputcontext_p.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
+#include <QtVirtualKeyboard/private/qvirtualkeyboardinputcontext_p.h>
 #include <QtVirtualKeyboard/private/shifthandler_p.h>
 #include <QtVirtualKeyboard/private/platforminputcontext_p.h>
 #include <QtVirtualKeyboard/private/virtualkeyboarddebug_p.h>

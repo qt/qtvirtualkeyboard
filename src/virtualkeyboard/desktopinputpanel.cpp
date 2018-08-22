@@ -31,8 +31,8 @@
 #include <QtVirtualKeyboard/private/appinputpanel_p_p.h>
 #include <QtVirtualKeyboard/private/inputview_p.h>
 #include <QtVirtualKeyboard/private/platforminputcontext_p.h>
-#include <QtVirtualKeyboard/private/inputcontext_p.h>
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/private/qvirtualkeyboardinputcontext_p.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #include <QGuiApplication>
 #include <QQmlEngine>
 #include <QScreen>

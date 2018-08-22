@@ -28,7 +28,7 @@
 ****************************************************************************/
 
 #include <QtVirtualKeyboard/private/shadowinputcontext_p.h>
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #include <QtVirtualKeyboard/private/virtualkeyboarddebug_p.h>
 
 #include <QtCore/private/qobject_p.h>

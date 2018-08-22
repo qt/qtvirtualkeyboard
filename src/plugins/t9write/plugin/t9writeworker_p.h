@@ -41,7 +41,7 @@
 // We mean it.
 //
 
-#include <QtVirtualKeyboard/trace.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardtrace.h>
 
 #include <QThread>
 #include <QSemaphore>

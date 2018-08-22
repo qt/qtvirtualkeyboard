@@ -27,11 +27,11 @@
 **
 ****************************************************************************/
 
-#ifndef ABSTRACTINPUTMETHOD_H
-#define ABSTRACTINPUTMETHOD_H
+#ifndef QVIRTUALKEYBOARDABSTRACTINPUTMETHOD_H
+#define QVIRTUALKEYBOARDABSTRACTINPUTMETHOD_H
 
-#include <QtVirtualKeyboard/inputengine.h>
-#include <QtVirtualKeyboard/selectionlistmodel.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardselectionlistmodel.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -28,7 +28,7 @@
 ****************************************************************************/
 
 #include <QtVirtualKeyboard/private/inputmethod_p.h>
-#include <QtVirtualKeyboard/trace.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardtrace.h>
 #include <QVariant>
 
 QT_BEGIN_NAMESPACE

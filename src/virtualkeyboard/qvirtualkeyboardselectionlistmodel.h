@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-#ifndef SELECTIONLISTMODEL_H
-#define SELECTIONLISTMODEL_H
+#ifndef QVIRTUALKEYBOARDSELECTIONLISTMODEL_H
+#define QVIRTUALKEYBOARDSELECTIONLISTMODEL_H
 
 #include <QAbstractListModel>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
@@ -101,4 +101,4 @@ Q_DECLARE_METATYPE(QVirtualKeyboardSelectionListModel::Type)
 Q_DECLARE_METATYPE(QVirtualKeyboardSelectionListModel::Role)
 Q_DECLARE_METATYPE(QVirtualKeyboardSelectionListModel::DictionaryType)
 
-#endif // SELECTIONLISTMODEL_H
+#endif // QVIRTUALKEYBOARDSELECTIONLISTMODEL_H

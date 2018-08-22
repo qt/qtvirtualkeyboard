@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-#include <QtVirtualKeyboard/abstractinputmethod.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
 #include <QtCore/private/qobject_p.h>
 
 QT_BEGIN_NAMESPACE

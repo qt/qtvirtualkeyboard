@@ -28,7 +28,7 @@
 ****************************************************************************/
 
 #include <QtHunspellInputMethod/private/hunspellinputmethod_p_p.h>
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #include <QLoggingCategory>
 
 QT_BEGIN_NAMESPACE
