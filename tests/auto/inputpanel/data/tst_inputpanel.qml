@@ -1824,8 +1824,8 @@ Rectangle {
             for (var len = 1; len <= 5; ++len) {
                 inputPanel.virtualKeyClick("z")
                 if (len >= 2) {
-                    inputPanel.wordCandidateListChangedSpy.clear()
-                    inputPanel.wordCandidateListChangedSpy.wait()
+                    inputPanel.inputMethodSelectionListChangedSpy.clear()
+                    inputPanel.inputMethodSelectionListChangedSpy.wait()
                     if (inputPanel.wordCandidateView.model.count <= 1)
                         break
                 }
