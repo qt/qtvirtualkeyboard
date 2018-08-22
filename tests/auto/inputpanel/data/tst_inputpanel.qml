@@ -697,6 +697,17 @@ Rectangle {
             verify(inputPanel.keyboardInputArea.initialKey === focusKey)
             verify(inputPanel.wordCandidateView.currentIndex !== -1)
 
+            // Select alternative key and check word candidates
+            verify(inputPanel.navigationKeyClick("e"))
+            var focusKeyAlt = inputPanel.keyboardInputArea.initialKey
+            verify(inputPanel.navigationKeyClick("ë"))
+            verify(inputPanel.wordCandidateView.count > 1)
+            verify(inputPanel.keyboardInputArea.initialKey === focusKeyAlt)
+            verify(inputPanel.navigationKeyClick(Qt.Key_Backspace))
+            verify(inputPanel.navigationKeyClick(Qt.Key_Backspace))
+            verify(inputPanel.navigationKeyClick(Qt.Key_Backspace))
+            verify(inputPanel.navigationKeyClick("q"))
+
             // Move focus to word candidate list
             inputPanel.emulateNavigationKeyClick(Qt.Key_Up)
             verify(inputPanel.keyboardInputArea.initialKey === null)

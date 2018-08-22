@@ -360,12 +360,6 @@ Item {
                         keyboardInputArea.reset()
                         keyboardInputArea.navigateToNextKey(0, 0, false)
                     }
-                } else if (alternativeKeys.active) {
-                    if (!isAutoRepeat) {
-                        alternativeKeys.clicked()
-                        keyboardInputArea.reset()
-                        keyboardInputArea.navigateToNextKey(0, 0, false)
-                    }
                 } else if (keyboardInputArea.initialKey) {
                     if (!isAutoRepeat) {
                         pressAndHoldTimer.restart()
@@ -405,6 +399,15 @@ Item {
                         keyboardInputArea.navigateToNextKey(0, 0, false)
                     } else {
                         wordCandidateContextMenu.openedByNavigationKeyLongPress = false
+                    }
+                } else if (alternativeKeys.active) {
+                    if (!alternativeKeys.openedByNavigationKeyLongPress) {
+                        alternativeKeys.clicked()
+                        alternativeKeys.close()
+                        keyboardInputArea.navigateToNextKey(0, 0, false)
+                        keyboardInputArea.reset()
+                    } else {
+                        alternativeKeys.openedByNavigationKeyLongPress = false
                     }
                 } else if (!wordCandidateContextMenu.active && wordCandidateView.count > 0) {
                     wordCandidateView.model.selectItem(wordCandidateView.currentIndex)
@@ -454,9 +457,12 @@ Item {
                                            keyboard.y + alternativeKeys.listView.y - verticalMargin,
                                            alternativeKeys.listView.width + horizontalMargin * 2,
                                            alternativeKeys.listView.height + verticalMargin * 2)
+        property bool openedByNavigationKeyLongPress
         onVisibleChanged: {
             if (visible)
                 InputContext.priv.previewRectangle = Qt.binding(function() {return previewRect})
+            else
+                openedByNavigationKeyLongPress = false
             InputContext.priv.previewVisible = visible
         }
     }
@@ -469,6 +475,7 @@ Item {
                 if (alternativeKeys.open(keyboard.activeKey, origin.x, origin.y)) {
                     InputContext.inputEngine.virtualKeyCancel()
                     keyboardInputArea.initialKey = null
+                    alternativeKeys.openedByNavigationKeyLongPress = keyboard.navigationModeActive
                 } else if (keyboard.activeKey.key === Qt.Key_Context1) {
                     InputContext.inputEngine.virtualKeyCancel()
                     keyboardInputArea.dragSymbolMode = true
@@ -488,7 +495,7 @@ Item {
                     keyboardInputArea.navigateToNextKey(0, 0, false)
             } else if (!wordCandidateContextMenu.active) {
                 wordCandidateContextMenu.show(wordCandidateView.currentIndex)
-                wordCandidateContextMenu.openedByNavigationKeyLongPress = true
+                wordCandidateContextMenu.openedByNavigationKeyLongPress = keyboard.navigationModeActive
             }
         }
     }
