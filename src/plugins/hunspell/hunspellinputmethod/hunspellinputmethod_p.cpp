@@ -113,8 +113,8 @@ void HunspellInputMethodPrivate::reset()
 {
     if (clearSuggestions(true)) {
         Q_Q(HunspellInputMethod);
-        emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-        emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, wordCandidates.index());
+        emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+        emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, wordCandidates.index());
     }
     autoSpaceAllowed = false;
 }
@@ -187,7 +187,7 @@ bool HunspellInputMethodPrivate::isAutoSpaceAllowed() const
     Q_Q(const HunspellInputMethod);
     if (!autoSpaceAllowed)
         return false;
-    if (q->inputEngine()->inputMode() == QVirtualKeyboardInputEngine::Numeric)
+    if (q->inputEngine()->inputMode() == QVirtualKeyboardInputEngine::InputMode::Numeric)
         return false;
     QVirtualKeyboardInputContext *ic = q->inputContext();
     if (!ic)

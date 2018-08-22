@@ -47,7 +47,6 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputEngine : public QObject
     Q_OBJECT
     Q_DISABLE_COPY(QVirtualKeyboardInputEngine)
     Q_DECLARE_PRIVATE(QVirtualKeyboardInputEngine)
-    Q_FLAGS(ReselectFlags)
     Q_PROPERTY(Qt::Key activeKey READ activeKey NOTIFY activeKeyChanged)
     Q_PROPERTY(Qt::Key previousKey READ previousKey NOTIFY previousKeyChanged)
     Q_PROPERTY(QVirtualKeyboardAbstractInputMethod *inputMethod READ inputMethod WRITE setInputMethod NOTIFY inputMethodChanged)
@@ -61,11 +60,13 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputEngine : public QObject
     void init();
 
 public:
-    enum TextCase {
+    enum class TextCase {
         Lower,
         Upper
     };
-    enum InputMode {
+    Q_ENUM(TextCase)
+
+    enum class InputMode {
         Latin,
         Numeric,
         Dialable,
@@ -84,20 +85,23 @@ public:
         JapaneseHandwriting,
         KoreanHandwriting
     };
-    enum PatternRecognitionMode {
-        PatternRecognitionDisabled,
-        HandwritingRecoginition
+    Q_ENUM(InputMode)
+
+    enum class PatternRecognitionMode {
+        None,
+        PatternRecognitionDisabled = None,
+        Handwriting,
+        HandwritingRecoginition = Handwriting
     };
-    enum ReselectFlag {
+    Q_ENUM(PatternRecognitionMode)
+
+    enum class ReselectFlag {
         WordBeforeCursor = 0x1,
         WordAfterCursor = 0x2,
         WordAtCursor = WordBeforeCursor | WordAfterCursor
     };
-
-    Q_ENUM(TextCase)
-    Q_ENUM(InputMode)
-    Q_ENUM(PatternRecognitionMode)
-    Q_DECLARE_FLAGS(ReselectFlags, ReselectFlag)
+    Q_FLAG(ReselectFlag)
+    Q_DECLARE_FLAGS(ReselectFlags, QVirtualKeyboardInputEngine::ReselectFlag)
 
 public:
     ~QVirtualKeyboardInputEngine();
@@ -159,10 +163,14 @@ private:
     friend class QVirtualKeyboardInputContextPrivate;
 };
 
+Q_DECL_CONST_FUNCTION Q_DECL_CONSTEXPR inline uint qHash(QVirtualKeyboardInputEngine::InputMode key, uint seed = 0) Q_DECL_NOTHROW { return uint(key) ^ seed; }
+Q_DECLARE_OPERATORS_FOR_FLAGS(QVirtualKeyboardInputEngine::ReselectFlags)
+
 QT_END_NAMESPACE
 
 Q_DECLARE_METATYPE(QVirtualKeyboardInputEngine::TextCase)
 Q_DECLARE_METATYPE(QVirtualKeyboardInputEngine::InputMode)
-Q_DECLARE_OPERATORS_FOR_FLAGS(QVirtualKeyboardInputEngine::ReselectFlags)
+Q_DECLARE_METATYPE(QVirtualKeyboardInputEngine::PatternRecognitionMode)
+Q_DECLARE_METATYPE(QVirtualKeyboardInputEngine::ReselectFlag)
 
 #endif

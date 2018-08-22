@@ -265,39 +265,39 @@ InputPanel {
 
     function mapInputMode(inputModeName) {
         if (inputModeName === "Latin")
-            return InputEngine.Latin
+            return InputEngine.InputMode.Latin
         else if (inputModeName === "Numeric")
-            return InputEngine.Numeric
+            return InputEngine.InputMode.Numeric
         else if (inputModeName === "Dialable")
-            return InputEngine.Dialable
+            return InputEngine.InputMode.Dialable
         else if (inputModeName === "Pinyin")
-            return InputEngine.Pinyin
+            return InputEngine.InputMode.Pinyin
         else if (inputModeName === "Cangjie")
-            return InputEngine.Cangjie
+            return InputEngine.InputMode.Cangjie
         else if (inputModeName === "Zhuyin")
-            return InputEngine.Zhuyin
+            return InputEngine.InputMode.Zhuyin
         else if (inputModeName === "Hangul")
-            return InputEngine.Hangul
+            return InputEngine.InputMode.Hangul
         else if (inputModeName === "Hiragana")
-            return InputEngine.Hiragana
+            return InputEngine.InputMode.Hiragana
         else if (inputModeName === "Katakana")
-            return InputEngine.Katakana
+            return InputEngine.InputMode.Katakana
         else if (inputModeName === "FullwidthLatin")
-            return InputEngine.FullwidthLatin
+            return InputEngine.InputMode.FullwidthLatin
         else if (inputModeName === "Greek")
-            return InputEngine.Greek
+            return InputEngine.InputMode.Greek
         else if (inputModeName === "Cyrillic")
-            return InputEngine.Cyrillic
+            return InputEngine.InputMode.Cyrillic
         else if (inputModeName === "Arabic")
-            return InputEngine.Arabic
+            return InputEngine.InputMode.Arabic
         else if (inputModeName === "Hebrew")
-            return InputEngine.Hebrew
+            return InputEngine.InputMode.Hebrew
         else if (inputModeName === "ChineseHandwriting")
-            return InputEngine.ChineseHandwriting
+            return InputEngine.InputMode.ChineseHandwriting
         else if (inputModeName === "JapaneseHandwriting")
-            return InputEngine.JapaneseHandwriting
+            return InputEngine.InputMode.JapaneseHandwriting
         else if (inputModeName === "KoreanHandwriting")
-            return InputEngine.KoreanHandwriting
+            return InputEngine.InputMode.KoreanHandwriting
         else
             return -1
     }
@@ -312,6 +312,75 @@ InputPanel {
         if (InputContext.inputEngine.inputMode !== inputMode)
             InputContext.inputEngine.inputMode = inputMode
         return true
+    }
+
+    function testPublicEnums() {
+        // Scoped
+        testcase.verify(InputEngine.TextCase.Lower !== undefined)
+        testcase.verify(InputEngine.TextCase.Upper !== undefined)
+        testcase.verify(InputEngine.InputMode.Latin !== undefined)
+        testcase.verify(InputEngine.InputMode.Numeric !== undefined)
+        testcase.verify(InputEngine.InputMode.Dialable !== undefined)
+        testcase.verify(InputEngine.InputMode.Pinyin !== undefined)
+        testcase.verify(InputEngine.InputMode.Cangjie !== undefined)
+        testcase.verify(InputEngine.InputMode.Zhuyin !== undefined)
+        testcase.verify(InputEngine.InputMode.Hangul !== undefined)
+        testcase.verify(InputEngine.InputMode.Hiragana !== undefined)
+        testcase.verify(InputEngine.InputMode.Katakana !== undefined)
+        testcase.verify(InputEngine.InputMode.FullwidthLatin !== undefined)
+        testcase.verify(InputEngine.InputMode.Greek !== undefined)
+        testcase.verify(InputEngine.InputMode.Cyrillic !== undefined)
+        testcase.verify(InputEngine.InputMode.Arabic !== undefined)
+        testcase.verify(InputEngine.InputMode.Hebrew !== undefined)
+        testcase.verify(InputEngine.InputMode.ChineseHandwriting !== undefined)
+        testcase.verify(InputEngine.InputMode.JapaneseHandwriting !== undefined)
+        testcase.verify(InputEngine.InputMode.KoreanHandwriting !== undefined)
+        testcase.verify(InputEngine.PatternRecognitionMode.None !== undefined)
+        testcase.verify(InputEngine.PatternRecognitionMode.PatternRecognitionDisabled !== undefined)
+        testcase.verify(InputEngine.PatternRecognitionMode.Handwriting !== undefined)
+        testcase.verify(InputEngine.PatternRecognitionMode.HandwritingRecoginition !== undefined)
+        testcase.verify(InputEngine.ReselectFlag.WordBeforeCursor !== undefined)
+        testcase.verify(InputEngine.ReselectFlag.WordAfterCursor !== undefined)
+        testcase.verify(InputEngine.ReselectFlag.WordAtCursor !== undefined)
+        testcase.verify(SelectionListModel.Type.WordCandidateList !== undefined)
+        testcase.verify(SelectionListModel.Role.Display !== undefined)
+        testcase.verify(SelectionListModel.Role.WordCompletionLength !== undefined)
+        testcase.verify(SelectionListModel.Role.Dictionary !== undefined)
+        testcase.verify(SelectionListModel.DictionaryType.Default !== undefined)
+        testcase.verify(SelectionListModel.DictionaryType.User !== undefined)
+        // Unscoped
+        testcase.verify(InputEngine.Lower !== undefined)
+        testcase.verify(InputEngine.Upper !== undefined)
+        testcase.verify(InputEngine.Latin !== undefined)
+        testcase.verify(InputEngine.Numeric !== undefined)
+        testcase.verify(InputEngine.Dialable !== undefined)
+        testcase.verify(InputEngine.Pinyin !== undefined)
+        testcase.verify(InputEngine.Cangjie !== undefined)
+        testcase.verify(InputEngine.Zhuyin !== undefined)
+        testcase.verify(InputEngine.Hangul !== undefined)
+        testcase.verify(InputEngine.Hiragana !== undefined)
+        testcase.verify(InputEngine.Katakana !== undefined)
+        testcase.verify(InputEngine.FullwidthLatin !== undefined)
+        testcase.verify(InputEngine.Greek !== undefined)
+        testcase.verify(InputEngine.Cyrillic !== undefined)
+        testcase.verify(InputEngine.Arabic !== undefined)
+        testcase.verify(InputEngine.Hebrew !== undefined)
+        testcase.verify(InputEngine.ChineseHandwriting !== undefined)
+        testcase.verify(InputEngine.JapaneseHandwriting !== undefined)
+        testcase.verify(InputEngine.KoreanHandwriting !== undefined)
+        testcase.verify(InputEngine.None !== undefined)
+        testcase.verify(InputEngine.PatternRecognitionDisabled !== undefined)
+        testcase.verify(InputEngine.Handwriting !== undefined)
+        testcase.verify(InputEngine.HandwritingRecoginition !== undefined)
+        testcase.verify(InputEngine.WordBeforeCursor !== undefined)
+        testcase.verify(InputEngine.WordAfterCursor !== undefined)
+        testcase.verify(InputEngine.WordAtCursor !== undefined)
+        testcase.verify(SelectionListModel.WordCandidateList !== undefined)
+        testcase.verify(SelectionListModel.DisplayRole !== undefined)
+        testcase.verify(SelectionListModel.WordCompletionLengthRole !== undefined)
+        testcase.verify(SelectionListModel.DictionaryType !== undefined)
+        testcase.verify(SelectionListModel.Default !== undefined)
+        testcase.verify(SelectionListModel.User !== undefined)
     }
 
     function setExternalLanguageSwitchEnabled(enabled) {
@@ -612,8 +681,8 @@ InputPanel {
     function selectionListSuggestionIsFromUserDictionary() {
         if (!inputPanel.wordCandidateView.currentItem)
             return false
-        var dictionaryType = inputPanel.wordCandidateView.model.dataAt(inputPanel.wordCandidateView.currentIndex, SelectionListModel.DictionaryTypeRole)
-        return dictionaryType !== undefined && dictionaryType === SelectionListModel.UserDictionary
+        var dictionaryType = inputPanel.wordCandidateView.model.dataAt(inputPanel.wordCandidateView.currentIndex, SelectionListModel.Role.Dictionary)
+        return dictionaryType !== undefined && dictionaryType === SelectionListModel.DictionaryType.User
     }
 
     function openWordCandidateContextMenu() {

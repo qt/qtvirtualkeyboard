@@ -73,7 +73,7 @@ Item {
     property var plainInputMethod: PlainInputMethod {}
     property var customInputMethod: null
     property var customInputMethodSharedLayouts: []
-    property int defaultInputMode: InputEngine.Latin
+    property int defaultInputMode: InputEngine.InputMode.Latin
     property bool inputMethodNeedsReset: true
     property bool inputModeNeedsReset: true
     property bool navigationModeActive: false
@@ -1217,16 +1217,16 @@ Item {
 
             wordCandidateContextMenuListModel.clear()
 
-            var canRemoveSuggestion = wordCandidateView.model.dataAt(wordCandidateIndex, SelectionListModel.CanRemoveSuggestionRole)
+            var canRemoveSuggestion = wordCandidateView.model.dataAt(wordCandidateIndex, SelectionListModel.Role.CanRemoveSuggestion)
             if (canRemoveSuggestion) {
-                var dictionaryType = wordCandidateView.model.dataAt(wordCandidateIndex, SelectionListModel.DictionaryTypeRole)
+                var dictionaryType = wordCandidateView.model.dataAt(wordCandidateIndex, SelectionListModel.Role.Dictionary)
                 var removeItemText;
                 switch (dictionaryType) {
-                case SelectionListModel.UserDictionary:
+                case SelectionListModel.DictionaryType.User:
                     //~ VirtualKeyboard Context menu for word suggestion if it can be removed from the user dictionary.
                     removeItemText = qsTr("Remove from dictionary")
                     break
-                case SelectionListModel.DefaultDictionary:
+                case SelectionListModel.DictionaryType.Default:
                     // Fallthrough
                 default:
                     //~ VirtualKeyboard Context menu for word suggestion if it can be removed from the default dictionary.
@@ -1340,19 +1340,19 @@ Item {
 
                     // Update input mode automatically in handwriting mode
                     if (keyboard.handwritingMode) {
-                        if (keyboard.dialableCharactersOnly && inputModes.indexOf(InputEngine.Dialable) !== -1)
-                            inputMode = InputEngine.Dialable
-                        else if ((keyboard.formattedNumbersOnly || keyboard.digitsOnly) && inputModes.indexOf(InputEngine.Numeric) !== -1)
-                            inputMode = InputEngine.Numeric
+                        if (keyboard.dialableCharactersOnly && inputModes.indexOf(InputEngine.InputMode.Dialable) !== -1)
+                            inputMode = InputEngine.InputMode.Dialable
+                        else if ((keyboard.formattedNumbersOnly || keyboard.digitsOnly) && inputModes.indexOf(InputEngine.InputMode.Numeric) !== -1)
+                            inputMode = InputEngine.InputMode.Numeric
                         else if (keyboardLayoutLoader.item.inputMode === -1)
                             inputMode = inputModes[0]
                     }
 
                     // Check the input method hints for input mode overrides
                     if (latinOnly)
-                        inputMode = InputEngine.Latin
+                        inputMode = InputEngine.InputMode.Latin
                     if (preferNumbers)
-                        inputMode = InputEngine.Numeric
+                        inputMode = InputEngine.InputMode.Numeric
                 }
 
                 // Make sure the input mode is supported by the current input method

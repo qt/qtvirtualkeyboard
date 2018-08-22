@@ -58,7 +58,7 @@ public:
 
     TCInputMethodPrivate(TCInputMethod *q_ptr) :
         q_ptr(q_ptr),
-        inputMode(QVirtualKeyboardInputEngine::Latin),
+        inputMode(QVirtualKeyboardInputEngine::InputMode::Latin),
         wordDictionary(nullptr),
         highlightIndex(-1)
     {}
@@ -90,8 +90,8 @@ public:
     {
         if (clearCandidates()) {
             Q_Q(TCInputMethod);
-            emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-            emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, highlightIndex);
+            emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+            emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, highlightIndex);
         }
         input.clear();
     }
@@ -104,12 +104,12 @@ public:
         switch (inputMode)
         {
 #if defined(HAVE_TCIME_CANGJIE)
-        case QVirtualKeyboardInputEngine::Cangjie:
+        case QVirtualKeyboardInputEngine::InputMode::Cangjie:
             accept = composeCangjie(ic, c);
             break;
 #endif
 #if defined(HAVE_TCIME_ZHUYIN)
-        case QVirtualKeyboardInputEngine::Zhuyin:
+        case QVirtualKeyboardInputEngine::InputMode::Zhuyin:
             accept = composeZhuyin(ic, c);
             break;
 #endif
@@ -130,8 +130,8 @@ public:
                 ic->setPreeditText(input);
                 if (setCandidates(wordDictionary->getWords(input), true)) {
                     Q_Q(TCInputMethod);
-                    emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-                    emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, highlightIndex);
+                    emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                    emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, highlightIndex);
                 }
             }
             accept = true;
@@ -170,8 +170,8 @@ public:
                     << QChar(0xFE5B) << QChar(0xFE5C) << QChar(0xFE43) << QChar(0xFE44);
             Q_Q(TCInputMethod);
             if (setCandidates(specialChars1, true)) {
-                emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-                emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, highlightIndex);
+                emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, highlightIndex);
             }
             q->inputContext()->setPreeditText(candidates[highlightIndex]);
             return true;
@@ -188,8 +188,8 @@ public:
                     << QChar(0xFE4F) << QChar(0xFE34) << QChar(0xFE33);
             Q_Q(TCInputMethod);
             if (setCandidates(specialChars2, true)) {
-                emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-                emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, highlightIndex);
+                emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, highlightIndex);
             }
             q->inputContext()->setPreeditText(candidates[highlightIndex]);
             return true;
@@ -251,8 +251,8 @@ public:
         ic->setPreeditText(input);
         if (setCandidates(wordDictionary->getWords(input), true)) {
             Q_Q(TCInputMethod);
-            emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-            emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, highlightIndex);
+            emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+            emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, highlightIndex);
         }
 
         return true;
@@ -353,10 +353,10 @@ QList<QVirtualKeyboardInputEngine::InputMode> TCInputMethod::inputModes(const QS
     Q_UNUSED(locale)
     return QList<QVirtualKeyboardInputEngine::InputMode>()
 #if defined(HAVE_TCIME_ZHUYIN)
-            << QVirtualKeyboardInputEngine::Zhuyin
+            << QVirtualKeyboardInputEngine::InputMode::Zhuyin
 #endif
 #if defined(HAVE_TCIME_CANGJIE)
-           << QVirtualKeyboardInputEngine::Cangjie
+           << QVirtualKeyboardInputEngine::InputMode::Cangjie
 #endif
                ;
 }
@@ -372,7 +372,7 @@ bool TCInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEng
     d->inputMode = inputMode;
     d->wordDictionary = nullptr;
 #if defined(HAVE_TCIME_CANGJIE)
-    if (inputMode == QVirtualKeyboardInputEngine::Cangjie) {
+    if (inputMode == QVirtualKeyboardInputEngine::InputMode::Cangjie) {
         if (d->cangjieDictionary.isEmpty()) {
             QString cangjieDictionary(qEnvironmentVariable("QT_VIRTUALKEYBOARD_CANGJIE_DICTIONARY"));
             if (!QFileInfo::exists(cangjieDictionary)) {
@@ -386,7 +386,7 @@ bool TCInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEng
     }
 #endif
 #if defined(HAVE_TCIME_ZHUYIN)
-    if (inputMode == QVirtualKeyboardInputEngine::Zhuyin) {
+    if (inputMode == QVirtualKeyboardInputEngine::InputMode::Zhuyin) {
         if (d->zhuyinDictionary.isEmpty()) {
             QString zhuyinDictionary(qEnvironmentVariable("QT_VIRTUALKEYBOARD_ZHUYIN_DICTIONARY"));
             if (!QFileInfo::exists(zhuyinDictionary)) {
@@ -410,7 +410,7 @@ bool TCInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEng
         d->phraseDictionary.load(phraseDictionary);
     }
     if (!result)
-        inputMode = QVirtualKeyboardInputEngine::Latin;
+        inputMode = QVirtualKeyboardInputEngine::InputMode::Latin;
     return result;
 }
 
@@ -448,8 +448,8 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
                 d->reset();
                 inputContext()->commit(finalWord);
                 if (d->setCandidates(d->phraseDictionary.getWords(finalWord.left(1)), false)) {
-                    emit selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-                    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, d->highlightIndex);
+                    emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->highlightIndex);
                 }
             }
         } else {
@@ -465,16 +465,16 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
             if (!d->checkSpecialCharInput()) {
 #endif
                 if (d->setCandidates(d->wordDictionary->getWords(d->input), true)) {
-                    emit selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-                    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, d->highlightIndex);
+                    emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->highlightIndex);
                 }
 #if defined(HAVE_TCIME_CANGJIE)
             }
 #endif
             accept = true;
         } else if (d->clearCandidates()) {
-            emit selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-            emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, d->highlightIndex);
+            emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+            emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->highlightIndex);
         }
         break;
 
@@ -490,7 +490,7 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
 
 QList<QVirtualKeyboardSelectionListModel::Type> TCInputMethod::selectionLists()
 {
-    return QList<QVirtualKeyboardSelectionListModel::Type>() << QVirtualKeyboardSelectionListModel::WordCandidateList;
+    return QList<QVirtualKeyboardSelectionListModel::Type>() << QVirtualKeyboardSelectionListModel::Type::WordCandidateList;
 }
 
 int TCInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
@@ -500,15 +500,15 @@ int TCInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Ty
     return d->candidates.count();
 }
 
-QVariant TCInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, int role)
+QVariant TCInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 {
     QVariant result;
     Q_D(TCInputMethod);
     switch (role) {
-    case QVirtualKeyboardSelectionListModel::DisplayRole:
+    case QVirtualKeyboardSelectionListModel::Role::Display:
         result = QVariant(d->candidates.at(index));
         break;
-    case QVirtualKeyboardSelectionListModel::WordCompletionLengthRole:
+    case QVirtualKeyboardSelectionListModel::Role::WordCompletionLength:
         result.setValue(0);
         break;
     default:
@@ -526,8 +526,8 @@ void TCInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionListModel
     reset();
     inputContext()->commit(finalWord);
     if (d->setCandidates(d->phraseDictionary.getWords(finalWord.left(1)), false)) {
-        emit selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-        emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, d->highlightIndex);
+        emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+        emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->highlightIndex);
     }
 }
 

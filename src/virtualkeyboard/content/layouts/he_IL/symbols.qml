@@ -180,7 +180,7 @@ KeyboardLayoutLoader {
                 keyWeight: 154
                 SymbolModeKey {
                     weight: 217
-                    displayText: InputContext.inputEngine.inputMode === InputEngine.Hebrew ? "\u05D0\u05D1\u05D2" : "ABC"
+                    displayText: InputContext.inputEngine.inputMode === InputEngine.InputMode.Hebrew ? "\u05D0\u05D1\u05D2" : "ABC"
                 }
                 ChangeLanguageKey {
                     weight: 154
@@ -350,7 +350,7 @@ KeyboardLayoutLoader {
                 keyWeight: 154
                 SymbolModeKey {
                     weight: 217
-                    displayText: InputContext.inputEngine.inputMode === InputEngine.Hebrew ? "\u05D0\u05D1\u05D2" : "ABC"
+                    displayText: InputContext.inputEngine.inputMode === InputEngine.InputMode.Hebrew ? "\u05D0\u05D1\u05D2" : "ABC"
                 }
                 ChangeLanguageKey {
                     weight: 154

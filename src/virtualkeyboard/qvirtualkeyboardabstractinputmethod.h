@@ -57,7 +57,7 @@ public:
 
     virtual QList<QVirtualKeyboardSelectionListModel::Type> selectionLists();
     virtual int selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type);
-    virtual QVariant selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, int role);
+    virtual QVariant selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role);
     virtual void selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index);
     virtual bool selectionListRemoveItem(QVirtualKeyboardSelectionListModel::Type type, int index);
 
@@ -71,8 +71,8 @@ public:
     virtual bool clickPreeditText(int cursorPosition);
 
 Q_SIGNALS:
-    void selectionListChanged(int type);
-    void selectionListActiveItemChanged(int type, int index);
+    void selectionListChanged(QVirtualKeyboardSelectionListModel::Type type);
+    void selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type type, int index);
     void selectionListsChanged();
 
 public Q_SLOTS:

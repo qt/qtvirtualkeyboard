@@ -80,6 +80,7 @@ public:
         InputMethodClickState = 0x8,
         SyncShadowInputState = 0x10
     };
+    Q_FLAG(StateFlag)
     Q_DECLARE_FLAGS(StateFlags, StateFlag)
 
     ~QVirtualKeyboardInputContextPrivate();

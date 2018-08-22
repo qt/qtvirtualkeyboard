@@ -36,8 +36,8 @@ KeyboardLayout {
         return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.3; HandwritingInputMethod {}', parent)
     }
     sharedLayouts: ['symbols']
-    inputMode: InputEngine.Arabic
-    readonly property bool alphabeticInputMode: [InputEngine.Latin, InputEngine.Dialable].indexOf(InputContext.inputEngine.inputMode) !== -1
+    inputMode: InputEngine.InputMode.Arabic
+    readonly property bool alphabeticInputMode: [InputEngine.InputMode.Latin, InputEngine.InputMode.Dialable].indexOf(InputContext.inputEngine.inputMode) !== -1
 
     KeyboardRow {
         Layout.preferredHeight: 3
@@ -46,7 +46,7 @@ KeyboardLayout {
             KeyboardRow {
                 TraceInputKey {
                     objectName: "hwrInputArea"
-                    patternRecognitionMode: InputEngine.HandwritingRecoginition
+                    patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
                     horizontalRulers:
                         alphabeticInputMode ? [] :
                             [Math.round(boundingBox.height / 4), Math.round(boundingBox.height / 4) * 2, Math.round(boundingBox.height / 4) * 3]
@@ -73,19 +73,19 @@ KeyboardLayout {
         InputModeKey {
             weight: 217
             inputModeNameList: [
-                "ABC",  // InputEngine.Latin
-                "\u0660\u0661\u0662",  // InputEngine.Numeric
-                "123",  // InputEngine.Dialable
-                "",  // InputEngine.Pinyin
-                "",  // InputEngine.Cangjie
-                "",  // InputEngine.Zhuyin
-                "",  // InputEngine.Hangul
-                "",  // InputEngine.Hiragana
-                "",  // InputEngine.Katakana
-                "",  // InputEngine.FullwidthLatin
-                "",  // InputEngine.Greek
-                "",  // InputEngine.Cyrillic
-                "\u0623\u200C\u0628\u200C\u062C",  // InputEngine.Arabic
+                "ABC",  // InputEngine.InputMode.Latin
+                "\u0660\u0661\u0662",  // InputEngine.InputMode.Numeric
+                "123",  // InputEngine.InputMode.Dialable
+                "",  // InputEngine.InputMode.Pinyin
+                "",  // InputEngine.InputMode.Cangjie
+                "",  // InputEngine.InputMode.Zhuyin
+                "",  // InputEngine.InputMode.Hangul
+                "",  // InputEngine.InputMode.Hiragana
+                "",  // InputEngine.InputMode.Katakana
+                "",  // InputEngine.InputMode.FullwidthLatin
+                "",  // InputEngine.InputMode.Greek
+                "",  // InputEngine.InputMode.Cyrillic
+                "\u0623\u200C\u0628\u200C\u062C",  // InputEngine.InputMode.Arabic
             ]
         }
         ChangeLanguageKey {

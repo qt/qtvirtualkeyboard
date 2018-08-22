@@ -43,7 +43,7 @@ public:
     QVirtualKeyboardSelectionListModelPrivate() :
         QAbstractItemModelPrivate(),
         dataSource(nullptr),
-        type(QVirtualKeyboardSelectionListModel::WordCandidateList),
+        type(QVirtualKeyboardSelectionListModel::Type::WordCandidateList),
         rowCount(0),
         wclAutoCommitWord(false)
     {
@@ -67,14 +67,16 @@ public:
     provided by the input method.
 
     An instance of QVirtualKeyboardSelectionListModel cannot be created directly.
-    Instead, the InputEngine manages the instances and provides
-    access to the model by InputEngine::wordCandidateListModel
+    Instead, the QVirtualKeyboardInputEngine manages the instances and provides
+    access to the model by QVirtualKeyboardInputEngine::wordCandidateListModel
     property.
 
     The model exposes the following data roles for the list delegate:
     \list
-        \li \c display Display text for item
-        \li \c wordCompletionLength Word completion length for item
+        \li \c display Display text for item.
+        \li \c wordCompletionLength Word completion length for item.
+        \li \c dictionaryType Dictionary type of the word, see QVirtualKeyboardSelectionListModel::DictionaryType.
+        \li \c canRemoveSuggestion A boolean indicating if the word can be removed from the dictionary.
     \endlist
 
     The activeItemChanged signal indicates which item is currently
@@ -103,7 +105,7 @@ public:
 
     This enum specifies the type of selection list.
 
-    \value WordCandidateList
+    \value Type::WordCandidateList
            Shows list of word candidates
 */
 
@@ -112,18 +114,22 @@ public:
 
     This enum specifies a role of the data requested.
 
-    \value DisplayRole
+    \value Role::Display
            The data to be rendered in form of text.
-    \value WordCompletionLengthRole
+    \value Role::DisplayRole
+           \c obsolete Use Role::Display.
+    \value Role::WordCompletionLength
            An integer specifying the length of the word
            the completion part expressed as the
            number of characters counted from the
            end of the string.
-    \value DictionaryTypeRole
+    \value Role::WordCompletionLengthRole
+           \c obsolete Use Role::WordCompletionLength.
+    \value Role::Dictionary
            An integer specifying \ l {QVirtualKeyboardSelectionListModel::DictionaryType}{dictionary type}.
-    \value CanRemoveSuggestionRole
+    \value Role::CanRemoveSuggestion
            A boolean value indicating if the word candidate
-           can be removed from dictionary.
+           can be removed from the dictionary.
 */
 
 /*!
@@ -131,9 +137,9 @@ public:
 
     This enum specifies the dictionary type of a word.
 
-    \value DefaultDictionary
+    \value DictionaryType::Default
            The word candidate is from the default dictionary.
-    \value UserDictionary
+    \value DictionaryType::User
            The word candidate is from the user dictionary.
 */
 
@@ -141,8 +147,10 @@ QVirtualKeyboardSelectionListModel::QVirtualKeyboardSelectionListModel(QObject *
     QAbstractListModel(*new QVirtualKeyboardSelectionListModelPrivate(), parent)
 {
     Q_D(QVirtualKeyboardSelectionListModel);
-    d->roles[DisplayRole] = "display";
-    d->roles[WordCompletionLengthRole] = "wordCompletionLength";
+    d->roles[static_cast<const int>(Role::Display)] = "display";
+    d->roles[static_cast<const int>(Role::WordCompletionLength)] = "wordCompletionLength";
+    d->roles[static_cast<const int>(Role::Dictionary)] = "dictionary";
+    d->roles[static_cast<const int>(Role::CanRemoveSuggestion)] = "canRemoveSuggestion";
 }
 
 /*!
@@ -159,8 +167,8 @@ void QVirtualKeyboardSelectionListModel::setDataSource(QVirtualKeyboardAbstractI
 {
     Q_D(QVirtualKeyboardSelectionListModel);
     if (d->dataSource) {
-        disconnect(this, SLOT(selectionListChanged(int)));
-        disconnect(this, SLOT(selectionListActiveItemChanged(int, int)));
+        disconnect(this, SLOT(selectionListChanged(Type)));
+        disconnect(this, SLOT(selectionListActiveItemChanged(Type, int)));
     }
     d->type = type;
     if (d->dataSource) {
@@ -170,8 +178,8 @@ void QVirtualKeyboardSelectionListModel::setDataSource(QVirtualKeyboardAbstractI
     }
     d->dataSource = dataSource;
     if (d->dataSource) {
-        connect(d->dataSource, SIGNAL(selectionListChanged(int)), SLOT(selectionListChanged(int)));
-        connect(d->dataSource, SIGNAL(selectionListActiveItemChanged(int, int)), SLOT(selectionListActiveItemChanged(int, int)));
+        QObject::connect(d->dataSource, &QVirtualKeyboardAbstractInputMethod::selectionListChanged, this, &QVirtualKeyboardSelectionListModel::selectionListChanged);
+        QObject::connect(d->dataSource, &QVirtualKeyboardAbstractInputMethod::selectionListActiveItemChanged, this, &QVirtualKeyboardSelectionListModel::selectionListActiveItemChanged);
     }
 }
 
@@ -200,7 +208,7 @@ int QVirtualKeyboardSelectionListModel::rowCount(const QModelIndex &parent) cons
 QVariant QVirtualKeyboardSelectionListModel::data(const QModelIndex &index, int role) const
 {
     Q_D(const QVirtualKeyboardSelectionListModel);
-    return d->dataSource ? d->dataSource->selectionListData(d->type, index.row(), role) : QVariant();
+    return d->dataSource ? d->dataSource->selectionListData(d->type, index.row(), static_cast<Role>(role)) : QVariant();
 }
 
 /*!
@@ -254,15 +262,15 @@ void QVirtualKeyboardSelectionListModel::removeItem(int index)
 /*!
  * \internal
  */
-QVariant QVirtualKeyboardSelectionListModel::dataAt(int index, int role) const
+QVariant QVirtualKeyboardSelectionListModel::dataAt(int index, QVirtualKeyboardSelectionListModel::Role role) const
 {
-    return data(this->index(index, 0), role);
+    return data(this->index(index, 0), static_cast<int>(role));
 }
 
 /*!
     \internal
 */
-void QVirtualKeyboardSelectionListModel::selectionListChanged(int type)
+void QVirtualKeyboardSelectionListModel::selectionListChanged(QVirtualKeyboardSelectionListModel::Type type)
 {
     Q_D(QVirtualKeyboardSelectionListModel);
     if (static_cast<Type>(type) == d->type) {
@@ -286,7 +294,7 @@ void QVirtualKeyboardSelectionListModel::selectionListChanged(int type)
             d->rowCount = 0;
             endResetModel();
         }
-        if (type == QVirtualKeyboardSelectionListModel::WordCandidateList)
+        if (static_cast<QVirtualKeyboardSelectionListModel::Type>(type) == QVirtualKeyboardSelectionListModel::Type::WordCandidateList)
             d->wclAutoCommitWord = ((oldCount > 1 || (oldCount == 1 && d->wclAutoCommitWord)) && newCount == 1 &&
                                  Settings::instance()->wclAutoCommitWord() &&
                                  dataAt(0).toString().length() > 1);
@@ -298,7 +306,7 @@ void QVirtualKeyboardSelectionListModel::selectionListChanged(int type)
 /*!
     \internal
 */
-void QVirtualKeyboardSelectionListModel::selectionListActiveItemChanged(int type, int index)
+void QVirtualKeyboardSelectionListModel::selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type type, int index)
 {
     Q_D(QVirtualKeyboardSelectionListModel);
     if (static_cast<Type>(type) == d->type && index < d->rowCount) {

@@ -319,14 +319,14 @@ int InputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type
     return result.toInt();
 }
 
-QVariant InputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, int role)
+QVariant InputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "selectionListData",
                               Q_RETURN_ARG(QVariant, result),
                               Q_ARG(QVariant, static_cast<int>(type)),
                               Q_ARG(QVariant, index),
-                              Q_ARG(QVariant, role));
+                              Q_ARG(QVariant, static_cast<int>(role)));
     if (result.isNull()) {
         result = QVirtualKeyboardAbstractInputMethod::selectionListData(type, index, role);
     }

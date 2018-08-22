@@ -58,23 +58,23 @@ Key {
         The default list contains all known input modes for \l {QVirtualKeyboardInputEngine::inputMode} {InputEngine.inputMode}.
     */
     property var inputModeNameList: [
-        "ABC",  // InputEngine.Latin
-        "123",  // InputEngine.Numeric
-        "123",  // InputEngine.Dialable
-        "拼音",  // InputEngine.Pinyin
-        "倉頡",  // InputEngine.Cangjie
-        "注音",  // InputEngine.Zhuyin
-        "한글",  // InputEngine.Hangul
-        "あ",    // InputEngine.Hiragana
-        "カ",    // InputEngine.Katakana
-        "全角",  // InputEngine.FullwidthLatin
-        "ΑΒΓ",  // InputEngine.Greek
-        "АБВ",  // InputEngine.Cyrillic
-        "\u0623\u200C\u0628\u200C\u062C",  // InputEngine.Arabic
-        "\u05D0\u05D1\u05D2",  // InputEngine.Hebrew
-        "中文",  // InputEngine.ChineseHandwriting
-        "日本語", // InputEngine.JapaneseHandwriting
-        "한국어", // InputEngine.KoreanHandwriting
+        "ABC",  // InputEngine.InputMode.Latin
+        "123",  // InputEngine.InputMode.Numeric
+        "123",  // InputEngine.InputMode.Dialable
+        "拼音",  // InputEngine.InputMode.Pinyin
+        "倉頡",  // InputEngine.InputMode.Cangjie
+        "注音",  // InputEngine.InputMode.Zhuyin
+        "한글",  // InputEngine.InputMode.Hangul
+        "あ",    // InputEngine.InputMode.Hiragana
+        "カ",    // InputEngine.InputMode.Katakana
+        "全角",  // InputEngine.InputMode.FullwidthLatin
+        "ΑΒΓ",  // InputEngine.InputMode.Greek
+        "АБВ",  // InputEngine.InputMode.Cyrillic
+        "\u0623\u200C\u0628\u200C\u062C",  // InputEngine.InputMode.Arabic
+        "\u05D0\u05D1\u05D2",  // InputEngine.InputMode.Hebrew
+        "中文",  // InputEngine.InputMode.ChineseHandwriting
+        "日本語", // InputEngine.InputMode.JapaneseHandwriting
+        "한국어", // InputEngine.InputMode.KoreanHandwriting
     ]
 
     /*!

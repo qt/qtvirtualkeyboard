@@ -218,6 +218,11 @@ Rectangle {
                 obj.destroy()
         }
 
+        function test_publicEnums() {
+            prepareTest()
+            inputPanel.testPublicEnums()
+        }
+
         function test_focusShowKeyboard() {
             container.forceActiveFocus()
             verify(inputPanel.visible === false)

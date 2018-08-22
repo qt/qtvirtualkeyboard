@@ -70,7 +70,7 @@ public:
 
     QList<QVirtualKeyboardSelectionListModel::Type> selectionLists() override;
     int selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type) override;
-    QVariant selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, int role) override;
+    QVariant selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role) override;
     void selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index) override;
 
     QList<QVirtualKeyboardInputEngine::PatternRecognitionMode> patternRecognitionModes() const override;

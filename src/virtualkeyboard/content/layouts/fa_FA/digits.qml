@@ -33,7 +33,7 @@ import QtQuick.VirtualKeyboard 2.1
 
 KeyboardLayout {
     inputMethod: PlainInputMethod {}
-    inputMode: InputEngine.Numeric
+    inputMode: InputEngine.InputMode.Numeric
 
     KeyboardColumn {
         Layout.fillWidth: false

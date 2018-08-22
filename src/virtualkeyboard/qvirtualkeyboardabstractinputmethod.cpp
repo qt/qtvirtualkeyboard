@@ -145,14 +145,14 @@ int QVirtualKeyboardAbstractInputMethod::selectionListItemCount(QVirtualKeyboard
     return 0;
 }
 
-QVariant QVirtualKeyboardAbstractInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, int role)
+QVariant QVirtualKeyboardAbstractInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 {
     Q_UNUSED(type)
     Q_UNUSED(index)
     switch (role) {
-    case QVirtualKeyboardSelectionListModel::DisplayRole:
+    case QVirtualKeyboardSelectionListModel::Role::Display:
         return QVariant("");
-    case QVirtualKeyboardSelectionListModel::WordCompletionLengthRole:
+    case QVirtualKeyboardSelectionListModel::Role::WordCompletionLength:
         return QVariant(0);
     }
     return QVariant();
@@ -310,7 +310,7 @@ bool QVirtualKeyboardAbstractInputMethod::clickPreeditText(int cursorPosition)
 */
 
 /*!
-    \fn QVariant QVirtualKeyboardAbstractInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, int role)
+    \fn QVariant QVirtualKeyboardAbstractInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 
     Returns item data for the selection list identified by \a type. The \a \l {QVirtualKeyboardSelectionListModel::Role}{role}
     parameter specifies which data is requested. The \a index parameter is a
@@ -333,7 +333,7 @@ bool QVirtualKeyboardAbstractInputMethod::clickPreeditText(int cursorPosition)
 */
 
 /*!
-    \fn void QVirtualKeyboardAbstractInputMethod::selectionListChanged(int type)
+    \fn void QVirtualKeyboardAbstractInputMethod::selectionListChanged(QVirtualKeyboardSelectionListModel::Type type)
 
     The input method emits this signal when the contents of the selection list
     has changed. The \a type parameter specifies which selection list has
@@ -341,7 +341,7 @@ bool QVirtualKeyboardAbstractInputMethod::clickPreeditText(int cursorPosition)
 */
 
 /*!
-    \fn void QVirtualKeyboardAbstractInputMethod::selectionListActiveItemChanged(int type, int index)
+    \fn void QVirtualKeyboardAbstractInputMethod::selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type type, int index)
 
     The input method emits this signal when the current \a index has changed
     in the selection list identified by \a type.

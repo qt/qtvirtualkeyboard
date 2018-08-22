@@ -52,9 +52,9 @@ MultiPointTouchArea {
 
     /*! Pattern recognition mode of this input area.
 
-        The default value is \l {InputEngine::PatternRecognitionDisabled} {InputEngine.PatternRecognitionDisabled}.
+        The default value is \l {InputEngine::PatternRecognitionMode::None} {InputEngine.PatternRecognitionMode.None}.
     */
-    property int patternRecognitionMode: InputEngine.PatternRecognitionDisabled
+    property int patternRecognitionMode: InputEngine.PatternRecognitionMode.None
 
     /*! List of horizontal rulers in the input area.
 
@@ -127,7 +127,7 @@ MultiPointTouchArea {
              canvasType: traceInputArea.canvasType
          })
 
-    enabled: patternRecognitionMode !== InputEngine.PatternRecognitionDisabled && InputContext.inputEngine.patternRecognitionModes.indexOf(patternRecognitionMode) !== -1
+    enabled: patternRecognitionMode !== InputEngine.PatternRecognitionMode.None && InputContext.inputEngine.patternRecognitionModes.indexOf(patternRecognitionMode) !== -1
 
     onPressed: {
         if (!keyboard.style.traceCanvasDelegate)

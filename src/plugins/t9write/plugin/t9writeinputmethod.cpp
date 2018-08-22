@@ -88,11 +88,11 @@ public:
     QString formatString(const QString &str) const
     {
         QString result;
-        QVirtualKeyboardInputEngine::TextCase textCase = QVirtualKeyboardInputEngine::Lower;
+        QVirtualKeyboardInputEngine::TextCase textCase = QVirtualKeyboardInputEngine::TextCase::Lower;
         for (int i = 0; i < str.length(); ++i) {
             if (i < textCaseList.length())
                 textCase = textCaseList.at(i);
-            result.append(textCase == QVirtualKeyboardInputEngine::Upper ? str.at(i).toUpper() : (preferLowercase ? str.at(i).toLower() : str.at(i)));
+            result.append(textCase == QVirtualKeyboardInputEngine::TextCase::Upper ? str.at(i).toUpper() : (preferLowercase ? str.at(i).toLower() : str.at(i)));
         }
         return result;
     }
@@ -136,7 +136,7 @@ public:
         activeWordIndex(-1),
         arcAdditionStarted(false),
         ignoreUpdate(false),
-        textCase(QVirtualKeyboardInputEngine::Lower)
+        textCase(QVirtualKeyboardInputEngine::TextCase::Lower)
 #ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
         , unipenTrace()
 #endif
@@ -661,24 +661,24 @@ public:
 
         DECUMA_UINT32 language = languageMap[localeLanguage];
         if (language == DECUMA_LANG_PRC) {
-            if (inputMode != QVirtualKeyboardInputEngine::ChineseHandwriting)
+            if (inputMode != QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting)
                 language = DECUMA_LANG_EN;
             else if (locale.script() == QLocale::TraditionalChineseScript)
                 language = (locale.country() == QLocale::HongKong) ? DECUMA_LANG_HK : DECUMA_LANG_TW;
         } else if (language == DECUMA_LANG_JP) {
-            if (inputMode != QVirtualKeyboardInputEngine::JapaneseHandwriting)
+            if (inputMode != QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting)
                 language = DECUMA_LANG_EN;
         } else if (language == DECUMA_LANG_KO) {
-            if (inputMode != QVirtualKeyboardInputEngine::KoreanHandwriting)
+            if (inputMode != QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting)
                 language = DECUMA_LANG_EN;
         } else if (language == DECUMA_LANG_SRCY) {
-            if (inputMode != QVirtualKeyboardInputEngine::Cyrillic)
+            if (inputMode != QVirtualKeyboardInputEngine::InputMode::Cyrillic)
                 language = DECUMA_LANG_SRLA;
         } else if (language == DECUMA_LANG_AR || language == DECUMA_LANG_FA) {
-            if (inputMode != QVirtualKeyboardInputEngine::Arabic && inputMode != QVirtualKeyboardInputEngine::Numeric)
+            if (inputMode != QVirtualKeyboardInputEngine::InputMode::Arabic && inputMode != QVirtualKeyboardInputEngine::InputMode::Numeric)
                 language = DECUMA_LANG_EN;
         } else if (language == DECUMA_LANG_IW) {
-            if (inputMode != QVirtualKeyboardInputEngine::Hebrew)
+            if (inputMode != QVirtualKeyboardInputEngine::InputMode::Hebrew)
                 language = DECUMA_LANG_EN;
         }
 
@@ -701,7 +701,7 @@ public:
 #if T9WRITEAPIMAJORVERNUM >= 21
         if (!cjk) {
             switch (inputMode) {
-            case QVirtualKeyboardInputEngine::Latin:
+            case QVirtualKeyboardInputEngine::InputMode::Latin:
                 switch (language) {
                 case DECUMA_LANG_EN:
                 case DECUMA_LANG_FR:
@@ -714,7 +714,7 @@ public:
                     break;
                 }
                 break;
-            case QVirtualKeyboardInputEngine::Arabic:
+            case QVirtualKeyboardInputEngine::InputMode::Arabic:
                 sessionSettings.recognitionMode = ucrMode;
                 break;
             default:
@@ -724,9 +724,9 @@ public:
 #endif
 
         // Use scrMode with hidden text or with no predictive mode
-        if (inputMode != QVirtualKeyboardInputEngine::ChineseHandwriting &&
-                inputMode != QVirtualKeyboardInputEngine::JapaneseHandwriting &&
-                inputMode != QVirtualKeyboardInputEngine::KoreanHandwriting) {
+        if (inputMode != QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting &&
+                inputMode != QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting &&
+                inputMode != QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting) {
             const Qt::InputMethodHints inputMethodHints = q->inputContext()->inputMethodHints();
             if (inputMethodHints.testFlag(Qt::ImhHiddenText) || inputMethodHints.testFlag(Qt::ImhNoPredictiveText))
                 sessionSettings.recognitionMode = scrMode;
@@ -747,7 +747,7 @@ public:
         Q_Q(T9WriteInputMethod);
         const Qt::InputMethodHints inputMethodHints = q->inputContext()->inputMethodHints();
         switch (inputMode) {
-        case QVirtualKeyboardInputEngine::Latin:
+        case QVirtualKeyboardInputEngine::InputMode::Latin:
             if (inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly)) {
                 symbolCategories.append(DECUMA_CATEGORY_EMAIL);
             } else if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly)) {
@@ -768,7 +768,7 @@ public:
             }
             break;
 
-        case QVirtualKeyboardInputEngine::Numeric:
+        case QVirtualKeyboardInputEngine::InputMode::Numeric:
             if (language == DECUMA_LANG_AR || language == DECUMA_LANG_FA) {
                 symbolCategories.append(DECUMA_CATEGORY_ARABIC_NUM_MODE);
                 symbolCategories.append(DECUMA_CATEGORY_ARABIC_GESTURES);
@@ -780,11 +780,11 @@ public:
                 symbolCategories.append(DECUMA_CATEGORY_NUM_SUP);
             break;
 
-        case QVirtualKeyboardInputEngine::Dialable:
+        case QVirtualKeyboardInputEngine::InputMode::Dialable:
             symbolCategories.append(DECUMA_CATEGORY_PHONE_NUMBER);
             break;
 
-        case QVirtualKeyboardInputEngine::Greek:
+        case QVirtualKeyboardInputEngine::InputMode::Greek:
             symbolCategories.append(DECUMA_CATEGORY_GREEK);
             symbolCategories.append(DECUMA_CATEGORY_QUEST_EXCL_MARK_PUNCTUATIONS);
             symbolCategories.append(DECUMA_CATEGORY_PERIOD_COMMA_PUNCTUATIONS);
@@ -793,7 +793,7 @@ public:
             symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
             break;
 
-        case QVirtualKeyboardInputEngine::Cyrillic:
+        case QVirtualKeyboardInputEngine::InputMode::Cyrillic:
             symbolCategories.append(DECUMA_CATEGORY_CYRILLIC);
             symbolCategories.append(DECUMA_CATEGORY_QUEST_EXCL_MARK_PUNCTUATIONS);
             symbolCategories.append(DECUMA_CATEGORY_PERIOD_COMMA_PUNCTUATIONS);
@@ -802,13 +802,13 @@ public:
                 symbolCategories.append(DECUMA_CATEGORY_CONTRACTION_MARK);
             break;
 
-        case QVirtualKeyboardInputEngine::Arabic:
+        case QVirtualKeyboardInputEngine::InputMode::Arabic:
             symbolCategories.append(DECUMA_CATEGORY_ARABIC_ISOLATED_LETTER_MODE);
             symbolCategories.append(DECUMA_CATEGORY_ARABIC_GESTURES);
             leftToRightGestures = false;
             break;
 
-        case QVirtualKeyboardInputEngine::Hebrew:
+        case QVirtualKeyboardInputEngine::InputMode::Hebrew:
             symbolCategories.append(DECUMA_CATEGORY_HEBREW_GL_HEBREW_CURSIVE_MODE);
             symbolCategories.append(DECUMA_CATEGORY_HEBREW_GL_HEBREW_LETTERSYMBOLS);
             symbolCategories.append(DECUMA_CATEGORY_HEBREW_SHEQEL);
@@ -838,24 +838,24 @@ public:
         symbolCategories.clear();
 
         switch (inputMode) {
-        case QVirtualKeyboardInputEngine::Latin:
+        case QVirtualKeyboardInputEngine::InputMode::Latin:
             symbolCategories.append(DECUMA_CATEGORY_ANSI);
             symbolCategories.append(DECUMA_CATEGORY_CJK_SYMBOL);
             symbolCategories.append(DECUMA_CATEGORY_PUNCTUATIONS);
             break;
 
-        case QVirtualKeyboardInputEngine::Numeric:
+        case QVirtualKeyboardInputEngine::InputMode::Numeric:
             symbolCategories.append(DECUMA_CATEGORY_DIGIT);
             symbolCategories.append(DECUMA_CATEGORY_CJK_SYMBOL);
             symbolCategories.append(DECUMA_CATEGORY_PUNCTUATIONS);
             break;
 
-        case QVirtualKeyboardInputEngine::Dialable:
+        case QVirtualKeyboardInputEngine::InputMode::Dialable:
             symbolCategories.append(DECUMA_CATEGORY_DIGIT);
             symbolCategories.append(DECUMA_CATEGORY_CJK_SYMBOL);
             break;
 
-        case QVirtualKeyboardInputEngine::ChineseHandwriting:
+        case QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting:
             switch (locale.script()) {
             case QLocale::SimplifiedChineseScript:
                 symbolCategories.append(DECUMA_CATEGORY_GB2312_A);
@@ -882,7 +882,7 @@ public:
             }
             break;
 
-        case QVirtualKeyboardInputEngine::JapaneseHandwriting:
+        case QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting:
             symbolCategories.append(DECUMA_CATEGORY_JIS_LEVEL_1);
             symbolCategories.append(DECUMA_CATEGORY_JIS_LEVEL_2);
             symbolCategories.append(DECUMA_CATEGORY_HIRAGANA);
@@ -894,7 +894,7 @@ public:
             symbolCategories.append(DECUMA_CATEGORY_PUNCTUATIONS);
             break;
 
-        case QVirtualKeyboardInputEngine::KoreanHandwriting:
+        case QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting:
             symbolCategories.append(DECUMA_CATEGORY_HANGUL_1001_A);
             symbolCategories.append(DECUMA_CATEGORY_HANGUL_1001_B);
             symbolCategories.append(DECUMA_CATEGORY_CJK_SYMBOL);
@@ -1026,8 +1026,8 @@ public:
             stringStart = preeditText;
             wordCandidates.append(preeditText);
             activeWordIndex = 0;
-            emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-            emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, activeWordIndex);
+            emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+            emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, activeWordIndex);
         }
 
         const int dpi = traceCaptureDeviceInfo.value("dpi", 96).toInt();
@@ -1238,8 +1238,8 @@ public:
             activeWordIndex = -1;
             if (emitSelectionListChanged) {
                 Q_Q(T9WriteInputMethod);
-                emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-                emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, activeWordIndex);
+                emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, activeWordIndex);
             }
             result = true;
         }
@@ -1283,7 +1283,7 @@ public:
                 if (finalWord.length() == 1) {
                     // In recording mode, the text case must match with the current text case
                     QChar ch(finalWord.at(0));
-                    if (!ch.isLetter() || (ch.isUpper() == (textCase == QVirtualKeyboardInputEngine::Upper))) {
+                    if (!ch.isLetter() || (ch.isUpper() == (textCase == QVirtualKeyboardInputEngine::TextCase::Upper))) {
                         QStringList homeLocations = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
                         if (!homeLocations.isEmpty()) {
                             unipenTrace->setDirectory(QStringLiteral("%1/%2").arg(homeLocations.at(0)).arg("VIRTUAL_KEYBOARD_TRACES"));
@@ -1359,7 +1359,7 @@ public:
                 if (i == 0) {
                     if (ic->shift()) {
                         caseFormatter.ensureLength(1, textCase);
-                        caseFormatter.ensureLength(resultChars.length(), QVirtualKeyboardInputEngine::Lower);
+                        caseFormatter.ensureLength(resultChars.length(), QVirtualKeyboardInputEngine::TextCase::Lower);
                     } else {
                         caseFormatter.ensureLength(resultChars.length(), textCase);
                     }
@@ -1420,9 +1420,9 @@ public:
 
             const QVirtualKeyboardInputEngine::InputMode inputMode = q->inputEngine()->inputMode();
             if (sessionSettings.recognitionMode == mcrMode && !symbolStrokes.isEmpty() &&
-                    inputMode != QVirtualKeyboardInputEngine::ChineseHandwriting &&
-                    inputMode != QVirtualKeyboardInputEngine::JapaneseHandwriting &&
-                    inputMode != QVirtualKeyboardInputEngine::KoreanHandwriting) {
+                    inputMode != QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting &&
+                    inputMode != QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting &&
+                    inputMode != QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting) {
                 int activeTraces = symbolStrokes.at(symbolStrokes.count() - 1).toInt();
                 if (symbolStrokes.count() > 1)
                     activeTraces += symbolStrokes.at(symbolStrokes.count() - 2).toInt();
@@ -1462,8 +1462,8 @@ public:
             wordCandidates = newWordCandidates;
             wordCandidatesHwrResultIndex = newWordCandidatesHwrResultIndex;
             activeWordIndex = wordCandidates.isEmpty() ? -1 : 0;
-            emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-            emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, activeWordIndex);
+            emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+            emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, activeWordIndex);
         }
 
         if (arcAdditionStarted && traceList.isEmpty() && worker->numberOfPendingTasks() == 0) {
@@ -1550,9 +1550,9 @@ public:
 
                 // Swipe right
                 const QVirtualKeyboardInputEngine::InputMode inputMode = q->inputEngine()->inputMode();
-                if (inputMode != QVirtualKeyboardInputEngine::ChineseHandwriting &&
-                        inputMode != QVirtualKeyboardInputEngine::JapaneseHandwriting &&
-                        inputMode != QVirtualKeyboardInputEngine::KoreanHandwriting) {
+                if (inputMode != QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting &&
+                        inputMode != QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting &&
+                        inputMode != QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting) {
                     if (swipeAngle <= SWIPE_ANGLE_THRESHOLD || swipeAngle >= 360 - SWIPE_ANGLE_THRESHOLD) {
                         if (swipeTouchCount == 1) {
                             // Single swipe: space
@@ -1571,17 +1571,17 @@ public:
                         if (!(ic->inputMethodHints() & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly))) {
                             QList<int> inputModes = ic->inputEngine()->inputModes();
                             // Filter out duplicate numeric mode (in favor of Numeric)
-                            int indexOfNumericInputMode = inputModes.indexOf(QVirtualKeyboardInputEngine::Numeric);
-                            int indexOfDialableInputMode = inputModes.indexOf(QVirtualKeyboardInputEngine::Dialable);
+                            int indexOfNumericInputMode = inputModes.indexOf(static_cast<const int>(QVirtualKeyboardInputEngine::InputMode::Numeric));
+                            int indexOfDialableInputMode = inputModes.indexOf(static_cast<const int>(QVirtualKeyboardInputEngine::InputMode::Dialable));
                             if (indexOfNumericInputMode != -1 && indexOfDialableInputMode != -1)
-                                inputModes.removeAt(inputMode != QVirtualKeyboardInputEngine::Dialable ?
+                                inputModes.removeAt(inputMode != QVirtualKeyboardInputEngine::InputMode::Dialable ?
                                             indexOfDialableInputMode :
                                             indexOfNumericInputMode);
                             if (inputModes.count() > 1) {
-                                int inputModeIndex = inputModes.indexOf((int)inputMode) + 1;
+                                int inputModeIndex = inputModes.indexOf(static_cast<const int>(inputMode)) + 1;
                                 if (inputModeIndex >= inputModes.count())
                                     inputModeIndex = 0;
-                                ic->inputEngine()->setInputMode((QVirtualKeyboardInputEngine::InputMode)inputModes.at(inputModeIndex));
+                                ic->inputEngine()->setInputMode(static_cast<QVirtualKeyboardInputEngine::InputMode>(inputModes.at(inputModeIndex)));
                             }
                         }
                         return true;
@@ -1704,28 +1704,28 @@ QList<QVirtualKeyboardInputEngine::InputMode> T9WriteInputMethod::inputModes(con
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly))) {
             switch (loc.script()) {
             case QLocale::GreekScript:
-                availableInputModes.append(QVirtualKeyboardInputEngine::Greek);
+                availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Greek);
                 break;
             case QLocale::CyrillicScript:
-                availableInputModes.append(QVirtualKeyboardInputEngine::Cyrillic);
+                availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Cyrillic);
                 break;
             default:
                 break;
             }
-            availableInputModes.append(QVirtualKeyboardInputEngine::Latin);
+            availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Latin);
         }
         break;
     case T9WriteInputMethodPrivate::Arabic:
         if (d->findHwrDb(T9WriteInputMethodPrivate::Arabic, d->defaultHwrDbPath).isEmpty())
             return availableInputModes;
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
-            availableInputModes.append(QVirtualKeyboardInputEngine::Arabic);
+            availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Arabic);
         break;
     case T9WriteInputMethodPrivate::Hebrew:
         if (d->findHwrDb(T9WriteInputMethodPrivate::Hebrew, d->defaultHwrDbPath).isEmpty())
             return availableInputModes;
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
-            availableInputModes.append(QVirtualKeyboardInputEngine::Hebrew);
+            availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Hebrew);
         break;
 #endif
 #ifdef HAVE_T9WRITE_CJK
@@ -1735,19 +1735,19 @@ QList<QVirtualKeyboardInputEngine::InputMode> T9WriteInputMethod::inputModes(con
         if (d->findHwrDb(mode, d->defaultHwrDbPath).isEmpty())
             return availableInputModes;
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
-            availableInputModes.append(QVirtualKeyboardInputEngine::ChineseHandwriting);
+            availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting);
         break;
     case T9WriteInputMethodPrivate::Japanese:
         if (d->findHwrDb(T9WriteInputMethodPrivate::Japanese, d->defaultHwrDbPath).isEmpty())
             return availableInputModes;
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
-            availableInputModes.append(QVirtualKeyboardInputEngine::JapaneseHandwriting);
+            availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting);
         break;
     case T9WriteInputMethodPrivate::Korean:
         if (d->findHwrDb(T9WriteInputMethodPrivate::Korean, d->defaultHwrDbPath).isEmpty())
             return availableInputModes;
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
-            availableInputModes.append(QVirtualKeyboardInputEngine::KoreanHandwriting);
+            availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting);
         break;
 #endif
     default:
@@ -1756,17 +1756,17 @@ QList<QVirtualKeyboardInputEngine::InputMode> T9WriteInputMethod::inputModes(con
 
     // Add exclusive input modes
     if (inputMethodHints.testFlag(Qt::ImhDialableCharactersOnly) || inputMethodHints.testFlag(Qt::ImhDigitsOnly)) {
-        availableInputModes.append(QVirtualKeyboardInputEngine::Dialable);
+        availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Dialable);
     } else if (inputMethodHints.testFlag(Qt::ImhFormattedNumbersOnly)) {
-        availableInputModes.append(QVirtualKeyboardInputEngine::Numeric);
+        availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Numeric);
     } else if (inputMethodHints.testFlag(Qt::ImhLatinOnly)) {
-        availableInputModes.append(QVirtualKeyboardInputEngine::Latin);
+        availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Latin);
     } else {
         // Add other input modes
         Q_ASSERT(!availableInputModes.isEmpty());
-        if (!availableInputModes.contains(QVirtualKeyboardInputEngine::Latin))
-            availableInputModes.append(QVirtualKeyboardInputEngine::Latin);
-        availableInputModes.append(QVirtualKeyboardInputEngine::Numeric);
+        if (!availableInputModes.contains(QVirtualKeyboardInputEngine::InputMode::Latin))
+            availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Latin);
+        availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Numeric);
     }
 
     return availableInputModes;
@@ -1821,8 +1821,8 @@ bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
                 d->stringStart = preeditText;
                 d->wordCandidates.append(preeditText);
                 d->activeWordIndex = 0;
-                emit selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-                emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, d->activeWordIndex);
+                emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->activeWordIndex);
                 return true;
             } else {
                 bool result = !preeditText.isEmpty();
@@ -1853,8 +1853,8 @@ bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
                 d->stringStart = preeditText;
                 d->wordCandidates.append(preeditText);
                 d->activeWordIndex = 0;
-                emit selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-                emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, d->activeWordIndex);
+                emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->activeWordIndex);
                 return true;
             } else {
                 ic->commit();
@@ -1885,7 +1885,7 @@ void T9WriteInputMethod::update()
 
 QList<QVirtualKeyboardSelectionListModel::Type> T9WriteInputMethod::selectionLists()
 {
-    return QList<QVirtualKeyboardSelectionListModel::Type>() << QVirtualKeyboardSelectionListModel::WordCandidateList;
+    return QList<QVirtualKeyboardSelectionListModel::Type>() << QVirtualKeyboardSelectionListModel::Type::WordCandidateList;
 }
 
 int T9WriteInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
@@ -1895,15 +1895,15 @@ int T9WriteInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListMode
     return d->wordCandidates.count();
 }
 
-QVariant T9WriteInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, int role)
+QVariant T9WriteInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 {
     QVariant result;
     Q_D(T9WriteInputMethod);
     switch (role) {
-    case QVirtualKeyboardSelectionListModel::DisplayRole:
+    case QVirtualKeyboardSelectionListModel::Role::Display:
         result = QVariant(d->wordCandidates.at(index));
         break;
-    case QVirtualKeyboardSelectionListModel::WordCompletionLengthRole:
+    case QVirtualKeyboardSelectionListModel::Role::WordCompletionLength:
         result.setValue(0);
         break;
     default:
@@ -1923,7 +1923,7 @@ void T9WriteInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionList
 QList<QVirtualKeyboardInputEngine::PatternRecognitionMode> T9WriteInputMethod::patternRecognitionModes() const
 {
     return QList<QVirtualKeyboardInputEngine::PatternRecognitionMode>()
-            << QVirtualKeyboardInputEngine::HandwritingRecoginition;
+            << QVirtualKeyboardInputEngine::PatternRecognitionMode::Handwriting;
 }
 
 QVirtualKeyboardTrace *T9WriteInputMethod::traceBegin(
@@ -1953,13 +1953,13 @@ bool T9WriteInputMethod::reselect(int cursorPosition, const QVirtualKeyboardInpu
         return false;
 
     const QVirtualKeyboardInputEngine::InputMode inputMode = inputEngine()->inputMode();
-    const int maxLength = (inputMode == QVirtualKeyboardInputEngine::ChineseHandwriting ||
-            inputMode == QVirtualKeyboardInputEngine::JapaneseHandwriting ||
-            inputMode == QVirtualKeyboardInputEngine::KoreanHandwriting) ? 0 : 32;
+    const int maxLength = (inputMode == QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting ||
+            inputMode == QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting ||
+            inputMode == QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting) ? 0 : 32;
     const QString surroundingText = ic->surroundingText();
     int replaceFrom = 0;
 
-    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::WordBeforeCursor)) {
+    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::ReselectFlag::WordBeforeCursor)) {
         for (int i = cursorPosition - 1; i >= 0 && d->stringStart.length() < maxLength; --i) {
             QChar c = surroundingText.at(i);
             if (!d->isValidInputChar(c))
@@ -1974,12 +1974,12 @@ bool T9WriteInputMethod::reselect(int cursorPosition, const QVirtualKeyboardInpu
         }
     }
 
-    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::WordAtCursor) && replaceFrom == 0) {
+    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::ReselectFlag::WordAtCursor) && replaceFrom == 0) {
         d->stringStart.clear();
         return false;
     }
 
-    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::WordAfterCursor)) {
+    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::ReselectFlag::WordAfterCursor)) {
         for (int i = cursorPosition; i < surroundingText.length() && d->stringStart.length() < maxLength; ++i) {
             QChar c = surroundingText.at(i);
             if (!d->isValidInputChar(c))
@@ -1998,7 +1998,7 @@ bool T9WriteInputMethod::reselect(int cursorPosition, const QVirtualKeyboardInpu
     if (d->stringStart.isEmpty())
         return false;
 
-    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::WordAtCursor) && replaceFrom == -d->stringStart.length() && d->stringStart.length() < maxLength) {
+    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::ReselectFlag::WordAtCursor) && replaceFrom == -d->stringStart.length() && d->stringStart.length() < maxLength) {
         d->stringStart.clear();
         return false;
     }
@@ -2015,11 +2015,11 @@ bool T9WriteInputMethod::reselect(int cursorPosition, const QVirtualKeyboardInpu
 
     ic->setPreeditText(d->stringStart, QList<QInputMethodEvent::Attribute>(), replaceFrom, d->stringStart.length());
     for (int i = 0; i < d->stringStart.length(); ++i)
-        d->caseFormatter.ensureLength(i + 1, d->stringStart.at(i).isUpper() ? QVirtualKeyboardInputEngine::Upper : QVirtualKeyboardInputEngine::Lower);
+        d->caseFormatter.ensureLength(i + 1, d->stringStart.at(i).isUpper() ? QVirtualKeyboardInputEngine::TextCase::Upper : QVirtualKeyboardInputEngine::TextCase::Lower);
     d->wordCandidates.append(d->stringStart);
     d->activeWordIndex = 0;
-    emit selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, d->activeWordIndex);
+    emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->activeWordIndex);
 
     return true;
 }
@@ -2050,9 +2050,9 @@ void T9WriteInputMethod::timerEvent(QTimerEvent *timerEvent)
             }
 
             const QVirtualKeyboardInputEngine::InputMode inputMode = inputEngine()->inputMode();
-            if (inputMode != QVirtualKeyboardInputEngine::ChineseHandwriting &&
-                    inputMode != QVirtualKeyboardInputEngine::JapaneseHandwriting &&
-                    inputMode != QVirtualKeyboardInputEngine::KoreanHandwriting) {
+            if (inputMode != QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting &&
+                    inputMode != QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting &&
+                    inputMode != QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting) {
                 d->clearTraces();
             }
 #endif

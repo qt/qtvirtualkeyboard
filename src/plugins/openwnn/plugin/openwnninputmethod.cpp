@@ -65,7 +65,7 @@ public:
 
     OpenWnnInputMethodPrivate(OpenWnnInputMethod *q_ptr) :
         q_ptr(q_ptr),
-        inputMode(QVirtualKeyboardInputEngine::Latin),
+        inputMode(QVirtualKeyboardInputEngine::InputMode::Latin),
         exactMatchMode(false),
         converter(nullptr),
         converterJAJP(),
@@ -318,9 +318,9 @@ public:
 
         Q_Q(OpenWnnInputMethod);
         if (!candidateList.isEmpty() || !wasEmpty)
-            emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
+            emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
         if (previousActiveWordIndex != activeWordIndex)
-            emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, activeWordIndex);
+            emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, activeWordIndex);
     }
 
     void clearCandidates(bool deferUpdate = false)
@@ -329,7 +329,7 @@ public:
             candidateList.clear();
             if (!deferUpdate) {
                 Q_Q(OpenWnnInputMethod);
-                emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
+                emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
             }
             clearFocusCandidate(deferUpdate);
         }
@@ -343,7 +343,7 @@ public:
         activeWordIndex++;
         if (activeWordIndex >= candidateList.size())
             activeWordIndex = 0;
-        emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, activeWordIndex);
+        emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, activeWordIndex);
         return candidateList.at(activeWordIndex);
     }
 
@@ -353,7 +353,7 @@ public:
         if (activeWordIndex != -1) {
             activeWordIndex = -1;
             if (!deferUpdate)
-                emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, activeWordIndex);
+                emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, activeWordIndex);
         }
     }
 
@@ -373,7 +373,7 @@ public:
             enableConverter = false;
         }
 
-        if (inputMode != QVirtualKeyboardInputEngine::Hiragana ||
+        if (inputMode != QVirtualKeyboardInputEngine::InputMode::Hiragana ||
             inputMethodHints.testFlag(Qt::ImhHiddenText) ||
             inputMethodHints.testFlag(Qt::ImhSensitiveData) ||
             inputMethodHints.testFlag(Qt::ImhNoPredictiveText)) {
@@ -381,7 +381,7 @@ public:
                 enablePrediction = false;
                 emit q->selectionListsChanged();
             }
-        } else if (inputMode == QVirtualKeyboardInputEngine::Hiragana && !enablePrediction) {
+        } else if (inputMode == QVirtualKeyboardInputEngine::InputMode::Hiragana && !enablePrediction) {
             enablePrediction = true;
             emit q->selectionListsChanged();
         }
@@ -621,10 +621,10 @@ QList<QVirtualKeyboardInputEngine::InputMode> OpenWnnInputMethod::inputModes(con
 {
     Q_UNUSED(locale)
     return QList<QVirtualKeyboardInputEngine::InputMode>()
-            << QVirtualKeyboardInputEngine::Hiragana
-            << QVirtualKeyboardInputEngine::Katakana
-            << QVirtualKeyboardInputEngine::FullwidthLatin
-            << QVirtualKeyboardInputEngine::Latin;
+            << QVirtualKeyboardInputEngine::InputMode::Hiragana
+            << QVirtualKeyboardInputEngine::InputMode::Katakana
+            << QVirtualKeyboardInputEngine::InputMode::FullwidthLatin
+            << QVirtualKeyboardInputEngine::InputMode::Latin;
 }
 
 bool OpenWnnInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)
@@ -635,11 +635,11 @@ bool OpenWnnInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInp
         return true;
     update();
     switch (inputMode) {
-    case QVirtualKeyboardInputEngine::Hiragana:
+    case QVirtualKeyboardInputEngine::InputMode::Hiragana:
         d->changeEngineMode(OpenWnnInputMethodPrivate::ENGINE_MODE_DEFAULT);
         break;
 
-    case QVirtualKeyboardInputEngine::Katakana:
+    case QVirtualKeyboardInputEngine::InputMode::Katakana:
         d->changeEngineMode(OpenWnnInputMethodPrivate::ENGINE_MODE_FULL_KATAKANA);
         break;
 
@@ -773,7 +773,7 @@ QList<QVirtualKeyboardSelectionListModel::Type> OpenWnnInputMethod::selectionLis
     Q_D(OpenWnnInputMethod);
     if (!d->enablePrediction)
         return QList<QVirtualKeyboardSelectionListModel::Type>();
-    return QList<QVirtualKeyboardSelectionListModel::Type>() << QVirtualKeyboardSelectionListModel::WordCandidateList;
+    return QList<QVirtualKeyboardSelectionListModel::Type>() << QVirtualKeyboardSelectionListModel::Type::WordCandidateList;
 }
 
 int OpenWnnInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
@@ -783,15 +783,15 @@ int OpenWnnInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListMode
     return d->candidateList.size();
 }
 
-QVariant OpenWnnInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, int role)
+QVariant OpenWnnInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 {
     QVariant result;
     Q_D(OpenWnnInputMethod);
     switch (role) {
-    case QVirtualKeyboardSelectionListModel::DisplayRole:
+    case QVirtualKeyboardSelectionListModel::Role::Display:
         result = QVariant(d->candidateList.at(index)->candidate);
         break;
-    case QVirtualKeyboardSelectionListModel::WordCompletionLengthRole:
+    case QVirtualKeyboardSelectionListModel::Role::WordCompletionLength:
         result.setValue(0);
         break;
     default:

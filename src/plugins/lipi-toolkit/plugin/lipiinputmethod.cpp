@@ -80,7 +80,7 @@ public:
 #endif
         q_ptr(q_ptr),
         recognizeTimer(0),
-        textCase(QVirtualKeyboardInputEngine::Lower)
+        textCase(QVirtualKeyboardInputEngine::TextCase::Lower)
 #ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
         , unipenTrace(0)
 #endif
@@ -278,7 +278,7 @@ public:
 #ifdef HAVE_HUNSPELL
                         int activeWordIndex = wordCandidates.index();
                         if (activeWordIndex != -1) {
-                            q->selectionListItemSelected(QVirtualKeyboardSelectionListModel::WordCandidateList, activeWordIndex);
+                            q->selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, activeWordIndex);
                             return;
                         }
 #endif
@@ -298,8 +298,8 @@ public:
                         cancelRecognition();
                         if (!(ic->inputMethodHints() & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly))) {
                             QVirtualKeyboardInputEngine::InputMode inputMode = ic->inputEngine()->inputMode();
-                            inputMode = inputMode == QVirtualKeyboardInputEngine::Latin ?
-                                        QVirtualKeyboardInputEngine::Numeric : QVirtualKeyboardInputEngine::Latin;
+                            inputMode = inputMode == QVirtualKeyboardInputEngine::InputMode::Latin ?
+                                        QVirtualKeyboardInputEngine::InputMode::Numeric : QVirtualKeyboardInputEngine::InputMode::Latin;
                             ic->inputEngine()->setInputMode(inputMode);
                         }
                     } else if (swipeTouchCount == 2) {
@@ -422,7 +422,7 @@ public:
 #ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
         // In recording mode, the text case must match with the current text case
         if (unipenTrace) {
-            if (!ch.isLetter() || (ch.isUpper() == (textCase == QVirtualKeyboardInputEngine::Upper)))
+            if (!ch.isLetter() || (ch.isUpper() == (textCase == QVirtualKeyboardInputEngine::TextCase::Upper)))
                 saveTraces(ch.unicode(), qRound(result["confidence"].toDouble() * 100));
             delete unipenTrace;
             unipenTrace = 0;
@@ -430,7 +430,7 @@ public:
 #endif
         Q_Q(LipiInputMethod);
         q->inputContext()->inputEngine()->virtualKeyClick((Qt::Key)chUpper.unicode(),
-                    textCase == QVirtualKeyboardInputEngine::Lower ? QString(ch.toLower()) : QString(chUpper),
+                    textCase == QVirtualKeyboardInputEngine::TextCase::Lower ? QString(ch.toLower()) : QString(chUpper),
                     Qt::NoModifier);
     }
 
@@ -499,12 +499,12 @@ QList<QVirtualKeyboardInputEngine::InputMode> LipiInputMethod::inputModes(const 
     const Qt::InputMethodHints inputMethodHints(inputContext()->inputMethodHints());
 
     if (inputMethodHints.testFlag(Qt::ImhDialableCharactersOnly) || inputMethodHints.testFlag(Qt::ImhDigitsOnly)) {
-        availableInputModes.append(QVirtualKeyboardInputEngine::Dialable);
+        availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Dialable);
     } else if (inputMethodHints.testFlag(Qt::ImhFormattedNumbersOnly)) {
-        availableInputModes.append(QVirtualKeyboardInputEngine::Numeric);
+        availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Numeric);
     } else {
-        availableInputModes.append(QVirtualKeyboardInputEngine::Latin);
-        availableInputModes.append(QVirtualKeyboardInputEngine::Numeric);
+        availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Latin);
+        availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Numeric);
     }
 
     return availableInputModes;
@@ -523,11 +523,11 @@ bool LipiInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputE
         return false;
     d->subsetOfClasses.clear();
     switch (inputMode) {
-    case QVirtualKeyboardInputEngine::Latin:
+    case QVirtualKeyboardInputEngine::InputMode::Latin:
         d->recognizer.subsetOfClasses(QStringLiteral("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz?,.@"), d->subsetOfClasses);
         break;
-    case QVirtualKeyboardInputEngine::Numeric:
-    case QVirtualKeyboardInputEngine::Dialable:
+    case QVirtualKeyboardInputEngine::InputMode::Numeric:
+    case QVirtualKeyboardInputEngine::InputMode::Dialable:
         d->recognizer.subsetOfClasses(QStringLiteral("1234567890,.+"), d->subsetOfClasses);
         break;
     default:
@@ -593,7 +593,7 @@ void LipiInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionListMod
 QList<QVirtualKeyboardInputEngine::PatternRecognitionMode> LipiInputMethod::patternRecognitionModes() const
 {
     return QList<QVirtualKeyboardInputEngine::PatternRecognitionMode>()
-            << QVirtualKeyboardInputEngine::HandwritingRecoginition;
+            << QVirtualKeyboardInputEngine::PatternRecognitionMode::Handwriting;
 }
 
 QVirtualKeyboardTrace *LipiInputMethod::traceBegin(

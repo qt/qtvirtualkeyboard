@@ -35,7 +35,7 @@ KeyboardLayoutLoader {
         return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.3; JapaneseInputMethod {}', parent, "japaneseInputMethod")
     }
     sharedLayouts: ['symbols']
-    sourceComponent: InputContext.inputEngine.inputMode === InputEngine.FullwidthLatin ? page2 : page1
+    sourceComponent: InputContext.inputEngine.inputMode === InputEngine.InputMode.FullwidthLatin ? page2 : page1
     Component {
         id: page1
         KeyboardLayout {
@@ -132,16 +132,16 @@ KeyboardLayoutLoader {
                 InputModeKey {
                     enabled: !(InputContext.inputMethodHints & Qt.ImhLatinOnly) && inputModeCount > 1
                     inputModeNameList: [
-                        "半角",  // InputEngine.Latin
-                        "",     // InputEngine.Numeric
-                        "",     // InputEngine.Dialable
-                        "",     // InputEngine.Pinyin
-                        "",     // InputEngine.Cangjie
-                        "",     // InputEngine.Zhuyin
-                        "",     // InputEngine.Hangul
-                        "あ",    // InputEngine.Hiragana
-                        "カ",    // InputEngine.Katakana
-                        "全角",  // InputEngine.FullwidthLatin
+                        "半角",  // InputEngine.InputMode.Latin
+                        "",     // InputEngine.InputMode.Numeric
+                        "",     // InputEngine.InputMode.Dialable
+                        "",     // InputEngine.InputMode.Pinyin
+                        "",     // InputEngine.InputMode.Cangjie
+                        "",     // InputEngine.InputMode.Zhuyin
+                        "",     // InputEngine.InputMode.Hangul
+                        "あ",    // InputEngine.InputMode.Hiragana
+                        "カ",    // InputEngine.InputMode.Katakana
+                        "全角",  // InputEngine.InputMode.FullwidthLatin
                     ]
                 }
                 Key {
@@ -211,7 +211,7 @@ KeyboardLayoutLoader {
                 }
                 SpaceKey {
                     weight: 556
-                    text: InputContext.inputEngine.inputMode != InputEngine.Latin ? "\u3000" : " "
+                    text: InputContext.inputEngine.inputMode != InputEngine.InputMode.Latin ? "\u3000" : " "
                 }
                 Key {
                     key: Qt.Key_Slash

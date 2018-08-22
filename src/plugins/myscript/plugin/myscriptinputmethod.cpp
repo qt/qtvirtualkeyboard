@@ -134,7 +134,7 @@ public:
         m_onManagingResult(false),
         m_isProcessing(false),
         m_commitTimer(0),
-        textCase(QVirtualKeyboardInputEngine::Lower),
+        textCase(QVirtualKeyboardInputEngine::TextCase::Lower),
         wordIndex(-1),
         m_itemIndex(-1),
         m_preeditCursorPosition(0)
@@ -877,8 +877,8 @@ public:
     {
         Q_Q(MyScriptInputMethod);
 
-        emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-        emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, wordIndex);
+        emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+        emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, wordIndex);
     }
 
     void updatePreeditTextCursor(int cursorPosition)
@@ -976,7 +976,7 @@ QList<QVirtualKeyboardInputEngine::InputMode> MyScriptInputMethod::inputModes(co
 {
     Q_UNUSED(locale);
     return QList<QVirtualKeyboardInputEngine::InputMode>()
-            << QVirtualKeyboardInputEngine::Latin;
+            << QVirtualKeyboardInputEngine::InputMode::Latin;
 }
 
 bool MyScriptInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)
@@ -1038,30 +1038,30 @@ void MyScriptInputMethod::update()
 
 QList<QVirtualKeyboardSelectionListModel::Type> MyScriptInputMethod::selectionLists()
 {
-    return QList<QVirtualKeyboardSelectionListModel::Type>() << QVirtualKeyboardSelectionListModel::WordCandidateList;
+    return QList<QVirtualKeyboardSelectionListModel::Type>() << QVirtualKeyboardSelectionListModel::Type::WordCandidateList;
 }
 
 int MyScriptInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
 {
     Q_D(MyScriptInputMethod);
 
-    if (type != QVirtualKeyboardSelectionListModel::WordCandidateList)
+    if (type != QVirtualKeyboardSelectionListModel::Type::WordCandidateList)
         return 0;
 
     return d->wordCandidates.count();
 }
 
-QVariant MyScriptInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, int role)
+QVariant MyScriptInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 {
     Q_D(MyScriptInputMethod);
 
-    if (type != QVirtualKeyboardSelectionListModel::WordCandidateList)
+    if (type != QVirtualKeyboardSelectionListModel::Type::WordCandidateList)
         return QVariant();
 
     switch (role) {
-    case QVirtualKeyboardSelectionListModel::DisplayRole:
+    case QVirtualKeyboardSelectionListModel::Role::Display:
         return QVariant(d->wordCandidates.at(index));
-    case QVirtualKeyboardSelectionListModel::WordCompletionLengthRole:
+    case QVirtualKeyboardSelectionListModel::Role::WordCompletionLength:
     {
         const QString wordCandidate(d->wordCandidates.at(index));
         int wordCompletionLength = wordCandidate.length() - d->word.length();
@@ -1103,7 +1103,7 @@ void MyScriptInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionLis
 QList<QVirtualKeyboardInputEngine::PatternRecognitionMode> MyScriptInputMethod::patternRecognitionModes() const
 {
     return QList<QVirtualKeyboardInputEngine::PatternRecognitionMode>()
-            << QVirtualKeyboardInputEngine::HandwritingRecoginition;
+            << QVirtualKeyboardInputEngine::PatternRecognitionMode::Handwriting;
 }
 
 QVirtualKeyboardTrace *MyScriptInputMethod::traceBegin(

@@ -180,7 +180,7 @@ KeyboardLayoutLoader {
                 keyWeight: 154
                 SymbolModeKey {
                     weight: 217
-                    displayText: InputContext.inputEngine.inputMode === InputEngine.Cyrillic ? "АБВ" : "ABC"
+                    displayText: InputContext.inputEngine.inputMode === InputEngine.InputMode.Cyrillic ? "АБВ" : "ABC"
                 }
                 ChangeLanguageKey {
                     weight: 154
@@ -350,7 +350,7 @@ KeyboardLayoutLoader {
                 keyWeight: 154
                 SymbolModeKey {
                     weight: 217
-                    displayText: InputContext.inputEngine.inputMode === InputEngine.Cyrillic ? "АБВ" : "ABC"
+                    displayText: InputContext.inputEngine.inputMode === InputEngine.InputMode.Cyrillic ? "АБВ" : "ABC"
                 }
                 ChangeLanguageKey {
                     weight: 154

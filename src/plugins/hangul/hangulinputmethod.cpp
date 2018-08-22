@@ -51,7 +51,7 @@ HangulInputMethod::~HangulInputMethod()
 QList<QVirtualKeyboardInputEngine::InputMode> HangulInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::Hangul;
+    return QList<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::Hangul;
 }
 
 bool HangulInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)

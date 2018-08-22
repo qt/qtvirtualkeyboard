@@ -44,7 +44,7 @@ KeyboardLayout {
             KeyboardRow {
                 TraceInputKey {
                     objectName: "hwrInputArea"
-                    patternRecognitionMode: InputEngine.HandwritingRecoginition
+                    patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
                 }
             }
         }

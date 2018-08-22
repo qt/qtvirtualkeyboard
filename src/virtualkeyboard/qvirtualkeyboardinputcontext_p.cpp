@@ -239,7 +239,7 @@ void QVirtualKeyboardInputContextPrivate::forceCursorPosition(int anchorPosition
         if (!inputMethodHints.testFlag(Qt::ImhNoPredictiveText) &&
                    cursorPosition > 0 && selectedText.isEmpty()) {
             stateFlags |= QVirtualKeyboardInputContextPrivate::ReselectEventState;
-            if (inputEngine->reselect(cursorPosition, QVirtualKeyboardInputEngine::WordAtCursor))
+            if (inputEngine->reselect(cursorPosition, QVirtualKeyboardInputEngine::ReselectFlag::WordAtCursor))
                 stateFlags |= QVirtualKeyboardInputContextPrivate::InputMethodClickState;
             stateFlags &= ~QVirtualKeyboardInputContextPrivate::ReselectEventState;
         }
@@ -415,7 +415,7 @@ void QVirtualKeyboardInputContextPrivate::update(Qt::InputMethodQueries queries)
             !inputMethodHints.testFlag(Qt::ImhNoPredictiveText) &&
             cursorPosition > 0 && this->selectedText.isEmpty()) {
         stateFlags |= QVirtualKeyboardInputContextPrivate::ReselectEventState;
-        if (inputEngine->reselect(cursorPosition, QVirtualKeyboardInputEngine::WordAtCursor))
+        if (inputEngine->reselect(cursorPosition, QVirtualKeyboardInputEngine::ReselectFlag::WordAtCursor))
             stateFlags |= QVirtualKeyboardInputContextPrivate::InputMethodClickState;
         stateFlags &= ~QVirtualKeyboardInputContextPrivate::ReselectEventState;
     }
@@ -440,7 +440,7 @@ void QVirtualKeyboardInputContextPrivate::invokeAction(QInputMethod::Action acti
                 stateFlags |= QVirtualKeyboardInputContextPrivate::ReselectEventState;
                 _forceCursorPosition = this->cursorPosition + cursorPosition;
                 commit();
-                inputEngine->reselect(this->cursorPosition, QVirtualKeyboardInputEngine::WordBeforeCursor);
+                inputEngine->reselect(this->cursorPosition, QVirtualKeyboardInputEngine::ReselectFlag::WordBeforeCursor);
                 stateFlags &= ~QVirtualKeyboardInputContextPrivate::ReselectEventState;
             } else if (!preeditText.isEmpty() && cursorPosition == preeditText.length()) {
                 commit();

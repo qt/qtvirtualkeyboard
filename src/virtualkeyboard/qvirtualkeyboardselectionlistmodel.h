@@ -48,25 +48,28 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardSelectionListModel : public QAbstr
     explicit QVirtualKeyboardSelectionListModel(QObject *parent = nullptr);
 
 public:
-    enum Type
+    enum class Type
     {
         WordCandidateList = 0
     };
-    enum Role
-    {
-        DisplayRole = Qt::DisplayRole,
-        WordCompletionLengthRole = Qt::UserRole + 1,
-        DictionaryTypeRole,
-        CanRemoveSuggestionRole,
-    };
-    enum DictionaryType
-    {
-        DefaultDictionary = 0,
-        UserDictionary
-    };
-
     Q_ENUM(Type)
+
+    enum class Role
+    {
+        Display = Qt::DisplayRole,
+        DisplayRole = Display,
+        WordCompletionLength = Qt::UserRole + 1,
+        WordCompletionLengthRole = WordCompletionLength,
+        Dictionary,
+        CanRemoveSuggestion
+    };
     Q_ENUM(Role)
+
+    enum class DictionaryType
+    {
+        Default = 0,
+        User
+    };
     Q_ENUM(DictionaryType)
 
     ~QVirtualKeyboardSelectionListModel();
@@ -80,7 +83,7 @@ public:
 
     Q_INVOKABLE void selectItem(int index);
     Q_INVOKABLE void removeItem(int index);
-    Q_INVOKABLE QVariant dataAt(int index, int role = Qt::DisplayRole) const;
+    Q_INVOKABLE QVariant dataAt(int index, Role role = Role::Display) const;
 
 Q_SIGNALS:
     void countChanged();
@@ -88,8 +91,8 @@ Q_SIGNALS:
     void itemSelected(int index);
 
 protected Q_SLOTS:
-    void selectionListChanged(int type);
-    void selectionListActiveItemChanged(int type, int index);
+    void selectionListChanged(Type type);
+    void selectionListActiveItemChanged(Type type, int index);
 
 private:
     friend class QVirtualKeyboardInputEngine;

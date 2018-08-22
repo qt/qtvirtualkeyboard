@@ -53,22 +53,22 @@ QList<QVirtualKeyboardInputEngine::InputMode> PlainInputMethod::inputModes(const
     QList<QVirtualKeyboardInputEngine::InputMode> result;
     switch (QLocale(locale).script()) {
     case QLocale::GreekScript:
-        result.append(QVirtualKeyboardInputEngine::Greek);
+        result.append(QVirtualKeyboardInputEngine::InputMode::Greek);
         break;
     case QLocale::CyrillicScript:
-        result.append(QVirtualKeyboardInputEngine::Cyrillic);
+        result.append(QVirtualKeyboardInputEngine::InputMode::Cyrillic);
         break;
     case QLocale::ArabicScript:
-        result.append(QVirtualKeyboardInputEngine::Arabic);
+        result.append(QVirtualKeyboardInputEngine::InputMode::Arabic);
         break;
     case QLocale::HebrewScript:
-        result.append(QVirtualKeyboardInputEngine::Hebrew);
+        result.append(QVirtualKeyboardInputEngine::InputMode::Hebrew);
         break;
     default:
         break;
     }
-    result.append(QVirtualKeyboardInputEngine::Latin);
-    result.append(QVirtualKeyboardInputEngine::Numeric);
+    result.append(QVirtualKeyboardInputEngine::InputMode::Latin);
+    result.append(QVirtualKeyboardInputEngine::InputMode::Numeric);
     return result;
 }
 

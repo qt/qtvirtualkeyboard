@@ -36,7 +36,7 @@ KeyboardLayoutLoader {
         return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.3; TCInputMethod {}', parent, "tcInputMethod")
     }
     sharedLayouts: ['symbols']
-    sourceComponent: InputContext.inputEngine.inputMode === InputEngine.Cangjie ? pageCangjie : pageZhuyin
+    sourceComponent: InputContext.inputEngine.inputMode === InputEngine.InputMode.Cangjie ? pageCangjie : pageZhuyin
     Component {
         id: pageCangjie
         KeyboardLayout {
@@ -201,7 +201,7 @@ KeyboardLayoutLoader {
                     weight: 154
                 }
                 InputModeKey {
-                    visible: InputContext.inputEngine.inputModes.indexOf(InputEngine.Zhuyin) !== -1
+                    visible: InputContext.inputEngine.inputModes.indexOf(InputEngine.InputMode.Zhuyin) !== -1
                 }
                 SpaceKey {
                     weight: 864
@@ -429,7 +429,7 @@ KeyboardLayoutLoader {
                     weight: 154
                 }
                 InputModeKey {
-                    visible: InputContext.inputEngine.inputModes.indexOf(InputEngine.Cangjie) !== -1
+                    visible: InputContext.inputEngine.inputModes.indexOf(InputEngine.InputMode.Cangjie) !== -1
                 }
                 SpaceKey {
                     weight: 864

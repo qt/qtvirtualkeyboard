@@ -62,22 +62,22 @@ QList<QVirtualKeyboardInputEngine::InputMode> HunspellInputMethod::inputModes(co
     QList<QVirtualKeyboardInputEngine::InputMode> result;
     switch (QLocale(locale).script()) {
     case QLocale::GreekScript:
-        result.append(QVirtualKeyboardInputEngine::Greek);
+        result.append(QVirtualKeyboardInputEngine::InputMode::Greek);
         break;
     case QLocale::CyrillicScript:
-        result.append(QVirtualKeyboardInputEngine::Cyrillic);
+        result.append(QVirtualKeyboardInputEngine::InputMode::Cyrillic);
         break;
     case QLocale::ArabicScript:
-        result.append(QVirtualKeyboardInputEngine::Arabic);
+        result.append(QVirtualKeyboardInputEngine::InputMode::Arabic);
         break;
     case QLocale::HebrewScript:
-        result.append(QVirtualKeyboardInputEngine::Hebrew);
+        result.append(QVirtualKeyboardInputEngine::InputMode::Hebrew);
         break;
     default:
         break;
     }
-    result.append(QVirtualKeyboardInputEngine::Latin);
-    result.append(QVirtualKeyboardInputEngine::Numeric);
+    result.append(QVirtualKeyboardInputEngine::InputMode::Latin);
+    result.append(QVirtualKeyboardInputEngine::InputMode::Numeric);
     return result;
 }
 
@@ -116,8 +116,8 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
             if (!word.isEmpty()) {
                 d->wordCandidates.updateWord(0, word);
                 if (d->updateSuggestions()) {
-                    emit selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-                    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, d->wordCandidates.index());
+                    emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->wordCandidates.index());
                 }
             } else {
                 d->reset();
@@ -167,8 +167,8 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
                 ic->setPreeditText(word);
                 d->ignoreUpdate = false;
                 if (d->updateSuggestions()) {
-                    emit selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-                    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, d->wordCandidates.index());
+                    emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->wordCandidates.index());
                 }
                 accept = true;
             } else if (text.length() > 1) {
@@ -201,7 +201,7 @@ QList<QVirtualKeyboardSelectionListModel::Type> HunspellInputMethod::selectionLi
     Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
     if (d->dictionaryState == HunspellInputMethodPrivate::DictionaryNotLoaded || inputMethodHints.testFlag(Qt::ImhNoPredictiveText) || inputMethodHints.testFlag(Qt::ImhHiddenText))
         return QList<QVirtualKeyboardSelectionListModel::Type>();
-    return QList<QVirtualKeyboardSelectionListModel::Type>() << QVirtualKeyboardSelectionListModel::WordCandidateList;
+    return QList<QVirtualKeyboardSelectionListModel::Type>() << QVirtualKeyboardSelectionListModel::Type::WordCandidateList;
 }
 
 int HunspellInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
@@ -211,15 +211,15 @@ int HunspellInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListMod
     return d->wordCandidates.size();
 }
 
-QVariant HunspellInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, int role)
+QVariant HunspellInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 {
     QVariant result;
     Q_D(HunspellInputMethod);
     switch (role) {
-    case QVirtualKeyboardSelectionListModel::DisplayRole:
+    case QVirtualKeyboardSelectionListModel::Role::Display:
         result = QVariant(d->wordCandidates.wordAt(index));
         break;
-    case QVirtualKeyboardSelectionListModel::WordCompletionLengthRole:
+    case QVirtualKeyboardSelectionListModel::Role::WordCompletionLength:
     {
         const QString wordCandidate(d->wordCandidates.wordAt(index));
         const QString word(d->wordCandidates.wordAt(0));
@@ -227,16 +227,16 @@ QVariant HunspellInputMethod::selectionListData(QVirtualKeyboardSelectionListMod
         result.setValue((wordCompletionLength > 0 && wordCandidate.startsWith(word)) ? wordCompletionLength : 0);
         break;
     }
-    case QVirtualKeyboardSelectionListModel::DictionaryTypeRole:
+    case QVirtualKeyboardSelectionListModel::Role::Dictionary:
     {
         const QString wordCandidate(d->wordCandidates.wordAt(index));
         QVirtualKeyboardSelectionListModel::DictionaryType dictionaryType =
                 d->userDictionaryWords && d->userDictionaryWords->contains(wordCandidate) ?
-                    QVirtualKeyboardSelectionListModel::UserDictionary : QVirtualKeyboardSelectionListModel::DefaultDictionary;
+                    QVirtualKeyboardSelectionListModel::DictionaryType::User : QVirtualKeyboardSelectionListModel::DictionaryType::Default;
         result = QVariant(static_cast<int>(dictionaryType));
         break;
     }
-    case QVirtualKeyboardSelectionListModel::CanRemoveSuggestionRole:
+    case QVirtualKeyboardSelectionListModel::Role::CanRemoveSuggestion:
         result.setValue(index > 0 && d->wordCandidates.wordFlagsAt(index).testFlag(HunspellWordList::SpellCheckOk));
         break;
     default:
@@ -288,7 +288,7 @@ bool HunspellInputMethod::reselect(int cursorPosition, const QVirtualKeyboardInp
     const QString surroundingText = ic->surroundingText();
     int replaceFrom = 0;
 
-    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::WordBeforeCursor)) {
+    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::ReselectFlag::WordBeforeCursor)) {
         for (int i = cursorPosition - 1; i >= 0; --i) {
             QChar c = surroundingText.at(i);
             if (!d->isValidInputChar(c))
@@ -303,10 +303,10 @@ bool HunspellInputMethod::reselect(int cursorPosition, const QVirtualKeyboardInp
         }
     }
 
-    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::WordAtCursor) && replaceFrom == 0)
+    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::ReselectFlag::WordAtCursor) && replaceFrom == 0)
         return false;
 
-    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::WordAfterCursor)) {
+    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::ReselectFlag::WordAfterCursor)) {
         for (int i = cursorPosition; i < surroundingText.length(); ++i) {
             QChar c = surroundingText.at(i);
             if (!d->isValidInputChar(c))
@@ -325,7 +325,7 @@ bool HunspellInputMethod::reselect(int cursorPosition, const QVirtualKeyboardInp
     if (word.isEmpty())
         return false;
 
-    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::WordAtCursor) && replaceFrom == -word.length())
+    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::ReselectFlag::WordAtCursor) && replaceFrom == -word.length())
         return false;
 
     if (d->isJoiner(word.at(0)))
@@ -339,8 +339,8 @@ bool HunspellInputMethod::reselect(int cursorPosition, const QVirtualKeyboardInp
 
     d->autoSpaceAllowed = false;
     if (d->updateSuggestions()) {
-        emit selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-        emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, d->wordCandidates.index());
+        emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+        emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->wordCandidates.index());
     }
 
     return true;
@@ -384,8 +384,8 @@ void HunspellInputMethod::updateSuggestions(const QSharedPointer<HunspellWordLis
     d->wordCandidates = *wordList;
     if (d->wordCandidates.wordAt(0).compare(word) != 0)
         d->wordCandidates.updateWord(0, word);
-    emit selectionListChanged(QVirtualKeyboardSelectionListModel::WordCandidateList);
-    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::WordCandidateList, d->wordCandidates.index());
+    emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->wordCandidates.index());
 }
 
 void HunspellInputMethod::dictionaryLoadCompleted(bool success)

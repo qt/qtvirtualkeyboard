@@ -31,7 +31,7 @@ import QtQuick 2.10
 import QtQuick.VirtualKeyboard 2.3
 
 KeyboardLayout {
-    inputMode: InputEngine.Latin
+    inputMode: InputEngine.InputMode.Latin
     sharedLayouts: ["numbers", "digits"]
     keyWeight: 160
     KeyboardRow {

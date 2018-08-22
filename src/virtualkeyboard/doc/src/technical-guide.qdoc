@@ -327,7 +327,7 @@ list types:
 
 \code
 function selectionLists() {
-    return [SelectionListModel.WordCandidateList];
+    return [SelectionListModel.Type.WordCandidateList];
 }
 \endcode
 
@@ -342,8 +342,8 @@ the input method requires the UI to highlight an item in the list, it will emit
 the InputMethod::selectionListActiveItemChanged signal.
 
 \code
-selectionListChanged(SelectionListModel.WordCandidateList)
-selectionListActiveItemChanged(SelectionListModel.WordCandidateList, wordIndex)
+selectionListChanged(SelectionListModel.Type.WordCandidateList)
+selectionListActiveItemChanged(SelectionListModel.Type.WordCandidateList, wordIndex)
 \endcode
 
 \section3 Populating Items in the Selection Lists
@@ -356,7 +356,7 @@ items in the list identified by the given type.
 
 \code
 function selectionListItemCount(type) {
-    if (type == SelectionListModel.WordCandidateList) {
+    if (type == SelectionListModel.Type.WordCandidateList) {
         return wordList.length
     }
     return 0
@@ -368,9 +368,9 @@ The InputMethod::selectionListData callback requests the data for items.
 \code
 function selectionListData(type, index, role) {
     var result = null
-    if (type == SelectionListModel.WordCandidateList) {
+    if (type == SelectionListModel.Type.WordCandidateList) {
         switch (role) {
-        case SelectionListModel.DisplayRole:
+        case SelectionListModel.Role.Display:
             result = wordList[index]
             break
         default:
@@ -382,7 +382,7 @@ function selectionListData(type, index, role) {
 \endcode
 
 The \a role parameter identifies which data is requested for an item. For
-example, the SelectionListModel.DisplayRole requests the display text data.
+example, the SelectionListModel.Role.Display requests the display text data.
 
 \section3 Responding to User Actions
 
@@ -391,7 +391,7 @@ event in the InputMethod::selectionListItemSelected method callback.
 
 \code
 function selectionListItemSelected(type, index) {
-    if (type == SelectionListModel.WordCandidateList) {
+    if (type == SelectionListModel.Type.WordCandidateList) {
         inputContext.commit(wordlist[index])
         update()
     }
@@ -452,7 +452,7 @@ from a variety of input sources (e.g. keyboard layout or full screen).
 
 The patternRecognitionModes method returns a list of pattern recognition modes,
 which are supported by the input method. A pattern recognition mode, such as
-\l { QVirtualKeyboardInputEngine::HandwritingRecoginition } { HandwritingRecoginition },
+\l { QVirtualKeyboardInputEngine::PatternRecognitionMode::Handwriting } { HandwritingRecognition },
 defines the method by which the input method processes the data.
 
 The trace interaction is started when an input source detects a new contact point, and

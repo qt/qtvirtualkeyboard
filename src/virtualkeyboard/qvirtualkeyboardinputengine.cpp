@@ -51,8 +51,8 @@ public:
         q_ptr(q_ptr),
         inputContext(nullptr),
         fallbackInputMethod(nullptr),
-        textCase(QVirtualKeyboardInputEngine::Lower),
-        inputMode(QVirtualKeyboardInputEngine::Latin),
+        textCase(QVirtualKeyboardInputEngine::TextCase::Lower),
+        inputMode(QVirtualKeyboardInputEngine::InputMode::Latin),
         activeKey(Qt::Key_unknown),
         activeKeyModifiers(Qt::NoModifier),
         previousKey(Qt::Key_unknown),
@@ -170,7 +170,7 @@ void QVirtualKeyboardInputEngine::init()
     d->fallbackInputMethod = new FallbackInputMethod(this);
     if (d->fallbackInputMethod)
         d->fallbackInputMethod->setInputEngine(this);
-    d->selectionListModels[QVirtualKeyboardSelectionListModel::WordCandidateList] = new QVirtualKeyboardSelectionListModel(this);
+    d->selectionListModels[QVirtualKeyboardSelectionListModel::Type::WordCandidateList] = new QVirtualKeyboardSelectionListModel(this);
 }
 
 /*!
@@ -417,7 +417,7 @@ void QVirtualKeyboardInputEngine::setInputMode(QVirtualKeyboardInputEngine::Inpu
         updateInputModes();
         Q_ASSERT(cachedInputModes == d->inputModes);
 #endif
-        if (d->inputModes.contains(inputMode)) {
+        if (d->inputModes.contains(static_cast<const int>(inputMode))) {
             d->inputMethod->setInputMode(d->inputContext->locale(), inputMode);
             if (d->inputMode != inputMode) {
                 d->inputMode = inputMode;
@@ -433,13 +433,13 @@ void QVirtualKeyboardInputEngine::setInputMode(QVirtualKeyboardInputEngine::Inpu
 QVirtualKeyboardSelectionListModel *QVirtualKeyboardInputEngine::wordCandidateListModel() const
 {
     Q_D(const QVirtualKeyboardInputEngine);
-    return d->selectionListModels[QVirtualKeyboardSelectionListModel::WordCandidateList];
+    return d->selectionListModels[QVirtualKeyboardSelectionListModel::Type::WordCandidateList];
 }
 
 bool QVirtualKeyboardInputEngine::wordCandidateListVisibleHint() const
 {
     Q_D(const QVirtualKeyboardInputEngine);
-    const auto it = d->selectionListModels.constFind(QVirtualKeyboardSelectionListModel::WordCandidateList);
+    const auto it = d->selectionListModels.constFind(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
     if (it == d->selectionListModels.cend())
         return false;
     return it.value()->dataSource() != nullptr;
@@ -459,7 +459,7 @@ QList<int> QVirtualKeyboardInputEngine::patternRecognitionModes() const
         return resultList;
     resultList.reserve(patterRecognitionModeList.size());
     for (const PatternRecognitionMode &patternRecognitionMode : qAsConst(patterRecognitionModeList))
-        resultList.append(patternRecognitionMode);
+        resultList.append(static_cast<int>(patternRecognitionMode));
     return resultList;
 }
 
@@ -516,7 +516,7 @@ QVirtualKeyboardTrace *QVirtualKeyboardInputEngine::traceBegin(
                             << "traceScreenInfo:" << traceScreenInfo;
     if (!d->inputMethod)
         return nullptr;
-    if (patternRecognitionMode == PatternRecognitionDisabled)
+    if (patternRecognitionMode == PatternRecognitionMode::None)
         return nullptr;
     if (!d->inputMethod->patternRecognitionModes().contains(patternRecognitionMode))
         return nullptr;
@@ -625,7 +625,7 @@ void QVirtualKeyboardInputEngine::update()
 void QVirtualKeyboardInputEngine::shiftChanged()
 {
     Q_D(QVirtualKeyboardInputEngine);
-    TextCase newCase = d->inputContext->priv()->shiftHandler()->shift() ? Upper : Lower;
+    TextCase newCase = d->inputContext->priv()->shiftHandler()->shift() ? TextCase::Upper : TextCase::Lower;
     if (d->textCase != newCase) {
         d->textCase = newCase;
         if (d->inputMethod) {
@@ -648,11 +648,11 @@ void QVirtualKeyboardInputEngine::updateSelectionListModels()
             auto it = d->selectionListModels.find(selectionListType);
             if (it == d->selectionListModels.end()) {
                 it = d->selectionListModels.insert(selectionListType, new QVirtualKeyboardSelectionListModel(this));
-                if (selectionListType == QVirtualKeyboardSelectionListModel::WordCandidateList)
+                if (selectionListType == QVirtualKeyboardSelectionListModel::Type::WordCandidateList)
                     emit wordCandidateListModelChanged();
             }
             it.value()->setDataSource(d->inputMethod, selectionListType);
-            if (selectionListType == QVirtualKeyboardSelectionListModel::WordCandidateList)
+            if (selectionListType == QVirtualKeyboardSelectionListModel::Type::WordCandidateList)
                 emit wordCandidateListVisibleHintChanged();
             inactiveSelectionLists.removeAll(selectionListType);
         }
@@ -663,7 +663,7 @@ void QVirtualKeyboardInputEngine::updateSelectionListModels()
         const auto it = d->selectionListModels.constFind(selectionListType);
         if (it != d->selectionListModels.cend()) {
             it.value()->setDataSource(nullptr, selectionListType);
-            if (selectionListType == QVirtualKeyboardSelectionListModel::WordCandidateList)
+            if (selectionListType == QVirtualKeyboardSelectionListModel::Type::WordCandidateList)
                 emit wordCandidateListVisibleHintChanged();
         }
     }
@@ -771,23 +771,23 @@ void QVirtualKeyboardInputEngine::timerEvent(QTimerEvent *timerEvent)
     The predefined input modes are:
 
     \list
-        \li \c InputEngine.Latin The default input mode for latin text.
-        \li \c InputEngine.Numeric Only numeric input is allowed.
-        \li \c InputEngine.Dialable Only dialable input is allowed.
-        \li \c InputEngine.Pinyin Pinyin input mode for Chinese.
-        \li \c InputEngine.Cangjie Cangjie input mode for Chinese.
-        \li \c InputEngine.Zhuyin Zhuyin input mode for Chinese.
-        \li \c InputEngine.Hangul Hangul input mode for Korean.
-        \li \c InputEngine.Hiragana Hiragana input mode for Japanese.
-        \li \c InputEngine.Katakana Katakana input mode for Japanese.
-        \li \c InputEngine.FullwidthLatin Fullwidth latin input mode for East Asian languages.
-        \li \c InputEngine.Greek Greek input mode.
-        \li \c InputEngine.Cyrillic Cyrillic input mode.
-        \li \c InputEngine.Arabic Arabic input mode.
-        \li \c InputEngine.Hebrew Hebrew input mode.
-        \li \c InputEngine.ChineseHandwriting Chinese handwriting.
-        \li \c InputEngine.JapaneseHandwriting Japanese handwriting.
-        \li \c InputEngine.KoreanHandwriting Korean handwriting.
+        \li \c InputEngine.InputMode.Latin The default input mode for latin text.
+        \li \c InputEngine.InputMode.Numeric Only numeric input is allowed.
+        \li \c InputEngine.InputMode.Dialable Only dialable input is allowed.
+        \li \c InputEngine.InputMode.Pinyin Pinyin input mode for Chinese.
+        \li \c InputEngine.InputMode.Cangjie Cangjie input mode for Chinese.
+        \li \c InputEngine.InputMode.Zhuyin Zhuyin input mode for Chinese.
+        \li \c InputEngine.InputMode.Hangul Hangul input mode for Korean.
+        \li \c InputEngine.InputMode.Hiragana Hiragana input mode for Japanese.
+        \li \c InputEngine.InputMode.Katakana Katakana input mode for Japanese.
+        \li \c InputEngine.InputMode.FullwidthLatin Fullwidth latin input mode for East Asian languages.
+        \li \c InputEngine.InputMode.Greek Greek input mode.
+        \li \c InputEngine.InputMode.Cyrillic Cyrillic input mode.
+        \li \c InputEngine.InputMode.Arabic Arabic input mode.
+        \li \c InputEngine.InputMode.Hebrew Hebrew input mode.
+        \li \c InputEngine.InputMode.ChineseHandwriting Chinese handwriting.
+        \li \c InputEngine.InputMode.JapaneseHandwriting Japanese handwriting.
+        \li \c InputEngine.InputMode.KoreanHandwriting Korean handwriting.
     \endlist
 */
 
@@ -835,33 +835,33 @@ void QVirtualKeyboardInputEngine::timerEvent(QTimerEvent *timerEvent)
 
     This enum specifies the input mode for the input method.
 
-    \value Latin
+    \value InputMode::Latin
            The default input mode for latin text.
-    \value Numeric
+    \value InputMode::Numeric
            Only numeric input is allowed.
-    \value Dialable
+    \value InputMode::Dialable
            Only dialable input is allowed.
-    \value Pinyin
+    \value InputMode::Pinyin
            Pinyin input mode for Chinese.
-    \value Cangjie
+    \value InputMode::Cangjie
            Cangjie input mode for Chinese.
-    \value Zhuyin
+    \value InputMode::Zhuyin
            Zhuyin input mode for Chinese.
-    \value Hangul
+    \value InputMode::Hangul
            Hangul input mode for Korean.
-    \value Hiragana
+    \value InputMode::Hiragana
            Hiragana input mode for Japanese.
-    \value Katakana
+    \value InputMode::Katakana
            Katakana input mode for Japanese.
-    \value FullwidthLatin
+    \value InputMode::FullwidthLatin
            Fullwidth latin input mode for East Asian languages.
-    \value Greek
+    \value InputMode::Greek
            Greek input mode.
-    \value Cyrillic
+    \value InputMode::Cyrillic
            Cyrillic input mode.
-    \value Arabic
+    \value InputMode::Arabic
            Arabic input mode.
-    \value Hebrew
+    \value InputMode::Hebrew
            Hebrew input mode.
 */
 
@@ -870,9 +870,9 @@ void QVirtualKeyboardInputEngine::timerEvent(QTimerEvent *timerEvent)
 
     This enum specifies the text case for the input method.
 
-    \value Lower
+    \value TextCase::Lower
            Lower case text.
-    \value Upper
+    \value TextCase::Upper
            Upper case text.
 */
 
@@ -881,10 +881,14 @@ void QVirtualKeyboardInputEngine::timerEvent(QTimerEvent *timerEvent)
 
     This enum specifies the input mode for the input method.
 
-    \value PatternRecognitionDisabled
+    \value PatternRecognitionMode::None
            Pattern recognition is not available.
-    \value HandwritingRecoginition
+    \value PatternRecognitionMode::PatternRecognitionDisabled
+           \c obsolete Use PatternRecognitionMode::None
+    \value PatternRecognitionMode::Handwriting
            Pattern recognition mode for handwriting recognition.
+    \value PatternRecognitionMode::HandwritingRecoginition
+           \c obsolete Use PatternRecognitionMode::Handwriting
 */
 
 /*!
@@ -892,11 +896,11 @@ void QVirtualKeyboardInputEngine::timerEvent(QTimerEvent *timerEvent)
 
     This enum specifies the rules for word reselection.
 
-    \value WordBeforeCursor
+    \value ReselectFlag::WordBeforeCursor
            Activate the word before the cursor. When this flag is used exclusively, the word must end exactly at the cursor.
-    \value WordAfterCursor
+    \value ReselectFlag::WordAfterCursor
            Activate the word after the cursor. When this flag is used exclusively, the word must start exactly at the cursor.
-    \value WordAtCursor
+    \value ReselectFlag::WordAtCursor
            Activate the word at the cursor. This flag is a combination of the above flags with the exception that the word cannot start or stop at the cursor.
 */
 
@@ -1033,8 +1037,10 @@ void QVirtualKeyboardInputEngine::timerEvent(QTimerEvent *timerEvent)
     The predefined pattern recognition modes are:
 
     \list
-        \li \c InputEngine.PatternRecognitionDisabled Pattern recognition is not available.
-        \li \c InputEngine.HandwritingRecoginition Pattern recognition mode for handwriting recognition.
+        \li \c InputEngine.PatternRecognitionMode.None Pattern recognition is not available.
+        \li \c InputEngine.PatternRecognitionMode.PatternRecognitionDisabled \c obsolete Use InputEngine.PatternRecognitionMode.None
+        \li \c InputEngine.PatternRecognitionMode.Handwriting Pattern recognition mode for handwriting recognition.
+        \li \c InputEngine.PatternRecognitionMode.HandwritingRecoginition \c obsolete Use InputEngine.PatternRecognitionMode.Handwriting
     \endlist
 */
 

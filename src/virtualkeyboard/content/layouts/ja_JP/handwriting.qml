@@ -43,9 +43,9 @@ KeyboardLayout {
             KeyboardRow {
                 TraceInputKey {
                     objectName: "hwrInputArea"
-                    patternRecognitionMode: InputEngine.HandwritingRecoginition
+                    patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
                     horizontalRulers:
-                        InputContext.inputEngine.inputMode !== InputEngine.JapaneseHandwriting ? [] :
+                        InputContext.inputEngine.inputMode !== InputEngine.InputMode.JapaneseHandwriting ? [] :
                             [Math.round(boundingBox.height / 4), Math.round(boundingBox.height / 4) * 2, Math.round(boundingBox.height / 4) * 3]
 
                 }

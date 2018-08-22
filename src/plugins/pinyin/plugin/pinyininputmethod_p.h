@@ -65,7 +65,7 @@ public:
 
     QList<QVirtualKeyboardSelectionListModel::Type> selectionLists();
     int selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type);
-    QVariant selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, int role);
+    QVariant selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role);
     void selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index);
 
     void reset();

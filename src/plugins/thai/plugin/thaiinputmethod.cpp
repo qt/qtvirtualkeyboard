@@ -49,7 +49,7 @@ QList<QVirtualKeyboardInputEngine::InputMode> ThaiInputMethod::inputModes(
         const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::Latin;
+    return QList<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::Latin;
 }
 
 bool ThaiInputMethod::setInputMode(const QString &locale,

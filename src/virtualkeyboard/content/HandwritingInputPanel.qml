@@ -105,7 +105,7 @@ Item {
         enabled: handwritingInputPanel.enabled && handwritingInputPanel.available && handwritingInputPanel.active
         objectName: "hwrInputArea"
         anchors.fill: parent
-        patternRecognitionMode: InputEngine.HandwritingRecoginition
+        patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
         canvasType: "fullscreen"
     }
 
