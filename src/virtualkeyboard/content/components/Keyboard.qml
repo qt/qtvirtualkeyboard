@@ -1415,33 +1415,37 @@ Item {
         }
     }
 
+    function filterLocaleIndices(filterCb) {
+        var localeIndices = []
+        for (var i = 0; i < layoutsModel.count; i++) {
+            if (localeIndices.indexOf(i) === -1) {
+                var localeName = layoutsModel.get(i, "fileName")
+                if (filterCb(localeName) && findLayout(localeName, "main"))
+                    localeIndices.push(i)
+            }
+        }
+        return localeIndices
+    }
+
     function updateAvailableLocaleIndices() {
         // Update list of all available locales
         var fallbackIndex = findFallbackIndex()
-        var newIndices = []
-        var newAvailableLocales = []
-        for (var i = 0; i < layoutsModel.count; i++) {
-            if (i === fallbackIndex)
-                continue
-            var localeName = layoutsModel.get(i, "fileName")
-            if (isValidLocale(i) && newIndices.indexOf(i) === -1 && findLayout(localeName, "main")) {
-                newIndices.push(i)
-                newAvailableLocales.push(localeName)
-            }
-        }
+        var newIndices = filterLocaleIndices(function(localeName) {
+            return isValidLocale(localeName)
+        })
 
         // Handle case where the VirtualKeyboardSettings.activeLocales contains no valid entries
+        // Fetch all locales by ignoring active locales setting
         if (newIndices.length === 0) {
-            for (i = 0; i < layoutsModel.count; i++) {
-                if (i === fallbackIndex)
-                    continue
-                localeName = layoutsModel.get(i, "fileName")
-                if (Qt.locale(localeName).name !== "C" && findLayout(localeName, "main")) {
-                    newIndices.push(i)
-                    newAvailableLocales.push(localeName)
-                    break
-                }
-            }
+            newIndices = filterLocaleIndices(function(localeName) {
+                return isValidLocale(localeName, true)
+            })
+        }
+
+        // Fetch matching locale names
+        var newAvailableLocales = []
+        for (var i = 0; i < newIndices.length; i++) {
+            newAvailableLocales.push(layoutsModel.get(newIndices[i], "fileName"))
         }
 
         newIndices.sort(function(a, b) { return a - b })
@@ -1519,7 +1523,7 @@ Item {
         return -1
     }
 
-    function isValidLocale(localeNameOrIndex) {
+    function isValidLocale(localeNameOrIndex, ignoreActiveLocales) {
         var localeName
         if (typeof localeNameOrIndex == "number") {
             if (localeNameOrIndex < 0 || localeNameOrIndex >= layoutsModel.count)
@@ -1529,13 +1533,18 @@ Item {
             localeName = localeNameOrIndex
         }
 
+        if (!localeName)
+            return false
+
         if (localeName === "fallback")
             return false
 
         if (Qt.locale(localeName).name === "C")
             return false
 
-        if (VirtualKeyboardSettings.activeLocales.length > 0 && VirtualKeyboardSettings.activeLocales.indexOf(localeName) === -1)
+        if (ignoreActiveLocales !== true &&
+                VirtualKeyboardSettings.activeLocales.length > 0 &&
+                VirtualKeyboardSettings.activeLocales.indexOf(localeName) === -1)
             return false
 
         return true
