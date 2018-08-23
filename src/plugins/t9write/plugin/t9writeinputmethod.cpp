@@ -141,7 +141,6 @@ public:
         , unipenTrace()
 #endif
     {
-        Q_INIT_RESOURCE(qmake_t9write_db);
     }
 
     static void *decumaMalloc(size_t size, void *pPrivate)
