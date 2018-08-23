@@ -36,6 +36,7 @@ Controls.TextArea {
     color: "#2B2C2E"
     selectionColor: Qt.rgba(0.0, 0.0, 0.0, 0.15)
     selectedTextColor: color
+    selectByMouse: true
     font.pixelSize: Qt.application.font.pixelSize * 2
 
     property int enterKeyAction: EnterKeyAction.None
