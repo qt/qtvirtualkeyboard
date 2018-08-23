@@ -154,6 +154,10 @@ QVariant QVirtualKeyboardAbstractInputMethod::selectionListData(QVirtualKeyboard
         return QVariant("");
     case QVirtualKeyboardSelectionListModel::Role::WordCompletionLength:
         return QVariant(0);
+    case QVirtualKeyboardSelectionListModel::Role::Dictionary:
+        return QVariant(static_cast<int>(QVirtualKeyboardSelectionListModel::DictionaryType::Default));
+    case QVirtualKeyboardSelectionListModel::Role::CanRemoveSuggestion:
+        return QVariant(false);
     }
     return QVariant();
 }
