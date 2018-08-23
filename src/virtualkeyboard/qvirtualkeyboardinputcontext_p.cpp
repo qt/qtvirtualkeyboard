@@ -219,9 +219,9 @@ void QVirtualKeyboardInputContextPrivate::forceCursorPosition(int anchorPosition
         return;
     if (!platformInputContext->m_visible)
         return;
-    if (stateFlags.testFlag(QVirtualKeyboardInputContextPrivate::ReselectEventState))
+    if (testState(State::Reselect))
         return;
-    if (stateFlags.testFlag(QVirtualKeyboardInputContextPrivate::SyncShadowInputState))
+    if (testState(State::SyncShadowInput))
         return;
 
     VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContextPrivate::forceCursorPosition():" << cursorPosition << "anchorPosition:" << anchorPosition;
@@ -238,10 +238,9 @@ void QVirtualKeyboardInputContextPrivate::forceCursorPosition(int anchorPosition
         q->setPreeditText(QString());
         if (!inputMethodHints.testFlag(Qt::ImhNoPredictiveText) &&
                    cursorPosition > 0 && selectedText.isEmpty()) {
-            stateFlags |= QVirtualKeyboardInputContextPrivate::ReselectEventState;
+            QVirtualKeyboardScopedState reselectState(this, State::Reselect);
             if (inputEngine->reselect(cursorPosition, QVirtualKeyboardInputEngine::ReselectFlag::WordAtCursor))
-                stateFlags |= QVirtualKeyboardInputContextPrivate::InputMethodClickState;
-            stateFlags &= ~QVirtualKeyboardInputContextPrivate::ReselectEventState;
+                setState(State::InputMethodClick);
         }
     }
 }
@@ -251,9 +250,9 @@ void QVirtualKeyboardInputContextPrivate::onInputItemChanged()
     if (!inputItem() && !activeKeys.isEmpty()) {
         // After losing keyboard focus it is impossible to track pressed keys
         activeKeys.clear();
-        stateFlags &= ~QVirtualKeyboardInputContextPrivate::KeyEventState;
+        clearState(State::KeyEvent);
     }
-    stateFlags &= ~QVirtualKeyboardInputContextPrivate::InputMethodClickState;
+    clearState(State::InputMethodClick);
 }
 
 void QVirtualKeyboardInputContextPrivate::sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes, int replaceFrom, int replaceLength)
@@ -272,9 +271,8 @@ void QVirtualKeyboardInputContextPrivate::sendPreedit(const QString &text, const
             const bool replace = replaceFrom != 0 || replaceLength > 0;
             if (replace)
                 event.setCommitString(QString(), replaceFrom, replaceLength);
-            stateFlags |= QVirtualKeyboardInputContextPrivate::InputMethodEventState;
-            platformInputContext->sendEvent(&event);
-            stateFlags &= ~QVirtualKeyboardInputContextPrivate::InputMethodEventState;
+
+            sendInputMethodEvent(&event);
 
             // Send also to shadow input if only attributes changed.
             // In this case the update() may not be called, so the shadow
@@ -295,6 +293,12 @@ void QVirtualKeyboardInputContextPrivate::sendPreedit(const QString &text, const
 
     if (preeditText.isEmpty())
         preeditTextAttributes.clear();
+}
+
+void QVirtualKeyboardInputContextPrivate::sendInputMethodEvent(QInputMethodEvent *event)
+{
+    QVirtualKeyboardScopedState inputMethodEventState(this, State::InputMethodEvent);
+    platformInputContext->sendEvent(event);
 }
 
 void QVirtualKeyboardInputContextPrivate::reset()
@@ -369,7 +373,7 @@ void QVirtualKeyboardInputContextPrivate::update(Qt::InputMethodQueries queries)
 
     // update input engine
     if ((newSurroundingText || newCursorPosition) &&
-            !stateFlags.testFlag(QVirtualKeyboardInputContextPrivate::InputMethodEventState)) {
+            !testState(State::InputMethodEvent)) {
         commit();
     }
     if (newInputMethodHints) {
@@ -410,20 +414,18 @@ void QVirtualKeyboardInputContextPrivate::update(Qt::InputMethodQueries queries)
 
     // word reselection
     if (newInputMethodHints || newSurroundingText || newSelectedText)
-        stateFlags &= ~QVirtualKeyboardInputContextPrivate::InputMethodClickState;
-    if ((newSurroundingText || newCursorPosition) && !newSelectedText && (int)stateFlags == 0 &&
+        clearState(State::InputMethodClick);
+    if ((newSurroundingText || newCursorPosition) && !newSelectedText && isEmptyState() &&
             !inputMethodHints.testFlag(Qt::ImhNoPredictiveText) &&
             cursorPosition > 0 && this->selectedText.isEmpty()) {
-        stateFlags |= QVirtualKeyboardInputContextPrivate::ReselectEventState;
+        QVirtualKeyboardScopedState reselectState(this, State::Reselect);
         if (inputEngine->reselect(cursorPosition, QVirtualKeyboardInputEngine::ReselectFlag::WordAtCursor))
-            stateFlags |= QVirtualKeyboardInputContextPrivate::InputMethodClickState;
-        stateFlags &= ~QVirtualKeyboardInputContextPrivate::ReselectEventState;
+            setState(State::InputMethodClick);
     }
 
-    if (!stateFlags.testFlag(QVirtualKeyboardInputContextPrivate::SyncShadowInputState)) {
-        stateFlags |= QVirtualKeyboardInputContextPrivate::SyncShadowInputState;
+    if (!testState(State::SyncShadowInput)) {
+        QVirtualKeyboardScopedState syncShadowInputState(this, State::SyncShadowInput);
         _shadow.update(queries);
-        stateFlags &= ~QVirtualKeyboardInputContextPrivate::SyncShadowInputState;
     }
 }
 
@@ -431,22 +433,21 @@ void QVirtualKeyboardInputContextPrivate::invokeAction(QInputMethod::Action acti
 {
     switch (action) {
     case QInputMethod::Click:
-        if ((int)stateFlags == 0) {
+        if (isEmptyState()) {
             if (inputEngine->clickPreeditText(cursorPosition))
                 break;
 
             bool reselect = !inputMethodHints.testFlag(Qt::ImhNoPredictiveText) && selectedText.isEmpty() && cursorPosition < preeditText.length();
             if (reselect) {
-                stateFlags |= QVirtualKeyboardInputContextPrivate::ReselectEventState;
+                QVirtualKeyboardScopedState reselectState(this, State::Reselect);
                 _forceCursorPosition = this->cursorPosition + cursorPosition;
                 commit();
                 inputEngine->reselect(this->cursorPosition, QVirtualKeyboardInputEngine::ReselectFlag::WordBeforeCursor);
-                stateFlags &= ~QVirtualKeyboardInputContextPrivate::ReselectEventState;
             } else if (!preeditText.isEmpty() && cursorPosition == preeditText.length()) {
                 commit();
             }
         }
-        stateFlags &= ~QVirtualKeyboardInputContextPrivate::InputMethodClickState;
+        clearState(State::InputMethodClick);
         break;
 
     case QInputMethod::ContextMenu:
@@ -467,9 +468,9 @@ bool QVirtualKeyboardInputContextPrivate::filterEvent(const QEvent *event)
             activeKeys -= keyEvent->nativeScanCode();
 
         if (activeKeys.isEmpty())
-            stateFlags &= ~QVirtualKeyboardInputContextPrivate::KeyEventState;
+            clearState(State::KeyEvent);
         else
-            stateFlags |= QVirtualKeyboardInputContextPrivate::KeyEventState;
+            setState(State::KeyEvent);
 
 #ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
         int key = keyEvent->key();

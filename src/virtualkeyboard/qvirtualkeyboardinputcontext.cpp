@@ -222,11 +222,11 @@ void QVirtualKeyboardInputContext::sendKeyClick(int key, const QString &text, in
         QKeyEvent releaseEvent(QEvent::KeyRelease, key, Qt::KeyboardModifiers(modifiers), text);
         VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContext::sendKeyClick():" << key;
 
-        d->stateFlags |= QVirtualKeyboardInputContextPrivate::KeyEventState;
+        d->setState(QVirtualKeyboardInputContextPrivate::State::KeyEvent);
         d->platformInputContext->sendKeyEvent(&pressEvent);
         d->platformInputContext->sendKeyEvent(&releaseEvent);
         if (d->activeKeys.isEmpty())
-            d->stateFlags &= ~QVirtualKeyboardInputContextPrivate::KeyEventState;
+            d->clearState(QVirtualKeyboardInputContextPrivate::State::KeyEvent);
     } else {
         qWarning() << "QVirtualKeyboardInputContext::sendKeyClick(): no focus to send key click" << key << text
                    << "- QGuiApplication::focusWindow() is:" << QGuiApplication::focusWindow();
@@ -279,9 +279,7 @@ void QVirtualKeyboardInputContext::commit(const QString &text, int replaceFrom, 
         d->preeditTextAttributes.clear();
         QInputMethodEvent inputEvent(QString(), attributes);
         inputEvent.setCommitString(text, replaceFrom, replaceLength);
-        d->stateFlags |= QVirtualKeyboardInputContextPrivate::InputMethodEventState;
-        d->platformInputContext->sendEvent(&inputEvent);
-        d->stateFlags &= ~QVirtualKeyboardInputContextPrivate::InputMethodEventState;
+        d->sendInputMethodEvent(&inputEvent);
     } else {
         d->preeditText.clear();
         d->preeditTextAttributes.clear();
@@ -312,9 +310,7 @@ void QVirtualKeyboardInputContext::clear()
         QList<QInputMethodEvent::Attribute> attributes;
         d->addSelectionAttribute(attributes);
         QInputMethodEvent event(QString(), attributes);
-        d->stateFlags |= QVirtualKeyboardInputContextPrivate::InputMethodEventState;
-        d->platformInputContext->sendEvent(&event);
-        d->stateFlags &= ~QVirtualKeyboardInputContextPrivate::InputMethodEventState;
+        d->sendInputMethodEvent(&event);
     }
 
     if (preeditChanged)

@@ -73,15 +73,15 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContextPrivate : public QObje
     void init();
 
 public:
-    enum StateFlag {
-        ReselectEventState = 0x1,
-        InputMethodEventState = 0x2,
-        KeyEventState = 0x4,
-        InputMethodClickState = 0x8,
-        SyncShadowInputState = 0x10
+    enum class State {
+        Reselect = 0x1,
+        InputMethodEvent = 0x2,
+        KeyEvent = 0x4,
+        InputMethodClick = 0x8,
+        SyncShadowInput = 0x10
     };
-    Q_FLAG(StateFlag)
-    Q_DECLARE_FLAGS(StateFlags, StateFlag)
+    Q_FLAG(State)
+    Q_DECLARE_FLAGS(StateFlags, QVirtualKeyboardInputContextPrivate::State)
 
     ~QVirtualKeyboardInputContextPrivate();
 
@@ -123,6 +123,7 @@ private Q_SLOTS:
 
 private:
     void sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes, int replaceFrom, int replaceLength);
+    void sendInputMethodEvent(QInputMethodEvent *event);
     void reset();
     void commit();
     void update(Qt::InputMethodQueries queries);
@@ -131,6 +132,10 @@ private:
     void addSelectionAttribute(QList<QInputMethodEvent::Attribute> &attributes);
     bool testAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const;
     int findAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const;
+    inline void setState(const State &state) { stateFlags.setFlag(state); }
+    inline void clearState(const State &state) { stateFlags &= ~StateFlags(state); }
+    inline bool testState(const State &state) const { return stateFlags.testFlag(state); }
+    inline bool isEmptyState() const { return !stateFlags; }
 
 private:
     QVirtualKeyboardInputContext *q_ptr;
@@ -164,10 +169,34 @@ private:
     QtVirtualKeyboard::ShadowInputContext _shadow;
 
     friend class QtVirtualKeyboard::PlatformInputContext;
+    friend class QVirtualKeyboardScopedState;
+};
+
+class QVirtualKeyboardScopedState
+{
+    Q_DISABLE_COPY(QVirtualKeyboardScopedState)
+public:
+    QVirtualKeyboardScopedState(QVirtualKeyboardInputContextPrivate *d, QVirtualKeyboardInputContextPrivate::State state) :
+        d(d),
+        state(state)
+    {
+        d->setState(state);
+    }
+
+    ~QVirtualKeyboardScopedState()
+    {
+        d->clearState(state);
+    }
+
+private:
+    QVirtualKeyboardInputContextPrivate *d;
+    QVirtualKeyboardInputContextPrivate::State state;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(QVirtualKeyboardInputContextPrivate::StateFlags)
 
 QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE(QVirtualKeyboardInputContextPrivate::State)
 
 #endif // QVIRTUALKEYBOARDINPUTCONTEXT_P_H
