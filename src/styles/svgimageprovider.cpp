@@ -46,24 +46,24 @@ QPixmap SvgImageProvider::requestPixmap(const QString &id, QSize *size, const QS
 {
     QSize imageSize(-1, -1);
     QUrl request(id);
-    QString imagePath = ":/" + request.path();
+    QString imagePath = QLatin1String(":/") + request.path();
     if (request.hasQuery()) {
         const QString query = request.query();
-        const QStringList paramList = query.split(QChar('&'), QString::SkipEmptyParts);
+        const QStringList paramList = query.split(QLatin1Char('&'), QString::SkipEmptyParts);
         QVariantMap params;
         for (const QString &param : paramList) {
-            QStringList keyValue = param.split(QChar('='), QString::SkipEmptyParts);
+            QStringList keyValue = param.split(QLatin1Char('='), QString::SkipEmptyParts);
             if (keyValue.length() == 2)
                 params[keyValue[0]] = keyValue[1];
         }
-        const auto widthIt = params.constFind("width");
+        const auto widthIt = params.constFind(QLatin1String("width"));
         if (widthIt != params.cend()) {
             bool ok = false;
             int value = widthIt.value().toInt(&ok);
             if (ok)
                 imageSize.setWidth(value);
         }
-        const auto heightIt = params.constFind("height");
+        const auto heightIt = params.constFind(QLatin1String("height"));
         if (heightIt != params.cend()) {
             bool ok = false;
             int value = heightIt.value().toInt(&ok);
@@ -75,7 +75,7 @@ QPixmap SvgImageProvider::requestPixmap(const QString &id, QSize *size, const QS
     }
 
     QPixmap image;
-    if ((imageSize.width() > 0 || imageSize.height() > 0) && imagePath.endsWith(".svg")) {
+    if ((imageSize.width() > 0 || imageSize.height() > 0) && imagePath.endsWith(QLatin1String(".svg"))) {
         QSvgRenderer renderer(imagePath);
         QSize defaultSize(renderer.defaultSize());
         if (defaultSize.isEmpty())

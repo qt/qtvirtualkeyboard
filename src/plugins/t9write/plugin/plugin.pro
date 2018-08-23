@@ -15,6 +15,12 @@ SOURCES += \
 OTHER_FILES += \
     t9write.json
 
+DEFINES += \
+    QT_NO_CAST_TO_ASCII \
+    QT_ASCII_CAST_WARNINGS \
+    QT_NO_CAST_FROM_ASCII \
+    QT_NO_CAST_FROM_BYTEARRAY
+
 include(../../../config.pri)
 include(../3rdparty/t9write/t9write-build.pri)
 

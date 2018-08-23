@@ -178,8 +178,8 @@ public:
         }
 
         if (input.length() == 0) {
-            mInputHiragana = "";
-            mInputRomaji = "";
+            mInputHiragana.clear();
+            mInputRomaji.clear();
             return 0;
         }
 

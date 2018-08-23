@@ -90,7 +90,7 @@ bool LipiSharedRecognizer::setModel(const QString &modelName)
     qCDebug(lcLipi) << "LipiSharedRecognizer::setModel():" << modelName;
 
     if (!s_lipiEngine) {
-        qWarning() << "Engine not initialized";
+        qCWarning(lcLipi) << "Engine not initialized";
         return false;
     }
 
@@ -187,16 +187,16 @@ int LipiSharedRecognizer::loadLipiInterface()
             */
             bool lipiRootVarIsEmpty = qEnvironmentVariableIsEmpty("LIPI_ROOT");
             s_lipiRoot = lipiRootVarIsEmpty ?
-                        QDir(QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/lipi_toolkit").absolutePath() :
+                        QDir(QLibraryInfo::location(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/lipi_toolkit")).absolutePath() :
                         qEnvironmentVariable("LIPI_ROOT");
 
             bool lipiLibVarIsEmpty = qEnvironmentVariableIsEmpty("LIPI_LIB");
             if (!lipiLibVarIsEmpty)
                 s_lipiLib = qEnvironmentVariable("LIPI_LIB");
             else if (!lipiRootVarIsEmpty)
-                s_lipiLib = s_lipiRoot + "/lib";
+                s_lipiLib = s_lipiRoot + QLatin1String("/lib");
             else
-                s_lipiLib = QDir(QLibraryInfo::location(QLibraryInfo::PluginsPath) + "/lipi_toolkit").absolutePath();
+                s_lipiLib = QDir(QLibraryInfo::location(QLibraryInfo::PluginsPath) + QLatin1String("/lipi_toolkit")).absolutePath();
         }
 
         QScopedPointer<LTKOSUtil> osUtil(LTKOSUtilFactory::getInstance());
@@ -205,7 +205,7 @@ int LipiSharedRecognizer::loadLipiInterface()
 
         int result = osUtil->loadSharedLib(lipiLibPath, LIPIENGINE_MODULE_STR, &s_lipiEngineHandle);
         if (result != SUCCESS) {
-            qWarning() << QString("Error %1: Could not open shared library for module '%2'").arg(result).arg(LIPIENGINE_MODULE_STR);
+            qCWarning(lcLipi) << QStringLiteral("Error %1: Could not open shared library for module '%2'").arg(result).arg(QLatin1String(LIPIENGINE_MODULE_STR));
             return result;
         }
 
@@ -215,13 +215,13 @@ int LipiSharedRecognizer::loadLipiInterface()
 
         result = osUtil->getFunctionAddress(s_lipiEngineHandle, "createLTKLipiEngine", (void **)&s_createLTKLipiEngine);
         if (result != SUCCESS) {
-            qWarning() << QString("Error %1: %2").arg(result).arg(getErrorMessage(result).c_str());
+            qCWarning(lcLipi) << QStringLiteral("Error %1: %2").arg(result).arg(QLatin1String(getErrorMessage(result).c_str()));
             return result;
         }
 
         result = osUtil->getFunctionAddress(s_lipiEngineHandle, "deleteLTKLipiEngine", (void **)&s_deleteLTKLipiEngine);
         if (result != SUCCESS) {
-            qWarning() << QString("Error %1: %2").arg(result).arg(getErrorMessage(result).c_str());
+            qCWarning(lcLipi) << QStringLiteral("Error %1: %2").arg(result).arg(QLatin1String(getErrorMessage(result).c_str()));
             return result;
         }
 
@@ -235,7 +235,7 @@ int LipiSharedRecognizer::loadLipiInterface()
 
         result = s_lipiEngine->initializeLipiEngine();
         if (result != SUCCESS) {
-            qWarning() << QString("Error %1: %2").arg(result).arg(getErrorMessage(result).c_str());
+            qCWarning(lcLipi) << QStringLiteral("Error %1: %2").arg(result).arg(QLatin1String(getErrorMessage(result).c_str()));
             return result;
         }
     }
@@ -266,9 +266,9 @@ int LipiSharedRecognizer::loadLipiEngineConfig()
 {
     s_lipiEngineConfigEntries.clear();
 
-    const QString &lipiEngineConfigFile(QDir::toNativeSeparators(QString("%1/projects/lipiengine.cfg").arg(s_lipiRoot)));
+    const QString &lipiEngineConfigFile(QDir::toNativeSeparators(QStringLiteral("%1/projects/lipiengine.cfg").arg(s_lipiRoot)));
     if (!QFileInfo::exists(lipiEngineConfigFile)) {
-        qWarning() << "File not found" << lipiEngineConfigFile;
+        qCWarning(lcLipi) << "File not found" << lipiEngineConfigFile;
         return FAILURE;
     }
 
@@ -291,11 +291,11 @@ int LipiSharedRecognizer::resolveLogicalNameToProjectProfile(const QString &logi
     if (configEntry == s_lipiEngineConfigEntries.end())
         return FAILURE;
 
-    QStringList parts = QString(configEntry->second.c_str()).split('(', QString::SkipEmptyParts);
+    QStringList parts = QString::fromLatin1(configEntry->second.c_str()).split(QLatin1Char('('), QString::SkipEmptyParts);
     if (parts.length() != 2)
         return FAILURE;
 
-    parts[1].replace(')', "");
+    parts[1].replace(QLatin1Char(')'), QString());
 
     outProjectName = parts[0].trimmed();
     outProfileName = parts[1].trimmed();
@@ -323,7 +323,7 @@ int LipiSharedRecognizer::loadModelData(const QString &logicalName)
         string strProfile = profile.toStdString();
         int result = s_lipiEngine->createShapeRecognizer(strProject, strProfile, &s_shapeRecognizer);
         if (result == SUCCESS) {
-            result = loadMapping(QDir::toNativeSeparators(QString("%1/projects/%2/config/unicodeMapfile_%2.ini").arg(s_lipiRoot).arg(project)));
+            result = loadMapping(QDir::toNativeSeparators(QStringLiteral("%1/projects/%2/config/unicodeMapfile_%2.ini").arg(s_lipiRoot).arg(project)));
             if (result == SUCCESS) {
                 s_lipiWorker = new LipiWorker(s_shapeRecognizer);
                 QSharedPointer<LipiLoadModelDataTask> loadModelDataTask(new LipiLoadModelDataTask());
@@ -337,7 +337,7 @@ int LipiSharedRecognizer::loadModelData(const QString &logicalName)
         qCDebug(lcLipi) << "LipiSharedRecognizer::loadModelData(): time:" << perf.elapsed() << "ms";
 
     if (result != SUCCESS) {
-        qWarning() << QString("Error %1: %2").arg(result).arg(getErrorMessage(result).c_str());
+        qCWarning(lcLipi) << QStringLiteral("Error %1: %2").arg(result).arg(QLatin1String(getErrorMessage(result).c_str()));
         unloadModelData();
     }
 
@@ -370,7 +370,7 @@ void LipiSharedRecognizer::unloadModelData()
 int LipiSharedRecognizer::loadMapping(const QString &mapFile)
 {
     if (!QFileInfo(mapFile).exists()) {
-        qWarning() << "File not found" << mapFile;
+        qCWarning(lcLipi) << "File not found" << mapFile;
         return FAILURE;
     }
 
@@ -381,15 +381,15 @@ int LipiSharedRecognizer::loadMapping(const QString &mapFile)
         for (stringStringMap::const_iterator i = cfgFileMap.begin(); i != cfgFileMap.end(); i++) {
             if (i->first.empty())
                 continue;
-            if (!QChar(i->first.at(0)).isDigit())
+            if (!QChar::fromLatin1(i->first.at(0)).isDigit())
                 continue;
 
             bool ok;
-            int id = QString(i->first.c_str()).toInt(&ok, 10);
+            int id = QString::fromLatin1(i->first.c_str()).toInt(&ok, 10);
             if (!ok)
                 continue;
 
-            QChar ch = QChar(QString(i->second.c_str()).toInt(&ok, 16));
+            QChar ch = QChar(QString::fromLatin1(i->second.c_str()).toInt(&ok, 16));
             if (!ok)
                 continue;
 

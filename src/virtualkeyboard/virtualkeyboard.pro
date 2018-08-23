@@ -387,6 +387,12 @@ no-builtin-style {
 
 DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_LAYOUTS_DIR=\\\"qrc:/QtQuick/VirtualKeyboard/content/layouts\\\"
 
+DEFINES += \
+    QT_NO_CAST_TO_ASCII \
+    QT_ASCII_CAST_WARNINGS \
+    QT_NO_CAST_FROM_ASCII \
+    QT_NO_CAST_FROM_BYTEARRAY
+
 OTHER_FILES += \
     content/styles/default/*.qml \
     content/styles/retro/*.qml \

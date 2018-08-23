@@ -45,6 +45,12 @@ HEADERS += \
     include/utf16char.h \
     include/utf16reader.h
 
+DEFINES += \
+    QT_NO_CAST_TO_ASCII \
+    QT_ASCII_CAST_WARNINGS \
+    QT_NO_CAST_FROM_ASCII \
+    QT_NO_CAST_FROM_BYTEARRAY
+
 OTHER_FILES +=\
     data/rawdict_utf16_65105_freq.txt \
     data/valid_utf16.txt

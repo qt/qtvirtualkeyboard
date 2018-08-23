@@ -84,10 +84,10 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
             qCWarning(qlcVirtualKeyboard) << "Error loading extension - metadata not found!";
             continue;
         }
-        const QString inputMethod = metaData.value("InputMethod").toString();
+        const QString inputMethod = metaData.value(QLatin1String("InputMethod")).toString();
         if (!inputMethod.isEmpty() && inputMethodList.contains(inputMethod)) {
             qCWarning(qlcVirtualKeyboard) << "Ignored extension" << extensionName <<
-                                             "by" << metaData.value("Provider").toString() <<
+                                             "by" << metaData.value(QLatin1String("Provider")).toString() <<
                                              "-" << inputMethod << "is already registered!";
             continue;
         }

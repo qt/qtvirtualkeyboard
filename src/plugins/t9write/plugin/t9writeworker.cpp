@@ -288,11 +288,11 @@ void T9WriteRecognitionResultsTask::run()
                 symbolStrokes.append(QVariant((int)hwrResult.pSymbolStrokes[symbolIndex]));
         }
 
-        resultMap["resultId"] = result->id;
-        resultMap["chars"] = resultString;
-        resultMap["symbolStrokes"] = symbolStrokes;
+        resultMap[QLatin1String("resultId")] = result->id;
+        resultMap[QLatin1String("chars")] = resultString;
+        resultMap[QLatin1String("symbolStrokes")] = symbolStrokes;
         if (!gesture.isEmpty())
-            resultMap["gesture"] = gesture;
+            resultMap[QLatin1String("gesture")] = gesture;
 
         resultList.append(resultMap);
     }

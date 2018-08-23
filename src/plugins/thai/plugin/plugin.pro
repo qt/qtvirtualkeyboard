@@ -10,6 +10,12 @@ SOURCES += \
 OTHER_FILES += \
     thai.json
 
+DEFINES += \
+    QT_NO_CAST_TO_ASCII \
+    QT_ASCII_CAST_WARNINGS \
+    QT_NO_CAST_FROM_ASCII \
+    QT_NO_CAST_FROM_BYTEARRAY
+
 include(../../../config.pri)
 
 !disable-hunspell {

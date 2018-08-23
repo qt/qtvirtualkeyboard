@@ -41,7 +41,7 @@ const QChar ZhuyinTable::WU_FINALS = 0x3128;
 const QChar ZhuyinTable::YU_FINALS = 0x3129;
 const QList<QChar> ZhuyinTable::tones = QList<QChar>()
         << ZhuyinTable::DEFAULT_TONE << 0x02d9 << 0x02ca << 0x02c7 << 0x02cb;
-const QChar ZhuyinTable::DEFAULT_TONE = QChar(' ');
+const QChar ZhuyinTable::DEFAULT_TONE = QLatin1Char(' ');
 
 int ZhuyinTable::getInitials(const QChar &initials)
 {

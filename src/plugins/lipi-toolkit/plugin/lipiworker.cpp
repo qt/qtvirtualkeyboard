@@ -58,7 +58,7 @@ void LipiLoadModelDataTask::run()
     int result = shapeRecognizer->loadModelData();
     qCDebug(lcLipi) << "LipiLoadModelDataTask::run(): time:" << perf.elapsed() << "ms";
     if (result != SUCCESS)
-        qWarning() << QString("Error %1: %2").arg(result).arg(getErrorMessage(result).c_str());
+        qCWarning(lcLipi) << QStringLiteral("Error %1: %2").arg(result).arg(QLatin1String(getErrorMessage(result).c_str()));
 }
 
 /*!
@@ -159,10 +159,10 @@ void LipiRecognitionResultsTask::run()
          i != resultVector->end(); i++) {
         QVariantMap result;
         int shapeId = i->getShapeId();
-        result["resultId"] = _resultId;
-        result["shapeId"] = shapeId;
-        result["unicode"] = unicodeMap.value(shapeId);
-        result["confidence"] = i->getConfidence();
+        result[QLatin1String("resultId")] = _resultId;
+        result[QLatin1String("shapeId")] = shapeId;
+        result[QLatin1String("unicode")] = unicodeMap.value(shapeId);
+        result[QLatin1String("confidence")] = i->getConfidence();
         resultList.append(result);
     }
 

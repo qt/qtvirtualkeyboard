@@ -12,6 +12,12 @@ HEADERS += \
 OTHER_FILES += \
     qtvirtualkeyboard.json
 
+DEFINES += \
+    QT_NO_CAST_TO_ASCII \
+    QT_ASCII_CAST_WARNINGS \
+    QT_NO_CAST_FROM_ASCII \
+    QT_NO_CAST_FROM_BYTEARRAY
+
 win32 {
     QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard (Qt $$QT_VERSION)"
     QMAKE_TARGET_DESCRIPTION = "Virtual Keyboard for Qt."
