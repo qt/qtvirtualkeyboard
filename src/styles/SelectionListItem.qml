@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.11
+import QtQuick 2.0
 
 /*!
     \qmltype SelectionListItem
@@ -49,7 +49,6 @@ Item {
         Sets the sound effect to be played on touch event.
     */
     property url soundEffect
-
     MouseArea {
         id: mouseArea
         anchors.fill: parent

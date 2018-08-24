@@ -1,5 +1,5 @@
 TARGET = qtvirtualkeyboardplugin
-QT += virtualkeyboard-private
+QT += qml virtualkeyboard-private
 
 SOURCES += \
     plugin.cpp \

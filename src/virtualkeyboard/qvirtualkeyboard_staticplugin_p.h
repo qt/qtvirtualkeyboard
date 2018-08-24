@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2018 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -27,21 +27,43 @@
 **
 ****************************************************************************/
 
-#ifndef STYLES_PLUGIN_H
-#define STYLES_PLUGIN_H
+#ifndef QVIRTUALKEYBOARD_STATICPLUGIN_P_H
+#define QVIRTUALKEYBOARD_STATICPLUGIN_P_H
 
-#include <QQmlExtensionPlugin>
+//
+//  W A R N I N G
+//  -------------
+//
+// This file is not part of the Qt API.  It exists purely as an
+// implementation detail.  This header file may change from version to
+// version without notice, or even be removed.
+//
+// We mean it.
+//
 
-class QtVirtualKeyboardStylesPlugin : public QQmlExtensionPlugin
-{
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
+#if defined(QT_STATICPLUGIN)
+#include <QtPlugin>
+#include <QPluginLoader>
 
-public:
-    QtVirtualKeyboardStylesPlugin(QObject *parent = nullptr) : QQmlExtensionPlugin(parent) { }
-    void registerTypes(const char *uri);
-    void initializeEngine(QQmlEngine *engine, const char *uri);
-};
+QT_BEGIN_NAMESPACE
 
-#endif // STYLES_PLUGIN_H
+// This macro is similar to Q_IMPORT_PLUGIN, except it does not
+// register duplicate entries as static plugins.
+// The check is required since the application may already have
+// initialized the plugin by its own dependencies.
+#define Q_VKB_IMPORT_PLUGIN(PLUGIN) \
+        extern const QT_PREPEND_NAMESPACE(QStaticPlugin) qt_static_plugin_##PLUGIN(); \
+        class Static##PLUGIN##PluginInstance{ \
+        public: \
+                Static##PLUGIN##PluginInstance() { \
+                    if (!QPluginLoader::staticInstances().contains(qt_static_plugin_##PLUGIN().instance())) \
+                        qRegisterStaticPluginFunction(qt_static_plugin_##PLUGIN()); \
+                } \
+        }; \
+       static Static##PLUGIN##PluginInstance static##PLUGIN##Instance;
 
+QT_END_NAMESPACE
+
+#endif
+
+#endif // QVIRTUALKEYBOARD_STATICPLUGIN_P_H

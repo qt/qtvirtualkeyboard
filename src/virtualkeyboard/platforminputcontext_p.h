@@ -90,6 +90,9 @@ public:
 
     virtual bool eventFilter(QObject *object, QEvent *event);
 
+    void setInputMethods(const QStringList &inputMethods);
+    QStringList inputMethods() const;
+
 signals:
     void focusObjectChanged();
 
@@ -107,6 +110,7 @@ private:
     friend class ::QVirtualKeyboardInputContext;
     friend class ::QVirtualKeyboardInputContextPrivate;
     QPointer<QVirtualKeyboardInputContext> m_inputContext;
+    QStringList m_inputMethods;
     QPointer<AbstractInputPanel> m_inputPanel;
     QPointer<DesktopInputSelectionControl> m_selectionControl;
     QPointer<QObject> m_focusObject;

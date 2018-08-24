@@ -33,6 +33,7 @@ import QtQuick.Window 2.2
 import QtQuick.VirtualKeyboard 2.3
 import QtQuick.VirtualKeyboard.Styles 2.1
 import QtQuick.VirtualKeyboard.Settings 2.2
+import QtQuick.VirtualKeyboard.Plugins 2.3
 import Qt.labs.folderlistmodel 2.0
 
 Item {
@@ -82,7 +83,7 @@ Item {
 
     function initDefaultInputMethod() {
         try {
-            return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.3; DefaultInputMethod {}', keyboard, "defaultInputMethod")
+            return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard.Plugins 2.3; DefaultInputMethod {}', keyboard, "defaultInputMethod")
         } catch (e) { }
         return plainInputMethod
     }
@@ -1583,7 +1584,7 @@ Item {
     }
 
     function isHandwritingAvailable() {
-        return VirtualKeyboardInputMethods.indexOf("HandwritingInputMethod") !== -1 && layoutExists(locale, "handwriting")
+        return InputContext.priv.inputMethods.indexOf("HandwritingInputMethod") !== -1 && layoutExists(locale, "handwriting")
     }
 
     function setHandwritingMode(enabled, resetInputMode) {

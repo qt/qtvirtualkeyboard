@@ -63,7 +63,8 @@ HEADERS += \
     gesturerecognizer_p.h \
     handwritinggesturerecognizer_p.h \
     qvirtualkeyboard_global.h \
-    qvirtualkeyboardextensionplugin.h
+    qvirtualkeyboardextensionplugin.h \
+    qvirtualkeyboard_staticplugin_p.h
 
 !no-builtin-style: RESOURCES += \
     content/styles/default/default_style.qrc \

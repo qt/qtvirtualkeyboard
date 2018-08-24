@@ -27,11 +27,14 @@
 **
 ****************************************************************************/
 
-#include "styles_plugin.h"
+#include "qtquickvirtualkeyboardstylesplugin.h"
 #include "svgimageprovider.h"
 
 #include <qqml.h>
 #include <QtCore/QLibraryInfo>
+#include <QtVirtualKeyboard/private/qvirtualkeyboard_staticplugin_p.h>
+
+QT_BEGIN_NAMESPACE
 
 /*!
     \qmlmodule QtQuick.VirtualKeyboard.Styles 2.2
@@ -48,8 +51,12 @@
     \endcode
 */
 
-void QtVirtualKeyboardStylesPlugin::registerTypes(const char *uri)
+void QtQuickVirtualKeyboardStylesPlugin::registerTypes(const char *uri)
 {
+#if defined(QT_STATICPLUGIN)
+    Q_VKB_IMPORT_PLUGIN(QtQuick2Plugin)
+#endif
+
     const QString path(QStringLiteral("qrc:///QtQuick/VirtualKeyboard/Styles/content/"));
     qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 1, 0, "KeyboardStyle");
     qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 1, 1, "KeyboardStyle");
@@ -68,8 +75,10 @@ void QtVirtualKeyboardStylesPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(path + QLatin1String("TraceCanvas.qml")), uri, 2, 0, "TraceCanvas");
 }
 
-void QtVirtualKeyboardStylesPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+void QtQuickVirtualKeyboardStylesPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
     Q_UNUSED(uri)
     engine->addImageProvider(QStringLiteral("qtvkbsvg"), new SvgImageProvider());
 }
+
+QT_END_NAMESPACE

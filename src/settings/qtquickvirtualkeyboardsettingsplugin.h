@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2018 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -27,25 +27,24 @@
 **
 ****************************************************************************/
 
-#ifndef PLUGIN_H
-#define PLUGIN_H
+#ifndef QTQUICKVIRTUALKEYBOARDSETTINGSPLUGIN_H
+#define QTQUICKVIRTUALKEYBOARDSETTINGSPLUGIN_H
 
-#include <qpa/qplatforminputcontextplugin_p.h>
-#include <QtVirtualKeyboard/private/platforminputcontext_p.h>
-#include <QStringList>
+#include <QQmlExtensionPlugin>
 
 QT_BEGIN_NAMESPACE
 
-class QVirtualKeyboardPlugin : public QPlatformInputContextPlugin
+class QtQuickVirtualKeyboardSettingsPlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID QPlatformInputContextFactoryInterface_iid FILE "qtvirtualkeyboard.json")
+    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
 
 public:
-    QStringList keys() const;
-    QPlatformInputContext *create(const QString&, const QStringList&);
+    QtQuickVirtualKeyboardSettingsPlugin(QObject *parent = nullptr) : QQmlExtensionPlugin(parent) { }
+    void registerTypes(const char *uri);
 };
 
 QT_END_NAMESPACE
 
-#endif // PLUGIN_H
+#endif // QTQUICKVIRTUALKEYBOARDSETTINGSPLUGIN_H
+

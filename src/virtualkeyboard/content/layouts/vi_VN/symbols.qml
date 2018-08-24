@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.10
-import QtQuick.Layouts 1.3
+import QtQuick 2.0
+import QtQuick.Layouts 1.0
 import QtQuick.VirtualKeyboard 2.3
 
 KeyboardLayoutLoader {

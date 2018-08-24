@@ -1,19 +1,24 @@
-TARGET = qtvirtualkeyboardstylesplugin
+TARGET = qtquickvirtualkeyboardstylesplugin
 TARGETPATH = QtQuick/VirtualKeyboard/Styles
-QT += qml quick svg
+IMPORT_VERSION = 2.2
+QT += qml quick svg virtualkeyboard-private
 
 CONFIG += no_cxx_module
 
 SOURCES += \
     svgimageprovider.cpp \
-    styles_plugin.cpp
+    qtquickvirtualkeyboardstylesplugin.cpp
 
 HEADERS += \
     svgimageprovider.h \
-    styles_plugin.h
+    qtquickvirtualkeyboardstylesplugin.h
 
 RESOURCES += \
     styles.qrc
+
+OTHER_FILES += \
+    plugins.qmltypes \
+    qmldir
 
 win32 {
     QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard (Qt $$QT_VERSION)"

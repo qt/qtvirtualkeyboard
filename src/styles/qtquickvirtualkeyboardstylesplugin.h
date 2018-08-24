@@ -27,25 +27,25 @@
 **
 ****************************************************************************/
 
-#ifndef PLUGIN_H
-#define PLUGIN_H
+#ifndef QTQUICKVIRTUALKEYBOARDSTYLESPLUGIN_H
+#define QTQUICKVIRTUALKEYBOARDSTYLESPLUGIN_H
 
-#include <qpa/qplatforminputcontextplugin_p.h>
-#include <QtVirtualKeyboard/private/platforminputcontext_p.h>
-#include <QStringList>
+#include <QQmlExtensionPlugin>
 
 QT_BEGIN_NAMESPACE
 
-class QVirtualKeyboardPlugin : public QPlatformInputContextPlugin
+class QtQuickVirtualKeyboardStylesPlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID QPlatformInputContextFactoryInterface_iid FILE "qtvirtualkeyboard.json")
+    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
 
 public:
-    QStringList keys() const;
-    QPlatformInputContext *create(const QString&, const QStringList&);
+    QtQuickVirtualKeyboardStylesPlugin(QObject *parent = nullptr) : QQmlExtensionPlugin(parent) { }
+    void registerTypes(const char *uri);
+    void initializeEngine(QQmlEngine *engine, const char *uri);
 };
 
 QT_END_NAMESPACE
 
-#endif // PLUGIN_H
+#endif // STYLES_PLUGIN_H
+

@@ -213,6 +213,16 @@ bool PlatformInputContext::eventFilter(QObject *object, QEvent *event)
     return false;
 }
 
+void PlatformInputContext::setInputMethods(const QStringList &inputMethods)
+{
+    m_inputMethods = inputMethods;
+}
+
+QStringList PlatformInputContext::inputMethods() const
+{
+    return m_inputMethods;
+}
+
 void PlatformInputContext::sendEvent(QEvent *event)
 {
     if (m_focusObject) {
