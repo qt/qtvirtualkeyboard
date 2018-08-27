@@ -118,7 +118,7 @@ Item {
         objectName: "selectionControl"
         x: -parent.x
         y: -parent.y
-        enabled: active && !keyboard.fullScreenMode
+        enabled: active && !keyboard.fullScreenMode && !__isRootItem
     }
 
     implicitHeight: keyboard.height
