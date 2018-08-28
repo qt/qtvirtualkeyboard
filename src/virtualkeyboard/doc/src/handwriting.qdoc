@@ -60,35 +60,43 @@ is a commercial handwriting recognition engine.
 
 T9 Write supports handwriting written in the following languages:
 
-\list
-\li Arabic
-\li Bulgarian
-\li Croatian
-\li Czech
-\li Danish
-\li Dutch
-\li English
-\li Estonian
-\li Finnish
-\li French
-\li German
-\li Greek
-\li Hebrew
-\li Hungarian
-\li Italian
-\li Japanese
-\li Korean
-\li Norwegian
-\li Persian/Farsi
-\li Polish
-\li Portugese
-\li Romanian
-\li Russian
-\li Serbian
-\li Simplified Chinese
-\li Spanish
-\li Swedish
-\li Traditional Chinese
+\table
+\row
+\li \list
+  \li Arabic
+  \li Bulgarian
+  \li Croatian
+  \li Czech
+  \li Danish
+  \li Dutch
+  \li English
 \endlist
-
+\li \list
+  \li Estonian
+  \li Finnish
+  \li French
+  \li German
+  \li Greek
+  \li Hebrew
+  \li Hungarian
+\endlist
+\li \list
+  \li Italian
+  \li Japanese
+  \li Korean
+  \li Norwegian
+  \li Persian/Farsi
+  \li Polish
+  \li Portugese
+\endlist
+\li \list
+  \li Romanian
+  \li Russian
+  \li Serbian
+  \li Simplified Chinese
+  \li Spanish
+  \li Swedish
+  \li Traditional Chinese
+\endlist
+\endtable
 */
