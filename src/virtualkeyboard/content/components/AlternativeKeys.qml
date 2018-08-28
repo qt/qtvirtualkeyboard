@@ -37,6 +37,8 @@ Item {
     property int keyCode
     property point origin
     signal clicked
+    LayoutMirroring.enabled: false
+    LayoutMirroring.childrenInherit: true
 
     z: 1
     visible: active

@@ -97,6 +97,8 @@ InputPanel {
 
     signal inputMethodResult(var text)
 
+    LayoutMirroring.childrenInherit: true
+
     Connections {
         target: InputContext
         onPreeditTextChanged: if (InputContext.preeditText.length > 0) inputMethodResult(InputContext.preeditText)
@@ -387,6 +389,10 @@ InputPanel {
         externalLanguageSwitchEnabled = enabled
     }
 
+    function setLayoutMirroring(enabled) {
+        LayoutMirroring.enabled = enabled
+    }
+
     function findVirtualKey(key) {
         return Utils.findChild(keyboardLayoutLoader, key, function(obj, param) {
             if (!obj.hasOwnProperty("key") || !obj.hasOwnProperty("text"))
@@ -600,6 +606,8 @@ InputPanel {
 
     function activateNavigationKeyMode() {
         if (!inputPanel.naviationHighlight.visible) {
+            inputPanel.naviationHighlight.moveDuration = 0
+            inputPanel.naviationHighlight.resizeDuration = 0
             emulateNavigationKeyClick(Qt.Key_Right)
             if (inputPanel.naviationHighlight.visible) {
                 while (inputPanel.naviationHighlightAnimating)

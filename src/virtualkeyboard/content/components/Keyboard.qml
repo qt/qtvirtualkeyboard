@@ -169,6 +169,7 @@ Item {
         }
         onNavigationKeyPressed: {
             var initialKey
+            var direction = wordCandidateView.effectiveLayoutDirection == Qt.LeftToRight ? 1 : -1
             switch (key) {
             case Qt.Key_Left:
                 if (keyboard.navigationModeActive && !keyboardInputArea.initialKey) {
@@ -193,17 +194,21 @@ Item {
                         break
                     }
                     if (wordCandidateView.count) {
-                        if (wordCandidateView.currentIndex > 0) {
+                        if (wordCandidateView.effectiveLayoutDirection == Qt.LeftToRight &&
+                                wordCandidateView.currentIndex > 0) {
                             wordCandidateView.decrementCurrentIndex()
+                        } else if (wordCandidateView.effectiveLayoutDirection == Qt.RightToLeft &&
+                                   wordCandidateView.currentIndex + 1 < wordCandidateView.count) {
+                            wordCandidateView.incrementCurrentIndex()
                         } else {
                             keyboardInputArea.navigateToNextKey(0, 0, false)
                             initialKey = keyboardInputArea.initialKey
-                            if (!keyboardInputArea.navigateToNextKey(-1, -1, false)) {
-                                keyboardInputArea.initialKey = initialKey
-                                keyboardInputArea.navigateToNextKey(-1, -1, true)
-                            } else {
-                                keyboardInputArea.navigateToNextKey(1, 1, false)
-                            }
+                            while (keyboardInputArea.navigateToNextKey(0, 1 * direction, false))
+                                initialKey = keyboardInputArea.initialKey
+                            while (keyboardInputArea.navigateToNextKey(1, 0, false))
+                                initialKey = keyboardInputArea.initialKey
+                            keyboardInputArea.initialKey = initialKey
+                            keyboardInputArea.navigateToNextKey(0, 0, false)
                         }
                         break
                     }
@@ -211,14 +216,18 @@ Item {
                 initialKey = keyboardInputArea.initialKey
                 if (!keyboardInputArea.navigateToNextKey(-1, 0, false)) {
                     keyboardInputArea.initialKey = initialKey
-                    if (!keyboardInputArea.navigateToNextKey(0, -1, false)) {
+                    if (!keyboardInputArea.navigateToNextKey(0, -1 * direction, false)) {
                         if (wordCandidateView.count) {
-                            if (wordCandidateView.currentIndex === -1)
-                                wordCandidateView.incrementCurrentIndex()
+                            if (wordCandidateView.count) {
+                                wordCandidateView.currentIndex =
+                                        wordCandidateView.effectiveLayoutDirection == Qt.LeftToRight ?
+                                            (wordCandidateView.count - 1) : 0
+                                break
+                            }
                             break
                         }
                         keyboardInputArea.initialKey = initialKey
-                        keyboardInputArea.navigateToNextKey(0, -1, true)
+                        keyboardInputArea.navigateToNextKey(0, -1 * direction, true)
                     }
                     keyboardInputArea.navigateToNextKey(-1, 0, true)
                 }
@@ -283,17 +292,21 @@ Item {
                         break
                     }
                     if (wordCandidateView.count) {
-                        if (wordCandidateView.currentIndex + 1 < wordCandidateView.count) {
+                        if (wordCandidateView.effectiveLayoutDirection == Qt.LeftToRight &&
+                                wordCandidateView.currentIndex + 1 < wordCandidateView.count) {
                             wordCandidateView.incrementCurrentIndex()
+                        } else if (wordCandidateView.effectiveLayoutDirection == Qt.RightToLeft &&
+                                   wordCandidateView.currentIndex > 0) {
+                            wordCandidateView.decrementCurrentIndex()
                         } else {
                             keyboardInputArea.navigateToNextKey(0, 0, false)
                             initialKey = keyboardInputArea.initialKey
-                            if (!keyboardInputArea.navigateToNextKey(1, 1, false)) {
-                                keyboardInputArea.initialKey = initialKey
-                                keyboardInputArea.navigateToNextKey(1, 1, true)
-                            } else {
-                                keyboardInputArea.navigateToNextKey(-1, -1, false)
-                            }
+                            while (keyboardInputArea.navigateToNextKey(0, -1 * direction, false))
+                                initialKey = keyboardInputArea.initialKey;
+                            while (keyboardInputArea.navigateToNextKey(-1, 0, false))
+                                initialKey = keyboardInputArea.initialKey;
+                            keyboardInputArea.initialKey = initialKey
+                            keyboardInputArea.navigateToNextKey(0, 0, false)
                         }
                         break
                     }
@@ -301,14 +314,15 @@ Item {
                 initialKey = keyboardInputArea.initialKey
                 if (!keyboardInputArea.navigateToNextKey(1, 0, false)) {
                     keyboardInputArea.initialKey = initialKey
-                    if (!keyboardInputArea.navigateToNextKey(0, 1, false)) {
+                    if (!keyboardInputArea.navigateToNextKey(0, 1 * direction, false)) {
                         if (wordCandidateView.count) {
-                            if (wordCandidateView.currentIndex === -1)
-                                wordCandidateView.incrementCurrentIndex()
+                            wordCandidateView.currentIndex =
+                                    wordCandidateView.effectiveLayoutDirection == Qt.LeftToRight ?
+                                        0 : (wordCandidateView.count - 1)
                             break
                         }
                         keyboardInputArea.initialKey = initialKey
-                        keyboardInputArea.navigateToNextKey(0, 1, true)
+                        keyboardInputArea.navigateToNextKey(0, 1 * direction, true)
                     }
                     keyboardInputArea.navigateToNextKey(1, 0, true)
                 }
@@ -786,6 +800,8 @@ Item {
             width: Math.round(keyboardBackground.width)
             height: Math.round(style.keyboardDesignHeight * width / style.keyboardDesignWidth)
             anchors.horizontalCenter: parent.horizontalCenter
+            LayoutMirroring.enabled: false
+            LayoutMirroring.childrenInherit: true
 
             Loader {
                 id: keyboardLayoutLoader
@@ -1075,6 +1091,8 @@ Item {
         id: languagePopup
         z: 1
         anchors.fill: parent
+        LayoutMirroring.enabled: false
+        LayoutMirroring.childrenInherit: true
 
         MouseArea {
             onPressed: keyboard.hideLanguagePopup()
@@ -1185,6 +1203,8 @@ Item {
         objectName: "wordCandidateContextMenu"
         z: 1
         anchors.fill: parent
+        LayoutMirroring.enabled: false
+        LayoutMirroring.childrenInherit: true
         property int previousWordCandidateIndex: -1
         readonly property bool active: wordCandidateContextMenuList.visible
         property bool openedByNavigationKeyLongPress
