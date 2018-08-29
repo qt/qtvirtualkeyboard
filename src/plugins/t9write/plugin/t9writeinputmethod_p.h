@@ -56,6 +56,19 @@ class T9WriteInputMethod : public QVirtualKeyboardAbstractInputMethod
     Q_DECLARE_PRIVATE(T9WriteInputMethod)
 
 public:
+    enum class EngineMode {
+        Uninitialized,
+        Alphabetic,
+        Arabic,
+        Hebrew,
+        SimplifiedChinese,
+        TraditionalChinese,
+        HongKongChinese,
+        Japanese,
+        Korean
+    };
+    Q_ENUM(EngineMode)
+
     explicit T9WriteInputMethod(QObject *parent = nullptr);
     ~T9WriteInputMethod();
 

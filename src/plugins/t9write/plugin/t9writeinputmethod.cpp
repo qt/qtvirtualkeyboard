@@ -107,23 +107,10 @@ class T9WriteInputMethodPrivate
 {
     Q_DECLARE_PUBLIC(T9WriteInputMethod)
 public:
-
-    enum EngineMode {
-        EngineUninitialized,
-        Alphabetic,
-        Arabic,
-        Hebrew,
-        SimplifiedChinese,
-        TraditionalChinese,
-        HongKongChinese,
-        Japanese,
-        Korean
-    };
-
     T9WriteInputMethodPrivate(T9WriteInputMethod *q_ptr) :
         q_ptr(q_ptr),
         cjk(false),
-        engineMode(EngineUninitialized),
+        engineMode(T9WriteInputMethod::EngineMode::Uninitialized),
         defaultHwrDbPath(QLatin1String(":/QtQuick/VirtualKeyboard/T9Write/data/")),
         defaultDictionaryDbPath(defaultHwrDbPath),
         traceListHardLimit(32),
@@ -178,34 +165,34 @@ public:
     }
 #endif
 
-    bool initEngine(EngineMode newEngineMode)
+    bool initEngine(T9WriteInputMethod::EngineMode newEngineMode)
     {
         if (engineMode == newEngineMode)
-            return engineMode != EngineUninitialized;
+            return engineMode != T9WriteInputMethod::EngineMode::Uninitialized;
 
         qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::initEngine()" << newEngineMode;
 
         if (decumaSession)
             exitEngine();
 
-        if (newEngineMode == EngineUninitialized)
+        if (newEngineMode == T9WriteInputMethod::EngineMode::Uninitialized)
             return false;
 
         switch (newEngineMode) {
-        case Alphabetic:
-        case Arabic:
-        case Hebrew:
+        case T9WriteInputMethod::EngineMode::Alphabetic:
+        case T9WriteInputMethod::EngineMode::Arabic:
+        case T9WriteInputMethod::EngineMode::Hebrew:
             cjk = false;
             break;
-        case SimplifiedChinese:
-        case TraditionalChinese:
-        case HongKongChinese:
-        case Japanese:
-        case Korean:
+        case T9WriteInputMethod::EngineMode::SimplifiedChinese:
+        case T9WriteInputMethod::EngineMode::TraditionalChinese:
+        case T9WriteInputMethod::EngineMode::HongKongChinese:
+        case T9WriteInputMethod::EngineMode::Japanese:
+        case T9WriteInputMethod::EngineMode::Korean:
             cjk = true;
             break;
         default:
-            Q_ASSERT(0 && "Invalid EngineMode!");
+            Q_ASSERT(0 && "Invalid T9WriteInputMethod::EngineMode!");
             return false;
         }
         engineMode = newEngineMode;
@@ -295,48 +282,48 @@ public:
         symbolCategories.clear();
         languageCategories.clear();
 
-        engineMode = EngineUninitialized;
+        engineMode = T9WriteInputMethod::EngineMode::Uninitialized;
         cjk = false;
     }
 
-    QString findHwrDb(EngineMode mode, const QString &dir) const
+    QString findHwrDb(T9WriteInputMethod::EngineMode mode, const QString &dir) const
     {
         QString hwrDbPath(dir);
         switch (mode) {
-        case Alphabetic:
+        case T9WriteInputMethod::EngineMode::Alphabetic:
 #if T9WRITEAPIMAJORVERNUM >= 21
             hwrDbPath.append(QLatin1String("hwrDB_le.bin"));
 #else
             hwrDbPath.append(QLatin1String("_databas_le.bin"));
 #endif
             break;
-        case Arabic:
+        case T9WriteInputMethod::EngineMode::Arabic:
 #if T9WRITEAPIMAJORVERNUM >= 21
             hwrDbPath.append(QLatin1String("arabic/hwrDB_le.bin"));
 #else
             hwrDbPath.append(QLatin1String("arabic/_databas_le.bin"));
 #endif
             break;
-        case Hebrew:
+        case T9WriteInputMethod::EngineMode::Hebrew:
 #if T9WRITEAPIMAJORVERNUM >= 21
             hwrDbPath.append(QLatin1String("hebrew/hwrDB_le.bin"));
 #else
             hwrDbPath.append(QLatin1String("hebrew/_databas_le.bin"));
 #endif
             break;
-        case SimplifiedChinese:
+        case T9WriteInputMethod::EngineMode::SimplifiedChinese:
             hwrDbPath.append(QLatin1String("cjk_S_gb18030_le.hdb"));
             break;
-        case TraditionalChinese:
+        case T9WriteInputMethod::EngineMode::TraditionalChinese:
             hwrDbPath.append(QLatin1String("cjk_T_std_le.hdb"));
             break;
-        case HongKongChinese:
+        case T9WriteInputMethod::EngineMode::HongKongChinese:
             hwrDbPath.append(QLatin1String("cjk_HK_std_le.hdb"));
             break;
-        case Japanese:
+        case T9WriteInputMethod::EngineMode::Japanese:
             hwrDbPath.append(QLatin1String("cjk_J_std_le.hdb"));
             break;
-        case Korean:
+        case T9WriteInputMethod::EngineMode::Korean:
             hwrDbPath.append(QLatin1String("cjk_K_mkt_le.hdb"));
             break;
         default:
@@ -480,21 +467,21 @@ public:
         return status == decumaNoError;
     }
 
-    EngineMode mapLocaleToEngineMode(const QLocale &locale)
+    T9WriteInputMethod::EngineMode mapLocaleToEngineMode(const QLocale &locale)
     {
 #ifdef HAVE_T9WRITE_CJK
         switch (locale.language()) {
         case QLocale::Chinese: {
             if (locale.script() == QLocale::TraditionalChineseScript)
-                return locale.country() == QLocale::HongKong ? HongKongChinese : TraditionalChinese;
-            return SimplifiedChinese;
+                return locale.country() == QLocale::HongKong ? T9WriteInputMethod::EngineMode::HongKongChinese : T9WriteInputMethod::EngineMode::TraditionalChinese;
+            return T9WriteInputMethod::EngineMode::SimplifiedChinese;
             break;
         }
         case QLocale::Japanese:
-            return Japanese;
+            return T9WriteInputMethod::EngineMode::Japanese;
             break;
         case QLocale::Korean:
-            return Korean;
+            return T9WriteInputMethod::EngineMode::Korean;
         default:
             break;
         }
@@ -505,14 +492,14 @@ public:
 #ifdef HAVE_T9WRITE_ALPHABETIC
         switch (locale.script()) {
         case QLocale::ArabicScript:
-            return T9WriteInputMethodPrivate::Arabic;
+            return T9WriteInputMethod::EngineMode::Arabic;
         case QLocale::HebrewScript:
-            return T9WriteInputMethodPrivate::Hebrew;
+            return T9WriteInputMethod::EngineMode::Hebrew;
         default:
-            return T9WriteInputMethodPrivate::Alphabetic;
+            return T9WriteInputMethod::EngineMode::Alphabetic;
         }
 #else
-        return T9WriteInputMethodPrivate::EngineUninitialized;
+        return T9WriteInputMethod::EngineMode::Uninitialized;
 #endif
     }
 
@@ -1622,7 +1609,7 @@ public:
     T9WriteInputMethod *q_ptr;
     static const DECUMA_MEM_FUNCTIONS memFuncs;
     bool cjk;
-    EngineMode engineMode;
+    T9WriteInputMethod::EngineMode engineMode;
     QByteArray currentContext;
     DECUMA_SESSION_SETTINGS sessionSettings;
     DECUMA_INSTANT_GESTURE_SETTINGS instantGestureSettings;
@@ -1693,13 +1680,13 @@ QList<QVirtualKeyboardInputEngine::InputMode> T9WriteInputMethod::inputModes(con
     QList<QVirtualKeyboardInputEngine::InputMode> availableInputModes;
     const Qt::InputMethodHints inputMethodHints(inputContext()->inputMethodHints());
     const QLocale loc(locale);
-    T9WriteInputMethodPrivate::EngineMode mode = d->mapLocaleToEngineMode(loc);
+    T9WriteInputMethod::EngineMode mode = d->mapLocaleToEngineMode(loc);
 
     // Add primary input mode
     switch (mode) {
 #ifdef HAVE_T9WRITE_ALPHABETIC
-    case T9WriteInputMethodPrivate::Alphabetic:
-        if (d->findHwrDb(T9WriteInputMethodPrivate::Alphabetic, d->defaultHwrDbPath).isEmpty())
+    case T9WriteInputMethod::EngineMode::Alphabetic:
+        if (d->findHwrDb(T9WriteInputMethod::EngineMode::Alphabetic, d->defaultHwrDbPath).isEmpty())
             return availableInputModes;
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly))) {
             switch (loc.script()) {
@@ -1715,36 +1702,36 @@ QList<QVirtualKeyboardInputEngine::InputMode> T9WriteInputMethod::inputModes(con
             availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Latin);
         }
         break;
-    case T9WriteInputMethodPrivate::Arabic:
-        if (d->findHwrDb(T9WriteInputMethodPrivate::Arabic, d->defaultHwrDbPath).isEmpty())
+    case T9WriteInputMethod::EngineMode::Arabic:
+        if (d->findHwrDb(T9WriteInputMethod::EngineMode::Arabic, d->defaultHwrDbPath).isEmpty())
             return availableInputModes;
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
             availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Arabic);
         break;
-    case T9WriteInputMethodPrivate::Hebrew:
-        if (d->findHwrDb(T9WriteInputMethodPrivate::Hebrew, d->defaultHwrDbPath).isEmpty())
+    case T9WriteInputMethod::EngineMode::Hebrew:
+        if (d->findHwrDb(T9WriteInputMethod::EngineMode::Hebrew, d->defaultHwrDbPath).isEmpty())
             return availableInputModes;
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
             availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Hebrew);
         break;
 #endif
 #ifdef HAVE_T9WRITE_CJK
-    case T9WriteInputMethodPrivate::SimplifiedChinese:
-    case T9WriteInputMethodPrivate::TraditionalChinese:
-    case T9WriteInputMethodPrivate::HongKongChinese:
+    case T9WriteInputMethod::EngineMode::SimplifiedChinese:
+    case T9WriteInputMethod::EngineMode::TraditionalChinese:
+    case T9WriteInputMethod::EngineMode::HongKongChinese:
         if (d->findHwrDb(mode, d->defaultHwrDbPath).isEmpty())
             return availableInputModes;
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
             availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting);
         break;
-    case T9WriteInputMethodPrivate::Japanese:
-        if (d->findHwrDb(T9WriteInputMethodPrivate::Japanese, d->defaultHwrDbPath).isEmpty())
+    case T9WriteInputMethod::EngineMode::Japanese:
+        if (d->findHwrDb(T9WriteInputMethod::EngineMode::Japanese, d->defaultHwrDbPath).isEmpty())
             return availableInputModes;
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
             availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting);
         break;
-    case T9WriteInputMethodPrivate::Korean:
-        if (d->findHwrDb(T9WriteInputMethodPrivate::Korean, d->defaultHwrDbPath).isEmpty())
+    case T9WriteInputMethod::EngineMode::Korean:
+        if (d->findHwrDb(T9WriteInputMethod::EngineMode::Korean, d->defaultHwrDbPath).isEmpty())
             return availableInputModes;
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
             availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting);
