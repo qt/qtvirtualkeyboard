@@ -36,6 +36,7 @@
 #include <QDirIterator>
 #include <QCryptographicHash>
 #include <QTime>
+#include <QMetaEnum>
 #include <QtVirtualKeyboard/private/handwritinggesturerecognizer_p.h>
 #ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
 #include <QtVirtualKeyboard/private/unipentrace_p.h>
@@ -165,12 +166,17 @@ public:
     }
 #endif
 
+    static const char *engineModeToString(T9WriteInputMethod::EngineMode mode)
+    {
+        return QMetaEnum::fromType<T9WriteInputMethod::EngineMode>().key(static_cast<int>(mode));
+    }
+
     bool initEngine(T9WriteInputMethod::EngineMode newEngineMode)
     {
         if (engineMode == newEngineMode)
             return engineMode != T9WriteInputMethod::EngineMode::Uninitialized;
 
-        qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::initEngine()" << newEngineMode;
+        qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::initEngine()" << engineModeToString(newEngineMode);
 
         if (decumaSession)
             exitEngine();
@@ -202,14 +208,14 @@ public:
         QString hwrDb = findHwrDb(engineMode, defaultHwrDbPath);
         hwrDbFile.setFileName(hwrDb);
         if (!hwrDbFile.open(QIODevice::ReadOnly)) {
-            qCritical() << "Could not open HWR database" << hwrDb;
+            qCCritical(lcT9Write) << "Could not open HWR database" << hwrDb;
             exitEngine();
             return false;
         }
 
         sessionSettings.pStaticDB = (DECUMA_STATIC_DB_PTR)hwrDbFile.map(0, hwrDbFile.size(), QFile::NoOptions);
         if (!sessionSettings.pStaticDB) {
-            qCritical() << "Could not read HWR database" << hwrDb;
+            qCCritical(lcT9Write) << "Could not read HWR database" << hwrDb;
             exitEngine();
             return false;
         }
@@ -230,7 +236,7 @@ public:
         DECUMA_STATUS status = DECUMA_API(BeginSession)(decumaSession, &sessionSettings, &memFuncs);
         Q_ASSERT(status == decumaNoError);
         if (status != decumaNoError) {
-            qCritical() << "Could not initialize T9Write engine" << status;
+            qCCritical(lcT9Write) << "Could not initialize engine" << status;
             exitEngine();
             return false;
         }
@@ -329,7 +335,11 @@ public:
         default:
             return QString();
         }
-        return QFileInfo::exists(hwrDbPath) ? hwrDbPath : QString();
+        if (!QFileInfo::exists(hwrDbPath)) {
+            qCCritical(lcT9Write) << "Could not find HWR database for" << engineModeToString(mode);
+            return QString();
+        }
+        return hwrDbPath;
     }
 
     QString findDictionary(const QString &dir, const QLocale &locale, DECUMA_SRC_DICTIONARY_TYPE &srcType)
@@ -350,7 +360,7 @@ public:
 
             if (fileEntry.endsWith(QLatin1String(".ldb"))) {
 #if T9WRITEAPIMAJORVERNUM >= 20
-                qCritical() << "Incompatible T9 Write dictionary" << fileEntry;
+                qCCritical(lcT9Write) << "Incompatible dictionary" << fileEntry;
                 continue;
 #else
                 srcType = decumaXT9LDB;
@@ -359,11 +369,11 @@ public:
 #if T9WRITEAPIMAJORVERNUM >= 20
                 srcType = decumaPortableHWRDictionary;
 #else
-                qCritical() << "Incompatible T9 Write dictionary" << fileEntry;
+                qCCritical(lcT9Write) << "Incompatible dictionary" << fileEntry;
                 continue;
 #endif
             } else {
-                qWarning() << "Incompatible T9 Write dictionary" << fileEntry;
+                qCCritical(lcT9Write) << "Incompatible dictionary" << fileEntry;
                 continue;
             }
 
@@ -414,14 +424,14 @@ public:
 
         DECUMA_UINT32 language = mapToDecumaLanguage(locale, inputMode);
         if (language == DECUMA_LANG_GSMDEFAULT) {
-            qWarning() << "Handwriting is not supported in" << locale.name();
+            qCCritical(lcT9Write) << "Language is not supported" << locale.name();
             return false;
         }
 
         int isLanguageSupported = 0;
         DECUMA_API(DatabaseIsLanguageSupported)(sessionSettings.pStaticDB, language, &isLanguageSupported);
         if (!isLanguageSupported) {
-            qWarning() << "Handwriting is not supported in" << locale.name();
+            qCCritical(lcT9Write) << "Language is not supported" << locale.name();
             return false;
         }
 
@@ -804,7 +814,7 @@ public:
             break;
 
         default:
-            qWarning() << "Handwriting is not supported in" << locale.name();
+            qCCritical(lcT9Write)  << "Invalid input mode" << inputMode;
             return false;
         }
 
@@ -864,7 +874,7 @@ public:
                 break;
 
             default:
-                qWarning() << "Chinese handwriting is not supported in" << locale.name();
+                qCCritical(lcT9Write)  << "Invalid locale" << locale << "for" << engineModeToString(engineMode);
                 return false;
             }
             break;
