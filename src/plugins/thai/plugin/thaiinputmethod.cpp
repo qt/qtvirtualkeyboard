@@ -44,7 +44,7 @@ ThaiInputMethod::ThaiInputMethod(QObject *parent) :
 {
 }
 
-#ifndef HAVE_HUNSPELL
+#ifndef QT_HUNSPELLINPUTMETHOD_LIB
 QList<QVirtualKeyboardInputEngine::InputMode> ThaiInputMethod::inputModes(
         const QString &locale)
 {
@@ -72,7 +72,7 @@ bool ThaiInputMethod::keyEvent(Qt::Key key,
                                Qt::KeyboardModifiers modifiers)
 {
     const bool isMark = text.length() == 2 && text.at(0) == QChar(' ');
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
     if (isMark) {
         const QString mark(text.right(1));
         return ThaiInputMethodBase::keyEvent(static_cast<Qt::Key>(mark.at(0).unicode()),

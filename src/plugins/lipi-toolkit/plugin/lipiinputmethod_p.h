@@ -41,7 +41,7 @@
 // We mean it.
 //
 
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
 #include <QtHunspellInputMethod/private/hunspellinputmethod_p.h>
 #define LipiInputMethodBase HunspellInputMethod
 #else
@@ -85,7 +85,7 @@ protected:
 protected slots:
     void resultsAvailable(const QVariantList &resultList);
 
-#ifndef HAVE_HUNSPELL
+#ifndef QT_HUNSPELLINPUTMETHOD_LIB
 private:
     QScopedPointer<LipiInputMethodPrivate> d_ptr;
 #endif

@@ -37,7 +37,7 @@
 #include <QtVirtualKeyboard/qvirtualkeyboardtrace.h>
 #include <QtVirtualKeyboard/private/handwritinggesturerecognizer_p.h>
 
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
 #include <QtHunspellInputMethod/private/hunspellinputmethod_p_p.h>
 #endif
 
@@ -59,7 +59,7 @@
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
 #define LipiInputMethodPrivateBase HunspellInputMethodPrivate
 #else
 #define LipiInputMethodPrivateBase DummyPrivate
@@ -73,7 +73,7 @@ class LipiInputMethodPrivate : public LipiInputMethodPrivateBase
     Q_DECLARE_PUBLIC(LipiInputMethod)
 public:
     LipiInputMethodPrivate(LipiInputMethod *q_ptr) :
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
         LipiInputMethodPrivateBase(static_cast<HunspellInputMethod *>(q_ptr)),
 #else
         LipiInputMethodPrivateBase(),
@@ -275,7 +275,7 @@ public:
                     } else if (swipeTouchCount == 2) {
                         // Double swipe: commit word, or insert space
                         cancelRecognition();
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
                         int activeWordIndex = wordCandidates.index();
                         if (activeWordIndex != -1) {
                             q->selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, activeWordIndex);
@@ -479,7 +479,7 @@ public:
 */
 
 LipiInputMethod::LipiInputMethod(QObject *parent) :
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
     LipiInputMethodBase(new LipiInputMethodPrivate(this), parent)
 #else
     LipiInputMethodBase(parent),
@@ -513,7 +513,7 @@ QList<QVirtualKeyboardInputEngine::InputMode> LipiInputMethod::inputModes(const 
 bool LipiInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)
 {
     Q_D(LipiInputMethod);
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
     HunspellInputMethod::setInputMode(locale, inputMode);
 #else
     Q_UNUSED(locale)
@@ -540,7 +540,7 @@ bool LipiInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase
 {
     Q_D(LipiInputMethod);
     d->textCase = textCase;
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
     HunspellInputMethod::setTextCase(textCase);
 #endif
     return true;
@@ -548,7 +548,7 @@ bool LipiInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase
 
 bool LipiInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
     Q_D(LipiInputMethod);
     switch (key) {
     case Qt::Key_Enter:

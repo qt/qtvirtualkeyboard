@@ -42,6 +42,7 @@
 //
 
 #include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
+#include <QtHunspellInputMethod/qhunspellinputmethod_global.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
@@ -49,7 +50,7 @@ namespace QtVirtualKeyboard {
 class HunspellInputMethodPrivate;
 class HunspellWordList;
 
-class HunspellInputMethod : public QVirtualKeyboardAbstractInputMethod
+class QHUNSPELLINPUTMETHOD_EXPORT HunspellInputMethod : public QVirtualKeyboardAbstractInputMethod
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(HunspellInputMethod)

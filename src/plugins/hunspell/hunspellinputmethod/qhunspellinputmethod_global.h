@@ -27,39 +27,23 @@
 **
 ****************************************************************************/
 
-#ifndef THAIINPUTMETHOD_H
-#define THAIINPUTMETHOD_H
+#ifndef QHUNSPELLINPUTMETHOD_GLOBAL_H
+#define QHUNSPELLINPUTMETHOD_GLOBAL_H
 
-#ifdef QT_HUNSPELLINPUTMETHOD_LIB
-#include <QtHunspellInputMethod/private/hunspellinputmethod_p.h>
-#define ThaiInputMethodBase HunspellInputMethod
-#else
-#include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
-#define ThaiInputMethodBase QVirtualKeyboardAbstractInputMethod
-#endif
+#include <QtCore/qglobal.h>
 
 QT_BEGIN_NAMESPACE
-namespace QtVirtualKeyboard {
 
-class ThaiInputMethodPrivate;
-
-class ThaiInputMethod : public ThaiInputMethodBase
-{
-    Q_OBJECT
-    Q_DECLARE_PRIVATE(ThaiInputMethod)
-public:
-    explicit ThaiInputMethod(QObject *parent = nullptr);
-
-#ifndef QT_HUNSPELLINPUTMETHOD_LIB
-    QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale);
-    bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode);
-    bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase);
+#ifndef QT_STATIC
+# if defined(QHUNSPELLINPUTMETHOD_LIBRARY)
+#   define QHUNSPELLINPUTMETHOD_EXPORT Q_DECL_EXPORT
+# else
+#   define QHUNSPELLINPUTMETHOD_EXPORT Q_DECL_IMPORT
+# endif
+#else
+# define QHUNSPELLINPUTMETHOD_EXPORT
 #endif
 
-    bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
-};
-
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE
 
 #endif
