@@ -91,6 +91,9 @@ Item {
     enabled: inputPanel.keyboard.isHandwritingAvailable()
     visible: enabled && available && active && Qt.inputMethod.visible
 
+    LayoutMirroring.enabled: false
+    LayoutMirroring.childrenInherit: true
+
     Item {
         id: keyboard
         property var style: inputPanel && inputPanel.hasOwnProperty ? inputPanel.keyboard.style : null
