@@ -44,7 +44,7 @@ KeyboardLayout {
             KeyboardRow {
                 TraceInputKey {
                     objectName: "hwrInputArea"
-                    patternRecognitionMode: InputEngine.HandwritingRecoginition
+                    patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
                 }
             }
         }
@@ -70,8 +70,8 @@ KeyboardLayout {
             key: Qt.Key_Mode_switch
             noKeyEvent: true
             functionKey: true
-            text: InputContext.inputEngine.inputMode === InputEngine.Latin ? "123" : "ABC"
-            onClicked: InputContext.inputEngine.inputMode = InputContext.inputEngine.inputMode === InputEngine.Latin ? InputEngine.Numeric : InputEngine.Latin
+            text: InputContext.inputEngine.inputMode === InputEngine.InputMode.Latin ? "123" : "ABC"
+            onClicked: InputContext.inputEngine.inputMode = InputContext.inputEngine.inputMode === InputEngine.InputMode.Latin ? InputEngine.InputMode.Numeric : InputEngine.InputMode.Latin
             enabled: !(InputContext.inputMethodHints & (Qt.ImhDialableCharactersOnly | Qt.ImhFormattedNumbersOnly | Qt.ImhDigitsOnly))
             keyPanelDelegate: keyboard.style ? keyboard.style.symbolKeyPanel : undefined
         }

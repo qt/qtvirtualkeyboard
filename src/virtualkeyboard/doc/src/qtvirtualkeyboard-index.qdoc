@@ -56,6 +56,7 @@
         \li \l {Handwriting Recognition}{Handwriting support}, with gestures for fullscreen input.
         \li Audio feedback.
         \li Cross-platform functionality.
+        \li Supports both \l {Integration Method}{Qt Quick and Qt Widgets applications}.
     \endlist
 
     \section1 Supported Languages

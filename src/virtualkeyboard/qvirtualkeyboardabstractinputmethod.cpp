@@ -27,32 +27,31 @@
 **
 ****************************************************************************/
 
-#include <QtVirtualKeyboard/abstractinputmethod.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
 #include <QtCore/private/qobject_p.h>
 
 QT_BEGIN_NAMESPACE
-namespace QtVirtualKeyboard {
 
-class AbstractInputMethodPrivate : public QObjectPrivate
+class QVirtualKeyboardAbstractInputMethodPrivate : public QObjectPrivate
 {
 public:
-    AbstractInputMethodPrivate();
+    QVirtualKeyboardAbstractInputMethodPrivate();
 
-    InputEngine *inputEngine;
+    QVirtualKeyboardInputEngine *inputEngine;
 };
 
 /*!
-    \class QtVirtualKeyboard::AbstractInputMethodPrivate
+    \class AbstractInputMethodPrivate
     \internal
 */
 
-AbstractInputMethodPrivate::AbstractInputMethodPrivate() :
+QVirtualKeyboardAbstractInputMethodPrivate::QVirtualKeyboardAbstractInputMethodPrivate() :
     inputEngine(nullptr)
 {
 }
 
 /*!
-    \class QtVirtualKeyboard::AbstractInputMethod
+    \class QVirtualKeyboardAbstractInputMethod
 
     \inmodule QtVirtualKeyboard
 
@@ -65,15 +64,15 @@ AbstractInputMethodPrivate::AbstractInputMethodPrivate() :
 /*!
     Constructs an input method with \a parent.
 */
-AbstractInputMethod::AbstractInputMethod(QObject *parent) :
-    QObject(*new AbstractInputMethodPrivate(), parent)
+QVirtualKeyboardAbstractInputMethod::QVirtualKeyboardAbstractInputMethod(QObject *parent) :
+    QObject(*new QVirtualKeyboardAbstractInputMethodPrivate(), parent)
 {
 }
 
 /*!
     Destroys the input method and frees all allocated resources.
 */
-AbstractInputMethod::~AbstractInputMethod()
+QVirtualKeyboardAbstractInputMethod::~QVirtualKeyboardAbstractInputMethod()
 {
 }
 
@@ -81,9 +80,9 @@ AbstractInputMethod::~AbstractInputMethod()
     Returns the input context associated with the input method.
     This method returns \c NULL if the input method is not active.
 */
-InputContext *AbstractInputMethod::inputContext() const
+QVirtualKeyboardInputContext *QVirtualKeyboardAbstractInputMethod::inputContext() const
 {
-    Q_D(const AbstractInputMethod);
+    Q_D(const QVirtualKeyboardAbstractInputMethod);
     return d->inputEngine ? d->inputEngine->inputContext() : nullptr;
 }
 
@@ -91,9 +90,9 @@ InputContext *AbstractInputMethod::inputContext() const
     Returns the input engine associated with the input method.
     This method returns \c NULL if the input method is not active.
 */
-InputEngine *AbstractInputMethod::inputEngine() const
+QVirtualKeyboardInputEngine *QVirtualKeyboardAbstractInputMethod::inputEngine() const
 {
-    Q_D(const AbstractInputMethod);
+    Q_D(const QVirtualKeyboardAbstractInputMethod);
     return d->inputEngine;
 }
 
@@ -103,7 +102,7 @@ InputEngine *AbstractInputMethod::inputEngine() const
     difference to the update() method is that reset() modifies only
     the input method state, i.e. it must not modify the input context.
 */
-void AbstractInputMethod::reset()
+void QVirtualKeyboardAbstractInputMethod::reset()
 {
 }
 
@@ -112,7 +111,7 @@ void AbstractInputMethod::reset()
     updated. The input method must close the current pre-edit text and
     restore its internal state to the default.
 */
-void AbstractInputMethod::update()
+void QVirtualKeyboardAbstractInputMethod::update()
 {
 }
 
@@ -121,9 +120,9 @@ void AbstractInputMethod::update()
     Called by the input engine when the input method is activated and
     deactivated.
 */
-void AbstractInputMethod::setInputEngine(InputEngine *inputEngine)
+void QVirtualKeyboardAbstractInputMethod::setInputEngine(QVirtualKeyboardInputEngine *inputEngine)
 {
-    Q_D(AbstractInputMethod);
+    Q_D(QVirtualKeyboardAbstractInputMethod);
     if (d->inputEngine) {
         d->inputEngine->disconnect(this, SLOT(reset()));
         d->inputEngine->disconnect(this, SLOT(update()));
@@ -135,37 +134,41 @@ void AbstractInputMethod::setInputEngine(InputEngine *inputEngine)
     }
 }
 
-QList<SelectionListModel::Type> AbstractInputMethod::selectionLists()
+QList<QVirtualKeyboardSelectionListModel::Type> QVirtualKeyboardAbstractInputMethod::selectionLists()
 {
-    return QList<SelectionListModel::Type>();
+    return QList<QVirtualKeyboardSelectionListModel::Type>();
 }
 
-int AbstractInputMethod::selectionListItemCount(SelectionListModel::Type type)
+int QVirtualKeyboardAbstractInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
 {
     Q_UNUSED(type)
     return 0;
 }
 
-QVariant AbstractInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
+QVariant QVirtualKeyboardAbstractInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 {
     Q_UNUSED(type)
     Q_UNUSED(index)
     switch (role) {
-    case SelectionListModel::DisplayRole:
+    case QVirtualKeyboardSelectionListModel::Role::Display:
         return QVariant("");
-    case SelectionListModel::WordCompletionLengthRole:
+    case QVirtualKeyboardSelectionListModel::Role::WordCompletionLength:
         return QVariant(0);
+    case QVirtualKeyboardSelectionListModel::Role::Dictionary:
+        return QVariant(static_cast<int>(QVirtualKeyboardSelectionListModel::DictionaryType::Default));
+    case QVirtualKeyboardSelectionListModel::Role::CanRemoveSuggestion:
+        return QVariant(false);
     }
     return QVariant();
 }
 
-void AbstractInputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
+void QVirtualKeyboardAbstractInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index)
 {
     Q_UNUSED(type)
     Q_UNUSED(index)
 }
 
-bool AbstractInputMethod::selectionListRemoveItem(SelectionListModel::Type type, int index)
+bool QVirtualKeyboardAbstractInputMethod::selectionListRemoveItem(QVirtualKeyboardSelectionListModel::Type type, int index)
 {
     Q_UNUSED(type)
     Q_UNUSED(index)
@@ -180,9 +183,9 @@ bool AbstractInputMethod::selectionListRemoveItem(SelectionListModel::Type type,
     This method is called by the input engine to query the list of
     supported pattern recognition modes.
 */
-QList<InputEngine::PatternRecognitionMode> AbstractInputMethod::patternRecognitionModes() const
+QList<QVirtualKeyboardInputEngine::PatternRecognitionMode> QVirtualKeyboardAbstractInputMethod::patternRecognitionModes() const
 {
-    return QList<InputEngine::PatternRecognitionMode>();
+    return QList<QVirtualKeyboardInputEngine::PatternRecognitionMode>();
 }
 
 /*!
@@ -194,11 +197,12 @@ QList<InputEngine::PatternRecognitionMode> AbstractInputMethod::patternRecogniti
     \a traceScreenInfo provides information about the screen context.
 
     If the input method accepts the event and wants to capture the trace input, it must return
-    a new Trace object. This object must remain valid until the traceEnd() method is called. If the
-    Trace is rendered on screen, it remains there until the Trace object is destroyed.
+    a new QVirtualKeyboardTrace object. This object must remain valid until the traceEnd() method is called. If the
+    QVirtualKeyboardTrace is rendered on screen, it remains there until the QVirtualKeyboardTrace object is destroyed.
 */
-Trace *AbstractInputMethod::traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
-                                       const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
+QVirtualKeyboardTrace *QVirtualKeyboardAbstractInputMethod::traceBegin(
+        int traceId, QVirtualKeyboardInputEngine::PatternRecognitionMode patternRecognitionMode,
+        const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
 {
     Q_UNUSED(traceId)
     Q_UNUSED(patternRecognitionMode)
@@ -211,12 +215,12 @@ Trace *AbstractInputMethod::traceBegin(int traceId, InputEngine::PatternRecognit
     \since QtQuick.VirtualKeyboard 2.0
 
     This method is called when the trace interaction ends. The input method should destroy the \a trace object
-    at some point after this function is called. See the \l Trace API how to access the gathered
+    at some point after this function is called. See the \l {Trace API for Input Methods} how to access the gathered
     data.
 
     The method returns \c true if the trace interaction is accepted.
 */
-bool AbstractInputMethod::traceEnd(Trace *trace)
+bool QVirtualKeyboardAbstractInputMethod::traceEnd(QVirtualKeyboardTrace *trace)
 {
     Q_UNUSED(trace)
     return false;
@@ -231,7 +235,7 @@ bool AbstractInputMethod::traceEnd(Trace *trace)
 
     The function returns \c true if the word was successfully reselected.
 */
-bool AbstractInputMethod::reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags)
+bool QVirtualKeyboardAbstractInputMethod::reselect(int cursorPosition, const QVirtualKeyboardInputEngine::ReselectFlags &reselectFlags)
 {
     Q_UNUSED(cursorPosition)
     Q_UNUSED(reselectFlags)
@@ -246,34 +250,34 @@ bool AbstractInputMethod::reselect(int cursorPosition, const InputEngine::Resele
     The function should return \c true if it handles the event. Otherwise the input
     falls back to \l reselect() for further processing.
 */
-bool AbstractInputMethod::clickPreeditText(int cursorPosition)
+bool QVirtualKeyboardAbstractInputMethod::clickPreeditText(int cursorPosition)
 {
     Q_UNUSED(cursorPosition)
     return false;
 }
 
 /*!
-    \fn QList<QtVirtualKeyboard::InputEngine::InputMode> QtVirtualKeyboard::AbstractInputMethod::inputModes(const QString& locale)
+    \fn QList<QVirtualKeyboardInputEngine::InputMode> QVirtualKeyboardAbstractInputMethod::inputModes(const QString& locale)
 
     Returns the list of input modes for \a locale.
 */
 
 /*!
-    \fn bool QtVirtualKeyboard::AbstractInputMethod::setInputMode(const QString& locale, InputEngine::InputMode inputMode)
+    \fn bool QVirtualKeyboardAbstractInputMethod::setInputMode(const QString& locale, QVirtualKeyboardInputEngine::InputMode inputMode)
 
     Sets the \a inputMode and \a locale for this input method. Returns \c true
     if successful.
 */
 
 /*!
-    \fn bool QtVirtualKeyboard::AbstractInputMethod::setTextCase(InputEngine::TextCase textCase)
+    \fn bool QVirtualKeyboardAbstractInputMethod::setTextCase(QVirtualKeyboardInputEngine::::TextCase textCase)
 
     Updates the \a textCase for this input method. The method returns \c true
     if successful.
 */
 
 /*!
-    \fn bool QtVirtualKeyboard::AbstractInputMethod::keyEvent(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers)
+    \fn bool QVirtualKeyboardAbstractInputMethod::keyEvent(Qt::Key key, const QString& text, Qt::KeyboardModifiers modifiers)
 
     The purpose of this method is to handle the key events generated by the the
     input engine.
@@ -289,7 +293,7 @@ bool AbstractInputMethod::clickPreeditText(int cursorPosition)
 */
 
 /*!
-    \fn QList<SelectionListModel::Type> QtVirtualKeyboard::AbstractInputMethod::selectionLists()
+    \fn QList<QVirtualKeyboardSelectionListModel::Type> QVirtualKeyboardAbstractInputMethod::selectionLists()
 
     Returns the list of selection lists used by this input method.
 
@@ -304,28 +308,28 @@ bool AbstractInputMethod::clickPreeditText(int cursorPosition)
 */
 
 /*!
-    \fn int QtVirtualKeyboard::AbstractInputMethod::selectionListItemCount(SelectionListModel::Type type)
+    \fn int QVirtualKeyboardAbstractInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
 
     Returns the number of items in the selection list identified by \a type.
 */
 
 /*!
-    \fn QVariant QtVirtualKeyboard::AbstractInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
+    \fn QVariant QVirtualKeyboardAbstractInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 
-    Returns item data for the selection list identified by \a type. The \a \l {QtVirtualKeyboard::SelectionListModel::Role}{role}
+    Returns item data for the selection list identified by \a type. The \a \l {QVirtualKeyboardSelectionListModel::Role}{role}
     parameter specifies which data is requested. The \a index parameter is a
     zero based index into the list.
 */
 
 /*!
-    \fn void QtVirtualKeyboard::AbstractInputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
+    \fn void QVirtualKeyboardAbstractInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index)
 
     This method is called when an item at \a index has been selected by the
     user. The selection list is identified by the \a type parameter.
 */
 
 /*!
-    \fn bool QtVirtualKeyboard::AbstractInputMethod::selectionListRemoveItem(SelectionListModel::Type type, int index)
+    \fn bool QVirtualKeyboardAbstractInputMethod::selectionListRemoveItem(QVirtualKeyboardSelectionListModel::Type type, int index)
 
     This method is called when an item at \a index must be removed from dictionary.
     The selection list is identified by the \a type parameter.
@@ -333,7 +337,7 @@ bool AbstractInputMethod::clickPreeditText(int cursorPosition)
 */
 
 /*!
-    \fn void QtVirtualKeyboard::AbstractInputMethod::selectionListChanged(int type)
+    \fn void QVirtualKeyboardAbstractInputMethod::selectionListChanged(QVirtualKeyboardSelectionListModel::Type type)
 
     The input method emits this signal when the contents of the selection list
     has changed. The \a type parameter specifies which selection list has
@@ -341,14 +345,14 @@ bool AbstractInputMethod::clickPreeditText(int cursorPosition)
 */
 
 /*!
-    \fn void QtVirtualKeyboard::AbstractInputMethod::selectionListActiveItemChanged(int type, int index)
+    \fn void QVirtualKeyboardAbstractInputMethod::selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type type, int index)
 
     The input method emits this signal when the current \a index has changed
     in the selection list identified by \a type.
 */
 
 /*!
-    \fn void QtVirtualKeyboard::AbstractInputMethod::selectionListsChanged()
+    \fn void QVirtualKeyboardAbstractInputMethod::selectionListsChanged()
     \since QtQuick.VirtualKeyboard 2.2
 
     The input method emits this signal when the selection list types have
@@ -356,5 +360,4 @@ bool AbstractInputMethod::clickPreeditText(int cursorPosition)
     allowing the input method to update the selection list types.
 */
 
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE

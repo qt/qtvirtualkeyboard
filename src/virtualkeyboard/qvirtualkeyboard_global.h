@@ -33,7 +33,6 @@
 #include <QtCore/qglobal.h>
 
 QT_BEGIN_NAMESPACE
-namespace QtVirtualKeyboard {
 
 #ifndef QT_STATIC
 # if defined(QVIRTUALKEYBOARD_LIBRARY)
@@ -45,7 +44,6 @@ namespace QtVirtualKeyboard {
 # define QVIRTUALKEYBOARD_EXPORT
 #endif
 
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE
 
 #endif

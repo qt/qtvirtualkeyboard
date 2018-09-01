@@ -43,14 +43,14 @@
 // We mean it.
 //
 
-#include <QtVirtualKeyboard/abstractinputmethod.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class MyScriptInputMethodPrivate;
 
-class MyScriptInputMethod : public AbstractInputMethod
+class MyScriptInputMethod : public QVirtualKeyboardAbstractInputMethod
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(MyScriptInputMethod)
@@ -59,24 +59,25 @@ public:
     explicit MyScriptInputMethod(QObject *parent = nullptr);
     ~MyScriptInputMethod();
 
-    QList<InputEngine::InputMode> inputModes(const QString &locale) override;
-    bool setInputMode(const QString &locale, InputEngine::InputMode inputMode) override;
-    bool setTextCase(InputEngine::TextCase textCase) override;
+    QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale) override;
+    bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode) override;
+    bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase) override;
 
     bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers) override;
 
     void reset() override;
     void update() override;
 
-    QList<SelectionListModel::Type> selectionLists() override;
-    int selectionListItemCount(SelectionListModel::Type type) override;
-    QVariant selectionListData(SelectionListModel::Type type, int index, int role) override;
-    void selectionListItemSelected(SelectionListModel::Type type, int index) override;
+    QList<QVirtualKeyboardSelectionListModel::Type> selectionLists() override;
+    int selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type) override;
+    QVariant selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role) override;
+    void selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index) override;
 
-    QList<InputEngine::PatternRecognitionMode> patternRecognitionModes() const override;
-    Trace *traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
-                      const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo) override;
-    bool traceEnd(Trace *trace) override;
+    QList<QVirtualKeyboardInputEngine::PatternRecognitionMode> patternRecognitionModes() const override;
+    QVirtualKeyboardTrace *traceBegin(
+            int traceId, QVirtualKeyboardInputEngine::PatternRecognitionMode patternRecognitionMode,
+            const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo) override;
+    bool traceEnd(QVirtualKeyboardTrace *trace) override;
 
     bool clickPreeditText(int cursorPosition) override;
 

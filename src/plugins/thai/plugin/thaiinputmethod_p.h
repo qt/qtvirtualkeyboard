@@ -30,12 +30,12 @@
 #ifndef THAIINPUTMETHOD_H
 #define THAIINPUTMETHOD_H
 
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
 #include <QtHunspellInputMethod/private/hunspellinputmethod_p.h>
 #define ThaiInputMethodBase HunspellInputMethod
 #else
-#include <QtVirtualKeyboard/abstractinputmethod.h>
-#define ThaiInputMethodBase AbstractInputMethod
+#include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
+#define ThaiInputMethodBase QVirtualKeyboardAbstractInputMethod
 #endif
 
 QT_BEGIN_NAMESPACE
@@ -50,10 +50,10 @@ class ThaiInputMethod : public ThaiInputMethodBase
 public:
     explicit ThaiInputMethod(QObject *parent = nullptr);
 
-#ifndef HAVE_HUNSPELL
-    QList<InputEngine::InputMode> inputModes(const QString &locale);
-    bool setInputMode(const QString &locale, InputEngine::InputMode inputMode);
-    bool setTextCase(InputEngine::TextCase textCase);
+#ifndef QT_HUNSPELLINPUTMETHOD_LIB
+    QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale);
+    bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode);
+    bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase);
 #endif
 
     bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);

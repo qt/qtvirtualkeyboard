@@ -29,7 +29,7 @@
 
 #include "hangulinputmethod_p.h"
 #include "hangul_p.h"
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
@@ -40,7 +40,7 @@ namespace QtVirtualKeyboard {
 */
 
 HangulInputMethod::HangulInputMethod(QObject *parent) :
-    AbstractInputMethod(parent)
+    QVirtualKeyboardAbstractInputMethod(parent)
 {
 }
 
@@ -48,20 +48,20 @@ HangulInputMethod::~HangulInputMethod()
 {
 }
 
-QList<InputEngine::InputMode> HangulInputMethod::inputModes(const QString &locale)
+QList<QVirtualKeyboardInputEngine::InputMode> HangulInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<InputEngine::InputMode>() << InputEngine::Hangul;
+    return QList<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::Hangul;
 }
 
-bool HangulInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
+bool HangulInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_UNUSED(inputMode)
     return true;
 }
 
-bool HangulInputMethod::setTextCase(InputEngine::TextCase textCase)
+bool HangulInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 {
     Q_UNUSED(textCase)
     return true;
@@ -70,7 +70,7 @@ bool HangulInputMethod::setTextCase(InputEngine::TextCase textCase)
 bool HangulInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
     Q_UNUSED(modifiers)
-    InputContext *ic = inputContext();
+    QVirtualKeyboardInputContext *ic = inputContext();
     bool accept = false;
     int cursorPosition = ic->cursorPosition();
     if (ic->cursorPosition() > 0) {

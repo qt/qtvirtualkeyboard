@@ -40,8 +40,8 @@ Item {
         anchors.fill: parent
     }
 
-    onXChanged: InputContext.shadow.updateSelectionProperties()
-    onYChanged: InputContext.shadow.updateSelectionProperties()
+    onXChanged: InputContext.priv.shadow.updateSelectionProperties()
+    onYChanged: InputContext.priv.shadow.updateSelectionProperties()
 
     Loader {
         sourceComponent: keyboard.style.fullScreenInputContainerBackground
@@ -61,7 +61,7 @@ Item {
                 flickableDirection: Flickable.HorizontalFlick
                 interactive: contentWidth > width
                 contentWidth: shadowInput.width
-                onContentXChanged: InputContext.shadow.updateSelectionProperties()
+                onContentXChanged: InputContext.priv.shadow.updateSelectionProperties()
 
                 function ensureVisible(rectangle) {
                     if (contentX >= rectangle.x)
@@ -113,7 +113,7 @@ Item {
                         onTriggered: {
                             var anchorPosition = shadowInput.getAnchorPosition()
                             if (anchorPosition !== InputContext.anchorPosition || shadowInput.cursorPosition !== InputContext.cursorPosition)
-                                InputContext.forceCursorPosition(anchorPosition, shadowInput.cursorPosition)
+                                InputContext.priv.forceCursorPosition(anchorPosition, shadowInput.cursorPosition)
                         }
                     }
 
@@ -130,7 +130,7 @@ Item {
     }
 
     Binding {
-        target: InputContext.shadow
+        target: InputContext.priv.shadow
         property: "inputItem"
         value: shadowInput
         when: VirtualKeyboardSettings.fullScreenMode

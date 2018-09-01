@@ -28,7 +28,7 @@
 ****************************************************************************/
 
 #include <QtHunspellInputMethod/private/hunspellinputmethod_p_p.h>
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #include <hunspell/hunspell.h>
 #include <QStringList>
 #include <QDir>
@@ -113,8 +113,8 @@ void HunspellInputMethodPrivate::reset()
 {
     if (clearSuggestions(true)) {
         Q_Q(HunspellInputMethod);
-        emit q->selectionListChanged(SelectionListModel::WordCandidateList);
-        emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, wordCandidates.index());
+        emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+        emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, wordCandidates.index());
     }
     autoSpaceAllowed = false;
 }
@@ -187,9 +187,9 @@ bool HunspellInputMethodPrivate::isAutoSpaceAllowed() const
     Q_Q(const HunspellInputMethod);
     if (!autoSpaceAllowed)
         return false;
-    if (q->inputEngine()->inputMode() == InputEngine::Numeric)
+    if (q->inputEngine()->inputMode() == QVirtualKeyboardInputEngine::InputMode::Numeric)
         return false;
-    InputContext *ic = q->inputContext();
+    QVirtualKeyboardInputContext *ic = q->inputContext();
     if (!ic)
         return false;
     Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
@@ -212,7 +212,7 @@ bool HunspellInputMethodPrivate::isJoiner(const QChar &c) const
 {
     if (c.isPunct() || c.isSymbol()) {
         Q_Q(const HunspellInputMethod);
-        InputContext *ic = q->inputContext();
+        QVirtualKeyboardInputContext *ic = q->inputContext();
         if (ic) {
             Qt::InputMethodHints inputMethodHints = ic->inputMethodHints();
             if (inputMethodHints.testFlag(Qt::ImhUrlCharactersOnly) || inputMethodHints.testFlag(Qt::ImhEmailCharactersOnly))

@@ -32,7 +32,7 @@ import QtQuick.VirtualKeyboard 2.3
 
 KeyboardLayoutLoader {
     sharedLayouts: ['symbols']
-    sourceComponent: InputContext.inputEngine.inputMode === InputEngine.Greek ? greekLayout : latinLayout
+    sourceComponent: InputContext.inputEngine.inputMode === InputEngine.InputMode.Greek ? greekLayout : latinLayout
     Component {
         id: greekLayout
         KeyboardLayout {
@@ -114,7 +114,7 @@ KeyboardLayoutLoader {
             KeyboardRow {
                 keyWeight: 156
                 InputModeKey {
-                    inputModes: [InputEngine.Greek, InputEngine.Latin]
+                    inputModes: [InputEngine.InputMode.Greek, InputEngine.InputMode.Latin]
                 }
                 Key {
                     text: "ζ"
@@ -287,7 +287,7 @@ KeyboardLayoutLoader {
             KeyboardRow {
                 keyWeight: 156
                 InputModeKey {
-                    inputModes: [InputEngine.Greek, InputEngine.Latin]
+                    inputModes: [InputEngine.InputMode.Greek, InputEngine.InputMode.Latin]
                 }
                 Key {
                     key: Qt.Key_Z

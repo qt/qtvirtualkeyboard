@@ -91,6 +91,9 @@ Item {
     enabled: inputPanel.keyboard.isHandwritingAvailable()
     visible: enabled && available && active && Qt.inputMethod.visible
 
+    LayoutMirroring.enabled: false
+    LayoutMirroring.childrenInherit: true
+
     Item {
         id: keyboard
         property var style: inputPanel && inputPanel.hasOwnProperty ? inputPanel.keyboard.style : null
@@ -105,12 +108,12 @@ Item {
         enabled: handwritingInputPanel.enabled && handwritingInputPanel.available && handwritingInputPanel.active
         objectName: "hwrInputArea"
         anchors.fill: parent
-        patternRecognitionMode: InputEngine.HandwritingRecoginition
+        patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
         canvasType: "fullscreen"
     }
 
     Binding {
-        target: InputContext
+        target: InputContext.priv
         property: "keyboardRectangle"
         value: Qt.rect(hwrInputArea.x, hwrInputArea.y, hwrInputArea.width, hwrInputArea.height)
         when: handwritingInputPanel.enabled && handwritingInputPanel.available && handwritingInputPanel.active

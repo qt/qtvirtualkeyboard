@@ -92,7 +92,7 @@ void T9WriteDictionaryTask::run()
         emit completed(dictionary);
 }
 
-T9WriteAddArcTask::T9WriteAddArcTask(Trace *trace) :
+T9WriteAddArcTask::T9WriteAddArcTask(QVirtualKeyboardTrace *trace) :
     trace(trace)
 {
 }

@@ -218,6 +218,11 @@ Rectangle {
                 obj.destroy()
         }
 
+        function test_publicEnums() {
+            prepareTest()
+            inputPanel.testPublicEnums()
+        }
+
         function test_focusShowKeyboard() {
             container.forceActiveFocus()
             verify(inputPanel.visible === false)
@@ -692,6 +697,17 @@ Rectangle {
             verify(inputPanel.keyboardInputArea.initialKey === focusKey)
             verify(inputPanel.wordCandidateView.currentIndex !== -1)
 
+            // Select alternative key and check word candidates
+            verify(inputPanel.navigationKeyClick("e"))
+            var focusKeyAlt = inputPanel.keyboardInputArea.initialKey
+            verify(inputPanel.navigationKeyClick("ë"))
+            verify(inputPanel.wordCandidateView.count > 1)
+            verify(inputPanel.keyboardInputArea.initialKey === focusKeyAlt)
+            verify(inputPanel.navigationKeyClick(Qt.Key_Backspace))
+            verify(inputPanel.navigationKeyClick(Qt.Key_Backspace))
+            verify(inputPanel.navigationKeyClick(Qt.Key_Backspace))
+            verify(inputPanel.navigationKeyClick("q"))
+
             // Move focus to word candidate list
             inputPanel.emulateNavigationKeyClick(Qt.Key_Up)
             verify(inputPanel.keyboardInputArea.initialKey === null)
@@ -810,10 +826,6 @@ Rectangle {
         }
 
         function test_spellCorrectionAutomaticSpaceInsertion(data) {
-            if (Qt.platform.pluginName === "offscreen") {
-                skip("QTBUG-68349");
-            }
-
             prepareTest(data)
 
             for (var inputIndex in data.inputSequence) {
@@ -1828,8 +1840,8 @@ Rectangle {
             for (var len = 1; len <= 5; ++len) {
                 inputPanel.virtualKeyClick("z")
                 if (len >= 2) {
-                    inputPanel.wordCandidateListChangedSpy.clear()
-                    inputPanel.wordCandidateListChangedSpy.wait()
+                    inputPanel.inputMethodSelectionListChangedSpy.clear()
+                    inputPanel.inputMethodSelectionListChangedSpy.wait()
                     if (inputPanel.wordCandidateView.model.count <= 1)
                         break
                 }

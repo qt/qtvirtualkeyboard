@@ -261,6 +261,8 @@ QtObject {
         \list
             \li \c display Display text for the current item.
             \li \c wordCompletionLength Word completion length measured from the end of the display text.
+            \li \c dictionary Dictionary type of the word, see QVirtualKeyboardSelectionListModel::DictionaryType.
+            \li \c canRemoveSuggestion A boolean indicating if the word can be removed from dictionary.
         \endlist
     */
     property Component selectionListDelegate: null
@@ -330,6 +332,8 @@ QtObject {
         \list
             \li \c display Display text for the current item.
             \li \c wordCompletionLength Word completion length measured from the end of the display text.
+            \li \c dictionary Dictionary type of the word, see QVirtualKeyboardSelectionListModel::DictionaryType.
+            \li \c canRemoveSuggestion A boolean indicating if the word can be removed from dictionary.
         \endlist
     */
     property Component popupListDelegate: null
@@ -381,8 +385,7 @@ QtObject {
 
         The following properties are available to the item:
         \list
-            \li \c display Display text for the current item.
-            \li \c wordCompletionLength Word completion length measured from the end of the display text.
+            \li \c displayName Display name of the language.
         \endlist
     */
     property Component languageListDelegate: null

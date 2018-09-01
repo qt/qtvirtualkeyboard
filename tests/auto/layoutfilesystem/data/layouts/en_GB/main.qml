@@ -32,5 +32,5 @@ import QtQuick.VirtualKeyboard 2.1
 
 KeyboardLayout {
     objectName: "en_GB"
-    inputMode: InputEngine.Latin
+    inputMode: InputEngine.InputMode.Latin
 }

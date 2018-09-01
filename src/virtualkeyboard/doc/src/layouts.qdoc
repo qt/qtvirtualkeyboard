@@ -68,9 +68,13 @@ The next sections illustrate each layout.
 
 \image layouts/qtvirtualkeyboard-layout-nl_NL.png
 
-\section2 English Layout
+\section2 English (British) Layout
 
 \image layouts/qtvirtualkeyboard-layout-en_GB.png
+
+\section2 English (American) Layout
+
+\image layouts/qtvirtualkeyboard-layout-en_US.png
 
 \section2 Estonian Layout
 
@@ -164,6 +168,10 @@ The next sections illustrate each layout.
 
 \image layouts/qtvirtualkeyboard-layout-pt_PT.png
 
+\section2 Portugese Layout (Brazil)
+
+\image layouts/qtvirtualkeyboard-layout-pt_BR.png
+
 \section2 Romanian Layout
 
 \image layouts/qtvirtualkeyboard-layout-ar_AR.png
@@ -204,6 +212,10 @@ The next sections illustrate each layout.
 
 \image layouts/qtvirtualkeyboard-layout-es_ES.png
 
+\section2 Spanish Layout (Mexican)
+
+\image layouts/qtvirtualkeyboard-layout-es_MX.png
+
 \section2 Swedish Layout
 
 \image layouts/qtvirtualkeyboard-layout-sv_SE.png
@@ -219,5 +231,9 @@ The next sections illustrate each layout.
 \section2 Ukrainian Layout
 
 \image layouts/qtvirtualkeyboard-layout-uk_UA.png
+
+\section2 Vietnamese Layout
+
+\image layouts/qtvirtualkeyboard-layout-vi_VN.png
 
 */

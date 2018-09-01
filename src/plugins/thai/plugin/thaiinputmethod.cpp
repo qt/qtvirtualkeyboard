@@ -28,8 +28,8 @@
 ****************************************************************************/
 
 #include "thaiinputmethod_p.h"
-#include <QtVirtualKeyboard/inputengine.h>
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
@@ -44,23 +44,23 @@ ThaiInputMethod::ThaiInputMethod(QObject *parent) :
 {
 }
 
-#ifndef HAVE_HUNSPELL
-QList<InputEngine::InputMode> ThaiInputMethod::inputModes(
+#ifndef QT_HUNSPELLINPUTMETHOD_LIB
+QList<QVirtualKeyboardInputEngine::InputMode> ThaiInputMethod::inputModes(
         const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<InputEngine::InputMode>() << InputEngine::Latin;
+    return QList<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::Latin;
 }
 
 bool ThaiInputMethod::setInputMode(const QString &locale,
-                                         InputEngine::InputMode inputMode)
+                                         QVirtualKeyboardInputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_UNUSED(inputMode)
     return true;
 }
 
-bool ThaiInputMethod::setTextCase(InputEngine::TextCase textCase)
+bool ThaiInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 {
     Q_UNUSED(textCase)
     return true;
@@ -72,7 +72,7 @@ bool ThaiInputMethod::keyEvent(Qt::Key key,
                                Qt::KeyboardModifiers modifiers)
 {
     const bool isMark = text.length() == 2 && text.at(0) == QChar(' ');
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
     if (isMark) {
         const QString mark(text.right(1));
         return ThaiInputMethodBase::keyEvent(static_cast<Qt::Key>(mark.at(0).unicode()),

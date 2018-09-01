@@ -45,13 +45,13 @@ BaseKey {
     /*! This property holds the action id for the enter key.
 
     */
-    readonly property int actionId: InputContext.hasEnterKeyAction(InputContext.inputItem) ? InputContext.inputItem.EnterKeyAction.actionId : EnterKeyAction.None
+    readonly property int actionId: InputContext.priv.hasEnterKeyAction(InputContext.priv.inputItem) ? InputContext.priv.inputItem.EnterKeyAction.actionId : EnterKeyAction.None
 
     text: "\n"
-    displayText: InputContext.hasEnterKeyAction(InputContext.inputItem) ? InputContext.inputItem.EnterKeyAction.label : ""
+    displayText: InputContext.priv.hasEnterKeyAction(InputContext.priv.inputItem) ? InputContext.priv.inputItem.EnterKeyAction.label : ""
     key: Qt.Key_Return
     showPreview: false
     highlighted: enabled && displayText.length > 0
-    enabled: InputContext.hasEnterKeyAction(InputContext.inputItem) ? InputContext.inputItem.EnterKeyAction.enabled : true
+    enabled: InputContext.priv.hasEnterKeyAction(InputContext.priv.inputItem) ? InputContext.priv.inputItem.EnterKeyAction.enabled : true
     keyPanelDelegate: keyboard.style ? keyboard.style.enterKeyPanel : undefined
 }

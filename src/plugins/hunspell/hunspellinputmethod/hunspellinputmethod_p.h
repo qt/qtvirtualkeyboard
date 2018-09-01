@@ -41,7 +41,8 @@
 // We mean it.
 //
 
-#include <QtVirtualKeyboard/abstractinputmethod.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
+#include <QtHunspellInputMethod/qhunspellinputmethod_global.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
@@ -49,7 +50,7 @@ namespace QtVirtualKeyboard {
 class HunspellInputMethodPrivate;
 class HunspellWordList;
 
-class HunspellInputMethod : public AbstractInputMethod
+class QHUNSPELLINPUTMETHOD_EXPORT HunspellInputMethod : public QVirtualKeyboardAbstractInputMethod
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(HunspellInputMethod)
@@ -59,19 +60,19 @@ public:
     explicit HunspellInputMethod(QObject *parent = nullptr);
     ~HunspellInputMethod();
 
-    QList<InputEngine::InputMode> inputModes(const QString &locale);
-    bool setInputMode(const QString &locale, InputEngine::InputMode inputMode);
-    bool setTextCase(InputEngine::TextCase textCase);
+    QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale);
+    bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode);
+    bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase);
 
     bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 
-    QList<SelectionListModel::Type> selectionLists();
-    int selectionListItemCount(SelectionListModel::Type type);
-    QVariant selectionListData(SelectionListModel::Type type, int index, int role);
-    void selectionListItemSelected(SelectionListModel::Type type, int index);
-    bool selectionListRemoveItem(SelectionListModel::Type type, int index);
+    QList<QVirtualKeyboardSelectionListModel::Type> selectionLists();
+    int selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type);
+    QVariant selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role);
+    void selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index);
+    bool selectionListRemoveItem(QVirtualKeyboardSelectionListModel::Type type, int index);
 
-    bool reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags);
+    bool reselect(int cursorPosition, const QVirtualKeyboardInputEngine::ReselectFlags &reselectFlags);
 
     void reset();
     void update();

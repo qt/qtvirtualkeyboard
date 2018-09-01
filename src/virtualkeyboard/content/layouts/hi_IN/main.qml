@@ -31,7 +31,7 @@ import QtQuick 2.0
 import QtQuick.VirtualKeyboard 2.1
 
 KeyboardLayoutLoader {
-    inputMode: InputEngine.Latin
+    inputMode: InputEngine.InputMode.Latin
     sourceComponent: InputContext.shift ? page2 : page1
     Component {
         id: page1

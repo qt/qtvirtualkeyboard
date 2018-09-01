@@ -32,7 +32,7 @@ import QtQuick.VirtualKeyboard 2.3
 
 KeyboardLayoutLoader {
     sharedLayouts: ['symbols']
-    sourceComponent: InputContext.inputEngine.inputMode === InputEngine.Hebrew ? hebrewLayout : latinLayout
+    sourceComponent: InputContext.inputEngine.inputMode === InputEngine.InputMode.Hebrew ? hebrewLayout : latinLayout
     Component {
         id: hebrewLayout
         KeyboardLayout {
@@ -122,7 +122,7 @@ KeyboardLayoutLoader {
             KeyboardRow {
                 keyWeight: 156
                 InputModeKey {
-                    inputModes: [InputEngine.Hebrew, InputEngine.Latin]
+                    inputModes: [InputEngine.InputMode.Hebrew, InputEngine.InputMode.Latin]
                 }
                 Key {
                     text: "\u05D6"
@@ -302,7 +302,7 @@ KeyboardLayoutLoader {
             KeyboardRow {
                 keyWeight: 156
                 InputModeKey {
-                    inputModes: [InputEngine.Hebrew, InputEngine.Latin]
+                    inputModes: [InputEngine.InputMode.Hebrew, InputEngine.InputMode.Latin]
                 }
                 Key {
                     key: Qt.Key_Z

@@ -42,37 +42,18 @@ The project is split into the following subprojects:
     \li \e examples/virtualkeyboard/basic/basic.pro
     \li Qt Virtual Keyboard Demo application
 \row
-    \li \e src/virtualkeyboard/virtualkeyboard.pro
-    \li Qt Virtual Keyboard plugin
+    \li \e src/virtualkeyboard/plugin/
+    \li Qt Virtual Keyboard platform input context plugin
+\row
+    \li \e src/virtualkeyboard/plugins/
+    \li A directory containing Qt Virtual Keyboard plugins, such as the Hunspell plugin
 \row
     \li \e src/virtualkeyboard/styles/styles.pro
     \li Qt Virtual Keyboard Style plugin that enables style decorations for the
         keyboard
 \row
-    \li \e src/virtualkeyboard/3rdparty/hunspell/hunspell.pro
-    \li A project file for compiling the Hunspell library.
-    \note This project is used if the Hunspell library is built from
-          sources rather than depending on the system library. The project
-          will be activated when the source code is extracted to this
-          directory.
-\row
-    \li \e src/virtualkeyboard/3rdparty/lipi-toolkit/lipi-toolkit.pro
-    \li A project file for compiling the lipi-toolkit library.
-\row
-    \li \e src/virtualkeyboard/3rdparty/openwnn/openwnn.pro
-    \li A project file for compiling the OpenWNN library.
-\row
-    \li \e src/virtualkeyboard/3rdparty/pinyin/pinyin.pro
-    \li A project file for compiling the PinyinIME library.
-\row
-    \li \e src/virtualkeyboard/3rdparty/t9write/t9write.pro
-    \li A project file for including T9 Write dictionaries as resources.
-\row
-    \li \e src/virtualkeyboard/3rdparty/tcime/tcime.pro
-    \li A project file for compiling the TCIME library.
-\row
-    \li \e src/plugins/myscript/myscript.pro
-    \li A project file for compiling MyScript Superimposed HWR (handwriting recognition) plugin.
+    \li \e src/virtualkeyboard/virtualkeyboard.pro
+    \li Qt Virtual Keyboard module, QML components and layouts
 \endtable
 
 The input methods are implemented either in C++ or QML.
@@ -295,10 +276,10 @@ By default, \e HunspellInputMethod will not be available unless the Hunspell
 library and development headers are found. For Linux/X11 targets, the Hunspell
 library can be provided by installing the libhunspell-dev package.
 Alternatively, the Hunspell sources can be extracted into the
-\e src/virtualkeyboard/3rdparty/hunspell directory. If Hunspell sources are used,
-then the dictionary files must also be copied into the
-\e src/virtualkeyboard/3rdparty/hunspell/data directory. Furthermore, if Hunspell
-sources are used, \e hunspell.pro will be used for all targets.
+\e src/plugins/hunspell/3rdparty/hunspell directory. The sources are automatically
+detected by the qmake and the project will be configured to use the local Hunspell.
+If Hunspell sources are used, then the dictionary files must also be
+copied into the \e src/plugins/hunspell/3rdparty/hunspell/data directory.
 
 An example of how the directory structure should look after copying in the
 Hunspell sources and dictionary files is listed below:
@@ -338,7 +319,7 @@ described below, or by using the \e unpack.py script found in the t9write direct
 To unpack the SDK using the script:
 
 \badcode
-$ cd src/virtualkeyboard/3rdparty/t9write/
+$ cd src/plugins/t9write/3rdparty/t9write/
 $ python unpack.py T9Write_Alpha_v7-8-0_SDK.zip .
 \endcode
 

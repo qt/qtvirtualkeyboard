@@ -14,14 +14,15 @@ include(../config.pri)
 
 SOURCES += \
     platforminputcontext.cpp \
-    inputcontext.cpp \
-    abstractinputmethod.cpp \
+    qvirtualkeyboardinputcontext.cpp \
+    qvirtualkeyboardinputcontext_p.cpp \
+    qvirtualkeyboardabstractinputmethod.cpp \
     plaininputmethod.cpp \
-    inputengine.cpp \
+    qvirtualkeyboardinputengine.cpp \
     shifthandler.cpp \
     inputmethod.cpp \
     inputselectionhandle.cpp \
-    selectionlistmodel.cpp \
+    qvirtualkeyboardselectionlistmodel.cpp \
     fallbackinputmethod.cpp \
     abstractinputpanel.cpp \
     appinputpanel.cpp \
@@ -29,7 +30,7 @@ SOURCES += \
     enterkeyactionattachedtype.cpp \
     settings.cpp \
     virtualkeyboardsettings.cpp \
-    trace.cpp \
+    qvirtualkeyboardtrace.cpp \
     desktopinputselectioncontrol.cpp \
     shadowinputcontext.cpp \
     gesturerecognizer.cpp \
@@ -38,14 +39,15 @@ SOURCES += \
 
 HEADERS += \
     platforminputcontext_p.h \
-    inputcontext.h \
-    abstractinputmethod.h \
+    qvirtualkeyboardinputcontext.h \
+    qvirtualkeyboardinputcontext_p.h \
+    qvirtualkeyboardabstractinputmethod.h \
     plaininputmethod_p.h \
-    inputengine.h \
+    qvirtualkeyboardinputengine.h \
     shifthandler_p.h \
     inputmethod_p.h \
     inputselectionhandle_p.h \
-    selectionlistmodel.h \
+    qvirtualkeyboardselectionlistmodel.h \
     fallbackinputmethod_p.h \
     abstractinputpanel_p.h \
     appinputpanel_p.h \
@@ -55,7 +57,7 @@ HEADERS += \
     enterkeyactionattachedtype_p.h \
     settings_p.h \
     virtualkeyboardsettings_p.h \
-    trace.h \
+    qvirtualkeyboardtrace.h \
     desktopinputselectioncontrol_p.h \
     shadowinputcontext_p.h \
     gesturerecognizer_p.h \
@@ -405,7 +407,7 @@ OTHER_FILES += \
 record-trace-input {
     SOURCES += unipentrace.cpp
     HEADERS += unipentrace_p.h
-    DEFINES += QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
+    MODULE_DEFINES += QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
 }
 
 arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION

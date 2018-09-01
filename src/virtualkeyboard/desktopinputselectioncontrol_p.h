@@ -47,11 +47,12 @@
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
+
 class QMouseEvent;
+class QVirtualKeyboardInputContext;
 
 namespace QtVirtualKeyboard {
 
-class InputContext;
 class InputSelectionHandle;
 
 class QVIRTUALKEYBOARD_EXPORT DesktopInputSelectionControl : public QObject
@@ -59,7 +60,7 @@ class QVIRTUALKEYBOARD_EXPORT DesktopInputSelectionControl : public QObject
     Q_OBJECT
 
 public:
-    DesktopInputSelectionControl(QObject *parent, InputContext *inputContext);
+    DesktopInputSelectionControl(QObject *parent, QVirtualKeyboardInputContext *inputContext);
     ~DesktopInputSelectionControl() {}
 
     void createHandles();
@@ -81,7 +82,7 @@ private:
     QRect handleRectForCursorRect(const QRectF &cursorRect) const;
 
 private:
-    InputContext *m_inputContext;
+    QVirtualKeyboardInputContext *m_inputContext;
     QSharedPointer<InputSelectionHandle> m_anchorSelectionHandle;
     QSharedPointer<InputSelectionHandle> m_cursorSelectionHandle;
     QImage m_handleImage;

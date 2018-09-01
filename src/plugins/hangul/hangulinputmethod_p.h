@@ -41,14 +41,14 @@
 // We mean it.
 //
 
-#include <QtVirtualKeyboard/abstractinputmethod.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class HangulInputMethodPrivate;
 
-class HangulInputMethod : public AbstractInputMethod
+class HangulInputMethod : public QVirtualKeyboardAbstractInputMethod
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(HangulInputMethod)
@@ -56,9 +56,9 @@ public:
     explicit HangulInputMethod(QObject *parent = nullptr);
     ~HangulInputMethod();
 
-    QList<InputEngine::InputMode> inputModes(const QString &locale);
-    bool setInputMode(const QString &locale, InputEngine::InputMode inputMode);
-    bool setTextCase(InputEngine::TextCase textCase);
+    QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale);
+    bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode);
+    bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase);
 
     bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 

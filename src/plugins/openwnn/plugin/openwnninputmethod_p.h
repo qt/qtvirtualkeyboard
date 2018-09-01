@@ -41,14 +41,14 @@
 // We mean it.
 //
 
-#include <QtVirtualKeyboard/abstractinputmethod.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 class OpenWnnInputMethodPrivate;
 
-class OpenWnnInputMethod : public AbstractInputMethod
+class OpenWnnInputMethod : public QVirtualKeyboardAbstractInputMethod
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(OpenWnnInputMethod)
@@ -57,16 +57,16 @@ public:
     explicit OpenWnnInputMethod(QObject *parent = nullptr);
     ~OpenWnnInputMethod();
 
-    QList<InputEngine::InputMode> inputModes(const QString &locale);
-    bool setInputMode(const QString &locale, InputEngine::InputMode inputMode);
-    bool setTextCase(InputEngine::TextCase textCase);
+    QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale);
+    bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode);
+    bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase);
 
     bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 
-    QList<SelectionListModel::Type> selectionLists();
-    int selectionListItemCount(SelectionListModel::Type type);
-    QVariant selectionListData(SelectionListModel::Type type, int index, int role);
-    void selectionListItemSelected(SelectionListModel::Type type, int index);
+    QList<QVirtualKeyboardSelectionListModel::Type> selectionLists();
+    int selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type);
+    QVariant selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role);
+    void selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index);
 
     void reset();
     void update();

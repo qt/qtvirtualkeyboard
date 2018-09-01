@@ -33,7 +33,7 @@ import QtQuick.VirtualKeyboard.Styles 2.1
 
 KeyboardStyle {
     id: currentStyle
-    readonly property bool compactSelectionList: [InputEngine.Pinyin, InputEngine.Cangjie, InputEngine.Zhuyin].indexOf(InputContext.inputEngine.inputMode) !== -1
+    readonly property bool compactSelectionList: [InputEngine.InputMode.Pinyin, InputEngine.InputMode.Cangjie, InputEngine.InputMode.Zhuyin].indexOf(InputContext.inputEngine.inputMode) !== -1
     readonly property string fontFamily: "Courier"
     readonly property real keyBackgroundMargin: Math.round(9 * scaleHint)
     readonly property real keyContentMargin: Math.round(30 * scaleHint)
@@ -880,30 +880,30 @@ KeyboardStyle {
         }
         Text {
             id: hwrInputModeIndicator
-            visible: control.patternRecognitionMode === InputEngine.HandwritingRecoginition
+            visible: control.patternRecognitionMode === InputEngine.PatternRecognitionMode.Handwriting
             text: {
                 switch (InputContext.inputEngine.inputMode) {
-                case InputEngine.Numeric:
+                case InputEngine.InputMode.Numeric:
                     if (["ar", "fa"].indexOf(InputContext.locale.substring(0, 2)) !== -1)
                         return "\u0660\u0661\u0662"
                     // Fallthrough
-                case InputEngine.Dialable:
+                case InputEngine.InputMode.Dialable:
                     return "123"
-                case InputEngine.Greek:
+                case InputEngine.InputMode.Greek:
                     return "ΑΒΓ"
-                case InputEngine.Cyrillic:
+                case InputEngine.InputMode.Cyrillic:
                     return "АБВ"
-                case InputEngine.Arabic:
+                case InputEngine.InputMode.Arabic:
                     if (InputContext.locale.substring(0, 2) === "fa")
                         return "\u0627\u200C\u0628\u200C\u067E"
                     return "\u0623\u200C\u0628\u200C\u062C"
-                case InputEngine.Hebrew:
+                case InputEngine.InputMode.Hebrew:
                     return "\u05D0\u05D1\u05D2"
-                case InputEngine.ChineseHandwriting:
+                case InputEngine.InputMode.ChineseHandwriting:
                     return "中文"
-                case InputEngine.JapaneseHandwriting:
+                case InputEngine.InputMode.JapaneseHandwriting:
                     return "日本語"
-                case InputEngine.KoreanHandwriting:
+                case InputEngine.InputMode.KoreanHandwriting:
                     return "한국어"
                 default:
                     return "Abc"

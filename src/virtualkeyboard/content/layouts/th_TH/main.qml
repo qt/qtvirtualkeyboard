@@ -32,7 +32,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.VirtualKeyboard 2.3
 
 KeyboardLayoutLoader {
-    inputMode: InputEngine.Latin
+    inputMode: InputEngine.InputMode.Latin
     function createInputMethod() {
         return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.3; ThaiInputMethod {}', parent, "thaiInputMethod")
     }

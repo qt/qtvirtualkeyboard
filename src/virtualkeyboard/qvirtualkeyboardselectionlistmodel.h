@@ -27,52 +27,54 @@
 **
 ****************************************************************************/
 
-#ifndef SELECTIONLISTMODEL_H
-#define SELECTIONLISTMODEL_H
+#ifndef QVIRTUALKEYBOARDSELECTIONLISTMODEL_H
+#define QVIRTUALKEYBOARDSELECTIONLISTMODEL_H
 
 #include <QAbstractListModel>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
-namespace QtVirtualKeyboard {
 
-class AbstractInputMethod;
-class InputEngine;
-class SelectionListModelPrivate;
+class QVirtualKeyboardAbstractInputMethod;
+class QVirtualKeyboardInputEngine;
+class QVirtualKeyboardSelectionListModelPrivate;
 
-class QVIRTUALKEYBOARD_EXPORT SelectionListModel : public QAbstractListModel
+class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardSelectionListModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(SelectionListModel)
+    Q_DECLARE_PRIVATE(QVirtualKeyboardSelectionListModel)
     Q_PROPERTY(int count READ count NOTIFY countChanged)
 
-    explicit SelectionListModel(QObject *parent = nullptr);
+    explicit QVirtualKeyboardSelectionListModel(QObject *parent = nullptr);
 
 public:
-    enum Type
+    enum class Type
     {
         WordCandidateList = 0
     };
-    enum Role
-    {
-        DisplayRole = Qt::DisplayRole,
-        WordCompletionLengthRole = Qt::UserRole + 1,
-        DictionaryTypeRole,
-        CanRemoveSuggestionRole,
-    };
-    enum DictionaryType
-    {
-        DefaultDictionary = 0,
-        UserDictionary
-    };
-
     Q_ENUM(Type)
+
+    enum class Role
+    {
+        Display = Qt::DisplayRole,
+        DisplayRole = Display,
+        WordCompletionLength = Qt::UserRole + 1,
+        WordCompletionLengthRole = WordCompletionLength,
+        Dictionary,
+        CanRemoveSuggestion
+    };
     Q_ENUM(Role)
+
+    enum class DictionaryType
+    {
+        Default = 0,
+        User
+    };
     Q_ENUM(DictionaryType)
 
-    ~SelectionListModel();
-    void setDataSource(AbstractInputMethod *dataSource, Type type);
-    AbstractInputMethod *dataSource() const;
+    ~QVirtualKeyboardSelectionListModel();
+    void setDataSource(QVirtualKeyboardAbstractInputMethod *dataSource, Type type);
+    QVirtualKeyboardAbstractInputMethod *dataSource() const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QHash<int,QByteArray> roleNames() const;
@@ -81,7 +83,7 @@ public:
 
     Q_INVOKABLE void selectItem(int index);
     Q_INVOKABLE void removeItem(int index);
-    Q_INVOKABLE QVariant dataAt(int index, int role = Qt::DisplayRole) const;
+    Q_INVOKABLE QVariant dataAt(int index, Role role = Role::Display) const;
 
 Q_SIGNALS:
     void countChanged();
@@ -89,18 +91,17 @@ Q_SIGNALS:
     void itemSelected(int index);
 
 protected Q_SLOTS:
-    void selectionListChanged(int type);
-    void selectionListActiveItemChanged(int type, int index);
+    void selectionListChanged(Type type);
+    void selectionListActiveItemChanged(Type type, int index);
 
 private:
-    friend class InputEngine;
+    friend class QVirtualKeyboardInputEngine;
 };
 
-} // namespace QtVirtualKeyboard
 QT_END_NAMESPACE
 
-Q_DECLARE_METATYPE(QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::SelectionListModel::Type)
-Q_DECLARE_METATYPE(QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::SelectionListModel::Role)
-Q_DECLARE_METATYPE(QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::SelectionListModel::DictionaryType)
+Q_DECLARE_METATYPE(QVirtualKeyboardSelectionListModel::Type)
+Q_DECLARE_METATYPE(QVirtualKeyboardSelectionListModel::Role)
+Q_DECLARE_METATYPE(QVirtualKeyboardSelectionListModel::DictionaryType)
 
-#endif // SELECTIONLISTMODEL_H
+#endif // QVIRTUALKEYBOARDSELECTIONLISTMODEL_H

@@ -45,9 +45,12 @@
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
+
+class QVirtualKeyboardInputContext;
+class QVirtualKeyboardInputContextPrivate;
+
 namespace QtVirtualKeyboard {
 
-class InputContext;
 class ShiftHandlerPrivate;
 
 class QVIRTUALKEYBOARD_EXPORT ShiftHandler : public QObject
@@ -58,8 +61,12 @@ class QVIRTUALKEYBOARD_EXPORT ShiftHandler : public QObject
     Q_PROPERTY(QString sentenceEndingCharacters READ sentenceEndingCharacters WRITE setSentenceEndingCharacters NOTIFY sentenceEndingCharactersChanged)
     Q_PROPERTY(bool autoCapitalizationEnabled READ autoCapitalizationEnabled NOTIFY autoCapitalizationEnabledChanged)
     Q_PROPERTY(bool toggleShiftEnabled READ toggleShiftEnabled NOTIFY toggleShiftEnabledChanged)
+    Q_PROPERTY(bool shift READ shift WRITE setShift NOTIFY shiftChanged)
+    Q_PROPERTY(bool capsLock READ capsLock WRITE setCapsLock NOTIFY capsLockChanged)
+    Q_PROPERTY(bool uppercase READ uppercase NOTIFY uppercaseChanged)
 
-    explicit ShiftHandler(InputContext *parent = nullptr);
+    explicit ShiftHandler(QVirtualKeyboardInputContext *parent = nullptr);
+    void init();
 
 public:
     ~ShiftHandler();
@@ -68,6 +75,11 @@ public:
     void setSentenceEndingCharacters(const QString &value);
     bool autoCapitalizationEnabled() const;
     bool toggleShiftEnabled() const;
+    bool shift() const;
+    void setShift(bool enable);
+    bool capsLock() const;
+    void setCapsLock(bool enable);
+    bool uppercase() const;
 
     Q_INVOKABLE void toggleShift();
     Q_INVOKABLE void clearToggleShiftTimer();
@@ -76,13 +88,15 @@ signals:
     void sentenceEndingCharactersChanged();
     void toggleShiftEnabledChanged();
     void autoCapitalizationEnabledChanged();
+    void shiftChanged();
+    void capsLockChanged();
+    void uppercaseChanged();
 
 private slots:
     void reset();
     void autoCapitalize();
     void restart();
     void localeChanged();
-    void shiftChanged();
     void inputMethodVisibleChanged();
 
 private:
@@ -90,7 +104,8 @@ private:
     void setToggleShiftEnabled(bool enabled);
 
 private:
-    friend class InputContext;
+    friend class ::QVirtualKeyboardInputContext;
+    friend class ::QVirtualKeyboardInputContextPrivate;
 };
 
 } // namespace QtVirtualKeyboard

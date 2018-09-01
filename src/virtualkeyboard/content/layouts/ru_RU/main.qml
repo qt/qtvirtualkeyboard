@@ -32,7 +32,7 @@ import QtQuick.VirtualKeyboard 2.3
 
 KeyboardLayoutLoader {
     sharedLayouts: ['symbols']
-    sourceComponent: InputContext.inputEngine.inputMode === InputEngine.Cyrillic ? cyrillicLayout : latinLayout
+    sourceComponent: InputContext.inputEngine.inputMode === InputEngine.InputMode.Cyrillic ? cyrillicLayout : latinLayout
     Component {
         id: cyrillicLayout
         KeyboardLayout {
@@ -141,7 +141,7 @@ KeyboardLayoutLoader {
             }
             KeyboardRow {
                 InputModeKey {
-                    inputModes: [InputEngine.Cyrillic, InputEngine.Latin]
+                    inputModes: [InputEngine.InputMode.Cyrillic, InputEngine.InputMode.Latin]
                 }
                 Key {
                     key: 0x042F
@@ -318,7 +318,7 @@ KeyboardLayoutLoader {
             KeyboardRow {
                 keyWeight: 156
                 InputModeKey {
-                    inputModes: [InputEngine.Cyrillic, InputEngine.Latin]
+                    inputModes: [InputEngine.InputMode.Cyrillic, InputEngine.InputMode.Latin]
                 }
                 Key {
                     key: Qt.Key_Y

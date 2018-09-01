@@ -29,14 +29,15 @@
 
 #include "lipiinputmethod_p.h"
 #include "lipisharedrecognizer_p.h"
-#include <QtVirtualKeyboard/inputengine.h>
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
+#include <QtVirtualKeyboard/private/qvirtualkeyboardinputcontext_p.h>
 #include <QtVirtualKeyboard/private/shifthandler_p.h>
 #include <QLoggingCategory>
-#include <QtVirtualKeyboard/trace.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardtrace.h>
 #include <QtVirtualKeyboard/private/handwritinggesturerecognizer_p.h>
 
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
 #include <QtHunspellInputMethod/private/hunspellinputmethod_p_p.h>
 #endif
 
@@ -51,14 +52,14 @@
 #include <QCryptographicHash>
 
 #ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
-#include "unipentrace.h"
+#include <QtVirtualKeyboard/private/unipentrace_p.h>
 #include <QStandardPaths>
 #endif
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
 #define LipiInputMethodPrivateBase HunspellInputMethodPrivate
 #else
 #define LipiInputMethodPrivateBase DummyPrivate
@@ -72,14 +73,14 @@ class LipiInputMethodPrivate : public LipiInputMethodPrivateBase
     Q_DECLARE_PUBLIC(LipiInputMethod)
 public:
     LipiInputMethodPrivate(LipiInputMethod *q_ptr) :
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
         LipiInputMethodPrivateBase(static_cast<HunspellInputMethod *>(q_ptr)),
 #else
         LipiInputMethodPrivateBase(),
 #endif
         q_ptr(q_ptr),
         recognizeTimer(0),
-        textCase(InputEngine::Lower)
+        textCase(QVirtualKeyboardInputEngine::TextCase::Lower)
 #ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
         , unipenTrace(0)
 #endif
@@ -91,7 +92,7 @@ public:
         cancelRecognition();
     }
 
-    QByteArray getContext(InputEngine::PatternRecognitionMode patternRecognitionMode,
+    QByteArray getContext(QVirtualKeyboardInputEngine::PatternRecognitionMode patternRecognitionMode,
                           const QVariantMap &traceCaptureDeviceInfo,
                           const QVariantMap &traceScreenInfo) const
     {
@@ -108,7 +109,7 @@ public:
         return hash.result();
     }
 
-    void setContext(InputEngine::PatternRecognitionMode patternRecognitionMode,
+    void setContext(QVirtualKeyboardInputEngine::PatternRecognitionMode patternRecognitionMode,
                     const QVariantMap &traceCaptureDeviceInfo,
                     const QVariantMap &traceScreenInfo)
     {
@@ -157,8 +158,9 @@ public:
         currentContext = context;
     }
 
-    Trace *traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
-                      const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
+    QVirtualKeyboardTrace *traceBegin(
+            int traceId, QVirtualKeyboardInputEngine::PatternRecognitionMode patternRecognitionMode,
+            const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
     {
         Q_UNUSED(traceId)
 
@@ -179,14 +181,14 @@ public:
         }
 #endif
 
-        Trace *trace = new Trace();
+        QVirtualKeyboardTrace *trace = new QVirtualKeyboardTrace();
         trace->setChannels(QStringList("t"));
         traceList.append(trace);
 
         return trace;
     }
 
-    void traceEnd(Trace *trace)
+    void traceEnd(QVirtualKeyboardTrace *trace)
     {
         if (trace->isCanceled()) {
             qCDebug(lcLipi) << "LipiInputMethodPrivate::traceEnd(): discarded" << trace;
@@ -203,7 +205,7 @@ public:
     int countActiveTraces() const
     {
         int count = 0;
-        for (Trace *trace : qAsConst(traceList)) {
+        for (QVirtualKeyboardTrace *trace : qAsConst(traceList)) {
             if (!trace->isFinal())
                 count++;
         }
@@ -230,7 +232,7 @@ public:
             if (swipeLength >= SWIPE_MIN_LENGTH) {
 
                 Q_Q(LipiInputMethod);
-                InputContext *ic = q->inputContext();
+                QVirtualKeyboardInputContext *ic = q->inputContext();
                 if (!ic)
                     return;
 
@@ -273,10 +275,10 @@ public:
                     } else if (swipeTouchCount == 2) {
                         // Double swipe: commit word, or insert space
                         cancelRecognition();
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
                         int activeWordIndex = wordCandidates.index();
                         if (activeWordIndex != -1) {
-                            q->selectionListItemSelected(SelectionListModel::WordCandidateList, activeWordIndex);
+                            q->selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, activeWordIndex);
                             return;
                         }
 #endif
@@ -295,15 +297,15 @@ public:
 #endif
                         cancelRecognition();
                         if (!(ic->inputMethodHints() & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly))) {
-                            InputEngine::InputMode inputMode = ic->inputEngine()->inputMode();
-                            inputMode = inputMode == InputEngine::Latin ?
-                                        InputEngine::Numeric : InputEngine::Latin;
+                            QVirtualKeyboardInputEngine::InputMode inputMode = ic->inputEngine()->inputMode();
+                            inputMode = inputMode == QVirtualKeyboardInputEngine::InputMode::Latin ?
+                                        QVirtualKeyboardInputEngine::InputMode::Numeric : QVirtualKeyboardInputEngine::InputMode::Latin;
                             ic->inputEngine()->setInputMode(inputMode);
                         }
                     } else if (swipeTouchCount == 2) {
                         // Double swipe: toggle text case
                         cancelRecognition();
-                        ic->shiftHandler()->toggleShift();
+                        ic->priv()->shiftHandler()->toggleShift();
                     }
                     return;
                 }
@@ -318,7 +320,7 @@ public:
         traceGroup.emptyAllTraces();
     }
 
-    void addPointsToTraceGroup(Trace *trace)
+    void addPointsToTraceGroup(QVirtualKeyboardTrace *trace)
     {
         vector<LTKChannel> channels;
         channels.push_back(LTKChannel("X", DT_INT, true));
@@ -420,7 +422,7 @@ public:
 #ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
         // In recording mode, the text case must match with the current text case
         if (unipenTrace) {
-            if (!ch.isLetter() || (ch.isUpper() == (textCase == InputEngine::Upper)))
+            if (!ch.isLetter() || (ch.isUpper() == (textCase == QVirtualKeyboardInputEngine::TextCase::Upper)))
                 saveTraces(ch.unicode(), qRound(result["confidence"].toDouble() * 100));
             delete unipenTrace;
             unipenTrace = 0;
@@ -428,7 +430,7 @@ public:
 #endif
         Q_Q(LipiInputMethod);
         q->inputContext()->inputEngine()->virtualKeyClick((Qt::Key)chUpper.unicode(),
-                    textCase == InputEngine::Lower ? QString(ch.toLower()) : QString(chUpper),
+                    textCase == QVirtualKeyboardInputEngine::TextCase::Lower ? QString(ch.toLower()) : QString(chUpper),
                     Qt::NoModifier);
     }
 
@@ -460,9 +462,9 @@ public:
     QScopedPointer<LTKScreenContext> screenContext;
     QSharedPointer<LipiRecognitionTask> recognitionTask;
     LTKTraceGroup traceGroup;
-    QList<Trace *> traceList;
+    QList<QVirtualKeyboardTrace *> traceList;
     int recognizeTimer;
-    InputEngine::TextCase textCase;
+    QVirtualKeyboardInputEngine::TextCase textCase;
     vector<int> subsetOfClasses;
     QVariantMap delayedResult;
     HandwritingGestureRecognizer gestureRecognizer;
@@ -477,7 +479,7 @@ public:
 */
 
 LipiInputMethod::LipiInputMethod(QObject *parent) :
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
     LipiInputMethodBase(new LipiInputMethodPrivate(this), parent)
 #else
     LipiInputMethodBase(parent),
@@ -490,28 +492,28 @@ LipiInputMethod::~LipiInputMethod()
 {
 }
 
-QList<InputEngine::InputMode> LipiInputMethod::inputModes(const QString &locale)
+QList<QVirtualKeyboardInputEngine::InputMode> LipiInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    QList<InputEngine::InputMode> availableInputModes;
+    QList<QVirtualKeyboardInputEngine::InputMode> availableInputModes;
     const Qt::InputMethodHints inputMethodHints(inputContext()->inputMethodHints());
 
     if (inputMethodHints.testFlag(Qt::ImhDialableCharactersOnly) || inputMethodHints.testFlag(Qt::ImhDigitsOnly)) {
-        availableInputModes.append(InputEngine::Dialable);
+        availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Dialable);
     } else if (inputMethodHints.testFlag(Qt::ImhFormattedNumbersOnly)) {
-        availableInputModes.append(InputEngine::Numeric);
+        availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Numeric);
     } else {
-        availableInputModes.append(InputEngine::Latin);
-        availableInputModes.append(InputEngine::Numeric);
+        availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Latin);
+        availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Numeric);
     }
 
     return availableInputModes;
 }
 
-bool LipiInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
+bool LipiInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)
 {
     Q_D(LipiInputMethod);
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
     HunspellInputMethod::setInputMode(locale, inputMode);
 #else
     Q_UNUSED(locale)
@@ -521,11 +523,11 @@ bool LipiInputMethod::setInputMode(const QString &locale, InputEngine::InputMode
         return false;
     d->subsetOfClasses.clear();
     switch (inputMode) {
-    case InputEngine::Latin:
+    case QVirtualKeyboardInputEngine::InputMode::Latin:
         d->recognizer.subsetOfClasses(QStringLiteral("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz?,.@"), d->subsetOfClasses);
         break;
-    case InputEngine::Numeric:
-    case InputEngine::Dialable:
+    case QVirtualKeyboardInputEngine::InputMode::Numeric:
+    case QVirtualKeyboardInputEngine::InputMode::Dialable:
         d->recognizer.subsetOfClasses(QStringLiteral("1234567890,.+"), d->subsetOfClasses);
         break;
     default:
@@ -534,11 +536,11 @@ bool LipiInputMethod::setInputMode(const QString &locale, InputEngine::InputMode
     return true;
 }
 
-bool LipiInputMethod::setTextCase(InputEngine::TextCase textCase)
+bool LipiInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 {
     Q_D(LipiInputMethod);
     d->textCase = textCase;
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
     HunspellInputMethod::setTextCase(textCase);
 #endif
     return true;
@@ -546,7 +548,7 @@ bool LipiInputMethod::setTextCase(InputEngine::TextCase textCase)
 
 bool LipiInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
-#ifdef HAVE_HUNSPELL
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
     Q_D(LipiInputMethod);
     switch (key) {
     case Qt::Key_Enter:
@@ -581,27 +583,28 @@ void LipiInputMethod::update()
     LipiInputMethodBase::update();
 }
 
-void LipiInputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
+void LipiInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index)
 {
     LipiInputMethodBase::selectionListItemSelected(type, index);
     Q_D(LipiInputMethod);
     d->cancelRecognition();
 }
 
-QList<InputEngine::PatternRecognitionMode> LipiInputMethod::patternRecognitionModes() const
+QList<QVirtualKeyboardInputEngine::PatternRecognitionMode> LipiInputMethod::patternRecognitionModes() const
 {
-    return QList<InputEngine::PatternRecognitionMode>()
-            << InputEngine::HandwritingRecoginition;
+    return QList<QVirtualKeyboardInputEngine::PatternRecognitionMode>()
+            << QVirtualKeyboardInputEngine::PatternRecognitionMode::Handwriting;
 }
 
-Trace *LipiInputMethod::traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
-                                   const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
+QVirtualKeyboardTrace *LipiInputMethod::traceBegin(
+        int traceId, QVirtualKeyboardInputEngine::PatternRecognitionMode patternRecognitionMode,
+        const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
 {
     Q_D(LipiInputMethod);
     return d->traceBegin(traceId, patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
 }
 
-bool LipiInputMethod::traceEnd(Trace *trace)
+bool LipiInputMethod::traceEnd(QVirtualKeyboardTrace *trace)
 {
     Q_D(LipiInputMethod);
     d->traceEnd(trace);

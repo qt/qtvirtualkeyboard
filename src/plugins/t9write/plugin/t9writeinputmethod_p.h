@@ -41,7 +41,7 @@
 // We mean it.
 //
 
-#include <QtVirtualKeyboard/abstractinputmethod.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
 #include <QSharedPointer>
 
 QT_BEGIN_NAMESPACE
@@ -50,35 +50,49 @@ namespace QtVirtualKeyboard {
 class T9WriteInputMethodPrivate;
 class T9WriteDictionary;
 
-class T9WriteInputMethod : public AbstractInputMethod
+class T9WriteInputMethod : public QVirtualKeyboardAbstractInputMethod
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(T9WriteInputMethod)
 
 public:
+    enum class EngineMode {
+        Uninitialized,
+        Alphabetic,
+        Arabic,
+        Hebrew,
+        SimplifiedChinese,
+        TraditionalChinese,
+        HongKongChinese,
+        Japanese,
+        Korean
+    };
+    Q_ENUM(EngineMode)
+
     explicit T9WriteInputMethod(QObject *parent = nullptr);
     ~T9WriteInputMethod();
 
-    QList<InputEngine::InputMode> inputModes(const QString &locale);
-    bool setInputMode(const QString &locale, InputEngine::InputMode inputMode);
-    bool setTextCase(InputEngine::TextCase textCase);
+    QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale);
+    bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode);
+    bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase);
 
     bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
 
     void reset();
     void update();
 
-    QList<SelectionListModel::Type> selectionLists();
-    int selectionListItemCount(SelectionListModel::Type type);
-    QVariant selectionListData(SelectionListModel::Type type, int index, int role);
-    void selectionListItemSelected(SelectionListModel::Type type, int index);
+    QList<QVirtualKeyboardSelectionListModel::Type> selectionLists();
+    int selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type);
+    QVariant selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role);
+    void selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index);
 
-    QList<InputEngine::PatternRecognitionMode> patternRecognitionModes() const;
-    Trace *traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
-                      const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
-    bool traceEnd(Trace *trace);
+    QList<QVirtualKeyboardInputEngine::PatternRecognitionMode> patternRecognitionModes() const;
+    QVirtualKeyboardTrace *traceBegin(
+            int traceId, QVirtualKeyboardInputEngine::PatternRecognitionMode patternRecognitionMode,
+            const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo);
+    bool traceEnd(QVirtualKeyboardTrace *trace);
 
-    bool reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags);
+    bool reselect(int cursorPosition, const QVirtualKeyboardInputEngine::ReselectFlags &reselectFlags);
 
 signals:
     void resultListChanged();

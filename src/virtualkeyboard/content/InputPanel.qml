@@ -114,11 +114,14 @@ Item {
     /*! \internal */
     readonly property bool __isRootItem: inputPanel.parent != null && inputPanel.parent.parent == null
 
+    LayoutMirroring.enabled: false
+    LayoutMirroring.childrenInherit: true
+
     SelectionControl {
         objectName: "selectionControl"
         x: -parent.x
         y: -parent.y
-        enabled: active && !keyboard.fullScreenMode
+        enabled: active && !keyboard.fullScreenMode && !__isRootItem
     }
 
     implicitHeight: keyboard.height
@@ -135,7 +138,7 @@ Item {
     }
 
     Binding {
-        target: InputContext
+        target: InputContext.priv
         property: "keyboardRectangle"
         value: mapToItem(null,
                          __isRootItem ? keyboard.x : x,

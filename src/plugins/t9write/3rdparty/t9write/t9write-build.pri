@@ -20,8 +20,8 @@ contains(QT_ARCH, arm) {
     T9WRITE_BUILD_SHARED_DIR = lib/arm/shared
     T9WRITE_BUILD_STATIC_DIR = lib/arm/static
 } else:linux {
-    T9WRITE_BUILD_SHARED_DIR = lib/linux-x86/shared
-    T9WRITE_BUILD_STATIC_DIR = lib/linux-x86/static
+    T9WRITE_BUILD_SHARED_DIR = lib/linux/shared
+    T9WRITE_BUILD_STATIC_DIR = lib/linux/static
 } else:win32 {
     T9WRITE_BUILD_SHARED_DIR = lib/win32/shared
     T9WRITE_BUILD_STATIC_DIR = lib/win32/static

@@ -28,7 +28,7 @@
 ****************************************************************************/
 
 #include <QtVirtualKeyboard/private/inputmethod_p.h>
-#include <QtVirtualKeyboard/trace.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardtrace.h>
 #include <QVariant>
 
 QT_BEGIN_NAMESPACE
@@ -207,7 +207,7 @@ namespace QtVirtualKeyboard {
     \since QtQuick.VirtualKeyboard 2.0
 
     This method is called when the trace interaction ends. The input method should destroy the \a trace object
-    at some point after this function is called. See the \l Trace API how to access the gathered
+    at some point after this function is called. See the \l {Trace API for Input Methods} how to access the gathered
     data.
 */
 
@@ -244,7 +244,7 @@ namespace QtVirtualKeyboard {
 */
 
 InputMethod::InputMethod(QObject *parent) :
-    AbstractInputMethod(parent)
+    QVirtualKeyboardAbstractInputMethod(parent)
 {
 }
 
@@ -252,21 +252,21 @@ InputMethod::~InputMethod()
 {
 }
 
-QList<InputEngine::InputMode> InputMethod::inputModes(const QString &locale)
+QList<QVirtualKeyboardInputEngine::InputMode> InputMethod::inputModes(const QString &locale)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "inputModes",
                               Q_RETURN_ARG(QVariant, result),
                               Q_ARG(QVariant, locale));
-    QList<InputEngine::InputMode> inputModeList;
+    QList<QVirtualKeyboardInputEngine::InputMode> inputModeList;
     const auto resultList = result.toList();
     inputModeList.reserve(resultList.size());
     for (const QVariant &inputMode : resultList)
-        inputModeList.append(static_cast<InputEngine::InputMode>(inputMode.toInt()));
+        inputModeList.append(static_cast<QVirtualKeyboardInputEngine::InputMode>(inputMode.toInt()));
     return inputModeList;
 }
 
-bool InputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
+bool InputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "setInputMode",
@@ -276,7 +276,7 @@ bool InputMethod::setInputMode(const QString &locale, InputEngine::InputMode inp
     return result.toBool();
 }
 
-bool InputMethod::setTextCase(InputEngine::TextCase textCase)
+bool InputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "setTextCase",
@@ -296,21 +296,21 @@ bool InputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifie
     return result.toBool();
 }
 
-QList<SelectionListModel::Type> InputMethod::selectionLists()
+QList<QVirtualKeyboardSelectionListModel::Type> InputMethod::selectionLists()
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "selectionLists",
                               Q_RETURN_ARG(QVariant, result));
-    QList<SelectionListModel::Type> selectionListsList;
+    QList<QVirtualKeyboardSelectionListModel::Type> selectionListsList;
     const auto resultList = result.toList();
     selectionListsList.reserve(resultList.size());
     for (const QVariant &selectionListType : resultList)
-        selectionListsList.append(static_cast<SelectionListModel::Type>(selectionListType.toInt()));
+        selectionListsList.append(static_cast<QVirtualKeyboardSelectionListModel::Type>(selectionListType.toInt()));
 
     return selectionListsList;
 }
 
-int InputMethod::selectionListItemCount(SelectionListModel::Type type)
+int InputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "selectionListItemCount",
@@ -319,43 +319,44 @@ int InputMethod::selectionListItemCount(SelectionListModel::Type type)
     return result.toInt();
 }
 
-QVariant InputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
+QVariant InputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "selectionListData",
                               Q_RETURN_ARG(QVariant, result),
                               Q_ARG(QVariant, static_cast<int>(type)),
                               Q_ARG(QVariant, index),
-                              Q_ARG(QVariant, role));
+                              Q_ARG(QVariant, static_cast<int>(role)));
     if (result.isNull()) {
-        result = AbstractInputMethod::selectionListData(type, index, role);
+        result = QVirtualKeyboardAbstractInputMethod::selectionListData(type, index, role);
     }
     return result;
 }
 
-void InputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
+void InputMethod::selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index)
 {
     QMetaObject::invokeMethod(this, "selectionListItemSelected",
                               Q_ARG(QVariant, static_cast<int>(type)),
                               Q_ARG(QVariant, index));
 }
 
-QList<InputEngine::PatternRecognitionMode> InputMethod::patternRecognitionModes() const
+QList<QVirtualKeyboardInputEngine::PatternRecognitionMode> InputMethod::patternRecognitionModes() const
 {
     QVariant result;
     QMetaObject::invokeMethod(const_cast<InputMethod *>(this), "patternRecognitionModes",
                               Q_RETURN_ARG(QVariant, result));
-    QList<InputEngine::PatternRecognitionMode> patterRecognitionModeList;
+    QList<QVirtualKeyboardInputEngine::PatternRecognitionMode> patterRecognitionModeList;
     const auto resultList = result.toList();
     patterRecognitionModeList.reserve(resultList.size());
     for (const QVariant &patterRecognitionMode : resultList)
-        patterRecognitionModeList.append(static_cast<InputEngine::PatternRecognitionMode>(patterRecognitionMode.toInt()));
+        patterRecognitionModeList.append(static_cast<QVirtualKeyboardInputEngine::PatternRecognitionMode>(patterRecognitionMode.toInt()));
 
     return patterRecognitionModeList;
 }
 
-Trace *InputMethod::traceBegin(int traceId, InputEngine::PatternRecognitionMode patternRecognitionMode,
-                               const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
+QVirtualKeyboardTrace *InputMethod::traceBegin(
+        int traceId, QVirtualKeyboardInputEngine::PatternRecognitionMode patternRecognitionMode,
+        const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "traceBegin",
@@ -364,10 +365,10 @@ Trace *InputMethod::traceBegin(int traceId, InputEngine::PatternRecognitionMode 
                               Q_ARG(int, (int)patternRecognitionMode),
                               Q_ARG(QVariant, traceCaptureDeviceInfo),
                               Q_ARG(QVariant, traceScreenInfo));
-    return result.value<Trace *>();
+    return result.value<QVirtualKeyboardTrace *>();
 }
 
-bool InputMethod::traceEnd(Trace *trace)
+bool InputMethod::traceEnd(QVirtualKeyboardTrace *trace)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "traceEnd",
@@ -376,7 +377,7 @@ bool InputMethod::traceEnd(Trace *trace)
     return result.toBool();
 }
 
-bool InputMethod::reselect(int cursorPosition, const InputEngine::ReselectFlags &reselectFlags)
+bool InputMethod::reselect(int cursorPosition, const QVirtualKeyboardInputEngine::ReselectFlags &reselectFlags)
 {
     QVariant result;
     QMetaObject::invokeMethod(this, "reselect",

@@ -28,7 +28,8 @@
 ****************************************************************************/
 
 #include <QtVirtualKeyboard/private/platforminputcontext_p.h>
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
+#include <QtVirtualKeyboard/private/qvirtualkeyboardinputcontext_p.h>
 #include <QtVirtualKeyboard/private/shadowinputcontext_p.h>
 #include <QtVirtualKeyboard/private/abstractinputpanel_p.h>
 #ifdef QT_VIRTUALKEYBOARD_DESKTOP
@@ -74,38 +75,37 @@ void PlatformInputContext::reset()
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::reset()";
     if (m_inputContext)
-        m_inputContext->reset();
+        m_inputContext->priv()->reset();
 }
 
 void PlatformInputContext::commit()
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::commit()";
     if (m_inputContext)
-        m_inputContext->externalCommit();
+        m_inputContext->priv()->commit();
 }
 
 void PlatformInputContext::update(Qt::InputMethodQueries queries)
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::update():" << queries;
-    bool enabled = inputMethodQuery(Qt::ImEnabled).toBool();
-#ifdef QT_VIRTUALKEYBOARD_DESKTOP
-    if (enabled && !m_inputPanel) {
-        m_inputPanel = new DesktopInputPanel(this);
-        m_inputPanel->createView();
-        m_selectionControl = new DesktopInputSelectionControl(this, m_inputContext);
-        m_selectionControl->createHandles();
-    }
-#endif
-
     if (m_inputContext) {
+        bool enabled = inputMethodQuery(Qt::ImEnabled).toBool();
         if (enabled) {
-            m_inputContext->update(queries);
+#ifdef QT_VIRTUALKEYBOARD_DESKTOP
+            if (!m_inputPanel) {
+                m_inputPanel = new DesktopInputPanel(this);
+                m_inputPanel->createView();
+                m_selectionControl = new DesktopInputSelectionControl(this, m_inputContext);
+                m_selectionControl->createHandles();
+            }
+#endif
+            m_inputContext->priv()->update(queries);
             if (m_visible)
                 updateInputPanelVisible();
         } else {
             hideInputPanel();
         }
-        m_inputContext->setFocus(enabled);
+        m_inputContext->priv()->setFocus(enabled);
     }
 }
 
@@ -113,12 +113,12 @@ void PlatformInputContext::invokeAction(QInputMethod::Action action, int cursorP
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::invokeAction():" << action << cursorPosition;
     if (m_inputContext)
-        m_inputContext->invokeAction(action, cursorPosition);
+        m_inputContext->priv()->invokeAction(action, cursorPosition);
 }
 
 QRectF PlatformInputContext::keyboardRect() const
 {
-    return m_inputContext ? m_inputContext->keyboardRectangle() : QRectF();
+    return m_inputContext ? m_inputContext->priv()->keyboardRectangle() : QRectF();
 }
 
 bool PlatformInputContext::isAnimating() const
@@ -186,8 +186,8 @@ void PlatformInputContext::setFocusObject(QObject *object)
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::setFocusObject():" << object;
     Q_ASSERT(m_inputContext == nullptr ||
-             m_inputContext->shadow()->inputItem() == nullptr ||
-             m_inputContext->shadow()->inputItem() != object);
+             m_inputContext->priv()->shadow()->inputItem() == nullptr ||
+             m_inputContext->priv()->shadow()->inputItem() != object);
     if (m_focusObject != object) {
         if (m_focusObject)
             m_focusObject->removeEventFilter(this);
@@ -199,7 +199,7 @@ void PlatformInputContext::setFocusObject(QObject *object)
     update(Qt::ImQueryAll);
 }
 
-InputContext *PlatformInputContext::inputContext() const
+QVirtualKeyboardInputContext *PlatformInputContext::inputContext() const
 {
     return m_inputContext;
 }
@@ -207,7 +207,7 @@ InputContext *PlatformInputContext::inputContext() const
 bool PlatformInputContext::eventFilter(QObject *object, QEvent *event)
 {
     if (event != m_filterEvent && object == m_focusObject && m_inputContext)
-        return m_inputContext->filterEvent(event);
+        return m_inputContext->priv()->filterEvent(event);
     return false;
 }
 
@@ -238,7 +238,7 @@ QVariant PlatformInputContext::inputMethodQuery(Qt::InputMethodQuery query)
     return event.value(query);
 }
 
-void PlatformInputContext::setInputContext(InputContext *context)
+void PlatformInputContext::setInputContext(QVirtualKeyboardInputContext *context)
 {
     if (m_inputContext) {
         disconnect(this, SLOT(keyboardRectangleChanged()));
@@ -247,7 +247,7 @@ void PlatformInputContext::setInputContext(InputContext *context)
     if (m_inputContext) {
         if (!m_inputPanel)
             m_inputPanel = new AppInputPanel(this);
-        connect(m_inputContext, SIGNAL(keyboardRectangleChanged()), SLOT(keyboardRectangleChanged()));
+        QObject::connect(m_inputContext->priv(), &QVirtualKeyboardInputContextPrivate::keyboardRectangleChanged, this, &PlatformInputContext::keyboardRectangleChanged);
     } else if (m_inputPanel) {
         m_inputPanel = nullptr;
     }
@@ -255,7 +255,7 @@ void PlatformInputContext::setInputContext(InputContext *context)
 
 void PlatformInputContext::keyboardRectangleChanged()
 {
-    m_inputPanel->setInputRect(m_inputContext->keyboardRectangle().toRect());
+    m_inputPanel->setInputRect(m_inputContext->priv()->keyboardRectangle().toRect());
 }
 
 void PlatformInputContext::updateInputPanelVisible()

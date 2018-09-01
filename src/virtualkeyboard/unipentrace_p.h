@@ -42,18 +42,19 @@
 //
 
 #include <QObject>
-#include <QtVirtualKeyboard/trace.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardtrace.h>
+#include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-class UnipenTrace : public QObject
+class QVIRTUALKEYBOARD_EXPORT UnipenTrace : public QObject
 {
     Q_OBJECT
 public:
     explicit UnipenTrace(const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo, QObject *parent = nullptr);
 
-    void record(const QList<Trace *> &traceList);
+    void record(const QList<QVirtualKeyboardTrace *> &traceList);
     void save(uint unicode, uint confidence);
 
     QString directory() const;

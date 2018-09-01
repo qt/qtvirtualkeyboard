@@ -28,8 +28,8 @@
 ****************************************************************************/
 
 #include "tcinputmethod_p.h"
-#include <QtVirtualKeyboard/inputengine.h>
-#include <QtVirtualKeyboard/inputcontext.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #if defined(HAVE_TCIME_CANGJIE)
 #include "cangjiedictionary.h"
 #include "cangjietable.h"
@@ -58,7 +58,7 @@ public:
 
     TCInputMethodPrivate(TCInputMethod *q_ptr) :
         q_ptr(q_ptr),
-        inputMode(InputEngine::Latin),
+        inputMode(QVirtualKeyboardInputEngine::InputMode::Latin),
         wordDictionary(nullptr),
         highlightIndex(-1)
     {}
@@ -90,8 +90,8 @@ public:
     {
         if (clearCandidates()) {
             Q_Q(TCInputMethod);
-            emit q->selectionListChanged(SelectionListModel::WordCandidateList);
-            emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, highlightIndex);
+            emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+            emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, highlightIndex);
         }
         input.clear();
     }
@@ -100,16 +100,16 @@ public:
     {
         bool accept;
         Q_Q(TCInputMethod);
-        InputContext *ic = q->inputContext();
+        QVirtualKeyboardInputContext *ic = q->inputContext();
         switch (inputMode)
         {
 #if defined(HAVE_TCIME_CANGJIE)
-        case InputEngine::Cangjie:
+        case QVirtualKeyboardInputEngine::InputMode::Cangjie:
             accept = composeCangjie(ic, c);
             break;
 #endif
 #if defined(HAVE_TCIME_ZHUYIN)
-        case InputEngine::Zhuyin:
+        case QVirtualKeyboardInputEngine::InputMode::Zhuyin:
             accept = composeZhuyin(ic, c);
             break;
 #endif
@@ -121,7 +121,7 @@ public:
     }
 
 #if defined(HAVE_TCIME_CANGJIE)
-    bool composeCangjie(InputContext *ic, const QChar &c)
+    bool composeCangjie(QVirtualKeyboardInputContext *ic, const QChar &c)
     {
         bool accept = false;
         if (!input.contains(0x91CD) && CangjieTable::isLetter(c)) {
@@ -130,8 +130,8 @@ public:
                 ic->setPreeditText(input);
                 if (setCandidates(wordDictionary->getWords(input), true)) {
                     Q_Q(TCInputMethod);
-                    emit q->selectionListChanged(SelectionListModel::WordCandidateList);
-                    emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, highlightIndex);
+                    emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                    emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, highlightIndex);
                 }
             }
             accept = true;
@@ -170,8 +170,8 @@ public:
                     << QChar(0xFE5B) << QChar(0xFE5C) << QChar(0xFE43) << QChar(0xFE44);
             Q_Q(TCInputMethod);
             if (setCandidates(specialChars1, true)) {
-                emit q->selectionListChanged(SelectionListModel::WordCandidateList);
-                emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, highlightIndex);
+                emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, highlightIndex);
             }
             q->inputContext()->setPreeditText(candidates[highlightIndex]);
             return true;
@@ -188,8 +188,8 @@ public:
                     << QChar(0xFE4F) << QChar(0xFE34) << QChar(0xFE33);
             Q_Q(TCInputMethod);
             if (setCandidates(specialChars2, true)) {
-                emit q->selectionListChanged(SelectionListModel::WordCandidateList);
-                emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, highlightIndex);
+                emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, highlightIndex);
             }
             q->inputContext()->setPreeditText(candidates[highlightIndex]);
             return true;
@@ -199,7 +199,7 @@ public:
 #endif
 
 #if defined(HAVE_TCIME_ZHUYIN)
-    bool composeZhuyin(InputContext *ic, const QChar &c)
+    bool composeZhuyin(QVirtualKeyboardInputContext *ic, const QChar &c)
     {
         if (ZhuyinTable::isTone(c)) {
             if (input.isEmpty())
@@ -251,8 +251,8 @@ public:
         ic->setPreeditText(input);
         if (setCandidates(wordDictionary->getWords(input), true)) {
             Q_Q(TCInputMethod);
-            emit q->selectionListChanged(SelectionListModel::WordCandidateList);
-            emit q->selectionListActiveItemChanged(SelectionListModel::WordCandidateList, highlightIndex);
+            emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+            emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, highlightIndex);
         }
 
         return true;
@@ -291,7 +291,7 @@ public:
 #endif
 
     TCInputMethod *q_ptr;
-    InputEngine::InputMode inputMode;
+    QVirtualKeyboardInputEngine::InputMode inputMode;
 #if defined(HAVE_TCIME_CANGJIE)
     CangjieDictionary cangjieDictionary;
 #endif
@@ -311,7 +311,7 @@ public:
 */
 
 TCInputMethod::TCInputMethod(QObject *parent) :
-    AbstractInputMethod(parent),
+    QVirtualKeyboardAbstractInputMethod(parent),
     d_ptr(new TCInputMethodPrivate(this))
 {
 }
@@ -337,7 +337,7 @@ void TCInputMethod::setSimplified(bool simplified)
     Q_D(TCInputMethod);
     if (d->cangjieDictionary.simplified() != simplified) {
         d->reset();
-        InputContext *ic = inputContext();
+        QVirtualKeyboardInputContext *ic = inputContext();
         if (ic)
             ic->clear();
         d->cangjieDictionary.setSimplified(simplified);
@@ -348,20 +348,20 @@ void TCInputMethod::setSimplified(bool simplified)
 #endif
 }
 
-QList<InputEngine::InputMode> TCInputMethod::inputModes(const QString &locale)
+QList<QVirtualKeyboardInputEngine::InputMode> TCInputMethod::inputModes(const QString &locale)
 {
     Q_UNUSED(locale)
-    return QList<InputEngine::InputMode>()
+    return QList<QVirtualKeyboardInputEngine::InputMode>()
 #if defined(HAVE_TCIME_ZHUYIN)
-            << InputEngine::Zhuyin
+            << QVirtualKeyboardInputEngine::InputMode::Zhuyin
 #endif
 #if defined(HAVE_TCIME_CANGJIE)
-           << InputEngine::Cangjie
+           << QVirtualKeyboardInputEngine::InputMode::Cangjie
 #endif
                ;
 }
 
-bool TCInputMethod::setInputMode(const QString &locale, InputEngine::InputMode inputMode)
+bool TCInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)
 {
     Q_UNUSED(locale)
     Q_D(TCInputMethod);
@@ -372,7 +372,7 @@ bool TCInputMethod::setInputMode(const QString &locale, InputEngine::InputMode i
     d->inputMode = inputMode;
     d->wordDictionary = nullptr;
 #if defined(HAVE_TCIME_CANGJIE)
-    if (inputMode == InputEngine::Cangjie) {
+    if (inputMode == QVirtualKeyboardInputEngine::InputMode::Cangjie) {
         if (d->cangjieDictionary.isEmpty()) {
             QString cangjieDictionary(qEnvironmentVariable("QT_VIRTUALKEYBOARD_CANGJIE_DICTIONARY"));
             if (!QFileInfo::exists(cangjieDictionary)) {
@@ -386,7 +386,7 @@ bool TCInputMethod::setInputMode(const QString &locale, InputEngine::InputMode i
     }
 #endif
 #if defined(HAVE_TCIME_ZHUYIN)
-    if (inputMode == InputEngine::Zhuyin) {
+    if (inputMode == QVirtualKeyboardInputEngine::InputMode::Zhuyin) {
         if (d->zhuyinDictionary.isEmpty()) {
             QString zhuyinDictionary(qEnvironmentVariable("QT_VIRTUALKEYBOARD_ZHUYIN_DICTIONARY"));
             if (!QFileInfo::exists(zhuyinDictionary)) {
@@ -410,11 +410,11 @@ bool TCInputMethod::setInputMode(const QString &locale, InputEngine::InputMode i
         d->phraseDictionary.load(phraseDictionary);
     }
     if (!result)
-        inputMode = InputEngine::Latin;
+        inputMode = QVirtualKeyboardInputEngine::InputMode::Latin;
     return result;
 }
 
-bool TCInputMethod::setTextCase(InputEngine::TextCase textCase)
+bool TCInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 {
     Q_UNUSED(textCase)
     return true;
@@ -426,7 +426,7 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
     Q_UNUSED(text)
     Q_UNUSED(modifiers)
     Q_D(TCInputMethod);
-    InputContext *ic = inputContext();
+    QVirtualKeyboardInputContext *ic = inputContext();
     bool accept = false;
     switch (key) {
     case Qt::Key_Context1:
@@ -448,8 +448,8 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
                 d->reset();
                 inputContext()->commit(finalWord);
                 if (d->setCandidates(d->phraseDictionary.getWords(finalWord.left(1)), false)) {
-                    emit selectionListChanged(SelectionListModel::WordCandidateList);
-                    emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->highlightIndex);
+                    emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->highlightIndex);
                 }
             }
         } else {
@@ -465,16 +465,16 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
             if (!d->checkSpecialCharInput()) {
 #endif
                 if (d->setCandidates(d->wordDictionary->getWords(d->input), true)) {
-                    emit selectionListChanged(SelectionListModel::WordCandidateList);
-                    emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->highlightIndex);
+                    emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+                    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->highlightIndex);
                 }
 #if defined(HAVE_TCIME_CANGJIE)
             }
 #endif
             accept = true;
         } else if (d->clearCandidates()) {
-            emit selectionListChanged(SelectionListModel::WordCandidateList);
-            emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->highlightIndex);
+            emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+            emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->highlightIndex);
         }
         break;
 
@@ -488,37 +488,37 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
     return accept;
 }
 
-QList<SelectionListModel::Type> TCInputMethod::selectionLists()
+QList<QVirtualKeyboardSelectionListModel::Type> TCInputMethod::selectionLists()
 {
-    return QList<SelectionListModel::Type>() << SelectionListModel::WordCandidateList;
+    return QList<QVirtualKeyboardSelectionListModel::Type>() << QVirtualKeyboardSelectionListModel::Type::WordCandidateList;
 }
 
-int TCInputMethod::selectionListItemCount(SelectionListModel::Type type)
+int TCInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
 {
     Q_UNUSED(type)
     Q_D(TCInputMethod);
     return d->candidates.count();
 }
 
-QVariant TCInputMethod::selectionListData(SelectionListModel::Type type, int index, int role)
+QVariant TCInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 {
     QVariant result;
     Q_D(TCInputMethod);
     switch (role) {
-    case SelectionListModel::DisplayRole:
+    case QVirtualKeyboardSelectionListModel::Role::Display:
         result = QVariant(d->candidates.at(index));
         break;
-    case SelectionListModel::WordCompletionLengthRole:
+    case QVirtualKeyboardSelectionListModel::Role::WordCompletionLength:
         result.setValue(0);
         break;
     default:
-        result = AbstractInputMethod::selectionListData(type, index, role);
+        result = QVirtualKeyboardAbstractInputMethod::selectionListData(type, index, role);
         break;
     }
     return result;
 }
 
-void TCInputMethod::selectionListItemSelected(SelectionListModel::Type type, int index)
+void TCInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index)
 {
     Q_UNUSED(type)
     Q_D(TCInputMethod);
@@ -526,8 +526,8 @@ void TCInputMethod::selectionListItemSelected(SelectionListModel::Type type, int
     reset();
     inputContext()->commit(finalWord);
     if (d->setCandidates(d->phraseDictionary.getWords(finalWord.left(1)), false)) {
-        emit selectionListChanged(SelectionListModel::WordCandidateList);
-        emit selectionListActiveItemChanged(SelectionListModel::WordCandidateList, d->highlightIndex);
+        emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+        emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->highlightIndex);
     }
 }
 
