@@ -58,5 +58,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = LipiPlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardLipiPlugin
 load(qt_plugin)

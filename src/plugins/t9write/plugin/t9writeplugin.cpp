@@ -35,7 +35,7 @@ QT_BEGIN_NAMESPACE
 
 using namespace QtVirtualKeyboard;
 
-void T9WritePlugin::registerTypes(const char *uri) const
+void QtVirtualKeyboardT9WritePlugin::registerTypes(const char *uri) const
 {
     Q_INIT_RESOURCE(qmake_t9write_db);
     qmlRegisterType<T9WriteInputMethod>(uri, 2, 0, "HandwritingInputMethod");

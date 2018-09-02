@@ -49,5 +49,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = PinyinPlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardPinyinPlugin
 load(qt_plugin)

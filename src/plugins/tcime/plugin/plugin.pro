@@ -55,5 +55,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = TCImePlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardTCImePlugin
 load(qt_plugin)

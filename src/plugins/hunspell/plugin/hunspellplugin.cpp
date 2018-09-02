@@ -35,7 +35,7 @@ QT_BEGIN_NAMESPACE
 
 using namespace QtVirtualKeyboard;
 
-void HunspellPlugin::registerTypes(const char *uri) const
+void QtVirtualKeyboardHunspellPlugin::registerTypes(const char *uri) const
 {
     qmlRegisterType<HunspellInputMethod>(uri, 1, 0, "HunspellInputMethod");
     qmlRegisterType<HunspellInputMethod>(uri, 2, 0, "HunspellInputMethod");

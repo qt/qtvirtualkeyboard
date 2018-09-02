@@ -106,5 +106,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = T9WritePlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardT9WritePlugin
 load(qt_plugin)

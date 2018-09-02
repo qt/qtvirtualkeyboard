@@ -35,7 +35,7 @@ QT_BEGIN_NAMESPACE
 
 using namespace QtVirtualKeyboard;
 
-void OpenWnnPlugin::registerTypes(const char *uri) const
+void QtVirtualKeyboardOpenWnnPlugin::registerTypes(const char *uri) const
 {
     qmlRegisterType<OpenWnnInputMethod>(uri, 1, 3, "JapaneseInputMethod");
     qmlRegisterType<OpenWnnInputMethod>(uri, 2, 0, "JapaneseInputMethod");

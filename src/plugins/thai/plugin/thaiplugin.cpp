@@ -35,7 +35,7 @@ QT_BEGIN_NAMESPACE
 
 using namespace QtVirtualKeyboard;
 
-void ThaiPlugin::registerTypes(const char *uri) const
+void QtVirtualKeyboardThaiPlugin::registerTypes(const char *uri) const
 {
     qmlRegisterType<ThaiInputMethod>(uri, 2, 3, "ThaiInputMethod");
 }

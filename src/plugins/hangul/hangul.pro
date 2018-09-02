@@ -35,5 +35,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = HangulPlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardHangulPlugin
 load(qt_plugin)

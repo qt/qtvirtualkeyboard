@@ -34,7 +34,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class ThaiPlugin : public QVirtualKeyboardExtensionPlugin
+class QtVirtualKeyboardThaiPlugin : public QVirtualKeyboardExtensionPlugin
 {
     Q_OBJECT
     Q_INTERFACES(QVirtualKeyboardExtensionPlugin)

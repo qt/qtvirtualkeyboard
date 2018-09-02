@@ -30,5 +30,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = HunspellPlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardHunspellPlugin
 load(qt_plugin)

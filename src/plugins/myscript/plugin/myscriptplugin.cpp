@@ -35,7 +35,7 @@ QT_BEGIN_NAMESPACE
 
 using namespace QtVirtualKeyboard;
 
-void MyScriptPlugin::registerTypes(const char *uri) const
+void QtVirtualKeyboardMyScriptPlugin::registerTypes(const char *uri) const
 {
     qmlRegisterType<MyScriptInputMethod>(uri, 2, 0, "HandwritingInputMethod");
 }

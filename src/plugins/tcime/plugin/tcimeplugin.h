@@ -34,7 +34,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class TCImePlugin : public QVirtualKeyboardExtensionPlugin
+class QtVirtualKeyboardTCImePlugin : public QVirtualKeyboardExtensionPlugin
 {
     Q_OBJECT
     Q_INTERFACES(QVirtualKeyboardExtensionPlugin)

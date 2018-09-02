@@ -34,7 +34,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class T9WritePlugin : public QVirtualKeyboardExtensionPlugin
+class QtVirtualKeyboardT9WritePlugin : public QVirtualKeyboardExtensionPlugin
 {
     Q_OBJECT
     Q_INTERFACES(QVirtualKeyboardExtensionPlugin)

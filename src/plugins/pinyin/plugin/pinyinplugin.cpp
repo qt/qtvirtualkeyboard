@@ -35,7 +35,7 @@ QT_BEGIN_NAMESPACE
 
 using namespace QtVirtualKeyboard;
 
-void PinyinPlugin::registerTypes(const char *uri) const
+void QtVirtualKeyboardPinyinPlugin::registerTypes(const char *uri) const
 {
     qmlRegisterType<PinyinInputMethod>(uri, 1, 1, "PinyinInputMethod");
     qmlRegisterType<PinyinInputMethod>(uri, 2, 0, "PinyinInputMethod");

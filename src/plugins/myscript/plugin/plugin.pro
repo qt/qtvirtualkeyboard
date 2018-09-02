@@ -104,5 +104,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = MyScriptPlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardMyScriptPlugin
 load(qt_plugin)

@@ -35,5 +35,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = OpenWnnPlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardOpenWnnPlugin
 load(qt_plugin)

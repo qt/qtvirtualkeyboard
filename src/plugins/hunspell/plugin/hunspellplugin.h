@@ -34,7 +34,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class HunspellPlugin : public QVirtualKeyboardExtensionPlugin
+class QtVirtualKeyboardHunspellPlugin : public QVirtualKeyboardExtensionPlugin
 {
     Q_OBJECT
     Q_INTERFACES(QVirtualKeyboardExtensionPlugin)

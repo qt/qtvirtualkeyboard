@@ -37,5 +37,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = ThaiPlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardThaiPlugin
 load(qt_plugin)
