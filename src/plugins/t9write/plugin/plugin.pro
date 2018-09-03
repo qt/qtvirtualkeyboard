@@ -71,10 +71,10 @@ t9write-cjk {
 OTHER_FILES += \
     $$LAYOUT_FILES
 
-layouts.files = $$LAYOUT_FILES
-layouts.base = $$LAYOUTS_BASE
-layouts.prefix = $$LAYOUTS_PREFIX
-RESOURCES += layouts
+virtualkeyboard_t9write_layouts.files = $$LAYOUT_FILES
+virtualkeyboard_t9write_layouts.base = $$LAYOUTS_BASE
+virtualkeyboard_t9write_layouts.prefix = $$LAYOUTS_PREFIX
+RESOURCES += virtualkeyboard_t9write_layouts
 
 DEFINES += HAVE_T9WRITE
 QMAKE_USE += t9write_db

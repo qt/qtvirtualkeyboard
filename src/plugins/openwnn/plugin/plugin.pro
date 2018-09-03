@@ -22,10 +22,10 @@ LAYOUT_FILES += \
 OTHER_FILES += \
     $$LAYOUT_FILES
 
-layouts.files = $$LAYOUT_FILES
-layouts.base = $$LAYOUTS_BASE
-layouts.prefix = $$LAYOUTS_PREFIX
-RESOURCES += layouts
+virtualkeyboard_openwnn_layouts.files = $$LAYOUT_FILES
+virtualkeyboard_openwnn_layouts.base = $$LAYOUTS_BASE
+virtualkeyboard_openwnn_layouts.prefix = $$LAYOUTS_PREFIX
+RESOURCES += virtualkeyboard_openwnn_layouts
 
 QMAKE_USE += openwnn
 

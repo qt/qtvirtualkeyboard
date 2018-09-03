@@ -24,10 +24,10 @@ LAYOUT_FILES += \
 OTHER_FILES += \
     $$LAYOUT_FILES
 
-layouts.files = $$LAYOUT_FILES
-layouts.base = $$LAYOUTS_BASE
-layouts.prefix = $$LAYOUTS_PREFIX
-RESOURCES += layouts
+virtualkeyboard_pinyin_layouts.files = $$LAYOUT_FILES
+virtualkeyboard_pinyin_layouts.base = $$LAYOUTS_BASE
+virtualkeyboard_pinyin_layouts.prefix = $$LAYOUTS_PREFIX
+RESOURCES += virtualkeyboard_pinyin_layouts
 
 QMAKE_USE += pinyin
 !no-bundle-pinyin {

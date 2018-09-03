@@ -46,10 +46,10 @@ OTHER_FILES += \
     $$LAYOUT_FILES
 
 !isEmpty(LAYOUT_FILES) {
-    layouts.files = $$LAYOUT_FILES
-    layouts.base = $$LAYOUTS_BASE
-    layouts.prefix = $$LAYOUTS_PREFIX
-    RESOURCES += layouts
+    virtualkeyboard_ltk_layouts.files = $$LAYOUT_FILES
+    virtualkeyboard_ltk_layouts.base = $$LAYOUTS_BASE
+    virtualkeyboard_ltk_layouts.prefix = $$LAYOUTS_PREFIX
+    RESOURCES += virtualkeyboard_ltk_layouts
 }
 
 win32 {

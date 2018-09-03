@@ -26,10 +26,10 @@ LAYOUT_FILES += \
 OTHER_FILES += \
     $$LAYOUT_FILES
 
-layouts.files = $$LAYOUT_FILES
-layouts.base = $$LAYOUTS_BASE
-layouts.prefix = $$LAYOUTS_PREFIX
-RESOURCES += layouts
+virtualkeyboard_thai_layouts.files = $$LAYOUT_FILES
+virtualkeyboard_thai_layouts.base = $$LAYOUTS_BASE
+virtualkeyboard_thai_layouts.prefix = $$LAYOUTS_PREFIX
+RESOURCES += virtualkeyboard_thai_layouts
 
 win32 {
     QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard Thai (Qt $$QT_VERSION)"

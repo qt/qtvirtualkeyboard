@@ -67,11 +67,11 @@ HEADERS += \
     qvirtualkeyboard_staticplugin_p.h
 
 !no-builtin-style: RESOURCES += \
-    content/styles/default/default_style.qrc \
-    content/styles/retro/retro_style.qrc
+    content/styles/default/virtualkeyboard_default_style.qrc \
+    content/styles/retro/virtualkeyboard_retro_style.qrc
 
 RESOURCES += \
-    content/content.qrc
+    content/virtualkeyboard_content.qrc
 
 # Fallback for languages which don't have these special layouts
 LAYOUT_FILES += \
@@ -414,9 +414,9 @@ record-trace-input {
 arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
 
 !disable-layouts {
-    layouts.files = $$LAYOUT_FILES
-    layouts.prefix = $$LAYOUTS_PREFIX
-    RESOURCES += layouts
+    virtualkeyboard_layouts.files = $$LAYOUT_FILES
+    virtualkeyboard_layouts.prefix = $$LAYOUTS_PREFIX
+    RESOURCES += virtualkeyboard_layouts
     DEFINES += HAVE_LAYOUTS
 }
 

@@ -93,10 +93,10 @@ contains(CONFIG, lang-zh(_TW)?): LAYOUT_FILES += $$LAYOUTS_BASE/content/layouts/
 OTHER_FILES += \
     $$LAYOUT_FILES
 
-layouts.files = $$LAYOUT_FILES
-layouts.base = $$LAYOUTS_BASE
-layouts.prefix = $$LAYOUTS_PREFIX
-RESOURCES += layouts
+virtualkeyboard_myscript_layouts.files = $$LAYOUT_FILES
+virtualkeyboard_myscript_layouts.base = $$LAYOUTS_BASE
+virtualkeyboard_myscript_layouts.prefix = $$LAYOUTS_PREFIX
+RESOURCES += virtualkeyboard_myscript_layouts
 
 win32 {
     QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard MyScript (Qt $$QT_VERSION)"

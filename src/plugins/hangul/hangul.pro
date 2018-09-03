@@ -24,10 +24,10 @@ LAYOUT_FILES += \
 OTHER_FILES += \
     $$LAYOUT_FILES
 
-layouts.files = $$LAYOUT_FILES
-layouts.base = $$LAYOUTS_BASE
-layouts.prefix = $$LAYOUTS_PREFIX
-RESOURCES += layouts
+virtualkeyboard_hangul_layouts.files = $$LAYOUT_FILES
+virtualkeyboard_hangul_layouts.base = $$LAYOUTS_BASE
+virtualkeyboard_hangul_layouts.prefix = $$LAYOUTS_PREFIX
+RESOURCES += virtualkeyboard_hangul_layouts
 
 win32 {
     QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard Hangul (Qt $$QT_VERSION)"
