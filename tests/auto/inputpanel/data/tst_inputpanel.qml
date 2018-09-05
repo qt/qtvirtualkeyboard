@@ -29,6 +29,7 @@
 
 import QtTest 1.0
 import QtQuick 2.0
+import QtQuick.Window 2.3
 
 Rectangle {
     id: container
@@ -83,6 +84,13 @@ Rectangle {
             inputPanel.setWclAutoCommitWord(data !== undefined && data.hasOwnProperty("wclAutoCommitWord") && data.wclAutoCommitWord)
             inputPanel.setFullScreenMode(data !== undefined && data.hasOwnProperty("fullScreenMode") && data.fullScreenMode)
             inputPanel.setExternalLanguageSwitchEnabled(data !== undefined && data.hasOwnProperty("externalLanguageSwitchEnabled") && data.externalLanguageSwitchEnabled)
+
+            var window = container.Window.window
+            verify(window)
+            window.raise()
+            window.requestActivate()
+            tryCompare(window, "active", true)
+
             container.forceActiveFocus()
             if (data !== undefined && data.hasOwnProperty("initText")) {
                 textInput.text = data.initText
