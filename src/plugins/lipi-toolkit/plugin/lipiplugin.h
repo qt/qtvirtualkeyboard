@@ -34,7 +34,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class LipiPlugin : public QVirtualKeyboardExtensionPlugin
+class QtVirtualKeyboardLipiPlugin : public QVirtualKeyboardExtensionPlugin
 {
     Q_OBJECT
     Q_INTERFACES(QVirtualKeyboardExtensionPlugin)

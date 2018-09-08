@@ -15,6 +15,12 @@ SOURCES += \
 OTHER_FILES += \
     t9write.json
 
+DEFINES += \
+    QT_NO_CAST_TO_ASCII \
+    QT_ASCII_CAST_WARNINGS \
+    QT_NO_CAST_FROM_ASCII \
+    QT_NO_CAST_FROM_BYTEARRAY
+
 include(../../../config.pri)
 include(../3rdparty/t9write/t9write-build.pri)
 
@@ -71,10 +77,10 @@ t9write-cjk {
 OTHER_FILES += \
     $$LAYOUT_FILES
 
-layouts.files = $$LAYOUT_FILES
-layouts.base = $$LAYOUTS_BASE
-layouts.prefix = $$LAYOUTS_PREFIX
-RESOURCES += layouts
+virtualkeyboard_t9write_layouts.files = $$LAYOUT_FILES
+virtualkeyboard_t9write_layouts.base = $$LAYOUTS_BASE
+virtualkeyboard_t9write_layouts.prefix = $$LAYOUTS_PREFIX
+RESOURCES += virtualkeyboard_t9write_layouts
 
 DEFINES += HAVE_T9WRITE
 QMAKE_USE += t9write_db
@@ -106,5 +112,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = T9WritePlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardT9WritePlugin
 load(qt_plugin)

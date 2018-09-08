@@ -27,19 +27,27 @@
 **
 ****************************************************************************/
 
-#include "hunspellplugin.h"
-#include <QtHunspellInputMethod/private/hunspellinputmethod_p.h>
-#include <QtQml>
+#include "qtquickvirtualkeyboardsettingsplugin.h"
+#include <QtVirtualKeyboard/private/virtualkeyboardsettings_p.h>
+#include <QtVirtualKeyboard/private/qvirtualkeyboard_staticplugin_p.h>
 
 QT_BEGIN_NAMESPACE
 
 using namespace QtVirtualKeyboard;
 
-void QtVirtualKeyboardHunspellPlugin::registerTypes(const char *uri) const
+void QtQuickVirtualKeyboardSettingsPlugin::registerTypes(const char *uri)
 {
-    qmlRegisterType<HunspellInputMethod>(uri, 1, 0, "HunspellInputMethod");
-    qmlRegisterType<HunspellInputMethod>(uri, 2, 0, "HunspellInputMethod");
-    qmlRegisterType<HunspellInputMethod>(uri, 2, 3, "DefaultInputMethod");
+#if defined(QT_STATICPLUGIN)
+    Q_VKB_IMPORT_PLUGIN(QtQuick2Plugin)
+#endif
+
+    qmlRegisterSingletonType<VirtualKeyboardSettings>(uri, 1, 0, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
+    qmlRegisterSingletonType<VirtualKeyboardSettings>(uri, 1, 1, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
+    qmlRegisterSingletonType<VirtualKeyboardSettings>(uri, 1, 2, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
+    qmlRegisterSingletonType<VirtualKeyboardSettings>(uri, 2, 0, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
+    qmlRegisterSingletonType<VirtualKeyboardSettings>(uri, 2, 1, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
+    qRegisterMetaType<WordCandidateListSettings *>("WordCandidateListSettings*");
+    qmlRegisterUncreatableType<WordCandidateListSettings>(uri, 2, 2, "WordCandidateListSettings", QLatin1String("Cannot create word candidate list settings"));
 }
 
 QT_END_NAMESPACE

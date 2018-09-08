@@ -15,6 +15,12 @@ SOURCES += \
 OTHER_FILES += \
     lipi.json
 
+DEFINES += \
+    QT_NO_CAST_TO_ASCII \
+    QT_ASCII_CAST_WARNINGS \
+    QT_NO_CAST_FROM_ASCII \
+    QT_NO_CAST_FROM_BYTEARRAY
+
 include(../../../config.pri)
 
 INCLUDEPATH += \
@@ -46,10 +52,10 @@ OTHER_FILES += \
     $$LAYOUT_FILES
 
 !isEmpty(LAYOUT_FILES) {
-    layouts.files = $$LAYOUT_FILES
-    layouts.base = $$LAYOUTS_BASE
-    layouts.prefix = $$LAYOUTS_PREFIX
-    RESOURCES += layouts
+    virtualkeyboard_ltk_layouts.files = $$LAYOUT_FILES
+    virtualkeyboard_ltk_layouts.base = $$LAYOUTS_BASE
+    virtualkeyboard_ltk_layouts.prefix = $$LAYOUTS_PREFIX
+    RESOURCES += virtualkeyboard_ltk_layouts
 }
 
 win32 {
@@ -58,5 +64,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = LipiPlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardLipiPlugin
 load(qt_plugin)

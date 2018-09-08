@@ -33,7 +33,7 @@ import QtQuick.VirtualKeyboard 2.3
 
 KeyboardLayout {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.3; HandwritingInputMethod {}', parent)
+        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard.Plugins 2.3; HandwritingInputMethod {}', parent)
     }
     sharedLayouts: ['symbols']
     inputMode: InputEngine.InputMode.Latin

@@ -88,7 +88,7 @@ public:
         finishSelection = true;
         composingStr.clear();
         if (inputContext)
-            inputContext->setPreeditText("");
+            inputContext->setPreeditText(QString());
         activeCmpsLen = 0;
         posDelSpl = -1;
         isPosInSpl = false;
@@ -231,7 +231,7 @@ public:
             for (int pos = fixedLen + 1; pos < splStart.size() - 1; pos++) {
                 composingStrDisplay += surface.mid(splStart[pos], splStart[pos + 1] - splStart[pos]).toUpper();
                 if (splStart[pos + 1] < surfaceDecodedLen)
-                    composingStrDisplay += " ";
+                    composingStrDisplay += QLatin1String(" ");
             }
             if (surfaceDecodedLen < surface.length())
                 composingStrDisplay += surface.mid(surfaceDecodedLen).toLower();

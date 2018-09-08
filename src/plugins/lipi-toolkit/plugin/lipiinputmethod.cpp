@@ -117,19 +117,19 @@ public:
         if (context == currentContext)
             return;
 
-        qCDebug(lcLipi) << "LipiInputMethodPrivate::setContext():" << QString(context.toHex());
+        qCDebug(lcLipi) << "LipiInputMethodPrivate::setContext():" << QLatin1String(context.toHex());
 
         clearTraces();
 
         deviceInfo.reset(new LTKCaptureDevice());
-        deviceInfo->setSamplingRate(traceCaptureDeviceInfo.value("sampleRate", 60).toInt());
-        deviceInfo->setXDPI(traceCaptureDeviceInfo.value("dpi", 96).toInt());
+        deviceInfo->setSamplingRate(traceCaptureDeviceInfo.value(QLatin1String("sampleRate"), 60).toInt());
+        deviceInfo->setXDPI(traceCaptureDeviceInfo.value(QLatin1String("dpi"), 96).toInt());
         deviceInfo->setYDPI(deviceInfo->getXDPI());
-        deviceInfo->setLatency(traceCaptureDeviceInfo.value("latency", 0.0).toFloat());
-        deviceInfo->setUniformSampling(traceCaptureDeviceInfo.value("uniform", false).toBool());
+        deviceInfo->setLatency(traceCaptureDeviceInfo.value(QLatin1String("latency"), 0.0).toFloat());
+        deviceInfo->setUniformSampling(traceCaptureDeviceInfo.value(QLatin1String("uniform"), false).toBool());
 
         screenContext.reset(new LTKScreenContext());
-        QRectF boundingBox(traceScreenInfo.value("boundingBox").toRectF());
+        QRectF boundingBox(traceScreenInfo.value(QLatin1String("boundingBox")).toRectF());
         if (!boundingBox.isEmpty()) {
             screenContext->setBboxLeft(boundingBox.left());
             screenContext->setBboxTop(boundingBox.top());
@@ -137,7 +137,7 @@ public:
             screenContext->setBboxBottom(boundingBox.bottom());
         }
 
-        QVariantList horizontalRulers(traceScreenInfo.value("horizontalRulers", QVariantList()).toList());
+        QVariantList horizontalRulers(traceScreenInfo.value(QLatin1String("horizontalRulers"), QVariantList()).toList());
         if (!horizontalRulers.isEmpty()) {
             for (QVariantList::ConstIterator i = horizontalRulers.constBegin();
                  i != horizontalRulers.constEnd(); i++) {
@@ -145,7 +145,7 @@ public:
             }
         }
 
-        QVariantList verticalRulers(traceScreenInfo.value("verticalRulers", QVariantList()).toList());
+        QVariantList verticalRulers(traceScreenInfo.value(QLatin1String("verticalRulers"), QVariantList()).toList());
         if (!horizontalRulers.isEmpty()) {
             for (QVariantList::ConstIterator i = verticalRulers.constBegin();
                  i != verticalRulers.constEnd(); i++) {
@@ -182,7 +182,7 @@ public:
 #endif
 
         QVirtualKeyboardTrace *trace = new QVirtualKeyboardTrace();
-        trace->setChannels(QStringList("t"));
+        trace->setChannels(QStringList(QLatin1String("t")));
         traceList.append(trace);
 
         return trace;
@@ -271,7 +271,7 @@ public:
                         saveTraces(Qt::Key_Space, 100);
 #endif
                         cancelRecognition();
-                        ic->inputEngine()->virtualKeyClick(Qt::Key_Space, QString(" "), Qt::NoModifier);
+                        ic->inputEngine()->virtualKeyClick(Qt::Key_Space, QLatin1String(" "), Qt::NoModifier);
                     } else if (swipeTouchCount == 2) {
                         // Double swipe: commit word, or insert space
                         cancelRecognition();
@@ -282,7 +282,7 @@ public:
                             return;
                         }
 #endif
-                        ic->inputEngine()->virtualKeyClick(Qt::Key_Space, QString(" "), Qt::NoModifier);
+                        ic->inputEngine()->virtualKeyClick(Qt::Key_Space, QLatin1String(" "), Qt::NoModifier);
                     }
                     return;
                 }
@@ -325,14 +325,14 @@ public:
         vector<LTKChannel> channels;
         channels.push_back(LTKChannel("X", DT_INT, true));
         channels.push_back(LTKChannel("Y", DT_INT, true));
-        bool hasTime = trace->channels().contains("t");
+        bool hasTime = trace->channels().contains(QLatin1String("t"));
         if (hasTime)
             channels.push_back(LTKChannel("T", DT_FLOAT, true));
         LTKTraceFormat traceFormat(channels);
         LTKTrace ltktrace(traceFormat);
 
         const QVariantList points = trace->points();
-        const QVariantList timeData = hasTime ? trace->channelData("t") : QVariantList();
+        const QVariantList timeData = hasTime ? trace->channelData(QLatin1String("t")) : QVariantList();
         QVariantList::ConstIterator t = timeData.constBegin();
         for (const QVariant &p : points) {
             const QPointF pt(p.toPointF());
@@ -355,7 +355,7 @@ public:
 #endif
         stopRecognizeTimer();
         clearTraces();
-        if (recognitionTask && !delayedResult.isEmpty() && recognitionTask->resultId() == delayedResult["resultId"].toInt())
+        if (recognitionTask && !delayedResult.isEmpty() && recognitionTask->resultId() == delayedResult[QLatin1String("resultId")].toInt())
             processResult(delayedResult);
         delayedResult.clear();
         recognitionTask.reset();
@@ -408,7 +408,7 @@ public:
     {
         if (!resultList.isEmpty()) {
             const QVariantMap result = resultList.at(0).toMap();
-            if (recognitionTask && recognitionTask->resultId() == result["resultId"].toInt())
+            if (recognitionTask && recognitionTask->resultId() == result[QLatin1String("resultId")].toInt())
                 delayedResult = result;
             else
                 processResult(result);
@@ -417,13 +417,13 @@ public:
 
     void processResult(const QVariantMap &result)
     {
-        const QChar ch = result["unicode"].toChar();
+        const QChar ch = result[QLatin1String("unicode")].toChar();
         const QChar chUpper = ch.toUpper();
 #ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
         // In recording mode, the text case must match with the current text case
         if (unipenTrace) {
             if (!ch.isLetter() || (ch.isUpper() == (textCase == QVirtualKeyboardInputEngine::TextCase::Upper)))
-                saveTraces(ch.unicode(), qRound(result["confidence"].toDouble() * 100));
+                saveTraces(ch.unicode(), qRound(result[QLatin1String("confidence")].toDouble() * 100));
             delete unipenTrace;
             unipenTrace = 0;
         }
@@ -448,7 +448,7 @@ public:
 
         QStringList homeLocations = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
         if (!homeLocations.isEmpty()) {
-            QString filePath = QStringLiteral("%1/%2").arg(homeLocations.at(0)).arg("VIRTUAL_KEYBOARD_TRACES");
+            QString filePath = QStringLiteral("%1/%2").arg(homeLocations.at(0)).arg(QLatin1String("VIRTUAL_KEYBOARD_TRACES"));
             unipenTrace->setDirectory(filePath);
             unipenTrace->save(unicode, confidence);
         }
@@ -625,7 +625,10 @@ void LipiInputMethod::resultsAvailable(const QVariantList &resultList)
         qCDebug(lcLipi) << "LipiInputMethod::resultsAvailable():";
         for (int i = 0; i < resultList.size(); i++) {
             QVariantMap result = resultList.at(i).toMap();
-            qCDebug(lcLipi) << QString("%1: %2 (%3)").arg(i + 1).arg(result["unicode"].toChar()).arg(result["confidence"].toFloat()).toUtf8().constData();
+            const QChar unicode = result[QLatin1String("unicode")].toChar();
+            const double confidence = result[QLatin1String("confidence")].toDouble();
+            qCDebug(lcLipi) << QStringLiteral("%1: %2 (%3)").arg(i + 1)
+                               .arg(unicode).arg(confidence).toUtf8().constData();
         }
     }
     Q_D(LipiInputMethod);

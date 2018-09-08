@@ -34,7 +34,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class PinyinPlugin : public QVirtualKeyboardExtensionPlugin
+class QtVirtualKeyboardPinyinPlugin : public QVirtualKeyboardExtensionPlugin
 {
     Q_OBJECT
     Q_INTERFACES(QVirtualKeyboardExtensionPlugin)

@@ -34,7 +34,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class HangulPlugin : public QVirtualKeyboardExtensionPlugin
+class QtVirtualKeyboardHangulPlugin : public QVirtualKeyboardExtensionPlugin
 {
     Q_OBJECT
     Q_INTERFACES(QVirtualKeyboardExtensionPlugin)

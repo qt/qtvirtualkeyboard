@@ -346,7 +346,7 @@ public:
     {
         srcType = numberOfSrcDictionaryTypes;
 
-        QStringList languageCountry = locale.name().split("_");
+        QStringList languageCountry = locale.name().split(QLatin1String("_"));
         if (languageCountry.length() != 2)
             return QString();
 
@@ -355,7 +355,7 @@ public:
         while (it.hasNext()) {
             QString fileEntry = it.next();
 
-            if (!fileEntry.contains("_" + languageCountry[0].toUpper()))
+            if (!fileEntry.contains(QLatin1String("_") + languageCountry[0].toUpper()))
                 continue;
 
             if (fileEntry.endsWith(QLatin1String(".ldb"))) {
@@ -1007,7 +1007,7 @@ public:
             return;
         currentContext = context;
 
-        qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::setContext():" << QString(context.toHex());
+        qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::setContext():" << QLatin1String((context.toHex()));
 
         // Finish recognition, but preserve current input
         Q_Q(T9WriteInputMethod);
@@ -1027,7 +1027,7 @@ public:
             emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, activeWordIndex);
         }
 
-        const int dpi = traceCaptureDeviceInfo.value("dpi", 96).toInt();
+        const int dpi = traceCaptureDeviceInfo.value(QLatin1String("dpi"), 96).toInt();
         static const int INSTANT_GESTURE_WIDTH_THRESHOLD_MM = 25;
         static const int INSTANT_GESTURE_HEIGHT_THRESHOLD_MM = 25;
         instantGestureSettings.widthThreshold = INSTANT_GESTURE_WIDTH_THRESHOLD_MM / 25.4 * dpi;
@@ -1035,7 +1035,7 @@ public:
 
         gestureRecognizer.setDpi(dpi);
 
-        QVariantList horizontalRulers(traceScreenInfo.value("horizontalRulers", QVariantList()).toList());
+        QVariantList horizontalRulers(traceScreenInfo.value(QLatin1String("horizontalRulers"), QVariantList()).toList());
         if (horizontalRulers.count() >= 2) {
             sessionSettings.baseline = horizontalRulers.last().toInt();
             sessionSettings.helpline = 0;
@@ -1343,8 +1343,8 @@ public:
             if (resultList.isEmpty())
                 return;
 
-            if (resultList.first().toMap()["resultId"] != resultId) {
-                qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::processResult(): resultId mismatch" << resultList.first().toMap()["resultId"] << "(" << resultId << ")";
+            if (resultList.first().toMap()[QLatin1String("resultId")] != resultId) {
+                qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::processResult(): resultId mismatch" << resultList.first().toMap()[QLatin1String("resultId")] << "(" << resultId << ")";
                 resultList.clear();
                 return;
             }
@@ -1352,7 +1352,7 @@ public:
 
             for (int i = 0; i < resultList.size(); i++) {
                 QVariantMap result = resultList.at(i).toMap();
-                QString resultChars = result["chars"].toString();
+                QString resultChars = result[QLatin1String("chars")].toString();
                 if (i == 0) {
                     if (ic->shift()) {
                         caseFormatter.ensureLength(1, textCase);
@@ -1370,16 +1370,16 @@ public:
                 }
                 if (i == 0) {
                     resultString = resultChars;
-                    if (result.contains("gesture"))
-                        gesture = result["gesture"].toString();
-                    if (sessionSettings.recognitionMode != scrMode && result.contains("symbolStrokes"))
-                        symbolStrokes = result["symbolStrokes"].toList();
+                    if (result.contains(QLatin1String("gesture")))
+                        gesture = result[QLatin1String("gesture")].toString();
+                    if (sessionSettings.recognitionMode != scrMode && result.contains(QLatin1String("symbolStrokes")))
+                        symbolStrokes = result[QLatin1String("symbolStrokes")].toList();
                     if (sessionSettings.recognitionMode == scrMode)
                         break;
                 } else {
                     // Add a gesture symbol to the secondary candidate
-                    if (sessionSettings.recognitionMode != scrMode && result.contains("gesture")) {
-                        QString gesture2 = result["gesture"].toString();
+                    if (sessionSettings.recognitionMode != scrMode && result.contains(QLatin1String("gesture"))) {
+                        QString gesture2 = result[QLatin1String("gesture")].toString();
                         if (gesture2.length() == 1) {
                             QChar symbol = T9WriteInputMethodPrivate::mapGestureToSymbol(gesture2.at(0).unicode());
                             if (!symbol.isNull()) {
@@ -1485,9 +1485,9 @@ public:
     {
         switch (symbol.unicode()) {
         case 0x23CE:
-            return QChar('\r');
+            return QLatin1Char('\r');
         case 0x2423:
-            return QChar(' ');
+            return QLatin1Char(' ');
         default:
             return QChar();
         }
@@ -1553,7 +1553,7 @@ public:
                     if (swipeAngle <= SWIPE_ANGLE_THRESHOLD || swipeAngle >= 360 - SWIPE_ANGLE_THRESHOLD) {
                         if (swipeTouchCount == 1) {
                             // Single swipe: space
-                            ic->inputEngine()->virtualKeyClick(Qt::Key_Space, QString(" "), Qt::NoModifier);
+                            ic->inputEngine()->virtualKeyClick(Qt::Key_Space, QLatin1String(" "), Qt::NoModifier);
                             return true;
                         }
                         return false;
@@ -2089,15 +2089,18 @@ void T9WriteInputMethod::resultsAvailable(const QVariantList &resultList)
         qCDebug(lcT9Write) << "T9WriteInputMethod::resultsAvailable():";
         for (int i = 0; i < resultList.size(); i++) {
             QVariantMap result = resultList.at(i).toMap();
-            QString resultPrint = QString("%1: ").arg(i + 1);
-            QString resultChars = result.value("chars").toString();
+            QString resultPrint = QStringLiteral("%1: ").arg(i + 1);
+            QString resultChars = result.value(QLatin1String("chars")).toString();
             if (!resultChars.isEmpty())
                 resultPrint.append(resultChars);
-            if (result.contains("gesture")) {
+            if (result.contains(QLatin1String("gesture"))) {
                 if (!resultChars.isEmpty())
-                    resultPrint.append(", ");
-                resultPrint.append("gesture = 0x");
-                resultPrint.append(result["gesture"].toString().toUtf8().toHex());
+                    resultPrint.append(QLatin1String(", "));
+                QString gesture = result[QLatin1String("gesture")].toString();
+                resultPrint.append(QLatin1String("gesture ="));
+                for (const QChar &chr : gesture) {
+                    resultPrint.append(QString::fromLatin1(" 0x%1").arg(chr.unicode(), 0, 16));
+                }
             }
             qCDebug(lcT9Write) << resultPrint.toUtf8().constData();
         }

@@ -68,8 +68,9 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContextPrivate : public QObje
     Q_PROPERTY(QObject *inputItem READ inputItem NOTIFY inputItemChanged)
     Q_PROPERTY(QtVirtualKeyboard::ShiftHandler *shiftHandler READ shiftHandler CONSTANT)
     Q_PROPERTY(QtVirtualKeyboard::ShadowInputContext *shadow READ shadow CONSTANT)
+    Q_PROPERTY(QStringList inputMethods READ inputMethods CONSTANT)
 
-    explicit QVirtualKeyboardInputContextPrivate(QVirtualKeyboardInputContext *q_ptr, QtVirtualKeyboard::PlatformInputContext *platformInputContext);
+    explicit QVirtualKeyboardInputContextPrivate(QVirtualKeyboardInputContext *q_ptr);
     void init();
 
 public:
@@ -98,6 +99,7 @@ public:
     QObject *inputItem() const;
     QtVirtualKeyboard::ShiftHandler *shiftHandler() const;
     QtVirtualKeyboard::ShadowInputContext *shadow() const;
+    QStringList inputMethods() const;
 
     // Helper functions
     Q_INVOKABLE bool fileExists(const QUrl &fileUrl);

@@ -30,7 +30,6 @@
 #ifndef PLUGIN_H
 #define PLUGIN_H
 
-#include <QtQml>
 #include <qpa/qplatforminputcontextplugin_p.h>
 #include <QtVirtualKeyboard/private/platforminputcontext_p.h>
 #include <QStringList>

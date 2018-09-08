@@ -151,7 +151,7 @@ QVariant QVirtualKeyboardAbstractInputMethod::selectionListData(QVirtualKeyboard
     Q_UNUSED(index)
     switch (role) {
     case QVirtualKeyboardSelectionListModel::Role::Display:
-        return QVariant("");
+        return QVariant(QString());
     case QVirtualKeyboardSelectionListModel::Role::WordCompletionLength:
         return QVariant(0);
     case QVirtualKeyboardSelectionListModel::Role::Dictionary:

@@ -63,14 +63,15 @@ HEADERS += \
     gesturerecognizer_p.h \
     handwritinggesturerecognizer_p.h \
     qvirtualkeyboard_global.h \
-    qvirtualkeyboardextensionplugin.h
+    qvirtualkeyboardextensionplugin.h \
+    qvirtualkeyboard_staticplugin_p.h
 
 !no-builtin-style: RESOURCES += \
-    content/styles/default/default_style.qrc \
-    content/styles/retro/retro_style.qrc
+    content/styles/default/virtualkeyboard_default_style.qrc \
+    content/styles/retro/virtualkeyboard_retro_style.qrc
 
 RESOURCES += \
-    content/content.qrc
+    content/virtualkeyboard_content.qrc
 
 # Fallback for languages which don't have these special layouts
 LAYOUT_FILES += \
@@ -386,6 +387,12 @@ no-builtin-style {
 
 DEFINES += QT_VIRTUALKEYBOARD_DEFAULT_LAYOUTS_DIR=\\\"qrc:/QtQuick/VirtualKeyboard/content/layouts\\\"
 
+DEFINES += \
+    QT_NO_CAST_TO_ASCII \
+    QT_ASCII_CAST_WARNINGS \
+    QT_NO_CAST_FROM_ASCII \
+    QT_NO_CAST_FROM_BYTEARRAY
+
 OTHER_FILES += \
     content/styles/default/*.qml \
     content/styles/retro/*.qml \
@@ -413,9 +420,9 @@ record-trace-input {
 arrow-key-navigation: DEFINES += QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
 
 !disable-layouts {
-    layouts.files = $$LAYOUT_FILES
-    layouts.prefix = $$LAYOUTS_PREFIX
-    RESOURCES += layouts
+    virtualkeyboard_layouts.files = $$LAYOUT_FILES
+    virtualkeyboard_layouts.prefix = $$LAYOUTS_PREFIX
+    RESOURCES += virtualkeyboard_layouts
     DEFINES += HAVE_LAYOUTS
 }
 

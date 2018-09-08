@@ -30,6 +30,7 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.VirtualKeyboard 2.1
+import QtQuick.VirtualKeyboard.Plugins 2.3
 
 KeyboardLayout {
     inputMethod: PlainInputMethod {}

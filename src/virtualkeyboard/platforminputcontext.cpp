@@ -88,17 +88,19 @@ void PlatformInputContext::commit()
 void PlatformInputContext::update(Qt::InputMethodQueries queries)
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::update():" << queries;
-    if (m_inputContext) {
-        bool enabled = inputMethodQuery(Qt::ImEnabled).toBool();
-        if (enabled) {
+    bool enabled = inputMethodQuery(Qt::ImEnabled).toBool();
 #ifdef QT_VIRTUALKEYBOARD_DESKTOP
-            if (!m_inputPanel) {
-                m_inputPanel = new DesktopInputPanel(this);
-                m_inputPanel->createView();
-                m_selectionControl = new DesktopInputSelectionControl(this, m_inputContext);
-                m_selectionControl->createHandles();
-            }
+    if (enabled && !m_inputPanel) {
+        m_inputPanel = new DesktopInputPanel(this);
+        m_inputPanel->createView();
+        if (m_inputContext) {
+            m_selectionControl = new DesktopInputSelectionControl(this, m_inputContext);
+            m_selectionControl->createHandles();
+        }
+    }
 #endif
+    if (m_inputContext) {
+        if (enabled) {
             m_inputContext->priv()->update(queries);
             if (m_visible)
                 updateInputPanelVisible();
@@ -209,6 +211,16 @@ bool PlatformInputContext::eventFilter(QObject *object, QEvent *event)
     if (event != m_filterEvent && object == m_focusObject && m_inputContext)
         return m_inputContext->priv()->filterEvent(event);
     return false;
+}
+
+void PlatformInputContext::setInputMethods(const QStringList &inputMethods)
+{
+    m_inputMethods = inputMethods;
+}
+
+QStringList PlatformInputContext::inputMethods() const
+{
+    return m_inputMethods;
 }
 
 void PlatformInputContext::sendEvent(QEvent *event)

@@ -245,7 +245,7 @@ bool DictTrie::load_dict(const char *filename, LemmaIdType start_id,
   if (NULL == filename || end_id <= start_id)
     return false;
 
-  QFile file(filename);
+  QFile file(QString::fromUtf8(filename));
   if (!file.open(QIODevice::ReadOnly))
     return false;
   QFile *fp = &file;

@@ -35,7 +35,7 @@ QT_BEGIN_NAMESPACE
 
 using namespace QtVirtualKeyboard;
 
-void TCImePlugin::registerTypes(const char *uri) const
+void QtVirtualKeyboardTCImePlugin::registerTypes(const char *uri) const
 {
     qmlRegisterType<TCInputMethod>(uri, 2, 0, "TCInputMethod");
 }

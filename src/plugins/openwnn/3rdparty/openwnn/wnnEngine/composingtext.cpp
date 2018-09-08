@@ -210,7 +210,7 @@ void ComposingText::debugout() const
         QString tmp;
         for (QList<StrSegment>::ConstIterator it = d->mStringLayer[i].constBegin();
              it != d->mStringLayer[i].constEnd(); it++) {
-            tmp += QString("(%1,%2,%3)").arg(it->string).arg(it->from).arg(it->to);
+            tmp += QStringLiteral("(%1,%2,%3)").arg(it->string).arg(it->from).arg(it->to);
         }
     }
 }

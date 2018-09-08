@@ -36,6 +36,8 @@
 #include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
 
 #include <QGuiApplication>
+#include <QtGui/qpa/qplatformintegration.h>
+#include <QtGui/private/qguiapplication_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -49,10 +51,10 @@ bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMeth
 
 using namespace QtVirtualKeyboard;
 
-QVirtualKeyboardInputContextPrivate::QVirtualKeyboardInputContextPrivate(QVirtualKeyboardInputContext *q_ptr, PlatformInputContext *platformInputContext) :
+QVirtualKeyboardInputContextPrivate::QVirtualKeyboardInputContextPrivate(QVirtualKeyboardInputContext *q_ptr) :
     QObject(nullptr),
     q_ptr(q_ptr),
-    platformInputContext(platformInputContext),
+    platformInputContext(nullptr),
     inputEngine(nullptr),
     _shiftHandler(nullptr),
     keyboardRect(),
@@ -83,7 +85,10 @@ QVirtualKeyboardInputContextPrivate::QVirtualKeyboardInputContextPrivate(QVirtua
 void QVirtualKeyboardInputContextPrivate::init()
 {
     Q_Q(QVirtualKeyboardInputContext);
-    Q_ASSERT(inputEngine == nullptr);
+    QGuiApplicationPrivate *guiApplicationPrivate = QGuiApplicationPrivate::instance();
+    QPlatformIntegration *platformIntegration = guiApplicationPrivate->platformIntegration();
+    QPlatformInputContext *unknownPlatformInputContext = platformIntegration->inputContext();
+    platformInputContext = qobject_cast<PlatformInputContext *>(unknownPlatformInputContext);
     inputEngine = new QVirtualKeyboardInputEngine(q);
     _shiftHandler = new ShiftHandler(q);
     inputEngine->init();
@@ -156,7 +161,7 @@ void QVirtualKeyboardInputContextPrivate::setPreviewVisible(bool visible)
 
 QString QVirtualKeyboardInputContextPrivate::locale() const
 {
-    return platformInputContext->locale().name();
+    return platformInputContext ? platformInputContext->locale().name() : QString();
 }
 
 void QVirtualKeyboardInputContextPrivate::setLocale(const QString &locale)
@@ -183,6 +188,11 @@ ShiftHandler *QVirtualKeyboardInputContextPrivate::shiftHandler() const
 ShadowInputContext *QVirtualKeyboardInputContextPrivate::shadow() const
 {
     return const_cast<ShadowInputContext *>(&_shadow);
+}
+
+QStringList QVirtualKeyboardInputContextPrivate::inputMethods() const
+{
+    return platformInputContext ? platformInputContext->inputMethods() : QStringList();
 }
 
 bool QVirtualKeyboardInputContextPrivate::fileExists(const QUrl &fileUrl)

@@ -114,9 +114,6 @@ Item {
     /*! \internal */
     readonly property bool __isRootItem: inputPanel.parent != null && inputPanel.parent.parent == null
 
-    LayoutMirroring.enabled: false
-    LayoutMirroring.childrenInherit: true
-
     SelectionControl {
         objectName: "selectionControl"
         x: -parent.x

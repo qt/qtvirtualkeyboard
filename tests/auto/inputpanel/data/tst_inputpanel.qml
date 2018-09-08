@@ -29,6 +29,7 @@
 
 import QtTest 1.0
 import QtQuick 2.0
+import QtQuick.Window 2.3
 
 Rectangle {
     id: container
@@ -83,6 +84,14 @@ Rectangle {
             inputPanel.setWclAutoCommitWord(data !== undefined && data.hasOwnProperty("wclAutoCommitWord") && data.wclAutoCommitWord)
             inputPanel.setFullScreenMode(data !== undefined && data.hasOwnProperty("fullScreenMode") && data.fullScreenMode)
             inputPanel.setExternalLanguageSwitchEnabled(data !== undefined && data.hasOwnProperty("externalLanguageSwitchEnabled") && data.externalLanguageSwitchEnabled)
+            inputPanel.setLayoutMirroring(data !== undefined && data.hasOwnProperty("layoutMirroring") && data.layoutMirroring)
+
+            var window = container.Window.window
+            verify(window)
+            window.raise()
+            window.requestActivate()
+            tryCompare(window, "active", true)
+
             container.forceActiveFocus()
             waitForRendering(container)
             if (data !== undefined && data.hasOwnProperty("initText")) {
@@ -770,6 +779,43 @@ Rectangle {
             verify(inputPanel.wordCandidateView.currentIndex === -1)
             verify(inputPanel.wordCandidateView.count === 0)
             verify(textInput.text.length > 0)
+        }
+
+        function test_navigationKeyLayoutMirroring_data() {
+            return [
+                { layoutMirroring: false },
+                { layoutMirroring: true },
+            ]
+        }
+
+        function test_navigationKeyLayoutMirroring(data) {
+            prepareTest(data)
+
+            if (!inputPanel.activateNavigationKeyMode())
+                skip("Arrow key navigation not enabled")
+            verify(inputPanel.naviationHighlight.visible)
+
+            verify(inputPanel.navigateToKey("q"))
+            var initialKey = inputPanel.keyboardInputArea.initialKey
+
+            var keysTraversed = []
+            do {
+                verify(keysTraversed.indexOf(inputPanel.keyboardInputArea.initialKey) === -1)
+                var currentKey = inputPanel.keyboardInputArea.initialKey
+                keysTraversed.push(currentKey)
+                inputPanel.emulateNavigationKeyClick(Qt.Key_Right)
+            } while (initialKey !== inputPanel.keyboardInputArea.initialKey)
+
+            inputPanel.setLayoutMirroring(!data.layoutMirroring)
+
+            do {
+                var indexOfKey = keysTraversed.indexOf(inputPanel.keyboardInputArea.initialKey)
+                verify(indexOfKey !== -1)
+                keysTraversed.splice(indexOfKey, 1)
+                inputPanel.emulateNavigationKeyClick(Qt.Key_Left)
+            } while (initialKey !== inputPanel.keyboardInputArea.initialKey)
+
+            compare(keysTraversed.length, 0)
         }
 
         function test_spellCorrectionSuggestions_data() {

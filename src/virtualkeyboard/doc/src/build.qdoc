@@ -42,15 +42,23 @@ The project is split into the following subprojects:
     \li \e examples/virtualkeyboard/basic/basic.pro
     \li Qt Virtual Keyboard Demo application
 \row
+    \li \e src/virtualkeyboard/import/
+    \li Qt Virtual Keyboard QML plugin (QtQuick.VirtualKeyboard)
+\row
     \li \e src/virtualkeyboard/plugin/
-    \li Qt Virtual Keyboard platform input context plugin
+    \li Qt Virtual Keyboard platform input context plugin. This plugin
+        provides the QPlatformInputContext interface for the Qt and is
+        also responsible for loading the Virtual Keyboard Plugins
+        (QtQuick.VirtualKeyboard.Plugins).
 \row
     \li \e src/virtualkeyboard/plugins/
     \li A directory containing Qt Virtual Keyboard plugins, such as the Hunspell plugin
 \row
+    \li \e src/virtualkeyboard/settings/
+    \li Qt Virtual Keyboard Settings QML plugin (QtQuick.VirtualKeyboard.Settings)
+\row
     \li \e src/virtualkeyboard/styles/styles.pro
-    \li Qt Virtual Keyboard Style plugin that enables style decorations for the
-        keyboard
+    \li Qt Virtual Keyboard Styles QML plugin (QtQuick.VirtualKeyboard.Styles)
 \row
     \li \e src/virtualkeyboard/virtualkeyboard.pro
     \li Qt Virtual Keyboard module, QML components and layouts

@@ -28,7 +28,7 @@ bool CangjieDictionary::_simplified = false;
 
 CangjieDictionary::CangjieDictionary() :
     WordDictionary(),
-    _collator(QLocale("zh_TW"))
+    _collator(QLocale(QLatin1String("zh_TW")))
 {
 }
 

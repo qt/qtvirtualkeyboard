@@ -70,7 +70,7 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContext : public QObject
     Q_PROPERTY(QVirtualKeyboardInputContextPrivate *priv READ priv CONSTANT)
 
 public:
-    explicit QVirtualKeyboardInputContext(QtVirtualKeyboard::PlatformInputContext *parent = nullptr);
+    explicit QVirtualKeyboardInputContext(QObject *parent = nullptr);
     ~QVirtualKeyboardInputContext();
 
     bool shift() const;

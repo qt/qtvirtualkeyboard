@@ -184,7 +184,7 @@ public:
     {
         if (composingText.size(ComposingText::LAYER0) != 0) {
             Q_Q(OpenWnnInputMethod);
-            q->inputContext()->commit("");
+            q->inputContext()->commit(QString());
         }
         composingText.clear();
         exactMatchMode = false;

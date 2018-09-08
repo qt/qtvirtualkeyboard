@@ -10,6 +10,12 @@ SOURCES += \
 OTHER_FILES += \
     thai.json
 
+DEFINES += \
+    QT_NO_CAST_TO_ASCII \
+    QT_ASCII_CAST_WARNINGS \
+    QT_NO_CAST_FROM_ASCII \
+    QT_NO_CAST_FROM_BYTEARRAY
+
 include(../../../config.pri)
 
 !disable-hunspell {
@@ -26,10 +32,10 @@ LAYOUT_FILES += \
 OTHER_FILES += \
     $$LAYOUT_FILES
 
-layouts.files = $$LAYOUT_FILES
-layouts.base = $$LAYOUTS_BASE
-layouts.prefix = $$LAYOUTS_PREFIX
-RESOURCES += layouts
+virtualkeyboard_thai_layouts.files = $$LAYOUT_FILES
+virtualkeyboard_thai_layouts.base = $$LAYOUTS_BASE
+virtualkeyboard_thai_layouts.prefix = $$LAYOUTS_PREFIX
+RESOURCES += virtualkeyboard_thai_layouts
 
 win32 {
     QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard Thai (Qt $$QT_VERSION)"
@@ -37,5 +43,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = ThaiPlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardThaiPlugin
 load(qt_plugin)

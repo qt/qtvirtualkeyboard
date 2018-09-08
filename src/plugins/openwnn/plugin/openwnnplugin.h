@@ -34,7 +34,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class OpenWnnPlugin : public QVirtualKeyboardExtensionPlugin
+class QtVirtualKeyboardOpenWnnPlugin : public QVirtualKeyboardExtensionPlugin
 {
     Q_OBJECT
     Q_INTERFACES(QVirtualKeyboardExtensionPlugin)

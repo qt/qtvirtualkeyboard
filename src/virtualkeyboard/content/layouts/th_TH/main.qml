@@ -34,7 +34,7 @@ import QtQuick.VirtualKeyboard 2.3
 KeyboardLayoutLoader {
     inputMode: InputEngine.InputMode.Latin
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.3; ThaiInputMethod {}', parent, "thaiInputMethod")
+        return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard.Plugins 2.3; ThaiInputMethod {}', parent, "thaiInputMethod")
     }
     sharedLayouts: [ "symbols" ]
     sourceComponent: InputContext.shift ? page2 : page1

@@ -763,7 +763,7 @@ void HunspellWorker::run()
                 continue;
             perf.start();
             currentTask->run();
-            qCDebug(lcHunspell) << QString(QLatin1String(currentTask->metaObject()->className()) + "::run(): time:").toLatin1().constData() << perf.elapsed() << "ms";
+            qCDebug(lcHunspell) << QString(QLatin1String(currentTask->metaObject()->className()) + QLatin1String("::run(): time:")).toLatin1().constData() << perf.elapsed() << "ms";
         }
     }
     if (hunspell) {

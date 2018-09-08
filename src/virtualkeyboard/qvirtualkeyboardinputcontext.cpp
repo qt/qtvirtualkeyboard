@@ -67,8 +67,9 @@ using namespace QtVirtualKeyboard;
     Constructs an input context with \a parent as the platform input
     context.
 */
-QVirtualKeyboardInputContext::QVirtualKeyboardInputContext(QtVirtualKeyboard::PlatformInputContext *parent) :
-    d_ptr(new QVirtualKeyboardInputContextPrivate(this, parent))
+QVirtualKeyboardInputContext::QVirtualKeyboardInputContext(QObject *parent) :
+    QObject(parent),
+    d_ptr(new QVirtualKeyboardInputContextPrivate(this))
 {
     Q_D(QVirtualKeyboardInputContext);
     d->init();

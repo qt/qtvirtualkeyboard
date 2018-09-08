@@ -45,19 +45,19 @@ UnipenTrace::UnipenTrace(const QVariantMap &traceCaptureDeviceInfo,
     m_lines.append(QLatin1String(".HIERARCHY CHARACTER"));
     m_lines.append(QLatin1String(".COORD X Y T"));
     m_lines.append(QLatin1String(".SEGMENT CHARACTER"));
-    const QRectF boundingBox = traceScreenInfo["boundingBox"].toRectF();
+    const QRectF boundingBox = traceScreenInfo[QLatin1String("boundingBox")].toRectF();
     if (!boundingBox.isEmpty()) {
         m_lines.append(QStringLiteral(".X_DIM %1").arg(qRound(boundingBox.right())));
         m_lines.append(QStringLiteral(".Y_DIM %1").arg(qRound(boundingBox.bottom())));
     }
     bool ok = false;
-    int dpi = traceCaptureDeviceInfo["dpi"].toInt(&ok);
+    int dpi = traceCaptureDeviceInfo[QLatin1String("dpi")].toInt(&ok);
     if (ok) {
         m_lines.append(QStringLiteral(".X_POINTS_PER_INCH %1").arg(dpi));
         m_lines.append(QStringLiteral(".Y_POINTS_PER_INCH %1").arg(dpi));
     }
     ok = false;
-    int sampleRate = traceCaptureDeviceInfo["sampleRate"].toInt(&ok);
+    int sampleRate = traceCaptureDeviceInfo[QLatin1String("sampleRate")].toInt(&ok);
     if (ok)
         m_lines.append(QStringLiteral(".POINTS_PER_SECOND %1").arg(sampleRate));
 }
@@ -67,8 +67,8 @@ void UnipenTrace::record(const QList<QVirtualKeyboardTrace *> &traceList)
     qlonglong t0 = 0;
     for (const QVirtualKeyboardTrace *trace : qAsConst(traceList)) {
         const QVariantList &points = trace->points();
-        const bool hasTime = trace->channels().contains("t");
-        const QVariantList timeData = hasTime ? trace->channelData("t") : QVariantList();
+        const bool hasTime = trace->channels().contains(QLatin1String("t"));
+        const QVariantList timeData = hasTime ? trace->channelData(QLatin1String("t")) : QVariantList();
         QVariantList::ConstIterator t = timeData.constBegin();
         if (t0 == 0 && hasTime)
             t0 = t->toLongLong();
@@ -107,8 +107,8 @@ void UnipenTrace::save(uint unicode, uint confidence)
         } while (QFileInfo::exists(fileName));
     }
 
-    QString dataStr(m_lines.join('\n'));
-    dataStr.append('\n');
+    QString dataStr(m_lines.join(QLatin1Char('\n')));
+    dataStr.append(QLatin1Char('\n'));
     QFile file(fileName);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
         file.write(dataStr.toUtf8().constData());

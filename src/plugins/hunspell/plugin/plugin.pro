@@ -8,6 +8,12 @@ SOURCES += \
 OTHER_FILES += \
     hunspell.json
 
+DEFINES += \
+    QT_NO_CAST_TO_ASCII \
+    QT_ASCII_CAST_WARNINGS \
+    QT_NO_CAST_FROM_ASCII \
+    QT_NO_CAST_FROM_BYTEARRAY
+
 include(../../../config.pri)
 
 hunspell-library {
@@ -30,5 +36,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = HunspellPlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardHunspellPlugin
 load(qt_plugin)

@@ -34,7 +34,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class MyScriptPlugin : public QVirtualKeyboardExtensionPlugin
+class QtVirtualKeyboardMyScriptPlugin : public QVirtualKeyboardExtensionPlugin
 {
     Q_OBJECT
     Q_INTERFACES(QVirtualKeyboardExtensionPlugin)

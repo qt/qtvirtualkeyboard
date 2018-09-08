@@ -35,7 +35,7 @@ QT_BEGIN_NAMESPACE
 
 using namespace QtVirtualKeyboard;
 
-void LipiPlugin::registerTypes(const char *uri) const
+void QtVirtualKeyboardLipiPlugin::registerTypes(const char *uri) const
 {
     qmlRegisterType<LipiInputMethod>(uri, 2, 0, "HandwritingInputMethod");
 }

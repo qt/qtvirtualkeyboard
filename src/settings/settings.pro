@@ -1,12 +1,23 @@
+TARGET = qtquickvirtualkeyboardsettingsplugin
 TARGETPATH = QtQuick/VirtualKeyboard/Settings
-QML_FILES += plugins.qmltypes
+IMPORT_VERSION = 2.2
+QT += qml quick virtualkeyboard-private
 
-load(qml_module)
+CONFIG += no_cxx_module
 
-# qmltypes target
-!cross_compile:if(build_pass|!debug_and_release) {
-    qtPrepareTool(QMLPLUGINDUMP, qmlplugindump)
+SOURCES += \
+    qtquickvirtualkeyboardsettingsplugin.cpp
 
-    qmltypes.commands = QT_IM_MODULE=qtvirtualkeyboard $$QMLPLUGINDUMP -defaultplatform -nonrelocatable QtQuick.VirtualKeyboard.Settings 2.1 > $$PWD/plugins.qmltypes
-    QMAKE_EXTRA_TARGETS += qmltypes
+HEADERS += \
+    qtquickvirtualkeyboardsettingsplugin.h
+
+OTHER_FILES += \
+    plugins.qmltypes \
+    qmldir
+
+win32 {
+    QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard (Qt $$QT_VERSION)"
+    QMAKE_TARGET_DESCRIPTION = "Virtual Keyboard for Qt."
 }
+
+load(qml_plugin)

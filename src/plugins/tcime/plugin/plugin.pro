@@ -10,6 +10,12 @@ SOURCES += \
 OTHER_FILES += \
     tcime.json
 
+DEFINES += \
+    QT_NO_CAST_TO_ASCII \
+    QT_ASCII_CAST_WARNINGS \
+    QT_NO_CAST_FROM_ASCII \
+    QT_NO_CAST_FROM_BYTEARRAY
+
 include(../../../config.pri)
 
 LAYOUT_FILES += \
@@ -19,10 +25,10 @@ LAYOUT_FILES += \
     $$LAYOUTS_BASE/content/layouts/zh_TW/numbers.fallback \
     $$LAYOUTS_BASE/content/layouts/zh_TW/symbols.qml
 
-layouts.files = $$LAYOUT_FILES
-layouts.base = $$LAYOUTS_BASE
-layouts.prefix = $$LAYOUTS_PREFIX
-RESOURCES += layouts
+virtualkeyboard_tcime_layouts.files = $$LAYOUT_FILES
+virtualkeyboard_tcime_layouts.base = $$LAYOUTS_BASE
+virtualkeyboard_tcime_layouts.prefix = $$LAYOUTS_PREFIX
+RESOURCES += virtualkeyboard_tcime_layouts
 
 cangjie: DEFINES += HAVE_TCIME_CANGJIE
 zhuyin: DEFINES += HAVE_TCIME_ZHUYIN
@@ -55,5 +61,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = TCImePlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardTCImePlugin
 load(qt_plugin)

@@ -27,19 +27,24 @@
 **
 ****************************************************************************/
 
-#include "hunspellplugin.h"
-#include <QtHunspellInputMethod/private/hunspellinputmethod_p.h>
-#include <QtQml>
+#ifndef QTQUICKVIRTUALKEYBOARDPLUGIN_H
+#define QTQUICKVIRTUALKEYBOARDPLUGIN_H
+
+#include <QQmlExtensionPlugin>
 
 QT_BEGIN_NAMESPACE
 
-using namespace QtVirtualKeyboard;
-
-void QtVirtualKeyboardHunspellPlugin::registerTypes(const char *uri) const
+class QtQuickVirtualKeyboardPlugin : public QQmlExtensionPlugin
 {
-    qmlRegisterType<HunspellInputMethod>(uri, 1, 0, "HunspellInputMethod");
-    qmlRegisterType<HunspellInputMethod>(uri, 2, 0, "HunspellInputMethod");
-    qmlRegisterType<HunspellInputMethod>(uri, 2, 3, "DefaultInputMethod");
-}
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
+
+public:
+    QtQuickVirtualKeyboardPlugin(QObject *parent = nullptr) : QQmlExtensionPlugin(parent) { }
+    void registerTypes(const char *uri);
+};
 
 QT_END_NAMESPACE
+
+#endif // QTQUICKVIRTUALKEYBOARDPLUGIN_H
+

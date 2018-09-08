@@ -10,6 +10,12 @@ SOURCES += \
 OTHER_FILES += \
     openwnn.json
 
+DEFINES += \
+    QT_NO_CAST_TO_ASCII \
+    QT_ASCII_CAST_WARNINGS \
+    QT_NO_CAST_FROM_ASCII \
+    QT_NO_CAST_FROM_BYTEARRAY
+
 include(../../../config.pri)
 
 LAYOUT_FILES += \
@@ -22,10 +28,10 @@ LAYOUT_FILES += \
 OTHER_FILES += \
     $$LAYOUT_FILES
 
-layouts.files = $$LAYOUT_FILES
-layouts.base = $$LAYOUTS_BASE
-layouts.prefix = $$LAYOUTS_PREFIX
-RESOURCES += layouts
+virtualkeyboard_openwnn_layouts.files = $$LAYOUT_FILES
+virtualkeyboard_openwnn_layouts.base = $$LAYOUTS_BASE
+virtualkeyboard_openwnn_layouts.prefix = $$LAYOUTS_PREFIX
+RESOURCES += virtualkeyboard_openwnn_layouts
 
 QMAKE_USE += openwnn
 
@@ -35,5 +41,5 @@ win32 {
 }
 
 PLUGIN_TYPE = virtualkeyboard
-PLUGIN_CLASS_NAME = OpenWnnPlugin
+PLUGIN_CLASS_NAME = QtVirtualKeyboardOpenWnnPlugin
 load(qt_plugin)

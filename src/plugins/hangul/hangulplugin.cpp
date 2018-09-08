@@ -35,7 +35,7 @@ QT_BEGIN_NAMESPACE
 
 using namespace QtVirtualKeyboard;
 
-void HangulPlugin::registerTypes(const char *uri) const
+void QtVirtualKeyboardHangulPlugin::registerTypes(const char *uri) const
 {
     qmlRegisterType<HangulInputMethod>(uri, 1, 3, "HangulInputMethod");
     qmlRegisterType<HangulInputMethod>(uri, 2, 0, "HangulInputMethod");

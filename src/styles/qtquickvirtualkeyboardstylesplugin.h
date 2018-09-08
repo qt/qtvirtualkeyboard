@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2018 The Qt Company Ltd.
+** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -27,19 +27,25 @@
 **
 ****************************************************************************/
 
-#include "hunspellplugin.h"
-#include <QtHunspellInputMethod/private/hunspellinputmethod_p.h>
-#include <QtQml>
+#ifndef QTQUICKVIRTUALKEYBOARDSTYLESPLUGIN_H
+#define QTQUICKVIRTUALKEYBOARDSTYLESPLUGIN_H
+
+#include <QQmlExtensionPlugin>
 
 QT_BEGIN_NAMESPACE
 
-using namespace QtVirtualKeyboard;
-
-void QtVirtualKeyboardHunspellPlugin::registerTypes(const char *uri) const
+class QtQuickVirtualKeyboardStylesPlugin : public QQmlExtensionPlugin
 {
-    qmlRegisterType<HunspellInputMethod>(uri, 1, 0, "HunspellInputMethod");
-    qmlRegisterType<HunspellInputMethod>(uri, 2, 0, "HunspellInputMethod");
-    qmlRegisterType<HunspellInputMethod>(uri, 2, 3, "DefaultInputMethod");
-}
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
+
+public:
+    QtQuickVirtualKeyboardStylesPlugin(QObject *parent = nullptr) : QQmlExtensionPlugin(parent) { }
+    void registerTypes(const char *uri);
+    void initializeEngine(QQmlEngine *engine, const char *uri);
+};
 
 QT_END_NAMESPACE
+
+#endif // STYLES_PLUGIN_H
+

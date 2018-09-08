@@ -51,6 +51,12 @@ HEADERS += \
     wnnEngine/include/romkanhalfkatakana.h \
     wnnEngine/include/wnnlookuptable.h
 
+DEFINES += \
+    QT_NO_CAST_TO_ASCII \
+    QT_ASCII_CAST_WARNINGS \
+    QT_NO_CAST_FROM_ASCII \
+    QT_NO_CAST_FROM_BYTEARRAY
+
 load(qt_helper_lib)
 
 CONFIG += qt

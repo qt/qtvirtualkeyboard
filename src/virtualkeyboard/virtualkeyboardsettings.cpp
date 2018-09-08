@@ -49,8 +49,8 @@ public:
 
     QString buildStyleImportPath(const QString &path, const QString &name) const
     {
-        QString importPath(path + name + "/style.qml");
-        if (!importPath.startsWith("qrc:")) {
+        QString importPath(path + name + QLatin1String("/style.qml"));
+        if (!importPath.startsWith(QLatin1String("qrc:"))) {
             QUrl url = QUrl::fromLocalFile(importPath);
             importPath = url.toString();
         }
@@ -60,9 +60,9 @@ public:
     QString buildStyleFilePath(const QString &path, const QString &name) const
     {
         QString filePath(path);
-        if (filePath.startsWith("qrc:"))
+        if (filePath.startsWith(QLatin1String("qrc:")))
             filePath.remove(0, 3);
-        return filePath + name + "/style.qml";
+        return filePath + name + QLatin1String("/style.qml");
     }
 
     QString styleImportPath(const QString &name) const
@@ -71,12 +71,12 @@ public:
             return QString();
 
         QStringList styleImportPathList;
-        styleImportPathList << "qrc:/QtQuick/VirtualKeyboard/content/styles/";
+        styleImportPathList << QLatin1String("qrc:/QtQuick/VirtualKeyboard/content/styles/");
         const QStringList importPathList = engine->importPathList();
         // Add QML import path (Note: the QML base dir is usually the last entry in the list)
         for (int i = importPathList.size() - 1; i >= 0; --i) {
             const QString stylesPath = importPathList.at(i)
-                + QStringLiteral("/QtQuick/VirtualKeyboard/Styles/");
+                + QLatin1String("/QtQuick/VirtualKeyboard/Styles/");
             styleImportPathList += stylesPath;
         }
 
@@ -226,7 +226,7 @@ void VirtualKeyboardSettings::setLayoutPath(const QUrl &layoutPath)
 void VirtualKeyboardSettings::resetLayoutPath()
 {
     Settings *settings = Settings::instance();
-    QUrl layoutPath(QT_VIRTUALKEYBOARD_DEFAULT_LAYOUTS_DIR);
+    QUrl layoutPath(QLatin1String(QT_VIRTUALKEYBOARD_DEFAULT_LAYOUTS_DIR));
     const QString customLayoutPath(QDir::fromNativeSeparators(qEnvironmentVariable("QT_VIRTUALKEYBOARD_LAYOUT_PATH")));
     if (!customLayoutPath.isEmpty()) {
         bool found = false;
@@ -293,12 +293,12 @@ void VirtualKeyboardSettings::resetStyle()
 {
     Q_D(VirtualKeyboardSettings);
     Settings *settings = Settings::instance();
-    QString styleName = QT_VIRTUALKEYBOARD_DEFAULT_STYLE;
+    QString styleName = QLatin1String(QT_VIRTUALKEYBOARD_DEFAULT_STYLE);
     QString style = d->styleImportPath(styleName);
-    QString customStyleName = qgetenv("QT_VIRTUALKEYBOARD_STYLE");
+    QString customStyleName = QString::fromLatin1(qgetenv("QT_VIRTUALKEYBOARD_STYLE"));
     if (!customStyleName.isEmpty()) {
         bool found = false;
-        QRegularExpression styleNameValidator("\\A(?:\\w+)\\z");
+        QRegularExpression styleNameValidator(QLatin1String("\\A(?:\\w+)\\z"));
         QRegularExpressionMatch match = styleNameValidator.match(customStyleName);
         if (match.hasMatch()) {
             QString customStyle = d->styleImportPath(customStyleName);
