@@ -49,6 +49,7 @@
 #include <QVector>
 #include <QLoggingCategory>
 #include <hunspell/hunspell.h>
+#include <QtHunspellInputMethod/qhunspellinputmethod_global.h>
 
 QT_BEGIN_NAMESPACE
 class QTextCodec;
@@ -57,7 +58,7 @@ namespace QtVirtualKeyboard {
 
 Q_DECLARE_LOGGING_CATEGORY(lcHunspell)
 
-class HunspellWordList
+class QHUNSPELLINPUTMETHOD_EXPORT HunspellWordList
 {
 public:
     enum Flag
