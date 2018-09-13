@@ -159,7 +159,7 @@ void ShadowInputContext::updateSelectionProperties()
     const QRectF inputItemClipRect = imQueryEvent.value(Qt::ImInputItemClipRectangle).toRectF();
     const bool anchorRectIntersectsClipRect = inputItemClipRect.intersects(anchorRect);
     const bool cursorRectIntersectsClipRect = inputItemClipRect.intersects(cursorRect);
-    const bool selectionControlVisible = d->inputContext->selectionControlVisible();
+    const bool selectionControlVisible = d->inputContext->isSelectionControlVisible();
 
     const bool newAnchorRectangle = anchorRectangle != d->anchorRectangle;
     const bool newCursorRectangle = cursorRectangle != d->cursorRectangle;

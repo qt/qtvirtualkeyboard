@@ -136,54 +136,54 @@ void ShiftHandler::setSentenceEndingCharacters(const QString &value)
     }
 }
 
-bool ShiftHandler::autoCapitalizationEnabled() const
+bool ShiftHandler::isAutoCapitalizationEnabled() const
 {
     Q_D(const ShiftHandler);
     return d->autoCapitalizationEnabled;
 }
 
-bool ShiftHandler::toggleShiftEnabled() const
+bool ShiftHandler::isToggleShiftEnabled() const
 {
     Q_D(const ShiftHandler);
     return d->toggleShiftEnabled;
 }
 
-bool ShiftHandler::shift() const
+bool ShiftHandler::isShiftActive() const
 {
     Q_D(const ShiftHandler);
     return d->shift;
 }
 
-void ShiftHandler::setShift(bool enable)
+void ShiftHandler::setShiftActive(bool active)
 {
     Q_D(ShiftHandler);
-    if (d->shift != enable) {
-        d->shift = enable;
+    if (d->shift != active) {
+        d->shift = active;
         d->shiftChanged = true;
-        emit shiftChanged();
+        emit shiftActiveChanged();
         if (!d->capsLock)
             emit uppercaseChanged();
     }
 }
 
-bool ShiftHandler::capsLock() const
+bool ShiftHandler::isCapsLockActive() const
 {
     Q_D(const ShiftHandler);
     return d->capsLock;
 }
 
-void ShiftHandler::setCapsLock(bool enable)
+void ShiftHandler::setCapsLockActive(bool active)
 {
     Q_D(ShiftHandler);
-    if (d->capsLock != enable) {
-        d->capsLock = enable;
-        emit capsLockChanged();
+    if (d->capsLock != active) {
+        d->capsLock = active;
+        emit capsLockActiveChanged();
         if (!d->shift)
             emit uppercaseChanged();
     }
 }
 
-bool ShiftHandler::uppercase() const
+bool ShiftHandler::isUppercase() const
 {
     Q_D(const ShiftHandler);
     return d->shift || d->capsLock;
@@ -217,16 +217,16 @@ void ShiftHandler::toggleShift()
     if (!d->toggleShiftEnabled)
         return;
     if (d->manualShiftLanguageFilter.contains(d->locale.language())) {
-        setCapsLock(false);
-        setShift(!d->shift);
+        setCapsLockActive(false);
+        setShiftActive(!d->shift);
     } else if (d->inputContext->inputMethodHints() & Qt::ImhNoAutoUppercase ||
                d->manualCapsInputModeFilter.contains(d->inputContext->inputEngine()->inputMode())) {
         bool capsLock = d->capsLock;
-        setCapsLock(!capsLock);
-        setShift(!capsLock);
+        setCapsLockActive(!capsLock);
+        setShiftActive(!capsLock);
     } else {
         if (d->capsLock) {
-            setCapsLock(!d->capsLock && d->shift && !d->shiftChanged);
+            setCapsLockActive(!d->capsLock && d->shift && !d->shiftChanged);
         }
 
         QStyleHints *style = QGuiApplication::styleHints();
@@ -234,10 +234,10 @@ void ShiftHandler::toggleShift()
         if (d->timer.isNull() || d->timer.elapsed() > style->mouseDoubleClickInterval()) {
             d->timer.restart();
         } else if (d->timer.elapsed() < style->mouseDoubleClickInterval() && !d->capsLock) {
-            setCapsLock(!d->capsLock && d->shift && !d->shiftChanged);
+            setCapsLockActive(!d->capsLock && d->shift && !d->shiftChanged);
         }
 
-        setShift(d->capsLock || !d->shift);
+        setShiftActive(d->capsLock || !d->shift);
         d->shiftChanged = false;
     }
 }
@@ -278,9 +278,9 @@ void ShiftHandler::reset()
         }
         setToggleShiftEnabled(toggleShiftEnabled);
         setAutoCapitalizationEnabled(autoCapitalizationEnabled);
-        setCapsLock(preferUpperCase);
+        setCapsLockActive(preferUpperCase);
         if (preferUpperCase)
-            setShift(preferUpperCase);
+            setShiftActive(preferUpperCase);
         else
             autoCapitalize();
     }
@@ -292,22 +292,22 @@ void ShiftHandler::autoCapitalize()
     if (d->capsLock)
         return;
     if (!d->autoCapitalizationEnabled || !d->inputContext->preeditText().isEmpty()) {
-        setShift(false);
+        setShiftActive(false);
     } else {
         int cursorPosition = d->inputContext->cursorPosition();
         bool preferLowerCase = d->inputContext->inputMethodHints() & Qt::ImhPreferLowercase;
         if (cursorPosition == 0) {
-            setShift(!preferLowerCase);
+            setShiftActive(!preferLowerCase);
         } else {
             QString text = d->inputContext->surroundingText();
             text.truncate(cursorPosition);
             text = text.trimmed();
             if (text.length() == 0)
-                setShift(!preferLowerCase);
+                setShiftActive(!preferLowerCase);
             else if (text.length() > 0 && d->sentenceEndingCharacters.indexOf(text[text.length() - 1]) >= 0)
-                setShift(!preferLowerCase);
+                setShiftActive(!preferLowerCase);
             else
-                setShift(false);
+                setShiftActive(false);
         }
     }
 }

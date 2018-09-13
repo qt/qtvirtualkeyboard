@@ -73,8 +73,8 @@ QVirtualKeyboardInputContext::QVirtualKeyboardInputContext(QObject *parent) :
 {
     Q_D(QVirtualKeyboardInputContext);
     d->init();
-    QObject::connect(d->_shiftHandler, &ShiftHandler::shiftChanged, this, &QVirtualKeyboardInputContext::shiftChanged);
-    QObject::connect(d->_shiftHandler, &ShiftHandler::capsLockChanged, this, &QVirtualKeyboardInputContext::capsLockChanged);
+    QObject::connect(d->_shiftHandler, &ShiftHandler::shiftActiveChanged, this, &QVirtualKeyboardInputContext::shiftActiveChanged);
+    QObject::connect(d->_shiftHandler, &ShiftHandler::capsLockActiveChanged, this, &QVirtualKeyboardInputContext::capsLockActiveChanged);
     QObject::connect(d->_shiftHandler, &ShiftHandler::uppercaseChanged, this, &QVirtualKeyboardInputContext::uppercaseChanged);
     QObject::connect(d, &QVirtualKeyboardInputContextPrivate::localeChanged, this, &QVirtualKeyboardInputContext::localeChanged);
 }
@@ -87,22 +87,22 @@ QVirtualKeyboardInputContext::~QVirtualKeyboardInputContext()
 {
 }
 
-bool QVirtualKeyboardInputContext::shift() const
+bool QVirtualKeyboardInputContext::isShiftActive() const
 {
     Q_D(const QVirtualKeyboardInputContext);
-    return d->_shiftHandler->shift();
+    return d->_shiftHandler->isShiftActive();
 }
 
-bool QVirtualKeyboardInputContext::capsLock() const
+bool QVirtualKeyboardInputContext::isCapsLockActive() const
 {
     Q_D(const QVirtualKeyboardInputContext);
-    return d->_shiftHandler->capsLock();
+    return d->_shiftHandler->isCapsLockActive();
 }
 
-bool QVirtualKeyboardInputContext::uppercase() const
+bool QVirtualKeyboardInputContext::isUppercase() const
 {
     Q_D(const QVirtualKeyboardInputContext);
-    return d->_shiftHandler->uppercase();
+    return d->_shiftHandler->isUppercase();
 }
 
 int QVirtualKeyboardInputContext::anchorPosition() const
@@ -176,7 +176,7 @@ QRectF QVirtualKeyboardInputContext::cursorRectangle() const
     return d->cursorRectangle;
 }
 
-bool QVirtualKeyboardInputContext::animating() const
+bool QVirtualKeyboardInputContext::isAnimating() const
 {
     Q_D(const QVirtualKeyboardInputContext);
     return d->animating;
@@ -338,7 +338,7 @@ bool QVirtualKeyboardInputContext::cursorRectIntersectsClipRect() const
     return d->cursorRectIntersectsClipRect;
 }
 
-bool QVirtualKeyboardInputContext::selectionControlVisible() const
+bool QVirtualKeyboardInputContext::isSelectionControlVisible() const
 {
     Q_D(const QVirtualKeyboardInputContext);
     return d->selectionControlVisible;
@@ -352,6 +352,7 @@ QVirtualKeyboardInputContextPrivate *QVirtualKeyboardInputContext::priv() const
 
 /*!
     \qmlproperty bool InputContext::shift
+    \deprecated Use \l shiftActive instead.
 
     This property is changed when the shift status changes.
 */
@@ -359,18 +360,49 @@ QVirtualKeyboardInputContextPrivate *QVirtualKeyboardInputContext::priv() const
 /*!
     \property QVirtualKeyboardInputContext::shift
     \brief the shift status.
+    \deprecated Use \l shiftActive instead.
+
+    This property is changed when the shift status changes.
+*/
+
+/*!
+    \qmlproperty bool InputContext::shiftActive
+    \since QtQuick.VirtualKeyboard 2.4
+
+    This property is changed when the shift status changes.
+*/
+
+/*!
+    \property QVirtualKeyboardInputContext::shiftActive
+    \brief the shift status.
 
     This property is changed when the shift status changes.
 */
 
 /*!
     \qmlproperty bool InputContext::capsLock
+    \deprecated Use \l capsLockActive instead.
 
     This property is changed when the caps lock status changes.
 */
 
 /*!
     \property QVirtualKeyboardInputContext::capsLock
+    \brief the caps lock status.
+    \deprecated Use \l capsLockActive instead.
+
+    This property is changed when the caps lock status changes.
+*/
+
+/*!
+    \qmlproperty bool InputContext::capsLockActive
+    \since QtQuick.VirtualKeyboard 2.4
+
+    This property is changed when the caps lock status changes.
+*/
+
+/*!
+    \property QVirtualKeyboardInputContext::capsLockActive
     \brief the caps lock status.
 
     This property is changed when the caps lock status changes.
@@ -380,14 +412,14 @@ QVirtualKeyboardInputContextPrivate *QVirtualKeyboardInputContext::priv() const
     \qmlproperty bool InputContext::uppercase
     \since QtQuick.VirtualKeyboard 2.2
 
-    This property is \c true when either \l shift or \l capsLock is \c true.
+    This property is \c true when either \l shiftActive or \l capsLockActive is \c true.
 */
 
 /*!
     \property QVirtualKeyboardInputContext::uppercase
     \brief the uppercase status.
 
-    This property is \c true when either \l shift or \l capsLock is \c true.
+    This property is \c true when either \l shiftActive or \l capsLockActive is \c true.
 */
 
 /*!

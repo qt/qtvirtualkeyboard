@@ -144,6 +144,9 @@ void QtQuickVirtualKeyboardPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(componentsPath + QLatin1String("PopupList.qml")), uri, 2, 3, "PopupList");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("SelectionControl.qml")), uri, 2, 1, "SelectionControl");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("InputModeKey.qml")), uri, 2, 3, "InputModeKey");
+
+    // New revisions in 5.12.
+    qmlRegisterSingletonType<QVirtualKeyboardInputContext>(uri, 2, 4, "InputContext", createInputContextModule);
 }
 
 QT_END_NAMESPACE

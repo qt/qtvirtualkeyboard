@@ -2108,9 +2108,9 @@ Rectangle {
                 skip("Prediction/spell correction not enabled")
 
             if (data.hasOwnProperty("initShift"))
-                inputPanel.setShift(data.initShift)
+                inputPanel.setShiftActive(data.initShift)
             if (data.hasOwnProperty("initCapsLock"))
-                inputPanel.setCapsLock(data.initCapsLock)
+                inputPanel.setCapsLockActive(data.initCapsLock)
 
             for (var inputIndex in data.inputSequence)
                 inputPanel.virtualKeyClick(data.inputSequence[inputIndex])

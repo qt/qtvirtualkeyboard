@@ -74,7 +74,7 @@ function renderSmoothedLine(ctx, trace, renderPos) {
     }
 
     // Draw the remainder of the line
-    if (trace.isFinal) {
+    if (trace.final) {
         if (i < points.length) {
             tp = points[i - 1]
             ctx.beginPath()

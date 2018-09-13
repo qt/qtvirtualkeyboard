@@ -196,7 +196,7 @@ InputPanel {
     SignalSpy {
         id: shiftStateSpy
         target: InputContext
-        signalName: "onShiftChanged"
+        signalName: "onShiftActiveChanged"
     }
 
     SignalSpy {
@@ -621,12 +621,12 @@ InputPanel {
         InputContext.priv.shiftHandler.toggleShift()
     }
 
-    function setShift(shift) {
-        InputContext.priv.shiftHandler.shift = shift
+    function setShiftActive(shiftActive) {
+        InputContext.priv.shiftHandler.shiftActive = shiftActive
     }
 
-    function setCapsLock(capsLock) {
-        InputContext.priv.shiftHandler.capsLock = capsLock
+    function setCapsLockActive(capsLockActive) {
+        InputContext.priv.shiftHandler.capsLockActive = capsLockActive
     }
 
     function style() {

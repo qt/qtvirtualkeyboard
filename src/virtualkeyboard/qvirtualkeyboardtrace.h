@@ -46,8 +46,8 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardTrace : public QObject
     Q_PROPERTY(int traceId READ traceId WRITE setTraceId NOTIFY traceIdChanged)
     Q_PROPERTY(QStringList channels READ channels WRITE setChannels NOTIFY channelsChanged)
     Q_PROPERTY(int length READ length NOTIFY lengthChanged)
-    Q_PROPERTY(bool isFinal READ isFinal WRITE setFinal NOTIFY finalChanged)
-    Q_PROPERTY(bool isCanceled READ isCanceled WRITE setCanceled NOTIFY canceledChanged)
+    Q_PROPERTY(bool final READ isFinal WRITE setFinal NOTIFY finalChanged)
+    Q_PROPERTY(bool canceled READ isCanceled WRITE setCanceled NOTIFY canceledChanged)
     Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity NOTIFY opacityChanged)
 public:
     explicit QVirtualKeyboardTrace(QObject *parent = nullptr);
