@@ -443,16 +443,16 @@ qmake command line.
 \section2 MyScript Text SDK Integration
 
 MyScript Text is designed for building applications that enable the recognition of
-handwritten text. MyScript Text supports the recognition of isolated character, cursive,
-print and superimposed writing. Especially, most recent text recognition technology,
-MyScript superimposed writing is integrated into Qt Virtual Keyboard, and it enables
+handwritten text. MyScript Text supports the recognition of isolated characters, cursive,
+print and superimposed writing.
+MyScript superimposed writing is integrated into Qt Virtual Keyboard. It enables
 the recognition of letters, words or parts of words written one over the other,
-without any explicit separation between consecutive fragments. It targets small size
-devices with sufficient hardware capabilities in terms of CPU power and memory.
+without any explicit separation between consecutive fragments. It is capable of running
+on memory and CPU constrained devices.
 
 \section3 Input handwriting styles of MyScript Text SDK
 
-The end-user can write one word fragment over the other or one character over the other,
+The end-user can write one word fragment over the other, or one character over the other,
 as depicted below. Space between two written words are automatically added, so that there
 is no need for an explicit gesture.
 
@@ -467,8 +467,8 @@ MyScript Superimposed supports 70 languages.
 
 \section3 MyScript Text SDK Packages Installation
 
-MyScript delivery team provide you the packages with various \c .zip archives.
-In order to access all the code, tools, and resources needed for building your own
+The MyScript delivery team can provide you the packages with various \c .zip archives.
+To access all the code, tools, and resources needed for building your own
 handwriting application, \b {extract all the packages in the same destination folder} as
 \c src/plugins/myscript/3rdparty/myscript.
 
@@ -557,14 +557,14 @@ The description for the contents of each directory are:
     \li Contains useful programmer tools including InkTool for ink testing.
 \row
     \li \e voim
-    \li Contains libraries of MyScript Text Input Method. It is an extension SDK to the MyScript Text recognition system, and designed for building input methods using handwriting recognition easily and quickly.
+    \li Contains libraries of MyScript Text Input Method. It is an extension SDK to the MyScript Text recognition system and designed for building input methods using handwriting recognition easily and quickly.
 \endtable
 
 \section3 Setting the Certificate of MyScript Text SDK
 
 \b {A valid certificate is mandatory to use the MyScript Text SDK.} This is a
 security measure that uniquely identifies you as a legitimate customer of MyScript
-technologies. The certificate helps us trace customers identify and the products
+technologies. The certificate helps MyScript trace customers' identify and the products
 that have been purchased.
 
 The certificate is delivered in the /c [your_login].vo.zip package. When you unzip
