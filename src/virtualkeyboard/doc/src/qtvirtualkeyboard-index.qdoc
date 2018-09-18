@@ -63,6 +63,17 @@
 
     \include layouts.qdocinc layout-list
 
+    \section1 Third-party Plugins
+
+    The Qt Virtual Keyboard supports third-party plugins from the following vendors:
+    \list
+        \li \l {Handwriting Recognition#T9 Write}{T9 Write} handwriting text input.
+        \li \l {Handwriting Recognition#MyScript}{MyScript} Text handwriting recognition
+    \endlist
+
+    \l {Building Qt Virtual Keyboard} describes how to integrate these plugins
+    into the Qt Virtual Keyboard.
+
     \section1 Guides
 
     \list

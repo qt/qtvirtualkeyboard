@@ -99,4 +99,107 @@ T9 Write supports handwriting written in the following languages:
   \li Traditional Chinese
 \endlist
 \endtable
+
+\section1 MyScript
+
+\l {https://www.myscript.com}{MyScript}
+SDK is a commercial handwriting recognition engine.
+
+\MyScript SDK supports 71 handwriting recognition languages:
+
+\table
+\row
+\li \list
+  \li Afrikaans
+  \li Albanian
+  \li Arabic
+  \li Armenian
+  \li Azeri, Azerbaijani
+  \li Basque
+  \li Belarusian (Cyrillic)
+  \li Bosnian (Latin)
+  \li Bulgarian
+  \li Catalan
+  \li Cebuano
+  \li Chinese Simplified
+  \li Chinese Traditional - Hong Kong
+  \li Chinese Traditional - Taiwan
+  \li Croatian
+  \li Czech
+  \li Danish
+\endlist
+\li \list
+  \li Dutch, Flemish
+  \li Dutch
+  \li English - Canada
+  \li English - Philippines
+  \li English - United Kingdom
+  \li English - United States
+  \li Estonian
+  \li Farsi, Persian
+  \li Filipino, Pilipino, Tagalog
+  \li Finnish
+  \li French - Canada
+  \li French - France
+  \li Galician
+  \li Georgian
+  \li German - Austria
+  \li German - Germany
+  \li Greek
+  \li Hebrew
+\endlist
+\li \list
+  \li Hindi
+  \li Hungarian
+  \li Icelandic
+  \li Indonesian
+  \li Irish, Ireland Gaelic
+  \li Italian
+  \li Japanese
+  \li Kazakh
+  \li Korean
+  \li Latvian
+  \li Lithuanian
+  \li Macedonian
+  \li Malagasy
+  \li Malay
+  \li Mongolian
+  \li Norwegian, Nordic Bokmal
+  \li Polish
+  \li Portuguese - Brazil
+\endlist
+\li \list
+  \li Portuguese - Portugal
+  \li Romanian
+  \li Russian
+  \li Serbian (Cyrillic)
+  \li Serbian (Latin)
+  \li Slovak
+  \li Slovenian, Slovene
+  \li Spanish - Colombia
+  \li Spanish - Spain
+  \li Spanish - Mexico
+  \li Swahili (Latin)
+  \li Swedish
+  \li Tatar (Cyrillic)
+  \li Thai
+  \li Turkish
+  \li Ukrainian
+  \li Urdu
+  \li Vietnamese
+\endlist
+\endtable
+
+\MyScript is integrated into Qt Virtual Keyboard with identical coverage of supported languages.
+
+  \list
+    \li \l {Qt Virtual Keyboard#Supported Languages}{Supported Languages}
+  \endlist
+
+However, with minor modifications to the Qt Virtual Keyboard source code, it is easy to add handwriting panels for other languages supported by \MyScript.
+
+To get the \MyScript SDK or additional information, please contact \MyScript at \l {mailto:contactus@myscript.com}{contactus@myscript.com}.
+
+\b {See also}: \l {MyScript Text SDK Integration}
+
 */
