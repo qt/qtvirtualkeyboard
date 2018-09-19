@@ -1685,19 +1685,14 @@ Rectangle {
                 skip("Prediction/spell correction not enabled")
 
             for (var len = 1; len <= 5; ++len) {
-                inputPanel.wordCandidateListChangedSpy.clear()
                 inputPanel.virtualKeyClick("z")
-                waitForRendering(inputPanel)
-                if (len >= 3) {
-                    if (data.wclAutoCommitWord)
-                        tryVerify(function() { return inputPanel.wordCandidateView.model.count === 0 }, 500)
-                    else
-                        wait(500)
+                if (len >= 2) {
+                    inputPanel.inputMethodSelectionListChangedSpy.clear()
+                    inputPanel.inputMethodSelectionListChangedSpy.wait()
                     if (inputPanel.wordCandidateView.model.count <= 1)
                         break
                 }
             }
-            waitForRendering(inputPanel)
 
             if (data.wclAutoCommitWord)
                 compare(inputPanel.wordCandidateView.model.count, 0)
