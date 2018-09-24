@@ -619,6 +619,8 @@ Item {
                 var empty = wordCandidateView.model.count === 0
                 if (empty)
                     wordCandidateViewAutoHideTimer.restart()
+                else
+                    wordCandidateViewAutoHideTimer.stop()
                 wordCandidateView.empty = empty
             }
         }
