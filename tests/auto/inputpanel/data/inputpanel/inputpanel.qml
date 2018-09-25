@@ -674,6 +674,17 @@ InputPanel {
         if (!inputPanel.wordCandidateView.currentItem)
             return false
         testcase.wait(200)
+        testcase.verify(inputPanel.wordCandidateView.currentItem,
+            "Expected wordCandidateView to have a currentItem, but it's null."
+            + " Its property values at the time of failure are:"
+            + " x=" + inputPanel.wordCandidateView.x
+            + " y=" + inputPanel.wordCandidateView.y
+            + " width=" + inputPanel.wordCandidateView.width
+            + " height=" + inputPanel.wordCandidateView.height
+            + " count=" + inputPanel.wordCandidateView.count
+            + " flicking=" + inputPanel.wordCandidateView.flicking
+            + " moving=" + inputPanel.wordCandidateView.moving
+            + " visible=" + inputPanel.wordCandidateView.visible)
         var itemPos = inputPanel.mapFromItem(inputPanel.wordCandidateView.currentItem,
                                              inputPanel.wordCandidateView.currentItem.width / 2,
                                              inputPanel.wordCandidateView.currentItem.height / 2)
