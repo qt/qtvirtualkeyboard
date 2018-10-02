@@ -196,7 +196,7 @@ InputPanel {
     SignalSpy {
         id: shiftStateSpy
         target: InputContext
-        signalName: "onShiftChanged"
+        signalName: "onShiftActiveChanged"
     }
 
     SignalSpy {
@@ -621,12 +621,12 @@ InputPanel {
         InputContext.priv.shiftHandler.toggleShift()
     }
 
-    function setShift(shift) {
-        InputContext.priv.shiftHandler.shift = shift
+    function setShiftActive(shiftActive) {
+        InputContext.priv.shiftHandler.shiftActive = shiftActive
     }
 
-    function setCapsLock(capsLock) {
-        InputContext.priv.shiftHandler.capsLock = capsLock
+    function setCapsLockActive(capsLockActive) {
+        InputContext.priv.shiftHandler.capsLockActive = capsLockActive
     }
 
     function style() {
@@ -674,6 +674,17 @@ InputPanel {
         if (!inputPanel.wordCandidateView.currentItem)
             return false
         testcase.wait(200)
+        testcase.verify(inputPanel.wordCandidateView.currentItem,
+            "Expected wordCandidateView to have a currentItem, but it's null."
+            + " Its property values at the time of failure are:"
+            + " x=" + inputPanel.wordCandidateView.x
+            + " y=" + inputPanel.wordCandidateView.y
+            + " width=" + inputPanel.wordCandidateView.width
+            + " height=" + inputPanel.wordCandidateView.height
+            + " count=" + inputPanel.wordCandidateView.count
+            + " flicking=" + inputPanel.wordCandidateView.flicking
+            + " moving=" + inputPanel.wordCandidateView.moving
+            + " visible=" + inputPanel.wordCandidateView.visible)
         var itemPos = inputPanel.mapFromItem(inputPanel.wordCandidateView.currentItem,
                                              inputPanel.wordCandidateView.currentItem.width / 2,
                                              inputPanel.wordCandidateView.currentItem.height / 2)

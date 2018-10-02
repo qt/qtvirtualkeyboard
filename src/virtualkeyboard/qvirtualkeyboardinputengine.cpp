@@ -162,7 +162,7 @@ void QVirtualKeyboardInputEngine::init()
 {
     Q_D(QVirtualKeyboardInputEngine);
     ShiftHandler *shiftHandler = d->inputContext->priv()->shiftHandler();
-    QObject::connect(shiftHandler, &ShiftHandler::shiftChanged, this, &QVirtualKeyboardInputEngine::shiftChanged);
+    QObject::connect(shiftHandler, &ShiftHandler::shiftActiveChanged, this, &QVirtualKeyboardInputEngine::shiftChanged);
     QObject::connect(d->inputContext, &QVirtualKeyboardInputContext::localeChanged, this, &QVirtualKeyboardInputEngine::update);
     QObject::connect(d->inputContext, &QVirtualKeyboardInputContext::inputMethodHintsChanged, this, &QVirtualKeyboardInputEngine::updateSelectionListModels);
     QObject::connect(d->inputContext, &QVirtualKeyboardInputContext::localeChanged, this, &QVirtualKeyboardInputEngine::updateInputModes);
@@ -625,7 +625,7 @@ void QVirtualKeyboardInputEngine::update()
 void QVirtualKeyboardInputEngine::shiftChanged()
 {
     Q_D(QVirtualKeyboardInputEngine);
-    TextCase newCase = d->inputContext->priv()->shiftHandler()->shift() ? TextCase::Upper : TextCase::Lower;
+    TextCase newCase = d->inputContext->priv()->shiftHandler()->isShiftActive() ? TextCase::Upper : TextCase::Lower;
     if (d->textCase != newCase) {
         d->textCase = newCase;
         if (d->inputMethod) {

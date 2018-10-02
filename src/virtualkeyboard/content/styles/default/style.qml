@@ -382,8 +382,8 @@ KeyboardStyle {
             }
             states: [
                 State {
-                    name: "capslock"
-                    when: InputContext.capsLock
+                    name: "capsLockActive"
+                    when: InputContext.capsLockActive
                     PropertyChanges {
                         target: shiftKeyBackground
                         color: "#5a892e"
@@ -394,8 +394,8 @@ KeyboardStyle {
                     }
                 },
                 State {
-                    name: "shift"
-                    when: InputContext.shift
+                    name: "shiftActive"
+                    when: InputContext.shiftActive
                     PropertyChanges {
                         target: shiftKeyIcon
                         source: resourcePrefix + "images/shift-80c342.svg"
@@ -805,9 +805,9 @@ KeyboardStyle {
                     weight: Font.Normal
                     pixelSize: 44 * scaleHint
                     capitalization: {
-                        if (InputContext.capsLock)
+                        if (InputContext.capsLockActive)
                             return Font.AllUppercase
-                        if (InputContext.shift)
+                        if (InputContext.shiftActive)
                             return Font.MixedCase
                         return Font.AllLowercase
                     }

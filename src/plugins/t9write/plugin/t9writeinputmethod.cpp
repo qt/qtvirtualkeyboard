@@ -1354,7 +1354,7 @@ public:
                 QVariantMap result = resultList.at(i).toMap();
                 QString resultChars = result[QLatin1String("chars")].toString();
                 if (i == 0) {
-                    if (ic->shift()) {
+                    if (ic->isShiftActive()) {
                         caseFormatter.ensureLength(1, textCase);
                         caseFormatter.ensureLength(resultChars.length(), QVirtualKeyboardInputEngine::TextCase::Lower);
                     } else {

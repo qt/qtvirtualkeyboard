@@ -37,7 +37,7 @@ KeyboardLayoutLoader {
         return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard.Plugins 2.3; ThaiInputMethod {}', parent, "thaiInputMethod")
     }
     sharedLayouts: [ "symbols" ]
-    sourceComponent: InputContext.shift ? page2 : page1
+    sourceComponent: InputContext.shiftActive ? page2 : page1
     Component {
         id: page1
         KeyboardLayout {

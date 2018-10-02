@@ -165,7 +165,7 @@ MultiPointTouchArea {
         for (var i = 0; i < touchPoints.length; i++) {
             var traceCanvas = findTraceCanvasById(touchPoints[i].pointId)
             if (traceCanvas) {
-                traceCanvas.trace.isFinal = true
+                traceCanvas.trace.final = true
                 __traceCanvasList.splice(__traceCanvasList.indexOf(traceCanvas), 1)
                 InputContext.inputEngine.traceEnd(traceCanvas.trace)
             }
@@ -176,8 +176,8 @@ MultiPointTouchArea {
         for (var i = 0; i < touchPoints.length; i++) {
             var traceCanvas = findTraceCanvasById(touchPoints[i].pointId)
             if (traceCanvas) {
-                traceCanvas.trace.isFinal = true
-                traceCanvas.trace.isCanceled = true
+                traceCanvas.trace.final = true
+                traceCanvas.trace.canceled = true
                 __traceCanvasList.splice(__traceCanvasList.indexOf(traceCanvas), 1)
                 InputContext.inputEngine.traceEnd(traceCanvas.trace)
             }

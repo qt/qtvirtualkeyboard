@@ -59,11 +59,11 @@ class QVIRTUALKEYBOARD_EXPORT ShiftHandler : public QObject
     Q_DISABLE_COPY(ShiftHandler)
     Q_DECLARE_PRIVATE(ShiftHandler)
     Q_PROPERTY(QString sentenceEndingCharacters READ sentenceEndingCharacters WRITE setSentenceEndingCharacters NOTIFY sentenceEndingCharactersChanged)
-    Q_PROPERTY(bool autoCapitalizationEnabled READ autoCapitalizationEnabled NOTIFY autoCapitalizationEnabledChanged)
-    Q_PROPERTY(bool toggleShiftEnabled READ toggleShiftEnabled NOTIFY toggleShiftEnabledChanged)
-    Q_PROPERTY(bool shift READ shift WRITE setShift NOTIFY shiftChanged)
-    Q_PROPERTY(bool capsLock READ capsLock WRITE setCapsLock NOTIFY capsLockChanged)
-    Q_PROPERTY(bool uppercase READ uppercase NOTIFY uppercaseChanged)
+    Q_PROPERTY(bool autoCapitalizationEnabled READ isAutoCapitalizationEnabled NOTIFY autoCapitalizationEnabledChanged)
+    Q_PROPERTY(bool toggleShiftEnabled READ isToggleShiftEnabled NOTIFY toggleShiftEnabledChanged)
+    Q_PROPERTY(bool shiftActive READ isShiftActive WRITE setShiftActive NOTIFY shiftActiveChanged)
+    Q_PROPERTY(bool capsLockActive READ isCapsLockActive WRITE setCapsLockActive NOTIFY capsLockActiveChanged)
+    Q_PROPERTY(bool uppercase READ isUppercase NOTIFY uppercaseChanged)
 
     explicit ShiftHandler(QVirtualKeyboardInputContext *parent = nullptr);
     void init();
@@ -73,13 +73,13 @@ public:
 
     QString sentenceEndingCharacters() const;
     void setSentenceEndingCharacters(const QString &value);
-    bool autoCapitalizationEnabled() const;
-    bool toggleShiftEnabled() const;
-    bool shift() const;
-    void setShift(bool enable);
-    bool capsLock() const;
-    void setCapsLock(bool enable);
-    bool uppercase() const;
+    bool isAutoCapitalizationEnabled() const;
+    bool isToggleShiftEnabled() const;
+    bool isShiftActive() const;
+    void setShiftActive(bool active);
+    bool isCapsLockActive() const;
+    void setCapsLockActive(bool active);
+    bool isUppercase() const;
 
     Q_INVOKABLE void toggleShift();
     Q_INVOKABLE void clearToggleShiftTimer();
@@ -88,8 +88,8 @@ signals:
     void sentenceEndingCharactersChanged();
     void toggleShiftEnabledChanged();
     void autoCapitalizationEnabledChanged();
-    void shiftChanged();
-    void capsLockChanged();
+    void shiftActiveChanged();
+    void capsLockActiveChanged();
     void uppercaseChanged();
 
 private slots:

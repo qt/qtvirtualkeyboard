@@ -115,7 +115,7 @@ void DesktopInputSelectionControl::updateVisibility()
     }
     const bool wasAnchorVisible = m_anchorHandleVisible;
     const bool wasCursorVisible = m_cursorHandleVisible;
-    const bool makeVisible = (m_inputContext->selectionControlVisible() || m_handleState == HandleIsMoving) && m_enabled;
+    const bool makeVisible = (m_inputContext->isSelectionControlVisible() || m_handleState == HandleIsMoving) && m_enabled;
 
     m_anchorHandleVisible = makeVisible;
     if (QWindow *focusWindow = QGuiApplication::focusWindow()) {

@@ -50,9 +50,11 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContext : public QObject
     Q_OBJECT
     Q_DISABLE_COPY(QVirtualKeyboardInputContext)
     Q_DECLARE_PRIVATE(QVirtualKeyboardInputContext)
-    Q_PROPERTY(bool shift READ shift NOTIFY shiftChanged)
-    Q_PROPERTY(bool capsLock READ capsLock NOTIFY capsLockChanged)
-    Q_PROPERTY(bool uppercase READ uppercase NOTIFY uppercaseChanged)
+    Q_PROPERTY(bool shift READ isShiftActive NOTIFY shiftActiveChanged)
+    Q_PROPERTY(bool shiftActive READ isShiftActive NOTIFY shiftActiveChanged REVISION 4)
+    Q_PROPERTY(bool capsLock READ isCapsLockActive NOTIFY capsLockActiveChanged)
+    Q_PROPERTY(bool capsLockActive READ isCapsLockActive NOTIFY capsLockActiveChanged REVISION 4)
+    Q_PROPERTY(bool uppercase READ isUppercase NOTIFY uppercaseChanged)
     Q_PROPERTY(int anchorPosition READ anchorPosition NOTIFY anchorPositionChanged)
     Q_PROPERTY(int cursorPosition READ cursorPosition NOTIFY cursorPositionChanged)
     Q_PROPERTY(Qt::InputMethodHints inputMethodHints READ inputMethodHints NOTIFY inputMethodHintsChanged)
@@ -61,10 +63,10 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContext : public QObject
     Q_PROPERTY(QString selectedText READ selectedText NOTIFY selectedTextChanged)
     Q_PROPERTY(QRectF anchorRectangle READ anchorRectangle NOTIFY anchorRectangleChanged)
     Q_PROPERTY(QRectF cursorRectangle READ cursorRectangle NOTIFY cursorRectangleChanged)
-    Q_PROPERTY(bool animating READ animating WRITE setAnimating NOTIFY animatingChanged)
+    Q_PROPERTY(bool animating READ isAnimating WRITE setAnimating NOTIFY animatingChanged)
     Q_PROPERTY(QString locale READ locale NOTIFY localeChanged)
     Q_PROPERTY(QVirtualKeyboardInputEngine *inputEngine READ inputEngine CONSTANT)
-    Q_PROPERTY(bool selectionControlVisible READ selectionControlVisible NOTIFY selectionControlVisibleChanged)
+    Q_PROPERTY(bool selectionControlVisible READ isSelectionControlVisible NOTIFY selectionControlVisibleChanged)
     Q_PROPERTY(bool anchorRectIntersectsClipRect READ anchorRectIntersectsClipRect NOTIFY anchorRectIntersectsClipRectChanged)
     Q_PROPERTY(bool cursorRectIntersectsClipRect READ cursorRectIntersectsClipRect NOTIFY cursorRectIntersectsClipRectChanged)
     Q_PROPERTY(QVirtualKeyboardInputContextPrivate *priv READ priv CONSTANT)
@@ -73,9 +75,9 @@ public:
     explicit QVirtualKeyboardInputContext(QObject *parent = nullptr);
     ~QVirtualKeyboardInputContext();
 
-    bool shift() const;
-    bool capsLock() const;
-    bool uppercase() const;
+    bool isShiftActive() const;
+    bool isCapsLockActive() const;
+    bool isUppercase() const;
     int anchorPosition() const;
     int cursorPosition() const;
     Qt::InputMethodHints inputMethodHints() const;
@@ -86,11 +88,11 @@ public:
     QString selectedText() const;
     QRectF anchorRectangle() const;
     QRectF cursorRectangle() const;
-    bool animating() const;
-    void setAnimating(bool animating);
+    bool isAnimating() const;
+    void setAnimating(bool isAnimating);
     QString locale() const;
     QVirtualKeyboardInputEngine *inputEngine() const;
-    bool selectionControlVisible() const;
+    bool isSelectionControlVisible() const;
     bool anchorRectIntersectsClipRect() const;
     bool cursorRectIntersectsClipRect() const;
     QVirtualKeyboardInputContextPrivate *priv() const;
@@ -112,8 +114,8 @@ Q_SIGNALS:
     void cursorPositionChanged();
     void anchorRectangleChanged();
     void cursorRectangleChanged();
-    void shiftChanged();
-    void capsLockChanged();
+    void shiftActiveChanged();
+    void capsLockActiveChanged();
     void uppercaseChanged();
     void animatingChanged();
     void localeChanged();

@@ -258,7 +258,7 @@ QVariantList QVirtualKeyboardTrace::points(int pos, int count) const
     Adds a \a point to the Trace.
 
     The method returns index of the point added, or -1 if
-    the points cannot be added (i.e. the isFinal is true).
+    the points cannot be added (i.e. the \l final is true).
 
     \note The returned index is required to associate additional
     data with the point using the setChannelData() function.
@@ -267,7 +267,7 @@ QVariantList QVirtualKeyboardTrace::points(int pos, int count) const
 /*! Adds a \a point to the QVirtualKeyboardTrace.
 
     The method returns index of the point added, or -1 if
-    the points cannot be added (i.e. the isFinal is true).
+    the points cannot be added (i.e. the \l final is true).
 
     \note The returned index is required to associate additional
     data with the point using the setChannelData() method.
@@ -416,29 +416,29 @@ void QVirtualKeyboardTrace::setOpacity(qreal opacity)
     \brief the number of of points in the QVirtualKeyboardTrace.
 */
 
-/*! \qmlproperty bool Trace::isFinal
+/*! \qmlproperty bool Trace::final
 
     This property defines whether the Trace can accept more data.
-    If the value is true, no more data is accepted.
+    If the value is \c true, no more data is accepted.
 */
 
-/*! \property QVirtualKeyboardTrace::isFinal
+/*! \property QVirtualKeyboardTrace::final
     \brief defines whether the QVirtualKeyboardTrace can accept more data.
-    If the value is true, no more data is accepted.
+    If the value is \c true, no more data is accepted.
 */
 
-/*! \qmlproperty bool Trace::isCanceled
+/*! \qmlproperty bool Trace::canceled
 
     This property defines whether the Trace is canceled.
     The input data should not be processed from the Traces
-    whose isCanceled property set to true.
+    whose \c canceled property set to true.
 */
 
-/*! \property QVirtualKeyboardTrace::isCanceled
+/*! \property QVirtualKeyboardTrace::canceled
     \brief defines whether the QVirtualKeyboardTrace is canceled.
 
     The input data should not be processed from the Traces
-    whose isCanceled property set to true.
+    whose \c canceled property set to true.
 */
 
 /*! \qmlproperty qreal Trace::opacity

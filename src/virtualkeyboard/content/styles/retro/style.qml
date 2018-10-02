@@ -420,8 +420,8 @@ KeyboardStyle {
             scale: (parent.height - 2 * keyBackgroundMargin) / sourceSize.height
             states: [
                 State {
-                    name: "capslock"
-                    when: InputContext.capsLock
+                    name: "capsLockActive"
+                    when: InputContext.capsLockActive
                     PropertyChanges {
                         target: shiftKeyBackground
                         source: resourcePrefix + "images/key154px_capslock.png"
@@ -432,8 +432,8 @@ KeyboardStyle {
                     }
                 },
                 State {
-                    name: "shift"
-                    when: InputContext.shift
+                    name: "shiftActive"
+                    when: InputContext.shiftActive
                     PropertyChanges {
                         target: shiftKeyBackground
                         source: resourcePrefix + "images/key154px_shiftcase.png"
@@ -918,9 +918,9 @@ KeyboardStyle {
                 weight: Font.Bold
                 pixelSize: 72 * scaleHint
                 capitalization: {
-                    if (InputContext.capsLock)
+                    if (InputContext.capsLockActive)
                         return Font.AllUppercase
-                    if (InputContext.shift)
+                    if (InputContext.shiftActive)
                         return Font.MixedCase
                     return Font.AllLowercase
                 }

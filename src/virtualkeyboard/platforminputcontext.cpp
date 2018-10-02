@@ -125,7 +125,7 @@ QRectF PlatformInputContext::keyboardRect() const
 
 bool PlatformInputContext::isAnimating() const
 {
-    return m_inputContext ? m_inputContext->animating() : false;
+    return m_inputContext ? m_inputContext->isAnimating() : false;
 }
 
 void PlatformInputContext::showInputPanel()
