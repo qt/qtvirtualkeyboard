@@ -106,6 +106,9 @@ UNPACK_RULES = [
 'data/hebrew': [
     '*/Hebrew/*_le.bin',
 ],
+'data/thai': [
+    '*/*Thai*/*_le.bin',
+],
 }, { # Data: Alphabetic and CJK databases
 'data': [
     '*/*_le.bin',

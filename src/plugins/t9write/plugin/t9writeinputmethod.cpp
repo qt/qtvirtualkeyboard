@@ -188,6 +188,7 @@ public:
         case T9WriteInputMethod::EngineMode::Alphabetic:
         case T9WriteInputMethod::EngineMode::Arabic:
         case T9WriteInputMethod::EngineMode::Hebrew:
+        case T9WriteInputMethod::EngineMode::Thai:
             cjk = false;
             break;
         case T9WriteInputMethod::EngineMode::SimplifiedChinese:
@@ -317,6 +318,13 @@ public:
             hwrDbPath.append(QLatin1String("hebrew/_databas_le.bin"));
 #endif
             break;
+        case T9WriteInputMethod::EngineMode::Thai:
+#if T9WRITEAPIMAJORVERNUM >= 21
+            hwrDbPath.append(QLatin1String("thai/hwrDB_le.bin"));
+#else
+            hwrDbPath.append(QLatin1String("thai/_databas_le.bin"));
+#endif
+            break;
         case T9WriteInputMethod::EngineMode::SimplifiedChinese:
             hwrDbPath.append(QLatin1String("cjk_S_gb18030_le.hdb"));
             break;
@@ -349,13 +357,20 @@ public:
         QStringList languageCountry = locale.name().split(QLatin1String("_"));
         if (languageCountry.length() != 2)
             return QString();
+        const QString language = languageCountry[0].toUpper();
 
         QString dictionary;
         QDirIterator it(dir, QDirIterator::NoIteratorFlags);
         while (it.hasNext()) {
             QString fileEntry = it.next();
+            const QFileInfo fileInfo(fileEntry);
 
-            if (!fileEntry.contains(QLatin1String("_") + languageCountry[0].toUpper()))
+            if (fileInfo.isDir())
+                continue;
+
+            const QString fileName(fileInfo.fileName());
+            if (!fileName.startsWith(language) &&
+                    !fileName.startsWith(QLatin1String("zzEval_") + language))
                 continue;
 
             if (fileEntry.endsWith(QLatin1String(".ldb"))) {
@@ -419,14 +434,14 @@ public:
 
         finishRecognition();
 
-        if (!initEngine(mapLocaleToEngineMode(locale)))
-            return false;
-
         DECUMA_UINT32 language = mapToDecumaLanguage(locale, inputMode);
         if (language == DECUMA_LANG_GSMDEFAULT) {
             qCCritical(lcT9Write) << "Language is not supported" << locale.name();
             return false;
         }
+
+        if (!initEngine(mapLocaleToEngineMode(locale, language)))
+            return false;
 
         int isLanguageSupported = 0;
         DECUMA_API(DatabaseIsLanguageSupported)(sessionSettings.pStaticDB, language, &isLanguageSupported);
@@ -477,7 +492,7 @@ public:
         return status == decumaNoError;
     }
 
-    T9WriteInputMethod::EngineMode mapLocaleToEngineMode(const QLocale &locale)
+    T9WriteInputMethod::EngineMode mapLocaleToEngineMode(const QLocale &locale, DECUMA_UINT32 language = 0)
     {
 #ifdef HAVE_T9WRITE_CJK
         switch (locale.language()) {
@@ -497,6 +512,7 @@ public:
         }
 #else
         Q_UNUSED(locale)
+        Q_UNUSED(language)
 #endif
 
 #ifdef HAVE_T9WRITE_ALPHABETIC
@@ -505,6 +521,9 @@ public:
             return T9WriteInputMethod::EngineMode::Arabic;
         case QLocale::HebrewScript:
             return T9WriteInputMethod::EngineMode::Hebrew;
+        case QLocale::ThaiScript:
+            return language == DECUMA_LANG_EN ? T9WriteInputMethod::EngineMode::Alphabetic
+                                              : T9WriteInputMethod::EngineMode::Thai;
         default:
             return T9WriteInputMethod::EngineMode::Alphabetic;
         }
@@ -677,6 +696,9 @@ public:
         } else if (language == DECUMA_LANG_IW) {
             if (inputMode != QVirtualKeyboardInputEngine::InputMode::Hebrew)
                 language = DECUMA_LANG_EN;
+        } else if (language == DECUMA_LANG_TH) {
+            if (inputMode != QVirtualKeyboardInputEngine::InputMode::Thai)
+                language = DECUMA_LANG_EN;
         }
 
         return language;
@@ -811,6 +833,11 @@ public:
             symbolCategories.append(DECUMA_CATEGORY_HEBREW_SHEQEL);
             symbolCategories.append(DECUMA_CATEGORY_ARABIC_GESTURES);
             leftToRightGestures = false;
+            break;
+
+        case QVirtualKeyboardInputEngine::InputMode::Thai:
+            symbolCategories.append(DECUMA_CATEGORY_THAI_BASE);
+            symbolCategories.append(DECUMA_CATEGORY_THAI_NON_BASE);
             break;
 
         default:
@@ -1101,7 +1128,7 @@ public:
 
         QVirtualKeyboardTrace *trace = new QVirtualKeyboardTrace();
 #ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
-        trace->setChannels(QStringList("t"));
+        trace->setChannels(QStringList(QLatin1String("t")));
 #endif
         traceList.append(trace);
 
@@ -1154,9 +1181,7 @@ public:
         qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::noteSelected():" << index;
         Q_ASSERT(index >= 0 && index < wordCandidatesHwrResultIndex.length());
         int resultIndex = wordCandidatesHwrResultIndex[index];
-        DECUMA_STATUS status = DECUMA_API(NoteSelectedCandidate)(decumaSession, resultIndex);
-        Q_UNUSED(status)
-        Q_ASSERT(status == decumaNoError);
+        DECUMA_API(NoteSelectedCandidate)(decumaSession, resultIndex);
     }
 
     void restartRecognition()
@@ -1283,7 +1308,7 @@ public:
                     if (!ch.isLetter() || (ch.isUpper() == (textCase == QVirtualKeyboardInputEngine::TextCase::Upper))) {
                         QStringList homeLocations = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
                         if (!homeLocations.isEmpty()) {
-                            unipenTrace->setDirectory(QStringLiteral("%1/%2").arg(homeLocations.at(0)).arg("VIRTUAL_KEYBOARD_TRACES"));
+                            unipenTrace->setDirectory(QStringLiteral("%1/%2").arg(homeLocations.at(0)).arg(QLatin1String("VIRTUAL_KEYBOARD_TRACES")));
                             unipenTrace->record(traceList);
                             unipenTrace->save(ch.unicode(), 100);
                         }
@@ -1706,6 +1731,9 @@ QList<QVirtualKeyboardInputEngine::InputMode> T9WriteInputMethod::inputModes(con
             case QLocale::CyrillicScript:
                 availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Cyrillic);
                 break;
+            case QLocale::ThaiScript:
+                availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Thai);
+                break;
             default:
                 break;
             }
@@ -1723,6 +1751,12 @@ QList<QVirtualKeyboardInputEngine::InputMode> T9WriteInputMethod::inputModes(con
             return availableInputModes;
         if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
             availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Hebrew);
+        break;
+    case T9WriteInputMethod::EngineMode::Thai:
+        if (d->findHwrDb(T9WriteInputMethod::EngineMode::Thai, d->defaultHwrDbPath).isEmpty())
+            return availableInputModes;
+        if (!(inputMethodHints & (Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly | Qt::ImhDigitsOnly | Qt::ImhLatinOnly)))
+            availableInputModes.append(QVirtualKeyboardInputEngine::InputMode::Thai);
         break;
 #endif
 #ifdef HAVE_T9WRITE_CJK

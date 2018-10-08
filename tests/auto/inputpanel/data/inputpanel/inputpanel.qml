@@ -300,6 +300,8 @@ InputPanel {
             return InputEngine.InputMode.JapaneseHandwriting
         else if (inputModeName === "KoreanHandwriting")
             return InputEngine.InputMode.KoreanHandwriting
+        else if (inputModeName === "Thai")
+            return InputEngine.InputMode.Thai
         else
             return -1
     }
@@ -337,6 +339,7 @@ InputPanel {
         testcase.verify(InputEngine.InputMode.ChineseHandwriting !== undefined)
         testcase.verify(InputEngine.InputMode.JapaneseHandwriting !== undefined)
         testcase.verify(InputEngine.InputMode.KoreanHandwriting !== undefined)
+        testcase.verify(InputEngine.InputMode.Thai !== undefined)
         testcase.verify(InputEngine.PatternRecognitionMode.None !== undefined)
         testcase.verify(InputEngine.PatternRecognitionMode.PatternRecognitionDisabled !== undefined)
         testcase.verify(InputEngine.PatternRecognitionMode.Handwriting !== undefined)
@@ -370,6 +373,7 @@ InputPanel {
         testcase.verify(InputEngine.ChineseHandwriting !== undefined)
         testcase.verify(InputEngine.JapaneseHandwriting !== undefined)
         testcase.verify(InputEngine.KoreanHandwriting !== undefined)
+        testcase.verify(InputEngine.Thai !== undefined)
         testcase.verify(InputEngine.None !== undefined)
         testcase.verify(InputEngine.PatternRecognitionDisabled !== undefined)
         testcase.verify(InputEngine.Handwriting !== undefined)

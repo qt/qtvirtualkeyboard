@@ -61,6 +61,7 @@ public:
         Alphabetic,
         Arabic,
         Hebrew,
+        Thai,
         SimplifiedChinese,
         TraditionalChinese,
         HongKongChinese,

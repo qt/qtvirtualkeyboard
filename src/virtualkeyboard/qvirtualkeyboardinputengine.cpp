@@ -788,6 +788,7 @@ void QVirtualKeyboardInputEngine::timerEvent(QTimerEvent *timerEvent)
         \li \c InputEngine.InputMode.ChineseHandwriting Chinese handwriting.
         \li \c InputEngine.InputMode.JapaneseHandwriting Japanese handwriting.
         \li \c InputEngine.InputMode.KoreanHandwriting Korean handwriting.
+        \li \c InputEngine.InputMode.Thai Thai input mode.
     \endlist
 */
 
