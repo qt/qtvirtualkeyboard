@@ -3,6 +3,7 @@ include($QT_INSTALL_DOCS/global/qt-module-defaults.qdocconf)
 project = QtVirtualKeyboard
 description = Qt Virtual Keyboard
 version = $QT_VERSION
+buildversion = Qt Virtual Keyboard | Commercial or GPLv3
 
 # Custom module header passed to clang
 moduleheader = QtVirtualKeyboard.h
