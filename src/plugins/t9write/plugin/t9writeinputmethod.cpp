@@ -1063,16 +1063,24 @@ public:
         gestureRecognizer.setDpi(dpi);
 
         QVariantList horizontalRulers(traceScreenInfo.value(QLatin1String("horizontalRulers"), QVariantList()).toList());
-        if (horizontalRulers.count() >= 2) {
+        if (horizontalRulers.count() > 2) {
             sessionSettings.baseline = horizontalRulers.last().toInt();
             sessionSettings.helpline = 0;
             sessionSettings.topline = horizontalRulers.first().toInt();
             sessionSettings.supportLineSet = baselineAndTopline;
+            sessionSettings.UIInputGuide = supportlines;
+        } else if (horizontalRulers.count() == 2) {
+            sessionSettings.baseline = horizontalRulers.last().toInt();
+            sessionSettings.helpline = horizontalRulers.first().toInt();
+            sessionSettings.topline = 0;
+            sessionSettings.supportLineSet = baselineAndHelpline;
+            sessionSettings.UIInputGuide = supportlines;
         } else {
             sessionSettings.baseline = 0;
             sessionSettings.helpline = 0;
             sessionSettings.topline = 0;
-            sessionSettings.supportLineSet = baselineAndTopline;
+            sessionSettings.supportLineSet = baselineAndHelpline;
+            sessionSettings.UIInputGuide = none;
         }
 
         DECUMA_STATUS status = DECUMA_API(ChangeSessionSettings)(decumaSession, &sessionSettings);
