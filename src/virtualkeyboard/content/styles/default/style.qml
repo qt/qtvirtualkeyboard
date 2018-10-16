@@ -792,6 +792,8 @@ KeyboardStyle {
                         return "日本語"
                     case InputEngine.InputMode.KoreanHandwriting:
                         return "한국어"
+                    case InputEngine.InputMode.Thai:
+                        return "กขค"
                     default:
                         return "Abc"
                     }

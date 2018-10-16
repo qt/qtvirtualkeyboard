@@ -1344,6 +1344,9 @@ Item {
                     // Make sure the current layout is included in the list
                     if (customInputMethodSharedLayouts.indexOf(layoutType) === -1)
                         customInputMethodSharedLayouts.push(layoutType)
+
+                    // Reset input mode, since inputEngine.inputModes is updated
+                    inputModeNeedsReset = true
                 }
             } catch (e) {
                 console.error(e.message)

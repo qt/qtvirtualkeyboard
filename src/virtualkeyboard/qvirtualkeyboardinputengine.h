@@ -83,7 +83,8 @@ public:
         Hebrew,
         ChineseHandwriting,
         JapaneseHandwriting,
-        KoreanHandwriting
+        KoreanHandwriting,
+        Thai
     };
     Q_ENUM(InputMode)
 

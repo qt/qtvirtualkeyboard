@@ -1245,6 +1245,7 @@ Rectangle {
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "fa_FA", initInputMode: "Arabic", inputSequence: "\u0686\u0627\u06CC", outputText: "\u0686\u0627\u06CC" },
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "he_IL", initInputMode: "Hebrew", inputSequence: "\u05D0\u05D5\u05D8\u05D5", outputText: "\u05D0\u05D5\u05D8\u05D5" },
                 { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "vi_VN", inputSequence: "Ti\u1EBFng vi\u1EC7t", outputText: "Ti\u1EBFng vi\u1EC7t" },
+                { initHwrMode: true, initInputMethodHints: Qt.ImhNone, initLocale: "th_TH", inputSequence: "สวัสดี", outputText: "สวัสดี" },
             ]
         }
 
