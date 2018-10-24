@@ -24,6 +24,10 @@
 
 #include <QDebug>
 
+// Enables logging of sensitive information, such as key events.
+// Should never be enabled by default.
+//#define SENSITIVE_DEBUG
+
 //#define QT_VIRTUALKEYBOARD_DEBUG
 #ifdef QT_VIRTUALKEYBOARD_DEBUG
 #  define VIRTUALKEYBOARD_DEBUG qDebug

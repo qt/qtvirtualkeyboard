@@ -419,7 +419,11 @@ void InputContext::sendKeyClick(int key, const QString &text, int modifiers)
     if (d->focus && d->inputContext) {
         QKeyEvent pressEvent(QEvent::KeyPress, key, Qt::KeyboardModifiers(modifiers), text);
         QKeyEvent releaseEvent(QEvent::KeyRelease, key, Qt::KeyboardModifiers(modifiers), text);
-        VIRTUALKEYBOARD_DEBUG() << "InputContext::::sendKeyClick():" << key;
+        VIRTUALKEYBOARD_DEBUG().nospace() << "InputContext::sendKeyClick()"
+#ifdef SENSITIVE_DEBUG
+            << ": " << key
+#endif
+        ;
 
         d->stateFlags |= InputContextPrivate::KeyEventState;
         d->inputContext->sendKeyEvent(&pressEvent);
