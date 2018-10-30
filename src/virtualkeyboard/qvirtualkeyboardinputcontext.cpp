@@ -221,7 +221,12 @@ void QVirtualKeyboardInputContext::sendKeyClick(int key, const QString &text, in
     if (d->_focus && d->platformInputContext) {
         QKeyEvent pressEvent(QEvent::KeyPress, key, Qt::KeyboardModifiers(modifiers), text);
         QKeyEvent releaseEvent(QEvent::KeyRelease, key, Qt::KeyboardModifiers(modifiers), text);
-        VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContext::sendKeyClick():" << key;
+        VIRTUALKEYBOARD_DEBUG().nospace() << "InputContext::sendKeyClick()"
+#ifdef SENSITIVE_DEBUG
+            << ": " << key
+#endif
+        ;
+
 
         d->setState(QVirtualKeyboardInputContextPrivate::State::KeyEvent);
         d->platformInputContext->sendKeyEvent(&pressEvent);
@@ -229,8 +234,11 @@ void QVirtualKeyboardInputContext::sendKeyClick(int key, const QString &text, in
         if (d->activeKeys.isEmpty())
             d->clearState(QVirtualKeyboardInputContextPrivate::State::KeyEvent);
     } else {
-        qWarning() << "QVirtualKeyboardInputContext::sendKeyClick(): no focus to send key click" << key << text
-                   << "- QGuiApplication::focusWindow() is:" << QGuiApplication::focusWindow();
+        VIRTUALKEYBOARD_WARN() << "InputContext::sendKeyClick(): no focus to send key click"
+#ifdef SENSITIVE_DEBUG
+            << key << text
+#endif
+            << "- QGuiApplication::focusWindow() is:" << QGuiApplication::focusWindow();
     }
 }
 
