@@ -214,7 +214,12 @@ QVirtualKeyboardInputEngine::~QVirtualKeyboardInputEngine()
 bool QVirtualKeyboardInputEngine::virtualKeyPress(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers, bool repeat)
 {
     Q_D(QVirtualKeyboardInputEngine);
-    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::virtualKeyPress():" << key << text << modifiers << repeat;
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::virtualKeyPress()"
+#ifdef SENSITIVE_DEBUG
+           << key << text << modifiers << repeat
+#endif
+        ;
+
     bool accept = false;
     if (d->activeKey == Qt::Key_unknown || d->activeKey == key) {
         d->activeKey = key;
@@ -281,7 +286,12 @@ void QVirtualKeyboardInputEngine::virtualKeyCancel()
 bool QVirtualKeyboardInputEngine::virtualKeyRelease(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
     Q_D(QVirtualKeyboardInputEngine);
-    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::virtualKeyRelease():" << key << text << modifiers;
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::virtualKeyRelease()"
+#ifdef SENSITIVE_DEBUG
+           << key << text << modifiers
+#endif
+        ;
+
     bool accept = false;
     if (d->activeKey == key) {
         if (!d->repeatCount) {
@@ -321,7 +331,11 @@ bool QVirtualKeyboardInputEngine::virtualKeyRelease(Qt::Key key, const QString &
 bool QVirtualKeyboardInputEngine::virtualKeyClick(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
     Q_D(QVirtualKeyboardInputEngine);
-    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::virtualKeyClick():" << key << text << modifiers;
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::virtualKeyClick()"
+#ifdef SENSITIVE_DEBUG
+           << key << text << modifiers
+#endif
+        ;
     return d->virtualKeyClick(key, text, modifiers, false);
 }
 
