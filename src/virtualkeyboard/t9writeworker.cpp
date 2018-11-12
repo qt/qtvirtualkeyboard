@@ -138,7 +138,9 @@ T9WriteRecognitionTask::T9WriteRecognitionTask(QSharedPointer<T9WriteRecognition
     stringStart(stringStart),
     stateCancelled(false)
 {
+#ifdef SENSITIVE_DEBUG
     VIRTUALKEYBOARD_DEBUG() << "T9WriteRecognitionTask():" << "boostLevel:" << boostLevel << "stringStart:" << stringStart;
+#endif
 }
 
 void T9WriteRecognitionTask::run()

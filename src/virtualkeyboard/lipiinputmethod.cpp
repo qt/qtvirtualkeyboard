@@ -773,7 +773,7 @@ void LipiInputMethod::timerEvent(QTimerEvent *timerEvent)
 
 void LipiInputMethod::resultsAvailable(const QVariantList &resultList)
 {
-#ifdef QT_VIRTUALKEYBOARD_DEBUG
+#ifdef SENSITIVE_DEBUG
     {
         VIRTUALKEYBOARD_DEBUG() << "LipiInputMethod::resultsAvailable():";
         for (int i = 0; i < resultList.size(); i++) {
