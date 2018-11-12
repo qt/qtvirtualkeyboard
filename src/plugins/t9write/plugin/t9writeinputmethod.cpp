@@ -2127,6 +2127,7 @@ void T9WriteInputMethod::dictionaryLoadCompleted(QSharedPointer<T9WriteDictionar
 
 void T9WriteInputMethod::resultsAvailable(const QVariantList &resultList)
 {
+#ifdef SENSITIVE_DEBUG
     if (lcT9Write().isDebugEnabled()) {
         qCDebug(lcT9Write) << "T9WriteInputMethod::resultsAvailable():";
         for (int i = 0; i < resultList.size(); i++) {
@@ -2147,6 +2148,7 @@ void T9WriteInputMethod::resultsAvailable(const QVariantList &resultList)
             qCDebug(lcT9Write) << resultPrint.toUtf8().constData();
         }
     }
+#endif
     Q_D(T9WriteInputMethod);
     QMutexLocker resultListGuard(&d->resultListLock);
     d->resultList = resultList;

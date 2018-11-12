@@ -205,6 +205,7 @@ StrSegment ComposingText::getStrSegment(TextLayer layer, int pos) const
 
 void ComposingText::debugout() const
 {
+#ifdef SENSITIVE_DEBUG
     Q_D(const ComposingText);
     for (int i = LAYER0; i < MAX_LAYER; i++) {
         QString tmp;
@@ -213,6 +214,7 @@ void ComposingText::debugout() const
             tmp += QStringLiteral("(%1,%2,%3)").arg(it->string).arg(it->from).arg(it->to);
         }
     }
+#endif
 }
 
 QString ComposingText::toString(TextLayer layer, int from, int to) const

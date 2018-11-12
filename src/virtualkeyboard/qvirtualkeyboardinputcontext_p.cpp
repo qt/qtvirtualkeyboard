@@ -267,7 +267,11 @@ void QVirtualKeyboardInputContextPrivate::onInputItemChanged()
 
 void QVirtualKeyboardInputContextPrivate::sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes, int replaceFrom, int replaceLength)
 {
-    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContextPrivate::sendPreedit():" << text << replaceFrom << replaceLength;
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContextPrivate::sendPreedit()"
+#ifdef SENSITIVE_DEBUG
+           << text << replaceFrom << replaceLength
+#endif
+        ;
 
     bool textChanged = preeditText != text;
     bool attributesChanged = preeditTextAttributes != attributes;
@@ -289,7 +293,11 @@ void QVirtualKeyboardInputContextPrivate::sendPreedit(const QString &text, const
             // input may be out of sync.
             if (_shadow.inputItem() && !replace && !text.isEmpty() &&
                     !textChanged && attributesChanged) {
-                VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContextPrivate::sendPreedit(shadow):" << text << replaceFrom << replaceLength;
+                VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContextPrivate::sendPreedit(shadow)"
+#ifdef SENSITIVE_DEBUG
+                       << text << replaceFrom << replaceLength
+#endif
+                    ;
                 event.setAccepted(true);
                 QGuiApplication::sendEvent(_shadow.inputItem(), &event);
             }

@@ -278,7 +278,12 @@ void QVirtualKeyboardInputContext::commit()
 void QVirtualKeyboardInputContext::commit(const QString &text, int replaceFrom, int replaceLength)
 {
     Q_D(QVirtualKeyboardInputContext);
-    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContext::commit():" << text << replaceFrom << replaceLength;
+
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContext::commit()"
+#ifdef SENSITIVE_DEBUG
+           << text << replaceFrom << replaceLength
+#endif
+        ;
     bool preeditChanged = !d->preeditText.isEmpty();
 
     if (d->platformInputContext) {

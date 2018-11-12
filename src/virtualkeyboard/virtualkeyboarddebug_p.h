@@ -49,9 +49,7 @@ namespace QtVirtualKeyboard {
 
 Q_DECLARE_LOGGING_CATEGORY(qlcVirtualKeyboard)
 
-// Enables logging of sensitive information, such as key events.
-// Should never be enabled by default.
-//#define SENSITIVE_DEBUG
+// See config.pri for SENSITIVE_DEBUG.
 
 #define VIRTUALKEYBOARD_DEBUG() qCDebug(qlcVirtualKeyboard)
 #define VIRTUALKEYBOARD_WARN() qCWarning(qlcVirtualKeyboard)
