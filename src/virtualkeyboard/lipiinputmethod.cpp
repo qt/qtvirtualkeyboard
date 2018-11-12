@@ -781,9 +781,9 @@ void LipiInputMethod::timerEvent(QTimerEvent *timerEvent)
 
 void LipiInputMethod::resultsAvailable(const QVariantList &resultList)
 {
-#ifdef QT_VIRTUALKEYBOARD_DEBUG
-    {
-        VIRTUALKEYBOARD_DEBUG() << "LipiInputMethod::resultsAvailable():";
+#ifdef SENSITIVE_DEBUG
+    if (lcLipi().isDebugEnabled()) {
+        qCDebug(lcLipi) << "LipiInputMethod::resultsAvailable():";
         for (int i = 0; i < resultList.size(); i++) {
             QVariantMap result = resultList.at(i).toMap();
             VIRTUALKEYBOARD_DEBUG() << QString("%1: %2 (%3)").arg(i + 1).arg(result["unicode"].toChar()).arg(result["confidence"].toFloat()).toUtf8().constData();

@@ -66,3 +66,7 @@ disable-xcb {
     message("The disable-xcb option has been deprecated. Please use disable-desktop instead.")
     CONFIG += disable-desktop
 }
+
+# Enables logging of sensitive information, such as key events.
+# Should never be enabled by default.
+sensitive-debug: DEFINES += SENSITIVE_DEBUG

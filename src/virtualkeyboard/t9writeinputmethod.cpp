@@ -1292,7 +1292,7 @@ void T9WriteInputMethod::dictionaryLoadCompleted(const QString &fileUri, void *d
 
 void T9WriteInputMethod::resultsAvailable(const QVariantList &resultList)
 {
-#ifdef QT_VIRTUALKEYBOARD_DEBUG
+#ifdef SENSITIVE_DEBUG
     {
         VIRTUALKEYBOARD_DEBUG() << "T9WriteInputMethod::resultsAvailable():";
         for (int i = 0; i < resultList.size(); i++) {
