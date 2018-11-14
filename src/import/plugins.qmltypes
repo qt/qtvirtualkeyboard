@@ -189,7 +189,8 @@ Module {
                 "Hebrew": 13,
                 "ChineseHandwriting": 14,
                 "JapaneseHandwriting": 15,
-                "KoreanHandwriting": 16
+                "KoreanHandwriting": 16,
+                "Thai": 17
             }
         }
         Enum {
@@ -620,8 +621,8 @@ Module {
     }
     Component {
         prototype: "QQuickItem"
-        name: "QtQuick.VirtualKeyboard/BaseKey 1.0"
-        exports: ["QtQuick.VirtualKeyboard/BaseKey 1.0"]
+        name: "QtQuick.VirtualKeyboard/BaseKey 2.0"
+        exports: ["QtQuick.VirtualKeyboard/BaseKey 2.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
@@ -649,8 +650,8 @@ Module {
     }
     Component {
         prototype: "QQuickItem"
-        name: "QtQuick.VirtualKeyboard/BaseKey 2.0"
-        exports: ["QtQuick.VirtualKeyboard/BaseKey 2.0"]
+        name: "QtQuick.VirtualKeyboard/BaseKey 1.0"
+        exports: ["QtQuick.VirtualKeyboard/BaseKey 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
@@ -758,8 +759,8 @@ Module {
     }
     Component {
         prototype: "QQuickItem"
-        name: "QtQuick.VirtualKeyboard/EnterKey 2.0"
-        exports: ["QtQuick.VirtualKeyboard/EnterKey 2.0"]
+        name: "QtQuick.VirtualKeyboard/EnterKey 1.0"
+        exports: ["QtQuick.VirtualKeyboard/EnterKey 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
@@ -788,8 +789,8 @@ Module {
     }
     Component {
         prototype: "QQuickItem"
-        name: "QtQuick.VirtualKeyboard/EnterKey 1.0"
-        exports: ["QtQuick.VirtualKeyboard/EnterKey 1.0"]
+        name: "QtQuick.VirtualKeyboard/EnterKey 2.0"
+        exports: ["QtQuick.VirtualKeyboard/EnterKey 2.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
@@ -916,8 +917,8 @@ Module {
     }
     Component {
         prototype: "QQuickItem"
-        name: "QtQuick.VirtualKeyboard/HideKeyboardKey 1.0"
-        exports: ["QtQuick.VirtualKeyboard/HideKeyboardKey 1.0"]
+        name: "QtQuick.VirtualKeyboard/HideKeyboardKey 2.0"
+        exports: ["QtQuick.VirtualKeyboard/HideKeyboardKey 2.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
@@ -945,8 +946,8 @@ Module {
     }
     Component {
         prototype: "QQuickItem"
-        name: "QtQuick.VirtualKeyboard/HideKeyboardKey 2.0"
-        exports: ["QtQuick.VirtualKeyboard/HideKeyboardKey 2.0"]
+        name: "QtQuick.VirtualKeyboard/HideKeyboardKey 1.0"
+        exports: ["QtQuick.VirtualKeyboard/HideKeyboardKey 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
@@ -1018,60 +1019,9 @@ Module {
     }
     Component {
         prototype: "QQuickItem"
-        name: "QtQuick.VirtualKeyboard/InputPanel 2.3"
-        exports: ["QtQuick.VirtualKeyboard/InputPanel 2.3"]
-        exportMetaObjectRevisions: [3]
-        isComposite: true
-        defaultProperty: "data"
-        Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
-        Property { name: "__isRootItem"; type: "bool"; isReadonly: true }
-        Property { name: "active"; type: "bool" }
-        Property { name: "keyboard"; type: "Keyboard_QMLTYPE_16"; isReadonly: true; isPointer: true }
-        Signal {
-            name: "externalLanguageSwitch"
-            Parameter { name: "localeList"; type: "QVariant" }
-            Parameter { name: "currentIndex"; type: "int" }
-        }
-    }
-    Component {
-        prototype: "QQuickItem"
         name: "QtQuick.VirtualKeyboard/InputPanel 1.2"
         exports: ["QtQuick.VirtualKeyboard/InputPanel 1.2"]
         exportMetaObjectRevisions: [2]
-        isComposite: true
-        defaultProperty: "data"
-        Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
-        Property { name: "__isRootItem"; type: "bool"; isReadonly: true }
-        Property { name: "active"; type: "bool" }
-        Property { name: "keyboard"; type: "Keyboard_QMLTYPE_16"; isReadonly: true; isPointer: true }
-        Signal {
-            name: "externalLanguageSwitch"
-            Parameter { name: "localeList"; type: "QVariant" }
-            Parameter { name: "currentIndex"; type: "int" }
-        }
-    }
-    Component {
-        prototype: "QQuickItem"
-        name: "QtQuick.VirtualKeyboard/InputPanel 2.1"
-        exports: ["QtQuick.VirtualKeyboard/InputPanel 2.1"]
-        exportMetaObjectRevisions: [1]
-        isComposite: true
-        defaultProperty: "data"
-        Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
-        Property { name: "__isRootItem"; type: "bool"; isReadonly: true }
-        Property { name: "active"; type: "bool" }
-        Property { name: "keyboard"; type: "Keyboard_QMLTYPE_16"; isReadonly: true; isPointer: true }
-        Signal {
-            name: "externalLanguageSwitch"
-            Parameter { name: "localeList"; type: "QVariant" }
-            Parameter { name: "currentIndex"; type: "int" }
-        }
-    }
-    Component {
-        prototype: "QQuickItem"
-        name: "QtQuick.VirtualKeyboard/InputPanel 2.4"
-        exports: ["QtQuick.VirtualKeyboard/InputPanel 2.4"]
-        exportMetaObjectRevisions: [4]
         isComposite: true
         defaultProperty: "data"
         Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
@@ -1103,9 +1053,43 @@ Module {
     }
     Component {
         prototype: "QQuickItem"
+        name: "QtQuick.VirtualKeyboard/InputPanel 2.4"
+        exports: ["QtQuick.VirtualKeyboard/InputPanel 2.4"]
+        exportMetaObjectRevisions: [4]
+        isComposite: true
+        defaultProperty: "data"
+        Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
+        Property { name: "__isRootItem"; type: "bool"; isReadonly: true }
+        Property { name: "active"; type: "bool" }
+        Property { name: "keyboard"; type: "Keyboard_QMLTYPE_16"; isReadonly: true; isPointer: true }
+        Signal {
+            name: "externalLanguageSwitch"
+            Parameter { name: "localeList"; type: "QVariant" }
+            Parameter { name: "currentIndex"; type: "int" }
+        }
+    }
+    Component {
+        prototype: "QQuickItem"
         name: "QtQuick.VirtualKeyboard/InputPanel 2.2"
         exports: ["QtQuick.VirtualKeyboard/InputPanel 2.2"]
         exportMetaObjectRevisions: [2]
+        isComposite: true
+        defaultProperty: "data"
+        Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
+        Property { name: "__isRootItem"; type: "bool"; isReadonly: true }
+        Property { name: "active"; type: "bool" }
+        Property { name: "keyboard"; type: "Keyboard_QMLTYPE_16"; isReadonly: true; isPointer: true }
+        Signal {
+            name: "externalLanguageSwitch"
+            Parameter { name: "localeList"; type: "QVariant" }
+            Parameter { name: "currentIndex"; type: "int" }
+        }
+    }
+    Component {
+        prototype: "QQuickItem"
+        name: "QtQuick.VirtualKeyboard/InputPanel 2.0"
+        exports: ["QtQuick.VirtualKeyboard/InputPanel 2.0"]
+        exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
         Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
@@ -1137,9 +1121,26 @@ Module {
     }
     Component {
         prototype: "QQuickItem"
-        name: "QtQuick.VirtualKeyboard/InputPanel 2.0"
-        exports: ["QtQuick.VirtualKeyboard/InputPanel 2.0"]
-        exportMetaObjectRevisions: [0]
+        name: "QtQuick.VirtualKeyboard/InputPanel 2.1"
+        exports: ["QtQuick.VirtualKeyboard/InputPanel 2.1"]
+        exportMetaObjectRevisions: [1]
+        isComposite: true
+        defaultProperty: "data"
+        Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
+        Property { name: "__isRootItem"; type: "bool"; isReadonly: true }
+        Property { name: "active"; type: "bool" }
+        Property { name: "keyboard"; type: "Keyboard_QMLTYPE_16"; isReadonly: true; isPointer: true }
+        Signal {
+            name: "externalLanguageSwitch"
+            Parameter { name: "localeList"; type: "QVariant" }
+            Parameter { name: "currentIndex"; type: "int" }
+        }
+    }
+    Component {
+        prototype: "QQuickItem"
+        name: "QtQuick.VirtualKeyboard/InputPanel 2.3"
+        exports: ["QtQuick.VirtualKeyboard/InputPanel 2.3"]
+        exportMetaObjectRevisions: [3]
         isComposite: true
         defaultProperty: "data"
         Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
@@ -1209,135 +1210,6 @@ Module {
         Property { name: "soundEffect"; type: "QUrl"; isReadonly: true }
         Property { name: "keyPanelDelegate"; type: "QQmlComponent"; isPointer: true }
         Signal { name: "clicked" }
-    }
-    Component {
-        prototype: "QQuickItem"
-        name: "QtQuick.VirtualKeyboard/Keyboard 1.0"
-        exports: ["QtQuick.VirtualKeyboard/Keyboard 1.0"]
-        exportMetaObjectRevisions: [0]
-        isComposite: true
-        defaultProperty: "data"
-        Property { name: "activeKey"; type: "QVariant" }
-        Property { name: "activeTouchPoint"; type: "QQuickTouchPoint"; isPointer: true }
-        Property { name: "localeIndex"; type: "int" }
-        Property { name: "availableLocaleIndices"; type: "QVariant" }
-        Property { name: "availableCustomLocaleIndices"; type: "QVariant" }
-        Property { name: "locale"; type: "string" }
-        Property { name: "inputLocale"; type: "string" }
-        Property { name: "defaultLocaleIndex"; type: "int" }
-        Property { name: "latinOnly"; type: "bool"; isReadonly: true }
-        Property { name: "preferNumbers"; type: "bool"; isReadonly: true }
-        Property { name: "dialableCharactersOnly"; type: "bool"; isReadonly: true }
-        Property { name: "formattedNumbersOnly"; type: "bool"; isReadonly: true }
-        Property { name: "digitsOnly"; type: "bool"; isReadonly: true }
-        Property { name: "layout"; type: "string" }
-        Property { name: "layoutType"; type: "string" }
-        Property { name: "active"; type: "bool" }
-        Property { name: "handwritingMode"; type: "bool" }
-        Property { name: "fullScreenHandwritingMode"; type: "bool" }
-        Property { name: "symbolMode"; type: "bool" }
-        Property { name: "fullScreenMode"; type: "bool" }
-        Property { name: "defaultInputMethod"; type: "QVariant" }
-        Property { name: "plainInputMethod"; type: "QVariant" }
-        Property { name: "customInputMethod"; type: "QVariant" }
-        Property { name: "customInputMethodSharedLayouts"; type: "QVariant" }
-        Property { name: "defaultInputMode"; type: "int" }
-        Property { name: "inputMethodNeedsReset"; type: "bool" }
-        Property { name: "inputModeNeedsReset"; type: "bool" }
-        Property { name: "navigationModeActive"; type: "bool" }
-        Property { name: "languagePopupListActive"; type: "bool"; isReadonly: true }
-        Property { name: "style"; type: "QObject"; isReadonly: true; isPointer: true }
-        Property { name: "wordCandidateView"; type: "QQuickListView"; isReadonly: true; isPointer: true }
-        Property { name: "shadowInputControl"; type: "QQuickItem"; isReadonly: true; isPointer: true }
-        Property { name: "soundEffect"; type: "QQuickItem"; isReadonly: true; isPointer: true }
-        Method { name: "initDefaultInputMethod"; type: "QVariant" }
-        Method {
-            name: "showLanguagePopup"
-            type: "QVariant"
-            Parameter { name: "parentItem"; type: "QVariant" }
-            Parameter { name: "customLayoutsOnly"; type: "QVariant" }
-        }
-        Method { name: "hideLanguagePopup"; type: "QVariant" }
-        Method {
-            name: "showWordCandidateContextMenu"
-            type: "QVariant"
-            Parameter { name: "wordCandidateIndex"; type: "QVariant" }
-        }
-        Method { name: "hideWordCandidateContextMenu"; type: "QVariant" }
-        Method { name: "updateInputMethod"; type: "QVariant" }
-        Method { name: "updateLayout"; type: "QVariant" }
-        Method { name: "updateDefaultLocale"; type: "QVariant" }
-        Method {
-            name: "filterLocaleIndices"
-            type: "QVariant"
-            Parameter { name: "filterCb"; type: "QVariant" }
-        }
-        Method { name: "updateAvailableLocaleIndices"; type: "QVariant" }
-        Method {
-            name: "listLocales"
-            type: "QVariant"
-            Parameter { name: "customLayoutsOnly"; type: "QVariant" }
-            Parameter { name: "localeNameOnly"; type: "QVariant" }
-        }
-        Method {
-            name: "nextLocaleIndex"
-            type: "QVariant"
-            Parameter { name: "customLayoutsOnly"; type: "QVariant" }
-        }
-        Method {
-            name: "changeInputLanguage"
-            type: "QVariant"
-            Parameter { name: "customLayoutsOnly"; type: "QVariant" }
-        }
-        Method {
-            name: "canChangeInputLanguage"
-            type: "QVariant"
-            Parameter { name: "customLayoutsOnly"; type: "QVariant" }
-        }
-        Method {
-            name: "findLocale"
-            type: "QVariant"
-            Parameter { name: "localeName"; type: "QVariant" }
-            Parameter { name: "defaultValue"; type: "QVariant" }
-        }
-        Method { name: "findFallbackIndex"; type: "QVariant" }
-        Method {
-            name: "isValidLocale"
-            type: "QVariant"
-            Parameter { name: "localeNameOrIndex"; type: "QVariant" }
-            Parameter { name: "ignoreActiveLocales"; type: "QVariant" }
-        }
-        Method {
-            name: "getLayoutFile"
-            type: "QVariant"
-            Parameter { name: "localeName"; type: "QVariant" }
-            Parameter { name: "layoutType"; type: "QVariant" }
-        }
-        Method {
-            name: "getFallbackFile"
-            type: "QVariant"
-            Parameter { name: "localeName"; type: "QVariant" }
-            Parameter { name: "layoutType"; type: "QVariant" }
-        }
-        Method {
-            name: "layoutExists"
-            type: "QVariant"
-            Parameter { name: "localeName"; type: "QVariant" }
-            Parameter { name: "layoutType"; type: "QVariant" }
-        }
-        Method {
-            name: "findLayout"
-            type: "QVariant"
-            Parameter { name: "localeName"; type: "QVariant" }
-            Parameter { name: "layoutType"; type: "QVariant" }
-        }
-        Method { name: "isHandwritingAvailable"; type: "QVariant" }
-        Method {
-            name: "setHandwritingMode"
-            type: "QVariant"
-            Parameter { name: "enabled"; type: "QVariant" }
-            Parameter { name: "resetInputMode"; type: "QVariant" }
-        }
     }
     Component {
         prototype: "QQuickItem"
@@ -1469,14 +1341,133 @@ Module {
         }
     }
     Component {
-        prototype: "QQuickColumnLayout"
-        name: "QtQuick.VirtualKeyboard/KeyboardColumn 2.0"
-        exports: ["QtQuick.VirtualKeyboard/KeyboardColumn 2.0"]
+        prototype: "QQuickItem"
+        name: "QtQuick.VirtualKeyboard/Keyboard 1.0"
+        exports: ["QtQuick.VirtualKeyboard/Keyboard 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
-        Property { name: "keyWeight"; type: "double" }
-        Property { name: "smallTextVisible"; type: "bool" }
+        Property { name: "activeKey"; type: "QVariant" }
+        Property { name: "activeTouchPoint"; type: "QQuickTouchPoint"; isPointer: true }
+        Property { name: "localeIndex"; type: "int" }
+        Property { name: "availableLocaleIndices"; type: "QVariant" }
+        Property { name: "availableCustomLocaleIndices"; type: "QVariant" }
+        Property { name: "locale"; type: "string" }
+        Property { name: "inputLocale"; type: "string" }
+        Property { name: "defaultLocaleIndex"; type: "int" }
+        Property { name: "latinOnly"; type: "bool"; isReadonly: true }
+        Property { name: "preferNumbers"; type: "bool"; isReadonly: true }
+        Property { name: "dialableCharactersOnly"; type: "bool"; isReadonly: true }
+        Property { name: "formattedNumbersOnly"; type: "bool"; isReadonly: true }
+        Property { name: "digitsOnly"; type: "bool"; isReadonly: true }
+        Property { name: "layout"; type: "string" }
+        Property { name: "layoutType"; type: "string" }
+        Property { name: "active"; type: "bool" }
+        Property { name: "handwritingMode"; type: "bool" }
+        Property { name: "fullScreenHandwritingMode"; type: "bool" }
+        Property { name: "symbolMode"; type: "bool" }
+        Property { name: "fullScreenMode"; type: "bool" }
+        Property { name: "defaultInputMethod"; type: "QVariant" }
+        Property { name: "plainInputMethod"; type: "QVariant" }
+        Property { name: "customInputMethod"; type: "QVariant" }
+        Property { name: "customInputMethodSharedLayouts"; type: "QVariant" }
+        Property { name: "defaultInputMode"; type: "int" }
+        Property { name: "inputMethodNeedsReset"; type: "bool" }
+        Property { name: "inputModeNeedsReset"; type: "bool" }
+        Property { name: "navigationModeActive"; type: "bool" }
+        Property { name: "languagePopupListActive"; type: "bool"; isReadonly: true }
+        Property { name: "style"; type: "QObject"; isReadonly: true; isPointer: true }
+        Property { name: "wordCandidateView"; type: "QQuickListView"; isReadonly: true; isPointer: true }
+        Property { name: "shadowInputControl"; type: "QQuickItem"; isReadonly: true; isPointer: true }
+        Property { name: "soundEffect"; type: "QQuickItem"; isReadonly: true; isPointer: true }
+        Method { name: "initDefaultInputMethod"; type: "QVariant" }
+        Method {
+            name: "showLanguagePopup"
+            type: "QVariant"
+            Parameter { name: "parentItem"; type: "QVariant" }
+            Parameter { name: "customLayoutsOnly"; type: "QVariant" }
+        }
+        Method { name: "hideLanguagePopup"; type: "QVariant" }
+        Method {
+            name: "showWordCandidateContextMenu"
+            type: "QVariant"
+            Parameter { name: "wordCandidateIndex"; type: "QVariant" }
+        }
+        Method { name: "hideWordCandidateContextMenu"; type: "QVariant" }
+        Method { name: "updateInputMethod"; type: "QVariant" }
+        Method { name: "updateLayout"; type: "QVariant" }
+        Method { name: "updateDefaultLocale"; type: "QVariant" }
+        Method {
+            name: "filterLocaleIndices"
+            type: "QVariant"
+            Parameter { name: "filterCb"; type: "QVariant" }
+        }
+        Method { name: "updateAvailableLocaleIndices"; type: "QVariant" }
+        Method {
+            name: "listLocales"
+            type: "QVariant"
+            Parameter { name: "customLayoutsOnly"; type: "QVariant" }
+            Parameter { name: "localeNameOnly"; type: "QVariant" }
+        }
+        Method {
+            name: "nextLocaleIndex"
+            type: "QVariant"
+            Parameter { name: "customLayoutsOnly"; type: "QVariant" }
+        }
+        Method {
+            name: "changeInputLanguage"
+            type: "QVariant"
+            Parameter { name: "customLayoutsOnly"; type: "QVariant" }
+        }
+        Method {
+            name: "canChangeInputLanguage"
+            type: "QVariant"
+            Parameter { name: "customLayoutsOnly"; type: "QVariant" }
+        }
+        Method {
+            name: "findLocale"
+            type: "QVariant"
+            Parameter { name: "localeName"; type: "QVariant" }
+            Parameter { name: "defaultValue"; type: "QVariant" }
+        }
+        Method { name: "findFallbackIndex"; type: "QVariant" }
+        Method {
+            name: "isValidLocale"
+            type: "QVariant"
+            Parameter { name: "localeNameOrIndex"; type: "QVariant" }
+            Parameter { name: "ignoreActiveLocales"; type: "QVariant" }
+        }
+        Method {
+            name: "getLayoutFile"
+            type: "QVariant"
+            Parameter { name: "localeName"; type: "QVariant" }
+            Parameter { name: "layoutType"; type: "QVariant" }
+        }
+        Method {
+            name: "getFallbackFile"
+            type: "QVariant"
+            Parameter { name: "localeName"; type: "QVariant" }
+            Parameter { name: "layoutType"; type: "QVariant" }
+        }
+        Method {
+            name: "layoutExists"
+            type: "QVariant"
+            Parameter { name: "localeName"; type: "QVariant" }
+            Parameter { name: "layoutType"; type: "QVariant" }
+        }
+        Method {
+            name: "findLayout"
+            type: "QVariant"
+            Parameter { name: "localeName"; type: "QVariant" }
+            Parameter { name: "layoutType"; type: "QVariant" }
+        }
+        Method { name: "isHandwritingAvailable"; type: "QVariant" }
+        Method {
+            name: "setHandwritingMode"
+            type: "QVariant"
+            Parameter { name: "enabled"; type: "QVariant" }
+            Parameter { name: "resetInputMode"; type: "QVariant" }
+        }
     }
     Component {
         prototype: "QQuickColumnLayout"
@@ -1490,17 +1481,13 @@ Module {
     }
     Component {
         prototype: "QQuickColumnLayout"
-        name: "QtQuick.VirtualKeyboard/KeyboardLayout 1.0"
-        exports: ["QtQuick.VirtualKeyboard/KeyboardLayout 1.0"]
+        name: "QtQuick.VirtualKeyboard/KeyboardColumn 2.0"
+        exports: ["QtQuick.VirtualKeyboard/KeyboardColumn 2.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
-        Property { name: "inputMethod"; type: "QVariant" }
-        Property { name: "sharedLayouts"; type: "QVariant" }
-        Property { name: "inputMode"; type: "int" }
         Property { name: "keyWeight"; type: "double" }
         Property { name: "smallTextVisible"; type: "bool" }
-        Method { name: "createInputMethod"; type: "QVariant" }
     }
     Component {
         prototype: "QQuickColumnLayout"
@@ -1517,10 +1504,24 @@ Module {
         Method { name: "createInputMethod"; type: "QVariant" }
     }
     Component {
+        prototype: "QQuickColumnLayout"
+        name: "QtQuick.VirtualKeyboard/KeyboardLayout 1.0"
+        exports: ["QtQuick.VirtualKeyboard/KeyboardLayout 1.0"]
+        exportMetaObjectRevisions: [0]
+        isComposite: true
+        defaultProperty: "data"
+        Property { name: "inputMethod"; type: "QVariant" }
+        Property { name: "sharedLayouts"; type: "QVariant" }
+        Property { name: "inputMode"; type: "int" }
+        Property { name: "keyWeight"; type: "double" }
+        Property { name: "smallTextVisible"; type: "bool" }
+        Method { name: "createInputMethod"; type: "QVariant" }
+    }
+    Component {
         prototype: "QQuickLoader"
-        name: "QtQuick.VirtualKeyboard/KeyboardLayoutLoader 1.1"
-        exports: ["QtQuick.VirtualKeyboard/KeyboardLayoutLoader 1.1"]
-        exportMetaObjectRevisions: [1]
+        name: "QtQuick.VirtualKeyboard/KeyboardLayoutLoader 2.0"
+        exports: ["QtQuick.VirtualKeyboard/KeyboardLayoutLoader 2.0"]
+        exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
         Property { name: "inputMethod"; type: "QVariant" }
@@ -1531,9 +1532,9 @@ Module {
     }
     Component {
         prototype: "QQuickLoader"
-        name: "QtQuick.VirtualKeyboard/KeyboardLayoutLoader 2.0"
-        exports: ["QtQuick.VirtualKeyboard/KeyboardLayoutLoader 2.0"]
-        exportMetaObjectRevisions: [0]
+        name: "QtQuick.VirtualKeyboard/KeyboardLayoutLoader 1.1"
+        exports: ["QtQuick.VirtualKeyboard/KeyboardLayoutLoader 1.1"]
+        exportMetaObjectRevisions: [1]
         isComposite: true
         defaultProperty: "data"
         Property { name: "inputMethod"; type: "QVariant" }
@@ -1593,9 +1594,45 @@ Module {
         Signal { name: "clicked" }
     }
     Component {
+        prototype: "QQuickItem"
+        name: "QtQuick.VirtualKeyboard/MultiSoundEffect 2.0"
+        exports: ["QtQuick.VirtualKeyboard/MultiSoundEffect 2.0"]
+        exportMetaObjectRevisions: [0]
+        isComposite: true
+        defaultProperty: "data"
+        Property { name: "source"; type: "QUrl" }
+        Property { name: "maxInstances"; type: "int" }
+        Property { name: "__cachedInstances"; type: "QVariant" }
+        Property { name: "__currentIndex"; type: "int" }
+        Signal {
+            name: "playingChanged"
+            Parameter { name: "source"; type: "QUrl" }
+            Parameter { name: "playing"; type: "bool" }
+        }
+        Method { name: "play"; type: "QVariant" }
+    }
+    Component {
+        prototype: "QQuickItem"
+        name: "QtQuick.VirtualKeyboard/MultiSoundEffect 1.1"
+        exports: ["QtQuick.VirtualKeyboard/MultiSoundEffect 1.1"]
+        exportMetaObjectRevisions: [1]
+        isComposite: true
+        defaultProperty: "data"
+        Property { name: "source"; type: "QUrl" }
+        Property { name: "maxInstances"; type: "int" }
+        Property { name: "__cachedInstances"; type: "QVariant" }
+        Property { name: "__currentIndex"; type: "int" }
+        Signal {
+            name: "playingChanged"
+            Parameter { name: "source"; type: "QUrl" }
+            Parameter { name: "playing"; type: "bool" }
+        }
+        Method { name: "play"; type: "QVariant" }
+    }
+    Component {
         prototype: "QVirtualKeyboardAbstractInputMethod"
-        name: "QtQuick.VirtualKeyboard/MultitapInputMethod 1.0"
-        exports: ["QtQuick.VirtualKeyboard/MultitapInputMethod 1.0"]
+        name: "QtQuick.VirtualKeyboard/MultitapInputMethod 2.0"
+        exports: ["QtQuick.VirtualKeyboard/MultitapInputMethod 2.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         Property { name: "multitapSequence"; type: "string" }
@@ -1660,8 +1697,8 @@ Module {
     }
     Component {
         prototype: "QVirtualKeyboardAbstractInputMethod"
-        name: "QtQuick.VirtualKeyboard/MultitapInputMethod 2.0"
-        exports: ["QtQuick.VirtualKeyboard/MultitapInputMethod 2.0"]
+        name: "QtQuick.VirtualKeyboard/MultitapInputMethod 1.0"
+        exports: ["QtQuick.VirtualKeyboard/MultitapInputMethod 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         Property { name: "multitapSequence"; type: "string" }
@@ -1865,35 +1902,6 @@ Module {
     }
     Component {
         prototype: "QQuickItem"
-        name: "QtQuick.VirtualKeyboard/SpaceKey 1.0"
-        exports: ["QtQuick.VirtualKeyboard/SpaceKey 1.0"]
-        exportMetaObjectRevisions: [0]
-        isComposite: true
-        defaultProperty: "data"
-        Property { name: "weight"; type: "double" }
-        Property { name: "text"; type: "string" }
-        Property { name: "displayText"; type: "string" }
-        Property { name: "smallText"; type: "string" }
-        Property { name: "smallTextVisible"; type: "bool" }
-        Property { name: "alternativeKeys"; type: "QVariant" }
-        Property { name: "effectiveAlternativeKeys"; type: "QVariant"; isReadonly: true }
-        Property { name: "effectiveAlternativeKeysHighlightIndex"; type: "int"; isReadonly: true }
-        Property { name: "key"; type: "int" }
-        Property { name: "noKeyEvent"; type: "bool" }
-        Property { name: "active"; type: "bool" }
-        Property { name: "noModifier"; type: "bool" }
-        Property { name: "repeat"; type: "bool" }
-        Property { name: "highlighted"; type: "bool" }
-        Property { name: "functionKey"; type: "bool" }
-        Property { name: "showPreview"; type: "bool" }
-        Property { name: "pressed"; type: "bool" }
-        Property { name: "uppercased"; type: "bool" }
-        Property { name: "soundEffect"; type: "QUrl"; isReadonly: true }
-        Property { name: "keyPanelDelegate"; type: "QQmlComponent"; isPointer: true }
-        Signal { name: "clicked" }
-    }
-    Component {
-        prototype: "QQuickItem"
         name: "QtQuick.VirtualKeyboard/SpaceKey 2.0"
         exports: ["QtQuick.VirtualKeyboard/SpaceKey 2.0"]
         exportMetaObjectRevisions: [0]
@@ -1923,8 +1931,8 @@ Module {
     }
     Component {
         prototype: "QQuickItem"
-        name: "QtQuick.VirtualKeyboard/SymbolModeKey 1.0"
-        exports: ["QtQuick.VirtualKeyboard/SymbolModeKey 1.0"]
+        name: "QtQuick.VirtualKeyboard/SpaceKey 1.0"
+        exports: ["QtQuick.VirtualKeyboard/SpaceKey 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
@@ -1954,6 +1962,35 @@ Module {
         prototype: "QQuickItem"
         name: "QtQuick.VirtualKeyboard/SymbolModeKey 2.0"
         exports: ["QtQuick.VirtualKeyboard/SymbolModeKey 2.0"]
+        exportMetaObjectRevisions: [0]
+        isComposite: true
+        defaultProperty: "data"
+        Property { name: "weight"; type: "double" }
+        Property { name: "text"; type: "string" }
+        Property { name: "displayText"; type: "string" }
+        Property { name: "smallText"; type: "string" }
+        Property { name: "smallTextVisible"; type: "bool" }
+        Property { name: "alternativeKeys"; type: "QVariant" }
+        Property { name: "effectiveAlternativeKeys"; type: "QVariant"; isReadonly: true }
+        Property { name: "effectiveAlternativeKeysHighlightIndex"; type: "int"; isReadonly: true }
+        Property { name: "key"; type: "int" }
+        Property { name: "noKeyEvent"; type: "bool" }
+        Property { name: "active"; type: "bool" }
+        Property { name: "noModifier"; type: "bool" }
+        Property { name: "repeat"; type: "bool" }
+        Property { name: "highlighted"; type: "bool" }
+        Property { name: "functionKey"; type: "bool" }
+        Property { name: "showPreview"; type: "bool" }
+        Property { name: "pressed"; type: "bool" }
+        Property { name: "uppercased"; type: "bool" }
+        Property { name: "soundEffect"; type: "QUrl"; isReadonly: true }
+        Property { name: "keyPanelDelegate"; type: "QQmlComponent"; isPointer: true }
+        Signal { name: "clicked" }
+    }
+    Component {
+        prototype: "QQuickItem"
+        name: "QtQuick.VirtualKeyboard/SymbolModeKey 1.0"
+        exports: ["QtQuick.VirtualKeyboard/SymbolModeKey 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
