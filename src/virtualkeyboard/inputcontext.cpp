@@ -431,7 +431,11 @@ void InputContext::sendKeyClick(int key, const QString &text, int modifiers)
         if (d->activeKeys.isEmpty())
             d->stateFlags &= ~InputContextPrivate::KeyEventState;
     } else {
-        qWarning() << "InputContext::::sendKeyClick():" << key << "no focus";
+        qWarning() << "InputContext::sendKeyClick(): no focus to send key click"
+#ifdef SENSITIVE_DEBUG
+            << key << text
+#endif
+            << "- QGuiApplication::focusWindow() is:" << QGuiApplication::focusWindow();
     }
 }
 
