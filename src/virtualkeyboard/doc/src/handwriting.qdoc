@@ -198,7 +198,7 @@ SDK is a commercial handwriting recognition engine.
 
 However, with minor modifications to the Qt Virtual Keyboard source code, it is easy to add handwriting panels for other languages supported by \MyScript.
 
-To get the \MyScript SDK or additional information, please contact \MyScript at \l {mailto:contactus@myscript.com}{contactus@myscript.com}.
+To get the \MyScript SDK or additional information, please contact \MyScript at \l {mailto:qt@myscript.com}{qt@myscript.com}.
 
 \b {See also}: \l {MyScript Text SDK Integration}
 
