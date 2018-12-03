@@ -124,7 +124,6 @@ Q_SIGNALS:
     void cursorRectIntersectsClipRectChanged();
 
 private:
-    friend class QVirtualKeyboardInputContextPrivate;
 
     QScopedPointer<QVirtualKeyboardInputContextPrivate> d_ptr;
 };
