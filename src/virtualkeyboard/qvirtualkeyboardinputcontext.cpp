@@ -36,13 +36,6 @@
 #include <QTextFormat>
 #include <QGuiApplication>
 
-/*!
-    \namespace QtVirtualKeyboard
-    \inmodule QtVirtualKeyboard
-
-    \brief Namespace for the Qt Virtual Keyboard C++ API.
-*/
-
 QT_BEGIN_NAMESPACE
 using namespace QtVirtualKeyboard;
 

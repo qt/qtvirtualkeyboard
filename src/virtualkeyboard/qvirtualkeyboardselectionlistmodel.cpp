@@ -178,8 +178,8 @@ void QVirtualKeyboardSelectionListModel::setDataSource(QVirtualKeyboardAbstractI
     }
     d->dataSource = dataSource;
     if (d->dataSource) {
-        QObject::connect(d->dataSource, &QVirtualKeyboardAbstractInputMethod::selectionListChanged, this, &QVirtualKeyboardSelectionListModel::selectionListChanged);
-        QObject::connect(d->dataSource, &QVirtualKeyboardAbstractInputMethod::selectionListActiveItemChanged, this, &QVirtualKeyboardSelectionListModel::selectionListActiveItemChanged);
+        QObject::connect(d->dataSource.data(), &QVirtualKeyboardAbstractInputMethod::selectionListChanged, this, &QVirtualKeyboardSelectionListModel::selectionListChanged);
+        QObject::connect(d->dataSource.data(), &QVirtualKeyboardAbstractInputMethod::selectionListActiveItemChanged, this, &QVirtualKeyboardSelectionListModel::selectionListActiveItemChanged);
     }
 }
 

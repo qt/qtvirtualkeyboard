@@ -22,6 +22,9 @@
 #include "composingtext.h"
 
 #include <QtCore/private/qobject_p.h>
+#include <QLoggingCategory>
+
+Q_LOGGING_CATEGORY(lcOpenWnn, "qt.virtualkeyboard.openwnn")
 
 class ComposingTextPrivate : public QObjectPrivate
 {
@@ -207,11 +210,14 @@ void ComposingText::debugout() const
 {
     Q_D(const ComposingText);
     for (int i = LAYER0; i < MAX_LAYER; i++) {
+        qCDebug(lcOpenWnn).noquote() << QStringLiteral("ComposingText[%1]").arg(i);
+        qCDebug(lcOpenWnn) << "  cur =" << d->mCursor[i];
         QString tmp;
         for (QList<StrSegment>::ConstIterator it = d->mStringLayer[i].constBegin();
              it != d->mStringLayer[i].constEnd(); it++) {
             tmp += QStringLiteral("(%1,%2,%3)").arg(it->string).arg(it->from).arg(it->to);
         }
+        qCDebug(lcOpenWnn).noquote() << "  str =" << tmp;
     }
 }
 
