@@ -7,165 +7,9 @@ import QtQuick.tooling 1.2
 // 'qmlplugindump -nonrelocatable QtQuick.VirtualKeyboard.Styles 2.2'
 
 Module {
-    dependencies: []
+    dependencies: ["QtQuick 2.0"]
     Component {
-        prototype: "QObject"
-        name: "QtQuick.VirtualKeyboard.Styles/KeyIcon 2.0"
-        exports: ["QtQuick.VirtualKeyboard.Styles/KeyIcon 2.0"]
-        exportMetaObjectRevisions: [0]
-        isComposite: true
-        defaultProperty: "data"
-        Property { name: "color"; type: "QColor" }
-        Property { name: "source"; type: "QUrl" }
-        Property { name: "parent"; type: "QQuickItem"; isPointer: true }
-        Property { name: "data"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "resources"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "children"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "x"; type: "double" }
-        Property { name: "y"; type: "double" }
-        Property { name: "z"; type: "double" }
-        Property { name: "width"; type: "double" }
-        Property { name: "height"; type: "double" }
-        Property { name: "opacity"; type: "double" }
-        Property { name: "enabled"; type: "bool" }
-        Property { name: "visible"; type: "bool" }
-        Property { name: "visibleChildren"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "states"; type: "QQuickState"; isList: true; isReadonly: true }
-        Property { name: "transitions"; type: "QQuickTransition"; isList: true; isReadonly: true }
-        Property { name: "state"; type: "string" }
-        Property { name: "childrenRect"; type: "QRectF"; isReadonly: true }
-        Property { name: "anchors"; type: "QQuickAnchors"; isReadonly: true; isPointer: true }
-        Property { name: "left"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "right"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "horizontalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "top"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "bottom"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "verticalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baseline"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baselineOffset"; type: "double" }
-        Property { name: "clip"; type: "bool" }
-        Property { name: "focus"; type: "bool" }
-        Property { name: "activeFocus"; type: "bool"; isReadonly: true }
-        Property { name: "activeFocusOnTab"; revision: 1; type: "bool" }
-        Property { name: "rotation"; type: "double" }
-        Property { name: "scale"; type: "double" }
-        Property { name: "transformOrigin"; type: "TransformOrigin" }
-        Property { name: "transformOriginPoint"; type: "QPointF"; isReadonly: true }
-        Property { name: "transform"; type: "QQuickTransform"; isList: true; isReadonly: true }
-        Property { name: "smooth"; type: "bool" }
-        Property { name: "antialiasing"; type: "bool" }
-        Property { name: "implicitWidth"; type: "double" }
-        Property { name: "implicitHeight"; type: "double" }
-        Property { name: "containmentMask"; revision: 11; type: "QObject"; isPointer: true }
-        Property { name: "layer"; type: "QQuickItemLayer"; isReadonly: true; isPointer: true }
-        Signal {
-            name: "childrenRectChanged"
-            Parameter { type: "QRectF" }
-        }
-        Signal {
-            name: "baselineOffsetChanged"
-            Parameter { type: "double" }
-        }
-        Signal {
-            name: "stateChanged"
-            Parameter { type: "string" }
-        }
-        Signal {
-            name: "focusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusOnTabChanged"
-            revision: 1
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "parentChanged"
-            Parameter { type: "QQuickItem"; isPointer: true }
-        }
-        Signal {
-            name: "transformOriginChanged"
-            Parameter { type: "TransformOrigin" }
-        }
-        Signal {
-            name: "smoothChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "antialiasingChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "clipChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "windowChanged"
-            revision: 1
-            Parameter { name: "window"; type: "QQuickWindow"; isPointer: true }
-        }
-        Method { name: "update" }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-            Parameter { name: "targetSize"; type: "QSize" }
-        }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-        }
-        Method {
-            name: "contains"
-            type: "bool"
-            Parameter { name: "point"; type: "QPointF" }
-        }
-        Method {
-            name: "mapFromItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapFromGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method { name: "forceActiveFocus" }
-        Method {
-            name: "forceActiveFocus"
-            Parameter { name: "reason"; type: "Qt::FocusReason" }
-        }
-        Method {
-            name: "nextItemInFocusChain"
-            revision: 1
-            type: "QQuickItem*"
-            Parameter { name: "forward"; type: "bool" }
-        }
-        Method { name: "nextItemInFocusChain"; revision: 1; type: "QQuickItem*" }
-        Method {
-            name: "childAt"
-            type: "QQuickItem*"
-            Parameter { name: "x"; type: "double" }
-            Parameter { name: "y"; type: "double" }
-        }
-    }
-    Component {
-        prototype: "QObject"
+        prototype: "QQuickItem"
         name: "QtQuick.VirtualKeyboard.Styles/KeyIcon 1.0"
         exports: ["QtQuick.VirtualKeyboard.Styles/KeyIcon 1.0"]
         exportMetaObjectRevisions: [0]
@@ -173,155 +17,19 @@ Module {
         defaultProperty: "data"
         Property { name: "color"; type: "QColor" }
         Property { name: "source"; type: "QUrl" }
-        Property { name: "parent"; type: "QQuickItem"; isPointer: true }
-        Property { name: "data"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "resources"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "children"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "x"; type: "double" }
-        Property { name: "y"; type: "double" }
-        Property { name: "z"; type: "double" }
-        Property { name: "width"; type: "double" }
-        Property { name: "height"; type: "double" }
-        Property { name: "opacity"; type: "double" }
-        Property { name: "enabled"; type: "bool" }
-        Property { name: "visible"; type: "bool" }
-        Property { name: "visibleChildren"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "states"; type: "QQuickState"; isList: true; isReadonly: true }
-        Property { name: "transitions"; type: "QQuickTransition"; isList: true; isReadonly: true }
-        Property { name: "state"; type: "string" }
-        Property { name: "childrenRect"; type: "QRectF"; isReadonly: true }
-        Property { name: "anchors"; type: "QQuickAnchors"; isReadonly: true; isPointer: true }
-        Property { name: "left"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "right"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "horizontalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "top"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "bottom"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "verticalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baseline"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baselineOffset"; type: "double" }
-        Property { name: "clip"; type: "bool" }
-        Property { name: "focus"; type: "bool" }
-        Property { name: "activeFocus"; type: "bool"; isReadonly: true }
-        Property { name: "activeFocusOnTab"; revision: 1; type: "bool" }
-        Property { name: "rotation"; type: "double" }
-        Property { name: "scale"; type: "double" }
-        Property { name: "transformOrigin"; type: "TransformOrigin" }
-        Property { name: "transformOriginPoint"; type: "QPointF"; isReadonly: true }
-        Property { name: "transform"; type: "QQuickTransform"; isList: true; isReadonly: true }
-        Property { name: "smooth"; type: "bool" }
-        Property { name: "antialiasing"; type: "bool" }
-        Property { name: "implicitWidth"; type: "double" }
-        Property { name: "implicitHeight"; type: "double" }
-        Property { name: "containmentMask"; revision: 11; type: "QObject"; isPointer: true }
-        Property { name: "layer"; type: "QQuickItemLayer"; isReadonly: true; isPointer: true }
-        Signal {
-            name: "childrenRectChanged"
-            Parameter { type: "QRectF" }
-        }
-        Signal {
-            name: "baselineOffsetChanged"
-            Parameter { type: "double" }
-        }
-        Signal {
-            name: "stateChanged"
-            Parameter { type: "string" }
-        }
-        Signal {
-            name: "focusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusOnTabChanged"
-            revision: 1
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "parentChanged"
-            Parameter { type: "QQuickItem"; isPointer: true }
-        }
-        Signal {
-            name: "transformOriginChanged"
-            Parameter { type: "TransformOrigin" }
-        }
-        Signal {
-            name: "smoothChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "antialiasingChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "clipChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "windowChanged"
-            revision: 1
-            Parameter { name: "window"; type: "QQuickWindow"; isPointer: true }
-        }
-        Method { name: "update" }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-            Parameter { name: "targetSize"; type: "QSize" }
-        }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-        }
-        Method {
-            name: "contains"
-            type: "bool"
-            Parameter { name: "point"; type: "QPointF" }
-        }
-        Method {
-            name: "mapFromItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapFromGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method { name: "forceActiveFocus" }
-        Method {
-            name: "forceActiveFocus"
-            Parameter { name: "reason"; type: "Qt::FocusReason" }
-        }
-        Method {
-            name: "nextItemInFocusChain"
-            revision: 1
-            type: "QQuickItem*"
-            Parameter { name: "forward"; type: "bool" }
-        }
-        Method { name: "nextItemInFocusChain"; revision: 1; type: "QQuickItem*" }
-        Method {
-            name: "childAt"
-            type: "QQuickItem*"
-            Parameter { name: "x"; type: "double" }
-            Parameter { name: "y"; type: "double" }
-        }
     }
     Component {
-        prototype: "QObject"
+        prototype: "QQuickItem"
+        name: "QtQuick.VirtualKeyboard.Styles/KeyIcon 2.0"
+        exports: ["QtQuick.VirtualKeyboard.Styles/KeyIcon 2.0"]
+        exportMetaObjectRevisions: [0]
+        isComposite: true
+        defaultProperty: "data"
+        Property { name: "color"; type: "QColor" }
+        Property { name: "source"; type: "QUrl" }
+    }
+    Component {
+        prototype: "QQuickItem"
         name: "QtQuick.VirtualKeyboard.Styles/KeyPanel 2.0"
         exports: ["QtQuick.VirtualKeyboard.Styles/KeyPanel 2.0"]
         exportMetaObjectRevisions: [0]
@@ -329,155 +37,9 @@ Module {
         defaultProperty: "data"
         Property { name: "control"; type: "QQuickItem"; isPointer: true }
         Property { name: "soundEffect"; type: "QUrl" }
-        Property { name: "parent"; type: "QQuickItem"; isPointer: true }
-        Property { name: "data"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "resources"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "children"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "x"; type: "double" }
-        Property { name: "y"; type: "double" }
-        Property { name: "z"; type: "double" }
-        Property { name: "width"; type: "double" }
-        Property { name: "height"; type: "double" }
-        Property { name: "opacity"; type: "double" }
-        Property { name: "enabled"; type: "bool" }
-        Property { name: "visible"; type: "bool" }
-        Property { name: "visibleChildren"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "states"; type: "QQuickState"; isList: true; isReadonly: true }
-        Property { name: "transitions"; type: "QQuickTransition"; isList: true; isReadonly: true }
-        Property { name: "state"; type: "string" }
-        Property { name: "childrenRect"; type: "QRectF"; isReadonly: true }
-        Property { name: "anchors"; type: "QQuickAnchors"; isReadonly: true; isPointer: true }
-        Property { name: "left"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "right"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "horizontalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "top"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "bottom"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "verticalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baseline"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baselineOffset"; type: "double" }
-        Property { name: "clip"; type: "bool" }
-        Property { name: "focus"; type: "bool" }
-        Property { name: "activeFocus"; type: "bool"; isReadonly: true }
-        Property { name: "activeFocusOnTab"; revision: 1; type: "bool" }
-        Property { name: "rotation"; type: "double" }
-        Property { name: "scale"; type: "double" }
-        Property { name: "transformOrigin"; type: "TransformOrigin" }
-        Property { name: "transformOriginPoint"; type: "QPointF"; isReadonly: true }
-        Property { name: "transform"; type: "QQuickTransform"; isList: true; isReadonly: true }
-        Property { name: "smooth"; type: "bool" }
-        Property { name: "antialiasing"; type: "bool" }
-        Property { name: "implicitWidth"; type: "double" }
-        Property { name: "implicitHeight"; type: "double" }
-        Property { name: "containmentMask"; revision: 11; type: "QObject"; isPointer: true }
-        Property { name: "layer"; type: "QQuickItemLayer"; isReadonly: true; isPointer: true }
-        Signal {
-            name: "childrenRectChanged"
-            Parameter { type: "QRectF" }
-        }
-        Signal {
-            name: "baselineOffsetChanged"
-            Parameter { type: "double" }
-        }
-        Signal {
-            name: "stateChanged"
-            Parameter { type: "string" }
-        }
-        Signal {
-            name: "focusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusOnTabChanged"
-            revision: 1
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "parentChanged"
-            Parameter { type: "QQuickItem"; isPointer: true }
-        }
-        Signal {
-            name: "transformOriginChanged"
-            Parameter { type: "TransformOrigin" }
-        }
-        Signal {
-            name: "smoothChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "antialiasingChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "clipChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "windowChanged"
-            revision: 1
-            Parameter { name: "window"; type: "QQuickWindow"; isPointer: true }
-        }
-        Method { name: "update" }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-            Parameter { name: "targetSize"; type: "QSize" }
-        }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-        }
-        Method {
-            name: "contains"
-            type: "bool"
-            Parameter { name: "point"; type: "QPointF" }
-        }
-        Method {
-            name: "mapFromItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapFromGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method { name: "forceActiveFocus" }
-        Method {
-            name: "forceActiveFocus"
-            Parameter { name: "reason"; type: "Qt::FocusReason" }
-        }
-        Method {
-            name: "nextItemInFocusChain"
-            revision: 1
-            type: "QQuickItem*"
-            Parameter { name: "forward"; type: "bool" }
-        }
-        Method { name: "nextItemInFocusChain"; revision: 1; type: "QQuickItem*" }
-        Method {
-            name: "childAt"
-            type: "QQuickItem*"
-            Parameter { name: "x"; type: "double" }
-            Parameter { name: "y"; type: "double" }
-        }
     }
     Component {
-        prototype: "QObject"
+        prototype: "QQuickItem"
         name: "QtQuick.VirtualKeyboard.Styles/KeyPanel 1.0"
         exports: ["QtQuick.VirtualKeyboard.Styles/KeyPanel 1.0"]
         exportMetaObjectRevisions: [0]
@@ -485,294 +47,12 @@ Module {
         defaultProperty: "data"
         Property { name: "control"; type: "QQuickItem"; isPointer: true }
         Property { name: "soundEffect"; type: "QUrl" }
-        Property { name: "parent"; type: "QQuickItem"; isPointer: true }
-        Property { name: "data"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "resources"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "children"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "x"; type: "double" }
-        Property { name: "y"; type: "double" }
-        Property { name: "z"; type: "double" }
-        Property { name: "width"; type: "double" }
-        Property { name: "height"; type: "double" }
-        Property { name: "opacity"; type: "double" }
-        Property { name: "enabled"; type: "bool" }
-        Property { name: "visible"; type: "bool" }
-        Property { name: "visibleChildren"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "states"; type: "QQuickState"; isList: true; isReadonly: true }
-        Property { name: "transitions"; type: "QQuickTransition"; isList: true; isReadonly: true }
-        Property { name: "state"; type: "string" }
-        Property { name: "childrenRect"; type: "QRectF"; isReadonly: true }
-        Property { name: "anchors"; type: "QQuickAnchors"; isReadonly: true; isPointer: true }
-        Property { name: "left"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "right"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "horizontalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "top"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "bottom"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "verticalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baseline"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baselineOffset"; type: "double" }
-        Property { name: "clip"; type: "bool" }
-        Property { name: "focus"; type: "bool" }
-        Property { name: "activeFocus"; type: "bool"; isReadonly: true }
-        Property { name: "activeFocusOnTab"; revision: 1; type: "bool" }
-        Property { name: "rotation"; type: "double" }
-        Property { name: "scale"; type: "double" }
-        Property { name: "transformOrigin"; type: "TransformOrigin" }
-        Property { name: "transformOriginPoint"; type: "QPointF"; isReadonly: true }
-        Property { name: "transform"; type: "QQuickTransform"; isList: true; isReadonly: true }
-        Property { name: "smooth"; type: "bool" }
-        Property { name: "antialiasing"; type: "bool" }
-        Property { name: "implicitWidth"; type: "double" }
-        Property { name: "implicitHeight"; type: "double" }
-        Property { name: "containmentMask"; revision: 11; type: "QObject"; isPointer: true }
-        Property { name: "layer"; type: "QQuickItemLayer"; isReadonly: true; isPointer: true }
-        Signal {
-            name: "childrenRectChanged"
-            Parameter { type: "QRectF" }
-        }
-        Signal {
-            name: "baselineOffsetChanged"
-            Parameter { type: "double" }
-        }
-        Signal {
-            name: "stateChanged"
-            Parameter { type: "string" }
-        }
-        Signal {
-            name: "focusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusOnTabChanged"
-            revision: 1
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "parentChanged"
-            Parameter { type: "QQuickItem"; isPointer: true }
-        }
-        Signal {
-            name: "transformOriginChanged"
-            Parameter { type: "TransformOrigin" }
-        }
-        Signal {
-            name: "smoothChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "antialiasingChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "clipChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "windowChanged"
-            revision: 1
-            Parameter { name: "window"; type: "QQuickWindow"; isPointer: true }
-        }
-        Method { name: "update" }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-            Parameter { name: "targetSize"; type: "QSize" }
-        }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-        }
-        Method {
-            name: "contains"
-            type: "bool"
-            Parameter { name: "point"; type: "QPointF" }
-        }
-        Method {
-            name: "mapFromItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapFromGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method { name: "forceActiveFocus" }
-        Method {
-            name: "forceActiveFocus"
-            Parameter { name: "reason"; type: "Qt::FocusReason" }
-        }
-        Method {
-            name: "nextItemInFocusChain"
-            revision: 1
-            type: "QQuickItem*"
-            Parameter { name: "forward"; type: "bool" }
-        }
-        Method { name: "nextItemInFocusChain"; revision: 1; type: "QQuickItem*" }
-        Method {
-            name: "childAt"
-            type: "QQuickItem*"
-            Parameter { name: "x"; type: "double" }
-            Parameter { name: "y"; type: "double" }
-        }
-    }
-    Component {
-        prototype: "QObject"
-        name: "QtQuick.VirtualKeyboard.Styles/KeyboardStyle 2.0"
-        exports: ["QtQuick.VirtualKeyboard.Styles/KeyboardStyle 2.0"]
-        exportMetaObjectRevisions: [0]
-        isComposite: true
-        Property { name: "keyboardHeight"; type: "double" }
-        Property { name: "keyboardDesignWidth"; type: "double" }
-        Property { name: "keyboardDesignHeight"; type: "double" }
-        Property { name: "scaleHint"; type: "double"; isReadonly: true }
-        Property { name: "keyboardRelativeLeftMargin"; type: "double" }
-        Property { name: "keyboardRelativeRightMargin"; type: "double" }
-        Property { name: "keyboardRelativeTopMargin"; type: "double" }
-        Property { name: "keyboardRelativeBottomMargin"; type: "double" }
-        Property { name: "keyboardBackground"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "keyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "backspaceKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "languageKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "enterKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "hideKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "shiftKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "spaceKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "symbolKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "modeKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "handwritingKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "characterPreviewMargin"; type: "double" }
-        Property { name: "characterPreviewDelegate"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "alternateKeysListItemWidth"; type: "double" }
-        Property { name: "alternateKeysListItemHeight"; type: "double" }
-        Property { name: "alternateKeysListTopMargin"; type: "double" }
-        Property { name: "alternateKeysListBottomMargin"; type: "double" }
-        Property { name: "alternateKeysListLeftMargin"; type: "double" }
-        Property { name: "alternateKeysListRightMargin"; type: "double" }
-        Property { name: "alternateKeysListDelegate"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "alternateKeysListHighlight"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "alternateKeysListBackground"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "selectionListHeight"; type: "double" }
-        Property { name: "selectionListDelegate"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "selectionListHighlight"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "selectionListBackground"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "selectionListAdd"; type: "QQuickTransition"; isPointer: true }
-        Property { name: "selectionListRemove"; type: "QQuickTransition"; isPointer: true }
-        Property { name: "navigationHighlight"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "traceInputKeyPanelDelegate"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "traceCanvasDelegate"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "popupListDelegate"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "popupListHighlight"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "popupListBackground"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "popupListAdd"; type: "QQuickTransition"; isPointer: true }
-        Property { name: "popupListRemove"; type: "QQuickTransition"; isPointer: true }
-        Property { name: "languagePopupListEnabled"; type: "bool" }
-        Property { name: "languageListDelegate"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "languageListHighlight"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "languageListBackground"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "languageListAdd"; type: "QQuickTransition"; isPointer: true }
-        Property { name: "languageListRemove"; type: "QQuickTransition"; isPointer: true }
-        Property { name: "selectionHandle"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "fullScreenInputContainerBackground"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "fullScreenInputBackground"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "fullScreenInputMargins"; type: "double" }
-        Property { name: "fullScreenInputPadding"; type: "double" }
-        Property { name: "fullScreenInputCursor"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "fullScreenInputFont"; type: "QFont" }
-        Property { name: "fullScreenInputPasswordCharacter"; type: "string" }
-        Property { name: "fullScreenInputColor"; type: "QColor" }
-        Property { name: "fullScreenInputSelectionColor"; type: "QColor" }
-        Property { name: "fullScreenInputSelectedTextColor"; type: "QColor" }
     }
     Component {
         prototype: "QObject"
         name: "QtQuick.VirtualKeyboard.Styles/KeyboardStyle 2.2"
         exports: ["QtQuick.VirtualKeyboard.Styles/KeyboardStyle 2.2"]
         exportMetaObjectRevisions: [2]
-        isComposite: true
-        Property { name: "keyboardHeight"; type: "double" }
-        Property { name: "keyboardDesignWidth"; type: "double" }
-        Property { name: "keyboardDesignHeight"; type: "double" }
-        Property { name: "scaleHint"; type: "double"; isReadonly: true }
-        Property { name: "keyboardRelativeLeftMargin"; type: "double" }
-        Property { name: "keyboardRelativeRightMargin"; type: "double" }
-        Property { name: "keyboardRelativeTopMargin"; type: "double" }
-        Property { name: "keyboardRelativeBottomMargin"; type: "double" }
-        Property { name: "keyboardBackground"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "keyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "backspaceKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "languageKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "enterKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "hideKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "shiftKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "spaceKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "symbolKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "modeKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "handwritingKeyPanel"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "characterPreviewMargin"; type: "double" }
-        Property { name: "characterPreviewDelegate"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "alternateKeysListItemWidth"; type: "double" }
-        Property { name: "alternateKeysListItemHeight"; type: "double" }
-        Property { name: "alternateKeysListTopMargin"; type: "double" }
-        Property { name: "alternateKeysListBottomMargin"; type: "double" }
-        Property { name: "alternateKeysListLeftMargin"; type: "double" }
-        Property { name: "alternateKeysListRightMargin"; type: "double" }
-        Property { name: "alternateKeysListDelegate"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "alternateKeysListHighlight"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "alternateKeysListBackground"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "selectionListHeight"; type: "double" }
-        Property { name: "selectionListDelegate"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "selectionListHighlight"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "selectionListBackground"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "selectionListAdd"; type: "QQuickTransition"; isPointer: true }
-        Property { name: "selectionListRemove"; type: "QQuickTransition"; isPointer: true }
-        Property { name: "navigationHighlight"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "traceInputKeyPanelDelegate"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "traceCanvasDelegate"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "popupListDelegate"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "popupListHighlight"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "popupListBackground"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "popupListAdd"; type: "QQuickTransition"; isPointer: true }
-        Property { name: "popupListRemove"; type: "QQuickTransition"; isPointer: true }
-        Property { name: "languagePopupListEnabled"; type: "bool" }
-        Property { name: "languageListDelegate"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "languageListHighlight"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "languageListBackground"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "languageListAdd"; type: "QQuickTransition"; isPointer: true }
-        Property { name: "languageListRemove"; type: "QQuickTransition"; isPointer: true }
-        Property { name: "selectionHandle"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "fullScreenInputContainerBackground"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "fullScreenInputBackground"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "fullScreenInputMargins"; type: "double" }
-        Property { name: "fullScreenInputPadding"; type: "double" }
-        Property { name: "fullScreenInputCursor"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "fullScreenInputFont"; type: "QFont" }
-        Property { name: "fullScreenInputPasswordCharacter"; type: "string" }
-        Property { name: "fullScreenInputColor"; type: "QColor" }
-        Property { name: "fullScreenInputSelectionColor"; type: "QColor" }
-        Property { name: "fullScreenInputSelectedTextColor"; type: "QColor" }
-    }
-    Component {
-        prototype: "QObject"
-        name: "QtQuick.VirtualKeyboard.Styles/KeyboardStyle 2.1"
-        exports: ["QtQuick.VirtualKeyboard.Styles/KeyboardStyle 2.1"]
-        exportMetaObjectRevisions: [1]
         isComposite: true
         Property { name: "keyboardHeight"; type: "double" }
         Property { name: "keyboardDesignWidth"; type: "double" }
@@ -906,8 +186,76 @@ Module {
     }
     Component {
         prototype: "QObject"
-        name: "QtQuick.VirtualKeyboard.Styles/KeyboardStyle 1.0"
-        exports: ["QtQuick.VirtualKeyboard.Styles/KeyboardStyle 1.0"]
+        name: "QtQuick.VirtualKeyboard.Styles/KeyboardStyle 2.1"
+        exports: ["QtQuick.VirtualKeyboard.Styles/KeyboardStyle 2.1"]
+        exportMetaObjectRevisions: [1]
+        isComposite: true
+        Property { name: "keyboardHeight"; type: "double" }
+        Property { name: "keyboardDesignWidth"; type: "double" }
+        Property { name: "keyboardDesignHeight"; type: "double" }
+        Property { name: "scaleHint"; type: "double"; isReadonly: true }
+        Property { name: "keyboardRelativeLeftMargin"; type: "double" }
+        Property { name: "keyboardRelativeRightMargin"; type: "double" }
+        Property { name: "keyboardRelativeTopMargin"; type: "double" }
+        Property { name: "keyboardRelativeBottomMargin"; type: "double" }
+        Property { name: "keyboardBackground"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "keyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "backspaceKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "languageKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "enterKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "hideKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "shiftKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "spaceKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "symbolKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "modeKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "handwritingKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "characterPreviewMargin"; type: "double" }
+        Property { name: "characterPreviewDelegate"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "alternateKeysListItemWidth"; type: "double" }
+        Property { name: "alternateKeysListItemHeight"; type: "double" }
+        Property { name: "alternateKeysListTopMargin"; type: "double" }
+        Property { name: "alternateKeysListBottomMargin"; type: "double" }
+        Property { name: "alternateKeysListLeftMargin"; type: "double" }
+        Property { name: "alternateKeysListRightMargin"; type: "double" }
+        Property { name: "alternateKeysListDelegate"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "alternateKeysListHighlight"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "alternateKeysListBackground"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "selectionListHeight"; type: "double" }
+        Property { name: "selectionListDelegate"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "selectionListHighlight"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "selectionListBackground"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "selectionListAdd"; type: "QQuickTransition"; isPointer: true }
+        Property { name: "selectionListRemove"; type: "QQuickTransition"; isPointer: true }
+        Property { name: "navigationHighlight"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "traceInputKeyPanelDelegate"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "traceCanvasDelegate"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "popupListDelegate"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "popupListHighlight"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "popupListBackground"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "popupListAdd"; type: "QQuickTransition"; isPointer: true }
+        Property { name: "popupListRemove"; type: "QQuickTransition"; isPointer: true }
+        Property { name: "languagePopupListEnabled"; type: "bool" }
+        Property { name: "languageListDelegate"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "languageListHighlight"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "languageListBackground"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "languageListAdd"; type: "QQuickTransition"; isPointer: true }
+        Property { name: "languageListRemove"; type: "QQuickTransition"; isPointer: true }
+        Property { name: "selectionHandle"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "fullScreenInputContainerBackground"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "fullScreenInputBackground"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "fullScreenInputMargins"; type: "double" }
+        Property { name: "fullScreenInputPadding"; type: "double" }
+        Property { name: "fullScreenInputCursor"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "fullScreenInputFont"; type: "QFont" }
+        Property { name: "fullScreenInputPasswordCharacter"; type: "string" }
+        Property { name: "fullScreenInputColor"; type: "QColor" }
+        Property { name: "fullScreenInputSelectionColor"; type: "QColor" }
+        Property { name: "fullScreenInputSelectedTextColor"; type: "QColor" }
+    }
+    Component {
+        prototype: "QObject"
+        name: "QtQuick.VirtualKeyboard.Styles/KeyboardStyle 2.0"
+        exports: ["QtQuick.VirtualKeyboard.Styles/KeyboardStyle 2.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         Property { name: "keyboardHeight"; type: "double" }
@@ -1110,316 +458,92 @@ Module {
     }
     Component {
         prototype: "QObject"
+        name: "QtQuick.VirtualKeyboard.Styles/KeyboardStyle 1.0"
+        exports: ["QtQuick.VirtualKeyboard.Styles/KeyboardStyle 1.0"]
+        exportMetaObjectRevisions: [0]
+        isComposite: true
+        Property { name: "keyboardHeight"; type: "double" }
+        Property { name: "keyboardDesignWidth"; type: "double" }
+        Property { name: "keyboardDesignHeight"; type: "double" }
+        Property { name: "scaleHint"; type: "double"; isReadonly: true }
+        Property { name: "keyboardRelativeLeftMargin"; type: "double" }
+        Property { name: "keyboardRelativeRightMargin"; type: "double" }
+        Property { name: "keyboardRelativeTopMargin"; type: "double" }
+        Property { name: "keyboardRelativeBottomMargin"; type: "double" }
+        Property { name: "keyboardBackground"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "keyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "backspaceKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "languageKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "enterKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "hideKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "shiftKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "spaceKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "symbolKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "modeKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "handwritingKeyPanel"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "characterPreviewMargin"; type: "double" }
+        Property { name: "characterPreviewDelegate"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "alternateKeysListItemWidth"; type: "double" }
+        Property { name: "alternateKeysListItemHeight"; type: "double" }
+        Property { name: "alternateKeysListTopMargin"; type: "double" }
+        Property { name: "alternateKeysListBottomMargin"; type: "double" }
+        Property { name: "alternateKeysListLeftMargin"; type: "double" }
+        Property { name: "alternateKeysListRightMargin"; type: "double" }
+        Property { name: "alternateKeysListDelegate"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "alternateKeysListHighlight"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "alternateKeysListBackground"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "selectionListHeight"; type: "double" }
+        Property { name: "selectionListDelegate"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "selectionListHighlight"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "selectionListBackground"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "selectionListAdd"; type: "QQuickTransition"; isPointer: true }
+        Property { name: "selectionListRemove"; type: "QQuickTransition"; isPointer: true }
+        Property { name: "navigationHighlight"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "traceInputKeyPanelDelegate"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "traceCanvasDelegate"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "popupListDelegate"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "popupListHighlight"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "popupListBackground"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "popupListAdd"; type: "QQuickTransition"; isPointer: true }
+        Property { name: "popupListRemove"; type: "QQuickTransition"; isPointer: true }
+        Property { name: "languagePopupListEnabled"; type: "bool" }
+        Property { name: "languageListDelegate"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "languageListHighlight"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "languageListBackground"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "languageListAdd"; type: "QQuickTransition"; isPointer: true }
+        Property { name: "languageListRemove"; type: "QQuickTransition"; isPointer: true }
+        Property { name: "selectionHandle"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "fullScreenInputContainerBackground"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "fullScreenInputBackground"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "fullScreenInputMargins"; type: "double" }
+        Property { name: "fullScreenInputPadding"; type: "double" }
+        Property { name: "fullScreenInputCursor"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "fullScreenInputFont"; type: "QFont" }
+        Property { name: "fullScreenInputPasswordCharacter"; type: "string" }
+        Property { name: "fullScreenInputColor"; type: "QColor" }
+        Property { name: "fullScreenInputSelectionColor"; type: "QColor" }
+        Property { name: "fullScreenInputSelectedTextColor"; type: "QColor" }
+    }
+    Component {
+        prototype: "QQuickItem"
         name: "QtQuick.VirtualKeyboard.Styles/SelectionListItem 1.0"
         exports: ["QtQuick.VirtualKeyboard.Styles/SelectionListItem 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
         Property { name: "soundEffect"; type: "QUrl" }
-        Property { name: "parent"; type: "QQuickItem"; isPointer: true }
-        Property { name: "data"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "resources"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "children"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "x"; type: "double" }
-        Property { name: "y"; type: "double" }
-        Property { name: "z"; type: "double" }
-        Property { name: "width"; type: "double" }
-        Property { name: "height"; type: "double" }
-        Property { name: "opacity"; type: "double" }
-        Property { name: "enabled"; type: "bool" }
-        Property { name: "visible"; type: "bool" }
-        Property { name: "visibleChildren"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "states"; type: "QQuickState"; isList: true; isReadonly: true }
-        Property { name: "transitions"; type: "QQuickTransition"; isList: true; isReadonly: true }
-        Property { name: "state"; type: "string" }
-        Property { name: "childrenRect"; type: "QRectF"; isReadonly: true }
-        Property { name: "anchors"; type: "QQuickAnchors"; isReadonly: true; isPointer: true }
-        Property { name: "left"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "right"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "horizontalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "top"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "bottom"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "verticalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baseline"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baselineOffset"; type: "double" }
-        Property { name: "clip"; type: "bool" }
-        Property { name: "focus"; type: "bool" }
-        Property { name: "activeFocus"; type: "bool"; isReadonly: true }
-        Property { name: "activeFocusOnTab"; revision: 1; type: "bool" }
-        Property { name: "rotation"; type: "double" }
-        Property { name: "scale"; type: "double" }
-        Property { name: "transformOrigin"; type: "TransformOrigin" }
-        Property { name: "transformOriginPoint"; type: "QPointF"; isReadonly: true }
-        Property { name: "transform"; type: "QQuickTransform"; isList: true; isReadonly: true }
-        Property { name: "smooth"; type: "bool" }
-        Property { name: "antialiasing"; type: "bool" }
-        Property { name: "implicitWidth"; type: "double" }
-        Property { name: "implicitHeight"; type: "double" }
-        Property { name: "containmentMask"; revision: 11; type: "QObject"; isPointer: true }
-        Property { name: "layer"; type: "QQuickItemLayer"; isReadonly: true; isPointer: true }
-        Signal {
-            name: "childrenRectChanged"
-            Parameter { type: "QRectF" }
-        }
-        Signal {
-            name: "baselineOffsetChanged"
-            Parameter { type: "double" }
-        }
-        Signal {
-            name: "stateChanged"
-            Parameter { type: "string" }
-        }
-        Signal {
-            name: "focusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusOnTabChanged"
-            revision: 1
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "parentChanged"
-            Parameter { type: "QQuickItem"; isPointer: true }
-        }
-        Signal {
-            name: "transformOriginChanged"
-            Parameter { type: "TransformOrigin" }
-        }
-        Signal {
-            name: "smoothChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "antialiasingChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "clipChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "windowChanged"
-            revision: 1
-            Parameter { name: "window"; type: "QQuickWindow"; isPointer: true }
-        }
-        Method { name: "update" }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-            Parameter { name: "targetSize"; type: "QSize" }
-        }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-        }
-        Method {
-            name: "contains"
-            type: "bool"
-            Parameter { name: "point"; type: "QPointF" }
-        }
-        Method {
-            name: "mapFromItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapFromGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method { name: "forceActiveFocus" }
-        Method {
-            name: "forceActiveFocus"
-            Parameter { name: "reason"; type: "Qt::FocusReason" }
-        }
-        Method {
-            name: "nextItemInFocusChain"
-            revision: 1
-            type: "QQuickItem*"
-            Parameter { name: "forward"; type: "bool" }
-        }
-        Method { name: "nextItemInFocusChain"; revision: 1; type: "QQuickItem*" }
-        Method {
-            name: "childAt"
-            type: "QQuickItem*"
-            Parameter { name: "x"; type: "double" }
-            Parameter { name: "y"; type: "double" }
-        }
     }
     Component {
-        prototype: "QObject"
+        prototype: "QQuickItem"
         name: "QtQuick.VirtualKeyboard.Styles/SelectionListItem 2.0"
         exports: ["QtQuick.VirtualKeyboard.Styles/SelectionListItem 2.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
         Property { name: "soundEffect"; type: "QUrl" }
-        Property { name: "parent"; type: "QQuickItem"; isPointer: true }
-        Property { name: "data"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "resources"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "children"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "x"; type: "double" }
-        Property { name: "y"; type: "double" }
-        Property { name: "z"; type: "double" }
-        Property { name: "width"; type: "double" }
-        Property { name: "height"; type: "double" }
-        Property { name: "opacity"; type: "double" }
-        Property { name: "enabled"; type: "bool" }
-        Property { name: "visible"; type: "bool" }
-        Property { name: "visibleChildren"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "states"; type: "QQuickState"; isList: true; isReadonly: true }
-        Property { name: "transitions"; type: "QQuickTransition"; isList: true; isReadonly: true }
-        Property { name: "state"; type: "string" }
-        Property { name: "childrenRect"; type: "QRectF"; isReadonly: true }
-        Property { name: "anchors"; type: "QQuickAnchors"; isReadonly: true; isPointer: true }
-        Property { name: "left"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "right"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "horizontalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "top"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "bottom"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "verticalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baseline"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baselineOffset"; type: "double" }
-        Property { name: "clip"; type: "bool" }
-        Property { name: "focus"; type: "bool" }
-        Property { name: "activeFocus"; type: "bool"; isReadonly: true }
-        Property { name: "activeFocusOnTab"; revision: 1; type: "bool" }
-        Property { name: "rotation"; type: "double" }
-        Property { name: "scale"; type: "double" }
-        Property { name: "transformOrigin"; type: "TransformOrigin" }
-        Property { name: "transformOriginPoint"; type: "QPointF"; isReadonly: true }
-        Property { name: "transform"; type: "QQuickTransform"; isList: true; isReadonly: true }
-        Property { name: "smooth"; type: "bool" }
-        Property { name: "antialiasing"; type: "bool" }
-        Property { name: "implicitWidth"; type: "double" }
-        Property { name: "implicitHeight"; type: "double" }
-        Property { name: "containmentMask"; revision: 11; type: "QObject"; isPointer: true }
-        Property { name: "layer"; type: "QQuickItemLayer"; isReadonly: true; isPointer: true }
-        Signal {
-            name: "childrenRectChanged"
-            Parameter { type: "QRectF" }
-        }
-        Signal {
-            name: "baselineOffsetChanged"
-            Parameter { type: "double" }
-        }
-        Signal {
-            name: "stateChanged"
-            Parameter { type: "string" }
-        }
-        Signal {
-            name: "focusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusOnTabChanged"
-            revision: 1
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "parentChanged"
-            Parameter { type: "QQuickItem"; isPointer: true }
-        }
-        Signal {
-            name: "transformOriginChanged"
-            Parameter { type: "TransformOrigin" }
-        }
-        Signal {
-            name: "smoothChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "antialiasingChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "clipChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "windowChanged"
-            revision: 1
-            Parameter { name: "window"; type: "QQuickWindow"; isPointer: true }
-        }
-        Method { name: "update" }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-            Parameter { name: "targetSize"; type: "QSize" }
-        }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-        }
-        Method {
-            name: "contains"
-            type: "bool"
-            Parameter { name: "point"; type: "QPointF" }
-        }
-        Method {
-            name: "mapFromItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapFromGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method { name: "forceActiveFocus" }
-        Method {
-            name: "forceActiveFocus"
-            Parameter { name: "reason"; type: "Qt::FocusReason" }
-        }
-        Method {
-            name: "nextItemInFocusChain"
-            revision: 1
-            type: "QQuickItem*"
-            Parameter { name: "forward"; type: "bool" }
-        }
-        Method { name: "nextItemInFocusChain"; revision: 1; type: "QQuickItem*" }
-        Method {
-            name: "childAt"
-            type: "QQuickItem*"
-            Parameter { name: "x"; type: "double" }
-            Parameter { name: "y"; type: "double" }
-        }
     }
     Component {
-        prototype: "QObject"
+        prototype: "QQuickCanvasItem"
         name: "QtQuick.VirtualKeyboard.Styles/TraceCanvas 2.0"
         exports: ["QtQuick.VirtualKeyboard.Styles/TraceCanvas 2.0"]
         exportMetaObjectRevisions: [0]
@@ -1432,221 +556,9 @@ Module {
         Property { name: "__renderPos"; type: "int" }
         Property { name: "__renderingEnabled"; type: "bool" }
         Method { name: "renderSmoothedLine"; type: "QVariant" }
-        Property { name: "available"; type: "bool"; isReadonly: true }
-        Property { name: "contextType"; type: "string" }
-        Property { name: "context"; type: "QQmlV4Handle"; isReadonly: true }
-        Property { name: "canvasSize"; type: "QSizeF" }
-        Property { name: "tileSize"; type: "QSize" }
-        Property { name: "canvasWindow"; type: "QRectF" }
-        Property { name: "renderTarget"; type: "RenderTarget" }
-        Property { name: "renderStrategy"; type: "RenderStrategy" }
-        Signal {
-            name: "paint"
-            Parameter { name: "region"; type: "QRect" }
-        }
-        Signal { name: "painted" }
-        Signal { name: "imageLoaded" }
-        Method {
-            name: "loadImage"
-            Parameter { name: "url"; type: "QUrl" }
-        }
-        Method {
-            name: "unloadImage"
-            Parameter { name: "url"; type: "QUrl" }
-        }
-        Method {
-            name: "isImageLoaded"
-            type: "bool"
-            Parameter { name: "url"; type: "QUrl" }
-        }
-        Method {
-            name: "isImageLoading"
-            type: "bool"
-            Parameter { name: "url"; type: "QUrl" }
-        }
-        Method {
-            name: "isImageError"
-            type: "bool"
-            Parameter { name: "url"; type: "QUrl" }
-        }
-        Method {
-            name: "getContext"
-            Parameter { name: "args"; type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "requestAnimationFrame"
-            Parameter { name: "args"; type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "cancelRequestAnimationFrame"
-            Parameter { name: "args"; type: "QQmlV4Function"; isPointer: true }
-        }
-        Method { name: "requestPaint" }
-        Method {
-            name: "markDirty"
-            Parameter { name: "dirtyRect"; type: "QRectF" }
-        }
-        Method { name: "markDirty" }
-        Method {
-            name: "save"
-            type: "bool"
-            Parameter { name: "filename"; type: "string" }
-        }
-        Method {
-            name: "toDataURL"
-            type: "string"
-            Parameter { name: "type"; type: "string" }
-        }
-        Method { name: "toDataURL"; type: "string" }
-        Property { name: "parent"; type: "QQuickItem"; isPointer: true }
-        Property { name: "data"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "resources"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "children"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "x"; type: "double" }
-        Property { name: "y"; type: "double" }
-        Property { name: "z"; type: "double" }
-        Property { name: "width"; type: "double" }
-        Property { name: "height"; type: "double" }
-        Property { name: "opacity"; type: "double" }
-        Property { name: "enabled"; type: "bool" }
-        Property { name: "visible"; type: "bool" }
-        Property { name: "visibleChildren"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "states"; type: "QQuickState"; isList: true; isReadonly: true }
-        Property { name: "transitions"; type: "QQuickTransition"; isList: true; isReadonly: true }
-        Property { name: "state"; type: "string" }
-        Property { name: "childrenRect"; type: "QRectF"; isReadonly: true }
-        Property { name: "anchors"; type: "QQuickAnchors"; isReadonly: true; isPointer: true }
-        Property { name: "left"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "right"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "horizontalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "top"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "bottom"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "verticalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baseline"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baselineOffset"; type: "double" }
-        Property { name: "clip"; type: "bool" }
-        Property { name: "focus"; type: "bool" }
-        Property { name: "activeFocus"; type: "bool"; isReadonly: true }
-        Property { name: "activeFocusOnTab"; revision: 1; type: "bool" }
-        Property { name: "rotation"; type: "double" }
-        Property { name: "scale"; type: "double" }
-        Property { name: "transformOrigin"; type: "TransformOrigin" }
-        Property { name: "transformOriginPoint"; type: "QPointF"; isReadonly: true }
-        Property { name: "transform"; type: "QQuickTransform"; isList: true; isReadonly: true }
-        Property { name: "smooth"; type: "bool" }
-        Property { name: "antialiasing"; type: "bool" }
-        Property { name: "implicitWidth"; type: "double" }
-        Property { name: "implicitHeight"; type: "double" }
-        Property { name: "containmentMask"; revision: 11; type: "QObject"; isPointer: true }
-        Property { name: "layer"; type: "QQuickItemLayer"; isReadonly: true; isPointer: true }
-        Signal {
-            name: "childrenRectChanged"
-            Parameter { type: "QRectF" }
-        }
-        Signal {
-            name: "baselineOffsetChanged"
-            Parameter { type: "double" }
-        }
-        Signal {
-            name: "stateChanged"
-            Parameter { type: "string" }
-        }
-        Signal {
-            name: "focusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusOnTabChanged"
-            revision: 1
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "parentChanged"
-            Parameter { type: "QQuickItem"; isPointer: true }
-        }
-        Signal {
-            name: "transformOriginChanged"
-            Parameter { type: "TransformOrigin" }
-        }
-        Signal {
-            name: "smoothChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "antialiasingChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "clipChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "windowChanged"
-            revision: 1
-            Parameter { name: "window"; type: "QQuickWindow"; isPointer: true }
-        }
-        Method { name: "update" }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-            Parameter { name: "targetSize"; type: "QSize" }
-        }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-        }
-        Method {
-            name: "contains"
-            type: "bool"
-            Parameter { name: "point"; type: "QPointF" }
-        }
-        Method {
-            name: "mapFromItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapFromGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method { name: "forceActiveFocus" }
-        Method {
-            name: "forceActiveFocus"
-            Parameter { name: "reason"; type: "Qt::FocusReason" }
-        }
-        Method {
-            name: "nextItemInFocusChain"
-            revision: 1
-            type: "QQuickItem*"
-            Parameter { name: "forward"; type: "bool" }
-        }
-        Method { name: "nextItemInFocusChain"; revision: 1; type: "QQuickItem*" }
-        Method {
-            name: "childAt"
-            type: "QQuickItem*"
-            Parameter { name: "x"; type: "double" }
-            Parameter { name: "y"; type: "double" }
-        }
     }
     Component {
-        prototype: "QObject"
+        prototype: "QQuickItem"
         name: "QtQuick.VirtualKeyboard.Styles/TraceInputKeyPanel 2.0"
         exports: ["QtQuick.VirtualKeyboard.Styles/TraceInputKeyPanel 2.0"]
         exportMetaObjectRevisions: [0]
@@ -1654,151 +566,5 @@ Module {
         defaultProperty: "data"
         Property { name: "control"; type: "QQuickItem"; isPointer: true }
         Property { name: "traceMargins"; type: "double" }
-        Property { name: "parent"; type: "QQuickItem"; isPointer: true }
-        Property { name: "data"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "resources"; type: "QObject"; isList: true; isReadonly: true }
-        Property { name: "children"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "x"; type: "double" }
-        Property { name: "y"; type: "double" }
-        Property { name: "z"; type: "double" }
-        Property { name: "width"; type: "double" }
-        Property { name: "height"; type: "double" }
-        Property { name: "opacity"; type: "double" }
-        Property { name: "enabled"; type: "bool" }
-        Property { name: "visible"; type: "bool" }
-        Property { name: "visibleChildren"; type: "QQuickItem"; isList: true; isReadonly: true }
-        Property { name: "states"; type: "QQuickState"; isList: true; isReadonly: true }
-        Property { name: "transitions"; type: "QQuickTransition"; isList: true; isReadonly: true }
-        Property { name: "state"; type: "string" }
-        Property { name: "childrenRect"; type: "QRectF"; isReadonly: true }
-        Property { name: "anchors"; type: "QQuickAnchors"; isReadonly: true; isPointer: true }
-        Property { name: "left"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "right"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "horizontalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "top"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "bottom"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "verticalCenter"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baseline"; type: "QQuickAnchorLine"; isReadonly: true }
-        Property { name: "baselineOffset"; type: "double" }
-        Property { name: "clip"; type: "bool" }
-        Property { name: "focus"; type: "bool" }
-        Property { name: "activeFocus"; type: "bool"; isReadonly: true }
-        Property { name: "activeFocusOnTab"; revision: 1; type: "bool" }
-        Property { name: "rotation"; type: "double" }
-        Property { name: "scale"; type: "double" }
-        Property { name: "transformOrigin"; type: "TransformOrigin" }
-        Property { name: "transformOriginPoint"; type: "QPointF"; isReadonly: true }
-        Property { name: "transform"; type: "QQuickTransform"; isList: true; isReadonly: true }
-        Property { name: "smooth"; type: "bool" }
-        Property { name: "antialiasing"; type: "bool" }
-        Property { name: "implicitWidth"; type: "double" }
-        Property { name: "implicitHeight"; type: "double" }
-        Property { name: "containmentMask"; revision: 11; type: "QObject"; isPointer: true }
-        Property { name: "layer"; type: "QQuickItemLayer"; isReadonly: true; isPointer: true }
-        Signal {
-            name: "childrenRectChanged"
-            Parameter { type: "QRectF" }
-        }
-        Signal {
-            name: "baselineOffsetChanged"
-            Parameter { type: "double" }
-        }
-        Signal {
-            name: "stateChanged"
-            Parameter { type: "string" }
-        }
-        Signal {
-            name: "focusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "activeFocusOnTabChanged"
-            revision: 1
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "parentChanged"
-            Parameter { type: "QQuickItem"; isPointer: true }
-        }
-        Signal {
-            name: "transformOriginChanged"
-            Parameter { type: "TransformOrigin" }
-        }
-        Signal {
-            name: "smoothChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "antialiasingChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "clipChanged"
-            Parameter { type: "bool" }
-        }
-        Signal {
-            name: "windowChanged"
-            revision: 1
-            Parameter { name: "window"; type: "QQuickWindow"; isPointer: true }
-        }
-        Method { name: "update" }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-            Parameter { name: "targetSize"; type: "QSize" }
-        }
-        Method {
-            name: "grabToImage"
-            revision: 2
-            type: "bool"
-            Parameter { name: "callback"; type: "QJSValue" }
-        }
-        Method {
-            name: "contains"
-            type: "bool"
-            Parameter { name: "point"; type: "QPointF" }
-        }
-        Method {
-            name: "mapFromItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToItem"
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapFromGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method {
-            name: "mapToGlobal"
-            revision: 7
-            Parameter { type: "QQmlV4Function"; isPointer: true }
-        }
-        Method { name: "forceActiveFocus" }
-        Method {
-            name: "forceActiveFocus"
-            Parameter { name: "reason"; type: "Qt::FocusReason" }
-        }
-        Method {
-            name: "nextItemInFocusChain"
-            revision: 1
-            type: "QQuickItem*"
-            Parameter { name: "forward"; type: "bool" }
-        }
-        Method { name: "nextItemInFocusChain"; revision: 1; type: "QQuickItem*" }
-        Method {
-            name: "childAt"
-            type: "QQuickItem*"
-            Parameter { name: "x"; type: "double" }
-            Parameter { name: "y"; type: "double" }
-        }
     }
 }

@@ -890,7 +890,9 @@ public:
             return;
 
         qCDebug(qlcVKMyScript) << Q_FUNC_INFO;
+#ifdef SENSITIVE_DEBUG
         qCDebug(qlcVKMyScript) << "preeditText:" << ic->preeditText();
+#endif
 
         bool isItemChanged = false;
         int lastPosition = 0;
@@ -1299,8 +1301,10 @@ void MyScriptRecognizeWorker::manageRecognitionResult(voimEngine *engine, voimRe
                     char *temp = bytes.data();
 
                     voim_getItemCandidateLabel(engine, result, itemIndex, candidateIndex, temp, length, "UTF-8");
+#ifdef SENSITIVE_DEBUG
                     float score = voim_getItemCandidateScore(engine, result, itemIndex, candidateIndex);
                     qCDebug(qlcVKMyScript) << "      - candidate #" << candidateIndex << " of " << candidateCount << " :" << temp << "(" << score << ")";
+#endif
 
                     QString label = QString::fromUtf8(temp);
 

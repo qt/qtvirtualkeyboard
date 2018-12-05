@@ -115,3 +115,9 @@ disable-xcb {
     message("The disable-xcb option has been deprecated. Please use disable-desktop instead.")
     CONFIG += disable-desktop
 }
+
+# Enables logging of sensitive information, such as key events.
+# Should never be enabled by default.
+# It's defined here rather than virtualkeyboarddebug_p.h
+# so that the plugins can use it.
+sensitive-debug: DEFINES += SENSITIVE_DEBUG
