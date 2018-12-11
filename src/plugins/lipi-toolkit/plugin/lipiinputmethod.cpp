@@ -621,6 +621,7 @@ void LipiInputMethod::timerEvent(QTimerEvent *timerEvent)
 
 void LipiInputMethod::resultsAvailable(const QVariantList &resultList)
 {
+#ifdef SENSITIVE_DEBUG
     if (lcLipi().isDebugEnabled()) {
         qCDebug(lcLipi) << "LipiInputMethod::resultsAvailable():";
         for (int i = 0; i < resultList.size(); i++) {
@@ -631,6 +632,7 @@ void LipiInputMethod::resultsAvailable(const QVariantList &resultList)
                                .arg(unicode).arg(confidence).toUtf8().constData();
         }
     }
+#endif
     Q_D(LipiInputMethod);
     d->resultsAvailable(resultList);
 }
