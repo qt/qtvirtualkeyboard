@@ -53,6 +53,7 @@ void tst_layoutfilesystem::layouts()
 
     layoutTestHelper.window->show();
     QVERIFY(QTest::qWaitForWindowExposed(layoutTestHelper.window.data()));
+    QCoreApplication::processEvents(); // Process all queued events
 
     QObject *layout = layoutTestHelper.window->findChild<QObject*>("en_GB");
     QVERIFY(layout);
