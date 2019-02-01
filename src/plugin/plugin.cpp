@@ -76,6 +76,7 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     qRegisterMetaType<PlainInputMethod *>("PlainInputMethod*");
     qmlRegisterType<PlainInputMethod>(pluginsUri, 1, 0, "PlainInputMethod");
     qmlRegisterType<PlainInputMethod>(pluginsUri, 2, 0, "PlainInputMethod");
+    qmlRegisterType<PlainInputMethod>(pluginsUri, 2, 3, "PlainInputMethod");
 
     QHash<QString, QJsonObject> extensions = ExtensionLoader::plugins();
     for (const QString &extensionName : extensions.uniqueKeys()) {

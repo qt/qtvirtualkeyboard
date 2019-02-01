@@ -270,7 +270,7 @@ bool QVirtualKeyboardAbstractInputMethod::clickPreeditText(int cursorPosition)
 */
 
 /*!
-    \fn bool QVirtualKeyboardAbstractInputMethod::setTextCase(QVirtualKeyboardInputEngine::::TextCase textCase)
+    \fn bool QVirtualKeyboardAbstractInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 
     Updates the \a textCase for this input method. The method returns \c true
     if successful.
@@ -316,7 +316,7 @@ bool QVirtualKeyboardAbstractInputMethod::clickPreeditText(int cursorPosition)
 /*!
     \fn QVariant QVirtualKeyboardAbstractInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 
-    Returns item data for the selection list identified by \a type. The \a \l {QVirtualKeyboardSelectionListModel::Role}{role}
+    Returns item data for the selection list identified by \a type. The \a role
     parameter specifies which data is requested. The \a index parameter is a
     zero based index into the list.
 */

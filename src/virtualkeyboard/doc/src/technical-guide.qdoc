@@ -452,7 +452,7 @@ from a variety of input sources (e.g. keyboard layout or full screen).
 
 The patternRecognitionModes method returns a list of pattern recognition modes,
 which are supported by the input method. A pattern recognition mode, such as
-\l { QVirtualKeyboardInputEngine::PatternRecognitionMode::Handwriting } { HandwritingRecognition },
+\l { QVirtualKeyboardInputEngine::PatternRecognitionMode } { Handwriting },
 defines the method by which the input method processes the data.
 
 The trace interaction is started when an input source detects a new contact point, and

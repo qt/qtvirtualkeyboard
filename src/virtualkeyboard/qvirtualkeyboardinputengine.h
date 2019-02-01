@@ -102,7 +102,7 @@ public:
         WordAtCursor = WordBeforeCursor | WordAfterCursor
     };
     Q_FLAG(ReselectFlag)
-    Q_DECLARE_FLAGS(ReselectFlags, QVirtualKeyboardInputEngine::ReselectFlag)
+    Q_DECLARE_FLAGS(ReselectFlags, ReselectFlag)
 
 public:
     ~QVirtualKeyboardInputEngine();
