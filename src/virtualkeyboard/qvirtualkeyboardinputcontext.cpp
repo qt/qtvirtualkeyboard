@@ -332,24 +332,66 @@ void QVirtualKeyboardInputContext::setSelectionOnFocusObject(const QPointF &anch
     QPlatformInputContext::setSelectionOnFocusObject(anchorPos, cursorPos);
 }
 
+/*!
+    \property QVirtualKeyboardInputContext::anchorRectIntersectsClipRect
+    \brief Holds \c true if the bounding rectangle of the selection anchor
+    intersects the exposed input item rectangle.
+
+    \sa Qt::ImAnchorRectangle, Qt::ImInputItemClipRectangle
+*/
+/*!
+    \qmlproperty bool InputContext::anchorRectIntersectsClipRect
+    \readonly
+    \brief Holds \c true if the bounding rectangle of the selection anchor
+    intersects the exposed input item rectangle.
+
+    \sa Qt::ImAnchorRectangle, Qt::ImInputItemClipRectangle
+*/
 bool QVirtualKeyboardInputContext::anchorRectIntersectsClipRect() const
 {
     Q_D(const QVirtualKeyboardInputContext);
     return d->anchorRectIntersectsClipRect;
 }
 
+/*!
+    \property QVirtualKeyboardInputContext::cursorRectIntersectsClipRect
+    \brief Holds \c true if the bounding rectangle of the input cursor
+    intersects the exposed input item rectangle.
+
+    \sa Qt::ImCursorRectangle, Qt::ImInputItemClipRectangle
+*/
+/*!
+    \qmlproperty bool InputContext::cursorRectIntersectsClipRect
+    \readonly
+    \brief Holds \c true if the bounding rectangle of the input cursor
+    intersects the exposed input item rectangle.
+
+    \sa Qt::ImCursorRectangle, Qt::ImInputItemClipRectangle
+*/
 bool QVirtualKeyboardInputContext::cursorRectIntersectsClipRect() const
 {
     Q_D(const QVirtualKeyboardInputContext);
     return d->cursorRectIntersectsClipRect;
 }
 
+/*!
+    \property QVirtualKeyboardInputContext::selectionControlVisible
+    \brief Holds \c true if the selection control is currently visible.
+*/
+/*!
+    \qmlproperty bool InputContext::selectionControlVisible
+    \readonly
+    \brief Holds \c true if the selection control is currently visible.
+*/
 bool QVirtualKeyboardInputContext::isSelectionControlVisible() const
 {
     Q_D(const QVirtualKeyboardInputContext);
     return d->selectionControlVisible;
 }
 
+/*!
+    \internal
+*/
 QVirtualKeyboardInputContextPrivate *QVirtualKeyboardInputContext::priv() const
 {
     Q_D(const QVirtualKeyboardInputContext);
@@ -358,7 +400,9 @@ QVirtualKeyboardInputContextPrivate *QVirtualKeyboardInputContext::priv() const
 
 /*!
     \qmlproperty bool InputContext::shift
-    \deprecated Use \l shiftActive instead.
+    \deprecated
+
+    Use \l shiftActive instead.
 
     This property is changed when the shift status changes.
 */
@@ -366,7 +410,9 @@ QVirtualKeyboardInputContextPrivate *QVirtualKeyboardInputContext::priv() const
 /*!
     \property QVirtualKeyboardInputContext::shift
     \brief the shift status.
-    \deprecated Use \l shiftActive instead.
+    \deprecated
+
+    Use \l shiftActive instead.
 
     This property is changed when the shift status changes.
 */
@@ -387,7 +433,9 @@ QVirtualKeyboardInputContextPrivate *QVirtualKeyboardInputContext::priv() const
 
 /*!
     \qmlproperty bool InputContext::capsLock
-    \deprecated Use \l capsLockActive instead.
+    \deprecated
+
+    Use \l capsLockActive instead.
 
     This property is changed when the caps lock status changes.
 */
@@ -395,7 +443,9 @@ QVirtualKeyboardInputContextPrivate *QVirtualKeyboardInputContext::priv() const
 /*!
     \property QVirtualKeyboardInputContext::capsLock
     \brief the caps lock status.
-    \deprecated Use \l capsLockActive instead.
+    \deprecated
+
+    Use \l capsLockActive instead.
 
     This property is changed when the caps lock status changes.
 */
@@ -575,4 +625,8 @@ QVirtualKeyboardInputContextPrivate *QVirtualKeyboardInputContext::priv() const
     This property stores the input engine.
 */
 
+/*!
+    \property QVirtualKeyboardInputContext::priv
+    \internal
+*/
 QT_END_NAMESPACE

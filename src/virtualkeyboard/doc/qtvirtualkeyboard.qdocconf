@@ -5,13 +5,9 @@ description = Qt Virtual Keyboard
 version = $QT_VERSION
 buildversion = Qt Virtual Keyboard | Commercial or GPLv3
 
-# Custom module header passed to clang
-moduleheader = QtVirtualKeyboard.h
-
 headerdirs  += ..
 sourcedirs  += .. ../../styles/
 excludedirs += ../content/layouts
-excludefiles += "*_p.h"
 
 # Specify the install path under QT_INSTALL_EXAMPLES
 exampledirs += ../../../examples/virtualkeyboard \
@@ -28,7 +24,7 @@ manifestmeta.highlighted.names = "QtVirtualKeyboard/Qt Quick Virtual Keyboard - 
 
 imagedirs += images
 
-depends += qtdoc qtcore qtgui qtwidgets qtwayland qtqml qtquick qtquickcontrols
+depends += qtdoc qtcore qtgui qtwidgets qtwaylandcompositor qtqml qtquick qtquickcontrols
 
 qhp.projects = QtVirtualKeyboard
 

@@ -57,18 +57,18 @@ public:
 };
 
 /*!
-    \qmltype QVirtualKeyboardSelectionListModel
+    \qmltype SelectionListModel
     \instantiates QVirtualKeyboardSelectionListModel
     \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
     \brief Provides a data model for the selection lists.
 
-    The QVirtualKeyboardSelectionListModel is a data model for word candidates
+    The SelectionListModel is a data model for word candidates
     provided by the input method.
 
-    An instance of QVirtualKeyboardSelectionListModel cannot be created directly.
-    Instead, the QVirtualKeyboardInputEngine manages the instances and provides
-    access to the model by QVirtualKeyboardInputEngine::wordCandidateListModel
+    An instance of a SelectionListModel cannot be created directly.
+    Instead, the InputEngine manages the instances and provides
+    access to the model by InputEngine::wordCandidateListModel
     property.
 
     The model exposes the following data roles for the list delegate:
@@ -105,8 +105,8 @@ public:
 
     This enum specifies the type of selection list.
 
-    \value Type::WordCandidateList
-           Shows list of word candidates
+    \value WordCandidateList
+           Shows list of word candidates.
 */
 
 /*!
@@ -114,20 +114,20 @@ public:
 
     This enum specifies a role of the data requested.
 
-    \value Role::Display
+    \value Display
            The data to be rendered in form of text.
-    \value Role::DisplayRole
+    \value DisplayRole
            \c obsolete Use Role::Display.
-    \value Role::WordCompletionLength
+    \value WordCompletionLength
            An integer specifying the length of the word
            the completion part expressed as the
            number of characters counted from the
            end of the string.
-    \value Role::WordCompletionLengthRole
+    \value WordCompletionLengthRole
            \c obsolete Use Role::WordCompletionLength.
-    \value Role::Dictionary
+    \value Dictionary
            An integer specifying \ l {QVirtualKeyboardSelectionListModel::DictionaryType}{dictionary type}.
-    \value Role::CanRemoveSuggestion
+    \value CanRemoveSuggestion
            A boolean value indicating if the word candidate
            can be removed from the dictionary.
 */
@@ -137,9 +137,9 @@ public:
 
     This enum specifies the dictionary type of a word.
 
-    \value DictionaryType::Default
+    \value Default
            The word candidate is from the default dictionary.
-    \value DictionaryType::User
+    \value User
            The word candidate is from the user dictionary.
 */
 
@@ -221,6 +221,10 @@ QHash<int,QByteArray> QVirtualKeyboardSelectionListModel::roleNames() const
 }
 
 /*!
+    \property QVirtualKeyboardSelectionListModel::count
+    \internal
+*/
+/*
     \internal
 */
 int QVirtualKeyboardSelectionListModel::count() const
@@ -229,15 +233,13 @@ int QVirtualKeyboardSelectionListModel::count() const
     return d->rowCount;
 }
 
-/*! \qmlmethod void QVirtualKeyboardSelectionListModel::selectItem(int index)
+/*! \qmlmethod void SelectionListModel::selectItem(int index)
 
     This method should be called when the user selects an item at position
     \a index from the list.
     The selection is forwarded to the input method for further processing.
 */
 /*!
-    \fn void QVirtualKeyboardSelectionListModel::selectItem(int index)
-
     This method should be called when the user selects an item at position
     \a index from the list.
     The selection is forwarded to the input method for further processing.
@@ -251,6 +253,18 @@ void QVirtualKeyboardSelectionListModel::selectItem(int index)
     }
 }
 
+/*!
+    \qmlmethod void SelectionListModel::removeItem(int index)
+
+    This method should be called when the user removes an item at position
+    \a index from the list.
+    The removal is forwarded to the input method for further processing.
+*/
+/*!
+    This method should be called when the user removes an item at position
+    \a index from the list.
+    The removal is forwarded to the input method for further processing.
+*/
 void QVirtualKeyboardSelectionListModel::removeItem(int index)
 {
     Q_D(QVirtualKeyboardSelectionListModel);
@@ -317,7 +331,7 @@ void QVirtualKeyboardSelectionListModel::selectionListActiveItemChanged(QVirtual
 }
 
 /*!
-    \qmlsignal void QVirtualKeyboardSelectionListModel::activeItemChanged(int index)
+    \qmlsignal void SelectionListModel::activeItemChanged(int index)
 
     This signal is emitted when the active item in the list changes. The
     UI should react to this signal by highlighting the item at \a index in
@@ -332,7 +346,7 @@ void QVirtualKeyboardSelectionListModel::selectionListActiveItemChanged(QVirtual
 */
 
 /*!
-    \qmlsignal void QVirtualKeyboardSelectionListModel::itemSelected(int index)
+    \qmlsignal void SelectionListModel::itemSelected(int index)
 
     This signal is emitted when an item at \a index is selected by the user.
 */

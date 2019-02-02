@@ -850,34 +850,42 @@ void QVirtualKeyboardInputEngine::timerEvent(QTimerEvent *timerEvent)
 
     This enum specifies the input mode for the input method.
 
-    \value InputMode::Latin
+    \value Latin
            The default input mode for latin text.
-    \value InputMode::Numeric
+    \value Numeric
            Only numeric input is allowed.
-    \value InputMode::Dialable
+    \value Dialable
            Only dialable input is allowed.
-    \value InputMode::Pinyin
+    \value Pinyin
            Pinyin input mode for Chinese.
-    \value InputMode::Cangjie
+    \value Cangjie
            Cangjie input mode for Chinese.
-    \value InputMode::Zhuyin
+    \value Zhuyin
            Zhuyin input mode for Chinese.
-    \value InputMode::Hangul
+    \value Hangul
            Hangul input mode for Korean.
-    \value InputMode::Hiragana
+    \value Hiragana
            Hiragana input mode for Japanese.
-    \value InputMode::Katakana
+    \value Katakana
            Katakana input mode for Japanese.
-    \value InputMode::FullwidthLatin
+    \value FullwidthLatin
            Fullwidth latin input mode for East Asian languages.
-    \value InputMode::Greek
+    \value Greek
            Greek input mode.
-    \value InputMode::Cyrillic
+    \value Cyrillic
            Cyrillic input mode.
-    \value InputMode::Arabic
+    \value Arabic
            Arabic input mode.
-    \value InputMode::Hebrew
+    \value Hebrew
            Hebrew input mode.
+    \value ChineseHandwriting
+           Chinese handwriting input mode.
+    \value JapaneseHandwriting
+           Japanese handwriting input mode.
+    \value KoreanHandwriting
+           Korean handwriting input mode.
+    \value Thai
+           Thai input mode.
 */
 
 /*!
@@ -885,9 +893,9 @@ void QVirtualKeyboardInputEngine::timerEvent(QTimerEvent *timerEvent)
 
     This enum specifies the text case for the input method.
 
-    \value TextCase::Lower
+    \value Lower
            Lower case text.
-    \value TextCase::Upper
+    \value Upper
            Upper case text.
 */
 
@@ -896,13 +904,13 @@ void QVirtualKeyboardInputEngine::timerEvent(QTimerEvent *timerEvent)
 
     This enum specifies the input mode for the input method.
 
-    \value PatternRecognitionMode::None
+    \value None
            Pattern recognition is not available.
-    \value PatternRecognitionMode::PatternRecognitionDisabled
+    \value PatternRecognitionDisabled
            \c obsolete Use PatternRecognitionMode::None
-    \value PatternRecognitionMode::Handwriting
+    \value Handwriting
            Pattern recognition mode for handwriting recognition.
-    \value PatternRecognitionMode::HandwritingRecoginition
+    \value HandwritingRecoginition
            \c obsolete Use PatternRecognitionMode::Handwriting
 */
 
@@ -911,11 +919,11 @@ void QVirtualKeyboardInputEngine::timerEvent(QTimerEvent *timerEvent)
 
     This enum specifies the rules for word reselection.
 
-    \value ReselectFlag::WordBeforeCursor
+    \value WordBeforeCursor
            Activate the word before the cursor. When this flag is used exclusively, the word must end exactly at the cursor.
-    \value ReselectFlag::WordAfterCursor
+    \value WordAfterCursor
            Activate the word after the cursor. When this flag is used exclusively, the word must start exactly at the cursor.
-    \value ReselectFlag::WordAtCursor
+    \value WordAtCursor
            Activate the word at the cursor. This flag is a combination of the above flags with the exception that the word cannot start or stop at the cursor.
 */
 
@@ -941,6 +949,18 @@ void QVirtualKeyboardInputEngine::timerEvent(QTimerEvent *timerEvent)
     \since QtQuick.VirtualKeyboard 2.0
 
     The list of available pattern recognition modes.
+
+    Possible values:
+
+    \value InputEngine.PatternRecognitionMode.None
+           Pattern recognition is not available.
+    \value InputEngine.PatternRecognitionMode.PatternRecognitionDisabled
+           \c obsolete - Use \c None instead.
+    \value InputEngine.PatternRecognitionMode.Handwriting
+           Pattern recognition mode for handwriting recognition.
+    \value InputEngine.PatternRecognitionMode.HandwritingRecoginition
+           \c obsolete - Use \c Handwriting instead.
+
 */
 
 /*!
