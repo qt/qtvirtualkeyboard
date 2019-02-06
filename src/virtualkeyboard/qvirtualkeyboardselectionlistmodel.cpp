@@ -147,10 +147,11 @@ QVirtualKeyboardSelectionListModel::QVirtualKeyboardSelectionListModel(QObject *
     QAbstractListModel(*new QVirtualKeyboardSelectionListModelPrivate(), parent)
 {
     Q_D(QVirtualKeyboardSelectionListModel);
-    d->roles[static_cast<const int>(Role::Display)] = "display";
-    d->roles[static_cast<const int>(Role::WordCompletionLength)] = "wordCompletionLength";
-    d->roles[static_cast<const int>(Role::Dictionary)] = "dictionary";
-    d->roles[static_cast<const int>(Role::CanRemoveSuggestion)] = "canRemoveSuggestion";
+    d->roles =
+        {{static_cast<int>(Role::Display), "display"},
+         {static_cast<int>(Role::WordCompletionLength), "wordCompletionLength"},
+         {static_cast<int>(Role::Dictionary), "dictionary"},
+         {static_cast<int>(Role::CanRemoveSuggestion), "canRemoveSuggestion"}};
 }
 
 /*!
