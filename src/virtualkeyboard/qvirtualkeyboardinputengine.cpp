@@ -431,7 +431,7 @@ void QVirtualKeyboardInputEngine::setInputMode(QVirtualKeyboardInputEngine::Inpu
         updateInputModes();
         Q_ASSERT(cachedInputModes == d->inputModes);
 #endif
-        if (d->inputModes.contains(static_cast<const int>(inputMode))) {
+        if (d->inputModes.contains(static_cast<int>(inputMode))) {
             d->inputMethod->setInputMode(d->inputContext->locale(), inputMode);
             if (d->inputMode != inputMode) {
                 d->inputMode = inputMode;
