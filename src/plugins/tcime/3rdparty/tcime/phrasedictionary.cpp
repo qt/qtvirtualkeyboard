@@ -47,8 +47,8 @@ QStringList PhraseDictionary::getWords(const QString &input) const
 
     const DictionaryEntry &words = dict[0];
 
-    DictionaryEntry::ConstIterator word = qBinaryFind(words, input.at(0));
-    if (word == words.constEnd())
+    DictionaryEntry::ConstIterator word = std::lower_bound(words.begin(), words.end(), input.at(0));
+    if (word == words.constEnd() || *word != input.at(0))
         return QStringList();
 
     int index = word - words.constBegin();
