@@ -57,7 +57,7 @@ Item {
 
     /*! Pattern recognition mode of this input area.
 
-        The default value is \l {InputEngine::PatternRecognitionMode::None} {InputEngine.PatternRecognitionMode.None}.
+        The default value is \l {InputEngine::patternRecognitionModes} {InputEngine.PatternRecognitionMode.None}.
     */
     property alias patternRecognitionMode: traceInputArea.patternRecognitionMode
 
