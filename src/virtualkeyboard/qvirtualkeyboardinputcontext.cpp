@@ -70,6 +70,7 @@ QVirtualKeyboardInputContext::QVirtualKeyboardInputContext(QObject *parent) :
     QObject::connect(d->_shiftHandler, &ShiftHandler::capsLockActiveChanged, this, &QVirtualKeyboardInputContext::capsLockActiveChanged);
     QObject::connect(d->_shiftHandler, &ShiftHandler::uppercaseChanged, this, &QVirtualKeyboardInputContext::uppercaseChanged);
     QObject::connect(d, &QVirtualKeyboardInputContextPrivate::localeChanged, this, &QVirtualKeyboardInputContext::localeChanged);
+    QObject::connect(d, &QVirtualKeyboardInputContextPrivate::inputItemChanged, this, &QVirtualKeyboardInputContext::inputItemChanged);
 }
 
 /*!
@@ -190,6 +191,12 @@ QString QVirtualKeyboardInputContext::locale() const
 {
     Q_D(const QVirtualKeyboardInputContext);
     return d->locale();
+}
+
+QObject *QVirtualKeyboardInputContext::inputItem() const
+{
+    Q_D(const QVirtualKeyboardInputContext);
+    return d->inputItem();
 }
 
 QVirtualKeyboardInputEngine *QVirtualKeyboardInputContext::inputEngine() const
@@ -610,6 +617,21 @@ QVirtualKeyboardInputContextPrivate *QVirtualKeyboardInputContext::priv() const
     \brief the locale.
 
     This property is changed when the input locale changes.
+*/
+
+/*!
+    \qmlproperty QtObject InputContext::inputItem
+    \deprecated
+
+    This property is changed when the focused input item changes.
+*/
+
+/*!
+    \property QVirtualKeyboardInputContext::inputItem
+    \brief the focused input item.
+    \deprecated
+
+    This property is changed when the focused input item changes.
 */
 
 /*!

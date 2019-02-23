@@ -65,6 +65,7 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContext : public QObject
     Q_PROPERTY(QRectF cursorRectangle READ cursorRectangle NOTIFY cursorRectangleChanged)
     Q_PROPERTY(bool animating READ isAnimating WRITE setAnimating NOTIFY animatingChanged)
     Q_PROPERTY(QString locale READ locale NOTIFY localeChanged)
+    Q_PROPERTY(QObject *inputItem READ inputItem NOTIFY inputItemChanged)
     Q_PROPERTY(QVirtualKeyboardInputEngine *inputEngine READ inputEngine CONSTANT)
     Q_PROPERTY(bool selectionControlVisible READ isSelectionControlVisible NOTIFY selectionControlVisibleChanged)
     Q_PROPERTY(bool anchorRectIntersectsClipRect READ anchorRectIntersectsClipRect NOTIFY anchorRectIntersectsClipRectChanged)
@@ -91,6 +92,7 @@ public:
     bool isAnimating() const;
     void setAnimating(bool isAnimating);
     QString locale() const;
+    QObject *inputItem() const;
     QVirtualKeyboardInputEngine *inputEngine() const;
     bool isSelectionControlVisible() const;
     bool anchorRectIntersectsClipRect() const;
@@ -119,6 +121,7 @@ Q_SIGNALS:
     void uppercaseChanged();
     void animatingChanged();
     void localeChanged();
+    void inputItemChanged();
     void selectionControlVisibleChanged();
     void anchorRectIntersectsClipRectChanged();
     void cursorRectIntersectsClipRectChanged();
