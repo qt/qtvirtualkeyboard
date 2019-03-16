@@ -111,8 +111,8 @@ QStringList CangjieDictionary::searchWords(int secondaryIndex, const DictionaryE
 
     DictionaryEntry::ConstIterator start = data.constBegin();
     DictionaryEntry::ConstIterator end = start + length;
-    DictionaryEntry::ConstIterator rangeStart = qBinaryFind(start, end, (DictionaryWord)secondaryIndex);
-    if (rangeStart == end)
+    DictionaryEntry::ConstIterator rangeStart = std::lower_bound(start, end, (DictionaryWord)secondaryIndex);
+    if (rangeStart == end || *rangeStart != secondaryIndex)
         return QStringList();
 
     // There may be more than one words with the same index; look up words with

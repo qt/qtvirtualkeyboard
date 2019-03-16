@@ -105,7 +105,7 @@ T9 Write supports handwriting written in the following languages:
 \l {https://www.myscript.com}{MyScript}
 SDK is a commercial handwriting recognition engine.
 
-\MyScript SDK supports 71 handwriting recognition languages:
+MyScript SDK supports 71 handwriting recognition languages:
 
 \table
 \row
@@ -190,7 +190,7 @@ SDK is a commercial handwriting recognition engine.
 \endlist
 \endtable
 
-\MyScript is integrated into Qt Virtual Keyboard with identical coverage of supported languages.
+MyScript is integrated into Qt Virtual Keyboard with identical coverage of supported languages.
 
   \list
     \li \l {Qt Virtual Keyboard#Supported Languages}{Supported Languages}
