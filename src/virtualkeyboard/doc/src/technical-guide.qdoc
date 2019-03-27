@@ -774,4 +774,11 @@ The final step is to run the example application with your custom style:
 QT_VIRTUALKEYBOARD_STYLE=test virtualkeyboard
 \endcode
 
+\section1 Using Qt Virtual Keyboard with QQuickWidget
+
+When using Qt Virtual Keyboard in a \l QQuickWidget on a touch device,
+it is necessary to set the \l Qt::WA_AcceptTouchEvents attribute via
+\l QWidget::setAttribute(). Without this attribute set, events from
+a touch device will be converted into synthesized mouse events.
+
 */
