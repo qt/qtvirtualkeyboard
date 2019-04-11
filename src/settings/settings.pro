@@ -1,6 +1,6 @@
 TARGET = qtquickvirtualkeyboardsettingsplugin
 TARGETPATH = QtQuick/VirtualKeyboard/Settings
-IMPORT_VERSION = 2.2
+IMPORT_VERSION = 2.$$QT_MINOR_VERSION
 QT += qml quick virtualkeyboard-private
 
 CONFIG += no_cxx_module

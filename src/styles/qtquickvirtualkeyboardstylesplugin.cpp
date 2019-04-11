@@ -37,7 +37,7 @@
 QT_BEGIN_NAMESPACE
 
 /*!
-    \qmlmodule QtQuick.VirtualKeyboard.Styles 2.2
+    \qmlmodule QtQuick.VirtualKeyboard.Styles 2.\QtMinorVersion
     \title Qt Quick Virtual Keyboard Styles QML Types
     \ingroup qmlmodules
 
@@ -46,9 +46,9 @@ QT_BEGIN_NAMESPACE
     The QML types can be imported into your application using the following
     import statements in your .qml file:
 
-    \code
-    import QtQuick.VirtualKeyboard.Styles 2.2
-    \endcode
+    \qml \QtMinorVersion
+    import QtQuick.VirtualKeyboard.Styles 2.\1
+    \endqml
 */
 
 void QtQuickVirtualKeyboardStylesPlugin::registerTypes(const char *uri)
@@ -73,6 +73,9 @@ void QtQuickVirtualKeyboardStylesPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(path + QLatin1String("SelectionListItem.qml")), uri, 2, 0, "SelectionListItem");
     qmlRegisterType(QUrl(path + QLatin1String("TraceInputKeyPanel.qml")), uri, 2, 0, "TraceInputKeyPanel");
     qmlRegisterType(QUrl(path + QLatin1String("TraceCanvas.qml")), uri, 2, 0, "TraceCanvas");
+
+    // Auto-increment the import to stay in sync with ALL future QtQuick minor versions
+    qmlRegisterModule(uri, 2, QT_VERSION_MINOR);
 }
 
 void QtQuickVirtualKeyboardStylesPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
