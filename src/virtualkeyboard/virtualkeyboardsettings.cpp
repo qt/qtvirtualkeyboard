@@ -95,7 +95,7 @@ public:
 };
 
 /*!
-    \qmlmodule QtQuick.VirtualKeyboard.Settings 2.2
+    \qmlmodule QtQuick.VirtualKeyboard.Settings 2.\QtMinorVersion
     \title Qt Quick Virtual Keyboard Settings QML Types
     \ingroup qmlmodules
 
@@ -104,9 +104,9 @@ public:
     The QML types can be imported into your application using the following
     import statements in your .qml file:
 
-    \code
-    import QtQuick.VirtualKeyboard.Settings 2.2
-    \endcode
+    \qml \QtMinorVersion
+    import QtQuick.VirtualKeyboard.Settings 2.\1
+    \endqml
 */
 
 /*!
