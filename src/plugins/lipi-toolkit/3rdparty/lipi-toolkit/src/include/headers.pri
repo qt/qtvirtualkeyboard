@@ -29,5 +29,4 @@ HEADERS += \
     $$PWD/LTKTypes.h \
     $$PWD/LTKWordRecoConfig.h \
     $$PWD/LTKWordRecoResult.h \
-    $$PWD/LTKWordRecognizer.h \
-    $$PWD/TpcError.h
+    $$PWD/LTKWordRecognizer.h
