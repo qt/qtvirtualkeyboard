@@ -46,6 +46,8 @@ namespace QtVirtualKeyboard {
 
 Q_LOGGING_CATEGORY(qlcVirtualKeyboard, "qt.virtualkeyboard")
 
+static const char disableDesktopEnvVarName[] = "QT_VIRTUALKEYBOARD_DESKTOP_DISABLE";
+
 /*!
     \class QtVirtualKeyboard::PlatformInputContext
     \internal
@@ -58,8 +60,14 @@ PlatformInputContext::PlatformInputContext() :
     m_locale(),
     m_inputDirection(m_locale.textDirection()),
     m_filterEvent(nullptr),
-    m_visible(false)
+    m_visible(false),
+    m_desktopModeDisabled(false)
 {
+    if (!qEnvironmentVariableIsEmpty(disableDesktopEnvVarName)) {
+        bool ok;
+        int desktopModeDisabled = qgetenv(disableDesktopEnvVarName).toInt(&ok);
+        m_desktopModeDisabled = ok && desktopModeDisabled != 0;
+    }
 }
 
 PlatformInputContext::~PlatformInputContext()
@@ -90,7 +98,7 @@ void PlatformInputContext::update(Qt::InputMethodQueries queries)
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::update():" << queries;
     bool enabled = inputMethodQuery(Qt::ImEnabled).toBool();
 #ifdef QT_VIRTUALKEYBOARD_DESKTOP
-    if (enabled && !m_inputPanel) {
+    if (enabled && !m_inputPanel && !m_desktopModeDisabled) {
         m_inputPanel = new DesktopInputPanel(this);
         m_inputPanel->createView();
         if (m_inputContext) {

@@ -118,6 +118,7 @@ private:
     Qt::LayoutDirection m_inputDirection;
     QEvent *m_filterEvent;
     bool m_visible;
+    bool m_desktopModeDisabled;
 };
 
 } // namespace QtVirtualKeyboard

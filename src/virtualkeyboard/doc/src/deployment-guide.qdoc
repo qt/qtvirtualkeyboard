@@ -91,7 +91,8 @@ for using the plugin:
 The integration method is automatically selected by the project files.
 However, in desktop environments, it is possible to override the desktop
 integration method and use the application integration method instead,
-by adding \c CONFIG+=disable-desktop to the \c qmake command line.
+by using the \c QT_VIRTUALKEYBOARD_DESKTOP_DISABLE environment variable,
+or by adding \c CONFIG+=disable-desktop to the \c qmake command line.
 
 \section2 Using Qt Virtual Keyboard with Qt Wayland
 
@@ -253,6 +254,9 @@ There are several environment variables defined by the module that are listed be
     \row
         \li QT_VIRTUALKEYBOARD_LAYOUT_PATH
         \li Specifies the location of the layouts to be used with the virtual keyboard.
+    \row
+        \li QT_VIRTUALKEYBOARD_DESKTOP_DISABLE
+        \li Disables the desktop integration method.
     \row
         \li LIPI_ROOT
         \li Specifies the location of lipi-toolkit.
