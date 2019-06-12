@@ -34,7 +34,7 @@
 #include <QtCore/private/qobject_p.h>
 #include <QSet>
 #include <QGuiApplication>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QStyleHints>
 
 QT_BEGIN_NAMESPACE
@@ -69,7 +69,7 @@ public:
     bool capsLock;
     bool resetWhenVisible;
     QLocale locale;
-    QTime timer;
+    QElapsedTimer timer;
     const QSet<QLocale::Language> manualShiftLanguageFilter;
     const QSet<QVirtualKeyboardInputEngine::InputMode> manualCapsInputModeFilter;
     const QSet<QVirtualKeyboardInputEngine::InputMode> noAutoUppercaseInputModeFilter;
@@ -231,7 +231,7 @@ void ShiftHandler::toggleShift()
 
         QStyleHints *style = QGuiApplication::styleHints();
 
-        if (d->timer.isNull() || d->timer.elapsed() > style->mouseDoubleClickInterval()) {
+        if (!d->timer.isValid() || d->timer.elapsed() > style->mouseDoubleClickInterval()) {
             d->timer.restart();
         } else if (d->timer.elapsed() < style->mouseDoubleClickInterval() && !d->capsLock) {
             setCapsLockActive(!d->capsLock && d->shift && !d->shiftChanged);
@@ -249,7 +249,7 @@ void ShiftHandler::toggleShift()
 void ShiftHandler::clearToggleShiftTimer()
 {
     Q_D(ShiftHandler);
-    d->timer = QTime();
+    d->timer.invalidate();
 }
 
 void ShiftHandler::reset()
