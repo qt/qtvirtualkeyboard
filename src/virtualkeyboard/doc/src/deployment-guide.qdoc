@@ -274,6 +274,12 @@ There are several environment variables defined by the module that are listed be
             \li \c {LIPI_ROOT + "/lib"} if \c LIPI_ROOT is set.
             \li \c {QLibraryInfo::location(QLibraryInfo::PluginsPath) + "/lipi_toolkit"} if \c LIPI_ROOT is not set.
             \endlist
+    \row
+        \li QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS
+        \li Enables Qt Virtual Keyboard to send key events and use Shift key without having any text input in focus.
+
+            This variable needs to be explicitly set in the run environment of an application that wants to benefit
+            from this. Using qputenv() in the application itself is not sufficient.
 \endtable
 
 */

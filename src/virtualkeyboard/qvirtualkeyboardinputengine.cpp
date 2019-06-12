@@ -76,6 +76,9 @@ public:
                 accept = fallbackInputMethod->keyEvent(key, text, modifiers);
             }
             emit q->virtualKeyClicked(key, text, modifiers, isAutoRepeat);
+        } else if (QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS) {
+            accept = fallbackInputMethod->keyEvent(key, text, modifiers);
+            emit q->virtualKeyClicked(key, text, modifiers, isAutoRepeat);
         } else {
             qWarning() << "input method is not set";
         }

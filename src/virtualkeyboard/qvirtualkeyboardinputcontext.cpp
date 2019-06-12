@@ -218,7 +218,7 @@ QVirtualKeyboardInputEngine *QVirtualKeyboardInputContext::inputEngine() const
 void QVirtualKeyboardInputContext::sendKeyClick(int key, const QString &text, int modifiers)
 {
     Q_D(QVirtualKeyboardInputContext);
-    if (d->_focus && d->platformInputContext) {
+    if ((d->_focus && d->platformInputContext) || QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS) {
         QKeyEvent pressEvent(QEvent::KeyPress, key, Qt::KeyboardModifiers(modifiers), text);
         QKeyEvent releaseEvent(QEvent::KeyRelease, key, Qt::KeyboardModifiers(modifiers), text);
         VIRTUALKEYBOARD_DEBUG().nospace() << "InputContext::sendKeyClick()"

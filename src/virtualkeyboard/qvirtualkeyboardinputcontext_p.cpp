@@ -51,6 +51,8 @@ bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMeth
 
 using namespace QtVirtualKeyboard;
 
+const bool QtVirtualKeyboard::QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS = qEnvironmentVariableIsSet("QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS");
+
 QVirtualKeyboardInputContextPrivate::QVirtualKeyboardInputContextPrivate(QVirtualKeyboardInputContext *q_ptr) :
     QObject(nullptr),
     q_ptr(q_ptr),

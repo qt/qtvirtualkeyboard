@@ -50,6 +50,13 @@
 QT_BEGIN_NAMESPACE
 
 namespace QtVirtualKeyboard {
+
+// Boolean variable QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS will enable virtual keyboard
+// to send key events without having any text input in focus when an environment
+// variable QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS is set. This will also enable virtual
+// keyboard shift key usage in the same no focus situation.
+extern const bool QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS;
+
 class PlatformInputContext;
 class ShiftHandler;
 }

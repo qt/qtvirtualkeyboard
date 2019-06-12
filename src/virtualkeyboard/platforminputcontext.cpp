@@ -243,7 +243,17 @@ void PlatformInputContext::sendEvent(QEvent *event)
 void PlatformInputContext::sendKeyEvent(QKeyEvent *event)
 {
     const QGuiApplication *app = qApp;
-    QWindow *focusWindow = app ? app->focusWindow() : nullptr;
+    QWindow *focusWindow = nullptr;
+    if (app) {
+        if (QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS) {
+            if (!app->allWindows().isEmpty()) {
+                focusWindow = app->allWindows().first();
+            }
+        }
+        else {
+            focusWindow = app->focusWindow();
+        }
+    }
     if (focusWindow) {
         m_filterEvent = event;
         QGuiApplication::sendEvent(focusWindow, event);
