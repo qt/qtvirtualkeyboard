@@ -1,0 +1,9 @@
+{
+  "name": "x11vkb.host",
+  "description": "Qt Virtual Keyboard Host",
+  "path": "HOST_PATH/x11vkbnativehost",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://ibmhlnijonocbgabbjfkdbegceoihcbp/"
+  ]
+}
