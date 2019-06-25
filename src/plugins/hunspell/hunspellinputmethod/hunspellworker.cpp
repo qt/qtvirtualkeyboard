@@ -496,7 +496,7 @@ bool HunspellBuildSuggestionsTask::spellCheck(const QString &word)
 {
     if (!hunspell)
         return false;
-    if (word.contains(QRegularExpression(QLatin1Literal("[0-9]"))))
+    if (word.contains(QRegularExpression(QLatin1String("[0-9]"))))
         return true;
     return Hunspell_spell(hunspell, textCodec->fromUnicode(word).constData()) != 0;
 }
