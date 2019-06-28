@@ -115,7 +115,6 @@ public:
         defaultHwrDbPath(QLatin1String(":/QtQuick/VirtualKeyboard/T9Write/data/")),
         defaultDictionaryDbPath(defaultHwrDbPath),
         traceListHardLimit(32),
-        dictionaryLock(QMutex::Recursive),
         attachedDictionary(nullptr),
         resultId(0),
         lastResultId(0),
@@ -401,7 +400,7 @@ public:
 
     bool attachDictionary(const QSharedPointer<T9WriteDictionary> &dictionary)
     {
-        QMutexLocker dictionaryGuard(&dictionaryLock);
+        const std::lock_guard<QRecursiveMutex> dictionaryGuard(dictionaryLock);
         Q_ASSERT(decumaSession != nullptr);
         Q_ASSERT(dictionary != nullptr);
         qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::attachDictionary():" << dictionary->fileName();
@@ -415,7 +414,7 @@ public:
 
     void detachDictionary(const QSharedPointer<T9WriteDictionary> &dictionary)
     {
-        QMutexLocker dictionaryGuard(&dictionaryLock);
+        const std::lock_guard<QRecursiveMutex> dictionaryGuard(dictionaryLock);
         if (!dictionary)
             return;
 
@@ -945,7 +944,7 @@ public:
             The loading operation is blocking for the main thread only if the
             user starts handwriting input before the operation is complete.
         */
-        QMutexLocker dictionaryGuard(&dictionaryLock);
+        const std::lock_guard<QRecursiveMutex> dictionaryGuard(dictionaryLock);
 
         // Detach previous dictionary if the language is being changed
         // or the recognizer mode is single-character mode
@@ -1664,7 +1663,7 @@ public:
     QScopedPointer<T9WriteWorker> worker;
     QList<QVirtualKeyboardTrace *> traceList;
     int traceListHardLimit;
-    QMutex dictionaryLock;
+    QRecursiveMutex dictionaryLock;
     QString dictionaryFileName;
     QSharedPointer<T9WriteDictionary> loadedDictionary;
     QSharedPointer<T9WriteDictionary> attachedDictionary;
@@ -2083,7 +2082,7 @@ void T9WriteInputMethod::timerEvent(QTimerEvent *timerEvent)
             // In UCR mode the whole purpose is to write the word with
             // one or few strokes.
             if (d->sessionSettings.recognitionMode == ucrMode) {
-                QMutexLocker dictionaryGuard(&d->dictionaryLock);
+                const std::lock_guard<QRecursiveMutex> dictionaryGuard(d->dictionaryLock);
                 if (d->attachedDictionary)
                     return;
             }
@@ -2105,7 +2104,7 @@ void T9WriteInputMethod::dictionaryLoadCompleted(QSharedPointer<T9WriteDictionar
 {
     Q_D(T9WriteInputMethod);
     // Note: This method is called in worker thread context
-    QMutexLocker dictionaryGuard(&d->dictionaryLock);
+    const std::lock_guard<QRecursiveMutex> dictionaryGuard(d->dictionaryLock);
 
     if (!dictionary)
         return;
