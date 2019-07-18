@@ -102,7 +102,7 @@ public:
             surface.clear();
             pinyinDecoderService->resetSearch();
         }
-        if (ch == Qt::Key_Apostrophe) {
+        if (ch == u'\'') {
             if (surface.isEmpty())
                 return false;
             if (surface.endsWith(ch))

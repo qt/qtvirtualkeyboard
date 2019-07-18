@@ -124,7 +124,7 @@ public:
     bool composeCangjie(QVirtualKeyboardInputContext *ic, const QChar &c)
     {
         bool accept = false;
-        if (!input.contains(0x91CD) && CangjieTable::isLetter(c)) {
+        if (!input.contains(QChar(0x91CD)) && CangjieTable::isLetter(c)) {
             if (input.length() < (cangjieDictionary.simplified() ? CangjieTable::MAX_SIMPLIFIED_CODE_LENGTH : CangjieTable::MAX_CODE_LENGTH)) {
                 input.append(c);
                 ic->setPreeditText(input);
@@ -260,7 +260,7 @@ public:
 
     QList<QChar> decomposeZhuyin()
     {
-        QList<QChar> results = QList<QChar>() << 0 << 0 << 0 << 0;
+        QList<QChar> results = {QChar::Null, QChar::Null, QChar::Null, QChar::Null};
         QStringList pair = ZhuyinTable::stripTones(input);
         if (!pair.isEmpty()) {
             // Decompose tones.

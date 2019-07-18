@@ -185,7 +185,7 @@ QString PinyinDecoderService::candidateAt(int index)
     candidateBuf.resize(kMaxSearchSteps + 1);
     if (!im_get_candidate(size_t(index), (char16 *)candidateBuf.data(), candidateBuf.length() - 1))
         return QString();
-    candidateBuf.last() = 0;
+    candidateBuf.last() = u'\0';
     return QString(candidateBuf.data());
 }
 

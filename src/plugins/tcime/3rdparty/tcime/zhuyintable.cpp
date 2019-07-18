@@ -26,21 +26,21 @@ using namespace tcime;
 
 const int ZhuyinTable::INITIALS_SIZE = 22;
 const QList<QChar> ZhuyinTable::yiEndingFinals = QList<QChar>()
-        << 0x311a << 0x311b << 0x311d << 0x311e << 0x3120 << 0x3121 << 0x3122
-        << 0x3123 << 0x3124 << 0x3125;
+        << QChar(0x311a) << QChar(0x311b) << QChar(0x311d) << QChar(0x311e) << QChar(0x3120) << QChar(0x3121) << QChar(0x3122)
+        << QChar(0x3123) << QChar(0x3124) << QChar(0x3125);
 const QList<QChar> ZhuyinTable::wuEndingFinals = QList<QChar>()
-        << 0x311a << 0x311b << 0x311e << 0x311f << 0x3122 << 0x3123 << 0x3124
-        << 0x3125;
+        << QChar(0x311a) << QChar(0x311b) << QChar(0x311e) << QChar(0x311f) << QChar(0x3122) << QChar(0x3123) << QChar(0x3124)
+        << QChar(0x3125);
 const QList<QChar> ZhuyinTable::yuEndingFinals = QList<QChar>()
-        << 0x311d << 0x3122 << 0x3123 << 0x3125;
+        << QChar(0x311d) << QChar(0x3122) << QChar(0x3123) << QChar(0x3125);
 const int ZhuyinTable::YI_FINALS_INDEX = 14;
 const int ZhuyinTable::WU_FINALS_INDEX = 25;
 const int ZhuyinTable::YU_FINALS_INDEX = 34;
-const QChar ZhuyinTable::YI_FINALS = 0x3127;
-const QChar ZhuyinTable::WU_FINALS = 0x3128;
-const QChar ZhuyinTable::YU_FINALS = 0x3129;
+const QChar ZhuyinTable::YI_FINALS(0x3127);
+const QChar ZhuyinTable::WU_FINALS(0x3128);
+const QChar ZhuyinTable::YU_FINALS (0x3129);
 const QList<QChar> ZhuyinTable::tones = QList<QChar>()
-        << ZhuyinTable::DEFAULT_TONE << 0x02d9 << 0x02ca << 0x02c7 << 0x02cb;
+        << ZhuyinTable::DEFAULT_TONE << QChar(0x02d9) << QChar(0x02ca) << QChar(0x02c7) << QChar(0x02cb);
 const QChar ZhuyinTable::DEFAULT_TONE = QLatin1Char(' ');
 
 int ZhuyinTable::getInitials(const QChar &initials)
@@ -139,8 +139,7 @@ bool ZhuyinTable::isTone(const QChar &c)
 
 bool ZhuyinTable::isYiWuYuFinals(const QChar &c)
 {
-    ushort unicode = c.unicode();
-    return unicode == YI_FINALS || unicode == WU_FINALS || unicode == YU_FINALS;
+    return c == YI_FINALS || c == WU_FINALS || c == YU_FINALS;
 }
 
 QStringList ZhuyinTable::stripTones(const QString &input)
