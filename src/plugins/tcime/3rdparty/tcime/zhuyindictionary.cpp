@@ -32,8 +32,8 @@ ZhuyinDictionary::ZhuyinDictionary() :
 QStringList ZhuyinDictionary::getWords(const QString &input) const
 {
     // Look up the syllables index; return empty string for invalid syllables.
-    QStringList pair = ZhuyinTable::stripTones(input);
-    int syllablesIndex = !pair.isEmpty() ? ZhuyinTable::getSyllablesIndex(pair[0]) : -1;
+    auto strippedTones = ZhuyinTable::stripTones(input);
+    int syllablesIndex = strippedTones.ok ? ZhuyinTable::getSyllablesIndex(strippedTones.pair[0]) : -1;
     if (syllablesIndex < 0 || syllablesIndex >= dictionary().size())
         return QStringList();
 
@@ -44,7 +44,7 @@ QStringList ZhuyinDictionary::getWords(const QString &input) const
         return QStringList();
 
     // Counts of words for each tone are stored in the array beginning.
-    int tone = ZhuyinTable::getTones(pair[1].at(0));
+    int tone = ZhuyinTable::getTones(strippedTones.pair[1].at(0));
     int length = (int) data[tone].unicode();
     if (length == 0)
         return QStringList();

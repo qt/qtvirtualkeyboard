@@ -206,14 +206,14 @@ public:
                 // Tones are accepted only when there's text in composing.
                 return false;
 
-            QStringList pair = ZhuyinTable::stripTones(input);
-            if (pair.isEmpty())
+            auto strippedTones = ZhuyinTable::stripTones(input);
+            if (!strippedTones.ok)
                 // Tones cannot be composed if there's no syllables.
                 return false;
 
             // Replace the original tone with the new tone, but the default tone
             // character should not be composed into the composing text.
-            QChar tone = pair[1].at(0);
+            QChar tone = strippedTones.pair[1].at(0);
             if (c == ZhuyinTable::DEFAULT_TONE) {
                 if (tone != ZhuyinTable::DEFAULT_TONE)
                     input.remove(input.length() - 1, 1);
@@ -229,7 +229,7 @@ public:
                 input.insert(0, c);
             else
                 input.replace(0, 1, c);
-        } else if (ZhuyinTable::getFinals(QString(c)) > 0) {
+        } else if (ZhuyinTable::getFinals(QStringView(&c, 1)) > 0) {
             // Replace the finals in the decomposed of syllables and tones.
             QList<QChar> decomposed = decomposeZhuyin();
             if (ZhuyinTable::isYiWuYuFinals(c)) {
@@ -261,15 +261,15 @@ public:
     QList<QChar> decomposeZhuyin()
     {
         QList<QChar> results = {QChar::Null, QChar::Null, QChar::Null, QChar::Null};
-        QStringList pair = ZhuyinTable::stripTones(input);
-        if (!pair.isEmpty()) {
+        auto strippedTones = ZhuyinTable::stripTones(input);
+        if (strippedTones.ok) {
             // Decompose tones.
-            QChar tone = pair[1].at(0);
+            QChar tone = strippedTones.pair[1].at(0);
             if (tone != ZhuyinTable::DEFAULT_TONE)
                 results[3] = tone;
 
             // Decompose initials.
-            QString syllables = pair[0];
+            QStringView syllables = strippedTones.pair[0];
             if (ZhuyinTable::getInitials(syllables.at(0)) > 0) {
                 results[0] = syllables.at(0);
                 syllables = syllables.mid(1);

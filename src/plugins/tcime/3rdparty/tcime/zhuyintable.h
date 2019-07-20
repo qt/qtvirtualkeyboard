@@ -22,53 +22,24 @@
 #ifndef ZHUYINTABLE_H
 #define ZHUYINTABLE_H
 
-#include <QMap>
-#include <QChar>
-#include <QString>
+#include <QtCore/QStringView>
 
 namespace tcime {
-
-class ZhuyinTable
-{
-    Q_DISABLE_COPY(ZhuyinTable)
-    ZhuyinTable() {}
-
-    // All Chinese characters are mapped into a zhuyin table as described in
-    // http://en.wikipedia.org/wiki/Zhuyin_table.
-    static const int INITIALS_SIZE;
-
-    // Finals that can be appended after 'ㄧ' (yi), 'ㄨ' (wu), or 'ㄩ' (yu).
-    static const QList<QChar> yiEndingFinals;
-    static const QList<QChar> wuEndingFinals;
-    static const QList<QChar> yuEndingFinals;
-
-    // 'ㄧ' (yi) finals start from position 14 and are followed by 'ㄨ' (wu)
-    // finals, and 'ㄩ' (yu) finals follow after 'ㄨ' (wu) finals.
-    static const int YI_FINALS_INDEX;
-    static const int WU_FINALS_INDEX;
-    static const int YU_FINALS_INDEX;
-
-    // 'ㄧ' (yi), 'ㄨ' (wu) , and 'ㄩ' (yu) finals.
-    static const QChar YI_FINALS;
-    static const QChar WU_FINALS;
-    static const QChar YU_FINALS;
-
-    // Default tone and four tone symbols: '˙', 'ˊ', 'ˇ', and 'ˋ'.
-    static const QList<QChar> tones;
-
-public:
+struct ZhuyinTable {
     static const QChar DEFAULT_TONE;
-
-    static int getInitials(const QChar &initials);
-    static int getFinals(const QString &finals);
-    static int getSyllablesIndex(const QString &syllables);
-    static int getTones(const QChar &c);
+    static int getInitials(QChar initials);
+    static int getFinals(QStringView finals);
+    static int getSyllablesIndex(QStringView syllables);
+    static int getTones(QChar c);
     static int getTonesCount();
-    static bool isTone(const QChar &c);
-    static bool isYiWuYuFinals(const QChar &c);
-    static QStringList stripTones(const QString &input);
+    static bool isTone(QChar c);
+    static bool isYiWuYuFinals(QChar c);
+    struct StripTonesResult {
+        bool ok;
+        QStringView pair[2];
+    };
+    static StripTonesResult stripTones(QStringView input);
 };
-
 }
 
 #endif // ZHUYINTABLE_H
