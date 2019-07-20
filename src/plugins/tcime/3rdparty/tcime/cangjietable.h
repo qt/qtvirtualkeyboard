@@ -22,7 +22,6 @@
 #ifndef CANGJIETABLE_H
 #define CANGJIETABLE_H
 
-#include <QMap>
 #include <QChar>
 #include <QString>
 
@@ -35,11 +34,6 @@ class CangjieTable
 {
     Q_DISABLE_COPY(CangjieTable)
     CangjieTable() {}
-
-    // Cangjie 25 letters with number-index starting from 1:
-    // 日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜
-    static const QMap<QChar, int> &letters();
-    static const int BASE_NUMBER;
 
 public:
 

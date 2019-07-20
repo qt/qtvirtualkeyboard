@@ -23,53 +23,23 @@
 
 using namespace tcime;
 
-const int CangjieTable::BASE_NUMBER = 26;
 const int CangjieTable::MAX_CODE_LENGTH = 5;
 const int CangjieTable::MAX_SIMPLIFIED_CODE_LENGTH = 2;
 
-const QMap<QChar, int> &CangjieTable::letters()
-{
-    static QMap<QChar, int> letters;
-    if (letters.isEmpty()) {
-        int i = 1;
-        letters.insert(QChar(0x65e5), i++);
-        letters.insert(QChar(0x6708), i++);
-        letters.insert(QChar(0x91d1), i++);
-        letters.insert(QChar(0x6728), i++);
-        letters.insert(QChar(0x6c34), i++);
-        letters.insert(QChar(0x706b), i++);
-        letters.insert(QChar(0x571f), i++);
-        letters.insert(QChar(0x7af9), i++);
-        letters.insert(QChar(0x6208), i++);
-        letters.insert(QChar(0x5341), i++);
-        letters.insert(QChar(0x5927), i++);
-        letters.insert(QChar(0x4e2d), i++);
-        letters.insert(QChar(0x4e00), i++);
-        letters.insert(QChar(0x5f13), i++);
-        letters.insert(QChar(0x4eba), i++);
-        letters.insert(QChar(0x5fc3), i++);
-        letters.insert(QChar(0x624b), i++);
-        letters.insert(QChar(0x53e3), i++);
-        letters.insert(QChar(0x5c38), i++);
-        letters.insert(QChar(0x5eff), i++);
-        letters.insert(QChar(0x5c71), i++);
-        letters.insert(QChar(0x5973), i++);
-        letters.insert(QChar(0x7530), i++);
-        letters.insert(QChar(0x96e3), i++);
-        letters.insert(QChar(0x535c), i++);
-    }
-    return letters;
-}
+// Cangjie 25 letters with number-index starting from 1:
+// 日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜
+static const int BASE_NUMBER = 26;
+static Q_CONSTEXPR char16_t letters[] =
+        u"\x65e5\x6708\x91d1\x6728\x6c34\x706b\x571f\x7af9\x6208\x5341\x5927\x4e2d\x4e00\x5f13"
+        u"\x4eba\x5fc3\x624b\x53e3\x5c38\x5eff\x5c71\x5973\x7530\x96e3\x535c";
 
 bool CangjieTable::isLetter(const QChar &c)
 {
-    static const QMap<QChar, int> &letters = CangjieTable::letters();
-    return letters.contains(c);
+    return QStringView(letters).contains(c);
 }
 
 int CangjieTable::getPrimaryIndex(const QString &code)
 {
-    static const QMap<QChar, int> &letters = CangjieTable::letters();
     int length = code.length();
     if ((length < 1) || (length > MAX_CODE_LENGTH))
         return -1;
@@ -80,7 +50,7 @@ int CangjieTable::getPrimaryIndex(const QString &code)
 
     // The first letter cannot be absent in the code; therefore, the numerical
     // index of the first letter starts from 0 instead.
-    int index = (letters[c] - 1) * BASE_NUMBER;
+    int index = QStringView(letters).indexOf(c) * BASE_NUMBER;
     if (length < 2)
         return index;
 
@@ -88,19 +58,18 @@ int CangjieTable::getPrimaryIndex(const QString &code)
     if (!isLetter(c))
         return -1;
 
-    return index + letters[c];
+    return index + QStringView(letters).indexOf(c) + 1;
 }
 
 int CangjieTable::getSecondaryIndex(const QString &code)
 {
-    static const QMap<QChar, int> &letters = CangjieTable::letters();
     int index = 0;
     int last = code.length() - 1;
     for (int i = 1; i < last; i++) {
         QChar c = code.at(i);
         if (!isLetter(c))
             return -1;
-        index = index * BASE_NUMBER + letters[c];
+        index = index * BASE_NUMBER + QStringView(letters).indexOf(c) + 1;
     }
 
     int maxEnd = MAX_CODE_LENGTH - 1;
