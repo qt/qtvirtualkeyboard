@@ -44,6 +44,8 @@
 #include <QLibraryInfo>
 #include <QFileInfo>
 
+#include <array>
+
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
@@ -231,7 +233,7 @@ public:
                 input.replace(0, 1, c);
         } else if (ZhuyinTable::getFinals(QStringView(&c, 1)) > 0) {
             // Replace the finals in the decomposed of syllables and tones.
-            QList<QChar> decomposed = decomposeZhuyin();
+            std::array<QChar, 4> decomposed = decomposeZhuyin();
             if (ZhuyinTable::isYiWuYuFinals(c)) {
                 decomposed[1] = c;
             } else {
@@ -240,9 +242,9 @@ public:
 
             // Compose back the text after the finals replacement.
             input.clear();
-            for (int i = 0; i < decomposed.length(); ++i) {
-                if (!decomposed[i].isNull())
-                    input.append(decomposed[i]);
+            for (QChar ch : decomposed) {
+                if (!ch.isNull())
+                    input.append(ch);
             }
         } else {
             return false;
@@ -258,9 +260,9 @@ public:
         return true;
     }
 
-    QList<QChar> decomposeZhuyin()
+    std::array<QChar, 4> decomposeZhuyin()
     {
-        QList<QChar> results = {QChar::Null, QChar::Null, QChar::Null, QChar::Null};
+        std::array<QChar, 4> results = {};
         auto strippedTones = ZhuyinTable::stripTones(input);
         if (strippedTones.ok) {
             // Decompose tones.
