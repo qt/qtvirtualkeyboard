@@ -53,7 +53,7 @@ const QChar ZhuyinTable::DEFAULT_TONE = QLatin1Char(' ');
 // Default tone and four tone symbols: '˙', 'ˊ', 'ˇ', and 'ˋ'.
 static Q_CONSTEXPR char16_t tones[] = u" \x02d9\x02ca\x02c7\x02cb";
 
-int ZhuyinTable::getInitials(QChar initials)
+int ZhuyinTable::getInitials(QChar initials) noexcept
 {
     // Calculate the index by its distance to the first initials 'ㄅ' (b).
     int index = initials.unicode() - 0x3105 + 1;
@@ -64,7 +64,7 @@ int ZhuyinTable::getInitials(QChar initials)
     return (index >= 0) ? index : -1;
 }
 
-int ZhuyinTable::getFinals(QStringView finals)
+int ZhuyinTable::getFinals(QStringView finals) noexcept
 {
     if (finals.length() == 0)
         // Syllables ending with no finals can still be valid.
@@ -106,7 +106,7 @@ int ZhuyinTable::getFinals(QStringView finals)
     return -1;
 }
 
-int ZhuyinTable::getSyllablesIndex(QStringView syllables)
+int ZhuyinTable::getSyllablesIndex(QStringView syllables) noexcept
 {
     if (syllables.isEmpty())
         return -1;
@@ -123,7 +123,7 @@ int ZhuyinTable::getSyllablesIndex(QStringView syllables)
     return (finals * INITIALS_SIZE + initials);
 }
 
-int ZhuyinTable::getTones(QChar c)
+int ZhuyinTable::getTones(QChar c) noexcept
 {
     const qsizetype i = QStringView(tones).indexOf(c);
     if (i >= 0)
@@ -132,22 +132,22 @@ int ZhuyinTable::getTones(QChar c)
     return 0;
 }
 
-int ZhuyinTable::getTonesCount()
+int ZhuyinTable::getTonesCount() noexcept
 {
     return int(QStringView(tones).size());
 }
 
-bool ZhuyinTable::isTone(QChar c)
+bool ZhuyinTable::isTone(QChar c) noexcept
 {
     return QStringView(tones).contains(c);
 }
 
-bool ZhuyinTable::isYiWuYuFinals(QChar c)
+bool ZhuyinTable::isYiWuYuFinals(QChar c) noexcept
 {
     return c == YI_FINALS || c == WU_FINALS || c == YU_FINALS;
 }
 
-auto ZhuyinTable::stripTones(QStringView input) -> StripTonesResult
+auto ZhuyinTable::stripTones(QStringView input) noexcept -> StripTonesResult
 {
     StripTonesResult result;
     result.ok = false;

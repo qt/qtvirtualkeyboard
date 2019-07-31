@@ -33,12 +33,12 @@ static Q_CONSTEXPR char16_t letters[] =
         u"\x65e5\x6708\x91d1\x6728\x6c34\x706b\x571f\x7af9\x6208\x5341\x5927\x4e2d\x4e00\x5f13"
         u"\x4eba\x5fc3\x624b\x53e3\x5c38\x5eff\x5c71\x5973\x7530\x96e3\x535c";
 
-bool CangjieTable::isLetter(QChar c)
+bool CangjieTable::isLetter(QChar c) noexcept
 {
     return QStringView(letters).contains(c);
 }
 
-int CangjieTable::getPrimaryIndex(QStringView code)
+int CangjieTable::getPrimaryIndex(QStringView code) noexcept
 {
     const qsizetype length = code.size();
     if ((length < 1) || (length > MAX_CODE_LENGTH))
@@ -61,7 +61,7 @@ int CangjieTable::getPrimaryIndex(QStringView code)
     return index + QStringView(letters).indexOf(c) + 1;
 }
 
-int CangjieTable::getSecondaryIndex(QStringView code)
+int CangjieTable::getSecondaryIndex(QStringView code) noexcept
 {
     int index = 0;
     const qsizetype last = code.size() - 1;

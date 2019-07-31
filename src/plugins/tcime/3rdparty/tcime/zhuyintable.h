@@ -27,18 +27,18 @@
 namespace tcime {
 struct ZhuyinTable {
     static const QChar DEFAULT_TONE;
-    static int getInitials(QChar initials);
-    static int getFinals(QStringView finals);
-    static int getSyllablesIndex(QStringView syllables);
-    static int getTones(QChar c);
-    static int getTonesCount();
-    static bool isTone(QChar c);
-    static bool isYiWuYuFinals(QChar c);
+    static int getInitials(QChar initials) noexcept;
+    static int getFinals(QStringView finals) noexcept;
+    static int getSyllablesIndex(QStringView syllables) noexcept;
+    static int getTones(QChar c) noexcept;
+    static int getTonesCount() noexcept;
+    static bool isTone(QChar c) noexcept;
+    static bool isYiWuYuFinals(QChar c) noexcept;
     struct StripTonesResult {
         bool ok;
         QStringView pair[2];
     };
-    static StripTonesResult stripTones(QStringView input);
+    static StripTonesResult stripTones(QStringView input) noexcept;
 };
 }
 
