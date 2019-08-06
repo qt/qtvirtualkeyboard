@@ -74,8 +74,9 @@ void QtQuickVirtualKeyboardStylesPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(path + QLatin1String("TraceInputKeyPanel.qml")), uri, 2, 0, "TraceInputKeyPanel");
     qmlRegisterType(QUrl(path + QLatin1String("TraceCanvas.qml")), uri, 2, 0, "TraceCanvas");
 
-    // Auto-increment the import to stay in sync with ALL future QtQuick minor versions
-    qmlRegisterModule(uri, 2, QT_VERSION_MINOR);
+    // The minor version used to be the current Qt 5 minor. For compatibility it is the last
+    // Qt 5 release.
+    qmlRegisterModule(uri, 2, 15);
 }
 
 void QtQuickVirtualKeyboardStylesPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
