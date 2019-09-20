@@ -28,6 +28,7 @@
 ****************************************************************************/
 
 import QtQuick
+import QtQuick.VirtualKeyboard
 
 /*!
     \qmltype SpaceKey
@@ -41,6 +42,7 @@ import QtQuick
 */
 
 Key {
+    keyType: QtVirtualKeyboard.SpaceKey
     text: " "
     displayText: ""
     repeat: true

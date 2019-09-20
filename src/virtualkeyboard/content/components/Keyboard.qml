@@ -813,6 +813,28 @@ Item {
             LayoutMirroring.enabled: false
             LayoutMirroring.childrenInherit: true
 
+            KeyboardObserver {
+                id: keyboardObserver
+
+                function scanLayout() {
+                    if (keyboardLayoutLoader.item == null)
+                        return null
+
+                    return keyboardLayoutLoader.item.scanLayout()
+                }
+            }
+
+            Component.onCompleted: InputContext.priv.setKeyboardObserver(keyboardObserver)
+
+            Timer {
+                id: layoutChangeNotifyTimer
+                interval: 50
+                onTriggered: if (keyboardLayoutLoader.item != null) keyboardObserver.layoutChanged()
+            }
+
+            onWidthChanged: notifyLayoutChanged()
+            onHeightChanged: notifyLayoutChanged()
+
             Loader {
                 id: keyboardLayoutLoader
                 objectName: "keyboardLayoutLoader"
@@ -835,6 +857,8 @@ Item {
                     // Reset input mode if the new layout wants to override it
                     if (item && item.inputMode !== -1)
                         inputModeNeedsReset = true
+                    if (item)
+                        notifyLayoutChanged()
                 }
 
                 MultiPointTouchArea {
@@ -1417,8 +1441,10 @@ Item {
                 if (inputModes.indexOf(inputMode) === -1)
                     inputMode = inputModes[0]
 
-                if (InputContext.inputEngine.inputMode !== inputMode || inputMethodChanged || inputModeNeedsReset)
+                if (InputContext.inputEngine.inputMode !== inputMode || inputMethodChanged || inputModeNeedsReset) {
+                    InputContext.priv.setKeyboardObserver(keyboardObserver)
                     InputContext.inputEngine.inputMode = inputMode
+                }
 
                 inputModeNeedsReset = false
             }
@@ -1654,5 +1680,9 @@ Item {
         if (enabled && resetInputMode)
             inputModeNeedsReset = true
         handwritingMode = enabled
+    }
+
+    function notifyLayoutChanged() {
+        layoutChangeNotifyTimer.restart()
     }
 }

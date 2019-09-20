@@ -43,6 +43,7 @@ import QtQuick.VirtualKeyboard
 */
 
 Key {
+    keyType: QtVirtualKeyboard.InputModeKey
     key: Qt.Key_Mode_switch
     noKeyEvent: true
     functionKey: true

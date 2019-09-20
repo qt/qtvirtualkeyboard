@@ -47,6 +47,7 @@
 #include <QInputMethodEvent>
 #include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #include <QtVirtualKeyboard/private/shadowinputcontext_p.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardobserver.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -109,6 +110,7 @@ public:
     QtVirtualKeyboard::ShiftHandler *shiftHandler() const;
     QtVirtualKeyboard::ShadowInputContext *shadow() const;
     QStringList inputMethods() const;
+    Q_INVOKABLE void setKeyboardObserver(QVirtualKeyboardObserver *keyboardObserver);
 
     // Helper functions
     Q_INVOKABLE bool fileExists(const QUrl &fileUrl);
@@ -180,6 +182,7 @@ private:
 #endif
     QSet<quint32> activeKeys;
     QtVirtualKeyboard::ShadowInputContext _shadow;
+    QPointer<QVirtualKeyboardObserver> keyboardObserver;
 
     friend class QtVirtualKeyboard::PlatformInputContext;
     friend class QVirtualKeyboardScopedState;

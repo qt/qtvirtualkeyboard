@@ -43,6 +43,7 @@ import QtQuick.VirtualKeyboard
 
 BaseKey {
     id: shiftKey
+    keyType: QtVirtualKeyboard.ShiftKey
     key: Qt.Key_Shift
     enabled: InputContext.priv.shiftHandler.toggleShiftEnabled
     highlighted: InputContext.capsLockActive

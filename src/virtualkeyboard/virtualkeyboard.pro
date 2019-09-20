@@ -24,6 +24,7 @@ SOURCES += \
     qvirtualkeyboardabstractinputmethod.cpp \
     plaininputmethod.cpp \
     qvirtualkeyboardinputengine.cpp \
+    qvirtualkeyboardobserver.cpp \
     shifthandler.cpp \
     inputmethod.cpp \
     inputselectionhandle.cpp \
@@ -44,11 +45,13 @@ SOURCES += \
 
 HEADERS += \
     platforminputcontext_p.h \
+    qvirtualkeyboard_namespace.h \
     qvirtualkeyboardinputcontext.h \
     qvirtualkeyboardinputcontext_p.h \
     qvirtualkeyboardabstractinputmethod.h \
     plaininputmethod_p.h \
     qvirtualkeyboardinputengine.h \
+    qvirtualkeyboardobserver.h \
     shifthandler_p.h \
     inputmethod_p.h \
     inputselectionhandle_p.h \

@@ -32,6 +32,7 @@
 #include <QtVirtualKeyboard/private/shifthandler_p.h>
 #include <QtVirtualKeyboard/private/platforminputcontext_p.h>
 #include <QtVirtualKeyboard/private/virtualkeyboarddebug_p.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardobserver.h>
 
 #include <QTextFormat>
 #include <QGuiApplication>
@@ -403,6 +404,25 @@ QVirtualKeyboardInputContextPrivate *QVirtualKeyboardInputContext::priv() const
 {
     Q_D(const QVirtualKeyboardInputContext);
     return const_cast<QVirtualKeyboardInputContextPrivate *>(d);
+}
+
+/*!
+    \property QVirtualKeyboardInputContext::keyboardObserver
+    \since QtQuick.VirtualKeyboard 6.1
+    \brief Holds the keyboard observer object, which can be used to receive
+    notifications of keyboard change events.
+*/
+/*!
+    \qmlproperty KeyboardObserver InputContext::keyboardObserver
+    \readonly
+    \since QtQuick.VirtualKeyboard 6.1
+    \brief Holds the keyboard observer object, which can be used to receive
+    notifications of keyboard change events.
+*/
+QVirtualKeyboardObserver *QVirtualKeyboardInputContext::keyboardObserver() const
+{
+    Q_D(const QVirtualKeyboardInputContext);
+    return d->keyboardObserver;
 }
 
 /*!

@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2021 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -27,39 +27,64 @@
 **
 ****************************************************************************/
 
-import QtQuick
-import QtQuick.VirtualKeyboard
+#include "qvirtualkeyboardobserver.h"
+
+#include <QtCore/private/qobject_p.h>
+
+QT_BEGIN_NAMESPACE
+
+class QVirtualKeyboardObserverPrivate : public QObjectPrivate
+{
+public:
+    QVirtualKeyboardObserverPrivate()
+    {}
+
+    QVariant layout;
+};
 
 /*!
-    \qmltype ModeKey
+    \qmltype KeyboardObserver
+    \instantiates QVirtualKeyboardObserver
     \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-qml
-    \inherits Key
-    \since QtQuick.VirtualKeyboard 2.0
-
-    \brief Generic mode key for keyboard layouts.
-
-    This key provides generic mode button functionality.
-
-    A key press toggles the current mode without emitting key event
-    for input method processing.
-
-    ModeKey can be used in situations where a particular mode is switched
-    "ON / OFF", and where the mode change does not require changing the
-    keyboard layout. When this component is used, the \l { BaseKey::displayText } { displayText } should
-    remain the same regardless of the mode, because the keyboard style
-    visualizes the status.
+    \brief Acts as a hub for keyboard event notifications.
 */
 
-Key {
-    /*! This property provides the current mode.
+/*!
+    \class QVirtualKeyboardObserver
+    \inmodule QtVirtualKeyboard
+    \brief Acts as a hub for keyboard event notifications.
+*/
 
-        The default is false.
-    */
-    property bool mode
-    keyType: QtVirtualKeyboard.ModeKey
-    noKeyEvent: true
-    functionKey: true
-    onClicked: mode = !mode
-    keyPanelDelegate: keyboard.style ? keyboard.style.modeKeyPanel : undefined
+QVirtualKeyboardObserver::QVirtualKeyboardObserver(QObject *parent) :
+    QObject(*new QVirtualKeyboardObserverPrivate, parent)
+{
+    connect(this, &QVirtualKeyboardObserver::layoutChanged, this, &QVirtualKeyboardObserver::invalidateLayout);
 }
+
+/*!
+    \property QVirtualKeyboardObserver::layout
+    \brief The current keyboard layout expressed as a variant.
+*/
+/*!
+    \qmlproperty variant KeyboardObserver::layout
+    \readonly
+    \brief The current keyboard layout expressed as a variant.
+*/
+QVariant QVirtualKeyboardObserver::layout()
+{
+    Q_D(QVirtualKeyboardObserver);
+
+    if (d->layout.isNull())
+        QMetaObject::invokeMethod(this, "scanLayout", Q_RETURN_ARG(QVariant, d->layout));
+
+    return d->layout;
+}
+
+void QVirtualKeyboardObserver::invalidateLayout()
+{
+    Q_D(QVirtualKeyboardObserver);
+    d->layout = QVariant();
+}
+
+QT_END_NAMESPACE

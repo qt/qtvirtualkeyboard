@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2021 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -27,39 +27,36 @@
 **
 ****************************************************************************/
 
-import QtQuick
-import QtQuick.VirtualKeyboard
+#ifndef QVIRTUALKEYBOARDOBSERVER_H
+#define QVIRTUALKEYBOARDOBSERVER_H
 
-/*!
-    \qmltype ModeKey
-    \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
-    \inherits Key
-    \since QtQuick.VirtualKeyboard 2.0
+#include <QObject>
+#include <QVariant>
+#include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
-    \brief Generic mode key for keyboard layouts.
+QT_BEGIN_NAMESPACE
 
-    This key provides generic mode button functionality.
+class QVirtualKeyboardObserverPrivate;
 
-    A key press toggles the current mode without emitting key event
-    for input method processing.
+class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardObserver : public QObject
+{
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(QVirtualKeyboardObserver)
+    Q_DISABLE_COPY(QVirtualKeyboardObserver)
+    Q_PROPERTY(QVariant layout READ layout NOTIFY layoutChanged)
 
-    ModeKey can be used in situations where a particular mode is switched
-    "ON / OFF", and where the mode change does not require changing the
-    keyboard layout. When this component is used, the \l { BaseKey::displayText } { displayText } should
-    remain the same regardless of the mode, because the keyboard style
-    visualizes the status.
-*/
+public:
+    explicit QVirtualKeyboardObserver(QObject *parent = nullptr);
 
-Key {
-    /*! This property provides the current mode.
+    QVariant layout();
 
-        The default is false.
-    */
-    property bool mode
-    keyType: QtVirtualKeyboard.ModeKey
-    noKeyEvent: true
-    functionKey: true
-    onClicked: mode = !mode
-    keyPanelDelegate: keyboard.style ? keyboard.style.modeKeyPanel : undefined
-}
+Q_SIGNALS:
+    void layoutChanged();
+
+private Q_SLOTS:
+    void invalidateLayout();
+};
+
+QT_END_NAMESPACE
+
+#endif // QVIRTUALKEYBOARDOBSERVER_H

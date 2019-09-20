@@ -44,6 +44,7 @@ class PlatformInputContext;
 }
 class QVirtualKeyboardInputEngine;
 class QVirtualKeyboardInputContextPrivate;
+class QVirtualKeyboardObserver;
 
 class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContext : public QObject
 {
@@ -71,6 +72,7 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContext : public QObject
     Q_PROPERTY(bool anchorRectIntersectsClipRect READ anchorRectIntersectsClipRect NOTIFY anchorRectIntersectsClipRectChanged)
     Q_PROPERTY(bool cursorRectIntersectsClipRect READ cursorRectIntersectsClipRect NOTIFY cursorRectIntersectsClipRectChanged)
     Q_PROPERTY(QVirtualKeyboardInputContextPrivate *priv READ priv CONSTANT)
+    Q_PROPERTY(QVirtualKeyboardObserver *keyboardObserver READ keyboardObserver CONSTANT REVISION(6, 1))
     Q_MOC_INCLUDE("qvirtualkeyboardinputengine.h")
     Q_MOC_INCLUDE("qvirtualkeyboardinputcontext_p.h")
 
@@ -100,6 +102,7 @@ public:
     bool anchorRectIntersectsClipRect() const;
     bool cursorRectIntersectsClipRect() const;
     QVirtualKeyboardInputContextPrivate *priv() const;
+    QVirtualKeyboardObserver *keyboardObserver() const;
 
     Q_INVOKABLE void sendKeyClick(int key, const QString &text, int modifiers = 0);
     Q_INVOKABLE void commit();

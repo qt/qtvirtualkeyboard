@@ -48,6 +48,29 @@ import QtQuick.VirtualKeyboard
 Item {
     id: keyItem
 
+    /*! \since QtQuick.VirtualKeyboard 6.1
+
+        Type of the key.
+
+        \list
+            \li \c QtVirtualKeyboard.BaseKey
+            \li \c QtVirtualKeyboard.BackspaceKey
+            \li \c QtVirtualKeyboard.ChangeLanguageKey
+            \li \c QtVirtualKeyboard.EnterKey
+            \li \c QtVirtualKeyboard.FillerKey
+            \li \c QtVirtualKeyboard.HandwritingModeKey
+            \li \c QtVirtualKeyboard.HideKeyboardKey
+            \li \c QtVirtualKeyboard.InputModeKey
+            \li \c QtVirtualKeyboard.Key
+            \li \c QtVirtualKeyboard.ModeKey
+            \li \c QtVirtualKeyboard.NumberKey
+            \li \c QtVirtualKeyboard.ShiftKey
+            \li \c QtVirtualKeyboard.SpaceKey
+            \li \c QtVirtualKeyboard.SymbolModeKey
+        \endlist
+    */
+    property int keyType: QtVirtualKeyboard.BaseKey
+
     /*! Sets the key weight value which determines the relative size of the key.
 
         Use this property to change the key size in the layout.

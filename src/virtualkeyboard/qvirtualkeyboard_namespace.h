@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2021 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -27,39 +27,38 @@
 **
 ****************************************************************************/
 
-import QtQuick
-import QtQuick.VirtualKeyboard
+#ifndef QVIRTUALKEYBOARD_NAMESPACE_H
+#define QVIRTUALKEYBOARD_NAMESPACE_H
 
-/*!
-    \qmltype ModeKey
-    \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
-    \inherits Key
-    \since QtQuick.VirtualKeyboard 2.0
+#include <QMetaEnum>
+#include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
-    \brief Generic mode key for keyboard layouts.
+QT_BEGIN_NAMESPACE
 
-    This key provides generic mode button functionality.
+namespace QtVirtualKeyboard {
 
-    A key press toggles the current mode without emitting key event
-    for input method processing.
+QVIRTUALKEYBOARD_EXPORT Q_NAMESPACE
 
-    ModeKey can be used in situations where a particular mode is switched
-    "ON / OFF", and where the mode change does not require changing the
-    keyboard layout. When this component is used, the \l { BaseKey::displayText } { displayText } should
-    remain the same regardless of the mode, because the keyboard style
-    visualizes the status.
-*/
+enum class KeyType {
+    BaseKey,
+    BackspaceKey,
+    ChangeLanguageKey,
+    EnterKey,
+    FillerKey,
+    HandwritingModeKey,
+    HideKeyboardKey,
+    InputModeKey,
+    Key,
+    ModeKey,
+    NumberKey,
+    ShiftKey,
+    SpaceKey,
+    SymbolModeKey,
+};
+Q_ENUM_NS(KeyType)
 
-Key {
-    /*! This property provides the current mode.
+} // namespace QtVirtualKeyboard
 
-        The default is false.
-    */
-    property bool mode
-    keyType: QtVirtualKeyboard.ModeKey
-    noKeyEvent: true
-    functionKey: true
-    onClicked: mode = !mode
-    keyPanelDelegate: keyboard.style ? keyboard.style.modeKeyPanel : undefined
-}
+QT_END_NAMESPACE
+
+#endif // QVIRTUALKEYBOARD_NAMESPACE_H

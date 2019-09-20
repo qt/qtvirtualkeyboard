@@ -28,6 +28,7 @@
 ****************************************************************************/
 
 import QtQuick
+import QtQuick.VirtualKeyboard
 
 /*!
     \qmltype NumberKey
@@ -44,4 +45,5 @@ import QtQuick
 
 Key {
     showPreview: false
+    keyType: QtVirtualKeyboard.NumberKey
 }

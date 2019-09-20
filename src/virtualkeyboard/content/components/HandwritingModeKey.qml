@@ -28,6 +28,7 @@
 ****************************************************************************/
 
 import QtQuick
+import QtQuick.VirtualKeyboard
 
 /*!
     \qmltype HandwritingModeKey
@@ -45,6 +46,7 @@ import QtQuick
 */
 
 Key {
+    keyType: QtVirtualKeyboard.HandwritingModeKey
     key: Qt.Key_Context2
     displayText: "HWR"
     functionKey: true

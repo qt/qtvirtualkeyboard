@@ -28,6 +28,7 @@
 ****************************************************************************/
 
 import QtQuick
+import QtQuick.VirtualKeyboard
 
 /*!
     \qmltype KeyboardLayoutLoader
@@ -123,5 +124,17 @@ Loader {
 
     active: parent !== null
 
-    onItemChanged: if (parent && item && __updateCount++ > 0 && !keyboard.inputMethodNeedsReset) keyboard.updateInputMethod()
+    onItemChanged: {
+        if (parent && item && __updateCount++ > 0) {
+            if (!keyboard.inputMethodNeedsReset)
+                keyboard.updateInputMethod()
+            keyboard.notifyLayoutChanged()
+        }
+    }
+
+    function scanLayout() {
+        if (item === null)
+            return null
+        return item.scanLayout()
+    }
 }

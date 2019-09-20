@@ -28,6 +28,7 @@
 ****************************************************************************/
 
 import QtQuick
+import QtQuick.VirtualKeyboard
 
 /*!
     \qmltype BackspaceKey
@@ -43,6 +44,7 @@ import QtQuick
 
 BaseKey {
     key: Qt.Key_Backspace
+    keyType: QtVirtualKeyboard.BackspaceKey
     repeat: true
     functionKey: true
     keyPanelDelegate: keyboard.style ? keyboard.style.backspaceKeyPanel : undefined

@@ -145,4 +145,38 @@ ColumnLayout {
     property bool smallTextVisible
 
     spacing: 0
+
+    function scanLayout() {
+        var layout = {
+            width: parent.width,
+            height: parent.height,
+            keys: []
+        }
+        __scanLayoutRecursive(this, layout)
+        return layout
+    }
+
+    function __scanLayoutRecursive(parent, layout) {
+        for (var i in parent.children) {
+            var child = parent.children[i]
+            if (child.keyType !== undefined && child.visible) {
+                var pos = mapFromItem(child, 0, 0)
+                var key = {
+                    left: pos.x,
+                    top: pos.y,
+                    width: child.width,
+                    height: child.height,
+                    keyType: child.keyType,
+                    key: child.key,
+                    text: child.text,
+                    altKeys: child.effectiveAlternativeKeys,
+                    isFunctionKey: child.functionKey,
+                    noKeyEvent: child.noKeyEvent
+                }
+                layout.keys.push(key)
+            } else {
+                __scanLayoutRecursive(child, layout)
+            }
+        }
+    }
 }

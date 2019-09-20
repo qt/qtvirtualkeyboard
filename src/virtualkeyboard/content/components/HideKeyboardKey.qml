@@ -42,6 +42,7 @@ import QtQuick.VirtualKeyboard
 */
 
 BaseKey {
+    keyType: QtVirtualKeyboard.HideKeyboardKey
     functionKey: true
     onClicked: InputContext.priv.hideInputPanel()
     keyPanelDelegate: keyboard.style ? keyboard.style.hideKeyPanel : undefined

@@ -65,6 +65,7 @@ BaseKey {
     property bool customLayoutsOnly: false
 
     id: changeLanguageKey
+    keyType: QtVirtualKeyboard.ChangeLanguageKey
     objectName: "changeLanguageKey"
     functionKey: true
     displayText: keyboard.locale.split("_")[0]

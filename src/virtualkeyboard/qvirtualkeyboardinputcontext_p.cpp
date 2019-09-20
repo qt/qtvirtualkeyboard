@@ -34,6 +34,7 @@
 #include <QtVirtualKeyboard/private/virtualkeyboarddebug_p.h>
 #include <QtVirtualKeyboard/private/enterkeyaction_p.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardobserver.h>
 
 #include <QFile>
 #include <QGuiApplication>
@@ -190,6 +191,14 @@ ShadowInputContext *QVirtualKeyboardInputContextPrivate::shadow() const
 QStringList QVirtualKeyboardInputContextPrivate::inputMethods() const
 {
     return platformInputContext ? platformInputContext->inputMethods() : QStringList();
+}
+
+void QVirtualKeyboardInputContextPrivate::setKeyboardObserver(QVirtualKeyboardObserver *keyboardObserver)
+{
+    if (!this->keyboardObserver.isNull())
+        return;
+
+    this->keyboardObserver = keyboardObserver;
 }
 
 bool QVirtualKeyboardInputContextPrivate::fileExists(const QUrl &fileUrl)
