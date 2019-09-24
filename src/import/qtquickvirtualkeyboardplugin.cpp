@@ -77,7 +77,8 @@ void QtQuickVirtualKeyboardPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<QVirtualKeyboardAbstractInputMethod>(uri, 2, 0, "AbstractInputMethod", QLatin1String("Cannot create abstract input method"));
     qmlRegisterType<InputMethod>(uri, 1, 0, "InputMethod");
     qmlRegisterType<InputMethod>(uri, 2, 0, "InputMethod");
-    qmlRegisterType<EnterKeyActionAttachedType>();
+    qmlRegisterAnonymousType<EnterKeyActionAttachedType>(uri, 1);
+    qmlRegisterAnonymousType<EnterKeyActionAttachedType>(uri, 2);
     qmlRegisterType<EnterKeyAction>(uri, 1, 0, "EnterKeyAction");
     qmlRegisterType<EnterKeyAction>(uri, 2, 0, "EnterKeyAction");
     qmlRegisterType<QVirtualKeyboardTrace>(uri, 2, 0, "Trace");
