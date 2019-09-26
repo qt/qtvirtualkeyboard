@@ -1485,9 +1485,10 @@ Item {
 
         // Handle case where the VirtualKeyboardSettings.activeLocales contains no valid entries
         // Fetch all locales by ignoring active locales setting
-        if (newIndices.length === 0) {
+        var ignoreActiveLocales = newIndices.length === 0
+        if (ignoreActiveLocales) {
             newIndices = filterLocaleIndices(function(localeName) {
-                return isValidLocale(localeName, true)
+                return isValidLocale(localeName, ignoreActiveLocales)
             })
         }
 
@@ -1497,9 +1498,21 @@ Item {
             newAvailableLocales.push(layoutsModel.get(newIndices[i], "fileName"))
         }
 
-        newIndices.sort(function(a, b) { return a - b })
-        availableLocaleIndices = newIndices
         newAvailableLocales.sort()
+
+        var sortOrder = !ignoreActiveLocales && VirtualKeyboardSettings.activeLocales.length > 0 ?
+                    VirtualKeyboardSettings.activeLocales :
+                    newAvailableLocales
+
+        newIndices.sort(function(localeIndexA, localeIndexB) {
+            var localeNameA = layoutsModel.get(localeIndexA, "fileName")
+            var localeNameB = layoutsModel.get(localeIndexB, "fileName")
+            var sortIndexA = sortOrder.indexOf(localeNameA)
+            var sortIndexB = sortOrder.indexOf(localeNameB)
+            return sortIndexA - sortIndexB
+        })
+
+        availableLocaleIndices = newIndices
         InputContext.priv.updateAvailableLocales(newAvailableLocales)
 
         // Update list of custom locale indices

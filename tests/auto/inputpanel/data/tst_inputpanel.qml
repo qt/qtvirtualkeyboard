@@ -1884,6 +1884,30 @@ Rectangle {
             compare(languagePopupList.visible, false)
         }
 
+        function test_languagePopupListSortOrder_data() {
+            return [
+                { activeLocales: ["fi_FI", "foo", "en_GB", "bar", "ar_AR", "baz"] },
+            ]
+        }
+
+        function test_languagePopupListSortOrder(data) {
+            prepareTest(data)
+
+            if (!inputPanel.keyboard.style.languagePopupListEnabled)
+                skip("The language popup is disabled (!style.languagePopupListEnabled)")
+
+            var changeLanguageKey = inputPanel.findObjectByName("changeLanguageKey")
+            var languagePopupList = inputPanel.findObjectByName("languagePopupList")
+            inputPanel.virtualKeyClick(changeLanguageKey)
+
+            var previousIndex = -1
+            for (var i = 0; i < languagePopupList.model.count; ++i) {
+                var currentIndex = data.activeLocales.indexOf(languagePopupList.model.get(i).localeName)
+                verify(currentIndex > previousIndex)
+                previousIndex = currentIndex
+            }
+        }
+
         function test_wclAutoHide_data() {
             return [
                 { wclAutoHideDelay: 100, wclAlwaysVisible: false },

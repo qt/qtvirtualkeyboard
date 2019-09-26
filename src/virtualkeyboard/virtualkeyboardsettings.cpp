@@ -367,6 +367,8 @@ void VirtualKeyboardSettings::resetStyle()
 
     The list of active languages is a subset of the available languages, and can be
     used to limit the list of available languages in the application lifetime.
+
+    The list of languages will be shown based on the specified ordering.
 */
 
 /*!
