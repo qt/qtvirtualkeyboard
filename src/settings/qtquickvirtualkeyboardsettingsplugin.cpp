@@ -49,8 +49,9 @@ void QtQuickVirtualKeyboardSettingsPlugin::registerTypes(const char *uri)
     qRegisterMetaType<WordCandidateListSettings *>("WordCandidateListSettings*");
     qmlRegisterUncreatableType<WordCandidateListSettings>(uri, 2, 2, "WordCandidateListSettings", QLatin1String("Cannot create word candidate list settings"));
 
-    // Auto-increment the import to stay in sync with ALL future QtQuick minor versions
-    qmlRegisterModule(uri, 2, QT_VERSION_MINOR);
+    // The minor version used to be the current Qt 5 minor. For compatibility it is the last
+    // Qt 5 release.
+    qmlRegisterModule(uri, 2, 15);
 }
 
 QT_END_NAMESPACE

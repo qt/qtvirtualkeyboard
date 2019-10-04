@@ -146,8 +146,9 @@ void QtQuickVirtualKeyboardPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(componentsPath + QLatin1String("SelectionControl.qml")), uri, 2, 1, "SelectionControl");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("InputModeKey.qml")), uri, 2, 3, "InputModeKey");
 
-    // Auto-increment the import to stay in sync with ALL future QtQuick minor versions
-    qmlRegisterModule(uri, 2, QT_VERSION_MINOR);
+    // The minor version used to be the current Qt 5 minor. For compatibility it is the last
+    // Qt 5 release.
+    qmlRegisterModule(uri, 2, 15);
 }
 
 QT_END_NAMESPACE
