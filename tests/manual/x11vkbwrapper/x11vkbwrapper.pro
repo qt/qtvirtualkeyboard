@@ -42,8 +42,6 @@ HEADERS += \
 
 RESOURCES += qml.qrc
 
-OTHER_FILES += main.qml
-
 INCLUDEPATH += /usr/include/X11
 INCLUDEPATH += /usr/include/at-spi-2.0
 INCLUDEPATH += /usr/lib/x86_64-linux-gnu/glib-2.0/include
