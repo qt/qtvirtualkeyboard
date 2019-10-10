@@ -27,25 +27,21 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.9
+import QtQuick 2.12
 import QtQuick.Window 2.2
 import QtQuick.VirtualKeyboard 2.2
 
 Window {
     id: keyboardWindow
-    width: Screen.width / scaleFactor
-    height: inputPanel.height + d.alternativeKeySpaceHeight
+    width: Screen.width / 2
+    height: width / 3.2
+    y: Screen.height - height
     color: "transparent"
     visible: Qt.inputMethod.visible
     flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.FramelessWindowHint
 
     readonly property double scaleFactor: 1.5
     signal languageChangedSignal(string msg)
-
-    QtObject {
-        id: d
-        property double alternativeKeySpaceHeight: inputPanel.height / 4.5
-    }
 
     Loader {
         id: testLoader
@@ -71,7 +67,25 @@ Window {
     InputPanel {
         id: inputPanel
         z: 99
-        width: keyboardWindow.width
-        anchors.bottom: parent.bottom
+        anchors.fill: parent
+
+        DragHandler {
+            target: null
+            onTranslationChanged: {
+                var dx = translation.x
+                var dy = translation.y
+                if (keyboardWindow.x < 0)
+                    dx = 0
+                if (keyboardWindow.x + keyboardWindow.width > Screen.width)
+                    dx = 0
+                if (keyboardWindow.y < 0)
+                    dy = 0
+                if (keyboardWindow.y + keyboardWindow.height > Screen.height)
+                    dy = 0
+
+                keyboardWindow.x += dx
+                keyboardWindow.y += dy
+            }
+        }
     }
 }
