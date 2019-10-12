@@ -1,0 +1,36 @@
+{
+  "manifest_version": 2,
+  "key": "bbngehjagobenpfgjcpmfigfanlomdkk",
+  "name": "Qt Virtual Keyboard",
+  "version": "1.0",
+  "browser_action": {
+    "default_icon": {
+      "32": "icons/Qt_logo.png"
+    },
+    "default_title": "Qt Keyboard"
+  },
+  "permissions": [
+    "*://*/*",
+    "tabs",
+    "storage",
+    "nativeMessaging",
+    "notifications",
+    "webNavigation",
+    "input",
+    "idle",
+    "bookmarks"
+  ],
+  "background": {
+    "scripts": [ "background.js" ],
+    "persistent": false
+  },
+  "icons": {
+    "32": "icons/Qt_logo.png"
+  },
+  "content_scripts": [
+    {
+      "matches" : ["*://*/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
