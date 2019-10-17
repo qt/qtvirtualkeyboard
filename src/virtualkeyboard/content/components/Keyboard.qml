@@ -103,16 +103,16 @@ Item {
     }
     Connections {
         target: VirtualKeyboardSettings
-        onLocaleChanged: {
+        function onLocaleChanged() {
             updateDefaultLocale()
             localeIndex = defaultLocaleIndex
         }
-        onActiveLocalesChanged: {
+        function onActiveLocalesChanged() {
             updateDefaultLocale()
             if (!isValidLocale(localeIndex) || VirtualKeyboardSettings.locale)
                 localeIndex = defaultLocaleIndex
         }
-        onFullScreenModeChanged: {
+        function onFullScreenModeChanged() {
             wordCandidateView.disableAnimation = VirtualKeyboardSettings.fullScreenMode
             keyboard.fullScreenMode = VirtualKeyboardSettings.fullScreenMode
         }
@@ -151,23 +151,23 @@ Item {
 
     Connections {
         target: InputContext
-        onInputMethodHintsChanged: {
+        function onInputMethodHintsChanged() {
             if (InputContext.priv.focus)
                 updateInputMethod()
         }
     }
     Connections {
         target: InputContext.priv
-        onInputItemChanged: {
+        function onInputItemChanged() {
             keyboard.hideLanguagePopup()
             if (active && symbolMode && !preferNumbers)
                 symbolMode = false
         }
-        onFocusChanged: {
+        function onFocusChanged() {
             if (InputContext.priv.focus)
                 updateInputMethod()
         }
-        onNavigationKeyPressed: {
+        function onNavigationKeyPressed(key, isAutoRepeat) {
             var initialKey
             var direction = wordCandidateView.effectiveLayoutDirection == Qt.LeftToRight ? 1 : -1
             switch (key) {
@@ -391,7 +391,7 @@ Item {
                 break
             }
         }
-        onNavigationKeyReleased: {
+        function onNavigationKeyReleased(key, isAutoRepeat) {
             switch (key) {
             case Qt.Key_Return:
                 if (!keyboard.navigationModeActive) {
@@ -437,7 +437,7 @@ Item {
     }
     Connections {
         target: InputContext.inputEngine
-        onVirtualKeyClicked: {
+        function onVirtualKeyClicked(key, text, modifiers, isAutoRepeat) {
             if (isAutoRepeat && keyboard.activeKey)
                 soundEffect.play(keyboard.activeKey.soundEffect)
             if (key !== Qt.Key_unknown && keyboardInputArea.dragSymbolMode) {
@@ -457,7 +457,7 @@ Item {
     }
     Connections {
         target: layoutsModel
-        onCountChanged: {
+        function onCountChanged() {
             updateDefaultLocale()
             localeIndex = defaultLocaleIndex
         }
@@ -624,7 +624,7 @@ Item {
 
         Connections {
             target: keyboard
-            onActiveChanged: {
+            function onActiveChanged() {
                 if (keyboard.active)
                     shadowInputControlVisibleTimer.start()
                 else
@@ -682,9 +682,9 @@ Item {
         onCurrentItemChanged: if (currentItem) soundEffect.register(currentItem.soundEffect)
         Connections {
             target: wordCandidateView.model ? wordCandidateView.model : null
-            onActiveItemChanged: wordCandidateView.currentIndex = index
-            onItemSelected: if (wordCandidateView.currentItem) soundEffect.play(wordCandidateView.currentItem.soundEffect)
-            onCountChanged: {
+            function onActiveItemChanged(index) { wordCandidateView.currentIndex = index }
+            function onItemSelected() { if (wordCandidateView.currentItem) soundEffect.play(wordCandidateView.currentItem.soundEffect) }
+            function onCountChanged() {
                 var empty = wordCandidateView.model.count === 0
                 if (empty)
                     wordCandidateViewAutoHideTimer.restart()
@@ -696,11 +696,11 @@ Item {
         }
         Connections {
             target: InputContext.priv
-            onInputItemChanged: wordCandidateViewAutoHideTimer.stop()
+            function onInputItemChanged() { wordCandidateViewAutoHideTimer.stop() }
         }
         Connections {
             target: InputContext.inputEngine
-            onWordCandidateListVisibleHintChanged: wordCandidateViewAutoHideTimer.stop()
+            function onWordCandidateListVisibleHintChanged() { wordCandidateViewAutoHideTimer.stop() }
         }
         Timer {
             id: wordCandidateViewAutoHideTimer
@@ -751,7 +751,7 @@ Item {
 
         Connections {
             target: VirtualKeyboardSettings
-            onStyleNameChanged: {
+            function onStyleNameChanged() {
                 soundEffect.__sounds = {}
                 soundEffect.available = false
             }
@@ -841,7 +841,7 @@ Item {
 
                     Connections {
                         target: keyboardLayoutLoader
-                        onStatusChanged: {
+                        function onStatusChanged() {
                             if (keyboardLayoutLoader.status == Loader.Ready &&
                                     keyboard.navigationModeActive &&
                                     keyboardInputArea.navigationCursor !== Qt.point(-1, -1))
@@ -850,7 +850,7 @@ Item {
                     }
                     Connections {
                         target: keyboard
-                        onNavigationModeActiveChanged: {
+                        function onNavigationModeActiveChanged() {
                             if (!keyboard.navigationModeActive) {
                                 keyboardInputArea.navigationCursor = Qt.point(-1, -1)
                                 keyboardInputArea.reset()
