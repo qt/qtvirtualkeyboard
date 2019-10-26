@@ -101,12 +101,15 @@ InputPanel {
 
     Connections {
         target: InputContext
-        onPreeditTextChanged: if (InputContext.preeditText.length > 0) inputMethodResult(InputContext.preeditText)
+        function onPreeditTextChanged() {
+            if (InputContext.preeditText.length > 0)
+                inputMethodResult(InputContext.preeditText)
+        }
     }
 
     Connections {
         target: InputContext.inputEngine
-        onVirtualKeyClicked: inputMethodResult(text)
+        function onVirtualKeyClicked(key, text, modifiers, isAutoRepeat) { inputMethodResult(text) }
     }
 
     SignalSpy {
