@@ -30,6 +30,7 @@
 import QtQuick 2.12
 import QtQuick.Window 2.2
 import QtQuick.VirtualKeyboard 2.2
+import Qt.labs.platform 1.1
 
 Window {
     id: keyboardWindow
@@ -62,6 +63,17 @@ Window {
                  keyboardWindow.languageChangedSignal(langText.text)
             }
         }
+    }
+
+    SystemTrayIcon {
+        id: qtLogo
+        icon {
+            mask: true
+            source: "graphics/Qt_logo.png"
+        }
+        visible: !Qt.inputMethod.visible
+        onActivated: atspiFocus.setKeyboardVisible(!Qt.inputMethod.visible)
+        Component.onCompleted: console.log("Found system tray?:",qtLogo.available)
     }
 
     InputPanel {
