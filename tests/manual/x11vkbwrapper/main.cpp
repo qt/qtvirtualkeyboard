@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QDBusConnection>
 #include <QtVirtualKeyboard>
@@ -52,9 +52,9 @@ int main(int argc, char *argv[])
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
     bool error = false;
-    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
     /** Setup DBus starts */
     auto *extensionHandler = new HandleDbusForChrome(&app);

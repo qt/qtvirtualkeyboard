@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = x11vkbwrapper
 
-QT += qml quick dbus virtualkeyboard svg
+QT += qml quick dbus virtualkeyboard svg widgets
 CONFIG += c++11
 
 static {
