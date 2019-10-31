@@ -135,6 +135,8 @@ public:
 class WnnClause : public WnnWord
 {
 public:
+    WnnClause() = default;
+
     WnnClause(const QString &candidate, const QString &stroke, const WnnPOS &posTag, int frequency) :
         WnnWord(candidate, stroke, posTag, frequency)
     { }
