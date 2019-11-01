@@ -49,7 +49,7 @@ Item {
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.bottom: inputPanel.top
-            handwritingInputPanelActive: handwritingInputPanel.active
+            handwritingInputPanelActive: handwritingInputPanel.available && handwritingInputPanel.active
         }
 
         /*  Handwriting input panel for full screen handwriting input.
