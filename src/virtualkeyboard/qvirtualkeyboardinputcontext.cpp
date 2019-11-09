@@ -208,7 +208,7 @@ QVirtualKeyboardInputEngine *QVirtualKeyboardInputContext::inputEngine() const
 /*!
     \qmlmethod void InputContext::sendKeyClick(int key, string text, int modifiers = 0)
 
-    Sends a key click event with the given \a key, \a text and \a modifiers to
+    Sends a key click event with the given \a key, \a text and \e modifiers to
     the input item that currently has focus.
 */
 /*!
@@ -264,9 +264,9 @@ void QVirtualKeyboardInputContext::commit()
 
     Commits the final \a text to the input item and optionally
     modifies the text relative to the start of the pre-edit text.
-    If \a replaceFrom is non-zero, the \a text replaces the
-    contents relative to \a replaceFrom with a length of
-    \a replaceLength.
+    If \e replaceFrom is non-zero, the \a text replaces the
+    contents relative to \e replaceFrom with a length of
+    \e replaceLength.
 */
 /*!
     Commits the final \a text to the input item and optionally
