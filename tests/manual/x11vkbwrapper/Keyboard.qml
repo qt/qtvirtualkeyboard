@@ -74,13 +74,15 @@ Window {
             onTranslationChanged: {
                 var dx = translation.x
                 var dy = translation.y
-                if (keyboardWindow.x < 0)
+                var ksx = keyboardWindow.x + keyboardWindow.width
+                var ksy = keyboardWindow.y + keyboardWindow.height
+                if (keyboardWindow.x < 0 && (keyboardWindow.x + dx) < 0)
                     dx = 0
-                if (keyboardWindow.x + keyboardWindow.width > Screen.width)
+                if (ksx > Screen.width && (ksx + dx) > Screen.width)
                     dx = 0
-                if (keyboardWindow.y < 0)
+                if (keyboardWindow.y < 0 && (keyboardWindow.y + dy) < 0)
                     dy = 0
-                if (keyboardWindow.y + keyboardWindow.height > Screen.height)
+                if (ksy > Screen.height && (ksy + dy) > Screen.height)
                     dy = 0
 
                 keyboardWindow.x += dx
