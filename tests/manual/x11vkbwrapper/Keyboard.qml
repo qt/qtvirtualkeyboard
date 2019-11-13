@@ -35,7 +35,7 @@ import Qt.labs.platform 1.1
 Window {
     id: keyboardWindow
     width: Screen.width / 2
-    height: width / 3.2
+    height: width / 2.65
     y: Screen.height - height
     color: "transparent"
     visible: Qt.inputMethod.visible
@@ -43,6 +43,11 @@ Window {
 
     readonly property double scaleFactor: 1.5
     signal languageChangedSignal(string msg)
+
+    QtObject {
+        id: d
+        property double alternativeKeySpaceHeight: inputPanel.height / 4.7
+    }
 
     Loader {
         id: testLoader
@@ -54,13 +59,13 @@ Window {
     }
 
     Component {
-       id: lang
+        id: lang
         Text {
             id: langText
             visible: false
             text: qsTr(Qt.locale(InputContext.locale).nativeLanguageName)
             onTextChanged: {
-                 keyboardWindow.languageChangedSignal(langText.text)
+                keyboardWindow.languageChangedSignal(langText.text)
             }
         }
     }
@@ -76,11 +81,12 @@ Window {
         Component.onCompleted: console.log("Found system tray?:",qtLogo.available)
     }
 
-    InputPanel {
-        id: inputPanel
-        z: 99
+    Rectangle {
+        id: dragArea
         anchors.fill: parent
-
+        anchors.bottomMargin: keyboardWindow.height - d.alternativeKeySpaceHeight
+        color: "#aa444444"
+        opacity: hoverHandler.hovered ? 1 : 0
         DragHandler {
             target: null
             onTranslationChanged: {
@@ -101,5 +107,25 @@ Window {
                 keyboardWindow.y += dy
             }
         }
+
+        HoverHandler {
+            id: hoverHandler
+        }
+
+        Behavior on opacity {
+            NumberAnimation {}
+        }
+        Text {
+            text: "Click here and then drag to move the keyboard"
+            color: "white"
+            anchors.horizontalCenter: parent.horizontalCenter
+            y: (d.alternativeKeySpaceHeight - height) / 2
+        }
+    }
+
+    InputPanel {
+        id: inputPanel
+        z: 99
+        anchors.fill: parent
     }
 }
