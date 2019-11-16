@@ -79,18 +79,21 @@ AbstractInputPanel::~AbstractInputPanel()
 
 /*!
     \fn void QtVirtualKeyboard::AbstractInputPanel::show() = 0
+    \internal
 
     Shows the input panel.
 */
 
 /*!
     \fn void QtVirtualKeyboard::AbstractInputPanel::hide() = 0
+    \internal
 
     Hides the input panel.
 */
 
 /*!
     \fn bool QtVirtualKeyboard::AbstractInputPanel::isVisible() const = 0
+    \internal
 
     Returns \c true if the input panel is currently visible.
 */
@@ -114,6 +117,7 @@ void AbstractInputPanel::createView()
 
 /*!
     \fn void QtVirtualKeyboard::AbstractInputPanel::destroyView()
+    \internal
 
     Destroys the view of the input panel.
 */

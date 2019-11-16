@@ -207,8 +207,9 @@ namespace QtVirtualKeyboard {
     \since QtQuick.VirtualKeyboard 2.0
 
     This method is called when the trace interaction ends. The input method should destroy the \a trace object
-    at some point after this function is called. See the \l {Trace API for Input Methods} how to access the gathered
-    data.
+    at some point after this function is called. Returns \c true on success.
+
+    See the \l {Trace API for Input Methods} how to access the gathered data.
 */
 
 /*!

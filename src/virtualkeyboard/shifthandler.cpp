@@ -202,6 +202,7 @@ bool ShiftHandler::isUppercase() const
 */
 /*!
     \since 1.2
+    \internal
 
     \fn void QtVirtualKeyboard::ShiftHandler::toggleShift()
 
