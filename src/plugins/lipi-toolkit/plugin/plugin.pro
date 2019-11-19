@@ -26,7 +26,7 @@ include(../../../config.pri)
 INCLUDEPATH += \
     ../3rdparty/lipi-toolkit/src/include \
     ../3rdparty/lipi-toolkit/src/util/lib
-LIBS += -L$$[QT_HOST_LIBS] \
+LIBS += -L$$OUT_PWD/../../../../lib \
     -lshaperecommon$$qtPlatformTargetSuffix() \
     -lltkcommon$$qtPlatformTargetSuffix() \
     -lltkutil$$qtPlatformTargetSuffix()
