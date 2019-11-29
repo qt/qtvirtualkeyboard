@@ -100,6 +100,9 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
         }
     }
 
+    // Auto-increment the import to stay in sync with ALL future QtQuick minor versions
+    qmlRegisterModule(pluginsUri, 2, QT_VERSION_MINOR);
+
     platformInputContext->setInputMethods(inputMethodList);
 
     return platformInputContext;
