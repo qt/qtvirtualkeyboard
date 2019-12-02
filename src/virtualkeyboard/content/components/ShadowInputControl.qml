@@ -88,7 +88,7 @@ Item {
                     selectionColor: keyboard.style.fullScreenInputSelectionColor
                     selectedTextColor: keyboard.style.fullScreenInputSelectedTextColor
                     echoMode: (InputContext.inputMethodHints & Qt.ImhHiddenText) ? TextInput.Password : TextInput.Normal
-                    selectByMouse: true
+                    selectByMouse: !!InputContext.inputItem.selectByMouse
                     onCursorPositionChanged: {
                         cursorSyncTimer.restart()
                         blinkStatus = true
