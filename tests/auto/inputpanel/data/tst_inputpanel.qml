@@ -104,6 +104,7 @@ Rectangle {
                 textInput.text = ""
             }
             textInput.inputMethodHints = data !== undefined && data.hasOwnProperty("initInputMethodHints") ? data.initInputMethodHints : Qt.ImhNone
+            textInput.selectByMouse = false
             handwritingInputPanel.available = false
             inputPanel.setHandwritingMode(false)
             textInput.forceActiveFocus()
@@ -2076,6 +2077,18 @@ Rectangle {
             verify(inputPanel.virtualKeyClick(Qt.Key_A))
             verify(inputPanel.virtualKeyClick(Qt.Key_Return))
             compare(inputPanel.shadowInput.text, "")
+        }
+
+        function test_fullScreenModeSelectByMouse() {
+            prepareTest()
+
+            inputPanel.setFullScreenMode(true)
+
+            // The default value for TextInput/TextEdit is false.
+            compare(inputPanel.shadowInput.selectByMouse, false)
+
+            textInput.selectByMouse = true
+            compare(inputPanel.shadowInput.selectByMouse, true)
         }
 
         function test_userDictionary_data() {
