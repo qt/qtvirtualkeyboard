@@ -424,9 +424,9 @@ Rectangle {
                 { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 0, inputSequence: "aaa bbb", outputText: "Aaa bbb", autoCapitalizationEnabled: true, toggleShiftEnabled: true },
                 { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 1, inputSequence: "aaa bbb", outputText: "aaa bbb", autoCapitalizationEnabled: true, toggleShiftEnabled: true },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, toggleShiftCount: 0, inputSequence: "aaa bbb", outputText: "aaa bbb", autoCapitalizationEnabled: false, toggleShiftEnabled: true },
-                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, toggleShiftCount: 1, inputSequence: "aaa bbb", outputText: "AAA BBB", autoCapitalizationEnabled: false, toggleShiftEnabled: true },
-                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, toggleShiftCount: 2, inputSequence: "aaa bbb", outputText: "aaa bbb", autoCapitalizationEnabled: false, toggleShiftEnabled: true },
-                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, toggleShiftCount: 3, inputSequence: "aaa bbb", outputText: "AAA BBB", autoCapitalizationEnabled: false, toggleShiftEnabled: true },
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, toggleShiftCount: 0, inputSequence: "aaa. bbb", outputText: "aaa. bbb", autoCapitalizationEnabled: false, toggleShiftEnabled: true },
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, toggleShiftCount: 1, inputSequence: "aaa bbb", outputText: "Aaa bbb", autoCapitalizationEnabled: false, toggleShiftEnabled: true },
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, toggleShiftCount: 2, inputSequence: "aaa bbb", outputText: "AAA BBB", autoCapitalizationEnabled: false, toggleShiftEnabled: true },
                 { initInputMethodHints: Qt.ImhNoPredictiveText, initLocale: "ar_AR", toggleShiftCount: 0, inputSequence: "\u0645\u0631\u062D\u0628\u0627", outputText: "\u0645\u0631\u062D\u0628\u0627", autoCapitalizationEnabled: false, toggleShiftEnabled: true },
                 { initInputMethodHints: Qt.ImhNoPredictiveText, initLocale: "hi_IN", toggleShiftCount: 0, inputSequence: "\u0928\u092E\u0938\u094D\u0915\u093E\u0930", outputText: "\u0928\u092E\u0938\u094D\u0915\u093E\u0930", autoCapitalizationEnabled: false, toggleShiftEnabled: true },
             ]
