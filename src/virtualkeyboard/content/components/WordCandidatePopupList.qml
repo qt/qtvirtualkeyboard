@@ -28,6 +28,8 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+// Deliberately imported after QtQuick to avoid missing restoreMode property in Binding. Fix in Qt 6.
+import QtQml 2.14
 import QtQuick.VirtualKeyboard 2.3
 
 PopupList {
@@ -55,12 +57,14 @@ PopupList {
                     (wordCandidatePopupList.currentItem.hasOwnProperty("cursorAnchor") ?
                          wordCandidatePopupList.currentItem.cursorAnchor : wordCandidatePopupList.currentItem.width) : 0))
         when: wordCandidatePopupList.visible
+        restoreMode: Binding.RestoreBinding
     }
     Binding {
         target: wordCandidatePopupList
         property: "y"
         value: Math.round(wordCandidatePopupList.flipVertical ? Qt.inputMethod.cursorRectangle.y - wordCandidatePopupList.height : Qt.inputMethod.cursorRectangle.y + Qt.inputMethod.cursorRectangle.height)
         when: wordCandidatePopupList.visible
+        restoreMode: Binding.RestoreBinding
     }
     model: enabled ? InputContext.inputEngine.wordCandidateListModel : null
 

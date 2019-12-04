@@ -28,6 +28,8 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+// Deliberately imported after QtQuick to avoid missing restoreMode property in Binding. Fix in Qt 6.
+import QtQml 2.14
 import QtQuick.Window 2.2
 import QtQuick.VirtualKeyboard 2.2
 import QtQuick.VirtualKeyboard.Settings 2.2
@@ -141,6 +143,8 @@ Item {
                 target: InputContext
                 property: "animating"
                 value: inputPanelTransition.running
+                restoreMode: Binding.RestoreBinding
+
             }
             AutoScroller {}
         }
@@ -149,6 +153,7 @@ Item {
             target: VirtualKeyboardSettings
             property: "fullScreenMode"
             value: appContainer.height > 0 && (appContainer.width / appContainer.height) > (16.0 / 9.0)
+            restoreMode: Binding.RestoreBinding
         }
     }
 }

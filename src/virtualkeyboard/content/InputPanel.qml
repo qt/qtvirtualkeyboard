@@ -28,6 +28,8 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+// Deliberately imported after QtQuick to avoid missing restoreMode property in Binding. Fix in Qt 6.
+import QtQml 2.14
 import QtQuick.VirtualKeyboard 2.1
 
 /*!
@@ -143,5 +145,6 @@ Item {
                          keyboard.width,
                          keyboard.height - keyboard.wordCandidateView.currentYOffset + (keyboard.shadowInputControl.visible ? keyboard.shadowInputControl.height : 0))
         when: !InputContext.animating
+        restoreMode: Binding.RestoreBinding
     }
 }

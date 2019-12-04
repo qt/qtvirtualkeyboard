@@ -28,6 +28,8 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+// Deliberately imported after QtQuick to avoid missing restoreMode property in Binding. Fix in Qt 6.
+import QtQml 2.14
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.2
 import QtQuick.VirtualKeyboard 2.3
@@ -542,17 +544,20 @@ Item {
         property: "previewRectangle"
         value: characterPreview.previewRect
         when: characterPreview.visible
+        restoreMode: Binding.RestoreBinding
     }
     Binding {
         target: InputContext.priv
         property: "previewRectangle"
         value: languagePopupList.previewRect
         when: languagePopupListActive
+        restoreMode: Binding.RestoreBinding
     }
     Binding {
         target: InputContext.priv
         property: "previewVisible"
         value: characterPreview.visible || languagePopupListActive
+        restoreMode: Binding.RestoreBinding
     }
     Loader {
         id: styleLoader
@@ -561,6 +566,7 @@ Item {
             target: styleLoader.item
             property: "keyboardHeight"
             value: keyboardInnerContainer.height
+            restoreMode: Binding.RestoreBinding
         }
     }
     Loader {
@@ -820,6 +826,7 @@ Item {
                     property: "source"
                     value: keyboard.layout
                     when: keyboard.layout.length > 0
+                    restoreMode: Binding.RestoreBinding
                 }
 
                 onItemChanged: {
