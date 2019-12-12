@@ -46,6 +46,7 @@ void QtQuickVirtualKeyboardSettingsPlugin::registerTypes(const char *uri)
     qmlRegisterSingletonType<VirtualKeyboardSettings>(uri, 1, 2, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
     qmlRegisterSingletonType<VirtualKeyboardSettings>(uri, 2, 0, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
     qmlRegisterSingletonType<VirtualKeyboardSettings>(uri, 2, 1, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
+    qmlRegisterSingletonType<VirtualKeyboardSettings>(uri, 6, 1, "VirtualKeyboardSettings", VirtualKeyboardSettings::registerSettingsModule);
     qRegisterMetaType<WordCandidateListSettings *>("WordCandidateListSettings*");
     qmlRegisterUncreatableType<WordCandidateListSettings>(uri, 2, 2, "WordCandidateListSettings", QLatin1String("Cannot create word candidate list settings"));
 

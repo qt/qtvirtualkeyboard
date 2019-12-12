@@ -167,6 +167,8 @@ VirtualKeyboardSettings::VirtualKeyboardSettings(QQmlEngine *engine) :
     connect(settings, SIGNAL(wclAlwaysVisibleChanged()), &d->wordCandidateListSettings, SIGNAL(alwaysVisibleChanged()));
     connect(settings, SIGNAL(wclAutoCommitWordChanged()), &d->wordCandidateListSettings, SIGNAL(autoCommitWordChanged()));
     connect(settings, SIGNAL(fullScreenModeChanged()), SIGNAL(fullScreenModeChanged()));
+    connect(settings, SIGNAL(userDataPathChanged()), SIGNAL(userDataPathChanged()));
+    settings->connect(this, SIGNAL(userDataReset()), SIGNAL(userDataReset()));
 }
 
 /*!
@@ -289,6 +291,16 @@ void VirtualKeyboardSettings::setFullScreenMode(bool fullScreenMode)
     return Settings::instance()->setFullScreenMode(fullScreenMode);
 }
 
+QString VirtualKeyboardSettings::userDataPath() const
+{
+    return Settings::instance()->userDataPath();
+}
+
+void VirtualKeyboardSettings::setUserDataPath(const QString &userDataPath)
+{
+    return Settings::instance()->setUserDataPath(userDataPath);
+}
+
 void VirtualKeyboardSettings::resetStyle()
 {
     Q_D(VirtualKeyboardSettings);
@@ -391,6 +403,23 @@ void VirtualKeyboardSettings::resetStyle()
             value: (Screen.width / Screen.height) > (16.0 / 9.0)
         }
     \endcode
+*/
+
+/*!
+    \qmlproperty bool VirtualKeyboardSettings::userDataPath
+    \since QtQuick.VirtualKeyboard.Settings 6.1
+
+    This property sets the user data path for the virtual keyboard and its plugins.
+
+    By default, the user data path is set to \l {QStandardPaths::GenericConfigLocation}{GenericConfigLocation} + "/qtvirtualkeyboard".
+*/
+
+/*!
+    \qmlsignal VirtualKeyboardSettings::userDataReset()
+
+    The application triggers this signal prior to the user's data being reset to
+    indicate to the virtual keyboard that all files must be closed
+    in the user data directory.
 */
 
 /*!

@@ -29,6 +29,10 @@
 
 #include <QtVirtualKeyboard/private/settings_p.h>
 #include <QtCore/private/qobject_p.h>
+#include <QStandardPaths>
+#include <QFileInfo>
+#include <QDir>
+#include "virtualkeyboarddebug_p.h"
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
@@ -47,8 +51,22 @@ public:
         wclAutoHideDelay(5000),
         wclAlwaysVisible(false),
         wclAutoCommitWord(false),
-        fullScreenMode(false)
-    {}
+        fullScreenMode(false),
+        userDataPath(QStringLiteral("%1/qtvirtualkeyboard")
+                     .arg(QStandardPaths::writableLocation(
+                              QStandardPaths::GenericConfigLocation)))
+    {
+        ensureUserDataPathExists();
+    }
+
+    void ensureUserDataPathExists() const
+    {
+        if (!userDataPath.isEmpty() && !QFileInfo::exists(userDataPath)) {
+            if (!QDir::root().mkpath(userDataPath)) {
+                VIRTUALKEYBOARD_WARN() << "Cannot create directory for user data" << userDataPath;
+            }
+        }
+    }
 
     QString style;
     QString styleName;
@@ -60,6 +78,7 @@ public:
     bool wclAlwaysVisible;
     bool wclAutoCommitWord;
     bool fullScreenMode;
+    QString userDataPath;
 };
 
 static QScopedPointer<Settings> s_settingsInstance;
@@ -228,6 +247,22 @@ void Settings::setFullScreenMode(bool fullScreenMode)
     if (d->fullScreenMode != fullScreenMode) {
         d->fullScreenMode = fullScreenMode;
         emit fullScreenModeChanged();
+    }
+}
+
+QString Settings::userDataPath() const
+{
+    Q_D(const Settings);
+    return d->userDataPath;
+}
+
+void Settings::setUserDataPath(const QString &userDataPath)
+{
+    Q_D(Settings);
+    if (d->userDataPath != userDataPath) {
+        d->userDataPath = userDataPath;
+        d->ensureUserDataPathExists();
+        emit userDataPathChanged();
     }
 }
 

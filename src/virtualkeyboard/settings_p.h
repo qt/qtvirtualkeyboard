@@ -91,6 +91,9 @@ public:
     bool fullScreenMode() const;
     void setFullScreenMode(bool fullScreenMode);
 
+    QString userDataPath() const;
+    void setUserDataPath(const QString &userDataPath);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -102,6 +105,8 @@ signals:
     void wclAlwaysVisibleChanged();
     void wclAutoCommitWordChanged();
     void fullScreenModeChanged();
+    void userDataPathChanged();
+    void userDataReset();
 };
 
 } // namespace QtVirtualKeyboard

@@ -62,6 +62,7 @@ class QVIRTUALKEYBOARD_EXPORT VirtualKeyboardSettings : public QObject
     Q_PROPERTY(QStringList activeLocales READ activeLocales WRITE setActiveLocales NOTIFY activeLocalesChanged)
     Q_PROPERTY(WordCandidateListSettings *wordCandidateList READ wordCandidateList CONSTANT)
     Q_PROPERTY(bool fullScreenMode READ fullScreenMode WRITE setFullScreenMode NOTIFY fullScreenModeChanged)
+    Q_PROPERTY(QString userDataPath READ userDataPath WRITE setUserDataPath NOTIFY userDataPathChanged REVISION(6, 1))
 
 public:
     static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine);
@@ -89,6 +90,9 @@ public:
     bool fullScreenMode() const;
     void setFullScreenMode(bool fullScreenMode);
 
+    QString userDataPath() const;
+    void setUserDataPath(const QString &userDataPath);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -97,6 +101,8 @@ signals:
     void activeLocalesChanged();
     void layoutPathChanged();
     void fullScreenModeChanged();
+    void userDataPathChanged();
+    Q_REVISION(6, 1) void userDataReset();
 
 private:
     void resetStyle();
