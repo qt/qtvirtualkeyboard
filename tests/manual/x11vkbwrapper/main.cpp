@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QDBusConnection>
 #include <QtVirtualKeyboard>
@@ -52,9 +52,9 @@ int main(int argc, char *argv[])
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
     bool error = false;
-    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
     /** Setup DBus starts */
     auto *extensionHandler = new HandleDbusForChrome(&app);
@@ -72,7 +72,6 @@ int main(int argc, char *argv[])
     /** Setup DBus ends */
 
     QQmlApplicationEngine engine(QStringLiteral("qrc:/main.qml"));
-    engine.load(QStringLiteral("qrc:/keyboard.qml"));
 
     QQmlContext* ctx = engine.rootContext();
 
@@ -94,21 +93,6 @@ int main(int argc, char *argv[])
         error = true;
     }
     ctx->setContextProperty("atspiFocus", &handleATSPIEvents);
-
-    QObject *switchObject = engine.rootObjects().first();
-    QObject *keyboardObject = engine.rootObjects().last();
-    QScreen *screen = app.primaryScreen();
-    QRect screenRect = screen->geometry();
-    int x1 = 0;
-    int y1 = 0;
-    int x2 = 0;
-    int y2 = 0;
-    screenRect.getCoords(&x1, &y1, &x2, &y2);
-
-    switchObject->setProperty("x", x2 - switchObject->property("width").toInt());
-    switchObject->setProperty("y", y2 - switchObject->property("height").toInt());
-    keyboardObject->setProperty("x", x2 - static_cast<int>(screen->size().rwidth()/keyboardObject->property("scaleFactor").toFloat()));
-    keyboardObject->setProperty("y", y2 - switchObject->property("height").toInt());
 
     QObject::connect(extensionHandler, &HandleDbusForChrome::showKeyboard, &handleATSPIEvents, &HandleATSPIEvents::setKeyboardVisible);
 

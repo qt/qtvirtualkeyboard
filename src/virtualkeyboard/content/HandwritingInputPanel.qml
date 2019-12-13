@@ -28,6 +28,8 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+// Deliberately imported after QtQuick to avoid missing restoreMode property in Binding. Fix in Qt 6.
+import QtQml 2.14
 import QtQuick.Window 2.2
 import QtQuick.VirtualKeyboard 2.1
 
@@ -117,6 +119,7 @@ Item {
         property: "keyboardRectangle"
         value: Qt.rect(hwrInputArea.x, hwrInputArea.y, hwrInputArea.width, hwrInputArea.height)
         when: handwritingInputPanel.enabled && handwritingInputPanel.available && handwritingInputPanel.active
+        restoreMode: Binding.RestoreBinding
     }
 
     Binding {
@@ -124,6 +127,7 @@ Item {
         property: "active"
         value: false
         when: handwritingInputPanel.enabled && handwritingInputPanel.available
+        restoreMode: Binding.RestoreBinding
     }
 
     WordCandidatePopupList {

@@ -31,9 +31,9 @@
 #define HANDLEKEYEVENTS_H
 
 #include <QObject>
+#include <QHash>
 
 class QKeyEvent;
-
 extern "C" {
 #include <xdo.h>
 }
@@ -52,9 +52,14 @@ public:
     bool init();
 
 private:
-    void keyTap(const QString &key) const;
+    void keyTap(const QKeyEvent *keyEvent, const QString &key);
+    void keyClick(const KeyCode key, const QString &keyText) const;
     void keyPressRelease(const KeyCode key, const bool eventType) const;
-    KeyCode getUnicodeKeycode(const QString &key) const;
+    KeyCode getUnicodeKeyCode(const QString &key, int scratchKeyCode) const;
+    void remapScratchKeyCode(const KeySym sym, int scratchKeyCode) const;
+    void sendKeyWithAtspi(const QKeyEvent *keyEvent, const QString key);
+    int getTemporaryKeyCode();
+
 
 protected:
     /** Deliver events from a another object(s). */
@@ -63,6 +68,8 @@ protected:
 private:
     /** Libxdo context. */
     xdo_t   *m_xdo;
+    /** Store temporary keycodes. */
+    QHash<Qt::Key, int> m_temporaryKeyCodes;
 };
 
 #endif // HANDLEKEYEVENTS_H

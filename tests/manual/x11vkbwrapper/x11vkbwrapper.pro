@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = x11vkbwrapper
 
-QT += qml quick dbus virtualkeyboard svg
+QT += qml quick dbus virtualkeyboard svg widgets
 CONFIG += c++11
 
 static {
@@ -41,8 +41,6 @@ HEADERS += \
     xcbkeyboard.h
 
 RESOURCES += qml.qrc
-
-OTHER_FILES += main.qml
 
 INCLUDEPATH += /usr/include/X11
 INCLUDEPATH += /usr/include/at-spi-2.0
