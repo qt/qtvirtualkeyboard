@@ -2,6 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>graphics/Qt_logo.png</file>
-        <file>keyboard.qml</file>
+        <file>Keyboard.qml</file>
     </qresource>
 </RCC>

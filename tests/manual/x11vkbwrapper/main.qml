@@ -27,16 +27,17 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.9
+import QtQuick 2.12
 import QtQuick.Window 2.2
-
 
 Window {
     id: window
     width: d.vkbSwitchSize
     height: d.vkbSwitchSize
+    x: Screen.width - width
+    y: Screen.height - height
     color: "transparent"
-    visible: !Qt.inputMethod.visible
+    visible: true
     flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.FramelessWindowHint
 
     QtObject {
@@ -51,10 +52,10 @@ Window {
 
         MouseArea {
             anchors.fill: parent
-            onClicked: {
-                atspiFocus.setKeyboardVisible(!Qt.inputMethod.visible)
-            }
+            onClicked: atspiFocus.setKeyboardVisible(!Qt.inputMethod.visible)
         }
     }
+
+    Keyboard {}
 }
 

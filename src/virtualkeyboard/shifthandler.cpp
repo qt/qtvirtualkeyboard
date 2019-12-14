@@ -220,8 +220,7 @@ void ShiftHandler::toggleShift()
     if (d->manualShiftLanguageFilter.contains(d->locale.language())) {
         setCapsLockActive(false);
         setShiftActive(!d->shift);
-    } else if (d->inputContext->inputMethodHints() & Qt::ImhNoAutoUppercase ||
-               d->manualCapsInputModeFilter.contains(d->inputContext->inputEngine()->inputMode())) {
+    } else if (d->manualCapsInputModeFilter.contains(d->inputContext->inputEngine()->inputMode())) {
         bool capsLock = d->capsLock;
         setCapsLockActive(!capsLock);
         setShiftActive(!capsLock);
