@@ -390,6 +390,7 @@ void QVirtualKeyboardInputEngine::setInputMethod(QVirtualKeyboardAbstractInputMe
     if (d->inputMethod != inputMethod) {
         update();
         if (d->inputMethod) {
+            d->inputMethod->clearInputMode();
             QObject::disconnect(d->inputMethod.data(), &QVirtualKeyboardAbstractInputMethod::selectionListsChanged, this, &QVirtualKeyboardInputEngine::updateSelectionListModels);
             d->inputMethod->setInputEngine(nullptr);
         }

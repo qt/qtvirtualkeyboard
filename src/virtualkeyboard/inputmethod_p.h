@@ -80,6 +80,7 @@ public:
 
     void reset() override;
     void update() override;
+    void clearInputMode() override;
 };
 
 } // namespace QtVirtualKeyboard

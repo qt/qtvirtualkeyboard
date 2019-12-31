@@ -116,6 +116,25 @@ void QVirtualKeyboardAbstractInputMethod::update()
 }
 
 /*!
+    Clears input mode.
+
+    This method is called by the virtual keyboard when this input method is being replaced
+    by another input method. It should clear the operations performed by setInputMode() method,
+    for example, to disconnect signal handlers from the virtual keyboard or free up resources.
+
+    The input mode may be reactivated by calling setInputMode(). However, note that the calls to
+    setInputMethod() and clearInputMethod() are not in balance. Thus, for example, setInputMethod()
+    may be called multiple times without matching calls to clearInputMethod().
+
+    The default implementation does nothing.
+
+    \since QtQuick.VirtualKeyboard 6.1
+*/
+void QVirtualKeyboardAbstractInputMethod::clearInputMode()
+{
+}
+
+/*!
     \internal
     Called by the input engine when the input method is activated and
     deactivated.

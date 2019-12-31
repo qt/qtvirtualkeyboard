@@ -1370,9 +1370,13 @@ Item {
         if (customInputMethod && !inputMethodNeedsReset && customInputMethodSharedLayouts.indexOf(layoutType) === -1)
             inputMethodNeedsReset = true
 
+        var customInputMethodToDestroy = null
         if (inputMethodNeedsReset) {
             if (customInputMethod) {
-                customInputMethod.destroy()
+                // Postpones the destruction of the custom input method after creating a new one
+                // and after assigning it to the input engine. This allows the input method to clear
+                // its state before destroying.
+                customInputMethodToDestroy = customInputMethod
                 customInputMethod = null
             }
             customInputMethodSharedLayouts = []
@@ -1459,6 +1463,9 @@ Item {
                 inputModeNeedsReset = false
             }
         }
+
+        if (customInputMethodToDestroy !== null)
+            customInputMethodToDestroy.destroy()
 
         // Clear the toggle shift timer
         InputContext.priv.shiftHandler.clearToggleShiftTimer()

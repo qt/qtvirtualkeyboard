@@ -407,5 +407,10 @@ void InputMethod::update()
     QMetaObject::invokeMethod(this, "update");
 }
 
+void InputMethod::clearInputMode()
+{
+    QMetaObject::invokeMethod(this, "clearInputMode");
+}
+
 } // namespace QtVirtualKeyboard
 QT_END_NAMESPACE
