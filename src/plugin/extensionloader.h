@@ -40,7 +40,7 @@ class ExtensionLoader
 {
     Q_DISABLE_COPY(ExtensionLoader)
 public:
-    static QHash<QString, QJsonObject> plugins(bool reload = false);
+    static QMultiHash<QString, QJsonObject> plugins(bool reload = false);
     static QJsonObject loadMeta(const QString &extensionName);
     static QVirtualKeyboardExtensionPlugin *loadPlugin(QJsonObject metaData);
 
@@ -49,7 +49,7 @@ private:
 
 private:
     static QMutex m_mutex;
-    static QHash<QString, QJsonObject> m_plugins;
+    static QMultiHash<QString, QJsonObject> m_plugins;
     static bool m_alreadyDiscovered;
 };
 

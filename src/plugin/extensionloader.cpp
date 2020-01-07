@@ -35,14 +35,14 @@ QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 QMutex ExtensionLoader::m_mutex;
-QHash<QString, QJsonObject> ExtensionLoader::m_plugins;
+QMultiHash<QString, QJsonObject> ExtensionLoader::m_plugins;
 bool ExtensionLoader::m_alreadyDiscovered = false;
 
 Q_GLOBAL_STATIC_WITH_ARGS(QFactoryLoader, loader,
         (QVirtualKeyboardExtensionPluginFactoryInterface_iid,
          QLatin1String("/virtualkeyboard")))
 
-QHash<QString, QJsonObject> ExtensionLoader::plugins(bool reload)
+QMultiHash<QString, QJsonObject> ExtensionLoader::plugins(bool reload)
 {
     QMutexLocker lock(&m_mutex);
 
@@ -105,7 +105,7 @@ void ExtensionLoader::loadPluginMetadata()
         QString name = obj.value(QLatin1String("Name")).toString();
         if (!name.isEmpty()) {
             obj.insert(QLatin1String("index"), i);
-            m_plugins.insertMulti(name, obj);
+            m_plugins.insert(name, obj);
         }
     }
 }
