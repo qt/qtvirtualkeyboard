@@ -512,7 +512,7 @@ Item {
                 keyboardInputArea.initialKey = null
                 if (keyboardInputArea.navigationCursor !== Qt.point(-1, -1))
                     keyboardInputArea.navigateToNextKey(0, 0, false)
-            } else if (!wordCandidateContextMenu.active) {
+            } else if (!wordCandidateContextMenu.active && keyboard.navigationModeActive) {
                 wordCandidateContextMenu.show(wordCandidateView.currentIndex)
                 wordCandidateContextMenu.openedByNavigationKeyLongPress = keyboard.navigationModeActive
             }
