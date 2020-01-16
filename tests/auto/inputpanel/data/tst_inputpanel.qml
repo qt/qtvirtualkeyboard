@@ -1965,9 +1965,9 @@ Rectangle {
             }
 
             if (data.wclAutoCommitWord)
-                compare(inputPanel.wordCandidateView.model.count, 0)
+                verify(textInput.text.length > 0)
             else
-                verify(inputPanel.wordCandidateView.model.count >= 1)
+                verify(textInput.text.length === 0)
         }
 
         function test_fullScreenModeActivation() {
