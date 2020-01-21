@@ -1296,6 +1296,8 @@ Item {
             wordCandidateView.currentIndex = wordCandidateIndex
 
             wordCandidateContextMenuList.anchors.leftMargin = Qt.binding(function() {
+                if (!wordCandidateView.currentItem)
+                    return 0
                 var leftBorder = Math.round(wordCandidateView.mapFromItem(wordCandidateView.currentItem, (wordCandidateView.currentItem.width - wordCandidateContextMenuList.width) / 2, 0).x)
                 var rightBorder = Math.round(wordCandidateContextMenuList.parent.width - wordCandidateContextMenuList.width)
                 return Math.min(leftBorder, rightBorder)
