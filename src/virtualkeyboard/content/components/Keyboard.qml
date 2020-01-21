@@ -1300,7 +1300,7 @@ Item {
                     return 0
                 var leftBorder = Math.round(wordCandidateView.mapFromItem(wordCandidateView.currentItem, (wordCandidateView.currentItem.width - wordCandidateContextMenuList.width) / 2, 0).x)
                 var rightBorder = Math.round(wordCandidateContextMenuList.parent.width - wordCandidateContextMenuList.width)
-                return Math.min(leftBorder, rightBorder)
+                return Math.max(0, Math.min(leftBorder, rightBorder))
             })
 
             wordCandidateContextMenuList.enabled = true
