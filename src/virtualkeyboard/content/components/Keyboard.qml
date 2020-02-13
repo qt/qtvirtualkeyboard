@@ -493,7 +493,7 @@ Item {
                     InputContext.inputEngine.virtualKeyCancel()
                     keyboardInputArea.initialKey = null
                     alternativeKeys.openedByNavigationKeyLongPress = keyboard.navigationModeActive
-                } else if (keyboard.activeKey.key === Qt.Key_Context1) {
+                } else if (keyboard.activeKey.key === Qt.Key_Context1 && !keyboard.symbolMode) {
                     InputContext.inputEngine.virtualKeyCancel()
                     keyboardInputArea.dragSymbolMode = true
                     keyboard.symbolMode = true
@@ -1078,14 +1078,28 @@ Item {
                                 InputContext.inputEngine.virtualKeyCancel()
                                 setActiveKey(key)
                                 press(key, false)
-                                if (dragSymbolMode)
-                                    pressAndHoldTimer.restart()
+                                if (dragSymbolMode) {
+                                    if (key && key.functionKey && key.key !== Qt.Key_Context1)
+                                        pressAndHoldTimer.restart()
+                                    else
+                                        pressAndHoldTimer.stop()
+                                }
                             }
                         }
                     }
                     onReleased: {
-                        if (containsPoint(touchPoints, activeTouchPoint))
+                        if (containsPoint(touchPoints, activeTouchPoint)) {
+                            if (dragSymbolMode) {
+                                var key = keyOnPoint(activeTouchPoint.x, activeTouchPoint.y)
+                                if (key && key.key === Qt.Key_Context1) {
+                                    dragSymbolMode = false
+                                    InputContext.inputEngine.virtualKeyCancel()
+                                    reset()
+                                    return
+                                }
+                            }
                             releaseActiveKey();
+                        }
                     }
                     onCanceled: {
                         if (containsPoint(touchPoints, activeTouchPoint))
