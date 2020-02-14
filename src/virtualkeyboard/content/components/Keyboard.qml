@@ -1078,12 +1078,8 @@ Item {
                                 InputContext.inputEngine.virtualKeyCancel()
                                 setActiveKey(key)
                                 press(key, false)
-                                if (dragSymbolMode) {
-                                    if (key.functionKey && key.key !== Qt.Key_Context1)
-                                        pressAndHoldTimer.restart()
-                                    else
-                                        pressAndHoldTimer.stop()
-                                }
+                                if (dragSymbolMode)
+                                    pressAndHoldTimer.restart()
                             }
                         }
                     }
