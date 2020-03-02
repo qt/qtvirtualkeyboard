@@ -1371,7 +1371,7 @@ Module {
         isComposite: true
         defaultProperty: "data"
         Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
-        Property { name: "__isRootItem"; type: "bool"; isReadonly: true }
+        Property { name: "desktopPanel"; type: "bool" }
         Property { name: "active"; type: "bool" }
         Property { name: "keyboard"; type: "Keyboard_QMLTYPE_22"; isReadonly: true; isPointer: true }
         Signal {
@@ -1388,7 +1388,7 @@ Module {
         isComposite: true
         defaultProperty: "data"
         Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
-        Property { name: "__isRootItem"; type: "bool"; isReadonly: true }
+        Property { name: "desktopPanel"; type: "bool" }
         Property { name: "active"; type: "bool" }
         Property { name: "keyboard"; type: "Keyboard_QMLTYPE_22"; isReadonly: true; isPointer: true }
         Signal {
@@ -1405,7 +1405,7 @@ Module {
         isComposite: true
         defaultProperty: "data"
         Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
-        Property { name: "__isRootItem"; type: "bool"; isReadonly: true }
+        Property { name: "desktopPanel"; type: "bool" }
         Property { name: "active"; type: "bool" }
         Property { name: "keyboard"; type: "Keyboard_QMLTYPE_22"; isReadonly: true; isPointer: true }
         Signal {
@@ -1422,7 +1422,7 @@ Module {
         isComposite: true
         defaultProperty: "data"
         Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
-        Property { name: "__isRootItem"; type: "bool"; isReadonly: true }
+        Property { name: "desktopPanel"; type: "bool" }
         Property { name: "active"; type: "bool" }
         Property { name: "keyboard"; type: "Keyboard_QMLTYPE_22"; isReadonly: true; isPointer: true }
         Signal {
@@ -1439,7 +1439,7 @@ Module {
         isComposite: true
         defaultProperty: "data"
         Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
-        Property { name: "__isRootItem"; type: "bool"; isReadonly: true }
+        Property { name: "desktopPanel"; type: "bool" }
         Property { name: "active"; type: "bool" }
         Property { name: "keyboard"; type: "Keyboard_QMLTYPE_22"; isReadonly: true; isPointer: true }
         Signal {
@@ -1456,7 +1456,7 @@ Module {
         isComposite: true
         defaultProperty: "data"
         Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
-        Property { name: "__isRootItem"; type: "bool"; isReadonly: true }
+        Property { name: "desktopPanel"; type: "bool" }
         Property { name: "active"; type: "bool" }
         Property { name: "keyboard"; type: "Keyboard_QMLTYPE_22"; isReadonly: true; isPointer: true }
         Signal {
@@ -1473,7 +1473,7 @@ Module {
         isComposite: true
         defaultProperty: "data"
         Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
-        Property { name: "__isRootItem"; type: "bool"; isReadonly: true }
+        Property { name: "desktopPanel"; type: "bool" }
         Property { name: "active"; type: "bool" }
         Property { name: "keyboard"; type: "Keyboard_QMLTYPE_22"; isReadonly: true; isPointer: true }
         Signal {
@@ -1490,7 +1490,7 @@ Module {
         isComposite: true
         defaultProperty: "data"
         Property { name: "externalLanguageSwitchEnabled"; type: "bool" }
-        Property { name: "__isRootItem"; type: "bool"; isReadonly: true }
+        Property { name: "desktopPanel"; type: "bool" }
         Property { name: "active"; type: "bool" }
         Property { name: "keyboard"; type: "Keyboard_QMLTYPE_22"; isReadonly: true; isPointer: true }
         Signal {

@@ -273,15 +273,13 @@ void QVirtualKeyboardInputContextPrivate::onInputItemChanged()
     if (QObject *item = inputItem()) {
         if (QQuickItem *vkbPanel = qobject_cast<QQuickItem*>(inputPanel)) {
             if (QQuickItem *quickItem = qobject_cast<QQuickItem*>(item)) {
-                const QVariant isRootItem = vkbPanel->property("__isRootItem");
+                const QVariant isDesktopPanel = vkbPanel->property("desktopPanel");
                 /*
                     For integrated keyboards, make sure it's a sibling to the overlay. The
                     high z-order will make sure it gets events also during a modal session.
                 */
-                if (isRootItem.isValid() && !isRootItem.toBool()) {
+                if (isDesktopPanel.isValid() && !isDesktopPanel.toBool())
                     vkbPanel->setParentItem(quickItem->window()->contentItem());
-                    vkbPanel->setProperty("__reparented", true);
-                }
             }
         }
     } else {
