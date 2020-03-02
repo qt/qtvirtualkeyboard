@@ -116,11 +116,14 @@ Item {
     /*! \internal */
     readonly property bool __isRootItem: inputPanel.parent != null && inputPanel.parent.parent == null
 
+    /*! \internal */
+    property bool __reparented: false
+
     SelectionControl {
         objectName: "selectionControl"
         x: -parent.x
         y: -parent.y
-        enabled: active && !keyboard.fullScreenMode && !__isRootItem
+        enabled: active && !keyboard.fullScreenMode && (!__isRootItem || __reparented)
     }
 
     implicitHeight: keyboard.height

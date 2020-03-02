@@ -90,6 +90,8 @@ Item {
         return plainInputMethod
     }
 
+    Component.onCompleted: InputContext.priv.registerInputPanel(parent)
+
     width: keyboardBackground.width
     height: keyboardBackground.height + (VirtualKeyboardSettings.wordCandidateList.alwaysVisible ? wordCandidateView.height : 0)
     onActiveChanged: {

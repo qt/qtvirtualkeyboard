@@ -111,6 +111,7 @@ public:
     // Helper functions
     Q_INVOKABLE bool fileExists(const QUrl &fileUrl);
     Q_INVOKABLE bool hasEnterKeyAction(QObject *item) const;
+    Q_INVOKABLE void registerInputPanel(QObject *inputPanel);
 
 Q_SIGNALS:
     void focusChanged();
@@ -151,6 +152,7 @@ private:
     QtVirtualKeyboard::PlatformInputContext *platformInputContext;
     QVirtualKeyboardInputEngine *inputEngine;
     QtVirtualKeyboard::ShiftHandler *_shiftHandler;
+    QPointer<QObject> inputPanel;
     QRectF keyboardRect;
     QRectF previewRect;
     bool _previewVisible;
