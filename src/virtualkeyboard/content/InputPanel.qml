@@ -114,13 +114,13 @@ Item {
     property alias keyboard: keyboard
 
     /*! \internal */
-    readonly property bool __isRootItem: inputPanel.parent != null && inputPanel.parent.parent == null
+    property bool desktopPanel: false
 
     SelectionControl {
         objectName: "selectionControl"
         x: -parent.x
         y: -parent.y
-        enabled: active && !keyboard.fullScreenMode && !__isRootItem
+        enabled: active && !keyboard.fullScreenMode && !desktopPanel
     }
 
     implicitHeight: keyboard.height
@@ -140,8 +140,8 @@ Item {
         target: InputContext.priv
         property: "keyboardRectangle"
         value: mapToItem(null,
-                         __isRootItem ? keyboard.x : x,
-                         (__isRootItem ? keyboard.y : y) + keyboard.wordCandidateView.currentYOffset - (keyboard.shadowInputControl.visible ? keyboard.shadowInputControl.height : 0),
+                         desktopPanel ? keyboard.x : x,
+                         (desktopPanel ? keyboard.y : y) + keyboard.wordCandidateView.currentYOffset - (keyboard.shadowInputControl.visible ? keyboard.shadowInputControl.height : 0),
                          keyboard.width,
                          keyboard.height - keyboard.wordCandidateView.currentYOffset + (keyboard.shadowInputControl.visible ? keyboard.shadowInputControl.height : 0))
         when: !InputContext.animating

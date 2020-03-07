@@ -36,6 +36,8 @@
 #include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
 
 #include <QGuiApplication>
+#include <QtQuick/qquickitem.h>
+#include <QtQuick/qquickwindow.h>
 #include <QtGui/qpa/qplatformintegration.h>
 #include <QtGui/private/qguiapplication_p.h>
 
@@ -213,6 +215,15 @@ bool QVirtualKeyboardInputContextPrivate::hasEnterKeyAction(QObject *item) const
     return item != nullptr && qmlAttachedPropertiesObject<EnterKeyAction>(item, false);
 }
 
+void QVirtualKeyboardInputContextPrivate::registerInputPanel(QObject *inputPanel)
+{
+    VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContextPrivate::registerInputPanel():" << inputPanel;
+    Q_ASSERT(!this->inputPanel);
+    this->inputPanel = inputPanel;
+    if (QQuickItem *item = qobject_cast<QQuickItem *>(inputPanel))
+        item->setZ(std::numeric_limits<qreal>::max());
+}
+
 void QVirtualKeyboardInputContextPrivate::hideInputPanel()
 {
     platformInputContext->hideInputPanel();
@@ -259,10 +270,24 @@ void QVirtualKeyboardInputContextPrivate::forceCursorPosition(int anchorPosition
 
 void QVirtualKeyboardInputContextPrivate::onInputItemChanged()
 {
-    if (!inputItem() && !activeKeys.isEmpty()) {
-        // After losing keyboard focus it is impossible to track pressed keys
-        activeKeys.clear();
-        clearState(State::KeyEvent);
+    if (QObject *item = inputItem()) {
+        if (QQuickItem *vkbPanel = qobject_cast<QQuickItem*>(inputPanel)) {
+            if (QQuickItem *quickItem = qobject_cast<QQuickItem*>(item)) {
+                const QVariant isDesktopPanel = vkbPanel->property("desktopPanel");
+                /*
+                    For integrated keyboards, make sure it's a sibling to the overlay. The
+                    high z-order will make sure it gets events also during a modal session.
+                */
+                if (isDesktopPanel.isValid() && !isDesktopPanel.toBool())
+                    vkbPanel->setParentItem(quickItem->window()->contentItem());
+            }
+        }
+    } else {
+        if (!activeKeys.isEmpty()) {
+            // After losing keyboard focus it is impossible to track pressed keys
+            activeKeys.clear();
+            clearState(State::KeyEvent);
+        }
     }
     clearState(State::InputMethodClick);
 }

@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
 SUBDIRS += \
     x11vkbwrapper \
-    x11vkbtest
-
+    x11vkbtest \
+    quickcontrols2

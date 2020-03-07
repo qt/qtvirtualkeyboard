@@ -104,6 +104,8 @@ void PlatformInputContext::update(Qt::InputMethodQueries queries)
         if (m_inputContext) {
             m_selectionControl = new DesktopInputSelectionControl(this, m_inputContext);
             m_selectionControl->createHandles();
+            if (QObject *inputPanel = m_inputContext->priv()->inputPanel)
+                inputPanel->setProperty("desktopPanel", true);
         }
     }
 #endif
