@@ -71,6 +71,8 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContext : public QObject
     Q_PROPERTY(bool anchorRectIntersectsClipRect READ anchorRectIntersectsClipRect NOTIFY anchorRectIntersectsClipRectChanged)
     Q_PROPERTY(bool cursorRectIntersectsClipRect READ cursorRectIntersectsClipRect NOTIFY cursorRectIntersectsClipRectChanged)
     Q_PROPERTY(QVirtualKeyboardInputContextPrivate *priv READ priv CONSTANT)
+    Q_MOC_INCLUDE("qvirtualkeyboardinputengine.h")
+    Q_MOC_INCLUDE("qvirtualkeyboardinputcontext_p.h")
 
 public:
     explicit QVirtualKeyboardInputContext(QObject *parent = nullptr);

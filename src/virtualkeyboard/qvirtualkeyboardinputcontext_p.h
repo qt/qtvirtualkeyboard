@@ -76,6 +76,7 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContextPrivate : public QObje
     Q_PROPERTY(QtVirtualKeyboard::ShiftHandler *shiftHandler READ shiftHandler CONSTANT)
     Q_PROPERTY(QtVirtualKeyboard::ShadowInputContext *shadow READ shadow CONSTANT)
     Q_PROPERTY(QStringList inputMethods READ inputMethods CONSTANT)
+    Q_MOC_INCLUDE("shifthandler_p.h")
 
     explicit QVirtualKeyboardInputContextPrivate(QVirtualKeyboardInputContext *q_ptr);
     void init();
