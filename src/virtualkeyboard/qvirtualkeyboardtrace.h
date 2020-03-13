@@ -76,6 +76,11 @@ public:
     qreal opacity() const;
     void setOpacity(qreal opacity);
 
+    Q_REVISION(6, 1) Q_INVOKABLE void startHideTimer(int delayMs);
+
+protected:
+    void timerEvent(QTimerEvent *event) override;
+
 Q_SIGNALS:
     void traceIdChanged(int traceId);
     void channelsChanged();

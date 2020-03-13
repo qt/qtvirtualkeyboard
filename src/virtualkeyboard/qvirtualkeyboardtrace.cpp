@@ -40,7 +40,8 @@ public:
         traceId(0),
         final(false),
         canceled(false),
-        opacity(1.0)
+        opacity(1.0),
+        hideTimer(0)
     { }
 
     int traceId;
@@ -49,6 +50,7 @@ public:
     bool final;
     bool canceled;
     qreal opacity;
+    int hideTimer;
 };
 
 /*!
@@ -383,6 +385,45 @@ void QVirtualKeyboardTrace::setOpacity(qreal opacity)
         d->opacity = opacity;
         emit opacityChanged(opacity);
     }
+}
+
+/*! \qmlmethod void Trace::startHideTimer(int delayMs)
+
+    Starts a timer to set opacity to zero after \a delayMs. If called again
+    within \a delayMs, the timer is restarted.
+
+    With this function the input method can hide the trace from screen before
+    destroying the trace object, for example, to indicate that the trace has
+    been processed.
+
+    \since QtQuick.VirtualKeyboard.Styles 6.1
+*/
+
+/*! Starts a timer to set opacity to zero after \a delayMs. If called again
+    within \a delayMs, the timer is restarted.
+
+    With this function the input method can hide the trace from screen before
+    destroying the trace object, for example, to indicate that the trace has
+    been processed.
+
+    \since QtQuick.VirtualKeyboard.Styles 6.1
+*/
+
+void QVirtualKeyboardTrace::startHideTimer(int delayMs)
+{
+    Q_D(QVirtualKeyboardTrace);
+    if (d->hideTimer != 0) {
+        killTimer(d->hideTimer);
+    }
+    d->hideTimer = startTimer(delayMs);
+}
+
+void QVirtualKeyboardTrace::timerEvent(QTimerEvent *event)
+{
+    Q_UNUSED(event)
+    Q_D(QVirtualKeyboardTrace);
+    d->hideTimer = 0;
+    setOpacity(0);
 }
 
 /*! \qmlproperty int Trace::traceId
