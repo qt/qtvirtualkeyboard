@@ -43,6 +43,7 @@
 
 #include <QObject>
 #include <QRectF>
+#include <QSet>
 #include <QInputMethodEvent>
 #include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #include <QtVirtualKeyboard/private/shadowinputcontext_p.h>

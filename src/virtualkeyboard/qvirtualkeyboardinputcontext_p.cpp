@@ -35,6 +35,7 @@
 #include <QtVirtualKeyboard/private/enterkeyaction_p.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
 
+#include <QFile>
 #include <QGuiApplication>
 #include <QtQuick/qquickitem.h>
 #include <QtQuick/qquickwindow.h>
