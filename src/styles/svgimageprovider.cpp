@@ -49,10 +49,10 @@ QPixmap SvgImageProvider::requestPixmap(const QString &id, QSize *size, const QS
     QString imagePath = QLatin1String(":/") + request.path();
     if (request.hasQuery()) {
         const QString query = request.query();
-        const QStringList paramList = query.split(QLatin1Char('&'), QString::SkipEmptyParts);
+        const QStringList paramList = query.split(QLatin1Char('&'), Qt::SkipEmptyParts);
         QVariantMap params;
         for (const QString &param : paramList) {
-            QStringList keyValue = param.split(QLatin1Char('='), QString::SkipEmptyParts);
+            QStringList keyValue = param.split(QLatin1Char('='), Qt::SkipEmptyParts);
             if (keyValue.length() == 2)
                 params[keyValue[0]] = keyValue[1];
         }
