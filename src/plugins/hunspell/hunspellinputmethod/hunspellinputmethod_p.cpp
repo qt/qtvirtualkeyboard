@@ -82,7 +82,7 @@ bool HunspellInputMethodPrivate::createHunspell(const QString &locale)
             QStringLiteral(":")
 #endif
         );
-        QStringList searchPaths(hunspellDataPath.split(pathListSep, QString::SkipEmptyParts));
+        QStringList searchPaths(hunspellDataPath.split(pathListSep, Qt::SkipEmptyParts));
         const QStringList defaultPaths = QStringList()
                 << QDir(QLibraryInfo::location(QLibraryInfo::DataPath) + QStringLiteral("/qtvirtualkeyboard/hunspell")).absolutePath()
 #if !defined(Q_OS_WIN32)

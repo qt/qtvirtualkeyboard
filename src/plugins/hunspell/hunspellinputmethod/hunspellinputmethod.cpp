@@ -138,6 +138,7 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
             QString word = d->wordCandidates.wordAt(0);
             bool addToWord = d->isValidInputChar(c) && (!word.isEmpty() || !d->isJoiner(c));
             if (addToWord) {
+                QString newText = text;
                 /*  Automatic space insertion. */
                 if (word.isEmpty()) {
                     QString surroundingText = ic->surroundingText();
@@ -153,7 +154,11 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
                         if (!lastChar.isSpace() &&
                             lastChar != Qt::Key_Minus &&
                             d->isAutoSpaceAllowed()) {
+                            // auto-insertion of space might trigger auto-capitalization
+                            bool wasShiftActive = ic->isShiftActive();
                             ic->commit(QLatin1String(" "));
+                            if (ic->isShiftActive() && !wasShiftActive)
+                                newText = newText.toUpper();
                         }
                     }
                 }
@@ -162,7 +167,7 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
                     a selection which the pre-edit text will replace.
                 */
                 d->ignoreUpdate = word.isEmpty();
-                word.append(text);
+                word.append(newText);
                 d->wordCandidates.updateWord(0, word);
                 ic->setPreeditText(word);
                 d->ignoreUpdate = false;

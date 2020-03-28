@@ -424,6 +424,8 @@ Rectangle {
             return [
                 { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 0, inputSequence: "aaa bbb", outputText: "Aaa bbb", autoCapitalizationEnabled: true, toggleShiftEnabled: true },
                 { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 1, inputSequence: "aaa bbb", outputText: "aaa bbb", autoCapitalizationEnabled: true, toggleShiftEnabled: true },
+                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 2, inputSequence: "aaa. bbb", outputText: "Aaa. Bbb", autoCapitalizationEnabled: true, toggleShiftEnabled: true },
+                { initInputMethodHints: Qt.ImhNoPredictiveText, toggleShiftCount: 2, inputSequence: "aaa.bbb", outputText: "Aaa.bbb", autoCapitalizationEnabled: true, toggleShiftEnabled: true },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, toggleShiftCount: 0, inputSequence: "aaa bbb", outputText: "aaa bbb", autoCapitalizationEnabled: false, toggleShiftEnabled: true },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, toggleShiftCount: 0, inputSequence: "aaa. bbb", outputText: "aaa. bbb", autoCapitalizationEnabled: false, toggleShiftEnabled: true },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, toggleShiftCount: 1, inputSequence: "aaa bbb", outputText: "Aaa bbb", autoCapitalizationEnabled: false, toggleShiftEnabled: true },

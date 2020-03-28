@@ -291,7 +291,7 @@ int LipiSharedRecognizer::resolveLogicalNameToProjectProfile(const QString &logi
     if (configEntry == s_lipiEngineConfigEntries.end())
         return FAILURE;
 
-    QStringList parts = QString::fromLatin1(configEntry->second.c_str()).split(QLatin1Char('('), QString::SkipEmptyParts);
+    QStringList parts = QString::fromStdString(configEntry->second).split(QLatin1Char('('), Qt::SkipEmptyParts);
     if (parts.length() != 2)
         return FAILURE;
 
