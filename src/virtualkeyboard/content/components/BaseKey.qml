@@ -132,7 +132,7 @@ Item {
     */
     readonly property int effectiveAlternativeKeysHighlightIndex: {
         var index = alternativeKeys.indexOf(text)
-        return index > 1 && (index + 1) == alternativeKeys.length ? alternativeKeys.length - 2 : index
+        return index > 0 && (index + 1) == alternativeKeys.length ? index - 1 : index
     }
 
     /*! Sets the key code for input method processing.
