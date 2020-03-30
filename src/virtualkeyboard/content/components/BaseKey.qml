@@ -67,6 +67,7 @@ Item {
             \li \c QtVirtualKeyboard.ShiftKey
             \li \c QtVirtualKeyboard.SpaceKey
             \li \c QtVirtualKeyboard.SymbolModeKey
+            \li \c QtVirtualKeyboard.FlickKey
         \endlist
     */
     property int keyType: QtVirtualKeyboard.BaseKey

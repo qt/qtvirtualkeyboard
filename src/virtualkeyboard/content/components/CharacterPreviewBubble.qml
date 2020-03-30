@@ -44,8 +44,33 @@ Item {
     }
 
     onActiveKeyChanged: {
-        if (activeKey && characterPreview.item !== null) {
-            characterPreview.item.text = InputContext.uppercase ? activeKey.displayText.toUpperCase() : activeKey.displayText
+        if (characterPreview.item !== null) {
+            if (!activeKey) {
+                characterPreview.item.text = ""
+                return
+            }
+
+            characterPreview.item.text = Qt.binding(function() {
+                if (!activeKey)
+                    return ""
+                var displayText = (activeKey.keyType === QtVirtualKeyboard.FlickKey) ? activeKey.text : activeKey.displayText
+                return InputContext.uppercase ? displayText.toUpperCase() : displayText
+            })
+            if (activeKey.keyType === QtVirtualKeyboard.FlickKey) {
+                if (characterPreview.item.hasOwnProperty("flickLeft")) {
+                    characterPreview.item.flickLeft = activeKey.flickLeft
+                    characterPreview.item.flickRight = activeKey.flickRight
+                    characterPreview.item.flickTop = activeKey.flickTop
+                    characterPreview.item.flickBottom = activeKey.flickBottom
+                }
+            } else {
+                if (characterPreview.item.hasOwnProperty("flickLeft")) {
+                    characterPreview.item.flickLeft = ""
+                    characterPreview.item.flickRight = ""
+                    characterPreview.item.flickTop = ""
+                    characterPreview.item.flickBottom = ""
+                }
+            }
             width = activeKey.width
             height = activeKey.height
             var position = keyboard.mapFromItem(activeKey, 0, 0)

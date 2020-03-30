@@ -528,6 +528,7 @@ specialized key types. Below is the list of all key types:
     \li \l ShiftKey
     \li \l SpaceKey
     \li \l SymbolModeKey
+    \li \l FlickKey
     \li \l HandwritingModeKey
     \li \l TraceInputKey
 \endlist

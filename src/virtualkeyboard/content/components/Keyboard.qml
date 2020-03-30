@@ -920,6 +920,8 @@ Item {
                         if (keyboard.activeKey === activeKey)
                             return
                         if (keyboard.activeKey) {
+                            if (keyboard.activeKey.keyType === QtVirtualKeyboard.FlickKey)
+                                keyboard.activeKey.onKeyChanged.disconnect(onFlickKeyKeyChanged)
                             keyboard.activeKey.active = false
                         }
                         keyboard.activeKey = activeKey
@@ -1063,6 +1065,11 @@ Item {
                         return initialKey !== null
                     }
 
+                    function onFlickKeyKeyChanged() {
+                        InputContext.inputEngine.virtualKeyCancel()
+                        press(activeKey, false)
+                    }
+
                     onPressed: {
                         keyboard.navigationModeActive = false
 
@@ -1076,10 +1083,17 @@ Item {
                             if (containsPoint(touchPoints, activeTouchPoint))
                                 releaseActiveKey();
 
-                            releaseInaccuracyTimer.start()
-                            pressAndHoldTimer.start()
                             initialKey = keyOnPoint(touchPoints[i].x, touchPoints[i].y)
+                            if (!initialKey)
+                                continue
                             activeTouchPoint = touchPoints[i]
+                            if (initialKey.keyType === QtVirtualKeyboard.FlickKey) {
+                                initialKey.press(activeTouchPoint.x, activeTouchPoint.y)
+                                initialKey.onKeyChanged.connect(onFlickKeyKeyChanged)
+                            } else {
+                                releaseInaccuracyTimer.start()
+                                pressAndHoldTimer.start()
+                            }
                             setActiveKey(initialKey)
                             press(initialKey, true)
                         }
@@ -1090,6 +1104,8 @@ Item {
 
                         if (alternativeKeys.active) {
                             alternativeKeys.move(mapToItem(alternativeKeys, activeTouchPoint.x, 0).x)
+                        } else if (activeKey && activeKey.keyType === QtVirtualKeyboard.FlickKey) {
+                            activeKey.update(activeTouchPoint.x, activeTouchPoint.y)
                         } else {
                             var key = null
                             if (releaseInaccuracyTimer.running) {

@@ -54,6 +54,7 @@ enum class KeyType {
     ShiftKey,
     SpaceKey,
     SymbolModeKey,
+    FlickKey,
 };
 Q_ENUM_NS(KeyType)
 

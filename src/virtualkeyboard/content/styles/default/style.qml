@@ -638,25 +638,112 @@ KeyboardStyle {
     characterPreviewMargin: 0
     characterPreviewDelegate: Item {
         property string text
+        property string flickLeft
+        property string flickTop
+        property string flickRight
+        property string flickBottom
+        readonly property bool flickKeysSet: flickLeft || flickTop || flickRight || flickBottom
+        readonly property bool flickKeysVisible: text && flickKeysSet &&
+                                                 text !== flickLeft && text !== flickTop && text !== flickRight && text !== flickBottom
         id: characterPreview
         Rectangle {
             id: characterPreviewBackground
             anchors.fill: parent
             color: "#5d5b59"
             radius: 5
+            readonly property int largeTextHeight: Math.round(height / 3 * 2)
+            readonly property int smallTextHeight: Math.round(height / 3)
+            readonly property int smallTextMargin: Math.round(3 * scaleHint)
             Text {
                 id: characterPreviewText
                 color: "white"
                 text: characterPreview.text
-                fontSizeMode: Text.HorizontalFit
+                fontSizeMode: Text.VerticalFit
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                anchors.fill: parent
-                anchors.margins: Math.round(48 * scaleHint)
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                height: characterPreviewBackground.largeTextHeight
                 font {
                     family: fontFamily
                     weight: Font.Normal
                     pixelSize: 82 * scaleHint
+                }
+            }
+            Text {
+                color: "gray"
+                text: characterPreview.flickLeft
+                visible: characterPreview.flickKeysVisible
+                fontSizeMode: Text.VerticalFit
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.left: parent.left
+                anchors.leftMargin: characterPreviewBackground.smallTextMargin
+                anchors.verticalCenter: parent.verticalCenter
+                height: characterPreviewBackground.smallTextHeight
+                font {
+                    family: fontFamily
+                    weight: Font.Normal
+                    pixelSize: 62 * scaleHint
+                }
+            }
+            Text {
+                color: "gray"
+                text: characterPreview.flickTop
+                visible: characterPreview.flickKeysVisible
+                fontSizeMode: Text.VerticalFit
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.top: parent.top
+                anchors.topMargin: characterPreviewBackground.smallTextMargin
+                anchors.horizontalCenter: parent.horizontalCenter
+                height: characterPreviewBackground.smallTextHeight
+                font {
+                    family: fontFamily
+                    weight: Font.Normal
+                    pixelSize: 62 * scaleHint
+                }
+            }
+            Text {
+                color: "gray"
+                text: characterPreview.flickRight
+                visible: characterPreview.flickKeysVisible
+                fontSizeMode: Text.VerticalFit
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.right: parent.right
+                anchors.rightMargin: characterPreviewBackground.smallTextMargin
+                anchors.verticalCenter: parent.verticalCenter
+                height: characterPreviewBackground.smallTextHeight
+                font {
+                    family: fontFamily
+                    weight: Font.Normal
+                    pixelSize: 62 * scaleHint
+                }
+            }
+            Text {
+                color: "gray"
+                text: characterPreview.flickBottom
+                visible: characterPreview.flickKeysVisible
+                fontSizeMode: Text.VerticalFit
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: characterPreviewBackground.smallTextMargin
+                anchors.horizontalCenter: parent.horizontalCenter
+                height: characterPreviewBackground.smallTextHeight
+                font {
+                    family: fontFamily
+                    weight: Font.Normal
+                    pixelSize: 62 * scaleHint
+                }
+            }
+            states: State {
+                name: "flickKeysVisible"
+                when: characterPreview.flickKeysVisible
+                PropertyChanges {
+                    target: characterPreviewText
+                    height: characterPreviewBackground.smallTextHeight
                 }
             }
         }

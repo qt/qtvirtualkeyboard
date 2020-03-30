@@ -82,6 +82,7 @@ set(virtualkeyboard_content_resource_files
     "components/CharacterPreviewBubble.qml"
     "components/EnterKey.qml"
     "components/FillerKey.qml"
+    "components/FlickKey.qml"
     "components/HandwritingModeKey.qml"
     "components/HideKeyboardKey.qml"
     "components/InputModeKey.qml"

@@ -152,6 +152,7 @@ void QtQuickVirtualKeyboardPlugin::registerTypes(const char *uri)
     qmlRegisterType(QUrl(componentsPath + QLatin1String("WordCandidatePopupList.qml")), uri, 2, 0, "WordCandidatePopupList");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("PopupList.qml")), uri, 2, 3, "PopupList");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("SelectionControl.qml")), uri, 2, 1, "SelectionControl");
+    qmlRegisterType(QUrl(componentsPath + QLatin1String("FlickKey.qml")), uri, 6, 1, "FlickKey");
     qmlRegisterType(QUrl(componentsPath + QLatin1String("InputModeKey.qml")), uri, 2, 3, "InputModeKey");
 
     // The minor version used to be the current Qt 5 minor. For compatibility it is the last
