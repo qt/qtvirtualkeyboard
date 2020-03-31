@@ -55,10 +55,14 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     Q_UNUSED(paramList);
 
 #if defined(QT_STATICPLUGIN)
+#if !defined(QT_VIRTUALKEYBOARD_DISABLE_LAYOUTS)
     Q_INIT_RESOURCE(qmake_virtualkeyboard_layouts);
+#endif
     Q_INIT_RESOURCE(virtualkeyboard_content);
+#if !defined(QT_VIRTUALKEYBOARD_NO_BUILTIN_STYLES)
     Q_INIT_RESOURCE(virtualkeyboard_default_style);
     Q_INIT_RESOURCE(virtualkeyboard_retro_style);
+#endif
     Q_VKB_IMPORT_PLUGIN(QtQuickVirtualKeyboardPlugin)
     Q_VKB_IMPORT_PLUGIN(QtQuickVirtualKeyboardSettingsPlugin)
     Q_VKB_IMPORT_PLUGIN(QtQuickVirtualKeyboardStylesPlugin)
