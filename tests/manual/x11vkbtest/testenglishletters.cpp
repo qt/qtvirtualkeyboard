@@ -75,7 +75,7 @@ void TestEnglishLetters::doTestLettersInGedit()
     auto bigDimension = m_windowHelper.getWindowDimension(x11vkbWin);
     auto mouseSimulator = new MouseSimulator(this, x11vkbWin, bigDimension.first, bigDimension.second);
 
-    QStringList lines = m_letters.split( QRegExp("[\n]") );
+    QStringList lines = m_letters.split(QLatin1Char('\n'));
     QChar enterChar = QChar::CarriageReturn;
 
     // first click shiftKey to get it Down

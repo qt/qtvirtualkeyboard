@@ -31,6 +31,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QTimer>
+#include <QRegularExpression>
 
 #include "startclose.h"
 
@@ -114,7 +115,7 @@ ulong StartClose::currentTotalAvailableMemory() const
     if (procFile.open(QIODevice::ReadOnly)) {
         QTextStream procStream(&procFile);
         procStream.readLine(); // "Read away" the first row
-        availableMemSize = procStream.readLine().split(QRegExp("\\s+")).at(1).toULong();
+        availableMemSize = procStream.readLine().split(QRegularExpression("\\s+")).at(1).toULong();
         procFile.close();
     }
     return availableMemSize;
