@@ -97,8 +97,8 @@ Item {
     Connections {
         ignoreUnknownSignals: true
         target: Qt.inputMethod
-        onAnimatingChanged: if (inputItem && !Qt.inputMethod.animating) delayedLoading.restart()
-        onKeyboardRectangleChanged: if (inputItem) delayedLoading.restart()
-        onCursorRectangleChanged: if (inputItem && inputItem.activeFocus) delayedLoading.restart()
+        function onAnimatingChanged() { if (inputItem && !Qt.inputMethod.animating) delayedLoading.restart() }
+        function onKeyboardRectangleChanged() { if (inputItem) delayedLoading.restart() }
+        function onCursorRectangleChanged() { if (inputItem && inputItem.activeFocus) delayedLoading.restart() }
     }
 }
