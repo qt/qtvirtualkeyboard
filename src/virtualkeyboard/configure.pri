@@ -95,15 +95,15 @@ defineTest(qtConfCommandline_disableLang) {
 
 # T9Write tests
 
-T9WRITE_BASE_DIR = $$VKB_SOURCE_TREE/3rdparty/t9write
+T9WRITE_BASE_DIR = $$VKB_SOURCE_TREE/src/plugins/t9write/3rdparty/t9write/
 
 defineTest(t9writeFindSharedLibrary) {
     contains(QT_ARCH, arm) {
-        LIB_DIR = $$BASE_DIR/lib/arm/shared
+        LIB_DIR = $$T9WRITE_BASE_DIR/lib/arm/shared
     } else: linux {
-        LIB_DIR = $$BASE_DIR/lib/linux-x86/shared
+        LIB_DIR = $$T9WRITE_BASE_DIR/lib/linux-x86/shared
     } else: win32 {
-        LIB_DIR = $$BASE_DIR/lib/win32/shared
+        LIB_DIR = $$T9WRITE_BASE_DIR/lib/win32/shared
     } else {
         return(false)
     }
@@ -125,11 +125,11 @@ defineTest(t9writeFindSharedLibrary) {
 
 defineTest(t9writeFindStaticLibrary) {
     contains(QT_ARCH, arm) {
-        LIB_DIR = $$BASE_DIR/lib/arm/shared
+        LIB_DIR = $$T9WRITE_BASE_DIR/lib/arm/shared
     } else: linux {
-        LIB_DIR = $$BASE_DIR/lib/linux-x86/shared
+        LIB_DIR = $$T9WRITE_BASE_DIR/lib/linux-x86/shared
     } else: win32 {
-        LIB_DIR = $$BASE_DIR/lib/win32/shared
+        LIB_DIR = $$T9WRITE_BASE_DIR/lib/win32/shared
     } else {
         return(false)
     }
