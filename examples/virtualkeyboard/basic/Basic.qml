@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.10
+import QtQuick 2.14
 import QtQuick.Controls 2.3
 import QtQuick.VirtualKeyboard 2.1
 import "content"
@@ -105,7 +105,7 @@ Rectangle {
                 }
                 TextField {
                     id: phoneNumberField
-                    validator: RegExpValidator { regExp: /^[0-9\+\-\#\*\ ]{6,}$/ }
+                    validator: RegularExpressionValidator { regularExpression: /^[0-9\+\-\#\*\ ]{6,}$/ }
                     width: parent.width
                     placeholderText: "Phone number field"
                     inputMethodHints: Qt.ImhDialableCharactersOnly
