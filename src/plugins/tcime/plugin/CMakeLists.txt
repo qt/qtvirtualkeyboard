@@ -1,0 +1,90 @@
+# Generated from plugin.pro.
+
+#####################################################################
+## QtVirtualKeyboardTCImePlugin Plugin:
+#####################################################################
+
+qt_internal_add_plugin(QtVirtualKeyboardTCImePlugin
+    OUTPUT_NAME qtvirtualkeyboard_tcime
+    TYPE virtualkeyboard
+    SOURCES
+        tcimeplugin.cpp tcimeplugin.h
+        tcinputmethod.cpp tcinputmethod_p.h
+    DEFINES
+        QT_ASCII_CAST_WARNINGS
+        QT_NO_CAST_FROM_ASCII
+        QT_NO_CAST_FROM_BYTEARRAY
+        QT_NO_CAST_TO_ASCII
+    PUBLIC_LIBRARIES
+        Qt::Core
+        Qt::Gui
+        Qt::Qml
+        Qt::VirtualKeyboardPrivate
+    LIBRARIES # special case
+        BundledTcime # special case
+)
+
+# Resources:
+set(qmake_virtualkeyboard_tcime_layouts_resource_files
+    "virtualkeyboard/content/layouts/zh_TW/dialpad.fallback"
+    "virtualkeyboard/content/layouts/zh_TW/digits.fallback"
+    "virtualkeyboard/content/layouts/zh_TW/main.qml"
+    "virtualkeyboard/content/layouts/zh_TW/numbers.fallback"
+    "virtualkeyboard/content/layouts/zh_TW/symbols.qml"
+)
+
+qt_add_resource(QtVirtualKeyboardTCImePlugin "qmake_virtualkeyboard_tcime_layouts"
+    PREFIX
+        "${VKB_LAYOUTS_PREFIX}" #special case
+    BASE
+        "${VKB_LAYOUTS_BASE}" #special case
+    FILES
+        ${qmake_virtualkeyboard_tcime_layouts_resource_files}
+)
+
+
+#### Keys ignored in scope 1:.:.:plugin.pro:<TRUE>:
+# OTHER_FILES = "tcime.json"
+
+## Scopes:
+#####################################################################
+
+if(NOT no-bundle-tcime)
+    # Resources:
+    set(qmake_tcime_resource_files
+        "../3rdparty/tcime/data/qt/dict_phrases.dat"
+    )
+
+    qt_add_resource(QtVirtualKeyboardTCImePlugin "qmake_tcime"
+        PREFIX
+            "/QtQuick/VirtualKeyboard"
+        BASE
+            "${CMAKE_CURRENT_SOURCE_DIR}" #special case
+        FILES
+            ${qmake_tcime_resource_files}
+    )
+endif()
+
+#### Keys ignored in scope 3:.:.:plugin.pro:QT_FEATURE_cangjie:
+# TCIME_FILES = "../3rdparty/tcime/data/qt/dict_cangjie.dat"
+
+#### Keys ignored in scope 4:.:.:plugin.pro:QT_FEATURE_zhuyin:
+# TCIME_FILES = "../3rdparty/tcime/data/qt/dict_zhuyin.dat"
+
+#### Keys ignored in scope 5:.:.:plugin.pro:else:
+# INSTALLS = "tcime_data"
+# tcime_data.files = "$$PWD/../3rdparty/tcime/data/qt/dict_phrases.dat"
+# tcime_data.path = "$$VIRTUALKEYBOARD_INSTALL_DATA/tcime"
+
+#### Keys ignored in scope 6:.:.:plugin.pro:QT_FEATURE_cangjie:
+# tcime_data.files = "$$PWD/../3rdparty/tcime/data/qt/dict_cangjie.dat"
+
+#### Keys ignored in scope 7:.:.:plugin.pro:QT_FEATURE_zhuyin:
+# tcime_data.files = "$$PWD/../3rdparty/tcime/data/qt/dict_zhuyin.dat"
+
+#### Keys ignored in scope 8:.:.:plugin.pro:NOT prefix_build:
+# COPIES = "tcime_data"
+
+#### Keys ignored in scope 9:.:.:plugin.pro:WIN32:
+# QMAKE_TARGET_DESCRIPTION = "Virtual Keyboard Extension for Qt."
+# QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard TCIME (Qt $$QT_VERSION)"

@@ -1,4 +1,4 @@
-TARGET = featureextractorcommon
+BASE_TARGET_NAME = featureextractorcommon
 include(../../../../lipilib.pri)
 
 INCLUDEPATH += \

@@ -6,7 +6,7 @@ QT_FOR_CONFIG += virtualkeyboard
 
 SOURCES += main.cpp
 CONFIG += link_pkgconfig
-static {
+contains(CONFIG, static) {
     QT += svg
     QTPLUGIN += qtvirtualkeyboardplugin
 }

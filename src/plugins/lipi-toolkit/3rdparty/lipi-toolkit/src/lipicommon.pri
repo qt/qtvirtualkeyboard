@@ -18,4 +18,4 @@ load(qt_build_paths)
     }
 }
 
-TARGET = $$TARGET$$qtPlatformTargetSuffix()
+TARGET = $$BASE_TARGET_NAME$$qtPlatformTargetSuffix()

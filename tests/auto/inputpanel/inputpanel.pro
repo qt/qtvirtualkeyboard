@@ -4,7 +4,7 @@ TARGET = tst_inputpanel
 QT += testlib
 CONFIG += qmltestcase console
 
-static {
+contains(CONFIG, static) {
     QT += svg
     QTPLUGIN += qtvirtualkeyboardplugin
 }

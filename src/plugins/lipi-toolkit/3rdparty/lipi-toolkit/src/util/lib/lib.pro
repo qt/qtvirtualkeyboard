@@ -1,4 +1,4 @@
-TARGET = ltkutil
+BASE_TARGET_NAME = ltkutil
 include(../../lipilib.pri)
 
 win32: DEFINES -= UNICODE
@@ -34,6 +34,6 @@ SOURCES += \
     LTKVersionCompatibilityCheck.cpp \
     LTKOSUtilFactory.cpp \
     LTKImageWriter.cpp
-    
+
 win32: SOURCES += LTKWindowsUtil.cpp
 else: SOURCES += LTKLinuxUtil.cpp

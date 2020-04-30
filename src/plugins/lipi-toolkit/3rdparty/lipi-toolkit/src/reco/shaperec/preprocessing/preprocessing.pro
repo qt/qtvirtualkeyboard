@@ -1,4 +1,4 @@
-TARGET = preproc
+BASE_TARGET_NAME = preproc
 LIPILIBS = shaperecommon ltkcommon ltkutil
 include(../../../lipiplugin.pri)
 

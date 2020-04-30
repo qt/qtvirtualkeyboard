@@ -1,4 +1,4 @@
-TARGET = wordreccommon
+BASE_TARGET_NAME = wordreccommon
 include(../../../lipilib.pri)
 
 INCLUDEPATH += \

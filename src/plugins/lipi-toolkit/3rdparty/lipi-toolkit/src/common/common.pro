@@ -1,4 +1,4 @@
-TARGET = ltkcommon
+BASE_TARGET_NAME = ltkcommon
 include(../lipilib.pri)
 
 INCLUDEPATH += \

@@ -1,0 +1,65 @@
+# Generated from common.pro.
+
+#####################################################################
+## common Generic Library:
+#####################################################################
+
+qt_add_cmake_library(common
+    STATIC
+    EXCEPTIONS
+    OUTPUT_DIRECTORY "${QT_BUILD_DIR}/lib"
+    SOURCES
+        ../include/LTKCaptureDevice.h
+        ../include/LTKChannel.h
+        ../include/LTKClassifierDefaults.h
+        ../include/LTKErrorsList.h
+        ../include/LTKException.h
+        ../include/LTKInc.h
+        ../include/LTKLipiEngineInterface.h
+        ../include/LTKLogger.h
+        ../include/LTKLoggerInterface.h
+        ../include/LTKMacros.h
+        ../include/LTKOSUtil.h
+        ../include/LTKOSUtilFactory.h
+        ../include/LTKPreprocDefaults.h
+        ../include/LTKPreprocessor.h
+        ../include/LTKPreprocessorInterface.h
+        ../include/LTKRecognitionContext.h
+        ../include/LTKRefCountedPtr.h
+        ../include/LTKScreenContext.h
+        ../include/LTKShapeFeatureMacros.h
+        ../include/LTKShapeRecoConfig.h
+        ../include/LTKShapeRecoEngine.h
+        ../include/LTKShapeRecoResult.h
+        ../include/LTKShapeRecoUtil.h
+        ../include/LTKShapeRecognizer.h
+        ../include/LTKTrace.h
+        ../include/LTKTraceFormat.h
+        ../include/LTKTraceGroup.h
+        ../include/LTKTypes.h
+        ../include/LTKWordRecoConfig.h
+        ../include/LTKWordRecoResult.h
+        ../include/LTKWordRecognizer.h
+        LTKCaptureDevice.cpp
+        LTKChannel.cpp
+        LTKException.cpp
+        LTKScreenContext.cpp
+        LTKTrace.cpp
+        LTKTraceFormat.cpp
+        LTKTraceGroup.cpp
+    INCLUDE_DIRECTORIES
+        ../include
+        ../util/lib
+    PUBLIC_LIBRARIES
+        Qt::Core
+        Qt::Gui
+)
+qt_disable_warnings(common)
+
+## Scopes:
+#####################################################################
+
+qt_extend_target(common CONDITION NOT LIPILIBS_ISEMPTY
+    PUBLIC_LIBRARIES
+        # Remove: L/lib
+)

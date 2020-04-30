@@ -1,4 +1,4 @@
-TARGET = shaperecommon
+BASE_TARGET_NAME = shaperecommon
 include(../../../lipilib.pri)
 
 INCLUDEPATH += \
