@@ -59,13 +59,13 @@ endif()
 
 if(NOT QT_FEATURE_vkb_desktop)
     target_compile_definitions(basic PUBLIC
-        MAIN_QML=\\\"basic-b2qt.qml\\\"
+        MAIN_QML="basic-b2qt.qml" # special case
     )
 endif()
 
 if(QT_FEATURE_vkb_desktop)
     target_compile_definitions(basic PUBLIC
-        MAIN_QML=\\\"Basic.qml\\\"
+        MAIN_QML="Basic.qml" # special case
     )
 endif()
 
