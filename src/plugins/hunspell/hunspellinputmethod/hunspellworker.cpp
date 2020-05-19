@@ -614,7 +614,6 @@ void HunspellLoadWordListTask::run()
     QFile inputFile(filePath);
     if (inputFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream inStream(&inputFile);
-        inStream.setCodec(QTextCodec::codecForName("UTF-8"));
         QString word;
         word.reserve(64);
         while (inStream.readLineInto(&word)) {
@@ -632,7 +631,6 @@ void HunspellSaveWordListTask::run()
         QDir().mkpath(QFileInfo(filePath).absoluteDir().path());
     if (outputFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream outStream(&outputFile);
-        outStream.setCodec(QTextCodec::codecForName("UTF-8"));
         for (int i = 0, count = wordList->size(); i < count; ++i) {
             const QString word(wordList->wordAt(i));
             outStream << word.toUtf8() << '\n';
