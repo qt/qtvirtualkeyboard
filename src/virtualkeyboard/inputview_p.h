@@ -57,7 +57,7 @@ signals:
     void sizeChanged();
 
 protected:
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event) override;
 };
 
 } // namespace QtVirtualKeyboard

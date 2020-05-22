@@ -41,8 +41,8 @@ class QtQuickVirtualKeyboardStylesPlugin : public QQmlExtensionPlugin
 
 public:
     QtQuickVirtualKeyboardStylesPlugin(QObject *parent = nullptr) : QQmlExtensionPlugin(parent) { }
-    void registerTypes(const char *uri);
-    void initializeEngine(QQmlEngine *engine, const char *uri);
+    void registerTypes(const char *uri) override;
+    void initializeEngine(QQmlEngine *engine, const char *uri) override;
 };
 
 QT_END_NAMESPACE

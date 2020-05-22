@@ -32,7 +32,7 @@ public:
     explicit RomkanFullKatakana(QObject *parent = 0);
     ~RomkanFullKatakana();
 
-    bool convert(ComposingText &text) const;
+    bool convert(ComposingText &text) const override;
 };
 
 #endif // ROMKANFULLKATAKANA_H

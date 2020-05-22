@@ -38,7 +38,7 @@ public:
     bool simplified() const;
     void setSimplified(bool simplified);
 
-    QStringList getWords(const QString &input) const;
+    QStringList getWords(const QString &input) const override;
 
 private:
     QStringList sortWords(const DictionaryEntry &data) const;

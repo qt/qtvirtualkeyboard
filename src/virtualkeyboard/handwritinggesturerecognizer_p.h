@@ -55,7 +55,7 @@ public:
     void setDpi(int dpi);
     int dpi() const;
 
-    QVariantMap recognize(const QList<QVirtualKeyboardTrace *> traceList);
+    QVariantMap recognize(const QList<QVirtualKeyboardTrace *> traceList) override;
 
 private:
     int m_dpi;

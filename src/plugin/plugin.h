@@ -43,7 +43,7 @@ class QVirtualKeyboardPlugin : public QPlatformInputContextPlugin
 
 public:
     QStringList keys() const;
-    QPlatformInputContext *create(const QString&, const QStringList&);
+    QPlatformInputContext *create(const QString&, const QStringList&) override;
 };
 
 QT_END_NAMESPACE

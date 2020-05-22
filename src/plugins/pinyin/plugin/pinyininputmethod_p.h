@@ -57,19 +57,20 @@ public:
     explicit PinyinInputMethod(QObject *parent = nullptr);
     ~PinyinInputMethod();
 
-    QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale);
-    bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode);
-    bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase);
+    QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale) override;
+    bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode) override;
+    bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase) override;
 
-    bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
+    bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers) override;
 
-    QList<QVirtualKeyboardSelectionListModel::Type> selectionLists();
-    int selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type);
-    QVariant selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role);
-    void selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index);
+    QList<QVirtualKeyboardSelectionListModel::Type> selectionLists() override;
+    int selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type) override;
+    QVariant selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index,
+                               QVirtualKeyboardSelectionListModel::Role role) override;
+    void selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index) override;
 
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 
 private:
     QScopedPointer<PinyinInputMethodPrivate> d_ptr;

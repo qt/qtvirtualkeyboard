@@ -35,7 +35,7 @@ class PhraseDictionary : public WordDictionary
 public:
     PhraseDictionary();
 
-    QStringList getWords(const QString &input) const;
+    QStringList getWords(const QString &input) const override;
 };
 
 }

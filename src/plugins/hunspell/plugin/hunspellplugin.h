@@ -41,7 +41,7 @@ class QtVirtualKeyboardHunspellPlugin : public QVirtualKeyboardExtensionPlugin
     Q_PLUGIN_METADATA(IID QVirtualKeyboardExtensionPluginFactoryInterface_iid
                       FILE "hunspell.json")
 public:
-    void registerTypes(const char *uri) const;
+    void registerTypes(const char *uri) const override;
 };
 
 QT_END_NAMESPACE

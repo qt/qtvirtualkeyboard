@@ -35,7 +35,7 @@ public:
     explicit Romkan(QObject *parent = 0);
     ~Romkan();
 
-    bool convert(ComposingText &text) const;
+    bool convert(ComposingText &text) const override;
 
 protected:
     bool convertImpl(ComposingText &text, const WnnLookupTable &table) const;

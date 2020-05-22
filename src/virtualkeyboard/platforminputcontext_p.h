@@ -64,31 +64,31 @@ public:
     explicit PlatformInputContext();
     ~PlatformInputContext();
 
-    virtual bool isValid() const;
+    bool isValid() const override;
 
-    virtual void reset();
-    virtual void commit();
-    virtual void update(Qt::InputMethodQueries queries);
-    virtual void invokeAction(QInputMethod::Action action, int cursorPosition);
-    virtual QRectF keyboardRect() const;
+    void reset() override;
+    void commit() override;
+    void update(Qt::InputMethodQueries queries) override;
+    void invokeAction(QInputMethod::Action action, int cursorPosition) override;
+    QRectF keyboardRect() const override;
 
-    virtual bool isAnimating() const;
+    bool isAnimating() const override;
 
-    virtual void showInputPanel();
-    virtual void hideInputPanel();
-    virtual bool isInputPanelVisible() const;
+    void showInputPanel() override;
+    void hideInputPanel() override;
+    bool isInputPanelVisible() const override;
 
-    virtual QLocale locale() const;
+    QLocale locale() const override;
     void setLocale(QLocale locale);
-    virtual Qt::LayoutDirection inputDirection() const;
+    Qt::LayoutDirection inputDirection() const override;
     void setInputDirection(Qt::LayoutDirection direction);
 
     QObject *focusObject();
-    virtual void setFocusObject(QObject *object);
+    void setFocusObject(QObject *object) override;
 
     QVirtualKeyboardInputContext *inputContext() const;
 
-    virtual bool eventFilter(QObject *object, QEvent *event);
+    bool eventFilter(QObject *object, QEvent *event) override;
 
     void setInputMethods(const QStringList &inputMethods);
     QStringList inputMethods() const;

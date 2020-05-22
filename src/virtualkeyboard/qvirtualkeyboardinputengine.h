@@ -157,7 +157,7 @@ private Q_SLOTS:
     void updateInputModes();
 
 protected:
-    void timerEvent(QTimerEvent *timerEvent);
+    void timerEvent(QTimerEvent *timerEvent) override;
 
 private:
     friend class QVirtualKeyboardInputContext;

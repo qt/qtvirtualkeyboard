@@ -147,7 +147,7 @@ public:
         WnnWord(stem.id, stem.candidate + fzk.candidate, stroke, WnnPOS(stem.partOfSpeech.left, fzk.partOfSpeech.right), stem.frequency, 1)
     { }
 
-    bool isClause() const
+    bool isClause() const override
     {
         return true;
     }
@@ -227,7 +227,7 @@ public:
         }
     }
 
-    bool isSentence() const
+    bool isSentence() const override
     {
         return true;
     }
