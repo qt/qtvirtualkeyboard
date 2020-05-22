@@ -38,7 +38,7 @@ public:
     explicit SvgImageProvider();
     ~SvgImageProvider();
 
-    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
+    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize) override;
 };
 
 #endif // SVGIMAGEPROVIDER_H

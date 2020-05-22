@@ -74,7 +74,7 @@ public Q_SLOTS:
     void updateVisibility();
     void reloadGraphics();
 protected:
-    bool eventFilter(QObject *object, QEvent *event);
+    bool eventFilter(QObject *object, QEvent *event) override;
 
 private:
     QRect anchorHandleRect() const;

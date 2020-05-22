@@ -34,7 +34,7 @@ class ZhuyinDictionary : public WordDictionary
 public:
     ZhuyinDictionary();
 
-    QStringList getWords(const QString &input) const;
+    QStringList getWords(const QString &input) const override;
 };
 
 }

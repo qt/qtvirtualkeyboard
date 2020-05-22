@@ -56,14 +56,14 @@ public:
     explicit HangulInputMethod(QObject *parent = nullptr);
     ~HangulInputMethod();
 
-    QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale);
-    bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode);
-    bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase);
+    QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale) override;
+    bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode) override;
+    bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase) override;
 
-    bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
+    bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers) override;
 
-    void reset();
-    void update();
+    void reset() override;
+    void update() override;
 };
 
 } // namespace QtVirtualKeyboard

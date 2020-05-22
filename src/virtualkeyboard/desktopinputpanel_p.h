@@ -59,15 +59,15 @@ public:
     explicit DesktopInputPanel(QObject *parent = nullptr);
     ~DesktopInputPanel();
 
-    void show();
-    void hide();
-    bool isVisible() const;
+    void show() override;
+    void hide() override;
+    bool isVisible() const override;
 
-    void setInputRect(const QRect &inputRect);
+    void setInputRect(const QRect &inputRect) override;
 
 public slots:
-    void createView();
-    void destroyView();
+    void createView() override;
+    void destroyView() override;
 
 protected slots:
     void repositionView(const QRect &rect);

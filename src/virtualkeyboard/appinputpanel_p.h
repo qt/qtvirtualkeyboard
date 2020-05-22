@@ -65,9 +65,9 @@ public:
     explicit AppInputPanel(QObject *parent = nullptr);
     ~AppInputPanel();
 
-    void show();
-    void hide();
-    bool isVisible() const;
+    void show() override;
+    void hide() override;
+    bool isVisible() const override;
 };
 
 } // namespace QtVirtualKeyboard

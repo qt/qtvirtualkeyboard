@@ -135,7 +135,7 @@ class HunspellLoadDictionaryTask : public HunspellTask
 public:
     explicit HunspellLoadDictionaryTask(const QString &locale, const QStringList &searchPaths);
 
-    void run();
+    void run() override;
 
 signals:
     void completed(bool success);
@@ -154,7 +154,7 @@ public:
     QSharedPointer<HunspellWordList> wordList;
     bool autoCorrect;
 
-    void run();
+    void run() override;
     bool spellCheck(const QString &word);
     int levenshteinDistance(const QString &s, const QString &t);
     QString removeAccentsAndDiacritics(const QString& s);
@@ -166,7 +166,7 @@ class HunspellUpdateSuggestionsTask : public HunspellTask
 public:
     QSharedPointer<HunspellWordList> wordList;
 
-    void run();
+    void run() override;
 
 signals:
     void updateSuggestions(const QSharedPointer<HunspellWordList> &wordList, int tag);
@@ -181,7 +181,7 @@ class HunspellAddWordTask : public HunspellTask
 public:
     QSharedPointer<HunspellWordList> wordList;
 
-    void run();
+    void run() override;
 
     static bool alternativeForm(const QString &word, QString &alternativeForm);
 };
@@ -192,7 +192,7 @@ class HunspellRemoveWordTask : public HunspellTask
 public:
     QSharedPointer<HunspellWordList> wordList;
 
-    void run();
+    void run() override;
 };
 
 class HunspellLoadWordListTask : public HunspellTask
@@ -202,7 +202,7 @@ public:
     QSharedPointer<HunspellWordList> wordList;
     QString filePath;
 
-    void run();
+    void run() override;
 };
 
 class HunspellSaveWordListTask : public HunspellTask
@@ -212,7 +212,7 @@ public:
     QSharedPointer<HunspellWordList> wordList;
     QString filePath;
 
-    void run();
+    void run() override;
 };
 
 class HunspellFilterWordTask : public HunspellTask
@@ -228,7 +228,7 @@ public:
     QSharedPointer<HunspellWordList> filterList;
     int startIndex;
 
-    void run();
+    void run() override;
 };
 
 class HunspellBoostWordTask : public HunspellTask
@@ -242,7 +242,7 @@ public:
     QSharedPointer<HunspellWordList> wordList;
     QSharedPointer<HunspellWordList> boostList;
 
-    void run();
+    void run() override;
 };
 
 class HunspellWorker : public QThread
@@ -271,7 +271,7 @@ public:
     }
 
 protected:
-    void run();
+    void run() override;
 
 private:
     void createHunspell();

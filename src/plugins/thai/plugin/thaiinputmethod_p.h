@@ -56,7 +56,7 @@ public:
     bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase);
 #endif
 
-    bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers);
+    bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers) override;
 };
 
 } // namespace QtVirtualKeyboard
