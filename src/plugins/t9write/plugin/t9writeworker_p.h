@@ -50,7 +50,7 @@
 #include <QSharedPointer>
 #include <QPointer>
 #include <QMap>
-#include <QVector>
+#include <QList>
 
 #include "t9write_p.h"
 #include "t9writedictionary_p.h"
@@ -118,7 +118,7 @@ public:
     explicit T9WriteRecognitionResult(int id, int maxResults, int maxCharsPerWord);
 
     DECUMA_STATUS status;
-    QVector<DECUMA_HWR_RESULT> results;
+    QList<DECUMA_HWR_RESULT> results;
     DECUMA_UINT16 numResults;
     int instantGesture;
     const int id;
@@ -126,9 +126,9 @@ public:
     const int maxCharsPerWord;
 
 private:
-    QVector<DECUMA_UNICODE> _chars;
-    QVector<DECUMA_INT16> _symbolChars;
-    QVector<DECUMA_INT16> _symbolStrokes;
+    QList<DECUMA_UNICODE> _chars;
+    QList<DECUMA_INT16> _symbolChars;
+    QList<DECUMA_INT16> _symbolStrokes;
 };
 
 class T9WriteRecognitionTask : public T9WriteTask

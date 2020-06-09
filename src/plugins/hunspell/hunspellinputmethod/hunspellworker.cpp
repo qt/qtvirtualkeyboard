@@ -28,7 +28,7 @@
 ****************************************************************************/
 
 #include <QtHunspellInputMethod/private/hunspellworker_p.h>
-#include <QVector>
+#include <QList>
 #include <QTextCodec>
 #include <QFileInfo>
 #include <QRegularExpression>
@@ -510,8 +510,8 @@ int HunspellBuildSuggestionsTask::levenshteinDistance(const QString &s, const QS
         return t.length();
     if (t.length() == 0)
         return s.length();
-    QVector<int> v0(t.length() + 1);
-    QVector<int> v1(t.length() + 1);
+    QList<int> v0(t.length() + 1);
+    QList<int> v1(t.length() + 1);
     for (int i = 0; i < v0.size(); i++)
         v0[i] = i;
     for (int i = 0; i < s.size(); i++) {

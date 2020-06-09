@@ -66,7 +66,7 @@ public:
     void resetSearch();
     QString pinyinString(bool decoded);
     int pinyinStringLength(bool decoded);
-    QVector<int> spellingStartPositions();
+    QList<int> spellingStartPositions();
     QString candidateAt(int index);
     QList<QString> fetchCandidates(int index, int count, int sentFixedLen);
     int chooceCandidate(int index);

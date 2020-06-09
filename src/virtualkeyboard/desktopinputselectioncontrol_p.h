@@ -104,7 +104,7 @@ private:
     unsigned m_cursorHandleVisible : 1;
     unsigned m_eventFilterEnabled : 1;
     QPoint m_otherSelectionPoint;
-    QVector <QMouseEvent*> m_eventQueue;
+    QList<QMouseEvent*> m_eventQueue;
     QPoint m_distanceBetweenMouseAndCursor;
     QPoint m_handleDragStartedPosition;
     QSize m_handleWindowSize;

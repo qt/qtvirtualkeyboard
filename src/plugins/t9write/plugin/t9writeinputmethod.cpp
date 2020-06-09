@@ -1658,8 +1658,8 @@ public:
     QString defaultHwrDbPath;
     QString defaultDictionaryDbPath;
     QFile hwrDbFile;
-    QVector<DECUMA_UINT32> languageCategories;
-    QVector<DECUMA_UINT32> symbolCategories;
+    QList<DECUMA_UINT32> languageCategories;
+    QList<DECUMA_UINT32> symbolCategories;
     QScopedPointer<T9WriteWorker> worker;
     QList<QVirtualKeyboardTrace *> traceList;
     int traceListHardLimit;

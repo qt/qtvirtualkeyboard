@@ -896,7 +896,7 @@ public:
 
         bool isItemChanged = false;
         int lastPosition = 0;
-        QVector<std::pair<int, CandidateItem *>>::const_iterator iter;
+        QList<std::pair<int, CandidateItem *>>::const_iterator iter;
 
         for (iter = m_items.cbegin(); iter != m_items.cend(); iter++) {
             int itemIndex = iter->first;
@@ -948,7 +948,7 @@ public:
     int m_itemIndex;
     int m_itemStartPosition;
     int m_itemLength;
-    QVector<std::pair<int, CandidateItem *>> m_items;
+    QList<std::pair<int, CandidateItem *>> m_items;
 
     QString m_locale;
     Qt::InputMethodHints m_inputMethodHints;

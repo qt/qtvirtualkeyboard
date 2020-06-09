@@ -88,7 +88,7 @@ QStringList CangjieDictionary::sortWords(const DictionaryEntry &data) const
 {
     int length = data.size() / 2;
     std::vector<QCollatorSortKey> sortKeys;
-    QVector<int> keys;
+    QList<int> keys;
     sortKeys.reserve(length);
     keys.reserve(length);
     for (int i = 0; i < length; ++i) {

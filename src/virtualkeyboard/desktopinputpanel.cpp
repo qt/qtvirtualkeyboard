@@ -253,7 +253,7 @@ void DesktopInputPanel::updateInputRegion()
     case DesktopInputPanelPrivate::Xcb:
 #if QT_CONFIG(vkb_xcb)
         {
-            QVector<xcb_rectangle_t> rects;
+            QList<xcb_rectangle_t> rects;
             rects.push_back(qRectToXCBRectangle(d->keyboardRect.toRect()));
             if (d->previewVisible && !d->previewRect.isEmpty())
                 rects.push_back(qRectToXCBRectangle(d->previewRect.toRect()));

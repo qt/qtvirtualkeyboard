@@ -22,7 +22,7 @@
 #ifndef WORDDICTIONARY_H
 #define WORDDICTIONARY_H
 
-#include <QVector>
+#include <QList>
 #include <QString>
 #include <QStringList>
 
@@ -38,8 +38,8 @@ class WordDictionary
 
 protected:
     typedef QChar DictionaryWord;
-    typedef QVector<DictionaryWord> DictionaryEntry;
-    typedef QVector<DictionaryEntry> Dictionary;
+    typedef QList<DictionaryWord> DictionaryEntry;
+    typedef QList<DictionaryEntry> Dictionary;
 
     const Dictionary &dictionary() const { return _dictionary; }
 

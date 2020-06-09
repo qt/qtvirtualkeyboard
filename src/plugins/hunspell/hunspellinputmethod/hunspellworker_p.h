@@ -46,7 +46,7 @@
 #include <QMutex>
 #include <QStringList>
 #include <QSharedPointer>
-#include <QVector>
+#include <QList>
 #include <QLoggingCategory>
 #include <hunspell/hunspell.h>
 #include <QtHunspellInputMethod/qhunspellinputmethod_global.h>
@@ -109,8 +109,8 @@ private:
 private:
     QMutex _lock;
     QStringList _list;
-    QVector<Flags> _flags;
-    QVector<int> _searchIndex;
+    QList<Flags> _flags;
+    QList<int> _searchIndex;
     int _index;
     int _limit;
 };

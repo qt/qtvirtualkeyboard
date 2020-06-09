@@ -46,7 +46,6 @@
 #include <QObject>
 #include <QString>
 #include <QThread>
-#include <QVector>
 
 typedef struct VOIM_ENGINE voimEngine;
 typedef struct VOIM_RECOGNIZER voimRecognizer;

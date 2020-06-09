@@ -116,7 +116,7 @@ public:
     {
         if (surface.isEmpty())
             return false;
-        QVector<int> splStart = pinyinDecoderService->spellingStartPositions();
+        QList<int> splStart = pinyinDecoderService->spellingStartPositions();
         isPosInSpl = (surface.length() <= splStart[fixedLen + 1]);
         posDelSpl = isPosInSpl ? fixedLen - 1 : surface.length() - 1;
         return true;
@@ -212,7 +212,7 @@ public:
         totalChoicesNum = result;
 
         surface = pinyinDecoderService->pinyinString(false);
-        QVector<int> splStart = pinyinDecoderService->spellingStartPositions();
+        QList<int> splStart = pinyinDecoderService->spellingStartPositions();
         QString fullSent = pinyinDecoderService->candidateAt(0);
         fixedLen = pinyinDecoderService->fixedLength();
         composingStr = fullSent.mid(0, fixedLen) + surface.mid(splStart[fixedLen + 1]);

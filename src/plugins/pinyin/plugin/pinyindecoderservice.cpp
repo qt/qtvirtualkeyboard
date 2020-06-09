@@ -163,14 +163,14 @@ int PinyinDecoderService::pinyinStringLength(bool decoded)
     return (int)py_len;
 }
 
-QVector<int> PinyinDecoderService::spellingStartPositions()
+QList<int> PinyinDecoderService::spellingStartPositions()
 {
     const unsigned short *spl_start;
     int len;
     // There will be len + 1 elements in the buffer when len > 0.
     len = (int)im_get_spl_start_pos(spl_start);
 
-    QVector<int> arr;
+    QList<int> arr;
     arr.resize(len + 2);
     arr[0] = len; // element 0 is used to store the length of buffer.
     for (int i = 0; i <= len; i++)
@@ -181,7 +181,7 @@ QVector<int> PinyinDecoderService::spellingStartPositions()
 QString PinyinDecoderService::candidateAt(int index)
 {
     Q_ASSERT(index >= 0);
-    QVector<QChar> candidateBuf;
+    QList<QChar> candidateBuf;
     candidateBuf.resize(kMaxSearchSteps + 1);
     if (!im_get_candidate(size_t(index), (char16 *)candidateBuf.data(), candidateBuf.length() - 1))
         return QString();
