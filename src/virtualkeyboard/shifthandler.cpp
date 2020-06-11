@@ -304,7 +304,7 @@ void ShiftHandler::autoCapitalize()
             if (text.trimmed().length() == 0)
                 setShiftActive(!preferLowerCase);
             else if (text.endsWith(QLatin1Char(' ')))
-                setShiftActive(d->sentenceEndingCharacters.contains(text.rightRef(2)[0])
+                setShiftActive(d->sentenceEndingCharacters.contains(QStringView{text}.right(2)[0])
                                && !preferLowerCase);
             else
                 setShiftActive(false);
