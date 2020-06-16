@@ -805,6 +805,8 @@ void OpenWnnInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionList
 {
     Q_UNUSED(type)
     Q_D(OpenWnnInputMethod);
+    // Set selected text as preeditText to place cursor at the end of selected text
+    inputContext()->setPreeditText(d->candidateList.at(index)->candidate);
     d->commitText(*d->candidateList.at(index));
 }
 
