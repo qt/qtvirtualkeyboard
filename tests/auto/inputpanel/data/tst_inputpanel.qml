@@ -1200,6 +1200,39 @@ Rectangle {
                 compare(textInput.cursorPosition, data.expectedCursorPosition)
         }
 
+        function test_japaneseInputSelectionCursorPosition_data() {
+            return [
+                // Selection for first word of text
+                { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["i"], expectedCandidates: [ "\u3044\u3064\u3082" ], outputText: "\u3044\u3064\u3082", expectedCursorPosition: 3 },
+                // Selection for last word of text
+                { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["i",Qt.Key_Space,Qt.Key_Return,Qt.Key_Space,"i"], expectedCandidates: [ "\u3044\u3064\u3082" ], outputText: "\u3044\u3000\u3044\u3064\u3082", expectedCursorPosition: 5 },
+                // Selection for word in middle of text
+                { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: [
+                                // Input two words
+                                "i",Qt.Key_Space,Qt.Key_Return,Qt.Key_Space,"i",Qt.Key_Space,Qt.Key_Return,
+                                // Move betwen the words and add space
+                                Qt.Key_Left,Qt.Key_Left,Qt.Key_Space,
+                                // Input first letter of new word
+                                "i"], expectedCandidates: [ "\u3044\u3064\u3082" ], outputText: "\u3044\u3000\u3044\u3064\u3082\u3000\u3044", expectedCursorPosition: 5 }
+                ]
+        }
+
+        function test_japaneseInputSelectionCursorPosition(data) {
+            prepareTest(data, true)
+
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
+            }
+            waitForRendering(inputPanel)
+
+            for (var candidateIndex in data.expectedCandidates) {
+                verify(inputPanel.selectionListSearchSuggestion(data.expectedCandidates[candidateIndex]))
+                verify(inputPanel.selectionListSelectCurrentItem())
+            }
+
+            compare(textInput.cursorPosition, data.expectedCursorPosition)
+        }
+
         function test_baseKeyNoModifier() {
             // The Japanese keyboard uses the BaseKey.noModifier flag for the arrow keys.
             // Without this flag the arrow key + shift would extend the text selection.
