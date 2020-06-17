@@ -29,7 +29,6 @@
 
 #include <QtHunspellInputMethod/private/hunspellworker_p.h>
 #include <QList>
-#include <QTextCodec>
 #include <QFileInfo>
 #include <QRegularExpression>
 #include <QElapsedTimer>
@@ -382,9 +381,9 @@ void HunspellLoadDictionaryTask::run()
         *hunspellPtr = Hunspell_create(affPath.toUtf8().constData(), dicPath.toUtf8().constData());
         if (*hunspellPtr) {
             /*  Make sure the encoding used by the dictionary is supported
-                by the QTextCodec.
+                by the QStringConverter.
             */
-            if (!QTextCodec::codecForName(Hunspell_get_dic_encoding(*hunspellPtr))) {
+            if (!QStringConverter::encodingForName(Hunspell_get_dic_encoding(*hunspellPtr))) {
                 qCWarning(lcHunspell) << "The Hunspell dictionary" << dicPath << "cannot be used because it uses an unknown text codec" << QLatin1String(Hunspell_get_dic_encoding(*hunspellPtr));
                 Hunspell_destroy(*hunspellPtr);
                 *hunspellPtr = nullptr;
@@ -414,12 +413,13 @@ void HunspellBuildSuggestionsTask::run()
         Hunspell_get_dic_encoding() should always return at least
         "ISO8859-1", but you can never be too sure.
      */
-    textCodec = QTextCodec::codecForName(Hunspell_get_dic_encoding(hunspell));
-    if (!textCodec)
+    textDecoder = QStringDecoder(Hunspell_get_dic_encoding(hunspell));
+    textEncoder = QStringEncoder(Hunspell_get_dic_encoding(hunspell));
+    if (!textDecoder.isValid() || !textEncoder.isValid())
         return;
 
     char **slst = nullptr;
-    int n = Hunspell_suggest(hunspell, &slst, textCodec->fromUnicode(word).constData());
+    int n = Hunspell_suggest(hunspell, &slst, QByteArray { textEncoder(word) }.constData());
     if (n > 0) {
         /*  Collect word candidates from the Hunspell suggestions.
             Insert word completions in the beginning of the list.
@@ -428,7 +428,7 @@ void HunspellBuildSuggestionsTask::run()
         int lastWordCompletionIndex = firstWordCompletionIndex;
         bool suggestCapitalization = false;
         for (int i = 0; i < n; i++) {
-            QString wordCandidate(textCodec->toUnicode(slst[i]));
+            QString wordCandidate(textDecoder(slst[i]));
             wordCandidate.replace(QChar(0x2019), QLatin1Char('\''));
             QString normalizedWordCandidate = removeAccentsAndDiacritics(wordCandidate);
             /*  Prioritize word Capitalization */
@@ -487,7 +487,7 @@ void HunspellBuildSuggestionsTask::run()
         wordList->wordAt(i, word, flags);
         if (flags.testFlag(HunspellWordList::CompoundWord))
             continue;
-        if (Hunspell_spell(hunspell, textCodec->fromUnicode(word).constData()) != 0)
+        if (Hunspell_spell(hunspell, QByteArray { textEncoder(word) }.constData()) != 0)
             wordList->updateWord(i, word, wordList->wordFlagsAt(i) | HunspellWordList::SpellCheckOk);
     }
 }
@@ -498,7 +498,7 @@ bool HunspellBuildSuggestionsTask::spellCheck(const QString &word)
         return false;
     if (word.contains(QRegularExpression(QLatin1String("[0-9]"))))
         return true;
-    return Hunspell_spell(hunspell, textCodec->fromUnicode(word).constData()) != 0;
+    return Hunspell_spell(hunspell, QByteArray { textEncoder(word) }.constData()) != 0;
 }
 
 // source: http://en.wikipedia.org/wiki/Levenshtein_distance
@@ -552,9 +552,8 @@ void HunspellUpdateSuggestionsTask::run()
 
 void HunspellAddWordTask::run()
 {
-    const QTextCodec *textCodec;
-    textCodec = QTextCodec::codecForName(Hunspell_get_dic_encoding(hunspell));
-    if (!textCodec)
+    auto fromUtf16 = QStringEncoder(Hunspell_get_dic_encoding(hunspell));
+    if (!fromUtf16.isValid())
         return;
 
     QString tmpWord;
@@ -563,9 +562,9 @@ void HunspellAddWordTask::run()
         const QString word(wordList->wordAt(i));
         if (word.length() < 2)
             continue;
-        Hunspell_add(hunspell, textCodec->fromUnicode(word).constData());
+        Hunspell_add(hunspell, QByteArray { fromUtf16(word) }.constData());
         if (HunspellAddWordTask::alternativeForm(word, tmpWord))
-            Hunspell_add(hunspell, textCodec->fromUnicode(tmpWord).constData());
+            Hunspell_add(hunspell, QByteArray { fromUtf16(tmpWord) }.constData());
     }
 }
 
@@ -590,9 +589,8 @@ bool HunspellAddWordTask::alternativeForm(const QString &word, QString &alternat
 
 void HunspellRemoveWordTask::run()
 {
-    const QTextCodec *textCodec;
-    textCodec = QTextCodec::codecForName(Hunspell_get_dic_encoding(hunspell));
-    if (!textCodec)
+    auto fromUtf16 = QStringEncoder(Hunspell_get_dic_encoding(hunspell));
+    if (!fromUtf16.isValid())
         return;
 
     QString tmpWord;
@@ -601,9 +599,9 @@ void HunspellRemoveWordTask::run()
         const QString word(wordList->wordAt(i));
         if (word.isEmpty())
             continue;
-        Hunspell_remove(hunspell, textCodec->fromUnicode(word).constData());
+        Hunspell_remove(hunspell, QByteArray { fromUtf16(word) }.constData());
         if (HunspellAddWordTask::alternativeForm(word, tmpWord))
-            Hunspell_remove(hunspell, textCodec->fromUnicode(tmpWord).constData());
+            Hunspell_remove(hunspell, QByteArray { fromUtf16(tmpWord) }.constData());
     }
 }
 

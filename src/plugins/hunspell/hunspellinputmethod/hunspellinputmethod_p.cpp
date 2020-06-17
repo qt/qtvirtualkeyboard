@@ -32,7 +32,6 @@
 #include <hunspell/hunspell.h>
 #include <QStringList>
 #include <QDir>
-#include <QTextCodec>
 #include <QtCore/QLibraryInfo>
 #include <QStandardPaths>
 
