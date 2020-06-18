@@ -41,7 +41,7 @@ import QtQuick 2.0
 
 Item {
     id: selectionListItem
-    height: parent.height
+    height: ListView.view.height
 
     /*!
         \since QtQuick.VirtualKeyboard.Styles 1.1
