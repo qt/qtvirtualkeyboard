@@ -51,9 +51,9 @@ public:
     explicit ThaiInputMethod(QObject *parent = nullptr);
 
 #ifndef QT_HUNSPELLINPUTMETHOD_LIB
-    QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale);
-    bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode);
-    bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase);
+    QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale) override;
+    bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode) override;
+    bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase) override;
 #endif
 
     bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers) override;
