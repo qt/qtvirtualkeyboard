@@ -31,6 +31,7 @@
     \brief Provides classes to implement input methods for virtual keyboards.
 
     \ingroup modules
+    \qtcmakepackage VirtualKeyboard
     \qtvariable virtualkeyboard
 
     To include the definitions of the module's classes, use the following directive:
