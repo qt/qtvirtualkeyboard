@@ -376,7 +376,7 @@ PinyinInputMethod::~PinyinInputMethod()
 
 QList<QVirtualKeyboardInputEngine::InputMode> PinyinInputMethod::inputModes(const QString &locale)
 {
-    Q_UNUSED(locale)
+    Q_UNUSED(locale);
     Q_D(PinyinInputMethod);
     QList<QVirtualKeyboardInputEngine::InputMode> result;
     if (d->pinyinDecoderService)
@@ -387,7 +387,7 @@ QList<QVirtualKeyboardInputEngine::InputMode> PinyinInputMethod::inputModes(cons
 
 bool PinyinInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)
 {
-    Q_UNUSED(locale)
+    Q_UNUSED(locale);
     Q_D(PinyinInputMethod);
     reset();
     if (inputMode == QVirtualKeyboardInputEngine::InputMode::Pinyin && !d->pinyinDecoderService)
@@ -398,17 +398,17 @@ bool PinyinInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInpu
 
 bool PinyinInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 {
-    Q_UNUSED(textCase)
+    Q_UNUSED(textCase);
     return true;
 }
 
 bool PinyinInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
-    Q_UNUSED(modifiers)
+    Q_UNUSED(modifiers);
     Q_D(PinyinInputMethod);
     if (d->inputMode == QVirtualKeyboardInputEngine::InputMode::Pinyin) {
         ScopedCandidateListUpdate scopedCandidateListUpdate(d);
-        Q_UNUSED(scopedCandidateListUpdate)
+        Q_UNUSED(scopedCandidateListUpdate);
         if ((key >= Qt::Key_A && key <= Qt::Key_Z) || (key == Qt::Key_Apostrophe)) {
             if (d->state == PinyinInputMethodPrivate::Predict)
                 d->resetToIdleState();
@@ -447,7 +447,7 @@ QList<QVirtualKeyboardSelectionListModel::Type> PinyinInputMethod::selectionList
 
 int PinyinInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
 {
-    Q_UNUSED(type)
+    Q_UNUSED(type);
     Q_D(PinyinInputMethod);
     return d->candidatesCount();
 }
@@ -455,7 +455,7 @@ int PinyinInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel
 QVariant PinyinInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 {
     QVariant result;
-    Q_UNUSED(type)
+    Q_UNUSED(type);
     Q_D(PinyinInputMethod);
     switch (role) {
     case QVirtualKeyboardSelectionListModel::Role::Display:
@@ -473,10 +473,10 @@ QVariant PinyinInputMethod::selectionListData(QVirtualKeyboardSelectionListModel
 
 void PinyinInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index)
 {
-    Q_UNUSED(type)
+    Q_UNUSED(type);
     Q_D(PinyinInputMethod);
     ScopedCandidateListUpdate scopedCandidateListUpdate(d);
-    Q_UNUSED(scopedCandidateListUpdate)
+    Q_UNUSED(scopedCandidateListUpdate);
     d->chooseAndUpdate(index);
 }
 
@@ -484,7 +484,7 @@ void PinyinInputMethod::reset()
 {
     Q_D(PinyinInputMethod);
     ScopedCandidateListUpdate scopedCandidateListUpdate(d);
-    Q_UNUSED(scopedCandidateListUpdate)
+    Q_UNUSED(scopedCandidateListUpdate);
     d->resetToIdleState();
 }
 
@@ -492,7 +492,7 @@ void PinyinInputMethod::update()
 {
     Q_D(PinyinInputMethod);
     ScopedCandidateListUpdate scopedCandidateListUpdate(d);
-    Q_UNUSED(scopedCandidateListUpdate)
+    Q_UNUSED(scopedCandidateListUpdate);
     d->chooseAndFinish();
     d->tryPredict();
 }

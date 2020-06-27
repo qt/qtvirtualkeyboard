@@ -217,7 +217,7 @@ void T9WriteRecognitionTask::run()
 
     {
         QMutexLocker stateGuard(&stateLock);
-        Q_UNUSED(stateGuard)
+        Q_UNUSED(stateGuard);
         if (stateCancelled)
             result.reset();
         qCDebug(lcT9Write) << "T9WriteRecognitionTask::run(): time:" << perfElapsed << "ms" << (stateCancelled ? "(cancelled)" : "");
@@ -228,14 +228,14 @@ int T9WriteRecognitionTask::shouldAbortRecognize(void *pUserData)
 {
     T9WriteRecognitionTask *pThis = (T9WriteRecognitionTask *)pUserData;
     QMutexLocker stateGuard(&pThis->stateLock);
-    Q_UNUSED(stateGuard)
+    Q_UNUSED(stateGuard);
     return pThis->stateCancelled;
 }
 
 bool T9WriteRecognitionTask::cancelRecognition()
 {
     QMutexLocker stateGuard(&stateLock);
-    Q_UNUSED(stateGuard)
+    Q_UNUSED(stateGuard);
     stateCancelled = true;
     return true;
 }

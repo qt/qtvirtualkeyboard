@@ -162,7 +162,7 @@ public:
             int traceId, QVirtualKeyboardInputEngine::PatternRecognitionMode patternRecognitionMode,
             const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
     {
-        Q_UNUSED(traceId)
+        Q_UNUSED(traceId);
 
         stopRecognizeTimer();
 
@@ -494,7 +494,7 @@ LipiInputMethod::~LipiInputMethod()
 
 QList<QVirtualKeyboardInputEngine::InputMode> LipiInputMethod::inputModes(const QString &locale)
 {
-    Q_UNUSED(locale)
+    Q_UNUSED(locale);
     QList<QVirtualKeyboardInputEngine::InputMode> availableInputModes;
     const Qt::InputMethodHints inputMethodHints(inputContext()->inputMethodHints());
 
@@ -516,7 +516,7 @@ bool LipiInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputE
 #if QT_CONFIG(hunspell)
     HunspellInputMethod::setInputMode(locale, inputMode);
 #else
-    Q_UNUSED(locale)
+    Q_UNUSED(locale);
 #endif
     bool result = d->recognizer.setModel(QStringLiteral("SHAPEREC_ALPHANUM"));
     if (!result)
@@ -564,9 +564,9 @@ bool LipiInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardMod
     }
     return HunspellInputMethod::keyEvent(key, text, modifiers);
 #else
-    Q_UNUSED(key)
-    Q_UNUSED(text)
-    Q_UNUSED(modifiers)
+    Q_UNUSED(key);
+    Q_UNUSED(text);
+    Q_UNUSED(modifiers);
     return false;
 #endif
 }

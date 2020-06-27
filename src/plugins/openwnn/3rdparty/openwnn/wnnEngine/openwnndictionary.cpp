@@ -805,7 +805,7 @@ OpenWnnDictionary::~OpenWnnDictionary()
 
 void OpenWnnDictionary::setInUseState(bool flag)
 {
-    Q_UNUSED(flag)
+    Q_UNUSED(flag);
     // Not implemented
 }
 
@@ -906,8 +906,8 @@ WnnPOS OpenWnnDictionary::getPOS(PartOfSpeechType type)
 
 int OpenWnnDictionary::learnWord(const WnnWord &word, const WnnWord *previousWord)
 {
-    Q_UNUSED(word)
-    Q_UNUSED(previousWord)
+    Q_UNUSED(word);
+    Q_UNUSED(previousWord);
     // Not implemented
     return -1;
 }

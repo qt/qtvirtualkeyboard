@@ -81,7 +81,7 @@ void QtQuickVirtualKeyboardStylesPlugin::registerTypes(const char *uri)
 
 void QtQuickVirtualKeyboardStylesPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
-    Q_UNUSED(uri)
+    Q_UNUSED(uri);
     engine->addImageProvider(QStringLiteral("qtvkbsvg"), new SvgImageProvider());
 }
 

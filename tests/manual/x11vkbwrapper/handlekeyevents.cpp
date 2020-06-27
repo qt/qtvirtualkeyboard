@@ -120,7 +120,7 @@ bool HandleKeyEvents::init()
  */
 bool HandleKeyEvents::eventFilter(QObject *watched, QEvent *event)
 {
-    Q_UNUSED( watched )
+    Q_UNUSED( watched );
 
     const auto type = event->type();
     if (type == QEvent::MouseButtonRelease && !QGuiApplication::inputMethod()->isVisible()) {

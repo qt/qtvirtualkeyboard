@@ -48,21 +48,21 @@ ThaiInputMethod::ThaiInputMethod(QObject *parent) :
 QList<QVirtualKeyboardInputEngine::InputMode> ThaiInputMethod::inputModes(
         const QString &locale)
 {
-    Q_UNUSED(locale)
+    Q_UNUSED(locale);
     return QList<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::Latin;
 }
 
 bool ThaiInputMethod::setInputMode(const QString &locale,
                                          QVirtualKeyboardInputEngine::InputMode inputMode)
 {
-    Q_UNUSED(locale)
-    Q_UNUSED(inputMode)
+    Q_UNUSED(locale);
+    Q_UNUSED(inputMode);
     return true;
 }
 
 bool ThaiInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 {
-    Q_UNUSED(textCase)
+    Q_UNUSED(textCase);
     return true;
 }
 #endif
@@ -80,7 +80,7 @@ bool ThaiInputMethod::keyEvent(Qt::Key key,
     }
     return ThaiInputMethodBase::keyEvent(key, text, modifiers);
 #else
-    Q_UNUSED(key)
+    Q_UNUSED(key);
     if (isMark) {
         const QString mark(text.right(1));
         inputContext()->sendKeyClick(static_cast<Qt::Key>(mark.at(0).unicode()), mark, modifiers);

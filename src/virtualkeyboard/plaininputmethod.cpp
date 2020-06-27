@@ -74,22 +74,22 @@ QList<QVirtualKeyboardInputEngine::InputMode> PlainInputMethod::inputModes(const
 
 bool PlainInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)
 {
-    Q_UNUSED(locale)
-    Q_UNUSED(inputMode)
+    Q_UNUSED(locale);
+    Q_UNUSED(inputMode);
     return true;
 }
 
 bool PlainInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 {
-    Q_UNUSED(textCase)
+    Q_UNUSED(textCase);
     return true;
 }
 
 bool PlainInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
-    Q_UNUSED(key)
-    Q_UNUSED(text)
-    Q_UNUSED(modifiers)
+    Q_UNUSED(key);
+    Q_UNUSED(text);
+    Q_UNUSED(modifiers);
     bool accept = false;
     return accept;
 }

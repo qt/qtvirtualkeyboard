@@ -83,14 +83,14 @@ QList<QVirtualKeyboardInputEngine::InputMode> HunspellInputMethod::inputModes(co
 
 bool HunspellInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)
 {
-    Q_UNUSED(inputMode)
+    Q_UNUSED(inputMode);
     Q_D(HunspellInputMethod);
     return d->createHunspell(locale);
 }
 
 bool HunspellInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 {
-    Q_UNUSED(textCase)
+    Q_UNUSED(textCase);
     return true;
 }
 
@@ -211,7 +211,7 @@ QList<QVirtualKeyboardSelectionListModel::Type> HunspellInputMethod::selectionLi
 
 int HunspellInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
 {
-    Q_UNUSED(type)
+    Q_UNUSED(type);
     Q_D(HunspellInputMethod);
     return d->wordCandidates.size();
 }
@@ -253,7 +253,7 @@ QVariant HunspellInputMethod::selectionListData(QVirtualKeyboardSelectionListMod
 
 void HunspellInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index)
 {
-    Q_UNUSED(type)
+    Q_UNUSED(type);
     Q_D(HunspellInputMethod);
     d->wordCandidates.setIndex(index);
     d->addToDictionary();
@@ -266,7 +266,7 @@ void HunspellInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionLis
 bool HunspellInputMethod::selectionListRemoveItem(QVirtualKeyboardSelectionListModel::Type type, int index)
 {
     Q_D(HunspellInputMethod);
-    Q_UNUSED(type)
+    Q_UNUSED(type);
 
     if (index <= 0 || index >= d->wordCandidates.size())
         return false;

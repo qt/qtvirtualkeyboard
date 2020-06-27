@@ -47,8 +47,8 @@ using namespace QtVirtualKeyboard;
 
 static QObject *createInputContextModule(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
-    Q_UNUSED(engine)
-    Q_UNUSED(scriptEngine)
+    Q_UNUSED(engine);
+    Q_UNUSED(scriptEngine);
     return new QVirtualKeyboardInputContext();
 }
 

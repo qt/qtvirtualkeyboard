@@ -199,7 +199,7 @@ QVirtualKeyboardAbstractInputMethod *QVirtualKeyboardSelectionListModel::dataSou
 int QVirtualKeyboardSelectionListModel::rowCount(const QModelIndex &parent) const
 {
     Q_D(const QVirtualKeyboardSelectionListModel);
-    Q_UNUSED(parent)
+    Q_UNUSED(parent);
     return d->rowCount;
 }
 

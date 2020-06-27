@@ -132,19 +132,19 @@ public:
 
     static void *decumaMalloc(size_t size, void *pPrivate)
     {
-        Q_UNUSED(pPrivate)
+        Q_UNUSED(pPrivate);
         return malloc(size);
     }
 
     static void *decumaCalloc(size_t elements, size_t size, void *pPrivate)
     {
-        Q_UNUSED(pPrivate)
+        Q_UNUSED(pPrivate);
         return calloc(elements, size);
     }
 
     static void decumaFree(void *ptr, void *pPrivate)
     {
-        Q_UNUSED(pPrivate)
+        Q_UNUSED(pPrivate);
         free(ptr);
     }
 
@@ -153,7 +153,7 @@ public:
     {
         static QMutex s_logMutex;
         static QByteArray s_logString;
-        Q_UNUSED(pUserData)
+        Q_UNUSED(pUserData);
         QMutexLocker guard(&s_logMutex);
         s_logString.append(pLogString, nLogStringLength);
         if (s_logString.endsWith('\n')) {
@@ -422,7 +422,7 @@ public:
 
         Q_ASSERT(decumaSession != nullptr);
         DECUMA_STATUS status = DECUMA_API(DetachDictionary)(decumaSession, dictionary->data());
-        Q_UNUSED(status)
+        Q_UNUSED(status);
         Q_ASSERT(status == decumaNoError);
     }
 
@@ -510,8 +510,8 @@ public:
             break;
         }
 #else
-        Q_UNUSED(locale)
-        Q_UNUSED(language)
+        Q_UNUSED(locale);
+        Q_UNUSED(language);
 #endif
 
 #ifdef HAVE_T9WRITE_ALPHABETIC
@@ -707,8 +707,8 @@ public:
                                QVirtualKeyboardInputEngine::InputMode inputMode)
     {
         Q_Q(T9WriteInputMethod);
-        Q_UNUSED(language)
-        Q_UNUSED(locale)
+        Q_UNUSED(language);
+        Q_UNUSED(locale);
 
         // Select recognition mode
         // Note: MCR mode is preferred, as it does not require recognition
@@ -1028,7 +1028,7 @@ public:
                     const QVariantMap &traceScreenInfo,
                     const QByteArray &context)
     {
-        Q_UNUSED(patternRecognitionMode)
+        Q_UNUSED(patternRecognitionMode);
         if (context == currentContext)
             return;
         currentContext = context;
@@ -1826,7 +1826,7 @@ bool T9WriteInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textC
 
 bool T9WriteInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
-    Q_UNUSED(modifiers)
+    Q_UNUSED(modifiers);
     Q_D(T9WriteInputMethod);
     switch (key) {
     case Qt::Key_Enter:
@@ -1928,7 +1928,7 @@ QList<QVirtualKeyboardSelectionListModel::Type> T9WriteInputMethod::selectionLis
 
 int T9WriteInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
 {
-    Q_UNUSED(type)
+    Q_UNUSED(type);
     Q_D(T9WriteInputMethod);
     return d->wordCandidates.count();
 }
@@ -1953,7 +1953,7 @@ QVariant T9WriteInputMethod::selectionListData(QVirtualKeyboardSelectionListMode
 
 void T9WriteInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index)
 {
-    Q_UNUSED(type)
+    Q_UNUSED(type);
     Q_D(T9WriteInputMethod);
     d->select(index);
 }

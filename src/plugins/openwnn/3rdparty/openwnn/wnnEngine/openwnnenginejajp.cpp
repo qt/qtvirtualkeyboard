@@ -231,7 +231,7 @@ bool OpenWnnEngineJAJP::setDictionary(DictionaryType type)
 int OpenWnnEngineJAJP::predict(const ComposingText &text, int minLen, int maxLen)
 {
     Q_D(OpenWnnEngineJAJP);
-    Q_UNUSED(minLen)
+    Q_UNUSED(minLen);
 
     d->clearCandidates();
 

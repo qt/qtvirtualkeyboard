@@ -141,14 +141,14 @@ QList<QVirtualKeyboardSelectionListModel::Type> QVirtualKeyboardAbstractInputMet
 
 int QVirtualKeyboardAbstractInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
 {
-    Q_UNUSED(type)
+    Q_UNUSED(type);
     return 0;
 }
 
 QVariant QVirtualKeyboardAbstractInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
 {
-    Q_UNUSED(type)
-    Q_UNUSED(index)
+    Q_UNUSED(type);
+    Q_UNUSED(index);
     switch (role) {
     case QVirtualKeyboardSelectionListModel::Role::Display:
         return QVariant(QString());
@@ -164,14 +164,14 @@ QVariant QVirtualKeyboardAbstractInputMethod::selectionListData(QVirtualKeyboard
 
 void QVirtualKeyboardAbstractInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index)
 {
-    Q_UNUSED(type)
-    Q_UNUSED(index)
+    Q_UNUSED(type);
+    Q_UNUSED(index);
 }
 
 bool QVirtualKeyboardAbstractInputMethod::selectionListRemoveItem(QVirtualKeyboardSelectionListModel::Type type, int index)
 {
-    Q_UNUSED(type)
-    Q_UNUSED(index)
+    Q_UNUSED(type);
+    Q_UNUSED(index);
     return false;
 }
 
@@ -204,10 +204,10 @@ QVirtualKeyboardTrace *QVirtualKeyboardAbstractInputMethod::traceBegin(
         int traceId, QVirtualKeyboardInputEngine::PatternRecognitionMode patternRecognitionMode,
         const QVariantMap &traceCaptureDeviceInfo, const QVariantMap &traceScreenInfo)
 {
-    Q_UNUSED(traceId)
-    Q_UNUSED(patternRecognitionMode)
-    Q_UNUSED(traceCaptureDeviceInfo)
-    Q_UNUSED(traceScreenInfo)
+    Q_UNUSED(traceId);
+    Q_UNUSED(patternRecognitionMode);
+    Q_UNUSED(traceCaptureDeviceInfo);
+    Q_UNUSED(traceScreenInfo);
     return nullptr;
 }
 
@@ -222,7 +222,7 @@ QVirtualKeyboardTrace *QVirtualKeyboardAbstractInputMethod::traceBegin(
 */
 bool QVirtualKeyboardAbstractInputMethod::traceEnd(QVirtualKeyboardTrace *trace)
 {
-    Q_UNUSED(trace)
+    Q_UNUSED(trace);
     return false;
 }
 
@@ -237,8 +237,8 @@ bool QVirtualKeyboardAbstractInputMethod::traceEnd(QVirtualKeyboardTrace *trace)
 */
 bool QVirtualKeyboardAbstractInputMethod::reselect(int cursorPosition, const QVirtualKeyboardInputEngine::ReselectFlags &reselectFlags)
 {
-    Q_UNUSED(cursorPosition)
-    Q_UNUSED(reselectFlags)
+    Q_UNUSED(cursorPosition);
+    Q_UNUSED(reselectFlags);
     return false;
 }
 
@@ -252,7 +252,7 @@ bool QVirtualKeyboardAbstractInputMethod::reselect(int cursorPosition, const QVi
 */
 bool QVirtualKeyboardAbstractInputMethod::clickPreeditText(int cursorPosition)
 {
-    Q_UNUSED(cursorPosition)
+    Q_UNUSED(cursorPosition);
     return false;
 }
 

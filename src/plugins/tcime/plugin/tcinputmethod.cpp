@@ -346,13 +346,13 @@ void TCInputMethod::setSimplified(bool simplified)
         emit simplifiedChanged();
     }
 #else
-    Q_UNUSED(simplified)
+    Q_UNUSED(simplified);
 #endif
 }
 
 QList<QVirtualKeyboardInputEngine::InputMode> TCInputMethod::inputModes(const QString &locale)
 {
-    Q_UNUSED(locale)
+    Q_UNUSED(locale);
     return QList<QVirtualKeyboardInputEngine::InputMode>()
 #if QT_CONFIG(zhuyin)
             << QVirtualKeyboardInputEngine::InputMode::Zhuyin
@@ -365,7 +365,7 @@ QList<QVirtualKeyboardInputEngine::InputMode> TCInputMethod::inputModes(const QS
 
 bool TCInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)
 {
-    Q_UNUSED(locale)
+    Q_UNUSED(locale);
     Q_D(TCInputMethod);
     if (d->inputMode == inputMode)
         return true;
@@ -418,15 +418,15 @@ bool TCInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEng
 
 bool TCInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 {
-    Q_UNUSED(textCase)
+    Q_UNUSED(textCase);
     return true;
 }
 
 bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers)
 {
-    Q_UNUSED(key)
-    Q_UNUSED(text)
-    Q_UNUSED(modifiers)
+    Q_UNUSED(key);
+    Q_UNUSED(text);
+    Q_UNUSED(modifiers);
     Q_D(TCInputMethod);
     QVirtualKeyboardInputContext *ic = inputContext();
     bool accept = false;
@@ -497,7 +497,7 @@ QList<QVirtualKeyboardSelectionListModel::Type> TCInputMethod::selectionLists()
 
 int TCInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Type type)
 {
-    Q_UNUSED(type)
+    Q_UNUSED(type);
     Q_D(TCInputMethod);
     return d->candidates.count();
 }
@@ -522,7 +522,7 @@ QVariant TCInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Ty
 
 void TCInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionListModel::Type type, int index)
 {
-    Q_UNUSED(type)
+    Q_UNUSED(type);
     Q_D(TCInputMethod);
     QString finalWord = d->candidates.at(index);
     reset();

@@ -62,7 +62,7 @@ QVirtualKeyboardExtensionPlugin::~QVirtualKeyboardExtensionPlugin()
 */
 void QVirtualKeyboardExtensionPlugin::registerTypes(const char *uri) const
 {
-    Q_UNUSED(uri)
+    Q_UNUSED(uri);
 }
 
 QT_END_NAMESPACE

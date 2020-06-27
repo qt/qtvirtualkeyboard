@@ -187,7 +187,7 @@ void ShadowInputContext::updateSelectionProperties()
 
 void ShadowInputContext::update(Qt::InputMethodQueries queries)
 {
-    Q_UNUSED(queries)
+    Q_UNUSED(queries);
     Q_D(ShadowInputContext);
     if (!d->inputItem)
         return;

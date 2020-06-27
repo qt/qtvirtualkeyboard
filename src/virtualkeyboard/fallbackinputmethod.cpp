@@ -45,20 +45,20 @@ FallbackInputMethod::FallbackInputMethod(QObject *parent) :
 
 QList<QVirtualKeyboardInputEngine::InputMode> FallbackInputMethod::inputModes(const QString &locale)
 {
-    Q_UNUSED(locale)
+    Q_UNUSED(locale);
     return QList<QVirtualKeyboardInputEngine::InputMode>();
 }
 
 bool FallbackInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode)
 {
-    Q_UNUSED(locale)
-    Q_UNUSED(inputMode)
+    Q_UNUSED(locale);
+    Q_UNUSED(inputMode);
     return true;
 }
 
 bool FallbackInputMethod::setTextCase(QVirtualKeyboardInputEngine::TextCase textCase)
 {
-    Q_UNUSED(textCase)
+    Q_UNUSED(textCase);
     return true;
 }
 
