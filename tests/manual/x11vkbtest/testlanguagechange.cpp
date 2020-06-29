@@ -31,7 +31,7 @@
 #include <QJsonObject>
 #include <QLoggingCategory>
 #include <QFile>
-#include <QVector>
+#include <QList>
 #include <QTextStream>
 #include <QDir>
 #include <QElapsedTimer>
@@ -51,7 +51,7 @@ const quint32 KTime_Wait_After_Click = 180000;
 const quint32 KTime_Wait_To_Start_Process = 350000;
 const quint32 KTestRepeats = 10;
 
-const QVector< QPair< QString, quint8 > > KLanguage_List = {
+const QList<QPair<QString, quint8>> KLanguage_List = {
     QPair< QString, quint8 >("العربية", 1),
     QPair< QString, quint8 >("български", 1),
     QPair< QString, quint8 >("čeština", 1),

@@ -31,7 +31,7 @@
 #define HANDLEATSPIEVENTS_H
 
 #include <QObject>
-#include <QVector>
+#include <QList>
 #include <atspi/atspi.h>
 
 class HandleATSPIEvents : public QObject
@@ -56,7 +56,7 @@ public slots:
 
 private:
     bool m_keyboardVisible;
-    QVector<qint8> m_focuses;
+    QList<qint8> m_focuses;
 };
 
 #endif // HANDLEATSPIEVENTS_H

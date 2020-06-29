@@ -29,7 +29,7 @@
 
 #include <QFile>
 #include <QTextStream>
-#include <QVectorIterator>
+#include <QListIterator>
 #include <QTextStream>
 #include "testreporter.h"
 #include "testbase.h"
@@ -56,7 +56,7 @@ void TestReporter::startMemoryReport()
     }
 }
 
-void TestReporter::printTestResultsToCSV(const QVector<TestBase *> &tests) const
+void TestReporter::printTestResultsToCSV(const QList<TestBase *> &tests) const
 {
     QFile file(KReport_CSV_File);
     if (file.open(QIODevice::WriteOnly | QIODevice::Append)) {
@@ -115,7 +115,7 @@ void TestReporter::printMemoryResultToCSV(QString minPeakMemoryReport) const
     }
 }
 
-void TestReporter::printTestResultToConsole(const QVector<TestBase *> &tests) const
+void TestReporter::printTestResultToConsole(const QList<TestBase *> &tests) const
 {
     QTextStream stream(stdout);
 

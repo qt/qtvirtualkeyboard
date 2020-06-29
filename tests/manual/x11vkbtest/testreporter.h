@@ -42,8 +42,8 @@ public:
 
 public:
     void startMemoryReport();
-    void printTestResultsToCSV(const QVector<TestBase*> &tests) const;
-    void printTestResultToConsole(const QVector<TestBase *> &tests) const;
+    void printTestResultsToCSV(const QList<TestBase *> &tests) const;
+    void printTestResultToConsole(const QList<TestBase *> &tests) const;
 
 public slots:
     void printMemoryResultToCSV(const QString minPeakMemoryReport) const;

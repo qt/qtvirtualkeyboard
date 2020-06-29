@@ -60,7 +60,7 @@ void TestThread::run()
     QElapsedTimer testTimer;
     testTimer.start();
 
-    QVector<TestBase*> tests;
+    QList<TestBase *> tests;
 
     TestReporter reporter;
     WindowHelper windowHelper;
