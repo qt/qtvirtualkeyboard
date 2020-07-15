@@ -41,16 +41,15 @@ Item {
 
     Item {
         id: appContainer
-        width: Screen.width < Screen.height ? parent.height : parent.width
-        height: Screen.width < Screen.height ? parent.width : parent.height
+        width: Screen.orientation === Qt.LandscapeOrientation ? parent.width : parent.height
+        height: Screen.orientation === Qt.LandscapeOrientation ? parent.height : parent.width
         anchors.centerIn: parent
-        rotation: Screen.width < Screen.height ? 90 : 0
         Basic {
             id: virtualKeyboard
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.right: parent.right
-            anchors.bottom: inputPanel.top
+            anchors.bottom: parent.bottom
             handwritingInputPanelActive: handwritingInputPanel.available && handwritingInputPanel.active
         }
 
@@ -109,9 +108,14 @@ Item {
         InputPanel {
             id: inputPanel
             z: 89
-            y: appContainer.height
-            anchors.left: parent.left
-            anchors.right: parent.right
+            y: yPositionWhenHidden
+            x: Screen.orientation === Qt.LandscapeOrientation ? 0 : (parent.width-parent.height) / 2
+            width: Screen.orientation === Qt.LandscapeOrientation ? parent.width : parent.height
+
+            keyboard.shadowInputControl.height: (Screen.orientation === Qt.LandscapeOrientation ? parent.height : parent.width) - keyboard.height
+
+            property real yPositionWhenHidden: Screen.orientation === Qt.LandscapeOrientation ? parent.height : parent.width + (parent.height-parent.width) / 2
+
             states: State {
                 name: "visible"
                 /*  The visibility of the InputPanel can be bound to the Qt.inputMethod.visible property,
@@ -122,7 +126,7 @@ Item {
                 when: inputPanel.active
                 PropertyChanges {
                     target: inputPanel
-                    y: appContainer.height - inputPanel.height
+                    y: inputPanel.yPositionWhenHidden - inputPanel.height
                 }
             }
             transitions: Transition {
@@ -155,5 +159,16 @@ Item {
             value: appContainer.height > 0 && (appContainer.width / appContainer.height) > (16.0 / 9.0)
             restoreMode: Binding.RestoreBinding
         }
+
+    }
+
+    property bool inLandscapeOrientation: Screen.orientation === Qt.LandscapeOrientation
+
+    Screen.orientationUpdateMask: Qt.LandscapeOrientation | Qt.PortraitOrientation
+
+    Binding {
+        target: appContainer.Window.window !== null ? appContainer.Window.window.contentItem : null
+        property: "rotation"
+        value: inLandscapeOrientation ? 0 : 90
     }
 }
