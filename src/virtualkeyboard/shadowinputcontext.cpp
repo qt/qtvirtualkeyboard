@@ -36,7 +36,6 @@
 #include <QQuickItem>
 
 QT_BEGIN_NAMESPACE
-bool operator==(const QInputMethodEvent::Attribute &attribute1, const QInputMethodEvent::Attribute &attribute2);
 
 namespace QtVirtualKeyboard {
 
