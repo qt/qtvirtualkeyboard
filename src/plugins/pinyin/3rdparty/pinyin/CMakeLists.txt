@@ -4,7 +4,12 @@
 ## BundledPinyin Generic Library:
 #####################################################################
 
-find_package(Threads REQUIRED) # special case
+# special case begin
+# TODO: Prepare for removal, once Platform brings in Threads.
+if(NOT TARGET Threads::Threads)
+    find_package(Threads REQUIRED)
+endif()
+# special case end
 
 qt_add_3rdparty_library(BundledPinyin
     STATIC
