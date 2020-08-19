@@ -170,6 +170,7 @@ void QVirtualKeyboardSelectionListModel::setDataSource(QVirtualKeyboardAbstractI
     if (d->dataSource) {
         disconnect(this, SLOT(selectionListChanged(Type)));
         disconnect(this, SLOT(selectionListActiveItemChanged(Type, int)));
+        disconnect(this, SLOT(dataSourceDestroyed()));
     }
     d->type = type;
     if (d->dataSource) {
@@ -181,6 +182,7 @@ void QVirtualKeyboardSelectionListModel::setDataSource(QVirtualKeyboardAbstractI
     if (d->dataSource) {
         QObject::connect(d->dataSource.data(), &QVirtualKeyboardAbstractInputMethod::selectionListChanged, this, &QVirtualKeyboardSelectionListModel::selectionListChanged);
         QObject::connect(d->dataSource.data(), &QVirtualKeyboardAbstractInputMethod::selectionListActiveItemChanged, this, &QVirtualKeyboardSelectionListModel::selectionListActiveItemChanged);
+        QObject::connect(d->dataSource.data(), &QObject::destroyed, this, &QVirtualKeyboardSelectionListModel::dataSourceDestroyed);
     }
 }
 
@@ -209,7 +211,14 @@ int QVirtualKeyboardSelectionListModel::rowCount(const QModelIndex &parent) cons
 QVariant QVirtualKeyboardSelectionListModel::data(const QModelIndex &index, int role) const
 {
     Q_D(const QVirtualKeyboardSelectionListModel);
-    return d->dataSource ? d->dataSource->selectionListData(d->type, index.row(), static_cast<Role>(role)) : QVariant();
+
+    if (!d->dataSource)
+        return QVariant();
+
+    if (index.row() < 0 || index.row() >= d->rowCount)
+        return QVariant();
+
+    return d->dataSource->selectionListData(d->type, index.row(), static_cast<Role>(role));
 }
 
 /*!
@@ -329,6 +338,16 @@ void QVirtualKeyboardSelectionListModel::selectionListActiveItemChanged(QVirtual
         if (index == 0 && d->wclAutoCommitWord)
             selectItem(0);
     }
+}
+
+/*!
+    \internal
+*/
+void QVirtualKeyboardSelectionListModel::dataSourceDestroyed()
+{
+    Q_D(QVirtualKeyboardSelectionListModel);
+    selectionListChanged(d->type);
+    selectionListActiveItemChanged(d->type, -1);
 }
 
 /*!

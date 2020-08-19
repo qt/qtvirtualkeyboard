@@ -93,6 +93,7 @@ Q_SIGNALS:
 protected Q_SLOTS:
     void selectionListChanged(Type type);
     void selectionListActiveItemChanged(Type type, int index);
+    void dataSourceDestroyed();
 
 private:
     friend class QVirtualKeyboardInputEngine;
