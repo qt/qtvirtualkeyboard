@@ -51,7 +51,8 @@ qt6_add_resources(basic "demo"
         ${demo_resource_files}
 )
 
-if(NOT QT_BUILD_SHARED_LIBS)
+if(QT_FEATURE_static) # special case
+    find_package(Qt6 COMPONENTS Svg) # special case
     target_link_libraries(basic PUBLIC
         Qt::Svg
     )
