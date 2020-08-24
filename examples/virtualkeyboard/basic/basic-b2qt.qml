@@ -164,8 +164,6 @@ Item {
 
     property bool inLandscapeOrientation: Screen.orientation === Qt.LandscapeOrientation
 
-    Screen.orientationUpdateMask: Qt.LandscapeOrientation | Qt.PortraitOrientation
-
     Binding {
         target: appContainer.Window.window !== null ? appContainer.Window.window.contentItem : null
         property: "rotation"
