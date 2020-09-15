@@ -82,7 +82,7 @@ bool PinyinDecoderService::init()
     if (!QFileInfo::exists(sysDict)) {
         sysDict = QLatin1String(":///QtQuick/VirtualKeyboard/3rdparty/pinyin/data/dict_pinyin.dat");
         if (!QFileInfo::exists(sysDict))
-            sysDict = QLibraryInfo::location(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/pinyin/dict_pinyin.dat");
+            sysDict = QLibraryInfo::path(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/pinyin/dict_pinyin.dat");
     }
 
     QString usrDictPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);

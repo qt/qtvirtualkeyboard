@@ -380,7 +380,7 @@ bool TCInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEng
             if (!QFileInfo::exists(cangjieDictionary)) {
                 cangjieDictionary = QLatin1String(":///QtQuick/VirtualKeyboard/3rdparty/tcime/data/qt/dict_cangjie.dat");
                 if (!QFileInfo::exists(cangjieDictionary))
-                    cangjieDictionary = QLibraryInfo::location(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/tcime/dict_cangjie.dat");
+                    cangjieDictionary = QLibraryInfo::path(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/tcime/dict_cangjie.dat");
             }
             d->cangjieDictionary.load(cangjieDictionary);
         }
@@ -394,7 +394,7 @@ bool TCInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEng
             if (!QFileInfo::exists(zhuyinDictionary)) {
                 zhuyinDictionary = QLatin1String(":///QtQuick/VirtualKeyboard/3rdparty/tcime/data/qt/dict_zhuyin.dat");
                 if (!QFileInfo::exists(zhuyinDictionary))
-                    zhuyinDictionary = QLibraryInfo::location(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/tcime/dict_zhuyin.dat");
+                    zhuyinDictionary = QLibraryInfo::path(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/tcime/dict_zhuyin.dat");
             }
             d->zhuyinDictionary.load(zhuyinDictionary);
         }
@@ -407,7 +407,7 @@ bool TCInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEng
         if (!QFileInfo::exists(phraseDictionary)) {
             phraseDictionary = QLatin1String(":///QtQuick/VirtualKeyboard/3rdparty/tcime/data/qt/dict_phrases.dat");
             if (!QFileInfo::exists(phraseDictionary))
-                phraseDictionary = QLibraryInfo::location(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/tcime/dict_phrases.dat");
+                phraseDictionary = QLibraryInfo::path(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/tcime/dict_phrases.dat");
         }
         d->phraseDictionary.load(phraseDictionary);
     }

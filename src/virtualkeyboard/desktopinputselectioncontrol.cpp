@@ -241,7 +241,7 @@ bool DesktopInputSelectionControl::eventFilter(QObject *object, QEvent *event)
         }
     } else if (event->type() == QEvent::MouseButtonPress) {
         QMouseEvent *me = static_cast<QMouseEvent*>(event);
-        const QPoint mousePos = me->screenPos().toPoint();
+        const QPoint mousePos = me->globalPosition().toPoint();
 
         // calculate distances from mouse pos to each handle,
         // then choose to interact with the nearest handle
@@ -265,7 +265,7 @@ bool DesktopInputSelectionControl::eventFilter(QObject *object, QEvent *event)
         // (squared) distances calculated, pick the closest handle
         HandleType closestHandle = (handles[AnchorHandle].squaredDistance < handles[CursorHandle].squaredDistance ? AnchorHandle : CursorHandle);
 
-        // Can not be replaced with me->windowPos(); because the event might be forwarded from the window of the handle
+        // Can not be replaced with me->scenePosition(); because the event might be forwarded from the window of the handle
         const QPoint windowPos = focusWindow->mapFromGlobal(mousePos);
         if (m_anchorHandleVisible && handles[closestHandle].rect.contains(windowPos)) {
             m_currentDragHandle = closestHandle;
@@ -275,14 +275,14 @@ bool DesktopInputSelectionControl::eventFilter(QObject *object, QEvent *event)
             const QRect otherRect = handles[1 - closestHandle].rect;
             m_otherSelectionPoint = QPoint(otherRect.x() + otherRect.width()/2, otherRect.top() - 4);
 
-            QMouseEvent *mouseEvent = new QMouseEvent(me->type(), me->localPos(), me->windowPos(), me->screenPos(),
+            QMouseEvent *mouseEvent = new QMouseEvent(me->type(), me->position(), me->scenePosition(), me->globalPosition(),
                                                       me->button(), me->buttons(), me->modifiers(), me->source());
             m_eventQueue.append(mouseEvent);
             return true;
         }
     } else if (event->type() == QEvent::MouseMove) {
         QMouseEvent *me = static_cast<QMouseEvent*>(event);
-        QPoint mousePos = me->screenPos().toPoint();
+        QPoint mousePos = me->globalPosition().toPoint();
         if (m_handleState == HandleIsHeld) {
             QPoint delta = m_handleDragStartedPosition - mousePos;
             const int startDragDistance = QGuiApplication::styleHints()->startDragDistance();
