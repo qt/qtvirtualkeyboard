@@ -96,7 +96,7 @@ void PlatformInputContext::commit()
 void PlatformInputContext::update(Qt::InputMethodQueries queries)
 {
     VIRTUALKEYBOARD_DEBUG() << "PlatformInputContext::update():" << queries;
-    bool enabled = inputMethodQuery(Qt::ImEnabled).toBool();
+    const bool enabled = inputMethodAccepted();
 #ifdef QT_VIRTUALKEYBOARD_DESKTOP
     if (enabled && !m_inputPanel && !m_desktopModeDisabled) {
         m_inputPanel = new DesktopInputPanel(this);
@@ -110,14 +110,10 @@ void PlatformInputContext::update(Qt::InputMethodQueries queries)
     }
 #endif
     if (m_inputContext) {
-        if (enabled) {
+        if (enabled)
             m_inputContext->priv()->update(queries);
-            if (m_visible)
-                updateInputPanelVisible();
-        } else {
-            hideInputPanel();
-        }
         m_inputContext->priv()->setFocus(enabled);
+        updateInputPanelVisible();
     }
 }
 
@@ -285,6 +281,16 @@ void PlatformInputContext::setInputContext(QVirtualKeyboardInputContext *context
     }
 }
 
+bool PlatformInputContext::evaluateInputPanelVisible() const
+{
+    // Show input panel when input panel is requested by showInputPanel()
+    // and focus object is set to an input control with input method accepted (Qt::ImEnabled)
+    // or input events without focus are enabled.
+    return m_visible &&
+            ((m_focusObject && inputMethodAccepted()) ||
+             QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS);
+}
+
 void PlatformInputContext::keyboardRectangleChanged()
 {
     m_inputPanel->setInputRect(m_inputContext->priv()->keyboardRectangle().toRect());
@@ -295,13 +301,14 @@ void PlatformInputContext::updateInputPanelVisible()
     if (!m_inputPanel)
         return;
 
-    if (m_visible != m_inputPanel->isVisible()) {
-        if (m_visible)
+    const bool visible = evaluateInputPanelVisible();
+    if (visible != m_inputPanel->isVisible()) {
+        if (visible)
             m_inputPanel->show();
         else
             m_inputPanel->hide();
         if (m_selectionControl)
-            m_selectionControl->setEnabled(m_visible);
+            m_selectionControl->setEnabled(visible);
         emitInputPanelVisibleChanged();
     }
 }

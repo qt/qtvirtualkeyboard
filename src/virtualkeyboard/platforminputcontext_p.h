@@ -101,6 +101,7 @@ protected:
     void sendKeyEvent(QKeyEvent *event);
     QVariant inputMethodQuery(Qt::InputMethodQuery query);
     void setInputContext(QVirtualKeyboardInputContext *context);
+    bool evaluateInputPanelVisible() const;
 
 private slots:
     void keyboardRectangleChanged();
