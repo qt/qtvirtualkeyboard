@@ -384,7 +384,7 @@ void QVirtualKeyboardInputContextPrivate::update(Qt::InputMethodQueries queries)
     bool newCursorPosition = cursorPosition != this->cursorPosition;
     bool newAnchorRectangle = anchorRectangle != this->anchorRectangle;
     bool newCursorRectangle = cursorRectangle != this->cursorRectangle;
-    bool selectionControlVisible = platformInputContext->isInputPanelVisible() && (cursorPosition != anchorPosition) && !inputMethodHints.testFlag(Qt::ImhNoTextHandles);
+    bool selectionControlVisible = platformInputContext->evaluateInputPanelVisible() && (cursorPosition != anchorPosition) && !inputMethodHints.testFlag(Qt::ImhNoTextHandles);
     bool newSelectionControlVisible = selectionControlVisible != this->selectionControlVisible;
 
     QRectF inputItemClipRect = imQueryEvent.value(Qt::ImInputItemClipRectangle).toRectF();
