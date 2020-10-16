@@ -51,8 +51,7 @@ qt6_add_resources(basic "demo"
         ${demo_resource_files}
 )
 
-if(QT_FEATURE_static) # special case
-    find_package(Qt6 COMPONENTS Svg) # special case
+if(NOT QT_BUILD_SHARED_LIBS)
     target_link_libraries(basic PUBLIC
         Qt::Svg
     )
@@ -60,13 +59,13 @@ endif()
 
 if(NOT QT_FEATURE_vkb_desktop)
     target_compile_definitions(basic PUBLIC
-        MAIN_QML="basic-b2qt.qml" # special case
+        MAIN_QML=\\\"basic-b2qt.qml\\\"
     )
 endif()
 
 if(QT_FEATURE_vkb_desktop)
     target_compile_definitions(basic PUBLIC
-        MAIN_QML="Basic.qml" # special case
+        MAIN_QML=\\\"Basic.qml\\\"
     )
 endif()
 
