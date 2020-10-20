@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtQuick.Window 2.2
+import QtQuick
+import QtQuick.Window
 
 Window {
     id: window

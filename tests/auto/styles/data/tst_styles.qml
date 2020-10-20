@@ -27,9 +27,9 @@
 **
 ****************************************************************************/
 
-import QtTest 1.0
-import QtQuick 2.0
-import QtQuick.VirtualKeyboard.Settings 2.0
+import QtTest
+import QtQuick
+import QtQuick.VirtualKeyboard.Settings
 
 Item {
 

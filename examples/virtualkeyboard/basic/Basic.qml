@@ -27,9 +27,9 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.14
-import QtQuick.Controls 2.3
-import QtQuick.VirtualKeyboard 2.1
+import QtQuick
+import QtQuick.Controls
+import QtQuick.VirtualKeyboard
 import "content"
 
 Rectangle {

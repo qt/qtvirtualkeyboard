@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtQuick.VirtualKeyboard 1.0
+import QtQuick
+import QtQuick.VirtualKeyboard
 
 // file: CustomInputMethod.qml
 

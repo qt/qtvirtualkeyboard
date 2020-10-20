@@ -27,16 +27,16 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick
 // Deliberately imported after QtQuick to avoid missing restoreMode property in Binding. Fix in Qt 6.
-import QtQml 2.14
-import QtQuick.Layouts 1.0
-import QtQuick.Window 2.2
-import QtQuick.VirtualKeyboard 2.3
-import QtQuick.VirtualKeyboard.Styles 2.1
-import QtQuick.VirtualKeyboard.Settings 2.2
-import QtQuick.VirtualKeyboard.Plugins 2.3
-import Qt.labs.folderlistmodel 2.0
+import QtQml
+import QtQuick.Layouts
+import QtQuick.Window
+import QtQuick.VirtualKeyboard
+import QtQuick.VirtualKeyboard.Styles
+import QtQuick.VirtualKeyboard.Settings
+import QtQuick.VirtualKeyboard.Plugins
+import Qt.labs.folderlistmodel
 
 Item {
     id: keyboard
@@ -85,7 +85,7 @@ Item {
 
     function initDefaultInputMethod() {
         try {
-            return Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard.Plugins 2.3; DefaultInputMethod {}', keyboard, "defaultInputMethod")
+            return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; DefaultInputMethod {}', keyboard, "defaultInputMethod")
         } catch (e) { }
         return plainInputMethod
     }
@@ -782,7 +782,7 @@ Item {
                 var soundId = Qt.md5(sound)
                 multiSoundEffect = __sounds[soundId]
                 if (!multiSoundEffect) {
-                    multiSoundEffect = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.VirtualKeyboard 2.1; MultiSoundEffect {}', soundEffect)
+                    multiSoundEffect = Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard; MultiSoundEffect {}', soundEffect)
                     if (multiSoundEffect) {
                         multiSoundEffect.playingChanged.connect(soundEffect.playingChanged)
                         multiSoundEffect.source = sound

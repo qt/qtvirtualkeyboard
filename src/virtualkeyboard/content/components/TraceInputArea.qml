@@ -27,9 +27,9 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtQuick.Window 2.2
-import QtQuick.VirtualKeyboard 2.1
+import QtQuick
+import QtQuick.Window
+import QtQuick.VirtualKeyboard
 
 /*!
     \qmltype TraceInputArea

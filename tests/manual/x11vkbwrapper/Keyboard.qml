@@ -27,10 +27,10 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtQuick.Window 2.2
-import QtQuick.VirtualKeyboard 2.2
-import Qt.labs.platform 1.1
+import QtQuick
+import QtQuick.Window
+import QtQuick.VirtualKeyboard
+import Qt.labs.platform
 
 Window {
     id: keyboardWindow

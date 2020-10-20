@@ -27,9 +27,9 @@
 **
 ****************************************************************************/
 
-import QtTest 1.0
-import QtQuick 2.0
-import QtQuick.Window 2.3
+import QtTest
+import QtQuick
+import QtQuick.Window
 
 Rectangle {
     id: container
@@ -145,65 +145,65 @@ Rectangle {
         function test_versionCheck_data() {
             return [
                 // Note: Add new import versions here
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard 1.0; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard; \
                         Item {}" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard 1.1; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard; \
                         Item {}" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard 1.2; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard; \
                         Item {}" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard 1.3; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard; \
                         Item {}" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard 2.0; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard; \
                         Item {}" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard 2.1; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard; \
                         Item {}" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard.Styles 1.0; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard.Styles; \
                         KeyboardStyle {}" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard.Styles 1.1; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard.Styles; \
                         KeyboardStyle {}" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard.Styles 1.2; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard.Styles; \
                         KeyboardStyle {}" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard.Styles 1.3; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard.Styles; \
                         KeyboardStyle {}" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard.Styles 2.0; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard.Styles; \
                         KeyboardStyle {}" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard.Styles 2.1; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard.Styles; \
                         KeyboardStyle {}" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard.Settings 1.0; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard.Settings; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName }" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard.Settings 1.1; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard.Settings; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName }" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard.Settings 1.2; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard.Settings; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName }" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard.Settings 2.0; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard.Settings; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName; \
                                property var locale: VirtualKeyboardSettings.locale; \
                                property var availableLocales: VirtualKeyboardSettings.availableLocales; \
                                property var activeLocales: VirtualKeyboardSettings.activeLocales }" },
-                { qml: "import QtQuick 2.0; \
-                        import QtQuick.VirtualKeyboard.Settings 2.1; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard.Settings; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName; \
                                property var locale: VirtualKeyboardSettings.locale; \
                                property var availableLocales: VirtualKeyboardSettings.availableLocales; \
                                property var activeLocales: VirtualKeyboardSettings.activeLocales }" },
-                { qml: "import QtQuick 2.7; \
-                        import QtQuick.VirtualKeyboard.Settings 2.2; \
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard.Settings; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName; \
                                property var locale: VirtualKeyboardSettings.locale; \
                                property var availableLocales: VirtualKeyboardSettings.availableLocales; \

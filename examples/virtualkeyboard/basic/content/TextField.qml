@@ -27,9 +27,9 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.10
-import QtQuick.Controls 2.3 as Controls
-import QtQuick.VirtualKeyboard 2.3
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.VirtualKeyboard
 
 Controls.TextField {
     id: control

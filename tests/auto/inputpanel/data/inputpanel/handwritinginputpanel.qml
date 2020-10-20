@@ -27,9 +27,9 @@
 **
 ****************************************************************************/
 
-import QtTest 1.0
-import QtQuick 2.0
-import QtQuick.VirtualKeyboard 2.1
+import QtTest
+import QtQuick
+import QtQuick.VirtualKeyboard
 import "handwriting.js" as Handwriting
 import "utils.js" as Utils
 

@@ -27,8 +27,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.10
-import QtQuick.VirtualKeyboard 2.3
+import QtQuick
+import QtQuick.VirtualKeyboard
 
 KeyboardLayoutLoader {
     sharedLayouts: ['symbols']

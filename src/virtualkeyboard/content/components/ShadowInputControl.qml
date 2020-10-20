@@ -27,11 +27,11 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.7
+import QtQuick
 // Deliberately imported after QtQuick to avoid missing restoreMode property in Binding. Fix in Qt 6.
-import QtQml 2.14
-import QtQuick.VirtualKeyboard 2.2
-import QtQuick.VirtualKeyboard.Settings 2.2
+import QtQml
+import QtQuick.VirtualKeyboard
+import QtQuick.VirtualKeyboard.Settings
 
 Item {
     id: control
