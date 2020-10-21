@@ -38,6 +38,12 @@
 #include <QStyleHints>
 
 QT_BEGIN_NAMESPACE
+
+size_t qHash(QLocale::Language lang, size_t seed)
+{
+    return qHash(ushort(lang), seed);
+}
+
 namespace QtVirtualKeyboard {
 
 class ShiftHandlerPrivate : public QObjectPrivate
