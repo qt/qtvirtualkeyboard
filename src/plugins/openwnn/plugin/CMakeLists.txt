@@ -33,7 +33,7 @@ set(qmake_virtualkeyboard_openwnn_layouts_resource_files
     "virtualkeyboard/content/layouts/ja_JP/symbols.qml"
 )
 
-qt_add_resource(QtVirtualKeyboardOpenWnnPlugin "qmake_virtualkeyboard_openwnn_layouts"
+qt_internal_add_resource(QtVirtualKeyboardOpenWnnPlugin "qmake_virtualkeyboard_openwnn_layouts"
     PREFIX
         "${VKB_LAYOUTS_PREFIX}" #special case
     BASE

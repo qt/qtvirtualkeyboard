@@ -11,7 +11,8 @@ if(NOT TARGET Threads::Threads)
 endif()
 # special case end
 
-qt_add_3rdparty_library(BundledPinyin
+qt_internal_add_3rdparty_library(BundledPinyin
+    QMAKE_LIB_NAME pinyin
     STATIC
     SOURCES
         include/atomdictbase.h

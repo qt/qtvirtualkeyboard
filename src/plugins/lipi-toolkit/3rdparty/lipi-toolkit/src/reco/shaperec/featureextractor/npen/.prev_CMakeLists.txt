@@ -4,7 +4,7 @@
 ## npen Generic Library:
 #####################################################################
 
-qt_add_cmake_library(npen
+qt_internal_add_cmake_library(npen
     MODULE
     INSTALL_DIRECTORY "$$[QT_INSTALL_PLUGINS]/lipi_toolkit"
     EXCEPTIONS
@@ -29,14 +29,14 @@ qt_disable_warnings(npen)
 ## Scopes:
 #####################################################################
 
-qt_extend_target(npen CONDITION WIN32
+qt_internal_extend_target(npen CONDITION WIN32
     DEFINES
         NPEN_EXPORTS
     PUBLIC_LIBRARIES
         Advapi32.lib
 )
 
-qt_extend_target(npen CONDITION NOT LIPILIBS_ISEMPTY
+qt_internal_extend_target(npen CONDITION NOT LIPILIBS_ISEMPTY
     PUBLIC_LIBRARIES
         # Remove: L/lib
 )

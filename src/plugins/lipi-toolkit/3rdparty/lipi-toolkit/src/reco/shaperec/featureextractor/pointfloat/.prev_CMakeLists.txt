@@ -4,7 +4,7 @@
 ## pointfloat Generic Library:
 #####################################################################
 
-qt_add_cmake_library(pointfloat
+qt_internal_add_cmake_library(pointfloat
     MODULE
     INSTALL_DIRECTORY "$$[QT_INSTALL_PLUGINS]/lipi_toolkit"
     EXCEPTIONS
@@ -29,14 +29,14 @@ qt_disable_warnings(pointfloat)
 ## Scopes:
 #####################################################################
 
-qt_extend_target(pointfloat CONDITION WIN32
+qt_internal_extend_target(pointfloat CONDITION WIN32
     DEFINES
         POINTFLOAT_EXPORTS
     PUBLIC_LIBRARIES
         Advapi32.lib
 )
 
-qt_extend_target(pointfloat CONDITION NOT LIPILIBS_ISEMPTY
+qt_internal_extend_target(pointfloat CONDITION NOT LIPILIBS_ISEMPTY
     PUBLIC_LIBRARIES
         # Remove: L/lib
 )

@@ -34,7 +34,7 @@ set(qmake_virtualkeyboard_pinyin_layouts_resource_files
     "virtualkeyboard/content/layouts/zh_CN/symbols.qml"
 )
 
-qt_add_resource(QtVirtualKeyboardPinyinPlugin "qmake_virtualkeyboard_pinyin_layouts"
+qt_internal_add_resource(QtVirtualKeyboardPinyinPlugin "qmake_virtualkeyboard_pinyin_layouts"
     PREFIX
         "${VKB_LAYOUTS_PREFIX}" #special case
     BASE
@@ -56,7 +56,7 @@ if(NOT no-bundle-pinyin)
         "../3rdparty/pinyin/data/dict_pinyin.dat"
     )
 
-    qt_add_resource(QtVirtualKeyboardPinyinPlugin "qmake_pinyin"
+    qt_internal_add_resource(QtVirtualKeyboardPinyinPlugin "qmake_pinyin"
         PREFIX
             "/QtQuick/VirtualKeyboard"
         BASE

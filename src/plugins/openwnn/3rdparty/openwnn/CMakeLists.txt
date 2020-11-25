@@ -4,7 +4,8 @@
 ## BundledOpenwnn Generic Library:
 #####################################################################
 
-qt_add_3rdparty_library(BundledOpenwnn
+qt_internal_add_3rdparty_library(BundledOpenwnn
+    QMAKE_LIB_NAME openwnn
     STATIC
     SOURCES
         wnnDictionary/engine/ndapi.c

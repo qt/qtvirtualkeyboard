@@ -4,7 +4,7 @@
 ## preproc Generic Library:
 #####################################################################
 
-qt_add_cmake_library(preproc
+qt_internal_add_cmake_library(preproc
     MODULE
     INSTALL_DIRECTORY "$$[QT_INSTALL_PLUGINS]/lipi_toolkit"
     EXCEPTIONS
@@ -28,14 +28,14 @@ qt_disable_warnings(preproc)
 ## Scopes:
 #####################################################################
 
-qt_extend_target(preproc CONDITION WIN32
+qt_internal_extend_target(preproc CONDITION WIN32
     DEFINES
         PREPROCESSING_EXPORTS
     PUBLIC_LIBRARIES
         Advapi32.lib
 )
 
-qt_extend_target(preproc CONDITION NOT LIPILIBS_ISEMPTY
+qt_internal_extend_target(preproc CONDITION NOT LIPILIBS_ISEMPTY
     PUBLIC_LIBRARIES
         # Remove: L/lib
 )

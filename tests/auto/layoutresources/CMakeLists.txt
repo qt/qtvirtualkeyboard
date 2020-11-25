@@ -4,7 +4,7 @@
 ## tst_layoutresources Test:
 #####################################################################
 
-qt_add_test(tst_layoutresources
+qt_internal_add_test(tst_layoutresources
     SOURCES
         ../shared/layouttesthelper.cpp ../shared/layouttesthelper.h
         tst_layoutresources.cpp
@@ -23,7 +23,7 @@ set(resourceslayout_resource_files
     "layouts/en_GB/main.qml"
 )
 
-qt_add_resource(tst_layoutresources "resourceslayout"
+qt_internal_add_resource(tst_layoutresources "resourceslayout"
     PREFIX
         "/resource"
     BASE
@@ -36,7 +36,7 @@ qt_add_resource(tst_layoutresources "resourceslayout"
 ## Scopes:
 #####################################################################
 
-qt_extend_target(tst_layoutresources CONDITION static
+qt_internal_extend_target(tst_layoutresources CONDITION static
     PUBLIC_LIBRARIES
         Qt::Svg
 )

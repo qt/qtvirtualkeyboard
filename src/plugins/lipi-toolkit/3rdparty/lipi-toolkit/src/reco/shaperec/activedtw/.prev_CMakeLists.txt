@@ -4,7 +4,7 @@
 ## activedtw Generic Library:
 #####################################################################
 
-qt_add_cmake_library(activedtw
+qt_internal_add_cmake_library(activedtw
     MODULE
     INSTALL_DIRECTORY "$$[QT_INSTALL_PLUGINS]/lipi_toolkit"
     EXCEPTIONS
@@ -32,14 +32,14 @@ qt_disable_warnings(activedtw)
 ## Scopes:
 #####################################################################
 
-qt_extend_target(activedtw CONDITION WIN32
+qt_internal_extend_target(activedtw CONDITION WIN32
     DEFINES
         ACTIVEDTW_EXPORTS
     PUBLIC_LIBRARIES
         Advapi32.lib
 )
 
-qt_extend_target(activedtw CONDITION NOT LIPILIBS_ISEMPTY
+qt_internal_extend_target(activedtw CONDITION NOT LIPILIBS_ISEMPTY
     PUBLIC_LIBRARIES
         # Remove: L/lib
 )

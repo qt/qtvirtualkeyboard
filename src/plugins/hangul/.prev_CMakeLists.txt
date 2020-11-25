@@ -32,7 +32,7 @@ set(qmake_virtualkeyboard_hangul_layouts_resource_files
     "virtualkeyboard/content/layouts/ko_KR/symbols.qml"
 )
 
-qt_add_resource(QtVirtualKeyboardHangulPlugin "qmake_virtualkeyboard_hangul_layouts"
+qt_internal_add_resource(QtVirtualKeyboardHangulPlugin "qmake_virtualkeyboard_hangul_layouts"
     PREFIX
         "$$LAYOUTS_PREFIX"
     BASE

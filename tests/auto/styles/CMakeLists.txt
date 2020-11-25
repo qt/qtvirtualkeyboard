@@ -10,7 +10,7 @@ file(GLOB_RECURSE test_data_glob
     ${CMAKE_CURRENT_SOURCE_DIR}/data/*)
 list(APPEND test_data ${test_data_glob})
 
-qt_add_test(tst_styles
+qt_internal_add_test(tst_styles
     QMLTEST
     SOURCES
         tst_styles.cpp
@@ -29,7 +29,7 @@ qt_add_test(tst_styles
 ## Scopes:
 #####################################################################
 
-qt_extend_target(tst_styles CONDITION static
+qt_internal_extend_target(tst_styles CONDITION static
     PUBLIC_LIBRARIES
         Qt::Svg
 )

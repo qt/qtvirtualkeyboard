@@ -4,7 +4,7 @@
 ## x11vkbnativehost Binary:
 #####################################################################
 
-qt_add_manual_test(x11vkbnativehost
+qt_internal_add_manual_test(x11vkbnativehost
     SOURCES
         common_defs.h
         main.cpp

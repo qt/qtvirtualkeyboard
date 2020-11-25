@@ -4,7 +4,7 @@
 ## wordreccommon Generic Library:
 #####################################################################
 
-qt_add_cmake_library(wordreccommon
+qt_internal_add_cmake_library(wordreccommon
     STATIC
     EXCEPTIONS
     OUTPUT_DIRECTORY "${QT_BUILD_DIR}/lib"
@@ -24,7 +24,7 @@ qt_disable_warnings(wordreccommon)
 ## Scopes:
 #####################################################################
 
-qt_extend_target(wordreccommon CONDITION NOT LIPILIBS_ISEMPTY
+qt_internal_extend_target(wordreccommon CONDITION NOT LIPILIBS_ISEMPTY
     PUBLIC_LIBRARIES
         # Remove: L/lib
 )

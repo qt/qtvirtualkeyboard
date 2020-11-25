@@ -4,7 +4,7 @@
 ## neuralnet Generic Library:
 #####################################################################
 
-qt_add_cmake_library(neuralnet
+qt_internal_add_cmake_library(neuralnet
     MODULE
     INSTALL_DIRECTORY "${INSTALL_PLUGINSDIR}/lipi_toolkit" # special case
     EXCEPTIONS
@@ -29,14 +29,14 @@ qt_disable_warnings(neuralnet)
 ## Scopes:
 #####################################################################
 
-qt_extend_target(neuralnet CONDITION WIN32
+qt_internal_extend_target(neuralnet CONDITION WIN32
     DEFINES
         NEURALNET_EXPORTS
     PUBLIC_LIBRARIES
         Advapi32.lib
 )
 
-qt_extend_target(neuralnet CONDITION NOT LIPILIBS_ISEMPTY
+qt_internal_extend_target(neuralnet CONDITION NOT LIPILIBS_ISEMPTY
     PUBLIC_LIBRARIES
         # Remove: L/lib
 )

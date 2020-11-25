@@ -4,7 +4,7 @@
 ## nn Generic Library:
 #####################################################################
 
-qt_add_cmake_library(nn
+qt_internal_add_cmake_library(nn
     MODULE
     INSTALL_DIRECTORY "${INSTALL_PLUGINSDIR}/lipi_toolkit" # special case
     EXCEPTIONS
@@ -30,14 +30,14 @@ qt_disable_warnings(nn)
 ## Scopes:
 #####################################################################
 
-qt_extend_target(nn CONDITION WIN32
+qt_internal_extend_target(nn CONDITION WIN32
     DEFINES
         NN_EXPORTS
     PUBLIC_LIBRARIES
         Advapi32.lib
 )
 
-qt_extend_target(nn CONDITION NOT LIPILIBS_ISEMPTY
+qt_internal_extend_target(nn CONDITION NOT LIPILIBS_ISEMPTY
     PUBLIC_LIBRARIES
         # Remove: L/lib
 )

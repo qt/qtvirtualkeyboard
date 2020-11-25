@@ -4,7 +4,7 @@
 ## x11vkbwrapper Binary:
 #####################################################################
 
-qt_add_manual_test(x11vkbwrapper
+qt_internal_add_manual_test(x11vkbwrapper
     GUI
     SOURCES
         common_defs.h
@@ -46,7 +46,7 @@ set(qml_resource_files
     "main.qml"
 )
 
-qt_add_resource(x11vkbwrapper "qml"
+qt_internal_add_resource(x11vkbwrapper "qml"
     PREFIX
         "/"
     FILES
@@ -60,7 +60,7 @@ qt_add_resource(x11vkbwrapper "qml"
 ## Scopes:
 #####################################################################
 
-qt_extend_target(x11vkbwrapper CONDITION static
+qt_internal_extend_target(x11vkbwrapper CONDITION static
     PUBLIC_LIBRARIES
         Qt::Svg
 )
@@ -68,7 +68,7 @@ qt_extend_target(x11vkbwrapper CONDITION static
 #### Keys ignored in scope 2:.:.:x11vkbwrapper.pro:static:
 # QTPLUGIN = "qtvirtualkeyboardplugin"
 
-qt_extend_target(x11vkbwrapper CONDITION CMAKE_BUILD_TYPE STREQUAL Release
+qt_internal_extend_target(x11vkbwrapper CONDITION CMAKE_BUILD_TYPE STREQUAL Release
     DEFINES
         QT_NO_DEBUG_OUTPUT
 )

@@ -34,7 +34,7 @@ set(qmake_virtualkeyboard_myscript_layouts_resource_files
     "virtualkeyboard/content/layouts/fallback/handwriting.qml"
 )
 
-qt_add_resource(QtVirtualKeyboardMyScriptPlugin "qmake_virtualkeyboard_myscript_layouts"
+qt_internal_add_resource(QtVirtualKeyboardMyScriptPlugin "qmake_virtualkeyboard_myscript_layouts"
     PREFIX
         "$$LAYOUTS_PREFIX"
     BASE

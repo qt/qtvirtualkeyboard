@@ -34,7 +34,7 @@ set(qmake_virtualkeyboard_t9write_layouts_resource_files
     "virtualkeyboard/content/layouts/fallback/handwriting.qml"
 )
 
-qt_add_resource(QtVirtualKeyboardT9WritePlugin "qmake_virtualkeyboard_t9write_layouts"
+qt_internal_add_resource(QtVirtualKeyboardT9WritePlugin "qmake_virtualkeyboard_t9write_layouts"
     PREFIX
         "$$LAYOUTS_PREFIX"
     BASE
@@ -50,7 +50,7 @@ qt_add_resource(QtVirtualKeyboardT9WritePlugin "qmake_virtualkeyboard_t9write_la
 ## Scopes:
 #####################################################################
 
-qt_extend_target(QtVirtualKeyboardT9WritePlugin CONDITION QT_FEATURE_t9write_alphabetic
+qt_internal_extend_target(QtVirtualKeyboardT9WritePlugin CONDITION QT_FEATURE_t9write_alphabetic
     DEFINES
         HAVE_T9WRITE_ALPHABETIC
 )
@@ -166,7 +166,7 @@ qt_extend_target(QtVirtualKeyboardT9WritePlugin CONDITION QT_FEATURE_t9write_alp
 #### Keys ignored in scope 40:.:.:plugin.pro:QT_FEATURE_vkb_lang_vi_VN:
 # LAYOUT_FILES = "$$LAYOUTS_BASE/content/layouts/vi_VN/handwriting.fallback"
 
-qt_extend_target(QtVirtualKeyboardT9WritePlugin CONDITION QT_FEATURE_t9write_cjk
+qt_internal_extend_target(QtVirtualKeyboardT9WritePlugin CONDITION QT_FEATURE_t9write_cjk
     DEFINES
         HAVE_T9WRITE_CJK
 )

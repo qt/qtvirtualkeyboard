@@ -33,7 +33,7 @@ set(qmake_virtualkeyboard_tcime_layouts_resource_files
     "virtualkeyboard/content/layouts/zh_TW/symbols.qml"
 )
 
-qt_add_resource(QtVirtualKeyboardTCImePlugin "qmake_virtualkeyboard_tcime_layouts"
+qt_internal_add_resource(QtVirtualKeyboardTCImePlugin "qmake_virtualkeyboard_tcime_layouts"
     PREFIX
         "${VKB_LAYOUTS_PREFIX}" #special case
     BASE
@@ -55,7 +55,7 @@ if(NOT no-bundle-tcime)
         "../3rdparty/tcime/data/qt/dict_phrases.dat"
     )
 
-    qt_add_resource(QtVirtualKeyboardTCImePlugin "qmake_tcime"
+    qt_internal_add_resource(QtVirtualKeyboardTCImePlugin "qmake_tcime"
         PREFIX
             "/QtQuick/VirtualKeyboard"
         BASE

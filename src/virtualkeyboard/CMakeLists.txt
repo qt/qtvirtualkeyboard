@@ -10,7 +10,7 @@ set(VKB_INSTALL_DATA = "${INSTALL_DATA}/qtvirtualkeyboard" CACHE STRING "" FORCE
 ## VirtualKeyboard Module:
 #####################################################################
 
-qt_add_module(VirtualKeyboard
+qt_internal_add_module(VirtualKeyboard
     PLUGIN_TYPES virtualkeyboard
     SOURCES
         abstractinputpanel.cpp abstractinputpanel_p.h
@@ -94,7 +94,7 @@ set(virtualkeyboard_content_resource_files
     "components/WordCandidatePopupList.qml"
 )
 
-qt_add_resource(VirtualKeyboard "virtualkeyboard_content"
+qt_internal_add_resource(VirtualKeyboard "virtualkeyboard_content"
     PREFIX
         "/QtQuick/VirtualKeyboard/content"
     BASE
@@ -112,7 +112,7 @@ qt_add_resource(VirtualKeyboard "virtualkeyboard_content"
 ## Scopes:
 #####################################################################
 
-qt_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_sensitive_debug
+qt_internal_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_sensitive_debug
     PUBLIC_DEFINES
         SENSITIVE_DEBUG
 )
@@ -135,7 +135,7 @@ if(NOT no-builtin-style)
         "style.qml"
     )
 
-    qt_add_resource(VirtualKeyboard "virtualkeyboard_default_style"
+    qt_internal_add_resource(VirtualKeyboard "virtualkeyboard_default_style"
         PREFIX
             "/QtQuick/VirtualKeyboard/content/styles/default"
         BASE
@@ -179,7 +179,7 @@ if(NOT no-builtin-style)
         "style.qml"
     )
 
-    qt_add_resource(VirtualKeyboard "virtualkeyboard_retro_style"
+    qt_internal_add_resource(VirtualKeyboard "virtualkeyboard_retro_style"
         PREFIX
             "/QtQuick/VirtualKeyboard/content/styles/retro"
         BASE
@@ -639,22 +639,22 @@ endif()
 #### Keys ignored in scope 40:.:.:virtualkeyboard.pro:QT_FEATURE_vkb_lang_vi_VN:
 # LAYOUT_FILES = "content/layouts/vi_VN/dialpad.fallback" "content/layouts/vi_VN/digits.fallback" "content/layouts/vi_VN/main.qml" "content/layouts/vi_VN/numbers.fallback" "content/layouts/vi_VN/symbols.qml"
 
-qt_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_no_builtin_style
+qt_internal_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_no_builtin_style
     DEFINES
         QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"\\\"
 )
 
-qt_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_retro_style AND NOT QT_FEATURE_vkb_no_builtin_style
+qt_internal_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_retro_style AND NOT QT_FEATURE_vkb_no_builtin_style
     DEFINES
         QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"retro\\\"
 )
 
-qt_extend_target(VirtualKeyboard CONDITION NOT QT_FEATURE_vkb_no_builtin_style AND NOT QT_FEATURE_vkb_retro_style
+qt_internal_extend_target(VirtualKeyboard CONDITION NOT QT_FEATURE_vkb_no_builtin_style AND NOT QT_FEATURE_vkb_retro_style
     DEFINES
         QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"default\\\"
 )
 
-qt_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_desktop
+qt_internal_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_desktop
     SOURCES
         desktopinputpanel.cpp desktopinputpanel_p.h
         inputview.cpp inputview_p.h
@@ -662,19 +662,19 @@ qt_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_desktop
         QT_VIRTUALKEYBOARD_DESKTOP
 )
 
-qt_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_desktop AND QT_FEATURE_vkb_xcb
+qt_internal_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_desktop AND QT_FEATURE_vkb_xcb
     PUBLIC_LIBRARIES
         XCB::XFIXES
 )
 
-qt_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_record_trace_input
+qt_internal_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_record_trace_input
     SOURCES
         unipentrace.cpp unipentrace_p.h
     PUBLIC_DEFINES
         QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
 )
 
-qt_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_arrow_keynavigation
+qt_internal_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_arrow_keynavigation
     DEFINES
         QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
 )
@@ -689,7 +689,7 @@ if(QT_FEATURE_vkb_layouts)
         "content/layouts/fallback/symbols.qml"
     )
 
-    qt_add_resource(VirtualKeyboard "qmake_virtualkeyboard_layouts"
+    qt_internal_add_resource(VirtualKeyboard "qmake_virtualkeyboard_layouts"
         PREFIX
             "${VKB_LAYOUTS_PREFIX}" #special case
         FILES
@@ -697,7 +697,7 @@ if(QT_FEATURE_vkb_layouts)
             ${LAYOUT_FILES} # special case
     )
 endif()
-qt_add_docs(VirtualKeyboard
+qt_internal_add_docs(VirtualKeyboard
     doc/qtvirtualkeyboard.qdocconf
 )
 

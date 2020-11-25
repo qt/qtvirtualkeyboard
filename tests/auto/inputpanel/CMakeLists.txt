@@ -10,7 +10,7 @@ file(GLOB_RECURSE test_data_glob
     ${CMAKE_CURRENT_SOURCE_DIR}/data/*)
 list(APPEND test_data ${test_data_glob})
 
-qt_add_test(tst_inputpanel
+qt_internal_add_test(tst_inputpanel
     QMLTEST
     SOURCES
         tst_inputpanel.cpp
@@ -26,7 +26,7 @@ qt_add_test(tst_inputpanel
 ## Scopes:
 #####################################################################
 
-qt_extend_target(tst_inputpanel CONDITION NOT QT_BUILD_SHARED_LIBS
+qt_internal_extend_target(tst_inputpanel CONDITION NOT QT_BUILD_SHARED_LIBS
     PUBLIC_LIBRARIES
         Qt::Svg
 )

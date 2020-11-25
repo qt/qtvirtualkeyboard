@@ -31,7 +31,7 @@ set(qmake_virtualkeyboard_thai_layouts_resource_files
     "virtualkeyboard/content/layouts/th_TH/symbols.qml"
 )
 
-qt_add_resource(QtVirtualKeyboardThaiPlugin "qmake_virtualkeyboard_thai_layouts"
+qt_internal_add_resource(QtVirtualKeyboardThaiPlugin "qmake_virtualkeyboard_thai_layouts"
     PREFIX
         "$$LAYOUTS_PREFIX"
     BASE
@@ -48,7 +48,7 @@ qt_add_resource(QtVirtualKeyboardThaiPlugin "qmake_virtualkeyboard_thai_layouts"
 ## Scopes:
 #####################################################################
 
-qt_extend_target(QtVirtualKeyboardThaiPlugin CONDITION QT_FEATURE_hunspell
+qt_internal_extend_target(QtVirtualKeyboardThaiPlugin CONDITION QT_FEATURE_hunspell
     PUBLIC_LIBRARIES
         Qt::HunspellInputMethodPrivate
 )

@@ -4,7 +4,7 @@
 ## boxfld Generic Library:
 #####################################################################
 
-qt_add_cmake_library(boxfld
+qt_internal_add_cmake_library(boxfld
     MODULE
     INSTALL_DIRECTORY "$$[QT_INSTALL_PLUGINS]/lipi_toolkit"
     EXCEPTIONS
@@ -28,14 +28,14 @@ qt_disable_warnings(boxfld)
 ## Scopes:
 #####################################################################
 
-qt_extend_target(boxfld CONDITION WIN32
+qt_internal_extend_target(boxfld CONDITION WIN32
     DEFINES
         BOXFLD_EXPORTS
     PUBLIC_LIBRARIES
         Advapi32.lib
 )
 
-qt_extend_target(boxfld CONDITION NOT LIPILIBS_ISEMPTY
+qt_internal_extend_target(boxfld CONDITION NOT LIPILIBS_ISEMPTY
     PUBLIC_LIBRARIES
         # Remove: L/lib
 )

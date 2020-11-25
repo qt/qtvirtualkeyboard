@@ -7,6 +7,7 @@
 qt_internal_add_plugin(QVirtualKeyboardPlugin
     OUTPUT_NAME qtvirtualkeyboardplugin
     TYPE platforminputcontexts
+    DEFAULT_IF FALSE
     SOURCES
         extensionloader.cpp extensionloader.h
         plugin.cpp plugin.h
@@ -29,6 +30,16 @@ qt_internal_add_plugin(QVirtualKeyboardPlugin
 ## Scopes:
 #####################################################################
 
-#### Keys ignored in scope 2:.:.:plugin.pro:WIN32:
+qt_internal_extend_target(QVirtualKeyboardPlugin CONDITION no-builtin-style
+    DEFINES
+        QT_VIRTUALKEYBOARD_NO_BUILTIN_STYLES
+)
+
+qt_internal_extend_target(QVirtualKeyboardPlugin CONDITION disable-layouts
+    DEFINES
+        QT_VIRTUALKEYBOARD_DISABLE_LAYOUTS
+)
+
+#### Keys ignored in scope 4:.:.:plugin.pro:WIN32:
 # QMAKE_TARGET_DESCRIPTION = "Virtual Keyboard for Qt."
 # QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard (Qt $$QT_VERSION)"

@@ -4,7 +4,7 @@
 ## l7 Generic Library:
 #####################################################################
 
-qt_add_cmake_library(l7
+qt_internal_add_cmake_library(l7
     MODULE
     INSTALL_DIRECTORY "$$[QT_INSTALL_PLUGINS]/lipi_toolkit"
     EXCEPTIONS
@@ -29,14 +29,14 @@ qt_disable_warnings(l7)
 ## Scopes:
 #####################################################################
 
-qt_extend_target(l7 CONDITION WIN32
+qt_internal_extend_target(l7 CONDITION WIN32
     DEFINES
         L7_EXPORTS
     PUBLIC_LIBRARIES
         Advapi32.lib
 )
 
-qt_extend_target(l7 CONDITION NOT LIPILIBS_ISEMPTY
+qt_internal_extend_target(l7 CONDITION NOT LIPILIBS_ISEMPTY
     PUBLIC_LIBRARIES
         # Remove: L/lib
 )

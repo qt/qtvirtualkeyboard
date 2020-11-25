@@ -4,7 +4,7 @@
 ## qtquickvirtualkeyboardplugin Plugin:
 #####################################################################
 
-qt_add_qml_module(qtquickvirtualkeyboardplugin
+qt_internal_add_qml_module(qtquickvirtualkeyboardplugin
     URI "QtQuick.VirtualKeyboard"
     VERSION "2.${CMAKE_PROJECT_VERSION_MINOR}"
     CLASSNAME QtQuickVirtualKeyboardPlugin

@@ -289,7 +289,7 @@ endif()
 
 # special case end
 
-qt_add_resource(QtVirtualKeyboardMyScriptPlugin "qmake_virtualkeyboard_myscript_layouts"
+qt_internal_add_resource(QtVirtualKeyboardMyScriptPlugin "qmake_virtualkeyboard_myscript_layouts"
     PREFIX
         "${VKB_LAYOUTS_PREFIX}" # special case
     BASE

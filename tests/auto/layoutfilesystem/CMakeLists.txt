@@ -4,7 +4,7 @@
 ## tst_layoutfilesystem Test:
 #####################################################################
 
-qt_add_test(tst_layoutfilesystem
+qt_internal_add_test(tst_layoutfilesystem
     SOURCES
         ../shared/layouttesthelper.cpp ../shared/layouttesthelper.h
         tst_layoutfilesystem.cpp
@@ -24,7 +24,7 @@ qt_add_test(tst_layoutfilesystem
 ## Scopes:
 #####################################################################
 
-qt_extend_target(tst_layoutfilesystem CONDITION static
+qt_internal_extend_target(tst_layoutfilesystem CONDITION static
     PUBLIC_LIBRARIES
         Qt::Svg
 )

@@ -4,7 +4,7 @@
 ## substroke Generic Library:
 #####################################################################
 
-qt_add_cmake_library(substroke
+qt_internal_add_cmake_library(substroke
     MODULE
     INSTALL_DIRECTORY "${INSTALL_PLUGINSDIR}/lipi_toolkit" # special case
     EXCEPTIONS
@@ -29,14 +29,14 @@ qt_disable_warnings(substroke)
 ## Scopes:
 #####################################################################
 
-qt_extend_target(substroke CONDITION WIN32
+qt_internal_extend_target(substroke CONDITION WIN32
     DEFINES
         SUBSTROKE_EXPORTS
     PUBLIC_LIBRARIES
         Advapi32.lib
 )
 
-qt_extend_target(substroke CONDITION NOT LIPILIBS_ISEMPTY
+qt_internal_extend_target(substroke CONDITION NOT LIPILIBS_ISEMPTY
     PUBLIC_LIBRARIES
         # Remove: L/lib
 )

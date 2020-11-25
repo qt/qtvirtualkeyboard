@@ -42,12 +42,12 @@ qt_internal_add_plugin(QtVirtualKeyboardLipiPlugin
 ## Scopes:
 #####################################################################
 
-qt_extend_target(QtVirtualKeyboardLipiPlugin CONDITION WIN32
+qt_internal_extend_target(QtVirtualKeyboardLipiPlugin CONDITION WIN32
     PUBLIC_LIBRARIES
         Advapi32.lib
 )
 
-qt_extend_target(QtVirtualKeyboardLipiPlugin CONDITION UNIX
+qt_internal_extend_target(QtVirtualKeyboardLipiPlugin CONDITION UNIX
     PUBLIC_LIBRARIES
         ${CMAKE_DL_LIBS}
 )
@@ -55,7 +55,7 @@ qt_extend_target(QtVirtualKeyboardLipiPlugin CONDITION UNIX
 #### Keys ignored in scope 4:.:.:plugin.pro:NOT prefix_build:
 # COPIES = "ltk_projects"
 
-qt_extend_target(QtVirtualKeyboardLipiPlugin CONDITION QT_FEATURE_hunspell
+qt_internal_extend_target(QtVirtualKeyboardLipiPlugin CONDITION QT_FEATURE_hunspell
     PUBLIC_LIBRARIES
         Qt::HunspellInputMethodPrivate
 )
@@ -81,7 +81,7 @@ if(NOT LAYOUT_FILES_ISEMPTY)
         "virtualkeyboard/content/layouts/fallback/handwriting.qml"
     )
 
-    qt_add_resource(QtVirtualKeyboardLipiPlugin "qmake_virtualkeyboard_ltk_layouts"
+    qt_internal_add_resource(QtVirtualKeyboardLipiPlugin "qmake_virtualkeyboard_ltk_layouts"
         PREFIX
             "$$LAYOUTS_PREFIX"
         BASE

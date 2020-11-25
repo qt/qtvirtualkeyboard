@@ -4,7 +4,7 @@
 ## HunspellInputMethod Module:
 #####################################################################
 
-qt_add_module(HunspellInputMethod
+qt_internal_add_module(HunspellInputMethod
     INTERNAL_MODULE
     SOURCES
         hunspellinputmethod.cpp hunspellinputmethod_p.cpp hunspellinputmethod_p.h
@@ -29,7 +29,7 @@ qt_add_module(HunspellInputMethod
 ## Scopes:
 #####################################################################
 
-qt_extend_target(HunspellInputMethod CONDITION QT_FEATURE_system_hunspell
+qt_internal_extend_target(HunspellInputMethod CONDITION QT_FEATURE_system_hunspell
     PUBLIC_LIBRARIES
         Hunspell::Hunspell
 )

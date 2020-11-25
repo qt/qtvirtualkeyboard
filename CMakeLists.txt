@@ -10,8 +10,8 @@ project(QtVirtualKeyboard
     LANGUAGES CXX C
 )
 
-find_package(Qt6 ${PROJECT_VERSION} CONFIG REQUIRED COMPONENTS BuildInternals Core Qml QmlTools Quick Svg) # special case
-find_package(Qt6 ${PROJECT_VERSION} CONFIG OPTIONAL_COMPONENTS QuickTest QuickControls2) # special case
+find_package(Qt6 ${PROJECT_VERSION} CONFIG REQUIRED COMPONENTS BuildInternals Core) # special case
+find_package(Qt6 ${PROJECT_VERSION} QUIET CONFIG OPTIONAL_COMPONENTS Qml QmlTools Quick Svg QuickTest QuickControls2) # special case
 
 if(NOT TARGET Qt::Quick)
     message(NOTICE "Skipping the build as the condition \"TARGET Qt::Quick\" is not met.")

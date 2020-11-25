@@ -4,7 +4,8 @@
 ## BundledTcime Generic Library:
 #####################################################################
 
-qt_add_3rdparty_library(BundledTcime
+qt_internal_add_3rdparty_library(BundledTcime
+    QMAKE_LIB_NAME tcime
     STATIC
     SOURCES
         cangjiedictionary.cpp cangjiedictionary.h

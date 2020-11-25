@@ -4,7 +4,7 @@
 ## quickcontrols2 Binary:
 #####################################################################
 
-qt_add_manual_test(quickcontrols2
+qt_internal_add_manual_test(quickcontrols2
     GUI
     SOURCES
         main.cpp
@@ -19,7 +19,7 @@ set(main_resource_files
     "main.qml"
 )
 
-qt_add_resource(quickcontrols2 "main"
+qt_internal_add_resource(quickcontrols2 "main"
     PREFIX
         "/"
     FILES

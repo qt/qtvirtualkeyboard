@@ -4,7 +4,7 @@
 ## qtquickvirtualkeyboardstylesplugin Plugin:
 #####################################################################
 
-qt_add_qml_module(qtquickvirtualkeyboardstylesplugin
+qt_internal_add_qml_module(qtquickvirtualkeyboardstylesplugin
     URI "QtQuick.VirtualKeyboard.Styles"
     VERSION "2.${CMAKE_PROJECT_VERSION_MINOR}"
     CLASSNAME QtQuickVirtualKeyboardStylesPlugin
@@ -39,7 +39,7 @@ set(styles_resource_files
     "TraceUtils.js"
 )
 
-qt_add_resource(qtquickvirtualkeyboardstylesplugin "styles"
+qt_internal_add_resource(qtquickvirtualkeyboardstylesplugin "styles"
     PREFIX
         "/QtQuick/VirtualKeyboard/Styles/content"
     FILES

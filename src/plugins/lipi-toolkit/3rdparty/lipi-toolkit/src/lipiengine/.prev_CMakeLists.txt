@@ -4,7 +4,7 @@
 ## lipiengine Generic Library:
 #####################################################################
 
-qt_add_cmake_library(lipiengine
+qt_internal_add_cmake_library(lipiengine
     MODULE
     INSTALL_DIRECTORY "$$[QT_INSTALL_PLUGINS]/lipi_toolkit"
     EXCEPTIONS
@@ -27,14 +27,14 @@ qt_disable_warnings(lipiengine)
 ## Scopes:
 #####################################################################
 
-qt_extend_target(lipiengine CONDITION WIN32
+qt_internal_extend_target(lipiengine CONDITION WIN32
     DEFINES
         LIPIENGINE_EXPORTS
     PUBLIC_LIBRARIES
         Advapi32.lib
 )
 
-qt_extend_target(lipiengine CONDITION NOT LIPILIBS_ISEMPTY
+qt_internal_extend_target(lipiengine CONDITION NOT LIPILIBS_ISEMPTY
     PUBLIC_LIBRARIES
         # Remove: L/lib
 )

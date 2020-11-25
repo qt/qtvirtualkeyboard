@@ -4,7 +4,8 @@
 ## BundledT9Write_Db Generic Library:
 #####################################################################
 
-qt_add_3rdparty_library(BundledT9Write_Db
+qt_internal_add_3rdparty_library(BundledT9Write_Db
+    QMAKE_LIB_NAME t9write_db
     STATIC
     SOURCES
         api/*
@@ -58,7 +59,7 @@ set(qmake_t9write_db_resource_files
     ${resource_glob_6}
 )
 
-qt_add_resource(BundledT9Write_Db "qmake_t9write_db"
+qt_internal_add_resource(BundledT9Write_Db "qmake_t9write_db"
     PREFIX
         "/QtQuick/VirtualKeyboard/T9Write"
     FILES

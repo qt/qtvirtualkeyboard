@@ -10,13 +10,14 @@ set_property(CACHE INPUT_vkb_hunspell PROPERTY STRINGS undefined no 3rdparty sys
 
 #### Libraries
 
-qt_find_package(Hunspell PROVIDED_TARGETS Hunspell::Hunspell)
+qt_find_package(Hunspell PROVIDED_TARGETS Hunspell::Hunspell MODULE_NAME virtualkeyboard QMAKE_LIB hunspell)
 if((LINUX) OR QT_FIND_ALL_PACKAGES_ALWAYS)
-    qt_find_package(XCB 1.9 PROVIDED_TARGETS XCB::XCB)
+    qt_find_package(XCB 1.11 PROVIDED_TARGETS XCB::XCB MODULE_NAME virtualkeyboard QMAKE_LIB xcb)
 endif()
 if((LINUX) OR QT_FIND_ALL_PACKAGES_ALWAYS)
-    qt_find_package(XCB COMPONENTS XFIXES PROVIDED_TARGETS XCB::XFIXES)
+    qt_find_package(XCB COMPONENTS XFIXES PROVIDED_TARGETS XCB::XFIXES MODULE_NAME virtualkeyboard QMAKE_LIB xcb-xfixes)
 endif()
+qt_add_qmake_lib_dependency(xcb-xfixes xcb)
 
 
 #### Tests
