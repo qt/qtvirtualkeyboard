@@ -152,7 +152,7 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
                     if (!surroundingText.isEmpty() && cursorPosition == surroundingText.length()) {
                         QChar lastChar = surroundingText.at(cursorPosition - 1);
                         if (!lastChar.isSpace() &&
-                            lastChar != Qt::Key_Minus &&
+                            lastChar != QLatin1Char(Qt::Key_Minus) &&
                             d->isAutoSpaceAllowed()) {
                             // auto-insertion of space might trigger auto-capitalization
                             bool wasShiftActive = ic->isShiftActive();
