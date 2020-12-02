@@ -47,7 +47,7 @@
     appropriate implementation based on the CONFIG options:
 
     \quotefromfile basic/basic.pro
-    \skipto android-embedded
+    \skipto vkb-desktop
     \printuntil /^\}$/
 
     The example enables the virtual keyboard by setting the \c QT_IM_MODULE
