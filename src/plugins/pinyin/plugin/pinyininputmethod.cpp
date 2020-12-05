@@ -134,8 +134,8 @@ public:
         if (composingStr.length() > 0) {
             if ((candId >= 0 || finishSelection) && composingStr.length() == fixedLen) {
                 QString resultStr = getComposingStrActivePart();
-                tryPredict();
                 q->inputContext()->commit(resultStr);
+                tryPredict();
             } else if (state == Idle) {
                 state = Input;
             }
