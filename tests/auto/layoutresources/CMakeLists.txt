@@ -36,7 +36,7 @@ qt_internal_add_resource(tst_layoutresources "resourceslayout"
 ## Scopes:
 #####################################################################
 
-qt_internal_extend_target(tst_layoutresources CONDITION static
+qt_internal_extend_target(tst_layoutresources CONDITION NOT QT_BUILD_SHARED_LIBS
     PUBLIC_LIBRARIES
         Qt::Svg
 )

@@ -24,7 +24,7 @@ qt_internal_add_test(tst_layoutfilesystem
 ## Scopes:
 #####################################################################
 
-qt_internal_extend_target(tst_layoutfilesystem CONDITION static
+qt_internal_extend_target(tst_layoutfilesystem CONDITION NOT QT_BUILD_SHARED_LIBS
     PUBLIC_LIBRARIES
         Qt::Svg
 )

@@ -60,7 +60,7 @@ qt_internal_add_resource(x11vkbwrapper "qml"
 ## Scopes:
 #####################################################################
 
-qt_internal_extend_target(x11vkbwrapper CONDITION static
+qt_internal_extend_target(x11vkbwrapper CONDITION NOT QT_BUILD_SHARED_LIBS
     PUBLIC_LIBRARIES
         Qt::Svg
 )
