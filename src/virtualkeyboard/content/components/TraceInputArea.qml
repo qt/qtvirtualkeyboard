@@ -95,20 +95,41 @@ MultiPointTouchArea {
     */
     property string canvasType
 
+    property var __activeTraceCanvases:  ({})
     property var __traceCanvasList: ([])
+    property var __recycledTraceCanvasList: ([])
 
-    /*! \internal */
-    function findTraceCanvasById(traceId) {
-        for (var i = 0; i < __traceCanvasList.length;) {
-            var traceCanvas = __traceCanvasList[i]
-            if (!traceCanvas || !traceCanvas.trace)
-                __traceCanvasList.splice(i, 1)
-            else if (traceCanvas.trace.traceId === traceId)
-                return traceCanvas
-            else
-                i++
+    Component.onCompleted: {
+        for (var i = 0; i < 6; i++) {
+            __recycledTraceCanvasList.push(__createTraceCanvas())
         }
-        return null
+    }
+
+    function __getTraceCanvas() {
+        while (__recycledTraceCanvasList.length == 0 &&
+               __traceCanvasList.length >= 15 &&
+               !__traceCanvasList.shift().recycle()) {}
+
+        return __recycledTraceCanvasList.length > 0 ?
+                    __recycledTraceCanvasList.pop() :
+                    __createTraceCanvas()
+    }
+
+    function __createTraceCanvas() {
+        var traceCanvas = keyboard.style.traceCanvasDelegate.createObject(traceInputArea)
+        traceCanvas.onRecycle.connect(__onTraceCanvasRecycled)
+        traceCanvas.anchors.fill = traceCanvas.parent
+        return traceCanvas
+    }
+
+    function __onTraceCanvasRecycled(traceCanvas) {
+        var index = __traceCanvasList.findIndex(function(otherCanvas) {
+            return traceCanvas === otherCanvas
+        })
+        if (index !== -1) {
+            __traceCanvasList.splice(index, index + 1)
+        }
+        __recycledTraceCanvasList.push(traceCanvas)
     }
 
     property var __traceCaptureDeviceInfo:
@@ -133,23 +154,31 @@ MultiPointTouchArea {
         if (!keyboard.style.traceCanvasDelegate)
             return
         for (var i = 0; i < touchPoints.length; i++) {
-            var trace = InputContext.inputEngine.traceBegin(touchPoints[i].pointId, patternRecognitionMode, __traceCaptureDeviceInfo, __traceScreenInfo)
+            var traceId = touchPoints[i].pointId
+            var trace = InputContext.inputEngine.traceBegin(traceId, patternRecognitionMode, __traceCaptureDeviceInfo, __traceScreenInfo)
             if (trace) {
-                var traceCanvas = keyboard.style.traceCanvasDelegate.createObject(traceInputArea, { "trace": trace, "autoDestroy": true })
-                traceCanvas.anchors.fill = traceCanvas.parent
-                var index = trace.addPoint(Qt.point(touchPoints[i].x, touchPoints[i].y))
-                if (trace.channels.indexOf('t') !== -1) {
-                    var dt = new Date()
-                    trace.setChannelData('t', index, dt.getTime())
+                var traceCanvas = __getTraceCanvas()
+                if (traceCanvas) {
+                    traceCanvas.trace = trace
+                    var index = trace.addPoint(Qt.point(touchPoints[i].x, touchPoints[i].y))
+                    if (trace.channels.indexOf('t') !== -1) {
+                        var dt = new Date()
+                        trace.setChannelData('t', index, dt.getTime())
+                    }
+                    __activeTraceCanvases[traceId] = traceCanvas
+                } else {
+                    __activeTraceCanvases[traceId] = null
                 }
-                __traceCanvasList.push(traceCanvas)
+            } else {
+                __activeTraceCanvases[traceId] = null
             }
         }
     }
 
     onUpdated: {
         for (var i = 0; i < touchPoints.length; i++) {
-            var traceCanvas = findTraceCanvasById(touchPoints[i].pointId)
+            var traceId = touchPoints[i].pointId
+            var traceCanvas = __activeTraceCanvases[traceId]
             if (traceCanvas) {
                 var trace = traceCanvas.trace
                 var index = trace.addPoint(Qt.point(touchPoints[i].x, touchPoints[i].y))
@@ -163,23 +192,31 @@ MultiPointTouchArea {
 
     onReleased: {
         for (var i = 0; i < touchPoints.length; i++) {
-            var traceCanvas = findTraceCanvasById(touchPoints[i].pointId)
+            var traceId = touchPoints[i].pointId
+            var traceCanvas = __activeTraceCanvases[traceId]
             if (traceCanvas) {
-                traceCanvas.trace.final = true
-                __traceCanvasList.splice(__traceCanvasList.indexOf(traceCanvas), 1)
-                InputContext.inputEngine.traceEnd(traceCanvas.trace)
+                if (traceCanvas.trace) {
+                    traceCanvas.trace.final = true
+                    InputContext.inputEngine.traceEnd(traceCanvas.trace)
+                }
+                __traceCanvasList.push(traceCanvas)
+                __activeTraceCanvases[traceId] = null
             }
         }
     }
 
     onCanceled: {
         for (var i = 0; i < touchPoints.length; i++) {
-            var traceCanvas = findTraceCanvasById(touchPoints[i].pointId)
+            var traceId = touchPoints[i].pointId
+            var traceCanvas = __activeTraceCanvases[traceId]
             if (traceCanvas) {
-                traceCanvas.trace.final = true
-                traceCanvas.trace.canceled = true
-                __traceCanvasList.splice(__traceCanvasList.indexOf(traceCanvas), 1)
-                InputContext.inputEngine.traceEnd(traceCanvas.trace)
+                if (traceCanvas.trace) {
+                    traceCanvas.trace.final = true
+                    traceCanvas.trace.canceled = true
+                    InputContext.inputEngine.traceEnd(traceCanvas.trace)
+                }
+                __traceCanvasList.push(traceCanvas)
+                __activeTraceCanvases[traceId] = null
             }
         }
     }

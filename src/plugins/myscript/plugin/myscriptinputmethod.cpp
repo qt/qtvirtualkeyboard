@@ -180,7 +180,8 @@ public:
             traceList[i]->setOpacity(qMax(0.0, 1 - 0.25 * (traceList.size() - i)));
         }
 
-        QVirtualKeyboardTrace *trace = new QVirtualKeyboardTrace();
+        Q_Q(MyScriptInputMethod);
+        QVirtualKeyboardTrace *trace = new QVirtualKeyboardTrace(q);
         traceList.append(trace);
 
         return trace;

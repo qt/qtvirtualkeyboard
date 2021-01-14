@@ -1133,7 +1133,8 @@ public:
             arcAdditionStarted = true;
         }
 
-        QVirtualKeyboardTrace *trace = new QVirtualKeyboardTrace();
+        Q_Q(T9WriteInputMethod);
+        QVirtualKeyboardTrace *trace = new QVirtualKeyboardTrace(q);
 #ifdef QT_VIRTUALKEYBOARD_RECORD_TRACE_INPUT
         trace->setChannels(QStringList(QLatin1String("t")));
 #endif

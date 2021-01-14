@@ -177,6 +177,7 @@ public:
 QVirtualKeyboardTrace::QVirtualKeyboardTrace(QObject *parent) :
     QObject(*new QVirtualKeyboardTracePrivate(), parent)
 {
+    Q_ASSERT(parent);
 }
 
 /*! \internal */

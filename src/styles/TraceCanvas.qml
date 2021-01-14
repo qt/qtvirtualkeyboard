@@ -29,6 +29,7 @@
 
 import QtQuick
 import "TraceUtils.js" as TraceUtils
+import QtQuick.VirtualKeyboard
 
 /*!
     \qmltype TraceCanvas
@@ -96,19 +97,20 @@ Canvas {
 
     /*! Provides access to \l Trace object.
     */
-    property var trace
+    property Trace trace
 
     /*! Enables auto destruction mode.
 
         If enabled, this item will be destroyed when the \c trace object is
         destroyed.
 
-        The default value is false.
+        The default value is false. In this case the canvas can be reused after
+        onRecycle signal is triggered.
     */
     property bool autoDestroy
 
     /*! Specifies the approximate delay in milliseconds, counted from the beginning of the
-        auto destruction, before the object is to be destroyed.
+        auto destruction, before the object is to be destroyed or recycled.
 
         This delay makes it possible, for example, to animate the item before destruction.
 
@@ -136,7 +138,61 @@ Canvas {
         __renderPos = TraceUtils.renderSmoothedLine(getContext("2d"), trace, __renderPos)
     }
 
-    onTraceChanged: if (trace === null && autoDestroy) destroy(autoDestroyDelay)
+    /*! Clears screen and resets the rendering.
+
+        \since QtQuick.VirtualKeyboard.Styles 6.1
+    */
+    function renderClear() {
+        var ctx = getContext("2d")
+        ctx.clearRect(0, 0, width, height)
+        __renderPos = 0
+    }
+
+    /*! Recycles trace canvas by clearing all drawings and resetting the variables.
+
+        The function triggers onRecycle signal after completed (before the return).
+
+        The function returns true when recycling is successful.
+
+        \since QtQuick.VirtualKeyboard.Styles 6.1
+    */
+    function recycle() {
+        if (!available) {
+            destroy()
+            return false
+        }
+
+        trace = null
+        recycleTimer.stop()
+        opacity = Qt.binding(function() {
+            return trace ? trace.opacity : 1.0
+        })
+        requestAnimationFrame(renderClear)
+        onRecycle(canvas)
+
+        return true
+    }
+
+    /*! Emitted when the \a traceCanvas is recycled.
+
+        \since QtQuick.VirtualKeyboard.Styles 6.1
+    */
+    signal onRecycle(var traceCanvas)
+
+    Timer {
+        id: recycleTimer
+        interval: canvas.autoDestroyDelay
+        onTriggered: canvas.recycle()
+    }
+
+    onTraceChanged: {
+        if (trace === null) {
+            if (autoDestroy || !available)
+                destroy(autoDestroyDelay)
+            else
+                recycleTimer.restart()
+        }
+    }
 
     onAvailableChanged: {
         __renderingEnabled = available
