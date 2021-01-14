@@ -257,23 +257,6 @@ There are several environment variables defined by the module that are listed be
         \li QT_VIRTUALKEYBOARD_DESKTOP_DISABLE
         \li Disables the desktop integration method.
     \row
-        \li LIPI_ROOT
-        \li Specifies the location of lipi-toolkit.
-
-            The default location depends on the value of
-            \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
-            For example, for Qt libraries built from source,
-            it could be \c {qtbase/qtvirtualkeyboard/lipi_toolkit}.
-    \row
-        \li LIPI_LIB
-        \li Specifies the location of lipi-toolkit plugins.
-
-            The default location depends on \c LIPI_ROOT:
-            \list
-            \li \c {LIPI_ROOT + "/lib"} if \c LIPI_ROOT is set.
-            \li \c {QLibraryInfo::location(QLibraryInfo::PluginsPath) + "/lipi_toolkit"} if \c LIPI_ROOT is not set.
-            \endlist
-    \row
         \li QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS
         \li Enables Qt Virtual Keyboard to send key events and use Shift key without having any text input in focus.
 

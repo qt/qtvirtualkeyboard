@@ -244,7 +244,7 @@ conflicting extension plugins, for example, two handwriting extensions.
             \list
             \li \c hangul
             \li \c default (Hunspell)
-            \li \c handwriting (T9 Write, Lipi-Toolkit)
+            \li \c handwriting (T9 Write)
             \li \c japanese (OpenWNN)
             \li \c pinyin
             \li \c traditional_chinese
@@ -269,12 +269,12 @@ conflicting extension plugins, for example, two handwriting extensions.
             preferred.
 \endtable
 
-The following metadata example is from the Lipi-Toolkit extension plugin (lipi.json):
+The following snippet shows the example handwriting plugin metadata:
 
 \badcode
 {
     "Name": "handwriting",
-    "Provider": "Qt Lipi-Toolkit Extension",
+    "Provider": "Qt Handwriting Extension",
     "InputMethod": "HandwritingInputMethod",
     "Version": 100
 }

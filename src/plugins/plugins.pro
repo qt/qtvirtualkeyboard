@@ -4,10 +4,6 @@ QT_FOR_CONFIG += virtualkeyboard-private
 
 qtConfig(hangul): SUBDIRS += hangul
 qtConfig(hunspell): SUBDIRS += hunspell
-qtConfig(lipi-toolkit) {
-    SUBDIRS += lipi-toolkit
-    qtConfig(hunspell): lipi-toolkit.depends += hunspell
-}
 qtConfig(openwnn): SUBDIRS += openwnn
 qtConfig(pinyin): SUBDIRS += pinyin
 qtConfig(t9write): SUBDIRS += t9write

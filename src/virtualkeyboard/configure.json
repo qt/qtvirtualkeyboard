@@ -12,7 +12,7 @@
             "vkb-cangjie": { "type": "boolean", "value": "cangjie" },
             "vkb-zhuyin": { "type": "boolean", "value": "zhuyin" },
             "vkb-hunspell": { "type": "enum", "values": [ "no", "3rdparty", "system" ] },
-            "vkb-handwriting": { "type": "optionalString", "values": [ "yes", "no", "t9write", "lipi" ] },
+            "vkb-handwriting": { "type": "optionalString", "values": [ "yes", "no", "t9write" ] },
             "vkb-style": { "type": "string", "values": [ "standard", "retro" , "none"] }
         }
     },
@@ -123,15 +123,8 @@
         "t9write": {
             "label": "T9Write handwriting",
             "enable": "input.vkb-handwriting == 't9write'",
-            "disable": "input.vkb-handwriting == 'no' || input.vkb-handwriting == 'lipi'",
+            "disable": "input.vkb-handwriting == 'no'",
             "condition": "features.t9write-alphabetic || features.t9write-cjk",
-            "output": [ "privateFeature" ]
-        },
-        "lipi-toolkit": {
-            "label": "Lipi handwriting",
-            "autoDetect": false,
-            "enable": "input.vkb-handwriting == 'lipi'",
-            "disable": "input.vkb-handwriting == 'no' || input.vkb-handwriting == 't9write'",
             "output": [ "privateFeature" ]
         },
         "system-hunspell": {
@@ -431,7 +424,6 @@ see the documentation in 'Building Qt Virtual Keyboard'."
                 "t9write",
                 "t9write-alphabetic",
                 "t9write-cjk",
-                "lipi-toolkit",
                 "hunspell",
                 "3rdparty-hunspell",
                 "openwnn",

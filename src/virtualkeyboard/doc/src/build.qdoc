@@ -112,13 +112,13 @@ keyboard features.
         if no other languages are specified.
 \row
     \li \e -vkb-handwriting
-    \li [yes|no|t9write|lipi]
+    \li [yes|no|t9write]
     \li Enables or disabled handwriting input
     \li This flag enables handwriting input. By default, the first engine
         available at build time is used. The engines are chosen in the
-        following order: \c t9write, \c lipi-toolkit. To force handwriting
+        following order: \c t9write. To force handwriting
         input using to use a specific engine, specify the engine to be used;
-        for example, \c {-vkb-handwriting lipi}.
+        for example, \c {-vkb-handwriting t9write}.
 \row
     \li \e [-no]-vkb-arrow-keynavigation
     \li
@@ -221,11 +221,6 @@ qmake $SRCDIR -- [options]
     \li This option activates the OpenWnn input method for the Japanese language.
 
     \include build.qdocinc input-method-language-option-note
-\row
-    \li \e lipi-toolkit
-    \li \e handwriting
-    \li Enables the handwriting input method using Lipi Toolkit.
-    \li Handwriting recognition is based on the open source Lipi Toolkit.
 \endtable
 
 \section2 Building Documentation
@@ -545,7 +540,7 @@ Static builds of the virtual keyboard are enabled by adding \c CONFIG+=static to
 the qmake command line and then rebuilding.
 
 Some third party modules used by the virtual keyboard are always built as shared
-libraries. These modules are Hunspell and Lipi Toolkit.
+libraries (e.g. Hunspell).
 
 \section3 Using the static plugin
 

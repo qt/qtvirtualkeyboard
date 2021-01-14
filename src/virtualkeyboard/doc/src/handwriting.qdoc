@@ -45,13 +45,6 @@ For instructions on how to activate and use the handwriting input mode, see the
 For information about building Qt Virtual Keyboard with a particular
 handwriting engine, see \l {Configuration Options}.
 
-\section1 Lipi Toolkit
-
-\l {http://lipitk.sourceforge.net/lipi-toolkit.htm}{Lipi Toolkit} is an
-open source handwriting recognition engine.
-
-Lipi Toolkit only supports handwriting written in the English language.
-
 \section1 T9 Write
 
 \l {https://www.nuance.com/mobile/mobile-solutions/text-input-solutions/t9-write.html}{T9 Write}

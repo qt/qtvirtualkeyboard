@@ -12,9 +12,9 @@ characters.
 
 The Unipen data can be collected using the virtual keyboard.
 To enable the data collection mode, the virtual keyboard must
-be compiled with a special qmake parameters:
+be compiled with a special parameters:
 
-CONFIG+=lipi-toolkit CONFIG+=record-trace-input
+INPUT_vkb_handwriting FEATURE_vkb_record_trace_input
 
 The first option enables the handwriting recognition engine and
 the second option enables the data collection mode.
