@@ -77,13 +77,7 @@ qt_feature("t9write" PRIVATE
     LABEL "T9Write handwriting"
     CONDITION QT_FEATURE_t9write_alphabetic OR QT_FEATURE_t9write_cjk
     ENABLE INPUT_vkb_handwriting STREQUAL 't9write'
-    DISABLE INPUT_vkb_handwriting STREQUAL 'no' OR INPUT_vkb_handwriting STREQUAL 'lipi'
-)
-qt_feature("lipi-toolkit" PRIVATE
-    LABEL "Lipi handwriting"
-    AUTODETECT OFF
-    ENABLE INPUT_vkb_handwriting STREQUAL 'lipi'
-    DISABLE INPUT_vkb_handwriting STREQUAL 'no' OR INPUT_vkb_handwriting STREQUAL 't9write'
+    DISABLE INPUT_vkb_handwriting STREQUAL 'no'
 )
 qt_feature("system-hunspell" PRIVATE
     LABEL "System Hunspell"
@@ -308,7 +302,6 @@ qt_configure_add_summary_entry(ARGS "vkb-sensitive-debug")
 qt_configure_add_summary_entry(ARGS "t9write")
 qt_configure_add_summary_entry(ARGS "t9write-alphabetic")
 qt_configure_add_summary_entry(ARGS "t9write-cjk")
-qt_configure_add_summary_entry(ARGS "lipi-toolkit")
 qt_configure_add_summary_entry(ARGS "hunspell")
 qt_configure_add_summary_entry(ARGS "3rdparty-hunspell")
 qt_configure_add_summary_entry(ARGS "openwnn")
