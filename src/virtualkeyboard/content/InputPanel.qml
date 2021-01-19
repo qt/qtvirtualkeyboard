@@ -124,6 +124,7 @@ Item {
     implicitHeight: keyboard.height
     Keyboard {
         id: keyboard
+        readonly property real yOffset: keyboard.wordCandidateView.currentYOffset - (keyboard.shadowInputControl.visible ? keyboard.shadowInputControl.height : 0)
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
@@ -137,11 +138,21 @@ Item {
     Binding {
         target: InputContext.priv
         property: "keyboardRectangle"
-        value: mapToItem(null,
-                         __isRootItem ? keyboard.x : x,
-                         (__isRootItem ? keyboard.y : y) + keyboard.wordCandidateView.currentYOffset - (keyboard.shadowInputControl.visible ? keyboard.shadowInputControl.height : 0),
-                         keyboard.width,
-                         keyboard.height - keyboard.wordCandidateView.currentYOffset + (keyboard.shadowInputControl.visible ? keyboard.shadowInputControl.height : 0))
+        value: keyboardRectangle()
         when: !InputContext.animating
+    }
+
+    /*! \internal */
+    function keyboardRectangle() {
+        var rect = Qt.rect(0, keyboard.yOffset, keyboard.width, keyboard.height - keyboard.yOffset)
+        if (__isRootItem) {
+            rect.x += keyboard.x
+            rect.y += keyboard.y
+        }
+        // Read the inputPanel position.
+        // This ensures that the Binding works.
+        var unusedX = inputPanel.x
+        var unusedY = inputPanel.y
+        return mapToItem(null, rect.x, rect.y, rect.width, rect.height)
     }
 }
