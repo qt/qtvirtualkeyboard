@@ -48,7 +48,7 @@
     "tests": {
         "3rdparty-hunspell": {
             "label": "Hunspell copy under 3rdparty/",
-            "type": "3rdpartyHunspell"
+            "type": "3rdparty-hunspell"
         },
         "t9write-alphabetic": {
             "label" : "T9Write Alphabetic Support",

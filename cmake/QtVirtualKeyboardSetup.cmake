@@ -62,11 +62,11 @@ function(process_vkb_enable)
 endfunction()
 
 function(check_3rdparty_hunspell)
-    if (EXISTS src/plugins/hunspell/3rdparty/hunspell/hunspell.h AND
-            EXISTS src/plugins/hunspell/3rdparty/hunspell/data)
-        set(VKB_HAVE_3RDPARTY_HUNSPELL TRUE CACHE STRING "" FORCE)
+    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/plugins/hunspell/3rdparty/hunspell/src/hunspell/hunspell.h" AND
+            EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/plugins/hunspell/3rdparty/hunspell/data")
+        set(VKB_HAVE_3RDPARTY_HUNSPELL TRUE CACHE BOOL "Detection of local Hunspell source code" FORCE)
     else()
-        set(VKB_HAVE_3RDPARTY_HUNSPELL FALSE CACHE STRING "" FORCE)
+        set(VKB_HAVE_3RDPARTY_HUNSPELL FALSE CACHE BOOL "Detection of local Hunspell source code" FORCE)
     endif()
 endfunction()
 

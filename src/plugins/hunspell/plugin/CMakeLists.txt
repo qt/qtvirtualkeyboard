@@ -28,6 +28,18 @@ qt_internal_add_plugin(QtVirtualKeyboardHunspellPlugin
 ## Scopes:
 #####################################################################
 
+# special case begin
+if(QT_FEATURE_3rdparty_hunspell)
+    qt_copy_or_install(
+        DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/hunspell/data/"
+        DESTINATION "${VKB_INSTALL_DATA}/hunspell"
+        FILES_MATCHING
+        PATTERN "*.dic"
+        PATTERN "*.aff"
+    )
+endif()
+# special case end
+
 #### Keys ignored in scope 3:.:.:plugin.pro:EXISTS ../3rdparty/hunspell/data:
 # INSTALLS = "hunspell_data"
 # hunspell_data.files = "$$PWD/../3rdparty/hunspell/data/*.dic" "$$PWD/../3rdparty/hunspell/data/*.aff"
