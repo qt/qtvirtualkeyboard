@@ -40,7 +40,7 @@ qt_feature("vkb-desktop" PUBLIC
 )
 qt_feature("vkb-xcb" PUBLIC
     LABEL "XCB integration"
-    CONDITION TARGET XCB::XCB AND XCB_XFIXES_FOUND
+    CONDITION TARGET XCB::XCB AND TARGET XCB::XFIXES
 )
 qt_feature("vkb-layouts" PUBLIC
     LABEL "Built-in layouts"
