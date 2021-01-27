@@ -6,3 +6,4 @@ SUBDIRS += \
     layoutfilesystem \
     layoutresources \
     cmake \
+    dictionarymanager \

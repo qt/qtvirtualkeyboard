@@ -4,7 +4,7 @@
 ## x11vkbtest Binary:
 #####################################################################
 
-qt_internal_add_manual_test(x11vkbtest
+qt_internal_add_executable(x11vkbtest
     GUI
     SOURCES
         colors.h

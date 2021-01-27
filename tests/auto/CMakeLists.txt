@@ -5,3 +5,4 @@ add_subdirectory(styles)
 add_subdirectory(layoutfilesystem)
 add_subdirectory(layoutresources)
 # add_subdirectory(cmake) # special case
+add_subdirectory(dictionarymanager)

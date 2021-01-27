@@ -18,7 +18,11 @@ qtConfig(vkb-sensitive-debug) {
 DEFINES += QVIRTUALKEYBOARD_LIBRARY
 
 SOURCES += \
+    virtualkeyboard.cpp \
+    virtualkeyboardattachedtype.cpp \
     platforminputcontext.cpp \
+    qvirtualkeyboarddictionary.cpp \
+    qvirtualkeyboarddictionarymanager.cpp \
     qvirtualkeyboardinputcontext.cpp \
     qvirtualkeyboardinputcontext_p.cpp \
     qvirtualkeyboardabstractinputmethod.cpp \
@@ -44,8 +48,12 @@ SOURCES += \
     qvirtualkeyboardextensionplugin.cpp
 
 HEADERS += \
+    virtualkeyboard_p.h \
+    virtualkeyboardattachedtype_p.h \
     platforminputcontext_p.h \
     qvirtualkeyboard_namespace.h \
+    qvirtualkeyboarddictionary.h \
+    qvirtualkeyboarddictionarymanager.h \
     qvirtualkeyboardinputcontext.h \
     qvirtualkeyboardinputcontext_p.h \
     qvirtualkeyboardabstractinputmethod.h \

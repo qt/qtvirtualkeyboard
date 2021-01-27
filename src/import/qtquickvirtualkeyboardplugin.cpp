@@ -42,6 +42,8 @@
 #include <QtVirtualKeyboard/private/qvirtualkeyboard_staticplugin_p.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardobserver.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_namespace.h>
+#include <QtVirtualKeyboard/private/virtualkeyboard_p.h>
+#include <QtVirtualKeyboard/private/virtualkeyboardattachedtype_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -89,6 +91,8 @@ void QtQuickVirtualKeyboardPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<ShadowInputContext>(uri, 2, 2, "ShadowInputContext", QLatin1String("Cannot create shadow input context"));
     qmlRegisterType<QVirtualKeyboardObserver>(uri, 6, 1, "KeyboardObserver");
     qmlRegisterUncreatableMetaObject(QtVirtualKeyboard::staticMetaObject, uri, 6, 1, "QtVirtualKeyboard", "Cannot create namespace");
+    qmlRegisterAnonymousType<VirtualKeyboardAttachedType>(uri, 6);
+    qmlRegisterType<VirtualKeyboard>(uri, 6, 1, "VirtualKeyboard");
 
     const QString path(QStringLiteral("qrc:///QtQuick/VirtualKeyboard/content/"));
     qmlRegisterType(QUrl(path + QLatin1String("InputPanel.qml")), uri, 1, 0, "InputPanel");

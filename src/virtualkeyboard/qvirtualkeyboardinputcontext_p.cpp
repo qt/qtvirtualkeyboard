@@ -35,6 +35,8 @@
 #include <QtVirtualKeyboard/private/enterkeyaction_p.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardobserver.h>
+#include <QtVirtualKeyboard/private/virtualkeyboardattachedtype_p.h>
+#include <QtVirtualKeyboard/qvirtualkeyboarddictionarymanager.h>
 
 #include <QFile>
 #include <QGuiApplication>
@@ -272,7 +274,8 @@ void QVirtualKeyboardInputContextPrivate::forceCursorPosition(int anchorPosition
 
 void QVirtualKeyboardInputContextPrivate::onInputItemChanged()
 {
-    if (QObject *item = inputItem()) {
+    QObject *item = inputItem();
+    if (item) {
         if (QQuickItem *vkbPanel = qobject_cast<QQuickItem*>(inputPanel)) {
             if (QQuickItem *quickItem = qobject_cast<QQuickItem*>(item)) {
                 const QVariant isDesktopPanel = vkbPanel->property("desktopPanel");
@@ -292,6 +295,14 @@ void QVirtualKeyboardInputContextPrivate::onInputItemChanged()
         }
     }
     clearState(State::InputMethodClick);
+
+    QStringList extraDictionaries;
+    if (item) {
+        VirtualKeyboardAttachedType *virtualKeyboardAttachedType = static_cast<VirtualKeyboardAttachedType *>(qmlAttachedPropertiesObject<VirtualKeyboard>(item, false));
+        if (virtualKeyboardAttachedType)
+            extraDictionaries = virtualKeyboardAttachedType->extraDictionaries();
+    }
+    QVirtualKeyboardDictionaryManager::instance()->setExtraDictionaries(extraDictionaries);
 }
 
 void QVirtualKeyboardInputContextPrivate::sendPreedit(const QString &text, const QList<QInputMethodEvent::Attribute> &attributes, int replaceFrom, int replaceLength)
