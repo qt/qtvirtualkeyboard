@@ -5,3 +5,6 @@ dependencies:
   ../qtsvg:
     ref: 0b7ba19d5df00a756c99fb4dc2aecd2262c82ea0
     required: true
+  ../qttools:
+    ref: d0607c4ca2388df8e81392396884d9a108e0443d
+    required: false
