@@ -106,6 +106,12 @@ public:
     bool isHandwritingModeDisabled() const;
     void setHandwritingModeDisabled(bool handwritingModeDisabled);
 
+    bool isDefaultInputMethodDisabled() const;
+    void setDefaultInputMethodDisabled(bool defaultInputMethodDisabled);
+
+    bool isDefaultDictionaryDisabled() const;
+    void setDefaultDictionaryDisabled(bool defaultDictionaryDisabled);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -123,6 +129,8 @@ signals:
     void hwrTimeoutForCjkChanged();
     void inputMethodHintsChanged();
     void handwritingModeDisabledChanged();
+    void defaultInputMethodDisabledChanged();
+    void defaultDictionaryDisabledChanged();
 };
 
 } // namespace QtVirtualKeyboard

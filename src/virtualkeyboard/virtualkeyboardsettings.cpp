@@ -173,6 +173,8 @@ VirtualKeyboardSettings::VirtualKeyboardSettings(QQmlEngine *engine) :
     connect(settings, SIGNAL(hwrTimeoutForCjkChanged()), SIGNAL(hwrTimeoutForCjkChanged()));
     connect(settings, SIGNAL(inputMethodHintsChanged()), SIGNAL(inputMethodHintsChanged()));
     connect(settings, SIGNAL(handwritingModeDisabledChanged()), SIGNAL(handwritingModeDisabledChanged()));
+    connect(settings, SIGNAL(defaultInputMethodDisabledChanged()), SIGNAL(defaultInputMethodDisabledChanged()));
+    connect(settings, SIGNAL(defaultDictionaryDisabledChanged()), SIGNAL(defaultDictionaryDisabledChanged()));
 }
 
 /*!
@@ -345,6 +347,26 @@ void VirtualKeyboardSettings::setHandwritingModeDisabled(bool handwritingModeDis
     Settings::instance()->setHandwritingModeDisabled(handwritingModeDisabled);
 }
 
+bool VirtualKeyboardSettings::isDefaultInputMethodDisabled() const
+{
+    return Settings::instance()->isDefaultInputMethodDisabled();
+}
+
+void VirtualKeyboardSettings::setDefaultInputMethodDisabled(bool defaultInputMethodDisabled)
+{
+    return Settings::instance()->setDefaultInputMethodDisabled(defaultInputMethodDisabled);
+}
+
+bool VirtualKeyboardSettings::isDefaultDictionaryDisabled() const
+{
+    return Settings::instance()->isDefaultDictionaryDisabled();
+}
+
+void VirtualKeyboardSettings::setDefaultDictionaryDisabled(bool defaultDictionaryDisabled)
+{
+    return Settings::instance()->setDefaultDictionaryDisabled(defaultDictionaryDisabled);
+}
+
 void VirtualKeyboardSettings::resetStyle()
 {
     Q_D(VirtualKeyboardSettings);
@@ -505,6 +527,22 @@ void VirtualKeyboardSettings::resetStyle()
     When this property is set to \c true, the handwriting button is hidden
     from the keyboard layout and the user cannot switch to handwriting
     input mode.
+*/
+
+/*!
+    \qmlproperty bool VirtualKeyboardSettings::defaultInputMethodDisabled
+    \since QtQuick.VirtualKeyboard.Settings 6.1
+
+    This property disables the default input method. The purpose of this setting is to be able to
+    override the default input method with the plain input method, disabling its functionality.
+*/
+
+/*!
+    \qmlproperty bool VirtualKeyboardSettings::defaultDictionaryDisabled
+    \since QtQuick.VirtualKeyboard.Settings 6.1
+
+    This property disables the default dictionary. The purpose of this setting is to be able to
+    use a custom dictionary only instead of the standard dictionary.
 */
 
 /*!

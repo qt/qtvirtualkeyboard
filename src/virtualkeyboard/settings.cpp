@@ -57,7 +57,9 @@ public:
                               QStandardPaths::GenericConfigLocation))),
         hwrTimeoutForAlphabetic(500),
         hwrTimeoutForCjk(500),
-        handwritingModeDisabled(false)
+        handwritingModeDisabled(false),
+        defaultInputMethodDisabled(false),
+        defaultDictionaryDisabled(false)
     {
         ensureUserDataPathExists();
     }
@@ -86,6 +88,8 @@ public:
     int hwrTimeoutForCjk;
     Qt::InputMethodHints inputMethodHints;
     bool handwritingModeDisabled;
+    bool defaultInputMethodDisabled;
+    bool defaultDictionaryDisabled;
 };
 
 static QScopedPointer<Settings> s_settingsInstance;
@@ -330,6 +334,36 @@ void Settings::setHandwritingModeDisabled(bool handwritingModeDisabled)
     if (d->handwritingModeDisabled != handwritingModeDisabled) {
         d->handwritingModeDisabled = handwritingModeDisabled;
         emit handwritingModeDisabledChanged();
+    }
+}
+
+bool Settings::isDefaultInputMethodDisabled() const
+{
+    Q_D(const Settings);
+    return d->defaultInputMethodDisabled;
+}
+
+void Settings::setDefaultInputMethodDisabled(bool defaultInputMethodDisabled)
+{
+    Q_D(Settings);
+    if (d->defaultInputMethodDisabled != defaultInputMethodDisabled) {
+        d->defaultInputMethodDisabled = defaultInputMethodDisabled;
+        emit defaultInputMethodDisabledChanged();
+    }
+}
+
+bool QtVirtualKeyboard::Settings::isDefaultDictionaryDisabled() const
+{
+    Q_D(const Settings);
+    return d->defaultDictionaryDisabled;
+}
+
+void QtVirtualKeyboard::Settings::setDefaultDictionaryDisabled(bool defaultDictionaryDisabled)
+{
+    Q_D(Settings);
+    if (d->defaultDictionaryDisabled != defaultDictionaryDisabled) {
+        d->defaultDictionaryDisabled = defaultDictionaryDisabled;
+        emit defaultDictionaryDisabledChanged();
     }
 }
 

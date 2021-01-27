@@ -120,6 +120,9 @@ Item {
             wordCandidateView.disableAnimation = VirtualKeyboardSettings.fullScreenMode
             keyboard.fullScreenMode = VirtualKeyboardSettings.fullScreenMode
         }
+        function onDefaultInputMethodDisabledChanged() {
+            updateInputMethod()
+        }
     }
     onAvailableLocaleIndicesChanged: hideLanguagePopup()
     onAvailableCustomLocaleIndicesChanged: hideLanguagePopup()
@@ -1401,8 +1404,15 @@ Item {
                 console.error(e.message)
             }
         }
-        if (!inputMethod)
-            inputMethod = customInputMethod ? customInputMethod : defaultInputMethod
+        if (!inputMethod) {
+            if (customInputMethod) {
+                inputMethod = customInputMethod
+            } else if (!VirtualKeyboardSettings.defaultInputMethodDisabled) {
+                inputMethod = defaultInputMethod
+            } else {
+                inputMethod = plainInputMethod
+            }
+        }
 
         var inputMethodChanged = InputContext.inputEngine.inputMethod !== inputMethod
         if (inputMethodChanged) {
