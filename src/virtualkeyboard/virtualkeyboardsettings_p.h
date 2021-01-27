@@ -101,7 +101,7 @@ signals:
     void activeLocalesChanged();
     void layoutPathChanged();
     void fullScreenModeChanged();
-    void userDataPathChanged();
+    Q_REVISION(6, 1) void userDataPathChanged();
     Q_REVISION(6, 1) void userDataReset();
 
 private:
