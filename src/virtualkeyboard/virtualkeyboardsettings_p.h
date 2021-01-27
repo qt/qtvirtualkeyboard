@@ -65,6 +65,7 @@ class QVIRTUALKEYBOARD_EXPORT VirtualKeyboardSettings : public QObject
     Q_PROPERTY(QString userDataPath READ userDataPath WRITE setUserDataPath NOTIFY userDataPathChanged REVISION(6, 1))
     Q_PROPERTY(int hwrTimeoutForAlphabetic READ hwrTimeoutForAlphabetic WRITE setHwrTimeoutForAlphabetic NOTIFY hwrTimeoutForAlphabeticChanged REVISION(6, 1))
     Q_PROPERTY(int hwrTimeoutForCjk READ hwrTimeoutForCjk WRITE setHwrTimeoutForCjk NOTIFY hwrTimeoutForCjkChanged REVISION(6, 1))
+    Q_PROPERTY(Qt::InputMethodHints inputMethodHints READ inputMethodHints WRITE setInputMethodHints NOTIFY inputMethodHintsChanged REVISION(6, 1))
 
 public:
     static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine);
@@ -101,6 +102,9 @@ public:
     int hwrTimeoutForCjk() const;
     void setHwrTimeoutForCjk(int hwrTimeoutForCjk);
 
+    Qt::InputMethodHints inputMethodHints() const;
+    void setInputMethodHints(const Qt::InputMethodHints &inputMethodHints);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -113,6 +117,7 @@ signals:
     Q_REVISION(6, 1) void userDataReset();
     Q_REVISION(6, 1) void hwrTimeoutForAlphabeticChanged();
     Q_REVISION(6, 1) void hwrTimeoutForCjkChanged();
+    Q_REVISION(6, 1) void inputMethodHintsChanged();
 
 private:
     void resetStyle();

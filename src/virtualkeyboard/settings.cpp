@@ -83,6 +83,7 @@ public:
     QString userDataPath;
     int hwrTimeoutForAlphabetic;
     int hwrTimeoutForCjk;
+    Qt::InputMethodHints inputMethodHints;
 };
 
 static QScopedPointer<Settings> s_settingsInstance;
@@ -297,6 +298,21 @@ void Settings::setHwrTimeoutForCjk(int hwrTimeoutForCjk)
     if (d->hwrTimeoutForCjk != hwrTimeoutForCjk) {
         d->hwrTimeoutForCjk = hwrTimeoutForCjk;
         emit hwrTimeoutForCjkChanged();
+    }
+}
+
+Qt::InputMethodHints Settings::inputMethodHints() const
+{
+    Q_D(const Settings);
+    return d->inputMethodHints;
+}
+
+void Settings::setInputMethodHints(const Qt::InputMethodHints &inputMethodHints)
+{
+    Q_D(Settings);
+    if (d->inputMethodHints != inputMethodHints) {
+        d->inputMethodHints = inputMethodHints;
+        emit inputMethodHintsChanged();
     }
 }
 

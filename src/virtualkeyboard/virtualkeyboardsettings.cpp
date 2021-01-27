@@ -171,6 +171,7 @@ VirtualKeyboardSettings::VirtualKeyboardSettings(QQmlEngine *engine) :
     settings->connect(this, SIGNAL(userDataReset()), SIGNAL(userDataReset()));
     connect(settings, SIGNAL(hwrTimeoutForAlphabeticChanged()), SIGNAL(hwrTimeoutForAlphabeticChanged()));
     connect(settings, SIGNAL(hwrTimeoutForCjkChanged()), SIGNAL(hwrTimeoutForCjkChanged()));
+    connect(settings, SIGNAL(inputMethodHintsChanged()), SIGNAL(inputMethodHintsChanged()));
 }
 
 /*!
@@ -323,6 +324,16 @@ void VirtualKeyboardSettings::setHwrTimeoutForCjk(int hwrTimeoutForCjk)
     return Settings::instance()->setHwrTimeoutForCjk(hwrTimeoutForCjk);
 }
 
+Qt::InputMethodHints VirtualKeyboardSettings::inputMethodHints() const
+{
+    return Settings::instance()->inputMethodHints();
+}
+
+void VirtualKeyboardSettings::setInputMethodHints(const Qt::InputMethodHints &inputMethodHints)
+{
+    Settings::instance()->setInputMethodHints(inputMethodHints);
+}
+
 void VirtualKeyboardSettings::resetStyle()
 {
     Q_D(VirtualKeyboardSettings);
@@ -460,6 +471,17 @@ void VirtualKeyboardSettings::resetStyle()
     This property sets the handwriting recognition timeout for Chinese / Japanese / Korean languages.
 
     By default, the timeout is 500 millliseconds.
+*/
+
+/*!
+    \qmlproperty int VirtualKeyboardSettings::inputMethodHints
+    \since QtQuick.VirtualKeyboard.Settings 6.1
+
+    This property allows to set persistent input method hints.
+
+    The value of this property is combined with the input method
+    hints from the input control. For example, to disable predictive
+    text input, this property can be set to \c Qt::ImhNoPredictiveText.
 */
 
 /*!

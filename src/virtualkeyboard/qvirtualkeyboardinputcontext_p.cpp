@@ -371,6 +371,7 @@ void QVirtualKeyboardInputContextPrivate::update(Qt::InputMethodQueries queries)
                     Qt::ImQueryInput | Qt::ImInputItemClipRectangle));
     platformInputContext->sendEvent(&imQueryEvent);
     Qt::InputMethodHints inputMethodHints = Qt::InputMethodHints(imQueryEvent.value(Qt::ImHints).toInt());
+    inputMethodHints |= Settings::instance()->inputMethodHints();
     const int cursorPosition = imQueryEvent.value(Qt::ImCursorPosition).toInt();
     const int anchorPosition = imQueryEvent.value(Qt::ImAnchorPosition).toInt();
     QRectF anchorRectangle;

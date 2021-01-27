@@ -100,6 +100,9 @@ public:
     int hwrTimeoutForCjk() const;
     void setHwrTimeoutForCjk(int hwrTimeoutForCjk);
 
+    Qt::InputMethodHints inputMethodHints() const;
+    void setInputMethodHints(const Qt::InputMethodHints &inputMethodHints);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -115,6 +118,7 @@ signals:
     void userDataReset();
     void hwrTimeoutForAlphabeticChanged();
     void hwrTimeoutForCjkChanged();
+    void inputMethodHintsChanged();
 };
 
 } // namespace QtVirtualKeyboard
