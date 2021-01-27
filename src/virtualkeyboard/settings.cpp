@@ -54,7 +54,9 @@ public:
         fullScreenMode(false),
         userDataPath(QStringLiteral("%1/qtvirtualkeyboard")
                      .arg(QStandardPaths::writableLocation(
-                              QStandardPaths::GenericConfigLocation)))
+                              QStandardPaths::GenericConfigLocation))),
+        hwrTimeoutForAlphabetic(500),
+        hwrTimeoutForCjk(500)
     {
         ensureUserDataPathExists();
     }
@@ -79,6 +81,8 @@ public:
     bool wclAutoCommitWord;
     bool fullScreenMode;
     QString userDataPath;
+    int hwrTimeoutForAlphabetic;
+    int hwrTimeoutForCjk;
 };
 
 static QScopedPointer<Settings> s_settingsInstance;
@@ -263,6 +267,36 @@ void Settings::setUserDataPath(const QString &userDataPath)
         d->userDataPath = userDataPath;
         d->ensureUserDataPathExists();
         emit userDataPathChanged();
+    }
+}
+
+int Settings::hwrTimeoutForAlphabetic() const
+{
+    Q_D(const Settings);
+    return d->hwrTimeoutForAlphabetic;
+}
+
+void Settings::setHwrTimeoutForAlphabetic(int hwrTimeoutForAlphabetic)
+{
+    Q_D(Settings);
+    if (d->hwrTimeoutForAlphabetic != hwrTimeoutForAlphabetic) {
+        d->hwrTimeoutForAlphabetic = hwrTimeoutForAlphabetic;
+        emit hwrTimeoutForAlphabeticChanged();
+    }
+}
+
+int Settings::hwrTimeoutForCjk() const
+{
+    Q_D(const Settings);
+    return d->hwrTimeoutForCjk;
+}
+
+void Settings::setHwrTimeoutForCjk(int hwrTimeoutForCjk)
+{
+    Q_D(Settings);
+    if (d->hwrTimeoutForCjk != hwrTimeoutForCjk) {
+        d->hwrTimeoutForCjk = hwrTimeoutForCjk;
+        emit hwrTimeoutForCjkChanged();
     }
 }
 

@@ -94,6 +94,12 @@ public:
     QString userDataPath() const;
     void setUserDataPath(const QString &userDataPath);
 
+    int hwrTimeoutForAlphabetic() const;
+    void setHwrTimeoutForAlphabetic(int hwrTimeoutForAlphabetic);
+
+    int hwrTimeoutForCjk() const;
+    void setHwrTimeoutForCjk(int hwrTimeoutForCjk);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -107,6 +113,8 @@ signals:
     void fullScreenModeChanged();
     void userDataPathChanged();
     void userDataReset();
+    void hwrTimeoutForAlphabeticChanged();
+    void hwrTimeoutForCjkChanged();
 };
 
 } // namespace QtVirtualKeyboard

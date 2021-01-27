@@ -63,6 +63,8 @@ class QVIRTUALKEYBOARD_EXPORT VirtualKeyboardSettings : public QObject
     Q_PROPERTY(WordCandidateListSettings *wordCandidateList READ wordCandidateList CONSTANT)
     Q_PROPERTY(bool fullScreenMode READ fullScreenMode WRITE setFullScreenMode NOTIFY fullScreenModeChanged)
     Q_PROPERTY(QString userDataPath READ userDataPath WRITE setUserDataPath NOTIFY userDataPathChanged REVISION(6, 1))
+    Q_PROPERTY(int hwrTimeoutForAlphabetic READ hwrTimeoutForAlphabetic WRITE setHwrTimeoutForAlphabetic NOTIFY hwrTimeoutForAlphabeticChanged REVISION(6, 1))
+    Q_PROPERTY(int hwrTimeoutForCjk READ hwrTimeoutForCjk WRITE setHwrTimeoutForCjk NOTIFY hwrTimeoutForCjkChanged REVISION(6, 1))
 
 public:
     static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine);
@@ -93,6 +95,12 @@ public:
     QString userDataPath() const;
     void setUserDataPath(const QString &userDataPath);
 
+    int hwrTimeoutForAlphabetic() const;
+    void setHwrTimeoutForAlphabetic(int hwrTimeoutForAlphabetic);
+
+    int hwrTimeoutForCjk() const;
+    void setHwrTimeoutForCjk(int hwrTimeoutForCjk);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -103,6 +111,8 @@ signals:
     void fullScreenModeChanged();
     Q_REVISION(6, 1) void userDataPathChanged();
     Q_REVISION(6, 1) void userDataReset();
+    Q_REVISION(6, 1) void hwrTimeoutForAlphabeticChanged();
+    Q_REVISION(6, 1) void hwrTimeoutForCjkChanged();
 
 private:
     void resetStyle();

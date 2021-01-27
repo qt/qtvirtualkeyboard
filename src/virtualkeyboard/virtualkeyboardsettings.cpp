@@ -169,6 +169,8 @@ VirtualKeyboardSettings::VirtualKeyboardSettings(QQmlEngine *engine) :
     connect(settings, SIGNAL(fullScreenModeChanged()), SIGNAL(fullScreenModeChanged()));
     connect(settings, SIGNAL(userDataPathChanged()), SIGNAL(userDataPathChanged()));
     settings->connect(this, SIGNAL(userDataReset()), SIGNAL(userDataReset()));
+    connect(settings, SIGNAL(hwrTimeoutForAlphabeticChanged()), SIGNAL(hwrTimeoutForAlphabeticChanged()));
+    connect(settings, SIGNAL(hwrTimeoutForCjkChanged()), SIGNAL(hwrTimeoutForCjkChanged()));
 }
 
 /*!
@@ -301,6 +303,26 @@ void VirtualKeyboardSettings::setUserDataPath(const QString &userDataPath)
     return Settings::instance()->setUserDataPath(userDataPath);
 }
 
+int VirtualKeyboardSettings::hwrTimeoutForAlphabetic() const
+{
+    return Settings::instance()->hwrTimeoutForAlphabetic();
+}
+
+void VirtualKeyboardSettings::setHwrTimeoutForAlphabetic(int hwrTimeoutForAlphabetic)
+{
+    return Settings::instance()->setHwrTimeoutForAlphabetic(hwrTimeoutForAlphabetic);
+}
+
+int VirtualKeyboardSettings::hwrTimeoutForCjk() const
+{
+    return Settings::instance()->hwrTimeoutForCjk();
+}
+
+void VirtualKeyboardSettings::setHwrTimeoutForCjk(int hwrTimeoutForCjk)
+{
+    return Settings::instance()->setHwrTimeoutForCjk(hwrTimeoutForCjk);
+}
+
 void VirtualKeyboardSettings::resetStyle()
 {
     Q_D(VirtualKeyboardSettings);
@@ -420,6 +442,24 @@ void VirtualKeyboardSettings::resetStyle()
     The application triggers this signal prior to the user's data being reset to
     indicate to the virtual keyboard that all files must be closed
     in the user data directory.
+*/
+
+/*!
+    \qmlproperty bool VirtualKeyboardSettings::hwrTimeoutForAlphabetic
+    \since QtQuick.VirtualKeyboard.Settings 6.1
+
+    This property sets the handwriting recognition timeout for alphabetical languages.
+
+    By default, the timeout is 500 millliseconds.
+*/
+
+/*!
+    \qmlproperty bool VirtualKeyboardSettings::hwrTimeoutForCjk
+    \since QtQuick.VirtualKeyboard.Settings 6.1
+
+    This property sets the handwriting recognition timeout for Chinese / Japanese / Korean languages.
+
+    By default, the timeout is 500 millliseconds.
 */
 
 /*!
