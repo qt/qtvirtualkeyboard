@@ -172,6 +172,7 @@ VirtualKeyboardSettings::VirtualKeyboardSettings(QQmlEngine *engine) :
     connect(settings, SIGNAL(hwrTimeoutForAlphabeticChanged()), SIGNAL(hwrTimeoutForAlphabeticChanged()));
     connect(settings, SIGNAL(hwrTimeoutForCjkChanged()), SIGNAL(hwrTimeoutForCjkChanged()));
     connect(settings, SIGNAL(inputMethodHintsChanged()), SIGNAL(inputMethodHintsChanged()));
+    connect(settings, SIGNAL(handwritingModeDisabledChanged()), SIGNAL(handwritingModeDisabledChanged()));
 }
 
 /*!
@@ -334,6 +335,16 @@ void VirtualKeyboardSettings::setInputMethodHints(const Qt::InputMethodHints &in
     Settings::instance()->setInputMethodHints(inputMethodHints);
 }
 
+bool VirtualKeyboardSettings::isHandwritingModeDisabled() const
+{
+    return Settings::instance()->isHandwritingModeDisabled();
+}
+
+void VirtualKeyboardSettings::setHandwritingModeDisabled(bool handwritingModeDisabled)
+{
+    Settings::instance()->setHandwritingModeDisabled(handwritingModeDisabled);
+}
+
 void VirtualKeyboardSettings::resetStyle()
 {
     Q_D(VirtualKeyboardSettings);
@@ -482,6 +493,18 @@ void VirtualKeyboardSettings::resetStyle()
     The value of this property is combined with the input method
     hints from the input control. For example, to disable predictive
     text input, this property can be set to \c Qt::ImhNoPredictiveText.
+*/
+
+/*!
+    \qmlproperty bool VirtualKeyboardSettings::handwritingModeDisabled
+    \since QtQuick.VirtualKeyboard.Settings 6.1
+
+    This property allows to disable handwriting input mode, if it is
+    otherwise available in the system.
+
+    When this property is set to \c true, the handwriting button is hidden
+    from the keyboard layout and the user cannot switch to handwriting
+    input mode.
 */
 
 /*!

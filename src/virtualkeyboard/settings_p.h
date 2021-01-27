@@ -103,6 +103,9 @@ public:
     Qt::InputMethodHints inputMethodHints() const;
     void setInputMethodHints(const Qt::InputMethodHints &inputMethodHints);
 
+    bool isHandwritingModeDisabled() const;
+    void setHandwritingModeDisabled(bool handwritingModeDisabled);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -119,6 +122,7 @@ signals:
     void hwrTimeoutForAlphabeticChanged();
     void hwrTimeoutForCjkChanged();
     void inputMethodHintsChanged();
+    void handwritingModeDisabledChanged();
 };
 
 } // namespace QtVirtualKeyboard

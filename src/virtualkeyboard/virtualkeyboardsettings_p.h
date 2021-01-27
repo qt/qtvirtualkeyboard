@@ -66,6 +66,7 @@ class QVIRTUALKEYBOARD_EXPORT VirtualKeyboardSettings : public QObject
     Q_PROPERTY(int hwrTimeoutForAlphabetic READ hwrTimeoutForAlphabetic WRITE setHwrTimeoutForAlphabetic NOTIFY hwrTimeoutForAlphabeticChanged REVISION(6, 1))
     Q_PROPERTY(int hwrTimeoutForCjk READ hwrTimeoutForCjk WRITE setHwrTimeoutForCjk NOTIFY hwrTimeoutForCjkChanged REVISION(6, 1))
     Q_PROPERTY(Qt::InputMethodHints inputMethodHints READ inputMethodHints WRITE setInputMethodHints NOTIFY inputMethodHintsChanged REVISION(6, 1))
+    Q_PROPERTY(bool handwritingModeDisabled READ isHandwritingModeDisabled WRITE setHandwritingModeDisabled NOTIFY handwritingModeDisabledChanged REVISION(6, 1))
 
 public:
     static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine);
@@ -105,6 +106,9 @@ public:
     Qt::InputMethodHints inputMethodHints() const;
     void setInputMethodHints(const Qt::InputMethodHints &inputMethodHints);
 
+    bool isHandwritingModeDisabled() const;
+    void setHandwritingModeDisabled(bool handwritingModeDisabled);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -118,6 +122,7 @@ signals:
     Q_REVISION(6, 1) void hwrTimeoutForAlphabeticChanged();
     Q_REVISION(6, 1) void hwrTimeoutForCjkChanged();
     Q_REVISION(6, 1) void inputMethodHintsChanged();
+    Q_REVISION(6, 1) void handwritingModeDisabledChanged();
 
 private:
     void resetStyle();

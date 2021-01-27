@@ -1673,10 +1673,14 @@ Item {
     }
 
     function isHandwritingAvailable() {
+        if (VirtualKeyboardSettings.handwritingModeDisabled)
+            return false
         return InputContext.priv.inputMethods.indexOf("HandwritingInputMethod") !== -1 && layoutExists(locale, "handwriting")
     }
 
     function setHandwritingMode(enabled, resetInputMode) {
+        if (VirtualKeyboardSettings.handwritingModeDisabled)
+            return
         if (enabled && resetInputMode)
             inputModeNeedsReset = true
         handwritingMode = enabled

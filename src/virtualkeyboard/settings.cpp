@@ -56,7 +56,8 @@ public:
                      .arg(QStandardPaths::writableLocation(
                               QStandardPaths::GenericConfigLocation))),
         hwrTimeoutForAlphabetic(500),
-        hwrTimeoutForCjk(500)
+        hwrTimeoutForCjk(500),
+        handwritingModeDisabled(false)
     {
         ensureUserDataPathExists();
     }
@@ -84,6 +85,7 @@ public:
     int hwrTimeoutForAlphabetic;
     int hwrTimeoutForCjk;
     Qt::InputMethodHints inputMethodHints;
+    bool handwritingModeDisabled;
 };
 
 static QScopedPointer<Settings> s_settingsInstance;
@@ -313,6 +315,21 @@ void Settings::setInputMethodHints(const Qt::InputMethodHints &inputMethodHints)
     if (d->inputMethodHints != inputMethodHints) {
         d->inputMethodHints = inputMethodHints;
         emit inputMethodHintsChanged();
+    }
+}
+
+bool Settings::isHandwritingModeDisabled() const
+{
+    Q_D(const Settings);
+    return d->handwritingModeDisabled;
+}
+
+void Settings::setHandwritingModeDisabled(bool handwritingModeDisabled)
+{
+    Q_D(Settings);
+    if (d->handwritingModeDisabled != handwritingModeDisabled) {
+        d->handwritingModeDisabled = handwritingModeDisabled;
+        emit handwritingModeDisabledChanged();
     }
 }
 
