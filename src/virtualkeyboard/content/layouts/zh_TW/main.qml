@@ -138,7 +138,7 @@ KeyboardLayoutLoader {
                     Component.onCompleted: updateBinding()
                     Connections {
                         target: InputContext.inputEngine
-                        onInputMethodChanged: simplifiedModeKey.updateBinding()
+                        function onInputMethodChanged() { simplifiedModeKey.updateBinding() }
                     }
                     function updateBinding() {
                         if (InputContext.inputEngine.inputMethod && InputContext.inputEngine.inputMethod.hasOwnProperty("simplified")) {

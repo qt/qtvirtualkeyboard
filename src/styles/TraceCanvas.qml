@@ -202,8 +202,8 @@ Canvas {
 
     Connections {
         target: canvas.__renderingEnabled && trace ? trace : null
-        onLengthChanged: if (renderFunction) canvas.requestAnimationFrame(renderFunction)
-        onFinalChanged: if (renderFunction) canvas.requestAnimationFrame(renderFunction)
+        function onLengthChanged() { if (renderFunction) canvas.requestAnimationFrame(renderFunction) }
+        function onFinalChanged() { if (renderFunction) canvas.requestAnimationFrame(renderFunction) }
     }
 
     opacity: trace ? trace.opacity : 1.0

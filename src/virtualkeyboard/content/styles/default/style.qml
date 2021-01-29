@@ -946,8 +946,8 @@ KeyboardStyle {
             }
             Connections {
                 target: control
-                onHorizontalRulersChanged: traceInputKeyGuideLines.requestPaint()
-                onVerticalRulersChanged: traceInputKeyGuideLines.requestPaint()
+                function onHorizontalRulersChanged() { traceInputKeyGuideLines.requestPaint() }
+                function onVerticalRulersChanged() { traceInputKeyGuideLines.requestPaint() }
             }
         }
     }

@@ -40,7 +40,7 @@ KeyboardLayout {
 
     Connections {
         target: InputContext
-        onInputMethodHintsChanged: {
+        function onInputMethodHintsChanged() {
             var newInputMode = preferredInputMode()
             if (InputContext.inputEngine.inputModes.indexOf(newInputMode) !== -1)
                 InputContext.inputEngine.inputMode = newInputMode

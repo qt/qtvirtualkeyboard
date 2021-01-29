@@ -79,7 +79,7 @@ PopupList {
 
     Connections {
         target: wordCandidatePopupList.model ? wordCandidatePopupList.model : null
-        onActiveItemChanged: wordCandidatePopupList.currentIndex = index
-        onItemSelected: if (wordCandidatePopupList.currentItem) keyboard.soundEffect.play(wordCandidatePopupList.currentItem.soundEffect)
+        function onActiveItemChanged() { wordCandidatePopupList.currentIndex = index }
+        function onItemSelected() { if (wordCandidatePopupList.currentItem) keyboard.soundEffect.play(wordCandidatePopupList.currentItem.soundEffect) }
     }
 }
