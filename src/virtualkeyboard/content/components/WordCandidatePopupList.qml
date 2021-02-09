@@ -79,7 +79,7 @@ PopupList {
 
     Connections {
         target: wordCandidatePopupList.model ? wordCandidatePopupList.model : null
-        function onActiveItemChanged() { wordCandidatePopupList.currentIndex = index }
+        function onActiveItemChanged(index) { wordCandidatePopupList.currentIndex = index }
         function onItemSelected() { if (wordCandidatePopupList.currentItem) keyboard.soundEffect.play(wordCandidatePopupList.currentItem.soundEffect) }
     }
 }
