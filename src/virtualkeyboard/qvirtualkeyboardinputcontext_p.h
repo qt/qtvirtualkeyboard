@@ -89,7 +89,8 @@ public:
         InputMethodEvent = 0x2,
         KeyEvent = 0x4,
         InputMethodClick = 0x8,
-        SyncShadowInput = 0x10
+        SyncShadowInput = 0x10,
+        SetFocus = 0x20
     };
     Q_FLAG(State)
     Q_DECLARE_FLAGS(StateFlags, QVirtualKeyboardInputContextPrivate::State)

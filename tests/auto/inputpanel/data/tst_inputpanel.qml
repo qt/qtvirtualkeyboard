@@ -1670,6 +1670,9 @@ Rectangle {
                 { initText: "aa http://www.example.com bb", initInputMethodHints: Qt.ImhUrlCharactersOnly, clickPositions: [4], expectedPreeditText: "http://www.example.com", expectedCursorPosition: 3, expectedText: "aa  bb" },
                 { initText: "aa username@example.com bb", clickPositions: [4], expectedPreeditText: "username", expectedCursorPosition: 3, expectedText: "aa @example.com bb" },
                 { initText: "aa username@example.com bb", initInputMethodHints: Qt.ImhEmailCharactersOnly, clickPositions: [4], expectedPreeditText: "username@example.com", expectedCursorPosition: 3, expectedText: "aa  bb" },
+                // 23
+                // Verify that word reselect is not activated during initial focus
+                { initText: "hello", clickPositions: [], initCursorPosition: 2, expectedPreeditText: "", expectedCursorPosition: 2, expectedText: "hello" },
             ]
         }
 

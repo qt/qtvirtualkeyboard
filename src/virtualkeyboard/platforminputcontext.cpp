@@ -196,6 +196,9 @@ void PlatformInputContext::setFocusObject(QObject *object)
     Q_ASSERT(m_inputContext == nullptr ||
              m_inputContext->priv()->shadow()->inputItem() == nullptr ||
              m_inputContext->priv()->shadow()->inputItem() != object);
+    QScopedPointer<QVirtualKeyboardScopedState> setFocusState;
+    if (m_inputContext)
+        setFocusState.reset(new QVirtualKeyboardScopedState(m_inputContext->priv(), QVirtualKeyboardInputContextPrivate::State::SetFocus));
     if (m_focusObject != object) {
         if (m_focusObject)
             m_focusObject->removeEventFilter(this);
