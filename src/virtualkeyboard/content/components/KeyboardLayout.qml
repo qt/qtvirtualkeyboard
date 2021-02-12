@@ -159,7 +159,7 @@ ColumnLayout {
     function __scanLayoutRecursive(parent, layout) {
         for (var i in parent.children) {
             var child = parent.children[i]
-            if (child.keyType !== undefined && child.visible) {
+            if (child.keyType !== undefined) {
                 var pos = mapFromItem(child, 0, 0)
                 var key = {
                     left: pos.x,
