@@ -829,12 +829,6 @@ Item {
 
             Component.onCompleted: InputContext.priv.setKeyboardObserver(keyboardObserver)
 
-            Timer {
-                id: layoutChangeNotifyTimer
-                interval: 50
-                onTriggered: if (keyboardLayoutLoader.item != null) keyboardObserver.layoutChanged()
-            }
-
             onWidthChanged: notifyLayoutChanged()
             onHeightChanged: notifyLayoutChanged()
 
@@ -1720,6 +1714,8 @@ Item {
     }
 
     function notifyLayoutChanged() {
-        layoutChangeNotifyTimer.restart()
+        Qt.callLater(function() {
+            if (keyboardLayoutLoader.item != null) keyboardObserver.layoutChanged()
+        })
     }
 }
