@@ -78,7 +78,7 @@ Q_SIGNALS:
 public Q_SLOTS:
     virtual void reset();
     virtual void update();
-    virtual void clearInputMode();
+    Q_REVISION(6, 1) virtual void clearInputMode();
 
 private:
     void setInputEngine(QVirtualKeyboardInputEngine *inputEngine);
