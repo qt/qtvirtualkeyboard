@@ -77,6 +77,8 @@ Key {
         "日本語", // InputEngine.InputMode.JapaneseHandwriting
         "한국어", // InputEngine.InputMode.KoreanHandwriting
         "กขค",  // InputEngine.InputMode.Thai
+        "笔画",  // InputEngine.InputMode.Stroke
+        "ローマ字",  // InputEngine.InputMode.Romaji
     ]
 
     /*!

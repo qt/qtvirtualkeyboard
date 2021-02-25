@@ -61,7 +61,7 @@ public:
         resetWhenVisible(false),
         manualShiftLanguageFilter(QSet<QLocale::Language>() << QLocale::Arabic << QLocale::Persian << QLocale::Hindi << QLocale::Korean << QLocale::Thai),
         manualCapsInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::Cangjie << QVirtualKeyboardInputEngine::InputMode::Zhuyin << QVirtualKeyboardInputEngine::InputMode::Hebrew),
-        noAutoUppercaseInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::FullwidthLatin << QVirtualKeyboardInputEngine::InputMode::Pinyin << QVirtualKeyboardInputEngine::InputMode::Cangjie << QVirtualKeyboardInputEngine::InputMode::Zhuyin << QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting << QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting << QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting),
+        noAutoUppercaseInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::FullwidthLatin << QVirtualKeyboardInputEngine::InputMode::Pinyin << QVirtualKeyboardInputEngine::InputMode::Cangjie << QVirtualKeyboardInputEngine::InputMode::Zhuyin << QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting << QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting << QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting << QVirtualKeyboardInputEngine::InputMode::Romaji),
         allCapsInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::Hiragana << QVirtualKeyboardInputEngine::InputMode::Katakana)
     {
     }
