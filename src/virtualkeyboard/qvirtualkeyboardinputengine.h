@@ -85,7 +85,9 @@ public:
         ChineseHandwriting,
         JapaneseHandwriting,
         KoreanHandwriting,
-        Thai
+        Thai,
+        Stroke,
+        Romaji,
     };
     Q_ENUM(InputMode)
 
