@@ -19,6 +19,7 @@ src/plugins/t9write/3rdparty/t9write/lib
 *.ilk
 *.pdb
 *.pro.user
+CMakeLists.txt.user
 *.a
 *.so
 *.moc
