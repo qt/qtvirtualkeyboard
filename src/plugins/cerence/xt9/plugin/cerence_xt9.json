@@ -1,0 +1,12 @@
+{
+    "Name": "xt9",
+    "Provider": "Qt Cerence XT9 Extension",
+    "InputMethod": [
+        "DefaultInputMethod",
+        "PinyinInputMethod",
+        "StrokeInputMethod",
+        "HangulInputMethod",
+        "JapaneseInputMethod"
+    ],
+    "Version": 200
+}

@@ -30,6 +30,7 @@
 import QtTest
 import QtQuick
 import QtQuick.Window
+import "inputpanel/utils.js" as Utils
 
 Rectangle {
     id: container
@@ -867,7 +868,7 @@ Rectangle {
         function test_spellCorrectionAutomaticSpaceInsertion_data() {
             return [
                 { inputSequence: ['h','e','l','l','o',Qt.Key_Select,'w','o','r','l','d'], outputText: "Hello world" },
-                { inputSequence: ['h','e','l','l','o','\'','s',Qt.Key_Select,'w','o','r','l','d'], outputText: "Hello's world" },
+                { inputSequence: ['k','e','l','l','y','\'','s',Qt.Key_Select,'w','o','r','l','d'], outputText: "Kelly's world" },
                 { inputSequence: ['h','e','l','l','o','s','\'',Qt.Key_Select,'w','o','r','l','d'], outputText: "Hellos' world" },
                 { inputSequence: ['h','e','l','l','o','-','w','o','r','l','d'], outputText: "Hello-world" },
                 { inputSequence: ['h','e','l','l','o',Qt.Key_Select,'.','w','o','r','l','d'], outputText: "Hello. World" },
@@ -940,7 +941,7 @@ Rectangle {
                 verify(inputPanel.selectionListSelectCurrentItem())
             }
 
-            compare(textInput.text, data.outputText)
+            compare(Utils.toUnicodeHex(textInput.text), Utils.toUnicodeHex(data.outputText))
         }
 
         function test_cangjieInputMethod_data() {
@@ -978,6 +979,9 @@ Rectangle {
 
         function test_cangjieInputMethod(data) {
             prepareTest(data, true)
+
+            if (!inputPanel.inputMethod.hasOwnProperty("simplified"))
+                skip("Input method does not support simplified mode")
 
             if (data.hasOwnProperty("initSimplified")) {
                 if (inputPanel.inputMethod.simplified !== data.initSimplified)
@@ -1120,7 +1124,7 @@ Rectangle {
                 { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3139\u314D", outputText: "\uAC0E" },
                 { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3139\u314E", outputText: "\uAC0F" },
                 { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3142\u3145", outputText: "\uAC12" },
-                { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3145\u3145", outputText: "\uAC14" },
+                //{ initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3145\u3145", outputText: "\uAC14" },   // Actually not standard
                 // Test using the final Jamo of the first syllable as an initial
                 // Jamo of the following syllable
                 { initLocale: "ko_KR", inputSequence: "\u3131\u314F\u3131\u314F", outputText: "\uAC00\uAC00" },
@@ -1137,24 +1141,32 @@ Rectangle {
 
             compare(Qt.inputMethod.locale.name, Qt.locale(data.initLocale).name)
 
+            function textInputContents() {
+                return textInput.text.substring(0, textInput.cursorPosition) +
+                        textInput.preeditText +
+                        textInput.text.substring(textInput.cursorPosition)
+            }
+
             // Add Jamos one by one
             var intermediateResult = []
             for (var inputIndex in data.inputSequence) {
                 verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
-                intermediateResult.push(textInput.text)
+                intermediateResult.push(textInputContents())
             }
 
-            compare(textInput.text, data.outputText)
+            compare(Utils.toUnicodeHex(textInputContents()), Utils.toUnicodeHex(data.outputText))
 
             // Remove Jamos one by one.
             // The number of removed characters must match to the number of Jamos entered.
             for (inputIndex = data.inputSequence.length - 1; inputIndex >= 0; inputIndex--) {
-                compare(textInput.text, intermediateResult.pop())
+                waitForRendering(inputPanel)
+                compare(Utils.toUnicodeHex(textInputContents()), Utils.toUnicodeHex(intermediateResult.pop()))
                 inputPanel.virtualKeyClick(Qt.Key_Backspace)
             }
 
             waitForRendering(inputPanel)
-            compare(textInput.text, data.initText !== undefined ? data.initText : "")
+            compare(Utils.toUnicodeHex(textInputContents()),
+                    Utils.toUnicodeHex(data.initText !== undefined ? data.initText : ""))
         }
 
         function test_japaneseInputModes_data() {
@@ -1241,6 +1253,8 @@ Rectangle {
             // The Japanese keyboard uses the BaseKey.noModifier flag for the arrow keys.
             // Without this flag the arrow key + shift would extend the text selection.
             prepareTest({ initLocale: "ja_JP", initInputMethodHints: Qt.ImhLatinOnly })
+            if (!inputPanel.findVirtualKey(Qt.Key_Left) || inputPanel.virtualKeyClick(Qt.Key_Right))
+                skip("Custom layout detected")
             verify(inputPanel.virtualKeyClick("a"))
             verify(inputPanel.virtualKeyClick(Qt.Key_Left))
             compare(textInput.cursorPosition, 0)
@@ -2159,21 +2173,21 @@ Rectangle {
                 { inputSequence: ['a','s','d'], initShift: false, expectedSuggestion: "asdf", suggestionIsFromUserDictionary: true },
                 { inputSequence: ['a','s','d'], initShift: true, expectedSuggestion: "Asdf", suggestionIsFromUserDictionary: true },
                 //
-                { inputSequence: ['s','d','f','a'], initShift: true },
-                { inputSequence: ['s','d','f'], initShift: true, expectedSuggestion: "Sdfa", suggestionIsFromUserDictionary: true },
+                { inputSequence: ['S','d','f','a'], initShift: true },
+                { inputSequence: ['S','d','f'], initShift: true, expectedSuggestion: "Sdfa", suggestionIsFromUserDictionary: true },
                 { inputSequence: ['s','d','f'], initShift: false, expectedSuggestion: "sdfa", suggestionIsFromUserDictionary: true, removeSuggestion: true },
                 //
-                { inputSequence: ['d','f','a','s'], initCapsLock: true },
-                { inputSequence: ['d','f','a'], initCapsLock: true, expectedSuggestion: "DFAS", suggestionIsFromUserDictionary: true },
+                { inputSequence: ['D','F','A','S'], initCapsLock: true },
+                { inputSequence: ['D','F','A'], initCapsLock: true, expectedSuggestion: "DFAS", suggestionIsFromUserDictionary: true },
                 { inputSequence: ['d','f','a'], initShift: false, unexpectedSuggestion: "dfas", suggestionIsFromUserDictionary: true },
                 //
                 { inputSequence: ['f','a','s','d'], initShift: false, initInputMethodHints: Qt.ImhSensitiveData },
                 { inputSequence: ['f','a','s'], initShift: false, unexpectedSuggestion: "fasd" },
-                { inputSequence: ['f','a','s'], initShift: true, unexpectedSuggestion: "Fasd"},
+                { inputSequence: ['F','a','s'], initShift: true, unexpectedSuggestion: "Fasd"},
                 //
-                { initLocale: "en_GB", inputSequence: "windo", expectedSuggestion: "Window", suggestionIsFromUserDictionary: false, removeSuggestion: true },
-                { initLocale: "en_GB", inputSequence: "window", },
-                { initLocale: "en_GB", inputSequence: "windo", expectedSuggestion: "Window", suggestionIsFromUserDictionary: false },
+                { initLocale: "en_GB", inputSequence: "windo", initShift: false, expectedSuggestion: "window", suggestionIsFromUserDictionary: false, removeSuggestion: true },
+                { initLocale: "en_GB", inputSequence: "window",initShift: false,  },
+                { initLocale: "en_GB", inputSequence: "windo", initShift: false, expectedSuggestion: "window", suggestionIsFromUserDictionary: false },
             ]
         }
 
@@ -2188,11 +2202,14 @@ Rectangle {
             if (data.hasOwnProperty("initCapsLock"))
                 inputPanel.setCapsLockActive(data.initCapsLock)
 
-            for (var inputIndex in data.inputSequence)
+            var exactWord = ""
+            for (var inputIndex in data.inputSequence) {
                 inputPanel.virtualKeyClick(data.inputSequence[inputIndex])
+                exactWord += data.inputSequence[inputIndex]
+            }
 
             if (data.hasOwnProperty("expectedSuggestion")) {
-                tryVerify(function() {return inputPanel.selectionListSearchSuggestion(data.expectedSuggestion)}, 1000, "The expected spell correction suggestion \"%1\" was not found".arg(data.expectedSuggestion))
+                tryVerify(function() {return inputPanel.selectionListSearchSuggestion(data.expectedSuggestion)}, 10000, "The expected spell correction suggestion \"%1\" was not found".arg(data.expectedSuggestion))
                 verify(inputPanel.selectionListCurrentIndex() > 0)
                 if (data.hasOwnProperty("suggestionIsFromUserDictionary"))
                     compare(inputPanel.selectionListSuggestionIsFromUserDictionary(), data.suggestionIsFromUserDictionary)
@@ -2201,15 +2218,16 @@ Rectangle {
                     inputPanel.wordCandidateListChangedSpy.clear()
                     verify(inputPanel.selectItemFromWordCandidateContextMenu(0))
                     inputPanel.wordCandidateListChangedSpy.wait()
-                    tryVerify(function() {return !inputPanel.selectionListSearchSuggestion(data.expectedSuggestion)}, 1000, "An unexpected spell correction suggestion \"%1\" was found".arg(data.unexpectedSuggestion))
+                    tryVerify(function() {return !inputPanel.selectionListSearchSuggestion(data.expectedSuggestion)}, 10000, "An unexpected spell correction suggestion \"%1\" was found".arg(data.unexpectedSuggestion))
                 } else {
                     inputPanel.selectionListSelectCurrentItem()
                 }
             } else if (data.hasOwnProperty("unexpectedSuggestion")) {
                 var oldIndex = inputPanel.selectionListCurrentIndex()
-                tryVerify(function() {return !inputPanel.selectionListSearchSuggestion(data.unexpectedSuggestion)}, 1000, "An unexpected spell correction suggestion \"%1\" was found".arg(data.unexpectedSuggestion))
+                tryVerify(function() {return !inputPanel.selectionListSearchSuggestion(data.unexpectedSuggestion)}, 10000, "An unexpected spell correction suggestion \"%1\" was found".arg(data.unexpectedSuggestion))
                 compare(inputPanel.selectionListCurrentIndex(), oldIndex)
             } else {
+                tryVerify(function() {return inputPanel.selectionListSearchSuggestion(exactWord)}, 1000, "The exact word \"%1\" was not found".arg(exactWord))
                 inputPanel.selectionListSelectCurrentItem()
             }
 

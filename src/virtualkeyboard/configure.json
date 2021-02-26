@@ -12,10 +12,17 @@
             "vkb-cangjie": { "type": "boolean", "value": "cangjie" },
             "vkb-zhuyin": { "type": "boolean", "value": "zhuyin" },
             "vkb-hunspell": { "type": "enum", "values": [ "no", "3rdparty", "system" ] },
-            "vkb-handwriting": { "type": "optionalString", "values": [ "yes", "no", "t9write" ] },
+            "vkb-handwriting": { "type": "optionalString", "values": [ "yes", "no", "cerence-hwr" ] },
+            "vkb-cerence-sdk": { "type": "string" },
             "vkb-style": { "type": "string", "values": [ "standard", "retro" , "none"] },
             "vkb-no-bundle-pinyin": "boolean",
-            "vkb-no-bundle-tcime": "boolean"
+            "vkb-no-bundle-tcime": "boolean",
+            "vkb-cerence-static": "boolean",
+            "vkb-bundle-cerence": "boolean",
+            "vkb-bundle-cerence-hwr": "boolean",
+            "vkb-bundle-cerence-xt9": "boolean",
+            "vkb-cerence-xt9-debug": "boolean",
+            "vkb-cerence-xt9-9key-layouts": "boolean"
         }
     },
 
@@ -52,13 +59,21 @@
             "label": "Hunspell copy under 3rdparty/",
             "type": "3rdparty-hunspell"
         },
-        "t9write-alphabetic": {
-            "label" : "T9Write Alphabetic Support",
-            "type"  : "t9write-alphabetic"
+        "cerence-sdk": {
+            "label": "Cerence SDK",
+            "type": "cerence-sdk"
         },
-        "t9write-cjk": {
-            "label" : "T9Write CJK Support",
-            "type"  : "t9write-cjk"
+        "cerence-hwr-alphabetic": {
+            "label": "Cerence HWR Alphabetic Support",
+            "type": "cerence-hwr-alphabetic"
+        },
+        "cerence-hwr-cjk": {
+            "label": "Cerence HWR CJK Support",
+            "type": "cerence-hwr-cjk"
+        },
+        "cerence-xt9": {
+            "label": "Cerence XT9",
+            "type": "cerence-xt9"
         }
     },
 
@@ -111,23 +126,64 @@
             "autoDetect": false,
             "output": [ "privateFeature" ]
         },
-
-        "t9write-alphabetic": {
-            "label": "  Alphabetic",
-            "condition": "tests.t9write-alphabetic",
+        "cerence-sdk": {
+            "label": "Cerence",
+            "condition": "tests.cerence-sdk",
             "output": [ "privateFeature" ]
         },
-        "t9write-cjk": {
-            "label": "  CJK",
-            "condition": "tests.t9write-cjk",
-            "output": [ "privateFeature" ]
-        },
-        "t9write": {
-            "label": "T9Write handwriting",
-            "enable": "input.vkb-handwriting == 't9write'",
+        "cerence-hwr": {
+            "label": "  Handwriting",
+            "enable": "input.vkb-handwriting == 'cerence-hwr'",
             "disable": "input.vkb-handwriting == 'no'",
-            "condition": "features.t9write-alphabetic || features.t9write-cjk",
+            "condition": "features.cerence-hwr-alphabetic || features.cerence-hwr-cjk",
             "output": [ "privateFeature" ]
+        },
+        "cerence-hwr-alphabetic": {
+            "label": "    Alphabetic",
+            "condition": "tests.cerence-hwr-alphabetic",
+            "output": [ "privateFeature" ]
+        },
+        "cerence-hwr-cjk": {
+            "label": "    CJK",
+            "condition": "tests.cerence-hwr-cjk",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-bundle-cerence": {
+            "label": "  Bundle resources",
+            "autoDetect": false,
+            "output": [ "publicFeature" ]
+        },
+        "vkb-bundle-cerence-hwr": {
+            "label": "    Handwriting",
+            "enable": "features.vkb-bundle-cerence",
+            "autoDetect": false,
+            "output": [ "publicFeature" ]
+        },
+        "vkb-bundle-cerence-xt9": {
+            "label": "    XT9",
+            "enable": "features.vkb-bundle-cerence",
+            "autoDetect": false,
+            "output": [ "publicFeature" ]
+        },
+        "cerence-xt9": {
+            "label": "  XT9",
+            "condition": "feature.cerence-sdk && tests.cerence-xt9",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-cerence-xt9-debug": {
+            "label": "    XT9 Debug",
+            "autoDetect": false,
+            "output": [ "publicFeature" ]
+        },
+        "vkb-cerence-xt9-9key-layouts": {
+            "label": "    XT9 9-key layouts",
+            "autoDetect": false,
+            "output": [ "publicFeature" ]
+        },
+        "vkb-cerence-static": {
+            "label": "  Static Linking",
+            "autoDetect": false,
+            "output": [ "publicFeature" ]
         },
         "system-hunspell": {
             "label": "System Hunspell",
@@ -143,11 +199,13 @@
         "hunspell": {
             "label": "Hunspell",
             "condition": "features.3rdparty-hunspell || features.system-hunspell",
+            "disable": "feature.cerence-xt9",
             "output": [ "privateFeature" ]
         },
         "openwnn": {
             "label": "OpenWnn",
             "autoDetect": "input.lang-ja_JP != 'no'",
+            "disable": "feature.cerence-xt9",
             "output": [ "privateFeature" ]
         },
         "vkb-myscript": {
@@ -158,6 +216,7 @@
         "pinyin": {
             "label": "libpinyin",
             "autoDetect": "input.lang-ch_CN != 'no'",
+            "disable": "feature.cerence-xt9",
             "output": [ "privateFeature" ]
         },
         "vkb-no-bundle-pinyin": {
@@ -169,6 +228,7 @@
             "label": "Traditional Chinese IME (tcime)",
             "autoDetect": "input.lang-ch_TW != 'no'",
             "condition": "features.zhuyin || features.cangjie",
+            "disable": "feature.cerence-xt9",
             "output": [ "privateFeature" ]
         },
         "vkb-no-bundle-tcime": {
@@ -179,21 +239,25 @@
         "zhuyin": {
             "label": "Zhuyin",
             "autoDetect": "input.lang-zh_TW != 'no'",
+            "disable": "feature.cerence-xt9",
             "output": [ "privateFeature" ]
         },
         "cangjie": {
             "label": "Cangjie",
             "autoDetect": "input.lang-zh_TW != 'no'",
+            "disable": "feature.cerence-xt9",
             "output": [ "privateFeature" ]
         },
         "hangul": {
             "label": "Hangul",
-            "autoDectect": "input.lang-ko_KR != 'no'",
+            "autoDetect": "input.lang-ko_KR != 'no'",
+            "disable": "feature.cerence-xt9",
             "output": [ "privateFeature" ]
         },
         "thai": {
            "label": "Thai",
-           "autoDectect": "input.lang-th_TH != 'no'",
+           "autoDetect": "input.lang-th_TH != 'no'",
+            "disable": "feature.cerence-xt9",
            "output": [ "privateFeature" ]
         },
         "vkb-lang-ar_AR": {
@@ -303,7 +367,7 @@
         },
         "vkb-lang-ja_JP": {
             "label": "Japanese",
-            "condition": "features.openwnn",
+            "condition": "features.openwnn || features.cerence-xt9",
             "output": [ "privateFeature" ]
         },
         "vkb-lang-ko_KR": {
@@ -378,7 +442,7 @@
         },
         "vkb-lang-th_TH": {
             "label": "Thai",
-            "condition": "features.thai",
+            "condition": "features.thai || features.cerence-xt9",
             "output": [ "privateFeature" ]
         },
         "vkb-lang-tr_TR": {
@@ -399,13 +463,19 @@
         "vkb-lang-zh_CN": {
             "label": "Simplified Chinese",
             "autoDetect": "input.lang-zh_CN != 'no'",
-            "condition": "features.pinyin",
+            "condition": "features.pinyin || features.cerence-xt9",
             "output": [ "privateFeature" ]
         },
         "vkb-lang-zh_TW": {
             "label": "Traditional Chinese",
             "autoDetect": "input.lang-zh_TW != 'no'",
-            "condition": "features.tcime || features.zhuyin || features.cangjie",
+            "condition": "features.tcime || features.zhuyin || features.cangjie || features.cerence-xt9",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-lang-zh_HK": {
+            "label": "HongKong Chinese",
+            "autoDetect": "input.lang-zh_HK != 'no'",
+            "condition": "features.cerence-xt9",
             "output": [ "privateFeature" ]
         }
     },
@@ -413,9 +483,8 @@
     "report": [
         {
             "type": "error",
-            "condition": "input.vkb-handwriting == 't9write' && !features.t9write",
-            "message": "T9Write SDK could not be found. For more information,
-see the documentation in 'Building Qt Virtual Keyboard'."
+            "condition": "input.vkb-handwriting == 'cerence-hwr' && !features.cerence-hwr",
+            "message": "Cerence HWR SDK could not be found. For more information, see the documentation in 'Building Qt Virtual Keyboard'."
         },
         {
             "type": "note",
@@ -433,9 +502,17 @@ see the documentation in 'Building Qt Virtual Keyboard'."
                 "vkb-arrow-keynavigation",
                 "vkb-retro-style",
                 "vkb-sensitive-debug",
-                "t9write",
-                "t9write-alphabetic",
-                "t9write-cjk",
+                "cerence-sdk",
+                "vkb-cerence-static",
+                "cerence-hwr",
+                "cerence-hwr-alphabetic",
+                "cerence-hwr-cjk",
+                "cerence-xt9",
+                "vkb-cerence-xt9-debug",
+                "vkb-cerence-xt9-9key-layouts",
+                "vkb-bundle-cerence",
+                "vkb-bundle-cerence-hwr",
+                "vkb-bundle-cerence-xt9",
                 "hunspell",
                 "3rdparty-hunspell",
                 "openwnn",

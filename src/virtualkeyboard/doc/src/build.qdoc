@@ -112,13 +112,13 @@ keyboard features.
         if no other languages are specified.
 \row
     \li \e -vkb-handwriting
-    \li [yes|no|t9write]
+    \li [yes|no|cerence-hwr]
     \li Enables or disabled handwriting input
     \li This flag enables handwriting input. By default, the first engine
         available at build time is used. The engines are chosen in the
-        following order: \c t9write. To force handwriting
+        following order: \c cerence-hwr. To force handwriting
         input using to use a specific engine, specify the engine to be used;
-        for example, \c {-vkb-handwriting t9write}.
+        for example, \c {-vkb-handwriting cerence-hwr}.
 \row
     \li \e [-no]-vkb-arrow-keynavigation
     \li
@@ -187,13 +187,13 @@ qmake $SRCDIR -- [options]
         system, or if it is built using the local project file. Integration can be
         disabled using this option.
 \row
-    \li \e vkb-no-bundle-pinyin
+    \li \e -vkb-no-bundle-pinyin
     \li \e n/a
     \li Disables bundling of pinyin resources
     \li This option excludes pinyin resources from the plugin binary. This option may be
         used to reduce the plugin binary size.
 \row
-    \li \e vkb-no-bundle-tcime
+    \li \e -vkb-no-bundle-tcime
     \li \e n/a
     \li Disables bundling of tcime resources
     \li This option excludes tcime resources from the plugin binary. This option may be
@@ -221,6 +221,31 @@ qmake $SRCDIR -- [options]
     \li This option activates the OpenWnn input method for the Japanese language.
 
     \include build.qdocinc input-method-language-option-note
+\row
+    \li \e -vkb-cerence-sdk
+    \li \e path/to/cerence/sdk
+    \li Configures the Cerence SDK location and enables the Cerence Handwriting and XT9 integrations.
+    \li The Cerence SDK (zip) must be unpacked using the \e src/virtualkeyboard/plugins/cerence/unpack.py
+        script. By default, the SDK is unpacked to \e src/virtualkeyboard/plugins/cerence/sdk, where
+        the build scripts can pick it up automatically. However, by using the second parameter to the unpack.py
+        script, it is possible to use different location for the SDK. In that case, the location must be
+        passed to the build script using the -vkb-cerence-sdk command line parameter.
+\row
+    \li \e -vkb-cerence-static
+    \li \e handwriting
+    \li Enables static linking of the Cerence Handwriting engine.
+    \li The Cerence Handwriting engine is linked dynamically by default. Use \e -vkb-cerence-static to
+        force static linking.
+\row
+    \li \e -vkb-bundle-cerence-hwr or \e -vkb-bundle-cerence
+    \li \e n/a
+    \li Enables bundling of Cerence Handwriting resources
+    \li This option bundles the Cerence Handwriting resources in the plugin binary.
+\row
+    \li \e -vkb-bundle-xt9 or \e -vkb-bundle-cerence
+    \li \e n/a
+    \li Enables bundling of XT9 resources
+    \li This option bundles the XT9 resources in the plugin binary.
 \endtable
 
 \section2 Building Documentation
@@ -259,87 +284,99 @@ Hunspell sources and dictionary files is listed below:
             (etc.)
 \endcode
 
-\section2 T9 Write Integration
+\section2 Cerence Handwriting Integration
 
-T9 Write integration supports the T9 Write Alphabetic and T9 Write CJK engines. Both
-engines are integrated via T9WriteInputMethod. The input method can be initialized
-with either of the engines at runtime. The engine selection happens automatically
-based on input locale and input mode from the keyboard.
+Cerence Handwriting integration supports the Alphabetic and CJK (Chinese Japanese Korean)
+engines. Both engines are integrated via T9WriteInputMethod. The input method is initialized
+with one engine at the time. The engine selection happens automatically based on the current
+input locale.
 
-\section3 T9 Write Compatibility
+\section3 Cerence Handwriting Compatibility
 
-Qt Virtual Keyboard is compatible with T9 Write v7.5.0 onward.
+Qt Virtual Keyboard is compatible with Cerence Handwriting v8.7 or later.
 
-The latest tested version is v7.8.1.
+\section3 Cerence Handwriting Build Preparations
 
-\section3 T9 Write Build Preparations
-
-The contents of the SDK must be either manually copied to the directory structure
-described below, or by using the \e unpack.py script found in the t9write directory.
-
-To unpack the SDK using the script:
+The contents of the SDK must unpacked using the \e unpack.py script located in the \e cerence
+directory. This ensures the correct directory structure for CMake to find the content.
 
 \badcode
-$ cd src/plugins/t9write/3rdparty/t9write/
-$ python unpack.py T9Write_Alpha_v7-8-0_SDK.zip .
+$ cd src/plugins/cerence/
+$ python unpack.py filename.zip
 \endcode
+
+This will unpack the contents to the \e src/plugins/cerence/sdk directory, where the CMake can
+pick it up automatically.
+
+Alternatively, you can unpack to any other directory by adding extra parameter to the command
+line. In this case, the location of the SDK must be passed to the \e configure script.
 
 \badcode
-3rdparty
-└── t9write
-    ├─── api
-    │   ├─── decuma*.h
-    │   ├─── t9write*.h
-    │   └─── xxt9w*.h
-    ├─── data
-    │   ├─── arabic
-    │   │   └─── *.bin [T9 Write Arabic]
-    │   ├─── hebrew
-    │   │   └─── *.bin [T9 Write Hebrew]
-    │   ├─── *.bin [T9 Write Alphabetic]
-    │   ├─── *.hdb
-    │   ├─── *.phd
-    │   └─── *.ldb [T9 Write v7.5]
-    └─── lib
-        ├─── arm
-        │   ├─── shared
-        │   │   ├─── alphabetic
-        │   │   │   └─── *.so
-        │   │   └─── cjk
-        │   │       └─── *.so
-        │   └─── static
-        │       ├─── alphabetic
-        │       │   └─── *.a / *.o
-        │       └─── cjk
-        │           └─── *.a / *.o
-        ├─── linux-x86
-        │   ├─── shared
-        │   │   ├─── alphabetic
-        │   │   │   └─── *.so
-        │   │   └─── cjk
-        │   │       └─── *.so
-        │   └─── static
-        │       ├─── alphabetic
-        │       │   └─── *.a / *.o
-        │       └─── cjk
-        │           └─── *.a / *.o
-        └─── win32
-            ├─── shared
-            │   ├─── alphabetic
-            │   │   ├─── *.dll
-            │   │   └─── *.lib
-            │   └─── cjk
-            │       ├─── *.dll
-            │       └─── *.lib
-            └─── static
-                ├─── alphabetic
-                │   └─── *.lib / *.obj
-                └─── cjk
-                    └─── *.lib / *.obj
+configure ... -vkb-cerence-sdk /path/to/cerence/sdk
 \endcode
 
-\note The above files are from the T9 Write demo SDK for Windows; the contents may vary for other
-      platforms.
+\section3 Layout of the Cerence SDK
+
+The extracted content of the SDK looks like this:
+
+\badcode
+sdk
+├───t9write
+│   ├───api
+│   ├───data
+│   │   ├───arabic
+│   │   ├───hebrew
+│   │   └───thai
+│   └───lib
+│       ├───linux
+│       │   ├───arm64
+│       │   │   ├───shared
+│       │   │   │   ├───alphabetic
+│       │   │   │   └───cjk
+│       │   │   └───static
+│       │   │       ├───alphabetic
+│       │   │       └───cjk
+│       │   └───x86_64
+│       │       ├───shared
+│       │       │   ├───alphabetic
+│       │       │   └───cjk
+│       │       └───static
+│       │           ├───alphabetic
+│       │           └───cjk
+│       └───win32
+│           ├───x86
+│           │   ├───shared
+│           │   │   ├───alphabetic
+│           │   │   └───cjk
+│           │   └───static
+│           │       ├───alphabetic
+│           │       └───cjk
+│           └───x86_64
+│               ├───shared
+│               │   ├───alphabetic
+│               │   └───cjk
+│               └───static
+│                   ├───alphabetic
+│                   └───cjk
+└───xt9
+    ├───api
+    ├───data
+    └───lib
+        ├───linux
+        │   ├───arm64
+        │   │   ├───shared
+        │   │   └───static
+        │   └───x86_64
+        │       ├───shared
+        │       └───static
+        └───win32
+            ├───x86
+            │   ├───shared
+            │   └───static
+            └───x86_64
+                ├───shared
+                └───static
+\endcode
 
 Where the contents of each directory are:
 
@@ -360,12 +397,12 @@ Where the contents of each directory are:
     \li \e data
     \li This directory should contain all HWR databases and optionally
         XT9 databases.
-    \li HWR database for the T9 Write Alphabetic:
+    \li HWR database for the Cerence Handwriting Alphabetic:
         \list
             \li \e _databas_le.bin
         \endlist
 
-        HWR database for the T9 Write CJK:
+        HWR database for the Cerence Handwriting CJK:
         \list
             \li \e cjk_HK_std_le.hdb HongKong Chinese
             \li \e cjk_J_std_le.hdb Japanese
@@ -384,14 +421,23 @@ Where the contents of each directory are:
     \li These directories should hold the desired target libraries.
         If both shared and static libraries are found, shared libraries
         are preferred.
-
-        For example, to enable a static win32 build, copy
-        \e t9write_alphabetic_rel.obj to \e lib/win32/static/alphabetic
-        directory.
 \endtable
 
-Finally, the SDK is included in the build by adding CONFIG+=t9write to the
-qmake command line.
+The Cerence Handwriting and XT9 integration code is automatically activated when the
+Cerence SDK is detected.
+
+All other extensions should be cleaned from the \e [qtbase]/plugins/virtualkeyboard directory
+before building the Cerence extensions to avoid conflicting behavior at runtime. The
+Cerence extensions do not require any other virtual keyboard plugin to function.
+
+Handwriting databases and language databases for XT9 are installed in the
+\e [qtbase]/qtvirtualkeyboard/cerence directory. In addition, there are two other
+alternatives for locating these files:
+
+\list
+    \li A custom runtime location defined by \l {Environment Variables}
+    \li The \e -vkb-bundle-cerence command line option to embed resources in the plugin binaries
+\endlist
 
 \section2 MyScript Text SDK Integration
 

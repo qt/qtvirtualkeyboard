@@ -122,15 +122,10 @@ qt_internal_add_resource(VirtualKeyboard "virtualkeyboard_content"
 #### Keys ignored in scope 1:.:.:virtualkeyboard.pro:<TRUE>:
 # LAYOUT_FILES = "content/layouts/fallback/dialpad.qml" "content/layouts/fallback/digits.qml" "content/layouts/fallback/numbers.qml" "content/layouts/fallback/main.qml" "content/layouts/fallback/symbols.qml"
 # MODULE = "virtualkeyboard"
-# OTHER_FILES = "$$PWD/qtvirtualkeyboard.qdocconf" "$$PWD/src/qtvirtualkeyboard-index.qdoc" "$$PWD/src/deployment-guide.qdoc" "$$PWD/src/technical-guide.qdoc" "$$PWD/src/user-guide.qdoc" "$$PWD/src/build.qdoc" "$$PWD/src/snippets/CustomInputMethod.qml" "content/styles/default/*.qml" "content/styles/retro/*.qml" "content/*.qml" "content/components/*.qml" "qtvirtualkeyboard.json" "$$LAYOUT_FILES"
+# OTHER_FILES = "$$PWD/images/*.*" "$$PWD/images/layouts/*.*" "$$PWD/qtvirtualkeyboard.qdocconf" "$$PWD/src/*.qdoc" "$$PWD/src/includes/*.qdocinc" "content/styles/default/*.qml" "content/styles/retro/*.qml" "content/*.qml" "content/components/*.qml" "qtvirtualkeyboard.json" "$$LAYOUT_FILES"
 
 ## Scopes:
 #####################################################################
-
-qt_internal_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_sensitive_debug
-    PUBLIC_DEFINES
-        SENSITIVE_DEBUG
-)
 
 if(NOT no-builtin-style)
     # Resources:

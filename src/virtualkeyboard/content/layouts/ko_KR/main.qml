@@ -33,7 +33,7 @@ import QtQuick.Layouts
 
 KeyboardLayoutLoader {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; HangulInputMethod {}', parent, "hangulInputMethod")
+        return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; HangulInputMethod {}', parent, "main.qml")
     }
     sourceComponent: InputContext.shiftActive ? page2 : page1
     sharedLayouts: ['symbols']

@@ -245,6 +245,35 @@ There are several environment variables defined by the module that are listed be
             For example, for Qt libraries built from source,
             it could be \c {qtbase/qtvirtualkeyboard/tcime/dict_phrases.dat}.
     \row
+        \li QT_VIRTUALKEYBOARD_CERENCE_HWR_DB_PATH
+        \li Specifies the location of Cerence Handwriting handwriting database.
+
+            The default search location for Cerence Handwriting handwriting database are:
+            \list
+            \li \c QT_VIRTUALKEYBOARD_CERENCE_HWR_DB_PATH
+            \li \c {QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/cerence/handwriting"}
+            \li \c {":/QtQuick/VirtualKeyboard/Cerence/Handwriting"}
+            \endlist
+
+            The environment variable may contain multiple paths. Multiple paths are separated with
+            semicolon in Windows and with colon in other operating systems.
+    \row
+        \li QT_VIRTUALKEYBOARD_XT9_LDB_PATH
+        \li Specifies the location of XT9 databases.
+
+            The default search location for LDB files are:
+            \list
+            \li \c QT_VIRTUALKEYBOARD_XT9_LDB_PATH
+            \li \c {QLibraryInfo::location(QLibraryInfo::DataPath) + "/qtvirtualkeyboard/cerence/xt9"}
+            \li \c {":/QtQuick/VirtualKeyboard/Cerence/Xt9"}
+            \endlist
+
+            Additional search paths can be specified by setting this environment variable. Multiple paths are
+            separated with semicolon in Windows and with colon in other operating systems.
+
+            The LDB files are shared between XT9 and Cerence Handwriting plugins, so this environment variable
+            affects both plugins.
+    \row
         \li QT_VIRTUALKEYBOARD_STYLE
         \li Specifies the location of the style to use with the virtual keyboard.
 

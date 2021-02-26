@@ -7,9 +7,6 @@ src/plugins/hunspell/3rdparty/hunspell/doc/html
 !src/plugins/hunspell/3rdparty/hunspell/hunspell.pro
 !src/plugins/hunspell/3rdparty/hunspell/CMakeLists.txt
 !src/plugins/hunspell/3rdparty/hunspell/config.h.cmake.in
-src/plugins/t9write/3rdparty/t9write/api
-src/plugins/t9write/3rdparty/t9write/data
-src/plugins/t9write/3rdparty/t9write/lib
 
 *_wrapper.sh
 *_wrapper.bat

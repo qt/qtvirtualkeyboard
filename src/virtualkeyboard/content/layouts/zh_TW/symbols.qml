@@ -33,7 +33,7 @@ import QtQuick.VirtualKeyboard
 
 KeyboardLayoutLoader {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; TCInputMethod {}', parent, "tcInputMethod")
+        return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; TCInputMethod {}', parent, "symbols.qml")
     }
     sharedLayouts: ['main']
     property int page

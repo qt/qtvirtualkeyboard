@@ -66,3 +66,13 @@ function findChild(parent, param, matchCb) {
     }
     return obj
 }
+
+function toUnicodeHex(str) {
+    var result = ''
+    for (var i = 0; i < str.length; i++) {
+        if (result.length > 0)
+            result += ", "
+        result += "U+" + ("000" + str.charCodeAt(i).toString(16)).slice(-4)
+    }
+    return result
+}

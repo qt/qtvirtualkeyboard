@@ -45,52 +45,20 @@ For instructions on how to activate and use the handwriting input mode, see the
 For information about building Qt Virtual Keyboard with a particular
 handwriting engine, see \l {Configuration Options}.
 
-\section1 T9 Write
+\section1 Cerence Handwriting
 
-\l {https://www.nuance.com/mobile/mobile-solutions/text-input-solutions/t9-write.html}{T9 Write}
+\l {https://cerence.com}{Cerence Handwriting}
 is a commercial handwriting recognition engine.
 
-T9 Write supports handwriting written in the following languages:
+Cerence Handwriting works with all languages supported by the virtual keyboard.
 
-\table
-\row
-\li \list
-  \li Arabic
-  \li Bulgarian
-  \li Croatian
-  \li Czech
-  \li Danish
-  \li Dutch
-  \li English
-\endlist
-\li \list
-  \li Estonian
-  \li Finnish
-  \li French
-  \li German
-  \li Greek
-  \li Hebrew
-  \li Hungarian
-\endlist
-\li \list
-  \li Italian
-  \li Japanese
-  \li Korean
-  \li Norwegian
-  \li Persian/Farsi
-  \li Polish
-  \li Portugese
-\endlist
-\li \list
-  \li Romanian
-  \li Russian
-  \li Serbian
-  \li Simplified Chinese
-  \li Spanish
-  \li Swedish
-  \li Traditional Chinese
-\endlist
-\endtable
+  \list
+    \li \l {Qt Virtual Keyboard#Supported Languages}{Supported Languages}
+  \endlist
+
+\b {See also}: \l {Cerence Handwriting Integration}
+
+\b {See also}: \l {Cerence XT9 Advanced Input}
 
 \section1 MyScript
 

@@ -689,6 +689,9 @@ InputPanel {
             origIndex = inputPanel.wordCandidateView.currentIndex
         }
         if (origIndex !== -1) {
+            while (inputPanel.wordCandidateView.currentIndex > 0) {
+                inputPanel.wordCandidateView.decrementCurrentIndex()
+            }
             while (true) {
                 if (inputPanel.wordCandidateView.model.dataAt(inputPanel.wordCandidateView.currentIndex) === suggestion) {
                     suggestionFound = true

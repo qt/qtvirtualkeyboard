@@ -1,0 +1,80 @@
+/****************************************************************************
+**
+** Copyright (C) 2021 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+
+\page xt9.html
+
+\title Cerence XT9 Advanced Input
+
+The Cerence XT9 advanced input offers high-quality spell correction and predictive
+text input that works with standard keyboard layouts bundled with
+the Qt Virtual Keyboard.
+
+The Cerence XT9 works as an add-on loaded into the Qt Virtual Keyboard at start-up.
+
+Main features:
+
+\list
+    \li \l {Multilingual}
+    \li \l {Advanced correction and learning capabilities}
+    \li \l {Next word prediction}
+    \li \l {Application specific dictionaries} (e.g. phone book)
+    \li \l {Handwriting Recognition with XT9 Capabilities}
+\endlist
+
+\section2 Multilingual
+
+The XT9 engine supports all the alphabetical languages as well as other languages, such
+as Chinese, Japanese and Korean.
+
+\section2 Advanced correction and learning capabilities
+
+Correction and learning capabilities are based the advanced language model that XT9 uses
+to correct and learn from the user input. For instance, frequently used words are prioritized
+in the word candidate list.
+
+\section2 Next word prediction
+
+Next word prediction is activated after selecting a candidate from the word candidate list.
+It automatically fills the word candidate list with followup words based on the context and
+previous input.
+
+\section2 Application specific dictionaries
+
+With the new \l {QVirtualKeyboardDictionaryManager} {dictionary manager} the application can
+create custom dictionaries and attach them to any context within the application. Together
+with \l {VirtualKeyboardSettings.defaultDictionaryDisabled} API it is also possible to use
+custom dictionaries exclusively without standard built-in dictionaries.
+
+\section2 Handwriting Recognition with XT9 Capabilities
+
+Cerence handwriting recognition and XT9 engines are uniquely integrated together in the Qt
+Virtual Keyboard. This means that the improved word candidate suggestions and next word
+prediction are also available in the handwriting mode.
+
+*/

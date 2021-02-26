@@ -30,7 +30,7 @@
     \page qtvirtualkeyboard-index.html
 
     The Qt Virtual Keyboard project provides an input framework and reference
-    keyboard frontend for Qt 5 on Linux Desktop/X11, Windows Desktop, and
+    keyboard frontend for Qt 6 on Linux Desktop/X11, Windows Desktop, and
     Boot2Qt targets.
 
     The input framework makes it easy to write custom input methods or to
@@ -67,7 +67,8 @@
 
     The Qt Virtual Keyboard supports third-party plugins from the following vendors:
     \list
-        \li \l {Handwriting Recognition#T9 Write}{T9 Write} handwriting text input.
+        \li \l {Cerence XT9 Advanced Input}{Cerence XT9} advanced input.
+        \li \l {Handwriting Recognition#Cerence Handwriting}{Cerence Handwriting} text input.
         \li \l {Handwriting Recognition#MyScript}{MyScript} Text handwriting recognition
     \endlist
 

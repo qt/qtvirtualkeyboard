@@ -33,7 +33,7 @@ import QtQuick.VirtualKeyboard
 
 KeyboardLayoutLoader {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; HangulInputMethod {}', parent, "hangulInputMethod")
+        return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; HangulInputMethod {}', parent, "symbols.qml")
     }
     sharedLayouts: ['main']
     property bool secondPage

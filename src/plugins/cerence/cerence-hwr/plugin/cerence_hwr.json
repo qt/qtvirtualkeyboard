@@ -1,0 +1,6 @@
+{
+    "Name": "handwriting",
+    "Provider": "Qt Cerence Handwriting Extension",
+    "InputMethod": "HandwritingInputMethod",
+    "Version": 200
+}

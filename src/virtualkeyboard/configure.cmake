@@ -6,6 +6,8 @@
 set(INPUT_vkb_hunspell "undefined" CACHE STRING "")
 set_property(CACHE INPUT_vkb_hunspell PROPERTY STRINGS undefined no 3rdparty system)
 
+# input vkb-cerence-sdk
+set(INPUT_vkb_cerence_sdk "" CACHE PATH "")
 
 
 #### Libraries
@@ -18,10 +20,11 @@ if((LINUX) OR QT_FIND_ALL_PACKAGES_ALWAYS AND NOT TARGET XCB::XFIXES) # special 
     qt_find_package(XCB COMPONENTS XFIXES PROVIDED_TARGETS XCB::XFIXES MODULE_NAME virtualkeyboard QMAKE_LIB xcb-xfixes)
 endif()
 qt_add_qmake_lib_dependency(xcb-xfixes xcb)
-
+qt_find_package(CerenceHwrAlphabetic PROVIDED_TARGETS Cerence::HWR::Alphabetic MODULE_NAME virtualkeyboard QMAKE_LIB t9write-ucr)
+qt_find_package(CerenceHwrCjk PROVIDED_TARGETS Cerence::HWR::CJK MODULE_NAME virtualkeyboard QMAKE_LIB t9write-cjk)
+qt_find_package(CerenceXt9 PROVIDED_TARGETS Cerence::XT9 MODULE_NAME virtualkeyboard QMAKE_LIB xt9-acktn)
 
 #### Tests
-
 
 
 #### Features
@@ -65,19 +68,59 @@ qt_feature("vkb-sensitive-debug" PRIVATE
     LABEL "Sensitive Debug"
     AUTODETECT OFF
 )
-qt_feature("t9write-alphabetic" PRIVATE
-    LABEL "  Alphabetic"
-    CONDITION VKB_HAVE_T9WRITE_ALPHA
+qt_feature("cerence-sdk" PRIVATE
+    LABEL "Cerence"
+    AUTODETECT CERENCE_HWR_ALPHABETIC_FOUND OR CERENCE_XT9_FOUND
 )
-qt_feature("t9write-cjk" PRIVATE
-    LABEL "  CJK"
-    CONDITION VKB_HAVE_T9WRITE_CJK
-)
-qt_feature("t9write" PRIVATE
-    LABEL "T9Write handwriting"
-    CONDITION QT_FEATURE_t9write_alphabetic OR QT_FEATURE_t9write_cjk
-    ENABLE INPUT_vkb_handwriting STREQUAL 't9write'
+qt_feature("cerence-hwr" PRIVATE
+    LABEL "  Handwriting"
+    CONDITION QT_FEATURE_cerence_hwr_alphabetic OR QT_FEATURE_cerence_hwr_cjk
+    ENABLE INPUT_vkb_handwriting STREQUAL 'cerence-hwr'
     DISABLE INPUT_vkb_handwriting STREQUAL 'no'
+)
+qt_feature("cerence-hwr-alphabetic" PRIVATE
+    LABEL "    Alphabetic"
+    CONDITION QT_FEATURE_cerence_sdk
+    ENABLE INPUT_vkb_handwriting STREQUAL 'cerence-hwr'
+    DISABLE INPUT_vkb_handwriting STREQUAL 'no'
+    AUTODETECT CERENCE_HWR_ALPHABETIC_FOUND
+)
+qt_feature("cerence-hwr-cjk" PRIVATE
+    LABEL "    CJK"
+    CONDITION QT_FEATURE_cerence_sdk
+    ENABLE INPUT_vkb_handwriting STREQUAL 'cerence-hwr'
+    DISABLE INPUT_vkb_handwriting STREQUAL 'no'
+    AUTODETECT CERENCE_HWR_CJK_FOUND
+)
+qt_feature("vkb-bundle-cerence" PUBLIC
+    LABEL "  Bundle resources"
+    AUTODETECT OFF
+)
+qt_feature("vkb-bundle-cerence-hwr" PUBLIC
+    LABEL "    Handwriting"
+    AUTODETECT OFF
+    ENABLE FEATURE_vkb_bundle_cerence
+)
+qt_feature("vkb-bundle-cerence-xt9" PUBLIC
+    LABEL "    XT9"
+    AUTODETECT OFF
+    ENABLE FEATURE_vkb_bundle_cerence
+)
+qt_feature("cerence-xt9" PRIVATE
+    LABEL "  XT9"
+    CONDITION CERENCE_XT9_FOUND
+)
+qt_feature("vkb-cerence-xt9-debug" PUBLIC
+    LABEL "    XT9 Debug"
+    AUTODETECT OFF
+)
+qt_feature("vkb-cerence-xt9-9key-layouts" PUBLIC
+    LABEL "    XT9 9-key layouts"
+    AUTODETECT OFF
+)
+qt_feature("vkb-cerence-static" PUBLIC
+    LABEL "  Static Linking"
+    AUTODETECT OFF
 )
 qt_feature("system-hunspell" PRIVATE
     LABEL "System Hunspell"
@@ -91,10 +134,12 @@ qt_feature("3rdparty-hunspell" PRIVATE
 qt_feature("hunspell" PRIVATE
     LABEL "Hunspell"
     CONDITION QT_FEATURE_3rdparty_hunspell OR QT_FEATURE_system_hunspell
+    DISABLE QT_FEATURE_cerence_xt9
 )
 qt_feature("openwnn" PRIVATE
     LABEL "OpenWnn"
     AUTODETECT ( NOT INPUT_lang_ja_JP STREQUAL 'no' )
+    DISABLE QT_FEATURE_cerence_xt9
 )
 qt_feature("vkb-myscript" PRIVATE
     LABEL "MyScript"
@@ -103,6 +148,7 @@ qt_feature("vkb-myscript" PRIVATE
 qt_feature("pinyin" PRIVATE
     LABEL "libpinyin"
     AUTODETECT ( NOT INPUT_lang_ch_CN STREQUAL 'no' )
+    DISABLE QT_FEATURE_cerence_xt9
 )
 qt_feature("vkb-no-bundle-pinyin" PRIVATE
     LABEL "Disable resource bundle for the pinyin"
@@ -112,6 +158,7 @@ qt_feature("tcime" PRIVATE
     LABEL "Traditional Chinese IME (tcime)"
     AUTODETECT ( NOT INPUT_lang_ch_TW STREQUAL 'no' )
     CONDITION QT_FEATURE_zhuyin OR QT_FEATURE_cangjie
+    DISABLE QT_FEATURE_cerence_xt9
 )
 qt_feature("vkb-no-bundle-tcime" PRIVATE
     LABEL "Disable resource bundle for the tcime"
@@ -120,16 +167,22 @@ qt_feature("vkb-no-bundle-tcime" PRIVATE
 qt_feature("zhuyin" PRIVATE
     LABEL "Zhuyin"
     AUTODETECT ( NOT INPUT_lang_zh_TW STREQUAL 'no' )
+    DISABLE QT_FEATURE_cerence_xt9
 )
 qt_feature("cangjie" PRIVATE
     LABEL "Cangjie"
     AUTODETECT ( NOT INPUT_lang_zh_TW STREQUAL 'no' )
+    DISABLE QT_FEATURE_cerence_xt9
 )
 qt_feature("hangul" PRIVATE
     LABEL "Hangul"
+    AUTODETECT ( NOT INPUT_lang_ko_KR STREQUAL 'no' )
+    DISABLE QT_FEATURE_cerence_xt9
 )
 qt_feature("thai" PRIVATE
     LABEL "Thai"
+    AUTODETECT ( NOT INPUT_lang_th_TH STREQUAL 'no' )
+    DISABLE QT_FEATURE_cerence_xt9
 )
 qt_feature("vkb-lang-ar_AR" PRIVATE
     LABEL "Arabic"
@@ -217,7 +270,7 @@ qt_feature("vkb-lang-it_IT" PRIVATE
 )
 qt_feature("vkb-lang-ja_JP" PRIVATE
     LABEL "Japanese"
-    CONDITION QT_FEATURE_openwnn
+    CONDITION QT_FEATURE_openwnn OR QT_FEATURE_cerence_xt9
 )
 qt_feature("vkb-lang-ko_KR" PRIVATE
     LABEL "Korean"
@@ -277,7 +330,7 @@ qt_feature("vkb-lang-sv_SE" PRIVATE
 )
 qt_feature("vkb-lang-th_TH" PRIVATE
     LABEL "Thai"
-    CONDITION QT_FEATURE_thai
+    CONDITION QT_FEATURE_thai OR QT_FEATURE_cerence_xt9
 )
 qt_feature("vkb-lang-tr_TR" PRIVATE
     LABEL "Turkish"
@@ -294,12 +347,17 @@ qt_feature("vkb-lang-vi_VN" PRIVATE
 qt_feature("vkb-lang-zh_CN" PRIVATE
     LABEL "Simplified Chinese"
     AUTODETECT ( NOT INPUT_lang_zh_CN STREQUAL 'no' )
-    CONDITION QT_FEATURE_pinyin
+    CONDITION QT_FEATURE_pinyin OR QT_FEATURE_cerence_xt9
 )
 qt_feature("vkb-lang-zh_TW" PRIVATE
     LABEL "Traditional Chinese"
     AUTODETECT ( NOT INPUT_lang_zh_TW STREQUAL 'no' )
-    CONDITION QT_FEATURE_tcime OR QT_FEATURE_zhuyin OR QT_FEATURE_cangjie
+    CONDITION QT_FEATURE_tcime OR QT_FEATURE_zhuyin OR QT_FEATURE_cangjie OR QT_FEATURE_cerence_xt9
+)
+qt_feature("vkb-lang-zh_HK" PRIVATE
+    LABEL "HongKong Chinese"
+    AUTODETECT ( NOT INPUT_lang_zh_HK STREQUAL 'no' )
+    CONDITION QT_FEATURE_cerence_xt9
 )
 qt_configure_add_summary_section(NAME "Qt Virtualkeyboard")
 qt_configure_add_summary_entry(ARGS "vkb-desktop")
@@ -307,9 +365,17 @@ qt_configure_add_summary_entry(ARGS "vkb-layouts")
 qt_configure_add_summary_entry(ARGS "vkb-arrow-keynavigation")
 qt_configure_add_summary_entry(ARGS "vkb-retro-style")
 qt_configure_add_summary_entry(ARGS "vkb-sensitive-debug")
-qt_configure_add_summary_entry(ARGS "t9write")
-qt_configure_add_summary_entry(ARGS "t9write-alphabetic")
-qt_configure_add_summary_entry(ARGS "t9write-cjk")
+qt_configure_add_summary_entry(ARGS "cerence-sdk")
+qt_configure_add_summary_entry(ARGS "vkb-cerence-static")
+qt_configure_add_summary_entry(ARGS "cerence-hwr")
+qt_configure_add_summary_entry(ARGS "cerence-hwr-alphabetic")
+qt_configure_add_summary_entry(ARGS "cerence-hwr-cjk")
+qt_configure_add_summary_entry(ARGS "cerence-xt9")
+qt_configure_add_summary_entry(ARGS "vkb-cerence-xt9-debug")
+qt_configure_add_summary_entry(ARGS "vkb-cerence-xt9-9key-layouts")
+qt_configure_add_summary_entry(ARGS "vkb-bundle-cerence")
+qt_configure_add_summary_entry(ARGS "vkb-bundle-cerence-hwr")
+qt_configure_add_summary_entry(ARGS "vkb-bundle-cerence-xt9")
 qt_configure_add_summary_entry(ARGS "hunspell")
 qt_configure_add_summary_entry(ARGS "3rdparty-hunspell")
 qt_configure_add_summary_entry(ARGS "openwnn")
@@ -357,6 +423,7 @@ qt_configure_add_summary_entry(ARGS "vkb-lang-uk_UA")
 qt_configure_add_summary_entry(ARGS "vkb-lang-vi_VN")
 qt_configure_add_summary_entry(ARGS "vkb-lang-zh_CN")
 qt_configure_add_summary_entry(ARGS "vkb-lang-zh_TW")
+qt_configure_add_summary_entry(ARGS "vkb-lang-zh_HK")
 qt_configure_end_summary_section() # end of "Language support enabled for" section
 qt_configure_add_summary_section(NAME "Traditional chinese input methods")
 qt_configure_add_summary_entry(ARGS "zhuyin")
@@ -365,8 +432,8 @@ qt_configure_end_summary_section() # end of "Traditional chinese input methods" 
 qt_configure_end_summary_section() # end of "Qt Virtualkeyboard" section
 qt_configure_add_report_entry(
     TYPE ERROR
-    MESSAGE "T9Write SDK could not be found. For more information, see the documentation in 'Building Qt Virtual Keyboard'."
-    CONDITION INPUT_vkb_handwriting STREQUAL 't9write' AND NOT QT_FEATURE_t9write
+    MESSAGE "Cerence HWR SDK could not be found. For more information, see the documentation in 'Building Qt Virtual Keyboard'."
+    CONDITION INPUT_vkb_handwriting STREQUAL 'cerence-hwr' AND NOT QT_FEATURE_cerence_hwr
 )
 qt_configure_add_report_entry(
     TYPE NOTE
