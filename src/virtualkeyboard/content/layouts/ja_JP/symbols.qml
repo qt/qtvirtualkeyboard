@@ -53,6 +53,16 @@ KeyboardLayoutLoader {
         "→←↑↓↔■□●○",
         "＼『』「」★☆◆◇"
     ]
+    readonly property string inputModeName: {
+        switch (InputContext.inputEngine.inputMode) {
+        case InputEngine.Katakana:
+            return "アイウ"
+        case InputEngine.Hiragana:
+            return "あいう"
+        default:
+            return "ABC"
+        }
+    }
     sourceComponent: {
         switch (page) {
         case 2: return page3
@@ -114,7 +124,7 @@ KeyboardLayoutLoader {
                 keyWeight: 154
                 SymbolModeKey {
                     weight: 217
-                    displayText: "ABC"
+                    displayText: inputModeName
                 }
                 ChangeLanguageKey {
                     weight: 154
@@ -191,7 +201,7 @@ KeyboardLayoutLoader {
                 keyWeight: 154
                 SymbolModeKey {
                     weight: 217
-                    displayText: "ABC"
+                    displayText: inputModeName
                 }
                 ChangeLanguageKey {
                     weight: 154
@@ -268,7 +278,7 @@ KeyboardLayoutLoader {
                 keyWeight: 154
                 SymbolModeKey {
                     weight: 217
-                    displayText: "ABC"
+                    displayText: inputModeName
                 }
                 ChangeLanguageKey {
                     weight: 154
