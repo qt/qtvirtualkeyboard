@@ -25,11 +25,11 @@ qt_internal_add_plugin(QtVirtualKeyboardHangulPlugin
 
 # Resources:
 set(qmake_virtualkeyboard_hangul_layouts_resource_files
-    "virtualkeyboard/content/layouts/ko_KR/dialpad.fallback"
-    "virtualkeyboard/content/layouts/ko_KR/digits.fallback"
-    "virtualkeyboard/content/layouts/ko_KR/main.qml"
-    "virtualkeyboard/content/layouts/ko_KR/numbers.fallback"
-    "virtualkeyboard/content/layouts/ko_KR/symbols.qml"
+    "content/layouts/ko_KR/dialpad.fallback"
+    "content/layouts/ko_KR/digits.fallback"
+    "content/layouts/ko_KR/main.qml"
+    "content/layouts/ko_KR/numbers.fallback"
+    "content/layouts/ko_KR/symbols.qml"
 )
 
 qt_internal_add_resource(QtVirtualKeyboardHangulPlugin "qmake_virtualkeyboard_hangul_layouts"
