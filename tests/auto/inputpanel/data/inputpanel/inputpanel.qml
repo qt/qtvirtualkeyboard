@@ -461,7 +461,7 @@ InputPanel {
 
     function multiLayoutKeyActionHelper(key, keyActionOnCurrentLayoutCb) {
         if (!keyboardLayoutLoader.item) {
-            console.warn("Key not found \\u%1 (keyboard layout not loaded)".arg(key.charCodeAt(0).toString(16)))
+            console.warn("Key not found \\u%1 (keyboard layout not loaded)".arg(typeof key == "string" ? key.charCodeAt(0).toString(16) : key.toString(16)))
             return false
         }
         var success = keyActionOnCurrentLayoutCb(key)
@@ -504,7 +504,7 @@ InputPanel {
             success = keyActionOnCurrentLayoutCb(key)
         }
         if (!success)
-            console.warn("Key not found \\u%1".arg(key.charCodeAt(0).toString(16)))
+            console.warn("Key not found \\u%1".arg(typeof key == "string" ? key.charCodeAt(0).toString(16) : key.toString(16)))
         return success
     }
 
