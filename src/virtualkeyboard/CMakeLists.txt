@@ -1,7 +1,7 @@
 # Generated from virtualkeyboard.pro.
 
 # special case begin
-set(VKB_LAYOUTS_BASE "${CMAKE_CURRENT_SOURCE_DIR}/.." CACHE STRING "" FORCE)
+set(VKB_LAYOUTS_BASE "${CMAKE_CURRENT_SOURCE_DIR}" CACHE STRING "" FORCE)
 set(VKB_LAYOUTS_PREFIX "/QtQuick/VirtualKeyboard" CACHE STRING "" FORCE)
 set(VKB_INSTALL_DATA "${QT_INSTALL_DIR}/qtvirtualkeyboard" CACHE STRING "" FORCE)
 

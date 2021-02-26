@@ -26,11 +26,11 @@ qt_internal_add_plugin(QtVirtualKeyboardTCImePlugin
 
 # Resources:
 set(qmake_virtualkeyboard_tcime_layouts_resource_files
-    "virtualkeyboard/content/layouts/zh_TW/dialpad.fallback"
-    "virtualkeyboard/content/layouts/zh_TW/digits.fallback"
-    "virtualkeyboard/content/layouts/zh_TW/main.qml"
-    "virtualkeyboard/content/layouts/zh_TW/numbers.fallback"
-    "virtualkeyboard/content/layouts/zh_TW/symbols.qml"
+    "content/layouts/zh_TW/dialpad.fallback"
+    "content/layouts/zh_TW/digits.fallback"
+    "content/layouts/zh_TW/main.qml"
+    "content/layouts/zh_TW/numbers.fallback"
+    "content/layouts/zh_TW/symbols.qml"
 )
 
 qt_internal_add_resource(QtVirtualKeyboardTCImePlugin "qmake_virtualkeyboard_tcime_layouts"

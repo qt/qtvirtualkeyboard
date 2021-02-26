@@ -31,259 +31,259 @@ qt_internal_add_plugin(QtVirtualKeyboardMyScriptPlugin
 
 # Resources:
 set(qmake_virtualkeyboard_myscript_layouts_resource_files
-    "virtualkeyboard/content/layouts/fallback/handwriting.qml"
+    "content/layouts/fallback/handwriting.qml"
 )
 
 # special case begin
 if (QT_FEATURE_vkb_lang_en_GB)
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/en_GB/handwriting.fallback"
+        "content/layouts/en_GB/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_en_US)
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/en_US/handwriting.fallback"
+        "content/layouts/en_US/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_ar_AR
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/ar_AR/handwriting.qml"
+        "content/layouts/ar_AR/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_bg_BG)
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/bg_BG/handwriting.qml"
+        "content/layouts/bg_BG/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_cs_CZ)
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/cs_CZ/handwriting.qml"
+        "content/layouts/cs_CZ/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_da_DK)
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/da_DK/handwriting.fallback"
+        "content/layouts/da_DK/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_de_DE)
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/de_DE/handwriting.fallback"
+        "content/layouts/de_DE/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_el_GR)
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/el_GR/handwriting.qml"
+        "content/layouts/el_GR/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_es_ES
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/es_ES/handwriting.qml"
+        "content/layouts/es_ES/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_es_MX
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/es_MX/handwriting.qml"
+        "content/layouts/es_MX/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_et_EE)
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/et_EE/handwriting.fallback"
+        "content/layouts/et_EE/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_fa_FA
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/fa_FA/handwriting.qml"
+        "content/layouts/fa_FA/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_fi_FI
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/fi_FI/handwriting.fallback"
+        "content/layouts/fi_FI/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_fr_FR
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/fr_FR/handwriting.fallback"
+        "content/layouts/fr_FR/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_fr_CA
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/fr_CA/handwriting.fallback"
+        "content/layouts/fr_CA/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_he_IL
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/he_IL/handwriting.qml"
+        "content/layouts/he_IL/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_hi_IN
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/he_IN/handwriting.qml"
+        "content/layouts/he_IN/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_hr_HR
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/hr_HR/handwriting.qml"
+        "content/layouts/hr_HR/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_hu_HU
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/hu_HU/handwriting.qml"
+        "content/layouts/hu_HU/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_id_ID
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/id_ID/handwriting.fallback"
+        "content/layouts/id_ID/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_it_IT
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/it_IT/handwriting.fallback"
+        "content/layouts/it_IT/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_ja_JP
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/ja_JP/handwriting.qml"
+        "content/layouts/ja_JP/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_ko_KR
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/ko_KR/handwriting.qml"
+        "content/layouts/ko_KR/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_ms_MY
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/ms_MY/handwriting.fallback"
+        "content/layouts/ms_MY/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_nb_NO
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/nb_NO/handwriting.fallback"
+        "content/layouts/nb_NO/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_nl_NL
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/nl_NL/handwriting.fallback"
+        "content/layouts/nl_NL/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_pl_PL
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/pl_PL/handwriting.fallback"
+        "content/layouts/pl_PL/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_pt_BR
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/pt_BR/handwriting.fallback"
+        "content/layouts/pt_BR/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_pt_PT
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/pt_PT/handwriting.fallback"
+        "content/layouts/pt_PT/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_ro_RO
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/ro_RO/handwriting.qml"
+        "content/layouts/ro_RO/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_ru_RU
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/ru_RU/handwriting.fallback"
+        "content/layouts/ru_RU/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_sk_SK
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/sk_SK/handwriting.fallback"
+        "content/layouts/sk_SK/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_sl_SI
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/sl_SI/handwriting.fallback"
+        "content/layouts/sl_SI/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_sq_AL
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/sq_AL/handwriting.fallback"
+        "content/layouts/sq_AL/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_sr_SP
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/sr_SP/handwriting.qml"
+        "content/layouts/sr_SP/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_sv_SE
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/sv_SE/handwriting.fallback"
+        "content/layouts/sv_SE/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_th_TH
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/th_TH/handwriting.fallback"
+        "content/layouts/th_TH/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_tr_TR
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/tr_TR/handwriting.fallback"
+        "content/layouts/tr_TR/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_uk_UA
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/uk_UA/handwriting.fallback"
+        "content/layouts/uk_UA/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_vi_VN
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/vi_VN/handwriting.fallback"
+        "content/layouts/vi_VN/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_zh_CN
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/zh_CN/handwriting.qml"
+        "content/layouts/zh_CN/handwriting.qml"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_zh_TW
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
-        "virtualkeyboard/content/layouts/zh_TW/handwriting.qml"
+        "content/layouts/zh_TW/handwriting.qml"
     )
 endif()
 
