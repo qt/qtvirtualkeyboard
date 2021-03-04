@@ -13,7 +13,9 @@
             "vkb-zhuyin": { "type": "boolean", "value": "zhuyin" },
             "vkb-hunspell": { "type": "enum", "values": [ "no", "3rdparty", "system" ] },
             "vkb-handwriting": { "type": "optionalString", "values": [ "yes", "no", "t9write" ] },
-            "vkb-style": { "type": "string", "values": [ "standard", "retro" , "none"] }
+            "vkb-style": { "type": "string", "values": [ "standard", "retro" , "none"] },
+            "vkb-no-bundle-pinyin": "boolean",
+            "vkb-no-bundle-tcime": "boolean"
         }
     },
 
@@ -158,10 +160,20 @@
             "autoDetect": "input.lang-ch_CN != 'no'",
             "output": [ "privateFeature" ]
         },
+        "vkb-no-bundle-pinyin": {
+            "label": "Disable resource bundle for the pinyin",
+            "autoDetect": false,
+            "output": [ "privateFeature" ]
+        },
         "tcime": {
             "label": "Traditional Chinese IME (tcime)",
             "autoDetect": "input.lang-ch_TW != 'no'",
             "condition": "features.zhuyin || features.cangjie",
+            "output": [ "privateFeature" ]
+        },
+        "vkb-no-bundle-tcime": {
+            "label": "Disable resource bundle for the tcime",
+            "autoDetect": false,
             "output": [ "privateFeature" ]
         },
         "zhuyin": {

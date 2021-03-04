@@ -104,10 +104,18 @@ qt_feature("pinyin" PRIVATE
     LABEL "libpinyin"
     AUTODETECT ( NOT INPUT_lang_ch_CN STREQUAL 'no' )
 )
+qt_feature("vkb-no-bundle-pinyin" PRIVATE
+    LABEL "Disable resource bundle for the pinyin"
+    AUTODETECT OFF
+)
 qt_feature("tcime" PRIVATE
     LABEL "Traditional Chinese IME (tcime)"
     AUTODETECT ( NOT INPUT_lang_ch_TW STREQUAL 'no' )
     CONDITION QT_FEATURE_zhuyin OR QT_FEATURE_cangjie
+)
+qt_feature("vkb-no-bundle-tcime" PRIVATE
+    LABEL "Disable resource bundle for the tcime"
+    AUTODETECT OFF
 )
 qt_feature("zhuyin" PRIVATE
     LABEL "Zhuyin"
