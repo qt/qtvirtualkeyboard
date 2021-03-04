@@ -187,13 +187,13 @@ qmake $SRCDIR -- [options]
         system, or if it is built using the local project file. Integration can be
         disabled using this option.
 \row
-    \li \e no-bundle-pinyin
+    \li \e vkb-no-bundle-pinyin
     \li \e n/a
     \li Disables bundling of pinyin resources
     \li This option excludes pinyin resources from the plugin binary. This option may be
         used to reduce the plugin binary size.
 \row
-    \li \e no-bundle-tcime
+    \li \e vkb-no-bundle-tcime
     \li \e n/a
     \li Disables bundling of tcime resources
     \li This option excludes tcime resources from the plugin binary. This option may be

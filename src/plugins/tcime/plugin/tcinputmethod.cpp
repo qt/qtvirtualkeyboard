@@ -378,9 +378,9 @@ bool TCInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEng
         if (d->cangjieDictionary.isEmpty()) {
             QString cangjieDictionary(qEnvironmentVariable("QT_VIRTUALKEYBOARD_CANGJIE_DICTIONARY"));
             if (!QFileInfo::exists(cangjieDictionary)) {
-                cangjieDictionary = QLatin1String(":///QtQuick/VirtualKeyboard/3rdparty/tcime/data/qt/dict_cangjie.dat");
+                cangjieDictionary = QLibraryInfo::path(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/tcime/dict_cangjie.dat");
                 if (!QFileInfo::exists(cangjieDictionary))
-                    cangjieDictionary = QLibraryInfo::path(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/tcime/dict_cangjie.dat");
+                    cangjieDictionary = QLatin1String(":///QtQuick/VirtualKeyboard/3rdparty/tcime/data/qt/dict_cangjie.dat");
             }
             d->cangjieDictionary.load(cangjieDictionary);
         }
@@ -392,9 +392,9 @@ bool TCInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEng
         if (d->zhuyinDictionary.isEmpty()) {
             QString zhuyinDictionary(qEnvironmentVariable("QT_VIRTUALKEYBOARD_ZHUYIN_DICTIONARY"));
             if (!QFileInfo::exists(zhuyinDictionary)) {
-                zhuyinDictionary = QLatin1String(":///QtQuick/VirtualKeyboard/3rdparty/tcime/data/qt/dict_zhuyin.dat");
+                zhuyinDictionary = QLibraryInfo::path(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/tcime/dict_zhuyin.dat");
                 if (!QFileInfo::exists(zhuyinDictionary))
-                    zhuyinDictionary = QLibraryInfo::path(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/tcime/dict_zhuyin.dat");
+                    zhuyinDictionary = QLatin1String(":///QtQuick/VirtualKeyboard/3rdparty/tcime/data/qt/dict_zhuyin.dat");
             }
             d->zhuyinDictionary.load(zhuyinDictionary);
         }
@@ -405,9 +405,9 @@ bool TCInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInputEng
     if (result && d->phraseDictionary.isEmpty()) {
         QString phraseDictionary(qEnvironmentVariable("QT_VIRTUALKEYBOARD_PHRASE_DICTIONARY"));
         if (!QFileInfo::exists(phraseDictionary)) {
-            phraseDictionary = QLatin1String(":///QtQuick/VirtualKeyboard/3rdparty/tcime/data/qt/dict_phrases.dat");
+            phraseDictionary = QLibraryInfo::path(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/tcime/dict_phrases.dat");
             if (!QFileInfo::exists(phraseDictionary))
-                phraseDictionary = QLibraryInfo::path(QLibraryInfo::DataPath) + QLatin1String("/qtvirtualkeyboard/tcime/dict_phrases.dat");
+                phraseDictionary = QLatin1String(":///QtQuick/VirtualKeyboard/3rdparty/tcime/data/qt/dict_phrases.dat");
         }
         d->phraseDictionary.load(phraseDictionary);
     }

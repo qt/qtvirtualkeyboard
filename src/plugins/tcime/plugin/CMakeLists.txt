@@ -49,19 +49,28 @@ qt_internal_add_resource(QtVirtualKeyboardTCImePlugin "qmake_virtualkeyboard_tci
 ## Scopes:
 #####################################################################
 
-if(NOT no-bundle-tcime)
+if (NOT FEATURE_vkb_no_bundle_tcime)
     # Resources:
     set(qmake_tcime_resource_files
-        "../3rdparty/tcime/data/qt/dict_phrases.dat"
+        "3rdparty/tcime/data/qt/dict_cangjie.dat"
+        "3rdparty/tcime/data/qt/dict_phrases.dat"
+        "3rdparty/tcime/data/qt/dict_zhuyin.dat"
     )
 
     qt_internal_add_resource(QtVirtualKeyboardTCImePlugin "qmake_tcime"
         PREFIX
             "/QtQuick/VirtualKeyboard"
         BASE
-            "${CMAKE_CURRENT_SOURCE_DIR}" #special case
+            "${CMAKE_CURRENT_SOURCE_DIR}/.." #special case
         FILES
             ${qmake_tcime_resource_files}
+    )
+else()
+    qt_copy_or_install(
+        DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/tcime/data/qt/"
+        DESTINATION "${VKB_INSTALL_DATA}/tcime"
+        FILES_MATCHING
+        PATTERN "*.dat"
     )
 endif()
 

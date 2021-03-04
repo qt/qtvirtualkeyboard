@@ -50,19 +50,26 @@ qt_internal_add_resource(QtVirtualKeyboardPinyinPlugin "qmake_virtualkeyboard_pi
 ## Scopes:
 #####################################################################
 
-if(NOT no-bundle-pinyin)
+if (NOT FEATURE_vkb_no_bundle_pinyin)
     # Resources:
     set(qmake_pinyin_resource_files
-        "../3rdparty/pinyin/data/dict_pinyin.dat"
+        "3rdparty/pinyin/data/dict_pinyin.dat"
     )
 
     qt_internal_add_resource(QtVirtualKeyboardPinyinPlugin "qmake_pinyin"
         PREFIX
             "/QtQuick/VirtualKeyboard"
         BASE
-            "${CMAKE_CURRENT_SOURCE_DIR}" #special case
+            "${CMAKE_CURRENT_SOURCE_DIR}/.." #special case
         FILES
             ${qmake_pinyin_resource_files}
+    )
+else()
+    qt_copy_or_install(
+        DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/pinyin/data/"
+        DESTINATION "${VKB_INSTALL_DATA}/pinyin"
+        FILES_MATCHING
+        PATTERN "*.dat"
     )
 endif()
 
