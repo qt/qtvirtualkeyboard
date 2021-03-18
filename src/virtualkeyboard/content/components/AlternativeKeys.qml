@@ -86,7 +86,7 @@ Item {
     onClicked: {
         if (active && listView.currentIndex >= 0 && listView.currentIndex < listView.model.count) {
             var activeKey = listView.model.get(listView.currentIndex)
-            InputContext.inputEngine.virtualKeyClick(keyCode, activeKey.text,
+            InputContext.inputEngine.virtualKeyClick(keyCode, activeKey.data,
                                                      InputContext.uppercase ? Qt.ShiftModifier : 0)
         }
     }
@@ -94,9 +94,13 @@ Item {
     function open(key, originX, originY) {
         keyCode = key.key
         var alternativeKeys = key.effectiveAlternativeKeys
-        if (alternativeKeys.length > 0) {
+        var displayAlternativeKeys = key.displayAlternativeKeys
+        if (alternativeKeys.length > 0 && displayAlternativeKeys.length === alternativeKeys.length) {
             for (var i = 0; i < alternativeKeys.length; i++) {
-                listModel.append({ "text": InputContext.uppercase ? alternativeKeys[i].toUpperCase() : alternativeKeys[i] })
+                listModel.append({
+                                     "text": InputContext.uppercase ? displayAlternativeKeys[i].toUpperCase() : displayAlternativeKeys[i],
+                                     "data": InputContext.uppercase ? alternativeKeys[i].toUpperCase() : alternativeKeys[i]
+                                 })
             }
             listView.width = keyboard.style.alternateKeysListItemWidth * listModel.count
             listView.forceLayout()

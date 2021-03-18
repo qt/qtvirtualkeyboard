@@ -159,6 +159,13 @@ Item {
         return index > 0 && (index + 1) == alternativeKeys.length ? index - 1 : index
     }
 
+    /*! \since QtQuick.VirtualKeyboard 6.2
+
+        This property allows overriding the list of key strings presented to the user in the
+        alternative keys view.
+    */
+    property var displayAlternativeKeys: effectiveAlternativeKeys
+
     /*! Sets the key code for input method processing.
 
         The default is Qt.Key_unknown.
