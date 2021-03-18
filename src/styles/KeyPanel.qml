@@ -82,7 +82,8 @@ Item {
             implicitHeight: keyPanelInfoText.height + 4
             Text {
                 id: keyPanelInfoText
-                text: root.parent.width + "x" + root.parent.height
+                property point pos: keyboard.keyboardLayoutLoader.item.mapFromItem(root.parent, 0, 0)
+                text: "(%1,%2)\n%3x%4\nweight: %5".arg(pos.x).arg(pos.y).arg(root.parent.width).arg(root.parent.height).arg(root.parent.control.weight)
                 font.pixelSize: 12
                 color: "white"
                 anchors.centerIn: parent
