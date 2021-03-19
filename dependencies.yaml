@@ -5,6 +5,3 @@ dependencies:
   ../qtsvg:
     ref: ec9ce89f3006e2d23af9af465de4d026f771b747
     required: true
-  ../qttools:
-    ref: d12847bb3d7fd147a1c44396b5b4ca7cbd53d86b
-    required: false
