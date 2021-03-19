@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2021 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -29,90 +29,80 @@
 
 import QtQuick
 import QtQuick.VirtualKeyboard
+import QtQuick.Layouts
 
 KeyboardLayout {
     inputMode: InputEngine.InputMode.Latin
     keyWeight: 160
+    readonly property real normalKeyWidth: normalKey.width
+    readonly property real functionKeyWidth: mapFromItem(normalKey, normalKey.width / 2, 0).x
     KeyboardRow {
         Key {
             key: Qt.Key_Q
             text: "q"
         }
         Key {
+            id: normalKey
             key: Qt.Key_W
             text: "w"
         }
         Key {
             key: Qt.Key_E
             text: "e"
-            alternativeKeys: "êeëèé"
         }
         Key {
             key: Qt.Key_R
             text: "r"
-            alternativeKeys: "ŕrř"
         }
         Key {
             key: Qt.Key_T
             text: "t"
-            alternativeKeys: "țţtŧť"
+            alternativeKeys: "tț"
         }
         Key {
             key: Qt.Key_Y
             text: "y"
-            alternativeKeys: "ÿyýŷ"
         }
         Key {
             key: Qt.Key_U
             text: "u"
-            alternativeKeys: "űūũûüuùú"
         }
         Key {
             key: Qt.Key_I
             text: "i"
-            alternativeKeys: "îïīĩiìí"
+            alternativeKeys: "iî"
         }
         Key {
             key: Qt.Key_O
             text: "o"
-            alternativeKeys: "œøõôöòóo"
         }
         Key {
             key: Qt.Key_P
             text: "p"
         }
-        Key {
-            key: 0x102
-            text: "ă"
-        }
-        Key {
-            key: Qt.Key_Icircumflex
-            text: "î"
-        }
-        Key {
-            key: Qt.Key_Acircumflex
-            text: "â"
-        }
-        BackspaceKey {}
     }
     KeyboardRow {
-        FillerKey {
-            weight: 56
-        }
-        Key {
-            key: Qt.Key_A
-            text: "a"
-            alternativeKeys: "aäåãăâàá"
+        KeyboardRow {
+            Layout.preferredWidth: functionKeyWidth
+            Layout.fillWidth: false
+            FillerKey {
+            }
+            Key {
+                key: Qt.Key_A
+                text: "a"
+                alternativeKeys: "aâă"
+                weight: normalKeyWidth
+                Layout.fillWidth: false
+            }
         }
         Key {
             key: Qt.Key_S
             text: "s"
-            alternativeKeys: "șšsşś"
+            alternativeKeys: "sș"
         }
         Key {
             key: Qt.Key_D
             text: "d"
-            alternativeKeys: "dđď"
         }
         Key {
             key: Qt.Key_F
@@ -121,7 +111,6 @@ KeyboardLayout {
         Key {
             key: Qt.Key_G
             text: "g"
-            alternativeKeys: "ġgģĝğ"
         }
         Key {
             key: Qt.Key_H
@@ -135,30 +124,27 @@ KeyboardLayout {
             key: Qt.Key_K
             text: "k"
         }
-        Key {
-            key: Qt.Key_L
-            text: "l"
-            alternativeKeys: "ĺŀłļľl"
-        }
-        Key {
-            key: 0x218
-            text: "ș"
-        }
-        Key {
-            key: 0x21a
-            text: "ț"
-        }
-        EnterKey {
-            weight: 283
+        KeyboardRow {
+            Layout.preferredWidth: functionKeyWidth
+            Layout.fillWidth: false
+            Key {
+                key: Qt.Key_L
+                text: "l"
+                weight: normalKeyWidth
+                Layout.fillWidth: false
+            }
+            FillerKey {
+            }
         }
     }
     KeyboardRow {
-        keyWeight: 156
-        ShiftKey {}
+        ShiftKey {
+            weight: functionKeyWidth
+            Layout.fillWidth: false
+        }
         Key {
             key: Qt.Key_Z
             text: "z"
-            alternativeKeys: "zžż"
         }
         Key {
             key: Qt.Key_X
@@ -167,7 +153,6 @@ KeyboardLayout {
         Key {
             key: Qt.Key_C
             text: "c"
-            alternativeKeys: "çcċčć"
         }
         Key {
             key: Qt.Key_V
@@ -180,50 +165,45 @@ KeyboardLayout {
         Key {
             key: Qt.Key_N
             text: "n"
-            alternativeKeys: "ņńnň"
         }
         Key {
             key: Qt.Key_M
             text: "m"
         }
-        Key {
-            key: Qt.Key_Comma
-            text: ","
-        }
-        Key {
-            key: Qt.Key_Period
-            text: "."
-        }
-        ShiftKey {
-            weight: 204
+        BackspaceKey {
+            weight: functionKeyWidth
+            Layout.fillWidth: false
         }
     }
     KeyboardRow {
-        keyWeight: 154
         SymbolModeKey {
-            weight: 217
+            weight: functionKeyWidth
+            Layout.fillWidth: false
         }
-        ChangeLanguageKey {
-            weight: 154
-        }
-        HandwritingModeKey {
-            weight: 154
+        Key {
+            key: Qt.Key_Comma
+            weight: normalKeyWidth
+            Layout.fillWidth: false
+            text: ","
+            smallText: "\u2699"
+            smallTextVisible: true
+            highlighted: true
         }
         SpaceKey {
-            weight: 864
         }
         Key {
-            key: Qt.Key_Minus
-            text: "-"
-            alternativeKeys: [ "\"", "'" ]
+            key: Qt.Key_Period
+            weight: normalKeyWidth
+            Layout.fillWidth: false
+            text: "."
+            alternativeKeys: "!.?"
+            smallText: "!?"
+            smallTextVisible: true
+            highlighted: true
         }
-        Key {
-            key: 0xE000
-            text: ":-)"
-            alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-        }
-        HideKeyboardKey {
-            weight: 204
+        EnterKey {
+            weight: functionKeyWidth
+            Layout.fillWidth: false
         }
     }
 }

@@ -28,6 +28,7 @@
 ****************************************************************************/
 
 import QtQuick
+import QtQuick.Layouts
 import QtQuick.VirtualKeyboard
 import QtQuick.VirtualKeyboard.Styles
 
@@ -35,31 +36,65 @@ KeyboardStyle {
     id: currentStyle
     readonly property bool compactSelectionList: [InputEngine.InputMode.Pinyin, InputEngine.InputMode.Cangjie, InputEngine.InputMode.Zhuyin].indexOf(InputContext.inputEngine.inputMode) !== -1
     readonly property string fontFamily: "Sans"
-    readonly property real keyBackgroundMargin: Math.round(13 * scaleHint)
-    readonly property real keyContentMargin: Math.round(45 * scaleHint)
-    readonly property real keyIconScale: scaleHint * 0.6
+    readonly property real keyBackgroundMargin: Math.round(8 * scaleHint)
+    readonly property real keyContentMargin: Math.round(40 * scaleHint)
+    readonly property real keyIconScale: scaleHint * 0.8
     readonly property string resourcePrefix: "qrc:/QtQuick/VirtualKeyboard/content/styles/default/"
 
     readonly property string inputLocale: InputContext.locale
-    property color inputLocaleIndicatorColor: "white"
+    property color primaryColor: "#263238"
+    property color primaryLightColor: "#4f5b62"
+    property color primaryDarkColor: "#000a12"
+    property color textOnPrimaryColor: "#ffffff"
+    property color secondaryColor: "#01579b"
+    property color secondaryLightColor: "#4f83cc"
+    property color secondaryDarkColor: "#002f6c"
+    property color textOnSecondaryColor: "#ffffff"
+
+    property color keyboardBackgroundColor: primaryColor
+    property color normalKeyBackgroundColor: primaryDarkColor
+    property color highlightedKeyBackgroundColor: primaryLightColor
+    property color capsLockKeyAccentColor: secondaryColor
+    property color modeKeyAccentColor: textOnPrimaryColor
+    property color keyTextColor: textOnPrimaryColor
+    property color keySmallTextColor: textOnPrimaryColor
+    property color popupBackgroundColor: secondaryColor
+    property color popupBorderColor: secondaryLightColor
+    property color popupTextColor: textOnSecondaryColor
+    property color popupHighlightColor: secondaryLightColor
+    property color selectionListTextColor: textOnPrimaryColor
+    property color selectionListSeparatorColor: primaryLightColor
+    property color selectionListBackgroundColor: primaryColor
+    property color navigationHighlightColor: "yellow"
+
+    property real inputLocaleIndicatorOpacity: 1.0
     property Timer inputLocaleIndicatorHighlightTimer: Timer {
         interval: 1000
-        onTriggered: inputLocaleIndicatorColor = "gray"
+        onTriggered: inputLocaleIndicatorOpacity = 0.5
     }
     onInputLocaleChanged: {
-        inputLocaleIndicatorColor = "white"
+        inputLocaleIndicatorOpacity = 1.0
         inputLocaleIndicatorHighlightTimer.restart()
+    }
+
+    property Component component_settingsIcon: Component {
+        Image {
+            sourceSize.width: 80 * keyIconScale
+            sourceSize.height: 80 * keyIconScale
+            smooth: false
+            source: resourcePrefix + "images/settings-fff.svg"
+        }
     }
 
     keyboardDesignWidth: 2560
     keyboardDesignHeight: 800
-    keyboardRelativeLeftMargin: 114 / keyboardDesignWidth
-    keyboardRelativeRightMargin: 114 / keyboardDesignWidth
-    keyboardRelativeTopMargin: 13 / keyboardDesignHeight
-    keyboardRelativeBottomMargin: 86 / keyboardDesignHeight
+    keyboardRelativeLeftMargin: 6 / keyboardDesignWidth
+    keyboardRelativeRightMargin: 6 / keyboardDesignWidth
+    keyboardRelativeTopMargin: 6 / keyboardDesignHeight
+    keyboardRelativeBottomMargin: 6 / keyboardDesignHeight
 
     keyboardBackground: Rectangle {
-        color: "black"
+        color: keyboardBackgroundColor
     }
 
     keyPanel: KeyPanel {
@@ -67,30 +102,36 @@ KeyboardStyle {
         Rectangle {
             id: keyBackground
             radius: 5
-            color: "#383533"
+            color: control && control.highlighted ? highlightedKeyBackgroundColor : normalKeyBackgroundColor
             anchors.fill: keyPanel
             anchors.margins: keyBackgroundMargin
             Text {
                 id: keySmallText
                 text: control.smallText
                 visible: control.smallTextVisible
-                color: "gray"
+                color: keySmallTextColor
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.margins: keyContentMargin / 3
                 font {
                     family: fontFamily
                     weight: Font.Normal
-                    pixelSize: 38 * scaleHint
+                    pixelSize: 60 * scaleHint
                     capitalization: control.uppercased ? Font.AllUppercase : Font.MixedCase
                 }
+            }
+            Loader {
+                id: loader_settingsIcon
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.margins: keyContentMargin / 3
             }
             Text {
                 id: keyText
                 text: control.displayText
-                color: "white"
+                color: keyTextColor
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
+                verticalAlignment: control.displayText.length > 1 ? Text.AlignVCenter : Text.AlignBottom
                 anchors.fill: parent
                 anchors.leftMargin: keyContentMargin
                 anchors.topMargin: keyContentMargin
@@ -99,10 +140,23 @@ KeyboardStyle {
                 font {
                     family: fontFamily
                     weight: Font.Normal
-                    pixelSize: 52 * scaleHint
+                    pixelSize: 60 * scaleHint
                     capitalization: control.uppercased ? Font.AllUppercase : Font.MixedCase
                 }
             }
+            states: [
+                State {
+                    when: control.smallText === "\u2699"
+                    PropertyChanges {
+                        target: keySmallText
+                        visible: false
+                    }
+                    PropertyChanges {
+                        target: loader_settingsIcon
+                        sourceComponent: component_settingsIcon
+                    }
+                }
+            ]
         }
         states: [
             State {
@@ -137,16 +191,15 @@ KeyboardStyle {
         Rectangle {
             id: backspaceKeyBackground
             radius: 5
-            color: "#23211E"
+            color: control && control.highlighted ? highlightedKeyBackgroundColor : normalKeyBackgroundColor
             anchors.fill: backspaceKeyPanel
             anchors.margins: keyBackgroundMargin
             Image {
                 id: backspaceKeyIcon
                 anchors.centerIn: parent
-                sourceSize.width: 159 * keyIconScale
                 sourceSize.height: 88 * keyIconScale
                 smooth: false
-                source: resourcePrefix + "images/backspace-868482.svg"
+                source: resourcePrefix + "images/backspace-fff.svg"
             }
         }
         states: [
@@ -182,16 +235,15 @@ KeyboardStyle {
         Rectangle {
             id: languageKeyBackground
             radius: 5
-            color: "#35322f"
+            color: control && control.highlighted ? highlightedKeyBackgroundColor : normalKeyBackgroundColor
             anchors.fill: languageKeyPanel
             anchors.margins: keyBackgroundMargin
             Image {
                 id: languageKeyIcon
                 anchors.centerIn: parent
-                sourceSize.width: 144 * keyIconScale
-                sourceSize.height: 144 * keyIconScale
+                sourceSize.height: 127 * keyIconScale
                 smooth: false
-                source: resourcePrefix + "images/globe-868482.svg"
+                source: resourcePrefix + "images/globe-fff.svg"
             }
         }
         states: [
@@ -227,7 +279,7 @@ KeyboardStyle {
         Rectangle {
             id: enterKeyBackground
             radius: 5
-            color: "#1e1b18"
+            color: control && control.highlighted ? highlightedKeyBackgroundColor : normalKeyBackgroundColor
             anchors.fill: enterKeyPanel
             anchors.margins: keyBackgroundMargin
             Image {
@@ -247,7 +299,6 @@ KeyboardStyle {
                         return Qt.size(211, 80)
                     }
                 }
-                sourceSize.width: enterKeyIconSize.width * keyIconScale
                 sourceSize.height: enterKeyIconSize.height * keyIconScale
                 smooth: false
                 source: {
@@ -256,11 +307,11 @@ KeyboardStyle {
                     case EnterKeyAction.Send:
                     case EnterKeyAction.Next:
                     case EnterKeyAction.Done:
-                        return resourcePrefix + "images/check-868482.svg"
+                        return resourcePrefix + "images/check-fff.svg"
                     case EnterKeyAction.Search:
-                        return resourcePrefix + "images/search-868482.svg"
+                        return resourcePrefix + "images/search-fff.svg"
                     default:
-                        return resourcePrefix + "images/enter-868482.svg"
+                        return resourcePrefix + "images/enter-fff.svg"
                     }
                 }
             }
@@ -272,11 +323,11 @@ KeyboardStyle {
                 fontSizeMode: Text.HorizontalFit
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                color: "#80c342"
+                color: keyTextColor
                 font {
                     family: fontFamily
                     weight: Font.Normal
-                    pixelSize: 44 * scaleHint
+                    pixelSize: 50 * scaleHint
                     capitalization: Font.AllUppercase
                 }
                 anchors.fill: parent
@@ -324,16 +375,15 @@ KeyboardStyle {
         Rectangle {
             id: hideKeyBackground
             radius: 5
-            color: "#1e1b18"
+            color: control && control.highlighted ? highlightedKeyBackgroundColor : normalKeyBackgroundColor
             anchors.fill: hideKeyPanel
             anchors.margins: keyBackgroundMargin
             Image {
                 id: hideKeyIcon
                 anchors.centerIn: parent
-                sourceSize.width: 144 * keyIconScale
                 sourceSize.height: 127 * keyIconScale
                 smooth: false
-                source: resourcePrefix + "images/hidekeyboard-868482.svg"
+                source: resourcePrefix + "images/hidekeyboard-fff.svg"
             }
         }
         states: [
@@ -369,16 +419,15 @@ KeyboardStyle {
         Rectangle {
             id: shiftKeyBackground
             radius: 5
-            color: "#1e1b18"
+            color: control && control.highlighted ? highlightedKeyBackgroundColor : normalKeyBackgroundColor
             anchors.fill: shiftKeyPanel
             anchors.margins: keyBackgroundMargin
             Image {
                 id: shiftKeyIcon
                 anchors.centerIn: parent
-                sourceSize.width: 144 * keyIconScale
                 sourceSize.height: 134 * keyIconScale
                 smooth: false
-                source: resourcePrefix + "images/shift-868482.svg"
+                source: resourcePrefix + "images/shift-fff.svg"
             }
             states: [
                 State {
@@ -386,7 +435,7 @@ KeyboardStyle {
                     when: InputContext.capsLockActive
                     PropertyChanges {
                         target: shiftKeyBackground
-                        color: "#5a892e"
+                        color: capsLockKeyAccentColor
                     }
                     PropertyChanges {
                         target: shiftKeyIcon
@@ -436,19 +485,20 @@ KeyboardStyle {
         Rectangle {
             id: spaceKeyBackground
             radius: 5
-            color: "#35322f"
+            color: control && control.highlighted ? highlightedKeyBackgroundColor : normalKeyBackgroundColor
             anchors.fill: spaceKeyPanel
             anchors.margins: keyBackgroundMargin
             Text {
                 id: spaceKeyText
                 text: Qt.locale(InputContext.locale).nativeLanguageName
-                color: currentStyle.inputLocaleIndicatorColor
-                Behavior on color { PropertyAnimation { duration: 250 } }
+                color: keyTextColor
+                opacity: inputLocaleIndicatorOpacity
+                Behavior on opacity { PropertyAnimation { duration: 250 } }
                 anchors.centerIn: parent
                 font {
                     family: fontFamily
                     weight: Font.Normal
-                    pixelSize: 48 * scaleHint
+                    pixelSize: 60 * scaleHint
                 }
             }
         }
@@ -477,13 +527,13 @@ KeyboardStyle {
         Rectangle {
             id: symbolKeyBackground
             radius: 5
-            color: "#1e1b18"
+            color: control && control.highlighted ? highlightedKeyBackgroundColor : normalKeyBackgroundColor
             anchors.fill: symbolKeyPanel
             anchors.margins: keyBackgroundMargin
             Text {
                 id: symbolKeyText
                 text: control.displayText
-                color: "white"
+                color: keyTextColor
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 anchors.fill: parent
@@ -491,7 +541,7 @@ KeyboardStyle {
                 font {
                     family: fontFamily
                     weight: Font.Normal
-                    pixelSize: 44 * scaleHint
+                    pixelSize: 60 * scaleHint
                     capitalization: Font.AllUppercase
                 }
             }
@@ -529,13 +579,13 @@ KeyboardStyle {
         Rectangle {
             id: modeKeyBackground
             radius: 5
-            color: "#1e1b18"
+            color: control && control.highlighted ? highlightedKeyBackgroundColor : normalKeyBackgroundColor
             anchors.fill: modeKeyPanel
             anchors.margins: keyBackgroundMargin
             Text {
                 id: modeKeyText
                 text: control.displayText
-                color: "white"
+                color: keyTextColor
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 anchors.fill: parent
@@ -543,7 +593,7 @@ KeyboardStyle {
                 font {
                     family: fontFamily
                     weight: Font.Normal
-                    pixelSize: 44 * scaleHint
+                    pixelSize: 60 * scaleHint
                     capitalization: Font.AllUppercase
                 }
             }
@@ -556,7 +606,7 @@ KeyboardStyle {
                 anchors.leftMargin: parent.width * 0.4
                 anchors.rightMargin: parent.width * 0.4
                 anchors.bottomMargin: parent.height * 0.12
-                color: "#80c342"
+                color: modeKeyAccentColor
                 radius: 3
                 visible: control.mode
             }
@@ -594,17 +644,15 @@ KeyboardStyle {
         Rectangle {
             id: hwrKeyBackground
             radius: 5
-            color: "#35322f"
+            color: control && control.highlighted ? highlightedKeyBackgroundColor : normalKeyBackgroundColor
             anchors.fill: handwritingKeyPanel
             anchors.margins: keyBackgroundMargin
             Image {
                 id: hwrKeyIcon
                 anchors.centerIn: parent
-                readonly property size hwrKeyIconSize: keyboard.handwritingMode ? Qt.size(124, 96) : Qt.size(156, 104)
-                sourceSize.width: hwrKeyIconSize.width * keyIconScale
-                sourceSize.height: hwrKeyIconSize.height * keyIconScale
+                sourceSize.height: 127 * keyIconScale
                 smooth: false
-                source: resourcePrefix + (keyboard.handwritingMode ? "images/textmode-868482.svg" : "images/handwriting-868482.svg")
+                source: resourcePrefix + (keyboard.handwritingMode ? "images/textmode-fff.svg" : "images/handwriting-fff.svg")
             }
         }
         states: [
@@ -649,14 +697,14 @@ KeyboardStyle {
         Rectangle {
             id: characterPreviewBackground
             anchors.fill: parent
-            color: "#5d5b59"
+            color: popupBackgroundColor
             radius: 5
             readonly property int largeTextHeight: Math.round(height / 3 * 2)
             readonly property int smallTextHeight: Math.round(height / 3)
             readonly property int smallTextMargin: Math.round(3 * scaleHint)
             Text {
                 id: characterPreviewText
-                color: "white"
+                color: popupTextColor
                 text: characterPreview.text
                 fontSizeMode: Text.VerticalFit
                 horizontalAlignment: Text.AlignHCenter
@@ -671,9 +719,10 @@ KeyboardStyle {
                 }
             }
             Text {
-                color: "gray"
+                color: popupTextColor
                 text: characterPreview.flickLeft
                 visible: characterPreview.flickKeysVisible
+                opacity: 0.8
                 fontSizeMode: Text.VerticalFit
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -688,9 +737,10 @@ KeyboardStyle {
                 }
             }
             Text {
-                color: "gray"
+                color: popupTextColor
                 text: characterPreview.flickTop
                 visible: characterPreview.flickKeysVisible
+                opacity: 0.8
                 fontSizeMode: Text.VerticalFit
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -705,9 +755,10 @@ KeyboardStyle {
                 }
             }
             Text {
-                color: "gray"
+                color: popupTextColor
                 text: characterPreview.flickRight
                 visible: characterPreview.flickKeysVisible
+                opacity: 0.8
                 fontSizeMode: Text.VerticalFit
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -722,9 +773,10 @@ KeyboardStyle {
                 }
             }
             Text {
-                color: "gray"
+                color: popupTextColor
                 text: characterPreview.flickBottom
                 visible: characterPreview.flickKeysVisible
+                opacity: 0.8
                 fontSizeMode: Text.VerticalFit
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -749,8 +801,8 @@ KeyboardStyle {
         }
     }
 
-    alternateKeysListItemWidth: 99 * scaleHint
-    alternateKeysListItemHeight: 150 * scaleHint
+    alternateKeysListItemWidth: 120 * scaleHint
+    alternateKeysListItemHeight: 170 * scaleHint
     alternateKeysListDelegate: Item {
         id: alternateKeysListItem
         width: alternateKeysListItemWidth
@@ -758,11 +810,12 @@ KeyboardStyle {
         Text {
             id: listItemText
             text: model.text
-            color: "#868482"
+            color: popupTextColor
+            opacity: 0.8
             font {
                 family: fontFamily
                 weight: Font.Normal
-                pixelSize: 52 * scaleHint
+                pixelSize: 60 * scaleHint
             }
             anchors.centerIn: parent
         }
@@ -771,17 +824,28 @@ KeyboardStyle {
             when: alternateKeysListItem.ListView.isCurrentItem
             PropertyChanges {
                 target: listItemText
-                color: "white"
+                opacity: 1
             }
         }
     }
     alternateKeysListHighlight: Rectangle {
-        color: "#5d5b59"
+        color: popupHighlightColor
         radius: 5
     }
-    alternateKeysListBackground: Rectangle {
-        color: "#1e1b18"
-        radius: 5
+    alternateKeysListBackground: Item {
+        Rectangle {
+            readonly property real margin: 20 * scaleHint
+            x: -margin
+            y: -margin
+            width: parent.width + 2 * margin
+            height: parent.height + 2 * margin
+            radius: 5
+            color: popupBackgroundColor
+            border {
+                width: 1
+                color: popupBorderColor
+            }
+        }
     }
 
     selectionListHeight: 85 * scaleHint
@@ -794,7 +858,8 @@ KeyboardStyle {
             anchors.leftMargin: Math.round((compactSelectionList ? 50 : 140) * scaleHint)
             anchors.verticalCenter: parent.verticalCenter
             text: decorateText(display, wordCompletionLength)
-            color: "#80c342"
+            color: selectionListTextColor
+            opacity: 0.9
             font {
                 family: fontFamily
                 weight: Font.Normal
@@ -812,7 +877,7 @@ KeyboardStyle {
             width: 4 * scaleHint
             height: 36 * scaleHint
             radius: 2
-            color: "#35322f"
+            color: selectionListSeparatorColor
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.left
         }
@@ -821,12 +886,12 @@ KeyboardStyle {
             when: selectionListItem.ListView.isCurrentItem
             PropertyChanges {
                 target: selectionListLabel
-                color: "white"
+                opacity: 1
             }
         }
     }
     selectionListBackground: Rectangle {
-        color: "#1e1b18"
+        color: selectionListBackgroundColor
     }
     selectionListAdd: Transition {
         NumberAnimation { property: "y"; from: wordCandidateView.height; duration: 200 }
@@ -839,7 +904,7 @@ KeyboardStyle {
 
     navigationHighlight: Rectangle {
         color: "transparent"
-        border.color: "yellow"
+        border.color: navigationHighlightColor
         border.width: 5
     }
 
@@ -849,7 +914,7 @@ KeyboardStyle {
         Rectangle {
             id: traceInputKeyPanelBackground
             radius: 5
-            color: "#35322f"
+            color: normalKeyBackgroundColor
             anchors.fill: traceInputKeyPanel
             anchors.margins: keyBackgroundMargin
             Text {
@@ -885,7 +950,7 @@ KeyboardStyle {
                         return "Abc"
                     }
                 }
-                color: "white"
+                color: keyTextColor
                 anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.margins: keyContentMargin
@@ -985,7 +1050,8 @@ KeyboardStyle {
             anchors.leftMargin: popupListLabel.height / 2
             anchors.topMargin: popupListLabel.height / 3
             text: decorateText(display, wordCompletionLength)
-            color: "#5CAA15"
+            color: popupTextColor
+            opacity: 0.8
             font {
                 family: fontFamily
                 weight: Font.Normal
@@ -1003,7 +1069,7 @@ KeyboardStyle {
             when: popupListItem.ListView.isCurrentItem
             PropertyChanges {
                 target: popupListLabel
-                color: "black"
+                opacity: 1.0
             }
         }
     }
@@ -1012,10 +1078,10 @@ KeyboardStyle {
         Rectangle {
             width: parent.width
             height: parent.height
-            color: "white"
+            color: popupBackgroundColor
             border {
                 width: 1
-                color: "#929495"
+                color: popupBorderColor
             }
         }
     }
@@ -1043,7 +1109,8 @@ KeyboardStyle {
             anchors.topMargin: languageNameTextMetrics.height / 3
             anchors.bottomMargin: anchors.topMargin
             text: languageNameFormatter.elidedText
-            color: "#5CAA15"
+            color: popupTextColor
+            opacity: 0.8
             font {
                 family: fontFamily
                 weight: Font.Normal
@@ -1075,16 +1142,21 @@ KeyboardStyle {
             when: languageListItem.ListView.isCurrentItem
             PropertyChanges {
                 target: languageListLabel
-                color: "black"
+                opacity: 1
             }
         }
     }
 
+    languageListHighlight: Rectangle {
+        color: popupHighlightColor
+        radius: 5
+    }
+
     languageListBackground: Rectangle {
-        color: "white"
+        color: popupBackgroundColor
         border {
             width: 1
-            color: "#929495"
+            color: popupBorderColor
         }
     }
 
@@ -1120,4 +1192,50 @@ KeyboardStyle {
     }
 
     fullScreenInputFont.pixelSize: 58 * scaleHint
+
+    functionPopupListDelegate: Item {
+        id: functionPopupListItem
+        readonly property real iconMargin: 40 * scaleHint
+        readonly property real iconWidth: 144 * keyIconScale
+        readonly property real iconHeight: 144 * keyIconScale
+        width: iconWidth + 2 * iconMargin
+        height: iconHeight + 2 * iconMargin
+        Image {
+            id: functionIcon
+            anchors.centerIn: parent
+            sourceSize.height: iconHeight
+            smooth: false
+            source: {
+                switch (keyboardFunction) {
+                case QtVirtualKeyboard.HideInputPanel:
+                    return resourcePrefix + "images/hidekeyboard-fff.svg"
+                case QtVirtualKeyboard.ChangeLanguage:
+                    return resourcePrefix + "images/globe-fff.svg"
+                case QtVirtualKeyboard.ToggleHandwritingMode:
+                    return resourcePrefix + (keyboard.handwritingMode ? "images/textmode-fff.svg" : "images/handwriting-fff.svg")
+                }
+            }
+        }
+    }
+
+    functionPopupListBackground: Item {
+        Rectangle {
+            readonly property real backgroundMargin: 20 * scaleHint
+            x: -backgroundMargin
+            y: -backgroundMargin
+            width: parent.width + 2 * backgroundMargin
+            height: parent.height + 2 * backgroundMargin
+            radius: 5
+            color: popupBackgroundColor
+            border {
+                width: 1
+                color: popupBorderColor
+            }
+        }
+    }
+
+    functionPopupListHighlight: Rectangle {
+        color: popupHighlightColor
+        radius: 5
+    }
 }

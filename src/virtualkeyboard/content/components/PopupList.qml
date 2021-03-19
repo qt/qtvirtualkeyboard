@@ -34,7 +34,6 @@ ListView {
     property int maxVisibleItems: 5
     readonly property int preferredVisibleItems: count < maxVisibleItems ? count : maxVisibleItems
     readonly property real contentWidth: contentItem.childrenRect.width
-    property alias background: popupListBackground.sourceComponent
     property alias defaultHighlight: defaultHighlight
 
     clip: true
@@ -56,12 +55,5 @@ ListView {
     Component {
         id: defaultHighlight
         Item {}
-    }
-
-    Loader {
-        id: popupListBackground
-        sourceComponent: keyboard.style.popupListBackground
-        anchors.fill: parent
-        z: -1
     }
 }

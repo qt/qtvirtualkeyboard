@@ -271,7 +271,7 @@ Item {
     Loader {
         id: keyPanel
         anchors.fill: parent
-        onStatusChanged: if (status == Loader.Ready) keyPanel.item.control = keyItem
+        onLoaded: keyPanel.item.control = keyItem
     }
 
     /*! This signal is triggered when the key is pressed, allowing custom processing

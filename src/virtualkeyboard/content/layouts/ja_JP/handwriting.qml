@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2017 The Qt Company Ltd.
+** Copyright (C) 2021 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -36,64 +36,48 @@ KeyboardLayout {
         return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; HandwritingInputMethod {}', parent)
     }
     sharedLayouts: ['symbols']
+
     KeyboardRow {
         Layout.preferredHeight: 3
-        KeyboardColumn {
-            Layout.preferredWidth: bottomRow.width - hideKeyboardKey.width
-            KeyboardRow {
-                TraceInputKey {
-                    objectName: "hwrInputArea"
-                    patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
-                    horizontalRulers:
-                        InputContext.inputEngine.inputMode !== InputEngine.InputMode.JapaneseHandwriting ? [] :
-                            [Math.round(boundingBox.height / 4), Math.round(boundingBox.height / 4) * 2, Math.round(boundingBox.height / 4) * 3]
-
-                }
-            }
-        }
-        KeyboardColumn {
-            Layout.preferredWidth: hideKeyboardKey.width
-            KeyboardRow {
-                BackspaceKey {}
-            }
-            KeyboardRow {
-                EnterKey {}
-            }
-            KeyboardRow {
-                ShiftKey { }
-            }
+        TraceInputKey {
+            objectName: "hwrInputArea"
+            patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
+            horizontalRulers:
+                InputContext.inputEngine.inputMode !== InputEngine.InputMode.JapaneseHandwriting ? [] :
+                    [Math.round(boundingBox.height / 4), Math.round(boundingBox.height / 4) * 2, Math.round(boundingBox.height / 4) * 3]
         }
     }
     KeyboardRow {
         id: bottomRow
         Layout.preferredHeight: 1
-        keyWeight: 154
+        keyWeight: 160
+        ShiftKey {
+            weight: 240
+        }
         InputModeKey {
-            weight: 217
-        }
-        ChangeLanguageKey {
-            weight: 154
-            customLayoutsOnly: true
-        }
-        HandwritingModeKey {
-            weight: 154
-        }
-        SpaceKey {
-            weight: 864
         }
         Key {
-            key: Qt.Key_Apostrophe
-            text: "‘"
-            alternativeKeys: "《》〈〉•…々〆‘’“”「」¥"
+            key: Qt.Key_Comma
+            text: "、"
+            smallText: "\u2699"
+            smallTextVisible: true
+            highlighted: true
+        }
+        SpaceKey {
+            weight: 10 * 160 - 4 * 160  - 2 * 240
         }
         Key {
             key: Qt.Key_Period
             text: "．"
-            alternativeKeys: "：；，．、。？！"
+            alternativeKeys: "‘’“”～…—《》〈〉「」\"，．：；。？！"
+            smallText: "!?"
+            smallTextVisible: true
+            highlighted: true
         }
-        HideKeyboardKey {
-            id: hideKeyboardKey
-            weight: 204
+        BackspaceKey {
+        }
+        EnterKey {
+            weight: 240
         }
     }
 }

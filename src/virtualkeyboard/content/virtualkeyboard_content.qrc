@@ -32,5 +32,6 @@
         <file>components/ShadowInputControl.qml</file>
         <file>components/InputModeKey.qml</file>
         <file>components/FlickKey.qml</file>
+        <file>components/FunctionPopupList.qml</file>
     </qresource>
 </RCC>

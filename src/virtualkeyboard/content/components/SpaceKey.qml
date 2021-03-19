@@ -47,6 +47,7 @@ Key {
     displayText: ""
     repeat: true
     showPreview: false
+    highlighted: true
     key: Qt.Key_Space
     keyPanelDelegate: keyboard.style ? keyboard.style.spaceKeyPanel : undefined
 }

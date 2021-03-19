@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2021 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -41,37 +41,22 @@ KeyboardLayout {
 
     KeyboardRow {
         Layout.preferredHeight: 3
-        KeyboardColumn {
-            Layout.preferredWidth: bottomRow.width - hideKeyboardKey.width
-            KeyboardRow {
-                TraceInputKey {
-                    objectName: "hwrInputArea"
-                    patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
-                    horizontalRulers:
-                        alphabeticInputMode ? [] :
-                            [Math.round(boundingBox.height / 4), Math.round(boundingBox.height / 4) * 2, Math.round(boundingBox.height / 4) * 3]
-                }
-            }
-        }
-        KeyboardColumn {
-            Layout.preferredWidth: hideKeyboardKey.width
-            KeyboardRow {
-                BackspaceKey {}
-            }
-            KeyboardRow {
-                EnterKey {}
-            }
-            KeyboardRow {
-                ShiftKey { }
-            }
+        TraceInputKey {
+            objectName: "hwrInputArea"
+            patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
+            horizontalRulers:
+                alphabeticInputMode ? [] :
+                    [Math.round(boundingBox.height / 4), Math.round(boundingBox.height / 4) * 2, Math.round(boundingBox.height / 4) * 3]
         }
     }
     KeyboardRow {
         id: bottomRow
         Layout.preferredHeight: 1
-        keyWeight: 154
+        keyWeight: 160
+        ShiftKey {
+            weight: 240
+        }
         InputModeKey {
-            weight: 217
             inputModeNameList: [
                 "ABC",  // InputEngine.InputMode.Latin
                 "\u0660\u0661\u0662",  // InputEngine.InputMode.Numeric
@@ -88,29 +73,28 @@ KeyboardLayout {
                 "\u0627\u200C\u0628\u200C\u067E",  // InputEngine.InputMode.Arabic
             ]
         }
-        ChangeLanguageKey {
-            weight: 154
-            customLayoutsOnly: true
-        }
-        HandwritingModeKey {
-            weight: 154
+        Key {
+            key: Qt.Key_Comma
+            text: alphabeticInputMode ? "," : "\u060C"
+            smallText: "\u2699"
+            smallTextVisible: true
+            highlighted: true
         }
         SpaceKey {
-            weight: 864
-        }
-        Key {
-            key: alphabeticInputMode ? Qt.Key_Apostrophe : 0x060C
-            text: alphabeticInputMode ? "'" : "\u060C"
-            alternativeKeys: alphabeticInputMode ? "<>()#%&*/\\\"'=+-_" : "\"\u060C\u066B\u066C\u066D"
+            weight: 10 * 160 - 4 * 160  - 2 * 240
         }
         Key {
             key: Qt.Key_Period
             text: "."
-            alternativeKeys: alphabeticInputMode ? ":;,.?!" : ":\u061B.\u061F!"
+            alternativeKeys: alphabeticInputMode ? "#%&*/\\\"'=+-_:;,.?!<>()" : "#%&*/\\\"'=+-_:\u061B.\u061F!<>()"
+            smallText: "!?"
+            smallTextVisible: true
+            highlighted: true
         }
-        HideKeyboardKey {
-            id: hideKeyboardKey
-            weight: 204
+        BackspaceKey {
+        }
+        EnterKey {
+            weight: 240
         }
     }
 }

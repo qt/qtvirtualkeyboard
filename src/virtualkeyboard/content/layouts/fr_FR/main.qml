@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2021 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -29,10 +29,13 @@
 
 import QtQuick
 import QtQuick.VirtualKeyboard
+import QtQuick.Layouts
 
 KeyboardLayout {
     inputMode: InputEngine.InputMode.Latin
     keyWeight: 160
+    readonly property real normalKeyWidth: normalKey.width
+    readonly property real functionKeyWidth: mapFromItem(normalKey, normalKey.width / 2, 0).x
     KeyboardRow {
         Key {
             key: Qt.Key_A
@@ -40,6 +43,7 @@ KeyboardLayout {
             alternativeKeys: "aàâæ"
         }
         Key {
+            id: normalKey
             key: Qt.Key_Z
             text: "z"
         }
@@ -80,12 +84,8 @@ KeyboardLayout {
             key: Qt.Key_P
             text: "p"
         }
-        BackspaceKey {}
     }
     KeyboardRow {
-        FillerKey {
-            weight: 56
-        }
         Key {
             key: Qt.Key_Q
             text: "q"
@@ -126,13 +126,12 @@ KeyboardLayout {
             key: Qt.Key_M
             text: "m"
         }
-        EnterKey {
-            weight: 283
-        }
     }
     KeyboardRow {
-        keyWeight: 156
-        ShiftKey {}
+        ShiftKey {
+            weight: functionKeyWidth
+            Layout.fillWidth: false
+        }
         Key {
             key: Qt.Key_W
             text: "w"
@@ -159,46 +158,43 @@ KeyboardLayout {
             text: "n"
         }
         Key {
-            key: Qt.Key_Comma
-            text: ","
-        }
-        Key {
-            key: Qt.Key_Period
-            text: "."
-        }
-        Key {
-            key: Qt.Key_Minus
-            text: "-"
-        }
-        ShiftKey {
-            weight: 264
-        }
-    }
-    KeyboardRow {
-        keyWeight: 154
-        SymbolModeKey {
-            weight: 217
-        }
-        ChangeLanguageKey {
-            weight: 154
-        }
-        HandwritingModeKey {
-            weight: 154
-        }
-        SpaceKey {
-            weight: 864
-        }
-        Key {
             key: Qt.Key_Apostrophe
             text: "'"
         }
-        Key {
-            key: 0xE000
-            text: ":-)"
-            alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
+        BackspaceKey {
+            weight: functionKeyWidth
+            Layout.fillWidth: false
         }
-        HideKeyboardKey {
-            weight: 204
+    }
+    KeyboardRow {
+        SymbolModeKey {
+            weight: functionKeyWidth
+            Layout.fillWidth: false
+        }
+        Key {
+            key: Qt.Key_Comma
+            weight: normalKeyWidth
+            Layout.fillWidth: false
+            text: ","
+            smallText: "\u2699"
+            smallTextVisible: true
+            highlighted: true
+        }
+        SpaceKey {
+        }
+        Key {
+            key: Qt.Key_Period
+            weight: normalKeyWidth
+            Layout.fillWidth: false
+            text: "."
+            alternativeKeys: "!.?"
+            smallText: "!?"
+            smallTextVisible: true
+            highlighted: true
+        }
+        EnterKey {
+            weight: functionKeyWidth
+            Layout.fillWidth: false
         }
     }
 }

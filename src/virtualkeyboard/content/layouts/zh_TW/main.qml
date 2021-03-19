@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2021 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -41,6 +41,8 @@ KeyboardLayoutLoader {
         id: pageCangjie
         KeyboardLayout {
             keyWeight: 160
+            readonly property real normalKeyWidth: normalKey.width
+            readonly property real functionKeyWidth: mapFromItem(normalKey, normalKey.width / 2, 0).x
             smallTextVisible: true
             KeyboardRow {
                 Key {
@@ -48,6 +50,7 @@ KeyboardLayoutLoader {
                     alternativeKeys: "\u624Bq"
                 }
                 Key {
+                    id: normalKey
                     text: "\u7530"
                     alternativeKeys: "\u7530w"
                 }
@@ -83,15 +86,19 @@ KeyboardLayoutLoader {
                     text: "\u5FC3"
                     alternativeKeys: "\u5FC3p"
                 }
-                BackspaceKey {}
             }
             KeyboardRow {
-                FillerKey {
-                    weight: 56
-                }
-                Key {
-                    text: "\u65E5"
-                    alternativeKeys: "\u65E5a"
+                KeyboardRow {
+                    Layout.preferredWidth: functionKeyWidth
+                    Layout.fillWidth: false
+                    FillerKey {
+                    }
+                    Key {
+                        text: "\u65E5"
+                        alternativeKeys: "\u65E5a"
+                        weight: normalKeyWidth
+                        Layout.fillWidth: false
+                    }
                 }
                 Key {
                     text: "\u5C38"
@@ -121,20 +128,26 @@ KeyboardLayoutLoader {
                     text: "\u5927"
                     alternativeKeys: "\u5927k"
                 }
-                Key {
-                    text: "\u4E2D"
-                    alternativeKeys: "\u4E2Dl"
-                }
-                EnterKey {
-                    weight: 283
+                KeyboardRow {
+                    Layout.preferredWidth: functionKeyWidth
+                    Layout.fillWidth: false
+                    Key {
+                        text: "\u4E2D"
+                        alternativeKeys: "\u4E2Dl"
+                        weight: normalKeyWidth
+                        Layout.fillWidth: false
+                    }
+                    FillerKey {
+                    }
                 }
             }
             KeyboardRow {
-                keyWeight: 156
                 ModeKey {
                     id: simplifiedModeKey
                     key: Qt.Key_Mode_switch
                     displayText: "速成"
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                     Component.onCompleted: updateBinding()
                     Connections {
                         target: InputContext.inputEngine
@@ -175,50 +188,45 @@ KeyboardLayoutLoader {
                     text: "\u4E00"
                     alternativeKeys: "\u4E00m"
                 }
-                Key {
-                    key: Qt.Key_Comma
-                    text: "\uFF0C"
-                    alternativeKeys: "\uFF0C\uFF1B\u3001"
-                }
-                Key {
-                    key: Qt.Key_Period
-                    text: "\uFF0E"
-                    alternativeKeys: "\uFF0E\uFF1A\u3002"
-                }
-                ShiftKey {
-                    weight: 204
+                BackspaceKey {
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                 }
             }
             KeyboardRow {
-                keyWeight: 154
                 SymbolModeKey {
-                    weight: 217
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                 }
-                ChangeLanguageKey {
-                    weight: 154
-                }
-                HandwritingModeKey {
-                    weight: 154
+                Key {
+                    key: Qt.Key_Comma
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: "\uFF0C"
+                    smallText: "\u2699"
+                    smallTextVisible: true
+                    highlighted: true
                 }
                 InputModeKey {
                     visible: InputContext.inputEngine.inputModes.indexOf(InputEngine.InputMode.Zhuyin) !== -1
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                 }
                 SpaceKey {
-                    weight: 864
                 }
                 Key {
-                    key: Qt.Key_Question
-                    text: "\uFF1F"
-                    alternativeKeys: "\uFF1F\uFF01"
+                    key: Qt.Key_Period
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: "\uFF0E"
+                    alternativeKeys: "\uFF1B\u3001\uFF0E\uFF1A\u3002？！"
+                    smallText: "!?"
+                    smallTextVisible: true
+                    highlighted: true
                 }
-                Key {
-                    key: 0xE000
-                    text: ":-)"
-                    smallTextVisible: false
-                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-                }
-                HideKeyboardKey {
-                    weight: 204
+                EnterKey {
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                 }
             }
         }
@@ -226,17 +234,19 @@ KeyboardLayoutLoader {
     Component {
         id: pageZhuyin
         KeyboardLayout {
+            readonly property real normalKeyWidth: normalKey.width
+            readonly property real functionKeyWidth: mapFromItem(normalKey, normalKey.width / 2, 0).x
             smallTextVisible: true
             KeyboardRow {
                 Layout.preferredHeight: 3
                 KeyboardColumn {
-                    Layout.preferredWidth: bottomRow.width - hideKeyboardKey.width
                     KeyboardRow {
                         Key {
                             text: "\u3105"
                             alternativeKeys: "\u31051"
                         }
                         Key {
+                            id: normalKey
                             text: "\u3109"
                             alternativeKeys: "\u31092"
                         }
@@ -246,7 +256,7 @@ KeyboardLayoutLoader {
                         }
                         Key {
                             text: "\u02CB"
-                            alternativeKeys: "4"
+                            alternativeKeys: "\u02CB4"
                             displayText: "`"
                         }
                         Key {
@@ -255,7 +265,7 @@ KeyboardLayoutLoader {
                         }
                         Key {
                             text: "\u02CA"
-                            alternativeKeys: "6"
+                            alternativeKeys: "\u02CA6"
                             displayText: "´"
                         }
                         Key {
@@ -402,55 +412,46 @@ KeyboardLayoutLoader {
                         }
                     }
                 }
-                KeyboardColumn {
-                    Layout.preferredWidth: hideKeyboardKey.width
-                    KeyboardRow {
-                        BackspaceKey {}
-                    }
-                    KeyboardRow {
-                        EnterKey {}
-                    }
-                    KeyboardRow {
-                        ShiftKey { }
-                    }
-                }
             }
             KeyboardRow {
                 id: bottomRow
-                Layout.preferredHeight: 1
-                keyWeight: 154
                 SymbolModeKey {
-                    weight: 217
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                 }
-                ChangeLanguageKey {
-                    weight: 154
-                }
-                HandwritingModeKey {
-                    weight: 154
+                Key {
+                    key: Qt.Key_Comma
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: "\uFF0C"
+                    smallText: "\u2699"
+                    smallTextVisible: true
+                    highlighted: true
                 }
                 InputModeKey {
-                    visible: InputContext.inputEngine.inputModes.indexOf(InputEngine.InputMode.Cangjie) !== -1
+                    visible: InputContext.inputEngine.inputModes.indexOf(InputEngine.InputMode.Zhuyin) !== -1
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                 }
                 SpaceKey {
-                    weight: 864
                 }
                 Key {
-                    text: "\u3126"
+                    key: Qt.Key_Period
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: "\uFF0E"
+                    alternativeKeys: "\uFF1B\u3001\uFF0E\uFF1A\u3002？！"
+                    smallText: "!?"
+                    smallTextVisible: true
+                    highlighted: true
                 }
-                Key {
-                    key: Qt.Key_Question
-                    text: "\uFF1F"
-                    alternativeKeys: "\uFF1F\uFF01"
+                BackspaceKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                 }
-                Key {
-                    key: 0xE000
-                    text: ":-)"
-                    smallTextVisible: false
-                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-                }
-                HideKeyboardKey {
-                    id: hideKeyboardKey
-                    weight: 204
+                EnterKey {
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                 }
             }
         }

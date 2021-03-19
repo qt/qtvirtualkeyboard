@@ -81,6 +81,7 @@ KeyboardLayout {
                 repeat: true
                 showPreview: false
                 key: Qt.Key_Space
+                highlighted: true
             }
         }
         KeyboardRow {

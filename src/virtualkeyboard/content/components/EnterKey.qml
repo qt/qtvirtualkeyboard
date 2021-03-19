@@ -52,7 +52,7 @@ BaseKey {
     displayText: InputContext.priv.hasEnterKeyAction(InputContext.priv.inputItem) ? InputContext.priv.inputItem.EnterKeyAction.label : ""
     key: Qt.Key_Return
     showPreview: false
-    highlighted: enabled && displayText.length > 0
+    highlighted: true
     enabled: InputContext.priv.hasEnterKeyAction(InputContext.priv.inputItem) ? InputContext.priv.inputItem.EnterKeyAction.enabled : true
     keyPanelDelegate: keyboard.style ? keyboard.style.enterKeyPanel : undefined
 }

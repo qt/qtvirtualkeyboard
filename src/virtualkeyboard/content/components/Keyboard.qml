@@ -82,6 +82,7 @@ Item {
     property bool navigationModeActive: false
     readonly property bool languagePopupListActive: languagePopupList.enabled
     property alias soundEffect: soundEffect
+    property alias keyboardLayoutLoader: keyboardLayoutLoader
 
     function initDefaultInputMethod() {
         try {
@@ -196,6 +197,16 @@ Item {
                         }
                         break
                     }
+                    if (functionPopupList.active) {
+                        if (functionPopupList.listView.currentIndex > 0) {
+                            functionPopupList.listView.decrementCurrentIndex()
+                        } else {
+                            functionPopupList.close()
+                            keyboardInputArea.setActiveKey(null)
+                            keyboardInputArea.navigateToNextKey(0, 0, false)
+                        }
+                        break
+                    }
                     if (wordCandidateContextMenu.active) {
                         hideWordCandidateContextMenu()
                         break
@@ -254,6 +265,10 @@ Item {
                     alternativeKeys.close()
                     keyboardInputArea.setActiveKey(null)
                     keyboardInputArea.navigateToNextKey(0, 0, false)
+                } else if (functionPopupList.active) {
+                    functionPopupList.close()
+                    keyboardInputArea.setActiveKey(null)
+                    keyboardInputArea.navigateToNextKey(0, 0, false)
                 } else if (wordCandidateContextMenu.active) {
                     if (wordCandidateContextMenuList.currentIndex > 0) {
                         wordCandidateContextMenuList.decrementCurrentIndex()
@@ -289,6 +304,16 @@ Item {
                             alternativeKeys.listView.incrementCurrentIndex()
                         } else {
                             alternativeKeys.close()
+                            keyboardInputArea.setActiveKey(null)
+                            keyboardInputArea.navigateToNextKey(0, 0, false)
+                        }
+                        break
+                    }
+                    if (functionPopupList.active) {
+                        if (functionPopupList.listView.currentIndex + 1 < functionPopupList.listView.count) {
+                            functionPopupList.listView.incrementCurrentIndex()
+                        } else {
+                            functionPopupList.close()
                             keyboardInputArea.setActiveKey(null)
                             keyboardInputArea.navigateToNextKey(0, 0, false)
                         }
@@ -347,6 +372,10 @@ Item {
                     }
                 } else if (alternativeKeys.active) {
                     alternativeKeys.close()
+                    keyboardInputArea.setActiveKey(null)
+                    keyboardInputArea.navigateToNextKey(0, 0, false)
+                } else if (functionPopupList.active) {
+                    functionPopupList.close()
                     keyboardInputArea.setActiveKey(null)
                     keyboardInputArea.navigateToNextKey(0, 0, false)
                 } else if (wordCandidateContextMenu.active) {
@@ -408,10 +437,11 @@ Item {
                 }
                 if (isAutoRepeat)
                     break
-                if (!languagePopupListActive && !alternativeKeys.active && !wordCandidateContextMenu.active && keyboard.activeKey) {
+                if (!languagePopupListActive && !alternativeKeys.active && !functionPopupList.active && !wordCandidateContextMenu.active && keyboard.activeKey) {
                     keyboardInputArea.release(keyboard.activeKey)
                     pressAndHoldTimer.stop()
                     alternativeKeys.close()
+                    functionPopupList.close()
                     keyboardInputArea.setActiveKey(null)
                     if (!languagePopupListActive && keyboardInputArea.navigationCursor !== Qt.point(-1, -1))
                         keyboardInputArea.navigateToNextKey(0, 0, false)
@@ -430,6 +460,15 @@ Item {
                         keyboardInputArea.reset()
                     } else {
                         alternativeKeys.openedByNavigationKeyLongPress = false
+                    }
+                } else if (functionPopupList.active) {
+                    if (!functionPopupList.openedByNavigationKeyLongPress) {
+                        functionPopupList.clicked()
+                        functionPopupList.close()
+                        keyboardInputArea.navigateToNextKey(0, 0, false)
+                        keyboardInputArea.reset()
+                    } else {
+                        functionPopupList.openedByNavigationKeyLongPress = false
                     }
                 } else if (!wordCandidateContextMenu.active && wordCandidateView.count > 0) {
                     wordCandidateView.model.selectItem(wordCandidateView.currentIndex)
@@ -488,13 +527,22 @@ Item {
             InputContext.priv.previewVisible = visible
         }
     }
+    FunctionPopupList {
+        id: functionPopupList
+        property bool openedByNavigationKeyLongPress
+    }
     Timer {
         id: pressAndHoldTimer
         interval: 500
         onTriggered: {
             if (keyboard.activeKey && keyboard.activeKey === keyboardInputArea.initialKey) {
                 var origin = keyboard.mapFromItem(activeKey, activeKey.width / 2, 0)
-                if (alternativeKeys.open(keyboard.activeKey, origin.x, origin.y)) {
+                if (keyboard.activeKey.smallText === "\u2699" &&
+                        functionPopupList.open(keyboard.activeKey, origin.x, origin.y)) {
+                    InputContext.inputEngine.virtualKeyCancel()
+                    keyboardInputArea.initialKey = null
+                    functionPopupList.openedByNavigationKeyLongPress = keyboard.navigationModeActive
+                } else if (alternativeKeys.open(keyboard.activeKey, origin.x, origin.y)) {
                     InputContext.inputEngine.virtualKeyCancel()
                     keyboardInputArea.initialKey = null
                     alternativeKeys.openedByNavigationKeyLongPress = keyboard.navigationModeActive
@@ -525,7 +573,7 @@ Item {
         id: releaseInaccuracyTimer
         interval: 500
         onTriggered: {
-            if (keyboardInputArea.pressed && activeTouchPoint && !alternativeKeys.active && !keyboardInputArea.dragSymbolMode) {
+            if (keyboardInputArea.pressed && activeTouchPoint && !alternativeKeys.active && !keyboardInputArea.dragSymbolMode && !functionPopupList.active) {
                 var key = keyboardInputArea.keyOnPoint(activeTouchPoint.x, activeTouchPoint.y)
                 if (key !== keyboard.activeKey) {
                     InputContext.inputEngine.virtualKeyCancel()
@@ -538,7 +586,7 @@ Item {
     CharacterPreviewBubble {
         id: characterPreview
         objectName: "characterPreviewBubble"
-        active: keyboardInputArea.pressed && !alternativeKeys.active
+        active: keyboardInputArea.pressed && !alternativeKeys.active && !functionPopupList.active
         property rect previewRect: Qt.rect(keyboard.x + characterPreview.x,
                                            keyboard.y + characterPreview.y,
                                            characterPreview.width,
@@ -579,12 +627,14 @@ Item {
         objectName: "naviationHighlight"
         property var highlightItem: {
             if (keyboard.navigationModeActive) {
-                if (keyboardInputArea.initialKey) {
-                    return keyboardInputArea.initialKey
-                } else if (languagePopupListActive) {
+                if (languagePopupListActive) {
                     return languagePopupList.highlightItem
+                } else if (keyboardInputArea.initialKey) {
+                    return keyboardInputArea.initialKey
                 } else if (alternativeKeys.listView.count > 0) {
                     return alternativeKeys.listView.highlightItem
+                } else if (functionPopupList.listView.count > 0) {
+                    return functionPopupList.listView.highlightItem
                 } else if (wordCandidateContextMenu.active) {
                     return wordCandidateContextMenuList.highlightItem
                 } else if (wordCandidateView.count > 0) {
@@ -871,9 +921,8 @@ Item {
 
                     Connections {
                         target: keyboardLayoutLoader
-                        function onStatusChanged() {
-                            if (keyboardLayoutLoader.status == Loader.Ready &&
-                                    keyboard.navigationModeActive &&
+                        function onLoaded() {
+                            if (keyboard.navigationModeActive &&
                                     keyboardInputArea.navigationCursor !== Qt.point(-1, -1))
                                 keyboard.navigationModeActive = keyboardInputArea.navigateToNextKey(0, 0, false)
                         }
@@ -956,6 +1005,8 @@ Item {
                     function releaseActiveKey() {
                         if (alternativeKeys.active) {
                             alternativeKeys.clicked()
+                        } else if (functionPopupList.active) {
+                            functionPopupList.clicked()
                         } else if (keyboard.activeKey) {
                             release(keyboard.activeKey)
                         }
@@ -967,6 +1018,7 @@ Item {
                         setActiveKey(null)
                         activeTouchPoint = null
                         alternativeKeys.close()
+                        functionPopupList.close()
                         if (dragSymbolMode) {
                             keyboard.symbolMode = false
                             dragSymbolMode = false
@@ -1098,6 +1150,8 @@ Item {
 
                         if (alternativeKeys.active) {
                             alternativeKeys.move(mapToItem(alternativeKeys, activeTouchPoint.x, 0).x)
+                        } else if (functionPopupList.active) {
+                            functionPopupList.move(mapToItem(functionPopupList, activeTouchPoint.x, activeTouchPoint.y))
                         } else if (activeKey && activeKey.keyType === QtVirtualKeyboard.FlickKey) {
                             activeKey.update(activeTouchPoint.x, activeTouchPoint.y)
                         } else {
@@ -1174,11 +1228,17 @@ Item {
             highlight: keyboard.style ? keyboard.style.languageListHighlight : defaultHighlight
             add: keyboard.style ? keyboard.style.languageListAdd : null
             remove: keyboard.style ? keyboard.style.languageListRemove : null
-            background: keyboard.style ? keyboard.style.languageListBackground : null
             property rect previewRect: Qt.rect(keyboard.x + languagePopupList.x,
                                                keyboard.y + languagePopupList.y,
                                                languagePopupList.width,
                                                languagePopupList.height)
+        }
+
+        Loader {
+            sourceComponent: keyboard.style.languageListBackground
+            anchors.fill: languagePopupList
+            z: -1
+            visible: languagePopupList.visible
         }
 
         ListModel {
@@ -1215,8 +1275,13 @@ Item {
                         languagePopupList.currentIndex = i
                 }
                 languagePopupList.positionViewAtIndex(languagePopupList.currentIndex, ListView.Center)
-                languagePopupList.anchors.leftMargin = Qt.binding(function() {return Math.round(keyboard.mapFromItem(parentItem, (parentItem.width - languagePopupList.width) / 2, 0).x)})
-                languagePopupList.anchors.topMargin = Qt.binding(function() {return Math.round(keyboard.mapFromItem(parentItem, 0, -languagePopupList.height).y)})
+                if (parentItem) {
+                    languagePopupList.anchors.leftMargin = Qt.binding(function() {return Math.round(keyboard.mapFromItem(parentItem, (parentItem.width - languagePopupList.width) / 2, 0).x)})
+                    languagePopupList.anchors.topMargin = Qt.binding(function() {return Math.round(keyboard.mapFromItem(parentItem, 0, -languagePopupList.height).y)})
+                } else {
+                    languagePopupList.anchors.leftMargin = Qt.binding(function() {return Math.round((keyboard.width - languagePopupList.width) / 2)})
+                    languagePopupList.anchors.topMargin = Qt.binding(function() {return Math.round((keyboard.height - languagePopupList.height) / 2)})
+                }
             }
             languagePopupList.enabled = true
         }
@@ -1717,5 +1782,47 @@ Item {
         Qt.callLater(function() {
             if (keyboardLayoutLoader.item != null) keyboardObserver.layoutChanged()
         })
+    }
+
+    function doKeyboardFunction(keyboardFunction) {
+        if (!isKeyboardFunctionAvailable(keyboardFunction))
+            return
+        switch (keyboardFunction) {
+        case QtVirtualKeyboard.HideInputPanel:
+            InputContext.priv.hideInputPanel()
+            break
+        case QtVirtualKeyboard.ChangeLanguage:
+            if (style.languagePopupListEnabled) {
+                if (!languagePopupListActive) {
+                    showLanguagePopup(activeKey, false)
+                } else {
+                    hideLanguagePopup()
+                }
+            } else {
+                const customLayoutsOnly = arguments.length == 2 && arguments[1]
+                changeInputLanguage(customLayoutsOnly)
+            }
+            break
+        case QtVirtualKeyboard.ToggleHandwritingMode:
+            setHandwritingMode(!handwritingMode)
+            break
+        default:
+            console.warn("Unknown keyboard function '%1'".arg(keyboardFunction))
+            break
+        }
+    }
+
+    function isKeyboardFunctionAvailable(keyboardFunction) {
+        switch (keyboardFunction) {
+        case QtVirtualKeyboard.HideInputPanel:
+            return true
+        case QtVirtualKeyboard.ChangeLanguage:
+            const customLayoutsOnly = arguments.length == 2 && arguments[1]
+            return canChangeInputLanguage(customLayoutsOnly)
+        case QtVirtualKeyboard.ToggleHandwritingMode:
+            return isHandwritingAvailable()
+        default:
+            return false
+        }
     }
 }

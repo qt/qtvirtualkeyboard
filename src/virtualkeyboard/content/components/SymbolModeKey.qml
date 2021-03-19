@@ -46,6 +46,7 @@ Key {
     key: Qt.Key_Context1
     displayText: "&123"
     functionKey: true
+    highlighted: true
     onClicked: keyboard.symbolMode = !keyboard.symbolMode
     keyPanelDelegate: keyboard.style ? keyboard.style.symbolKeyPanel : undefined
 }

@@ -47,6 +47,7 @@ Key {
     key: Qt.Key_Mode_switch
     noKeyEvent: true
     functionKey: true
+    highlighted: true
     text: InputContext.inputEngine.inputMode < inputModeNameList.length ?
               inputModeNameList[InputContext.inputEngine.inputMode] : "ABC"
     onClicked: InputContext.inputEngine.inputMode = __nextInputMode(InputContext.inputEngine.inputMode)

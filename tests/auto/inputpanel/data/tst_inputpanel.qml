@@ -33,8 +33,8 @@ import QtQuick.Window
 
 Rectangle {
     id: container
-    width: 400
-    height: 400
+    width: 800
+    height: 640
     color: "blue"
 
     Component {
@@ -138,6 +138,7 @@ Rectangle {
                 }
                 verify(inputPanel.setInputMode(inputMode))
             }
+            waitForRendering(inputPanel)
             verify(inputPanel.visible === true)
             verify(textInput.activeFocus === true)
         }
@@ -873,9 +874,6 @@ Rectangle {
                 { inputSequence: ['h','e','l','l','o',Qt.Key_Select,',','w','o','r','l','d'], outputText: "Hello, world" },
                 { inputSequence: ['h','e','l','l','o','.',Qt.Key_Backspace,'w','o','r','l','d'], outputText: "Helloworld" },
                 { inputSequence: ['h','e','l','l','o',' ',Qt.Key_Backspace,'w','o','r','l','d'], outputText: "Helloworld" },
-                { inputSequence: ['h','e','l','l','o',Qt.Key_Select,'w','o','r','l','d',':-)'], outputText: "Hello world :-)" },
-                { inputSequence: ['h','e','l','l','o',Qt.Key_Select,'w','o','r','l','d',':-)',':-)'], outputText: "Hello world :-) :-)" },
-                { inputSequence: ['h','e','l','l','o',Qt.Key_Select,':-)'], outputText: "Hello :-)" },
                 { initText: "Hekko world", selectionStart: 2, selectionEnd: 4, inputSequence: ['l','l'], outputText: "Hello world" },
             ]
         }
@@ -1165,8 +1163,6 @@ Rectangle {
                 { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Return], outputText: "\u306B\u307B\u3093\u3054" },
                 // Hiragana to Kanjie conversion
                 { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Space,Qt.Key_Return], outputText: "\u65E5\u672C\u8A9E" },
-                // Hiragana to Kanjie conversion plus a smiley
-                { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["n","i","h","o","n","g","o",0xE000,Qt.Key_Space,Qt.Key_Return,Qt.Key_Return], outputText: "\u65E5\u672C\u8A9E\uFF1A\u30FC\uFF09" },
                 // Correction to Hiragana sequence using exact match mode
                 { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: [
                                 // Write part of the text leaving out "ni" from the beginning
@@ -1804,13 +1800,12 @@ Rectangle {
             prepareTest(data)
             if (inputPanel.availableLocales.length < 2)
                 skip("Input language can not be changed")
-            var changeLanguageKey = inputPanel.findObjectByName("changeLanguageKey")
             var languagePopupList = inputPanel.findObjectByName("languagePopupList")
             inputPanel.externalLanguageSwitchSpy.clear()
-            inputPanel.virtualKeyClick(changeLanguageKey)
+            inputPanel.doKeyboardFunction("ChangeLanguage")
             compare(languagePopupList.visible, !data.externalLanguageSwitchEnabled)
             compare(inputPanel.externalLanguageSwitchSpy.count, data.externalLanguageSwitchEnabled ? 1 : 0)
-            inputPanel.virtualKeyClick(changeLanguageKey)
+            inputPanel.doKeyboardFunction("ChangeLanguage")
             compare(languagePopupList.visible, false)
         }
 
@@ -1818,9 +1813,8 @@ Rectangle {
             prepareTest()
             if (inputPanel.availableLocales.length < 2)
                 skip("Input language can not be changed")
-            var changeLanguageKey = inputPanel.findObjectByName("changeLanguageKey")
             var languagePopupList = inputPanel.findObjectByName("languagePopupList")
-            inputPanel.virtualKeyClick(changeLanguageKey)
+            inputPanel.doKeyboardFunction("ChangeLanguage")
             compare(languagePopupList.visible, true)
             container.forceActiveFocus()
             textInput.forceActiveFocus()
@@ -1831,9 +1825,8 @@ Rectangle {
             prepareTest()
             if (inputPanel.availableLocales.length < 2)
                 skip("Input language can not be changed")
-            var changeLanguageKey = inputPanel.findObjectByName("changeLanguageKey")
             var languagePopupList = inputPanel.findObjectByName("languagePopupList")
-            inputPanel.virtualKeyClick(changeLanguageKey)
+            inputPanel.doKeyboardFunction("ChangeLanguage")
             compare(languagePopupList.visible, true)
             Qt.inputMethod.hide()
             Qt.inputMethod.show()
@@ -1857,9 +1850,8 @@ Rectangle {
                 }
             }
 
-            var changeLanguageKey = inputPanel.findObjectByName("changeLanguageKey")
             var languagePopupList = inputPanel.findObjectByName("languagePopupList")
-            inputPanel.virtualKeyClick(changeLanguageKey)
+            inputPanel.doKeyboardFunction("ChangeLanguage")
 
             compare(languagePopupList.visible, data.languagePopupVisible)
             if (!data.languagePopupVisible)
@@ -1881,7 +1873,7 @@ Rectangle {
                 }
                 compare(inputPanel.locale, data.selectLocale, "Language popup select %1".arg(data.selectLocale))
             } else {
-                inputPanel.virtualKeyClick(changeLanguageKey)
+                inputPanel.doKeyboardFunction("ChangeLanguage")
             }
 
             compare(languagePopupList.visible, false)
@@ -1899,9 +1891,8 @@ Rectangle {
             if (!inputPanel.keyboard.style.languagePopupListEnabled)
                 skip("The language popup is disabled (!style.languagePopupListEnabled)")
 
-            var changeLanguageKey = inputPanel.findObjectByName("changeLanguageKey")
             var languagePopupList = inputPanel.findObjectByName("languagePopupList")
-            inputPanel.virtualKeyClick(changeLanguageKey)
+            inputPanel.doKeyboardFunction("ChangeLanguage")
 
             var previousIndex = -1
             for (var i = 0; i < languagePopupList.model.count; ++i) {

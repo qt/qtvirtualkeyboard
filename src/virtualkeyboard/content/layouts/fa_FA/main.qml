@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2021 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -29,316 +29,161 @@
 
 import QtQuick
 import QtQuick.VirtualKeyboard
+import QtQuick.Layouts
 
-KeyboardLayoutLoader {
+KeyboardLayout {
     inputMode: InputEngine.InputMode.Arabic
-    sourceComponent: InputContext.shiftActive ? page2 : page1
-    Component {
-        id: page1
-        KeyboardLayout {
-            keyWeight: 160
-            KeyboardRow {
-                Key {
-                    text: "\u0636"
-                }
-                Key {
-                    text: "\u0635"
-                }
-                Key {
-                    text: "\u062B"
-                }
-                Key {
-                    text: "\u0642"
-                }
-                Key {
-                    text: "\u0641"
-                }
-                Key {
-                    text: "\u063A"
-                }
-                Key {
-                    text: "\u0639"
-                }
-                Key {
-                    text: "\u0647"
-                }
-                Key {
-                    text: "\u062E"
-                }
-                Key {
-                    text: "\u062D"
-                }
-                Key {
-                    text: "\u062C"
-                }
-                Key {
-                    text: "\u0686"
-                }
-                BackspaceKey {}
-            }
-            KeyboardRow {
-                FillerKey {
-                    weight: 56
-                }
-                Key {
-                    text: "\u0634"
-                }
-                Key {
-                    text: "\u0633"
-                }
-                Key {
-                    text: "\u06CC"
-                }
-                Key {
-                    text: "\u0628"
-                }
-                Key {
-                    text: "\u0644"
-                }
-                Key {
-                    text: "\u0627"
-                }
-                Key {
-                    text: "\u062A"
-                }
-                Key {
-                    text: "\u0646"
-                }
-                Key {
-                    text: "\u0645"
-                }
-                Key {
-                    text: "\u06A9"
-                }
-                Key {
-                    text: "\u06AF"
-                }
-                EnterKey {
-                    weight: 283
-                }
-            }
-            KeyboardRow {
-                keyWeight: 156
-                ShiftKey {}
-                Key {
-                    text: "\u0638"
-                }
-                Key {
-                    text: "\u0637"
-                }
-                Key {
-                    text: "\u0632"
-                }
-                Key {
-                    text: "\u0631"
-                }
-                Key {
-                    text: "\u0630"
-                }
-                Key {
-                    text: "\u062F"
-                }
-                Key {
-                    text: "\u067E"
-                }
-                Key {
-                    text: "\u0648"
-                }
-                Key {
-                    key: 0x060C
-                    text: "\u060C"
-                    alternativeKeys: "\u060C,"
-                }
-                Key {
-                    key: Qt.Key_Period
-                    text: "."
-                }
-                ShiftKey {
-                    weight: 204
-                }
-            }
-            KeyboardRow {
-                keyWeight: 154
-                SymbolModeKey {
-                    weight: 217
-                    displayText: "\u06F1\u06F2\u06F3\u061F"
-                }
-                ChangeLanguageKey {
-                    weight: 154
-                }
-                HandwritingModeKey {
-                    weight: 154
-                }
-                SpaceKey {
-                    weight: 864
-                }
-                Key {
-                    text: "\u200D"
-                    displayText: "ZWJ"
-                }
-                Key {
-                    key: 0xE000
-                    text: ":-)"
-                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-                }
-                HideKeyboardKey {
-                    weight: 204
-                }
-            }
+    keyWeight: 160
+    smallTextVisible: true
+    readonly property real normalKeyWidth: normalKey.width
+    readonly property real functionKeyWidth: mapFromItem(normalKey, normalKey.width / 2, 0).x
+    KeyboardRow {
+        Key {
+            text: "\u0635"
+            alternativeKeys: "1\u0635\u0636\u0661"
+            smallText: "\u0636\u0661"
+        }
+        Key {
+            id: normalKey
+            text: "\u0642"
+            alternativeKeys: "2\u0642\u0662"
+        }
+        Key {
+            text: "\u0641"
+            alternativeKeys: "3\u0641\u0663"
+        }
+        Key {
+            text: "\u063A"
+            alternativeKeys: "4\u063A\u0664"
+        }
+        Key {
+            text: "\u0639"
+            alternativeKeys: "5\u0639\u0665"
+        }
+        Key {
+            text: "\u0647"
+            alternativeKeys: "6\u0647\u0666"
+        }
+        Key {
+            text: "\u062E"
+            alternativeKeys: "7\u062E\u0667"
+        }
+        Key {
+            text: "\u062D"
+            alternativeKeys: "8\u062D\u0668"
+        }
+        Key {
+            text: "\u062C"
+            alternativeKeys: "9\u062C\u0669"
+        }
+        Key {
+            text: "\u0686"
+            alternativeKeys: "0\u0686\u0660"
         }
     }
-    Component {
-        id: page2
-        KeyboardLayout {
-            keyWeight: 160
-            KeyboardRow {
-                Key {
-                    text: "\u0652"
-                }
-                Key {
-                    text: "\u064C"
-                }
-                Key {
-                    text: "\u064D"
-                }
-                Key {
-                    text: "\u064B"
-                }
-                Key {
-                    text: "\u064F"
-                }
-                Key {
-                    text: "\u0650"
-                }
-                Key {
-                    text: "\u064E"
-                }
-                Key {
-                    text: "\u0651"
-                }
-                Key {
-                    enabled: false
-                }
-                Key {
-                    enabled: false
-                }
-                Key {
-                    enabled: false
-                }
-                Key {
-                    enabled: false
-                }
-                BackspaceKey {}
-            }
-            KeyboardRow {
-                FillerKey {
-                    weight: 56
-                }
-                Key {
-                    enabled: false
-                }
-                Key {
-                    text: "\u064F"
-                }
-                Key {
-                    text: "\u064A"
-                }
-                Key {
-                    text: "\u0625"
-                }
-                Key {
-                    text: "\u0623"
-                }
-                Key {
-                    text: "\u0622"
-                }
-                Key {
-                    text: "\u0629"
-                }
-                Key {
-                    enabled: false
-                }
-                Key {
-                    enabled: false
-                }
-                Key {
-                    enabled: false
-                }
-                Key {
-                    enabled: false
-                }
-                EnterKey {
-                    weight: 283
-                }
-            }
-            KeyboardRow {
-                keyWeight: 156
-                ShiftKey {}
-                Key {
-                    text: "\u0643"
-                }
-                Key {
-                    text: "\u0653"
-                }
-                Key {
-                    text: "\u0698"
-                }
-                Key {
-                    text: "\u0670"
-                }
-                Key {
-                    text: "\u0621"
-                }
-                Key {
-                    enabled: false
-                }
-                Key {
-                    enabled: false
-                }
-                Key {
-                    text: "\u0624"
-                }
-                Key {
-                    key: 0x060C
-                    text: "\u060C"
-                    alternativeKeys: "\u060C,"
-                }
-                Key {
-                    key: Qt.Key_Period
-                    text: "."
-                }
-                ShiftKey {
-                    weight: 204
-                }
-            }
-            KeyboardRow {
-                keyWeight: 154
-                SymbolModeKey {
-                    weight: 217
-                    displayText: "\u06F1\u06F2\u06F3\u061F"
-                }
-                ChangeLanguageKey {
-                    weight: 154
-                }
-                HandwritingModeKey {
-                    weight: 154
-                }
-                SpaceKey {
-                    weight: 864
-                }
-                Key {
-                    text: "\u200C"
-                    displayText: "ZWNJ"
-                }
-                Key {
-                    key: 0xE000
-                    text: ":-)"
-                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-                }
-                HideKeyboardKey {
-                    weight: 204
-                }
-            }
+    KeyboardRow {
+        Key {
+            text: "\u0634"
+        }
+        Key {
+            text: "\u0633"
+        }
+        Key {
+            text: "\u06CC"
+        }
+        Key {
+            text: "\u0628"
+        }
+        Key {
+            text: "\u0644"
+        }
+        Key {
+            text: "\u0627"
+            alternativeKeys: "\u0625\u0627\u0623\u0622"
+        }
+        Key {
+            text: "\u062A"
+            alternativeKeys: "\u062A\u062B"
+        }
+        Key {
+            text: "\u0646"
+        }
+        Key {
+            text: "\u0645"
+        }
+        Key {
+            text: "\u06A9"
+        }
+    }
+    KeyboardRow {
+        Key {
+            text: "\u200C"
+            alternativeKeys: "\u200C\u200D"
+            displayText: "\u25C2\u205E\u25B8"
+            displayAlternativeKeys: ["\u25B8\u205E\u25C2"]
+            highlighted: true
+        }
+        Key {
+            text: "\u064E"
+            alternativeKeys: "\u064C\u064E\u064F\u0652\u064B\u064D\u0640\u0651\u0650"
+            smallText: "\u25CC\u064F "
+        }
+        Key {
+            text: "\u0637"
+            alternativeKeys: "\u0637\u0638"
+        }
+        Key {
+            text: "\u0632"
+            alternativeKeys: "\u0632\u0698"
+        }
+        Key {
+            text: "\u0631"
+        }
+        Key {
+            text: "\u0630"
+        }
+        Key {
+            text: "\u062F"
+        }
+        Key {
+            text: "\u0648"
+            alternativeKeys: "\u0624\u0648\u0621"
+        }
+        Key {
+            text: "\u06AF"
+            alternativeKeys: "\u06AF\u067E"
+        }
+        BackspaceKey {
+        }
+    }
+    KeyboardRow {
+        SymbolModeKey {
+            displayText: "\u0661\u0662\u0663\u061F"
+            weight: functionKeyWidth
+            Layout.fillWidth: false
+        }
+        Key {
+            key: Qt.Key_Comma
+            weight: normalKeyWidth
+            Layout.fillWidth: false
+            text: "\u060C"
+            smallText: "\u2699"
+            smallTextVisible: true
+            highlighted: true
+        }
+        SpaceKey {
+        }
+        Key {
+            key: Qt.Key_Period
+            weight: normalKeyWidth
+            Layout.fillWidth: false
+            text: "."
+            alternativeKeys: "!,\u060C\u061B.\u061F"
+            highlighted: true
+        }
+        EnterKey {
+            weight: functionKeyWidth
+            Layout.fillWidth: false
         }
     }
 }

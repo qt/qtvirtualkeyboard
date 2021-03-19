@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2021 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -38,21 +38,6 @@ KeyboardLayoutLoader {
     sharedLayouts: ['main']
     property int page
     readonly property int numPages: 3
-    property var keysPage1: [
-        "1234567890",
-        "@#$%^&*()",
-        "“”、=：；！？～"
-    ]
-    property var keysPage2: [
-        "-+/\\|[]{}·",
-        "<>,.:;!?~",
-        "／\"'_§￥€£¢"
-    ]
-    property var keysPage3: [
-        "（）〔〕〈〉《》【】",
-        "→←↑↓↔■□●○",
-        "＼『』「」★☆◆◇"
-    ]
     readonly property string inputModeName: {
         switch (InputContext.inputEngine.inputMode) {
         case InputEngine.Katakana:
@@ -74,75 +59,154 @@ KeyboardLayoutLoader {
         id: page1
         KeyboardLayout {
             keyWeight: 160
+            readonly property real normalKeyWidth: normalKey.width
+            readonly property real functionKeyWidth: mapFromItem(normalKey, normalKey.width / 2, 0).x
             KeyboardRow {
-                Repeater {
-                    model: keysPage1[0].length
-                    Key {
-                        key: keysPage1[0][index].charCodeAt(0)
-                        text: keysPage1[0][index]
-                    }
+                Key {
+                    key: Qt.Key_1
+                    text: "1"
                 }
-                BackspaceKey {}
+                Key {
+                    id: normalKey
+                    key: Qt.Key_2
+                    text: "2"
+                }
+                Key {
+                    key: Qt.Key_3
+                    text: "3"
+                }
+                Key {
+                    key: Qt.Key_4
+                    text: "4"
+                }
+                Key {
+                    key: Qt.Key_5
+                    text: "5"
+                }
+                Key {
+                    key: Qt.Key_6
+                    text: "6"
+                }
+                Key {
+                    key: Qt.Key_7
+                    text: "7"
+                }
+                Key {
+                    key: Qt.Key_8
+                    text: "8"
+                }
+                Key {
+                    key: Qt.Key_9
+                    text: "9"
+                }
+                Key {
+                    key: Qt.Key_0
+                    text: "0"
+                }
             }
             KeyboardRow {
-                FillerKey {
-                    weight: 56
+                Key {
+                    key: Qt.Key_1
+                    text: "@"
                 }
-                Repeater {
-                    model: keysPage1[1].length
-                    Key {
-                        key: keysPage1[1][index].charCodeAt(0)
-                        text: keysPage1[1][index]
-                    }
+                Key {
+                    key: Qt.Key_1
+                    text: "#"
                 }
-                EnterKey {
-                    weight: 283
+                Key {
+                    key: Qt.Key_1
+                    text: "%"
+                }
+                Key {
+                    key: Qt.Key_1
+                    text: "&"
+                }
+                Key {
+                    key: Qt.Key_1
+                    text: "*"
+                }
+                Key {
+                    key: Qt.Key_1
+                    text: "_"
+                }
+                Key {
+                    key: Qt.Key_1
+                    text: "-"
+                }
+                Key {
+                    key: Qt.Key_1
+                    text: "+"
+                }
+                Key {
+                    key: Qt.Key_1
+                    text: "("
+                }
+                Key {
+                    key: Qt.Key_1
+                    text: ")"
                 }
             }
             KeyboardRow {
-                keyWeight: 156
                 Key {
                     displayText: (page + 1) + "/" + numPages
                     functionKey: true
                     onClicked: page = (page + 1) % numPages
-                }
-                Repeater {
-                    model: keysPage1[2].length
-                    Key {
-                        key: keysPage1[2][index].charCodeAt(0)
-                        text: keysPage1[2][index]
-                    }
+                    highlighted: true
                 }
                 Key {
-                    weight: 204
-                    displayText: (page + 1) + "/" + numPages
-                    functionKey: true
-                    onClicked: page = (page + 1) % numPages
+                    text: "“"
+                }
+                Key {
+                    text: "”"
+                }
+                Key {
+                    text: "、"
+                }
+                Key {
+                    text: "："
+                }
+                Key {
+                    text: "；"
+                }
+                Key {
+                    text: "！"
+                }
+                Key {
+                    text: "？"
+                }
+                Key {
+                    text: "～"
+                }
+                BackspaceKey {
                 }
             }
             KeyboardRow {
-                keyWeight: 154
                 SymbolModeKey {
-                    weight: 217
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                     displayText: inputModeName
                 }
-                ChangeLanguageKey {
-                    weight: 154
+                Key {
+                    key: Qt.Key_Comma
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: ","
+                    smallText: "\u2699"
+                    smallTextVisible: true
+                    highlighted: true
                 }
                 SpaceKey {
-                    weight: 864
                 }
                 Key {
-                    key: 0x2014
+                    key: Qt.Key_Period
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                     text: "—"
+                    highlighted: true
                 }
-                Key {
-                    key: 0xE000
-                    text: ":-)"
-                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-                }
-                HideKeyboardKey {
-                    weight: 204
+                EnterKey {
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                 }
             }
         }
@@ -151,75 +215,135 @@ KeyboardLayoutLoader {
         id: page2
         KeyboardLayout {
             keyWeight: 160
+            readonly property real normalKeyWidth: normalKey.width
+            readonly property real functionKeyWidth: mapFromItem(normalKey, normalKey.width / 2, 0).x
             KeyboardRow {
-                Repeater {
-                    model: keysPage2[0].length
-                    Key {
-                        key: keysPage2[0][index].charCodeAt(0)
-                        text: keysPage2[0][index]
-                    }
+                Key {
+                    text: "½"
+                    alternativeKeys: "½¼¾"
                 }
-                BackspaceKey {}
+                Key {
+                    id: normalKey
+                    text: "'"
+                }
+                Key {
+                    text: "/"
+                }
+                Key {
+                    text: "\\"
+                }
+                Key {
+                    text: "|"
+                }
+                Key {
+                    text: "["
+                }
+                Key {
+                    text: "]"
+                }
+                Key {
+                    text: "{"
+                }
+                Key {
+                    text: "}"
+                }
+                Key {
+                    text: "·"
+                }
             }
             KeyboardRow {
-                FillerKey {
-                    weight: 56
+                Key {
+                    text: "<"
                 }
-                Repeater {
-                    model: keysPage2[1].length
-                    Key {
-                        key: keysPage2[1][index].charCodeAt(0)
-                        text: keysPage2[1][index]
-                    }
+                Key {
+                    text: ">"
                 }
-                EnterKey {
-                    weight: 283
+                Key {
+                    text: ","
+                }
+                Key {
+                    text: "."
+                }
+                Key {
+                    text: ":"
+                }
+                Key {
+                    text: ";"
+                }
+                Key {
+                    text: "!"
+                }
+                Key {
+                    text: "?"
+                }
+                Key {
+                    text: "="
+                }
+                Key {
+                    text: "~"
                 }
             }
             KeyboardRow {
-                keyWeight: 156
                 Key {
                     displayText: (page + 1) + "/" + numPages
                     functionKey: true
                     onClicked: page = (page + 1) % numPages
-                }
-                Repeater {
-                    model: keysPage2[2].length
-                    Key {
-                        key: keysPage2[2][index].charCodeAt(0)
-                        text: keysPage2[2][index]
-                    }
+                    highlighted: true
                 }
                 Key {
-                    weight: 204
-                    displayText: (page + 1) + "/" + numPages
-                    functionKey: true
-                    onClicked: page = (page + 1) % numPages
+                    text: "\""
+                }
+                Key {
+                    text: "§"
+                }
+                Key {
+                    text: "^"
+                }
+                Key {
+                    text: "$"
+                }
+                Key {
+                    text: "￥"
+                }
+                Key {
+                    text: "€"
+                }
+                Key {
+                    text: "£"
+                }
+                Key {
+                    text: "¢"
+                }
+                BackspaceKey {
                 }
             }
             KeyboardRow {
-                keyWeight: 154
                 SymbolModeKey {
-                    weight: 217
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                     displayText: inputModeName
                 }
-                ChangeLanguageKey {
-                    weight: 154
+                Key {
+                    key: Qt.Key_Comma
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: ","
+                    smallText: "\u2699"
+                    smallTextVisible: true
+                    highlighted: true
                 }
                 SpaceKey {
-                    weight: 864
                 }
                 Key {
-                    key: 0x3002
+                    key: Qt.Key_Period
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                     text: "。"
+                    highlighted: true
                 }
-                Key {
-                    key: 0xE000
-                    text: ":-)"
-                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-                }
-                HideKeyboardKey {
-                    weight: 204
+                EnterKey {
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                 }
             }
         }
@@ -228,75 +352,134 @@ KeyboardLayoutLoader {
         id: page3
         KeyboardLayout {
             keyWeight: 160
+            readonly property real normalKeyWidth: normalKey.width
+            readonly property real functionKeyWidth: mapFromItem(normalKey, normalKey.width / 2, 0).x
             KeyboardRow {
-                Repeater {
-                    model: keysPage3[0].length
-                    Key {
-                        key: keysPage3[0][index].charCodeAt(0)
-                        text: keysPage3[0][index]
-                    }
+                Key {
+                    text: "＼"
                 }
-                BackspaceKey {}
+                Key {
+                    id: normalKey
+                    text: "／"
+                }
+                Key {
+                    text: "（"
+                }
+                Key {
+                    text: "）"
+                }
+                Key {
+                    text: "〔"
+                }
+                Key {
+                    text: "〕"
+                }
+                Key {
+                    text: "〈"
+                }
+                Key {
+                    text: "〉"
+                }
+                Key {
+                    text: "《"
+                }
+                Key {
+                    text: "》"
+                }
             }
             KeyboardRow {
-                FillerKey {
-                    weight: 56
+                Key {
+                    text: "→"
                 }
-                Repeater {
-                    model: keysPage3[1].length
-                    Key {
-                        key: keysPage3[1][index].charCodeAt(0)
-                        text: keysPage3[1][index]
-                    }
+                Key {
+                    text: "←"
                 }
-                EnterKey {
-                    weight: 283
+                Key {
+                    text: "↑"
+                }
+                Key {
+                    text: "↓"
+                }
+                Key {
+                    text: "■"
+                }
+                Key {
+                    text: "□"
+                }
+                Key {
+                    text: "●"
+                }
+                Key {
+                    text: "○"
+                }
+                Key {
+                    text: "【"
+                }
+                Key {
+                    text: "】"
                 }
             }
             KeyboardRow {
-                keyWeight: 156
                 Key {
                     displayText: (page + 1) + "/" + numPages
                     functionKey: true
                     onClicked: page = (page + 1) % numPages
-                }
-                Repeater {
-                    model: keysPage3[2].length
-                    Key {
-                        key: keysPage3[2][index].charCodeAt(0)
-                        text: keysPage3[2][index]
-                    }
+                    highlighted: true
                 }
                 Key {
-                    weight: 204
-                    displayText: (page + 1) + "/" + numPages
-                    functionKey: true
-                    onClicked: page = (page + 1) % numPages
+                    text: "『"
+                }
+                Key {
+                    text: "』"
+                }
+                Key {
+                    text: "「"
+                }
+                Key {
+                    text: "」"
+                }
+                Key {
+                    text: "★"
+                }
+                Key {
+                    text: "☆"
+                }
+                Key {
+                    text: "◆"
+                }
+                Key {
+                    text: "◇"
+                }
+                BackspaceKey {
                 }
             }
             KeyboardRow {
-                keyWeight: 154
                 SymbolModeKey {
-                    weight: 217
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                     displayText: inputModeName
                 }
-                ChangeLanguageKey {
-                    weight: 154
+                Key {
+                    key: Qt.Key_Comma
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: ","
+                    smallText: "\u2699"
+                    smallTextVisible: true
+                    highlighted: true
                 }
                 SpaceKey {
-                    weight: 864
                 }
                 Key {
-                    key: 0x2026
+                    key: Qt.Key_Period
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                     text: "…"
+                    highlighted: true
                 }
-                Key {
-                    key: 0xE000
-                    text: ":-)"
-                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-                }
-                HideKeyboardKey {
-                    weight: 204
+                EnterKey {
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                 }
             }
         }

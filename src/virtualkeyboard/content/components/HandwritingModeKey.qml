@@ -50,7 +50,8 @@ Key {
     key: Qt.Key_Context2
     displayText: "HWR"
     functionKey: true
-    visible: keyboard.isHandwritingAvailable()
-    onClicked: keyboard.setHandwritingMode(!keyboard.handwritingMode)
+    highlighted: true
+    visible: keyboard.isKeyboardFunctionAvailable(QtVirtualKeyboard.ToggleHandwritingMode)
+    onClicked: keyboard.doKeyboardFunction(QtVirtualKeyboard.ToggleHandwritingMode)
     keyPanelDelegate: keyboard.style ? keyboard.style.handwritingKeyPanel : undefined
 }

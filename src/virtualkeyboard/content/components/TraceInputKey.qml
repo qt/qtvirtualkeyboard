@@ -105,7 +105,7 @@ Item {
         id: traceInputKeyPanel
         sourceComponent: keyboard.style.traceInputKeyPanelDelegate
         anchors.fill: parent
-        onStatusChanged: if (status == Loader.Ready) traceInputKeyPanel.item.control = traceInputKey
+        onLoaded: traceInputKeyPanel.item.control = traceInputKey
     }
 
     TraceInputArea {

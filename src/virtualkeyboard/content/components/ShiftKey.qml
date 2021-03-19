@@ -46,7 +46,7 @@ BaseKey {
     keyType: QtVirtualKeyboard.ShiftKey
     key: Qt.Key_Shift
     enabled: InputContext.priv.shiftHandler.toggleShiftEnabled
-    highlighted: InputContext.capsLockActive
+    highlighted: true
     functionKey: true
     keyPanelDelegate: keyboard.style ? keyboard.style.shiftKeyPanel : undefined
     onClicked: InputContext.priv.shiftHandler.toggleShift()

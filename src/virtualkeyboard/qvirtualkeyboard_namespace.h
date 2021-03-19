@@ -58,6 +58,13 @@ enum class KeyType {
 };
 Q_ENUM_NS(KeyType)
 
+enum class KeyboardFunction {
+    HideInputPanel,
+    ChangeLanguage,
+    ToggleHandwritingMode,
+};
+Q_ENUM_NS(KeyboardFunction)
+
 } // namespace QtVirtualKeyboard
 
 QT_END_NAMESPACE

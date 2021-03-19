@@ -47,5 +47,6 @@ BaseKey {
     keyType: QtVirtualKeyboard.BackspaceKey
     repeat: true
     functionKey: true
+    highlighted: true
     keyPanelDelegate: keyboard.style ? keyboard.style.backspaceKeyPanel : undefined
 }

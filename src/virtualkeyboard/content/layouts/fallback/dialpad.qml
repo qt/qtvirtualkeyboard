@@ -75,6 +75,7 @@ KeyboardLayout {
                 repeat: true
                 showPreview: false
                 key: Qt.Key_Space
+                highlighted: true
             }
         }
         KeyboardRow {
@@ -95,7 +96,6 @@ KeyboardLayout {
         KeyboardRow {
             Key {
                 key: Qt.Key_Asterisk
-                displayText: "*+"
                 text: "*"
                 alternativeKeys: "*+"
             }

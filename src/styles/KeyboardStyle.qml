@@ -527,4 +527,31 @@ QtObject {
         The default color is set to \c fullScreenInputColor.
     */
     property color fullScreenInputSelectedTextColor: fullScreenInputColor
+
+    /*! \since QtQuick.VirtualKeyboard.Styles 6.2
+
+        Template for the function list item.
+
+        \note The delegate is used in a \l ListView.
+
+        The following properties are available to the item:
+        \list
+            \li \c keyboardFunction \l {QtVirtualKeyboard.KeyboardFunction}{Keyboard function} of the current item
+        \endlist
+    */
+    property Component functionPopupListDelegate: null
+
+    /*! \since QtQuick.VirtualKeyboard.Styles 6.2
+
+        Template for the function popup list highlight.
+
+        \note The delegate is used as \c ListView.highlight.
+    */
+    property Component functionPopupListHighlight: null
+
+    /*! \since QtQuick.VirtualKeyboard.Styles 6.2
+
+        Template for the function popup list background.
+    */
+    property Component functionPopupListBackground: null
 }

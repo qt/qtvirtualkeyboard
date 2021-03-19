@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2018 The Qt Company Ltd.
+** Copyright (C) 2021 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -39,12 +39,15 @@ KeyboardLayoutLoader {
         id: page1
         KeyboardLayout {
             keyWeight: 160
+            readonly property real normalKeyWidth: normalKey.width
+            readonly property real functionKeyWidth: mapFromItem(normalKey, normalKey.width / 2, 0).x
             KeyboardRow {
                 Key {
                     key: Qt.Key_1
                     text: "1"
                 }
                 Key {
+                    id: normalKey
                     key: Qt.Key_2
                     text: "2"
                 }
@@ -80,12 +83,8 @@ KeyboardLayoutLoader {
                     key: Qt.Key_0
                     text: "0"
                 }
-                BackspaceKey {}
             }
             KeyboardRow {
-                FillerKey {
-                    weight: 56
-                }
                 Key {
                     key: Qt.Key_At
                     text: "@"
@@ -107,6 +106,10 @@ KeyboardLayoutLoader {
                     text: "*"
                 }
                 Key {
+                    key: Qt.Key_Underscore
+                    text: "_"
+                }
+                Key {
                     key: Qt.Key_Minus
                     text: "-"
                 }
@@ -122,20 +125,13 @@ KeyboardLayoutLoader {
                     key: Qt.Key_ParenRight
                     text: ")"
                 }
-                EnterKey {
-                    weight: 283
-                }
             }
             KeyboardRow {
-                keyWeight: 156
                 Key {
                     displayText: "1/2"
                     functionKey: true
                     onClicked: secondPage = !secondPage
-                }
-                Key {
-                    key: Qt.Key_Exclam
-                    text: "!"
+                    highlighted: true
                 }
                 Key {
                     key:  Qt.Key_QuoteDbl
@@ -158,48 +154,47 @@ KeyboardLayoutLoader {
                     text: ":"
                 }
                 Key {
-                    key: Qt.Key_Semicolon
-                    text: ";"
-                }
-                Key {
                     key: Qt.Key_Slash
                     text: "/"
+                }
+                Key {
+                    key: Qt.Key_Exclam
+                    text: "!"
                 }
                 Key {
                     key: Qt.Key_Question
                     text: "?"
                 }
-                Key {
-                    weight: 204
-                    displayText: "1/2"
-                    functionKey: true
-                    onClicked: secondPage = !secondPage
+                BackspaceKey {
                 }
             }
             KeyboardRow {
-                keyWeight: 154
                 SymbolModeKey {
-                    weight: 217
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                     displayText: "ABC"
                 }
-                ChangeLanguageKey {
-                    weight: 154
+                Key {
+                    key: Qt.Key_Comma
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: ","
+                    smallText: "\u2699"
+                    smallTextVisible: true
+                    highlighted: true
                 }
                 SpaceKey {
-                    weight: 864
                 }
                 Key {
                     key: Qt.Key_Period
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                     text: "."
-                    alternativeKeys: ".,"
+                    highlighted: true
                 }
-                Key {
-                    key: 0xE000
-                    text: ":-)"
-                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-                }
-                HideKeyboardKey {
-                    weight: 204
+                EnterKey {
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                 }
             }
         }
@@ -208,12 +203,15 @@ KeyboardLayoutLoader {
         id: page2
         KeyboardLayout {
             keyWeight: 160
+            readonly property real normalKeyWidth: normalKey.width
+            readonly property real functionKeyWidth: mapFromItem(normalKey, normalKey.width / 2, 0).x
             KeyboardRow {
                 Key {
                     key: Qt.Key_AsciiTilde
                     text: "~"
                 }
                 Key {
+                    id: normalKey
                     key: Qt.Key_Agrave
                     text: "`"
                 }
@@ -250,12 +248,8 @@ KeyboardLayoutLoader {
                     key: Qt.Key_BraceRight
                     text: "}"
                 }
-                BackspaceKey {}
             }
             KeyboardRow {
-                FillerKey {
-                    weight: 56
-                }
                 Key {
                     key: Qt.Key_Dollar
                     text: "$"
@@ -277,6 +271,10 @@ KeyboardLayoutLoader {
                     text: "₫"
                 }
                 Key {
+                    key: Qt.Key_AsciiCircum
+                    text: "^"
+                }
+                Key {
                     key: Qt.Key_Equal
                     text: "="
                 }
@@ -292,20 +290,13 @@ KeyboardLayoutLoader {
                     key: Qt.Key_BracketRight
                     text: "]"
                 }
-                EnterKey {
-                    weight: 283
-                }
             }
             KeyboardRow {
-                keyWeight: 156
                 Key {
                     displayText: "2/2"
                     functionKey: true
                     onClicked: secondPage = !secondPage
-                }
-                Key {
-                    key: Qt.Key_Underscore
-                    text: "_"
+                    highlighted: true
                 }
                 Key {
                     key: 0x2122
@@ -324,6 +315,10 @@ KeyboardLayoutLoader {
                     text: '»'
                 }
                 Key {
+                    key: Qt.Key_Semicolon
+                    text: ";"
+                }
+                Key {
                     key: 0x201C
                     text: '“'
                 }
@@ -335,40 +330,36 @@ KeyboardLayoutLoader {
                     key: Qt.Key_Backslash
                     text: "\\"
                 }
-                Key {
-                    key: Qt.Key_AsciiCircum
-                    text: "^"
-                }
-                Key {
-                    weight: 204
-                    displayText: "2/2"
-                    functionKey: true
-                    onClicked: secondPage = !secondPage
+                BackspaceKey {
                 }
             }
             KeyboardRow {
-                keyWeight: 154
                 SymbolModeKey {
-                    weight: 217
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                     displayText: "ABC"
                 }
-                ChangeLanguageKey {
-                    weight: 154
+                Key {
+                    key: Qt.Key_Comma
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: ","
+                    smallText: "\u2699"
+                    smallTextVisible: true
+                    highlighted: true
                 }
                 SpaceKey {
-                    weight: 864
                 }
                 Key {
                     key: 0x2026
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                     text: "\u2026"
+                    highlighted: true
                 }
-                Key {
-                    key: 0xE000
-                    text: ":-)"
-                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-                }
-                HideKeyboardKey {
-                    weight: 204
+                EnterKey {
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                 }
             }
         }

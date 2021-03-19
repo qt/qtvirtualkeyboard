@@ -60,6 +60,7 @@ Key {
     keyType: QtVirtualKeyboard.ModeKey
     noKeyEvent: true
     functionKey: true
+    highlighted: true
     onClicked: mode = !mode
     keyPanelDelegate: keyboard.style ? keyboard.style.modeKeyPanel : undefined
 }

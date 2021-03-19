@@ -2,6 +2,7 @@
     <qresource prefix="/QtQuick/VirtualKeyboard/content/styles/retro">
         <file>style.qml</file>
         <file>images/key154px_black.png</file>
+        <file>images/key154px_black.svg</file>
         <file>images/key154px_black_long.png</file>
         <file>images/key154px_capslock_long.png</file>
         <file>images/key154px_capslock.png</file>
@@ -25,13 +26,21 @@
         <file>images/check-c5a96f.svg</file>
         <file>images/enter-c5a96f.svg</file>
         <file>images/globe-110b05.svg</file>
+        <file>images/globe-c5a96f.svg</file>
+        <file>images/globe-fff.svg</file>
         <file>images/handwriting-110b05.svg</file>
+        <file>images/handwriting-c5a96f.svg</file>
+        <file>images/handwriting-fff.svg</file>
+        <file>images/hidekeyboard-110b05.svg</file>
         <file>images/hidekeyboard-c5a96f.svg</file>
+        <file>images/hidekeyboard-fff.svg</file>
         <file>images/search-c5a96f.svg</file>
         <file>images/shift-c5a96f.svg</file>
         <file>images/shift-cd8865.svg</file>
         <file>images/shift-dc4f28.svg</file>
         <file>images/textmode-110b05.svg</file>
+        <file>images/textmode-c5a96f.svg</file>
+        <file>images/textmode-fff.svg</file>
         <file>images/selectionhandle-bottom.svg</file>
     </qresource>
 </RCC>

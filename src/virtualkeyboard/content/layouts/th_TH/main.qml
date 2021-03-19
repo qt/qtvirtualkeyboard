@@ -42,27 +42,33 @@ KeyboardLayoutLoader {
         id: page1
         KeyboardLayout {
             keyWeight: 160
+            readonly property real normalKeyWidth: normalKey.width
+            readonly property real functionKeyWidth: mapFromItem(normalKey, normalKey.width / 2, 0).x
             KeyboardRow {
                 Layout.preferredHeight: 3
                 smallTextVisible: true
                 KeyboardColumn {
-                    Layout.preferredWidth: bottomRow.width - hideKeyboardKey.width
                     KeyboardRow {
                         Key {
-                            text: "ๆ"
-                            alternativeKeys: "ๆ๑"
+                            text: "ๅ"
+                            alternativeKeys: "ๅ1๑"
                         }
                         Key {
-                            text: "ๅ"
-                            alternativeKeys: "ๅ๒"
+                            id: normalKey
+                            text: "/"
+                            alternativeKeys: "/2๒"
+                        }
+                        Key {
+                            text: "_"
+                            alternativeKeys: "_3๓"
                         }
                         Key {
                             text: "ภ"
-                            alternativeKeys: "ภ๓"
+                            alternativeKeys: "ภ4๔"
                         }
                         Key {
                             text: "ถ"
-                            alternativeKeys: "ถ๔"
+                            alternativeKeys: "ถ5๕"
                         }
                         Key {
                             text: "\u0E38"
@@ -75,29 +81,32 @@ KeyboardLayoutLoader {
                         }
                         Key {
                             text: "ค"
-                            alternativeKeys: "ค๕"
+                            alternativeKeys: "ค6๖"
                         }
                         Key {
                             text: "ต"
-                            alternativeKeys: "ต๖"
+                            alternativeKeys: "ต7๗"
                         }
                         Key {
                             text: "จ"
-                            alternativeKeys: "จ๗"
+                            alternativeKeys: "จ8๘"
                         }
                         Key {
                             text: "ข"
-                            alternativeKeys: "ข๘"
+                            alternativeKeys: "๙ข9"
                         }
                         Key {
                             text: "ช"
-                            alternativeKeys: "ช๙"
+                            alternativeKeys: "๐ช0"
                         }
                     }
                     KeyboardRow {
                         Key {
+                            text: "ๆ"
+                        }
+                        Key {
                             text: "ไ"
-                            alternativeKeys: "ไ฿"
+                            alternativeKeys: "ไ\""
                         }
                         Key {
                             text: " ำ"
@@ -182,15 +191,16 @@ KeyboardLayoutLoader {
                         }
                         Key {
                             text: "ว"
-                            alternativeKeys: "วซ"
                         }
                         Key {
                             text: "ง"
                         }
+                        Key {
+                            text: "ซ"
+                        }
                     }
                     KeyboardRow {
-                        FillerKey {
-                            weight: 80
+                        ShiftKey {
                         }
                         Key {
                             text: "ผ"
@@ -231,53 +241,40 @@ KeyboardLayoutLoader {
                             text: "ฝ"
                             alternativeKeys: "ฝฦ"
                         }
-                        FillerKey {
-                            weight: 80
+                        BackspaceKey {
                         }
-                    }
-                }
-                KeyboardColumn {
-                    Layout.preferredWidth: hideKeyboardKey.width
-                    KeyboardRow {
-                        BackspaceKey {}
-                    }
-                    KeyboardRow {
-                        EnterKey {}
-                    }
-                    KeyboardRow {
-                        ShiftKey { }
                     }
                 }
             }
             KeyboardRow {
-                id: bottomRow
-                keyWeight: 154
                 SymbolModeKey {
-                    weight: 217
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                 }
-                ChangeLanguageKey {
-                    weight: 154
-                }
-                HandwritingModeKey {
-                    weight: 154
+                Key {
+                    key: Qt.Key_Comma
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: ","
+                    smallText: "\u2699"
+                    smallTextVisible: true
+                    highlighted: true
                 }
                 SpaceKey {
-                    weight: 864
                 }
                 Key {
                     key: Qt.Key_Period
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                     text: "."
-                    alternativeKeys: "!?.,"
+                    alternativeKeys: "!.?"
+                    smallText: "!?"
                     smallTextVisible: true
+                    highlighted: true
                 }
-                Key {
-                    key: 0xE000
-                    text: ":-)"
-                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-                }
-                HideKeyboardKey {
-                    id: hideKeyboardKey
-                    weight: 204
+                EnterKey {
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                 }
             }
         }
@@ -286,13 +283,18 @@ KeyboardLayoutLoader {
         id: page2
         KeyboardLayout {
             keyWeight: 160
+            readonly property real normalKeyWidth: normalKey.width
+            readonly property real functionKeyWidth: mapFromItem(normalKey, normalKey.width / 2, 0).x
             KeyboardRow {
                 Layout.preferredHeight: 3
                 smallTextVisible: true
                 KeyboardColumn {
-                    Layout.preferredWidth: bottomRow.width - hideKeyboardKey.width
                     KeyboardRow {
                         Key {
+                            text: "+"
+                        }
+                        Key {
+                            id: normalKey
                             text: "๑"
                         }
                         Key {
@@ -309,7 +311,7 @@ KeyboardLayoutLoader {
                             displayText: " \u0E39"
                         }
                         Key {
-                            enabled: false
+                            text: "฿"
                         }
                         Key {
                             text: "๕"
@@ -329,7 +331,10 @@ KeyboardLayoutLoader {
                     }
                     KeyboardRow {
                         Key {
-                            text: "฿"
+                            text: "๐"
+                        }
+                        Key {
+                            text: "\""
                         }
                         Key {
                             text: "ฎ"
@@ -360,7 +365,7 @@ KeyboardLayoutLoader {
                             text: "ฐ"
                         }
                         Key {
-                            enabled: false
+                            text: ","
                         }
                     }
                     KeyboardRow {
@@ -397,18 +402,20 @@ KeyboardLayoutLoader {
                             text: "ซ"
                         }
                         Key {
-                            enabled: false
+                            text: "."
+                        }
+                        Key {
+                            text: "ฅ"
                         }
                     }
                     KeyboardRow {
-                        FillerKey {
-                            weight: 80
+                        ShiftKey {
                         }
                         Key {
-                            enabled: false
+                            text: "("
                         }
                         Key {
-                            enabled: false
+                            text: ")"
                         }
                         Key {
                             text: "ฉ"
@@ -425,7 +432,7 @@ KeyboardLayoutLoader {
                             displayText: " \u0E4C"
                         }
                         Key {
-                            enabled: false
+                            text: "?"
                         }
                         Key {
                             text: "ฒ"
@@ -436,52 +443,40 @@ KeyboardLayoutLoader {
                         Key {
                             text: "ฦ"
                         }
-                        FillerKey {
-                            weight: 80
+                        BackspaceKey {
                         }
-                    }
-                }
-                KeyboardColumn {
-                    Layout.preferredWidth: hideKeyboardKey.width
-                    KeyboardRow {
-                        BackspaceKey {}
-                    }
-                    KeyboardRow {
-                        EnterKey {}
-                    }
-                    KeyboardRow {
-                        ShiftKey { }
                     }
                 }
             }
             KeyboardRow {
-                id: bottomRow
-                keyWeight: 154
                 SymbolModeKey {
-                    weight: 217
-                }
-                ChangeLanguageKey {
-                    weight: 154
-                }
-                HandwritingModeKey {
-                    weight: 154
-                }
-                SpaceKey {
-                    weight: 864
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                 }
                 Key {
                     key: Qt.Key_Comma
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                     text: ","
-                    alternativeKeys: "!?,"
+                    smallText: "\u2699"
+                    smallTextVisible: true
+                    highlighted: true
+                }
+                SpaceKey {
                 }
                 Key {
-                    key: 0xE000
-                    text: ":-)"
-                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
+                    key: Qt.Key_Period
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: "."
+                    alternativeKeys: "!.?"
+                    smallText: "!?"
+                    smallTextVisible: true
+                    highlighted: true
                 }
-                HideKeyboardKey {
-                    id: hideKeyboardKey
-                    weight: 204
+                EnterKey {
+                    weight: functionKeyWidth
+                    Layout.fillWidth: false
                 }
             }
         }

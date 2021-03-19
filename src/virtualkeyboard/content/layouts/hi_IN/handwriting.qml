@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2017 The Qt Company Ltd.
+** Copyright (C) 2021 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -39,65 +39,42 @@ KeyboardLayout {
 
     KeyboardRow {
         Layout.preferredHeight: 3
-        KeyboardColumn {
-            Layout.preferredWidth: bottomRow.width - hideKeyboardKey.width
-            KeyboardRow {
-                TraceInputKey {
-                    objectName: "hwrInputArea"
-                    patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
-                }
-            }
-        }
-        KeyboardColumn {
-            Layout.preferredWidth: hideKeyboardKey.width
-            KeyboardRow {
-                BackspaceKey {}
-            }
-            KeyboardRow {
-                EnterKey {}
-            }
-            KeyboardRow {
-                ShiftKey { }
-            }
+        TraceInputKey {
+            objectName: "hwrInputArea"
+            patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
         }
     }
     KeyboardRow {
         id: bottomRow
         Layout.preferredHeight: 1
-        keyWeight: 154
+        keyWeight: 160
+        ShiftKey {
+            weight: 240
+        }
+        InputModeKey {
+        }
         Key {
-            weight: 217
-            key: Qt.Key_Mode_switch
-            noKeyEvent: true
-            functionKey: true
-            text: InputContext.inputEngine.inputMode === InputEngine.InputMode.Latin ? "123" : "ABC"
-            onClicked: InputContext.inputEngine.inputMode = InputContext.inputEngine.inputMode === InputEngine.InputMode.Latin ? InputEngine.InputMode.Numeric : InputEngine.InputMode.Latin
-            enabled: !(InputContext.inputMethodHints & (Qt.ImhDialableCharactersOnly | Qt.ImhFormattedNumbersOnly | Qt.ImhDigitsOnly))
-            keyPanelDelegate: keyboard.style ? keyboard.style.symbolKeyPanel : undefined
-        }
-        ChangeLanguageKey {
-            weight: 154
-            customLayoutsOnly: true
-        }
-        HandwritingModeKey {
-            weight: 154
+            key: Qt.Key_Comma
+            text: ","
+            smallText: "\u2699"
+            smallTextVisible: true
+            highlighted: true
         }
         SpaceKey {
-            weight: 864
-        }
-        Key {
-            key: Qt.Key_Apostrophe
-            text: "'"
-            alternativeKeys: "<>()#%&*/\\\"'=+-_"
+            weight: 10 * 160 - 4 * 160  - 2 * 240
         }
         Key {
             key: Qt.Key_Period
             text: "."
-            alternativeKeys: ":;,.?!"
+            alternativeKeys: "<>()/\\\"'=+-_:;.?!"
+            smallText: "!?"
+            smallTextVisible: true
+            highlighted: true
         }
-        HideKeyboardKey {
-            id: hideKeyboardKey
-            weight: 204
+        BackspaceKey {
+        }
+        EnterKey {
+            weight: 240
         }
     }
 }

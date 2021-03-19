@@ -252,6 +252,22 @@ InputPanel {
         VirtualKeyboardSettings.activeLocales = activeLocales
     }
 
+    function mapKeyboardFunction(keyboardFunctionName) {
+        if (keyboardFunctionName === "HideInputPanel")
+            return QtVirtualKeyboard.HideInputPanel
+        if (keyboardFunctionName === "ChangeLanguage")
+            return QtVirtualKeyboard.ChangeLanguage
+        if (keyboardFunctionName === "ToggleHandwritingMode")
+            return QtVirtualKeyboard.ToggleHandwritingMode
+        return -1
+    }
+
+    function doKeyboardFunction(keyboardFunctionName) {
+        const keyboardFunction = mapKeyboardFunction(keyboardFunctionName)
+        testcase.verify(keyboardFunction !== -1)
+        keyboard.doKeyboardFunction(keyboardFunction)
+    }
+
     function setWclAutoHideDelay(wclAutoHideDelay) {
         VirtualKeyboardSettings.wordCandidateList.autoHideDelay = wclAutoHideDelay
     }

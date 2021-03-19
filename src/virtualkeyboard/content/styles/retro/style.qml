@@ -42,13 +42,13 @@ KeyboardStyle {
     readonly property string resourcePrefix: "qrc:/" + resourcePath
 
     readonly property string inputLocale: InputContext.locale
-    property color inputLocaleIndicatorColor: "#110b05"
+    property real inputLocaleIndicatorOpacity: 1.0
     property Timer inputLocaleIndicatorHighlightTimer: Timer {
         interval: 1000
-        onTriggered: inputLocaleIndicatorColor = "#413828"
+        onTriggered: inputLocaleIndicatorOpacity = 0.8
     }
     onInputLocaleChanged: {
-        inputLocaleIndicatorColor = "#110b05"
+        inputLocaleIndicatorOpacity = 1.0
         inputLocaleIndicatorHighlightTimer.restart()
     }
 
@@ -87,7 +87,7 @@ KeyboardStyle {
                 },
                 State {
                     name: "key154px_black"
-                    when: control.displayText.length > 2
+                    when: control.highlighted
                     PropertyChanges {
                         target: keyBackground
                         source: resourcePrefix + "images/key154px_black.png"
@@ -113,7 +113,7 @@ KeyboardStyle {
             states: [
                 State {
                     name: "fontB"
-                    when: control.displayText.length > 2
+                    when: control.highlighted
                     PropertyChanges {
                         target: keyText
                         color: "#c5a96f"
@@ -214,8 +214,8 @@ KeyboardStyle {
         Image {
             id: languageKeyIcon
             anchors.centerIn: languageKeyPanel
-            sourceSize.width: 144 * keyIconScale
-            sourceSize.height: 144 * keyIconScale
+            sourceSize.width: 127 * keyIconScale
+            sourceSize.height: 127 * keyIconScale
             smooth: false
             source: resourcePrefix + "images/globe-110b05.svg"
         }
@@ -371,7 +371,7 @@ KeyboardStyle {
         Image {
             id: hideKeyIcon
             anchors.centerIn: hideKeyPanel
-            sourceSize.width: 144 * keyIconScale
+            sourceSize.width: 127 * keyIconScale
             sourceSize.height: 127 * keyIconScale
             smooth: false
             source: resourcePrefix + "images/hidekeyboard-c5a96f.svg"
@@ -485,7 +485,7 @@ KeyboardStyle {
         id: spaceKeyPanel
         BorderImage {
             id: spaceKeyBackground
-            source: resourcePrefix + "images/key154px_colorA.png"
+            source: resourcePrefix + "images/key154px_black.png"
             width: (parent.width - 2 * keyBackgroundMargin) / scale
             height: sourceSize.height
             anchors.centerIn: spaceKeyPanel
@@ -499,8 +499,9 @@ KeyboardStyle {
         Text {
             id: spaceKeyText
             text: Qt.locale(InputContext.locale).nativeLanguageName
-            color: currentStyle.inputLocaleIndicatorColor
-            Behavior on color { PropertyAnimation { duration: 250 } }
+            color: "#c5a96f"
+            opacity: inputLocaleIndicatorOpacity
+            Behavior on opacity { PropertyAnimation { duration: 250 } }
             anchors.centerIn: spaceKeyPanel
             font {
                 family: fontFamily
@@ -650,7 +651,7 @@ KeyboardStyle {
         id: handwritingKeyPanel
         BorderImage {
             id: hwrKeyBackground
-            source: resourcePrefix + "images/key154px_colorB.png"
+            source: resourcePrefix + "images/key154px_black.png"
             width: (parent.width - 2 * hwrKeyBackground) / scale
             height: sourceSize.height
             anchors.centerIn: handwritingKeyPanel
@@ -664,11 +665,10 @@ KeyboardStyle {
         Image {
             id: hwrKeyIcon
             anchors.centerIn: handwritingKeyPanel
-            readonly property size hwrKeyIconSize: keyboard.handwritingMode ? Qt.size(124, 96) : Qt.size(156, 104)
-            sourceSize.width: hwrKeyIconSize.width * keyIconScale
-            sourceSize.height: hwrKeyIconSize.height * keyIconScale
+            sourceSize.width: 127 * keyIconScale
+            sourceSize.height: 127 * keyIconScale
             smooth: false
-            source: resourcePrefix + (keyboard.handwritingMode ? "images/textmode-110b05.svg" : "images/handwriting-110b05.svg")
+            source: resourcePrefix + (keyboard.handwritingMode ? "images/textmode-c5a96f.svg" : "images/handwriting-c5a96f.svg")
         }
         states: [
             State {
@@ -1005,9 +1005,9 @@ KeyboardStyle {
             anchors.leftMargin: popupListLabel.height / 2
             anchors.topMargin: popupListLabel.height / 3
             text: decorateText(display, wordCompletionLength)
-            color: "#5CAA15"
+            color: "#110b05"
             font {
-                family: "Sans"
+                family: fontFamily
                 weight: Font.Normal
                 pixelSize: Qt.inputMethod.cursorRectangle.height * 0.8
             }
@@ -1029,14 +1029,21 @@ KeyboardStyle {
     }
 
     popupListBackground: Item {
-        Rectangle {
-            width: parent.width
-            height: parent.height
-            color: "white"
-            border {
-                width: 1
-                color: "#929495"
-            }
+        BorderImage {
+            readonly property int popupListBackgroundSvgImageHeight: Math.round(height / 8)
+            readonly property real popupListBackgroundSvgImageScale: popupListBackgroundSvgImageHeight / 154
+            readonly property real backgroundMargin: 0 * scaleHint
+            x: -backgroundMargin
+            y: -backgroundMargin
+            width: parent.width + 2 * backgroundMargin
+            height: parent.height + 2 * backgroundMargin
+            source: "image://qtvkbsvg/%1/images/key154px_colorA.svg?height=%2".arg(resourcePath).arg(popupListBackgroundSvgImageHeight)
+            border.left: 76 * popupListBackgroundSvgImageScale
+            border.top: 76 * popupListBackgroundSvgImageScale
+            border.right: 76 * popupListBackgroundSvgImageScale
+            border.bottom: 76 * popupListBackgroundSvgImageScale
+            horizontalTileMode: BorderImage.Stretch
+            verticalTileMode: BorderImage.Stretch
         }
     }
 
@@ -1045,6 +1052,101 @@ KeyboardStyle {
     }
 
     popupListRemove: Transition {
+        NumberAnimation { property: "opacity"; to: 0; duration: 200 }
+    }
+
+    languagePopupListEnabled: true
+
+    languageListDelegate: SelectionListItem {
+        id: languageListItem
+        width: languageNameTextMetrics.width * 20
+        height: languageNameTextMetrics.height + languageListLabel.anchors.topMargin + languageListLabel.anchors.bottomMargin
+        Text {
+            id: languageListLabel
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.leftMargin: languageNameTextMetrics.height / 2
+            anchors.rightMargin: anchors.leftMargin
+            anchors.topMargin: languageNameTextMetrics.height / 3
+            anchors.bottomMargin: anchors.topMargin
+            text: languageNameFormatter.elidedText
+            color: "#c5a96f"
+            opacity: 0.8
+            font {
+                family: fontFamily
+                weight: Font.Normal
+                pixelSize: 44 * scaleHint
+            }
+        }
+        TextMetrics {
+            id: languageNameTextMetrics
+            font {
+                family: fontFamily
+                weight: Font.Normal
+                pixelSize: 44 * scaleHint
+            }
+            text: "X"
+        }
+        TextMetrics {
+            id: languageNameFormatter
+            font {
+                family: fontFamily
+                weight: Font.Normal
+                pixelSize: 44 * scaleHint
+            }
+            elide: Text.ElideRight
+            elideWidth: languageListItem.width - languageListLabel.anchors.leftMargin - languageListLabel.anchors.rightMargin
+            text: displayName
+        }
+        states: State {
+            name: "current"
+            when: languageListItem.ListView.isCurrentItem
+            PropertyChanges {
+                target: languageListLabel
+                color: "white"
+            }
+        }
+    }
+
+    languageListHighlight: Item {
+        Rectangle {
+            anchors.fill: parent
+            anchors.topMargin: Math.round(8 * scaleHint)
+            anchors.bottomMargin: Math.round(8 * scaleHint)
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#64462a" }
+                GradientStop { position: 0.18; color: "#a37648" }
+                GradientStop { position: 0.5; color: "#c4a47c" }
+                GradientStop { position: 0.82; color: "#a37648" }
+                GradientStop { position: 1.0; color: "#64462a" }
+            }
+        }
+    }
+
+    languageListBackground: Item {
+        BorderImage {
+            readonly property int languageListBackgroundSvgImageHeight: Math.round(height / 3)
+            readonly property real languageListBackgroundSvgImageScale: languageListBackgroundSvgImageHeight / 154
+            readonly property real backgroundMargin: 40 * scaleHint
+            x: -backgroundMargin
+            y: -backgroundMargin
+            width: parent.width + 2 * backgroundMargin
+            height: parent.height + 2 * backgroundMargin
+            source: "image://qtvkbsvg/%1/images/key154px_black.svg?height=%2".arg(resourcePath).arg(languageListBackgroundSvgImageHeight)
+            border.left: 76 * languageListBackgroundSvgImageScale
+            border.top: 76 * languageListBackgroundSvgImageScale
+            border.right: 78 * languageListBackgroundSvgImageScale
+            border.bottom: 78 * languageListBackgroundSvgImageScale
+            horizontalTileMode: BorderImage.Stretch
+            verticalTileMode: BorderImage.Stretch
+        }
+    }
+
+    languageListAdd: Transition {
+        NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 200 }
+    }
+
+    languageListRemove: Transition {
         NumberAnimation { property: "opacity"; to: 0; duration: 200 }
     }
 
@@ -1076,4 +1178,97 @@ KeyboardStyle {
     fullScreenInputPasswordCharacter: "*"
 
     fullScreenInputSelectionColor: "#B57C47"
+
+    functionPopupListDelegate: Item {
+        id: functionPopupListItem
+        readonly property real iconMargin: 40 * scaleHint
+        readonly property real iconWidth: 144 * keyIconScale
+        readonly property real iconHeight: 144 * keyIconScale
+        width: iconWidth + 2 * iconMargin
+        height: iconHeight + 2 * iconMargin
+        Image {
+            id: functionIcon
+            anchors.centerIn: parent
+            sourceSize.width: iconWidth
+            sourceSize.height: iconHeight
+            smooth: false
+            source: {
+                switch (keyboardFunction) {
+                case QtVirtualKeyboard.HideInputPanel:
+                    return resourcePrefix + "images/hidekeyboard-c5a96f.svg"
+                case QtVirtualKeyboard.ChangeLanguage:
+                    return resourcePrefix + "images/globe-c5a96f.svg"
+                case QtVirtualKeyboard.ToggleHandwritingMode:
+                    return resourcePrefix + (keyboard.handwritingMode ? "images/textmode-c5a96f.svg" : "images/handwriting-c5a96f.svg")
+                }
+            }
+            states: State {
+                when: functionPopupListItem.ListView.isCurrentItem
+                PropertyChanges {
+                    target: functionIcon
+                    source: {
+                        switch (keyboardFunction) {
+                        case QtVirtualKeyboard.HideInputPanel:
+                            return resourcePrefix + "images/hidekeyboard-fff.svg"
+                        case QtVirtualKeyboard.ChangeLanguage:
+                            return resourcePrefix + "images/globe-fff.svg"
+                        case QtVirtualKeyboard.ToggleHandwritingMode:
+                            return resourcePrefix + (keyboard.handwritingMode ? "images/textmode-fff.svg" : "images/handwriting-fff.svg")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    functionPopupListBackground: Item {
+        property ListView view
+        property real currentItemOffset: {
+            if (view.count > 0) {
+                var highlightItem = view.itemAtIndex(0)
+                return view.mapFromItem(highlightItem, highlightItem.width / 2, 0).x
+            }
+            return 0
+        }
+        property bool currentItemHighlight: view.currentIndex === 0
+        BorderImage {
+            cache: false
+            source: resourcePrefix + "images/key160px_black.png"
+            width: sourceSize.width + parent.width / scale
+            height: sourceSize.height
+            anchors.centerIn: parent
+            border.left: 79
+            border.top: 79
+            border.right: 79
+            border.bottom: 79
+            horizontalTileMode: BorderImage.Stretch
+            scale: parent.height / sourceSize.height
+        }
+        Image {
+            visible: currentItemOffset !== undefined
+            source: currentItemHighlight ? resourcePrefix + "images/triangle_highlight.png" : resourcePrefix + "images/triangle_black.png"
+            fillMode: Image.PreserveAspectFit
+            width: sourceSize.width * scaleHint
+            height: sourceSize.height * scaleHint
+            anchors.top: parent.bottom
+            anchors.topMargin: Math.round(-8 * scaleHint)
+            anchors.left: parent.left
+            anchors.leftMargin: Math.round(currentItemOffset - width / 2)
+        }
+    }
+
+    functionPopupListHighlight: Item {
+        Rectangle {
+            anchors.fill: parent
+            anchors.topMargin: Math.round(8 * scaleHint)
+            anchors.bottomMargin: Math.round(8 * scaleHint)
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#64462a" }
+                GradientStop { position: 0.18; color: "#a37648" }
+                GradientStop { position: 0.5; color: "#c4a47c" }
+                GradientStop { position: 0.82; color: "#a37648" }
+                GradientStop { position: 1.0; color: "#64462a" }
+            }
+        }
+    }
 }

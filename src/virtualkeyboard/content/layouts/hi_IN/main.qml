@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2021 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -29,312 +29,180 @@
 
 import QtQuick
 import QtQuick.VirtualKeyboard
+import QtQuick.Layouts
 
-KeyboardLayoutLoader {
+KeyboardLayout {
     inputMode: InputEngine.InputMode.Latin
-    sourceComponent: InputContext.shiftActive ? page2 : page1
-    Component {
-        id: page1
-        KeyboardLayout {
-            keyWeight: 160
-            KeyboardRow {
-                Key {
-                    text: "\u094C"
-                }
-                Key {
-                    text: "\u0948"
-                }
-                Key {
-                    text: "\u093E"
-                }
-                Key {
-                    text: "\u0940"
-                }
-                Key {
-                    text: "\u0942"
-                }
-                Key {
-                    text: "\u092C"
-                }
-                Key {
-                    text: "\u0939"
-                }
-                Key {
-                    text: "\u0917"
-                }
-                Key {
-                    text: "\u0926"
-                }
-                Key {
-                    text: "\u091C"
-                }
-                Key {
-                    text: "\u0921"
-                }
-                BackspaceKey {}
-            }
-            KeyboardRow {
-                FillerKey {
-                    weight: 66
-                }
-                Key {
-                    text: "\u094B"
-                    alternativeKeys: ["\u094B", "\u094A"]
-                }
-                Key {
-                    text: "\u0947"
-                }
-                Key {
-                    text: "\u094D"
-                }
-                Key {
-                    text: "\u093F"
-                }
-                Key {
-                    text: "\u0941"
-                }
-                Key {
-                    text: "\u092A"
-                }
-                Key {
-                    text: "\u0930"
-                }
-                Key {
-                    text: "\u0915"
-                }
-                Key {
-                    text: "\u0924"
-                }
-                Key {
-                    text: "\u091A"
-                }
-                Key {
-                    text: "\u091F"
-                }
-                EnterKey {
-                    weight: 283
-                }
-            }
-            KeyboardRow {
-                keyWeight: 156
-                ShiftKey { }
-                Key {
-                    text: "\u0949"
-                }
-                Key {
-                    text: "\u0902"
-                    alternativeKeys: "\u0902\u0903"
-                }
-                Key {
-                    text: "\u092E"
-                }
-                Key {
-                    text: "\u0928"
-                }
-                Key {
-                    text: "\u0935"
-                }
-                Key {
-                    text: "\u0932"
-                }
-                Key {
-                    text: "\u0938"
-                }
-                Key {
-                    text: "\u092F"
-                }
-                Key {
-                    text: "\u093C"
-                }
-                Key {
-                    key: 0x2013
-                    text: "\u2013"
-                    alternativeKeys: "\u2013-“”"
-                }
-                ShiftKey {
-                    weight: 264
-                }
-            }
-            KeyboardRow {
-                keyWeight: 154
-                SymbolModeKey {
-                    weight: 217
-                    displayText: "&\u0967\u0968\u0969"
-                }
-                ChangeLanguageKey {
-                    weight: 154
-                }
-                HandwritingModeKey {
-                    weight: 154
-                }
-                SpaceKey {
-                    weight: 864
-                }
-                Key {
-                    key: Qt.Key_Comma
-                    text: ","
-                    alternativeKeys: "!?:;.,|"
-                }
-                Key {
-                    key: 0xE000
-                    text: ":-)"
-                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-                }
-                HideKeyboardKey {
-                    weight: 204
-                }
-            }
+    keyWeight: 160
+    smallTextVisible: true
+    readonly property real normalKeyWidth: normalKey.width
+    readonly property real functionKeyWidth: mapFromItem(normalKey, normalKey.width / 2, 0).x
+    KeyboardRow {
+        Key {
+            text: "\u0914"
+            alternativeKeys: "\u0914\u094C\u0967"
+        }
+        Key {
+            id: normalKey
+            text: "\u0910"
+            alternativeKeys: "\u0910\u0948\u0968"
+        }
+        Key {
+            text: "\u0906"
+            alternativeKeys: "\u0906\u093E\u0969"
+        }
+        Key {
+            text: "\u0908"
+            alternativeKeys: "\u0908\u0940\u096A"
+        }
+        Key {
+            text: "\u090A"
+            alternativeKeys: "\u090A\u0942\u096B"
+        }
+        Key {
+            text: "\u092C"
+            alternativeKeys: "\u092C\u092D\u096C"
+        }
+        Key {
+            text: "\u0939"
+            alternativeKeys: "\u0939\u096D"
+        }
+        Key {
+            text: "\u0917"
+            alternativeKeys: "\u0917\u0918\u096E"
+        }
+        Key {
+            text: "\u0926"
+            alternativeKeys: "\u0926\u0927\u096F"
+        }
+        Key {
+            text: "\u091C"
+            alternativeKeys: "\u0966\u091E\u091D\u091C"
+        }
+        Key {
+            text: "\u0921"
+            alternativeKeys: "\u0921\u0922"
         }
     }
-    Component {
-        id: page2
-        KeyboardLayout {
-            keyWeight: 160
-            KeyboardRow {
-                Key {
-                    text: "\u0914"
-                }
-                Key {
-                    text: "\u0910"
-                }
-                Key {
-                    text: "\u0906"
-                }
-                Key {
-                    text: "\u0908"
-                }
-                Key {
-                    text: "\u090A"
-                }
-                Key {
-                    text: "\u092D"
-                }
-                Key {
-                    text: "\u0919"
-                }
-                Key {
-                    text: "\u0918"
-                }
-                Key {
-                    text: "\u0927"
-                }
-                Key {
-                    text: "\u091D"
-                }
-                Key {
-                    text: "\u0922"
-                }
-                BackspaceKey {}
-            }
-            KeyboardRow {
-                FillerKey {
-                    weight: 66
-                }
-                Key {
-                    text: "\u0913"
-                }
-                Key {
-                    text: "\u090F"
-                }
-                Key {
-                    text: "\u0905"
-                }
-                Key {
-                    text: "\u0907"
-                }
-                Key {
-                    text: "\u0909"
-                }
-                Key {
-                    text: "\u092B"
-                }
-                Key {
-                    text: "\u0931"
-                }
-                Key {
-                    text: "\u0916"
-                }
-                Key {
-                    text: "\u0925"
-                }
-                Key {
-                    text: "\u091B"
-                }
-                Key {
-                    text: "\u0920"
-                }
-                EnterKey {
-                    weight: 283
-                }
-            }
-            KeyboardRow {
-                keyWeight: 156
-                ShiftKey { }
-                Key {
-                    text: "\u0911"
-                }
-                Key {
-                    text: "\u0901"
-                }
-                Key {
-                    text: "\u0923"
-                }
-                Key {
-                    text: "\u0929"
-                }
-                Key {
-                    text: "\u091E"
-                }
-                Key {
-                    text: "\u0933"
-                }
-                Key {
-                    text: "\u0936"
-                }
-                Key {
-                    text: "\u0937"
-                }
-                Key {
-                    text: "\u0943"
-                }
-                Key {
-                    key: 0x2013
-                    text: "\u2013"
-                    alternativeKeys: "\u2013-“”"
-                }
-                ShiftKey {
-                    weight: 264
-                }
-            }
-            KeyboardRow {
-                keyWeight: 154
-                SymbolModeKey {
-                    weight: 217
-                    displayText: "&\u0967\u0968\u0969"
-                }
-                ChangeLanguageKey {
-                    weight: 154
-                }
-                HandwritingModeKey {
-                    weight: 154
-                }
-                SpaceKey {
-                    weight: 864
-                }
-                Key {
-                    key: Qt.Key_Comma
-                    text: ","
-                    alternativeKeys: "!?:;.,|"
-                }
-                Key {
-                    key: 0xE000
-                    text: ":-)"
-                    alternativeKeys: [ ";-)", ":-)", ":-D", ":-(", "<3" ]
-                }
-                HideKeyboardKey {
-                    weight: 204
-                }
-            }
+    KeyboardRow {
+        Key {
+            text: "\u0913"
+            alternativeKeys: "\u0913\u094B"
+        }
+        Key {
+            text: "\u090F"
+            alternativeKeys: "\u090F\u0947"
+        }
+        Key {
+            text: "\u0905"
+        }
+        Key {
+            text: "\u0907"
+            alternativeKeys: "\u0907\u093F"
+        }
+        Key {
+            text: "\u0909"
+            alternativeKeys: "\u0909\u0941"
+        }
+        Key {
+            text: "\u092A"
+            alternativeKeys: "\u092A\u092B"
+        }
+        Key {
+            text: "\u0930"
+            alternativeKeys: "\u0930\u090B\u0943"
+        }
+        Key {
+            text: "\u0915"
+            alternativeKeys: "\u0915\u0916"
+        }
+        Key {
+            text: "\u0924"
+            alternativeKeys: ["\u0924", "\u0925", "\u0924\u094D\u0930"]
+        }
+        Key {
+            text: "\u091A"
+            alternativeKeys: "\u091A\u091B"
+        }
+        Key {
+            text: "\u091F"
+            alternativeKeys: "\u091F\u0920"
+        }
+    }
+    KeyboardRow {
+        Key {
+            text: "\u200C"
+            alternativeKeys: "\u200C\u200D"
+            displayText: "\u25C2\u205E\u25B8"
+            displayAlternativeKeys: ["\u25B8\u205E\u25C2"]
+            highlighted: true
+        }
+        Key {
+            text: "\u0911"
+            alternativeKeys: "\u0911\u0949"
+        }
+        Key {
+            text: "\u094D"
+            alternativeKeys: "\u094D\u0945\u090D"
+        }
+        Key {
+            text: "\u0902"
+            alternativeKeys: "\u093C\u0902\u0903\u0901\u093D"
+        }
+        Key {
+            text: "\u092E"
+            alternativeKeys: "\u092E\u0950"
+        }
+        Key {
+            text: "\u0928"
+            alternativeKeys: "\u0919\u0928\u0923\u091E"
+        }
+        Key {
+            text: "\u0935"
+        }
+        Key {
+            text: "\u0932"
+            alternativeKeys: "\u0932\u0933"
+        }
+        Key {
+            text: "\u0938"
+            alternativeKeys: ["\u0936\u094D\u0930", "\u0938", "\u0936", "\u0937"]
+        }
+        Key {
+            text: "\u092F"
+            alternativeKeys: "\u0943"
+        }
+        BackspaceKey {
+        }
+    }
+    KeyboardRow {
+        SymbolModeKey {
+            displayText: "&\u0967\u0968\u0969"
+            weight: functionKeyWidth
+            Layout.fillWidth: false
+        }
+        Key {
+            key: Qt.Key_Comma
+            weight: normalKeyWidth
+            Layout.fillWidth: false
+            text: ","
+            smallText: "\u2699"
+            smallTextVisible: true
+            highlighted: true
+        }
+        SpaceKey {
+        }
+        Key {
+            key: Qt.Key_Period
+            weight: normalKeyWidth
+            Layout.fillWidth: false
+            text: "."
+            alternativeKeys: "!.?"
+            highlighted: true
+        }
+        EnterKey {
+            weight: functionKeyWidth
+            Layout.fillWidth: false
         }
     }
 }

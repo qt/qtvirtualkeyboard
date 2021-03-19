@@ -131,8 +131,16 @@ Item {
     }
 
     WordCandidatePopupList {
+        id: wordCandidatePopupList
         z: 1
         objectName: "wordCandidatePopupList"
         enabled: handwritingInputPanel.enabled && handwritingInputPanel.available && handwritingInputPanel.active
+    }
+
+    Loader {
+        sourceComponent: keyboard.style.popupListBackground
+        anchors.fill: wordCandidatePopupList
+        z: -1
+        visible: wordCandidatePopupList.visible
     }
 }
