@@ -354,14 +354,14 @@ public:
         const voCertificate *certificate = &myCertificate;
         voimProperty *properties = nullptr;
 
-        QString imLibrary = QLibraryInfo::location(QLibraryInfo::BinariesPath) + "/" + MYSCRIPT_VOIM_NAME;
+        QString imLibrary = QLibraryInfo::path(QLibraryInfo::BinariesPath) + "/" + MYSCRIPT_VOIM_NAME;
         properties = Properties_put(properties, "com.myscript.im.library", imLibrary.toStdString().c_str());
         if (!properties) {
             qCCritical(qlcVKMyScript) << "failed to define property " << "com.myscript.im.library" << " with value " << imLibrary;
             return false;
         }
 
-        QString engineLibrary = QLibraryInfo::location(QLibraryInfo::BinariesPath) + "/" + MYSCRIPT_ENGINE_NAME;
+        QString engineLibrary = QLibraryInfo::path(QLibraryInfo::BinariesPath) + "/" + MYSCRIPT_ENGINE_NAME;
         properties = Properties_put(properties, "com.myscript.engine.library", engineLibrary.toStdString().c_str());
         if (!properties) {
             qCCritical(qlcVKMyScript) << "failed to define property " << "com.myscript.engine.library" << " with value " << engineLibrary;
@@ -369,7 +369,7 @@ public:
         }
 
         QString propertyFile = QLatin1String("/Engine.properties");
-        propertyFile = QLibraryInfo::location(QLibraryInfo::DataPath) + "/" + MYSCRIPT_VOIM_PROPERTY_PATH + propertyFile;
+        propertyFile = QLibraryInfo::path(QLibraryInfo::DataPath) + "/" + MYSCRIPT_VOIM_PROPERTY_PATH + propertyFile;
 
         if (!checkFile(propertyFile)) {
             qCCritical(qlcVKMyScript) << "failed to open Engine Property file " << propertyFile;
@@ -391,7 +391,7 @@ public:
 
         voimProperty *properties = nullptr;
 
-        QString languageConf = QLibraryInfo::location(QLibraryInfo::DataPath) + "/" + MYSCRIPT_LANGUAGE_CONF_PATH;
+        QString languageConf = QLibraryInfo::path(QLibraryInfo::DataPath) + "/" + MYSCRIPT_LANGUAGE_CONF_PATH;
         properties = Properties_put(properties, "com.myscript.im.languageSearchPath", languageConf.toStdString().c_str());
         if (!properties) {
             qCCritical(qlcVKMyScript) << "failed to define property " << "com.myscript.im.languageSearchPath" << " with value " << languageConf;
@@ -405,7 +405,7 @@ public:
         }
 
         QString propertyFile = QLatin1String("/LanguageManager.properties");
-        propertyFile = QLibraryInfo::location(QLibraryInfo::DataPath) + "/" + MYSCRIPT_VOIM_PROPERTY_PATH + propertyFile;
+        propertyFile = QLibraryInfo::path(QLibraryInfo::DataPath) + "/" + MYSCRIPT_VOIM_PROPERTY_PATH + propertyFile;
 
         if (!checkFile(propertyFile)) {
             qCCritical(qlcVKMyScript) << "failed to open LanguageManager Property file " << propertyFile;
@@ -432,7 +432,7 @@ public:
         qCDebug(qlcVKMyScript) << Q_FUNC_INFO;
 
         QString propertyFile = QLatin1String("/Recognizer.properties");
-        propertyFile = QLibraryInfo::location(QLibraryInfo::DataPath) + "/" + MYSCRIPT_VOIM_PROPERTY_PATH + propertyFile;
+        propertyFile = QLibraryInfo::path(QLibraryInfo::DataPath) + "/" + MYSCRIPT_VOIM_PROPERTY_PATH + propertyFile;
 
         if (!checkFile(propertyFile)) {
             qCCritical(qlcVKMyScript) << "failed to open Recognizer Property file " << propertyFile;
