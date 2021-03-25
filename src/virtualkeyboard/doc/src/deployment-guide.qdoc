@@ -195,7 +195,7 @@ There are several environment variables defined by the module that are listed be
         \li Overrides the location of the Hunspell data files.
 
             The default location depends on the value of
-            \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            \c {QLibraryInfo::path(QLibraryInfo::DataPath)}.
             For example, for Qt libraries built from source,
             it could be \c {qtbase/qtvirtualkeyboard/hunspell}.
 
@@ -208,7 +208,7 @@ There are several environment variables defined by the module that are listed be
 
             To disable resource bundling, add \c CONFIG+=no-bundle-pinyin in the
             plugin's qmake command line. In this scenario, the default location
-            depends on the value of \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            depends on the value of \c {QLibraryInfo::path(QLibraryInfo::DataPath)}.
             For example, for Qt libraries built from source,
             it could be \c {qtbase/qtvirtualkeyboard/pinyin/dict_pinyin.dat}.
     \row
@@ -219,7 +219,7 @@ There are several environment variables defined by the module that are listed be
 
             To disable resource bundling, add \c CONFIG+=no-bundle-tcime in the
             plugin's qmake command line. In this scenario, the default location
-            depends on the value of \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            depends on the value of \c {QLibraryInfo::path(QLibraryInfo::DataPath)}.
             For example, for Qt libraries built from source,
             it could be \c {qtbase/qtvirtualkeyboard/tcime/dict_cangjie.dat}.
     \row
@@ -230,7 +230,7 @@ There are several environment variables defined by the module that are listed be
 
             To disable resource bundling, add \c CONFIG+=no-bundle-tcime in the
             plugin's qmake command line. In this scenario, the default location
-            depends on the value of \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            depends on the value of \c {QLibraryInfo::path(QLibraryInfo::DataPath)}.
             For example, for Qt libraries built from source,
             it could be \c {qtbase/qtvirtualkeyboard/tcime/dict_zhuyin.dat}.
     \row
@@ -241,7 +241,7 @@ There are several environment variables defined by the module that are listed be
 
             To disable resource bundling, add \c CONFIG+=no-bundle-tcime in the
             plugin's qmake command line. In this scenario, the default location
-            depends on the value of \c {QLibraryInfo::location(QLibraryInfo::DataPath)}.
+            depends on the value of \c {QLibraryInfo::path(QLibraryInfo::DataPath)}.
             For example, for Qt libraries built from source,
             it could be \c {qtbase/qtvirtualkeyboard/tcime/dict_phrases.dat}.
     \row
