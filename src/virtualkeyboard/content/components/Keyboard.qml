@@ -490,7 +490,7 @@ Item {
     }
     Timer {
         id: pressAndHoldTimer
-        interval: 800
+        interval: 500
         onTriggered: {
             if (keyboard.activeKey && keyboard.activeKey === keyboardInputArea.initialKey) {
                 var origin = keyboard.mapFromItem(activeKey, activeKey.width / 2, 0)
