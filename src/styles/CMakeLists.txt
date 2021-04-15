@@ -6,7 +6,7 @@
 
 qt_internal_add_qml_module(qtquickvirtualkeyboardstylesplugin
     URI "QtQuick.VirtualKeyboard.Styles"
-    VERSION "2.${CMAKE_PROJECT_VERSION_MINOR}"
+    VERSION "2.${PROJECT_VERSION_MINOR}"
     CLASSNAME QtQuickVirtualKeyboardStylesPlugin
     DEPENDENCIES
         QtQuick/2.0
