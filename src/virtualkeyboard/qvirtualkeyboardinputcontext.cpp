@@ -209,7 +209,7 @@ QVirtualKeyboardInputEngine *QVirtualKeyboardInputContext::inputEngine() const
 /*!
     \qmlmethod void InputContext::sendKeyClick(int key, string text, int modifiers = 0)
 
-    Sends a key click event with the given \a key, \a text and \e modifiers to
+    Sends a key click event with the given \a key, \a text and \a modifiers to
     the input item that currently has focus.
 */
 /*!
