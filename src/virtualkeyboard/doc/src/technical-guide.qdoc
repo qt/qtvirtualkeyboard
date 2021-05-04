@@ -37,10 +37,10 @@ This document provides a technical overview of the Qt Virtual Keyboard plugin.
 
 \section1 Basic Concepts
 
-The Qt Virtual Keyboard project is a Qt 5 input context plugin which implements
+The Qt Virtual Keyboard project is a Qt input context plugin which implements
 QPlatformInputContextPlugin and QPlatformInputContext interfaces.
 These interfaces allow the plugin to be used as a platform input
-context plugin in Qt 5 applications.
+context plugin in Qt applications.
 
 The plugin itself provides an input framework supporting multiple
 input methods as well as a QML UI for the virtual keyboard. The input
