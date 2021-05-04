@@ -225,7 +225,7 @@ void QVirtualKeyboardInputContextPrivate::registerInputPanel(QObject *inputPanel
     Q_ASSERT(!this->inputPanel);
     this->inputPanel = inputPanel;
     if (QQuickItem *item = qobject_cast<QQuickItem *>(inputPanel))
-        item->setZ(std::numeric_limits<qreal>::max());
+        item->setZ(10000);
 }
 
 void QVirtualKeyboardInputContextPrivate::hideInputPanel()

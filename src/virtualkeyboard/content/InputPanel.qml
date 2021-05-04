@@ -43,6 +43,9 @@ import QtQuick.VirtualKeyboard
     width; that is, the keyboard maintains the aspect ratio specified by the current
     style. Therefore the application should only set the \l {Item::}{width} and \l {Item::}{y}
     coordinates of the InputPanel, and not the \l {Item::}{height}.
+    The default \l {Item::z}-value of the InputPanel is 10000, which puts it on
+    top of a typical user interface, while leaving space for UI elements that
+    should not be obscured by the input panel.
 
     As with \l {Qt Virtual Keyboard QML Types}{all other QML types} provided by
     the module, the \c QT_IM_MODULE environment variable must be set to
