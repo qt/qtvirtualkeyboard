@@ -48,6 +48,8 @@ import QtQuick.VirtualKeyboard
     the module, the \c QT_IM_MODULE environment variable must be set to
     \c qtvirtualkeyboard before using InputPanel. For more information, see
     \l {Loading the Plugin}.
+
+    \note You can have only one InputPanel instance in your application.
 */
 
 Item {
