@@ -60,7 +60,7 @@ void QtQuickVirtualKeyboardPlugin::registerTypes(const char *uri)
 {
 #if defined(QT_STATICPLUGIN)
     Q_VKB_IMPORT_PLUGIN(QtQuick2Plugin)
-    Q_VKB_IMPORT_PLUGIN(QtQuick2WindowPlugin)
+    Q_VKB_IMPORT_PLUGIN(QtQuick_WindowPlugin)
     Q_VKB_IMPORT_PLUGIN(QtQuickLayoutsPlugin)
     Q_VKB_IMPORT_PLUGIN(QmlFolderListModelPlugin)
     Q_VKB_IMPORT_PLUGIN(QtQuickVirtualKeyboardSettingsPlugin)
