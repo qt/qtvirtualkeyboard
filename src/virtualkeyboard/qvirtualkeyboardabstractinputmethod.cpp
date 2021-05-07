@@ -28,27 +28,9 @@
 ****************************************************************************/
 
 #include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
-#include <QtCore/private/qobject_p.h>
+#include <QtVirtualKeyboard/private/qvirtualkeyboardabstractinputmethod_p.h>
 
 QT_BEGIN_NAMESPACE
-
-class QVirtualKeyboardAbstractInputMethodPrivate : public QObjectPrivate
-{
-public:
-    QVirtualKeyboardAbstractInputMethodPrivate();
-
-    QVirtualKeyboardInputEngine *inputEngine;
-};
-
-/*!
-    \class AbstractInputMethodPrivate
-    \internal
-*/
-
-QVirtualKeyboardAbstractInputMethodPrivate::QVirtualKeyboardAbstractInputMethodPrivate() :
-    inputEngine(nullptr)
-{
-}
 
 /*!
     \class QVirtualKeyboardAbstractInputMethod
@@ -61,9 +43,15 @@ QVirtualKeyboardAbstractInputMethodPrivate::QVirtualKeyboardAbstractInputMethodP
     method using C/C++ language.
 */
 
+QVirtualKeyboardAbstractInputMethod::QVirtualKeyboardAbstractInputMethod(QVirtualKeyboardAbstractInputMethodPrivate &dd, QObject *parent) :
+    QObject(dd, parent)
+{
+}
+
 /*!
     Constructs an input method with \a parent.
 */
+
 QVirtualKeyboardAbstractInputMethod::QVirtualKeyboardAbstractInputMethod(QObject *parent) :
     QObject(*new QVirtualKeyboardAbstractInputMethodPrivate(), parent)
 {

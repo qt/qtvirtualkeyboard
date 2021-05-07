@@ -38,6 +38,7 @@ qt_internal_add_module(VirtualKeyboard
         qvirtualkeyboard_namespace.h
         qvirtualkeyboard_staticplugin_p.h
         qvirtualkeyboardabstractinputmethod.cpp qvirtualkeyboardabstractinputmethod.h
+        qvirtualkeyboardabstractinputmethod_p.cpp qvirtualkeyboardabstractinputmethod_p.h
         qvirtualkeyboarddictionary.cpp qvirtualkeyboarddictionary.h
         qvirtualkeyboarddictionarymanager.cpp qvirtualkeyboarddictionarymanager.h
         qvirtualkeyboardextensionplugin.cpp qvirtualkeyboardextensionplugin.h

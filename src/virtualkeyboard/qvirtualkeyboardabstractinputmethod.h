@@ -42,6 +42,9 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardAbstractInputMethod : public QObje
     Q_OBJECT
     Q_DECLARE_PRIVATE(QVirtualKeyboardAbstractInputMethod)
 
+protected:
+    QVirtualKeyboardAbstractInputMethod(QVirtualKeyboardAbstractInputMethodPrivate &dd, QObject *parent = nullptr);
+
 public:
     explicit QVirtualKeyboardAbstractInputMethod(QObject *parent = nullptr);
     ~QVirtualKeyboardAbstractInputMethod();
