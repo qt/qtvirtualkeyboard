@@ -26,11 +26,11 @@ qt_internal_add_plugin(QtVirtualKeyboardOpenWnnPlugin
 
 # Resources:
 set(qmake_virtualkeyboard_openwnn_layouts_resource_files
-    "content/layouts/ja_JP/dialpad.fallback"
-    "content/layouts/ja_JP/digits.fallback"
-    "content/layouts/ja_JP/main.qml"
-    "content/layouts/ja_JP/numbers.fallback"
-    "content/layouts/ja_JP/symbols.qml"
+    "${VKB_LAYOUTS_BASE}/content/layouts/ja_JP/dialpad.fallback"
+    "${VKB_LAYOUTS_BASE}/content/layouts/ja_JP/digits.fallback"
+    "${VKB_LAYOUTS_BASE}/content/layouts/ja_JP/main.qml"
+    "${VKB_LAYOUTS_BASE}/content/layouts/ja_JP/numbers.fallback"
+    "${VKB_LAYOUTS_BASE}/content/layouts/ja_JP/symbols.qml"
 )
 
 qt_internal_add_resource(QtVirtualKeyboardOpenWnnPlugin "qmake_virtualkeyboard_openwnn_layouts"

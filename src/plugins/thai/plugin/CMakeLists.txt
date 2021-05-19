@@ -24,11 +24,11 @@ qt_internal_add_plugin(QtVirtualKeyboardThaiPlugin
 
 # Resources:
 set(qmake_virtualkeyboard_thai_layouts_resource_files
-    "content/layouts/th_TH/dialpad.fallback"
-    "content/layouts/th_TH/digits.fallback"
-    "content/layouts/th_TH/main.qml"
-    "content/layouts/th_TH/numbers.fallback"
-    "content/layouts/th_TH/symbols.qml"
+    "${VKB_LAYOUTS_BASE}/content/layouts/th_TH/dialpad.fallback"
+    "${VKB_LAYOUTS_BASE}/content/layouts/th_TH/digits.fallback"
+    "${VKB_LAYOUTS_BASE}/content/layouts/th_TH/main.qml"
+    "${VKB_LAYOUTS_BASE}/content/layouts/th_TH/numbers.fallback"
+    "${VKB_LAYOUTS_BASE}/content/layouts/th_TH/symbols.qml"
 )
 
 qt_internal_add_resource(QtVirtualKeyboardThaiPlugin "qmake_virtualkeyboard_thai_layouts"

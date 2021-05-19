@@ -20,7 +20,7 @@ qt_internal_add_test(tst_layoutresources
 
 # Resources:
 set(resourceslayout_resource_files
-    "layouts/en_GB/main.qml"
+    "data/layouts/en_GB/main.qml"
 )
 
 qt_internal_add_resource(tst_layoutresources "resourceslayout"

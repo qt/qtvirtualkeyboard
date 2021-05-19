@@ -31,14 +31,14 @@ qt_internal_add_plugin(QtVirtualKeyboardT9WritePlugin
 
 # Resources:
 set(qmake_virtualkeyboard_t9write_layouts_resource_files
-    "virtualkeyboard/content/layouts/fallback/handwriting.qml"
+    "${VKB_LAYOUTS_BASE}/content/layouts/fallback/handwriting.qml"
 )
 
 qt_internal_add_resource(QtVirtualKeyboardT9WritePlugin "qmake_virtualkeyboard_t9write_layouts"
     PREFIX
-        "$$LAYOUTS_PREFIX"
+        "${VKB_LAYOUTS_PREFIX}"
     BASE
-        "$$LAYOUTS_BASE"
+        "${VKB_LAYOUTS_BASE}"
     FILES
         ${qmake_virtualkeyboard_t9write_layouts_resource_files}
 )
