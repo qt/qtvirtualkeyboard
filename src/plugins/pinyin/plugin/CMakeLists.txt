@@ -27,11 +27,11 @@ qt_internal_add_plugin(QtVirtualKeyboardPinyinPlugin
 
 # Resources:
 set(qmake_virtualkeyboard_pinyin_layouts_resource_files
-    "content/layouts/zh_CN/dialpad.fallback"
-    "content/layouts/zh_CN/digits.fallback"
-    "content/layouts/zh_CN/main.qml"
-    "content/layouts/zh_CN/numbers.fallback"
-    "content/layouts/zh_CN/symbols.qml"
+    "${VKB_LAYOUTS_BASE}/content/layouts/zh_CN/dialpad.fallback"
+    "${VKB_LAYOUTS_BASE}/content/layouts/zh_CN/digits.fallback"
+    "${VKB_LAYOUTS_BASE}/content/layouts/zh_CN/main.qml"
+    "${VKB_LAYOUTS_BASE}/content/layouts/zh_CN/numbers.fallback"
+    "${VKB_LAYOUTS_BASE}/content/layouts/zh_CN/symbols.qml"
 )
 
 qt_internal_add_resource(QtVirtualKeyboardPinyinPlugin "qmake_virtualkeyboard_pinyin_layouts"
@@ -53,7 +53,7 @@ qt_internal_add_resource(QtVirtualKeyboardPinyinPlugin "qmake_virtualkeyboard_pi
 if (NOT FEATURE_vkb_no_bundle_pinyin)
     # Resources:
     set(qmake_pinyin_resource_files
-        "3rdparty/pinyin/data/dict_pinyin.dat"
+        "../3rdparty/pinyin/data/dict_pinyin.dat"
     )
 
     qt_internal_add_resource(QtVirtualKeyboardPinyinPlugin "qmake_pinyin"

@@ -26,11 +26,11 @@ qt_internal_add_plugin(QtVirtualKeyboardTCImePlugin
 
 # Resources:
 set(qmake_virtualkeyboard_tcime_layouts_resource_files
-    "content/layouts/zh_TW/dialpad.fallback"
-    "content/layouts/zh_TW/digits.fallback"
-    "content/layouts/zh_TW/main.qml"
-    "content/layouts/zh_TW/numbers.fallback"
-    "content/layouts/zh_TW/symbols.qml"
+    "${VKB_LAYOUTS_BASE}/content/layouts/zh_TW/dialpad.fallback"
+    "${VKB_LAYOUTS_BASE}/content/layouts/zh_TW/digits.fallback"
+    "${VKB_LAYOUTS_BASE}/content/layouts/zh_TW/main.qml"
+    "${VKB_LAYOUTS_BASE}/content/layouts/zh_TW/numbers.fallback"
+    "${VKB_LAYOUTS_BASE}/content/layouts/zh_TW/symbols.qml"
 )
 
 qt_internal_add_resource(QtVirtualKeyboardTCImePlugin "qmake_virtualkeyboard_tcime_layouts"
@@ -52,9 +52,9 @@ qt_internal_add_resource(QtVirtualKeyboardTCImePlugin "qmake_virtualkeyboard_tci
 if (NOT FEATURE_vkb_no_bundle_tcime)
     # Resources:
     set(qmake_tcime_resource_files
-        "3rdparty/tcime/data/qt/dict_cangjie.dat"
-        "3rdparty/tcime/data/qt/dict_phrases.dat"
-        "3rdparty/tcime/data/qt/dict_zhuyin.dat"
+        "../3rdparty/tcime/data/qt/dict_cangjie.dat"
+        "../3rdparty/tcime/data/qt/dict_phrases.dat"
+        "../3rdparty/tcime/data/qt/dict_zhuyin.dat"
     )
 
     qt_internal_add_resource(QtVirtualKeyboardTCImePlugin "qmake_tcime"
