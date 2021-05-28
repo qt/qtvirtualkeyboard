@@ -150,7 +150,7 @@ MultiPointTouchArea {
 
     enabled: patternRecognitionMode !== InputEngine.PatternRecognitionMode.None && InputContext.inputEngine.patternRecognitionModes.indexOf(patternRecognitionMode) !== -1
 
-    onPressed: {
+    onPressed: (touchPoints) => {
         if (!keyboard.style.traceCanvasDelegate)
             return
         for (var i = 0; i < touchPoints.length; i++) {
@@ -175,7 +175,7 @@ MultiPointTouchArea {
         }
     }
 
-    onUpdated: {
+    onUpdated: (touchPoints) => {
         for (var i = 0; i < touchPoints.length; i++) {
             var traceId = touchPoints[i].pointId
             var traceCanvas = __activeTraceCanvases[traceId]
@@ -190,7 +190,7 @@ MultiPointTouchArea {
         }
     }
 
-    onReleased: {
+    onReleased: (touchPoints) => {
         for (var i = 0; i < touchPoints.length; i++) {
             var traceId = touchPoints[i].pointId
             var traceCanvas = __activeTraceCanvases[traceId]
@@ -205,7 +205,7 @@ MultiPointTouchArea {
         }
     }
 
-    onCanceled: {
+    onCanceled: (touchPoints) => {
         for (var i = 0; i < touchPoints.length; i++) {
             var traceId = touchPoints[i].pointId
             var traceCanvas = __activeTraceCanvases[traceId]

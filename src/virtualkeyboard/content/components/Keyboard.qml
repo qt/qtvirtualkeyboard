@@ -1116,7 +1116,7 @@ Item {
                         press(activeKey, false)
                     }
 
-                    onPressed: {
+                    onPressed: (touchPoints) => {
                         keyboard.navigationModeActive = false
 
                         // Immediately release any pending key that the user might be
@@ -1144,7 +1144,7 @@ Item {
                             press(initialKey, true)
                         }
                     }
-                    onUpdated: {
+                    onUpdated: (touchPoints) => {
                         if (!containsPoint(touchPoints, activeTouchPoint))
                             return
 
@@ -1180,7 +1180,7 @@ Item {
                             }
                         }
                     }
-                    onReleased: {
+                    onReleased: (touchPoints) => {
                         if (containsPoint(touchPoints, activeTouchPoint)) {
                             if (dragSymbolMode) {
                                 var key = keyOnPoint(activeTouchPoint.x, activeTouchPoint.y)
@@ -1194,7 +1194,7 @@ Item {
                             releaseActiveKey();
                         }
                     }
-                    onCanceled: {
+                    onCanceled: (touchPoints) => {
                         if (containsPoint(touchPoints, activeTouchPoint))
                             reset()
                     }
