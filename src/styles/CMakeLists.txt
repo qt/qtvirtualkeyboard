@@ -1,5 +1,3 @@
-# Generated from styles.pro.
-
 #####################################################################
 ## qtquickvirtualkeyboardstylesplugin Plugin:
 #####################################################################
@@ -7,10 +5,14 @@
 qt_internal_add_qml_module(qtquickvirtualkeyboardstylesplugin
     URI "QtQuick.VirtualKeyboard.Styles"
     VERSION "2.${PROJECT_VERSION_MINOR}"
-    CLASSNAME QtQuickVirtualKeyboardStylesPlugin
+    CLASS_NAME QtQuickVirtualKeyboardStylesPlugin
+    PLUGIN_TARGET qtquickvirtualkeyboardstylesplugin
+    NO_GENERATE_PLUGIN_SOURCE
+    NO_PLUGIN_OPTIONAL
+    NO_GENERATE_QMLTYPES
+    INSTALL_SOURCE_QMLTYPES "plugins.qmltypes"
     DEPENDENCIES
         QtQuick/2.0
-    SKIP_TYPE_REGISTRATION
     SOURCES
         qtquickvirtualkeyboardstylesplugin.cpp qtquickvirtualkeyboardstylesplugin.h
         svgimageprovider.cpp svgimageprovider.h
@@ -45,12 +47,6 @@ qt_internal_add_resource(qtquickvirtualkeyboardstylesplugin "styles"
     FILES
         ${styles_resource_files}
 )
-
-
-#### Keys ignored in scope 1:.:.:styles.pro:<TRUE>:
-# IMPORT_VERSION = "2.$$QT_MINOR_VERSION"
-# OTHER_FILES = "plugins.qmltypes" "qmldir"
-# TARGETPATH = "QtQuick/VirtualKeyboard/Styles"
 
 ## Scopes:
 #####################################################################

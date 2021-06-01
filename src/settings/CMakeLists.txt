@@ -1,5 +1,3 @@
-# Generated from settings.pro.
-
 #####################################################################
 ## qtquickvirtualkeyboardsettingsplugin Plugin:
 #####################################################################
@@ -7,10 +5,14 @@
 qt_internal_add_qml_module(qtquickvirtualkeyboardsettingsplugin
     URI "QtQuick.VirtualKeyboard.Settings"
     VERSION "2.${PROJECT_VERSION_MINOR}"
-    CLASSNAME QtQuickVirtualKeyboardSettingsPlugin
+    CLASS_NAME QtQuickVirtualKeyboardSettingsPlugin
+    PLUGIN_TARGET qtquickvirtualkeyboardsettingsplugin
+    NO_GENERATE_PLUGIN_SOURCE
+    NO_PLUGIN_OPTIONAL
+    NO_GENERATE_QMLTYPES
+    INSTALL_SOURCE_QMLTYPES "plugins.qmltypes"
     DEPENDENCIES
         QtQuick/2.0
-    SKIP_TYPE_REGISTRATION
     SOURCES
         qtquickvirtualkeyboardsettingsplugin.cpp qtquickvirtualkeyboardsettingsplugin.h
     PUBLIC_LIBRARIES
@@ -20,11 +22,6 @@ qt_internal_add_qml_module(qtquickvirtualkeyboardsettingsplugin
         Qt::Quick
         Qt::VirtualKeyboardPrivate
 )
-
-#### Keys ignored in scope 1:.:.:settings.pro:<TRUE>:
-# IMPORT_VERSION = "2.$$QT_MINOR_VERSION"
-# OTHER_FILES = "plugins.qmltypes" "qmldir"
-# TARGETPATH = "QtQuick/VirtualKeyboard/Settings"
 
 ## Scopes:
 #####################################################################
