@@ -83,6 +83,8 @@ import QtQuick.VirtualKeyboard
 */
 
 ColumnLayout {
+    id: root
+
     /*! Sets the input method to be used in this layout.
 
         This property allows a custom input method to be
@@ -148,8 +150,8 @@ ColumnLayout {
 
     function scanLayout() {
         var layout = {
-            width: parent.width,
-            height: parent.height,
+            width: root.width,
+            height: root.height,
             keys: []
         }
         __scanLayoutRecursive(this, layout)
@@ -173,6 +175,10 @@ ColumnLayout {
                     isFunctionKey: child.functionKey,
                     noKeyEvent: child.noKeyEvent
                 }
+                if (key.left + key.width > layout.width)
+                    layout.width = key.left + key.width
+                if (key.top + key.height > layout.height)
+                    layout.height = key.top + key.height
                 layout.keys.push(key)
             } else {
                 __scanLayoutRecursive(child, layout)
