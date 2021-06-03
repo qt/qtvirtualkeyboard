@@ -1948,20 +1948,19 @@ Rectangle {
             if (!inputPanel.wordCandidateListVisibleHint)
                 skip("Prediction/spell correction not enabled")
 
+            inputPanel.wordCandidateListItemSelectedSpy.clear()
             for (var len = 1; len <= 5; ++len) {
                 inputPanel.virtualKeyClick("z")
-                if (len >= 2) {
-                    inputPanel.inputMethodSelectionListChangedSpy.clear()
-                    inputPanel.inputMethodSelectionListChangedSpy.wait()
-                    if (inputPanel.wordCandidateView.model.count <= 1)
-                        break
+                wait(200)
+                if (inputPanel.wordCandidateListItemSelectedSpy.count > 0) {
+                    break
                 }
             }
 
             if (data.wclAutoCommitWord)
-                verify(textInput.text.length > 0)
+                compare(inputPanel.wordCandidateListItemSelectedSpy.count, 1)
             else
-                verify(textInput.text.length === 0)
+                compare(inputPanel.wordCandidateListItemSelectedSpy.count, 0)
         }
 
         function test_fullScreenModeActivation() {

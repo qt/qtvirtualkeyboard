@@ -89,6 +89,7 @@ InputPanel {
     property alias soundEffectSpy: soundEffectSpy
     property alias inputMethodResultSpy: inputMethodResultSpy
     property alias wordCandidateListChangedSpy: wordCandidateListChangedSpy
+    property alias wordCandidateListItemSelectedSpy: wordCandidateListItemSelectedSpy
     property alias inputMethodSelectionListChangedSpy: inputMethodSelectionListChangedSpy
     property alias wordCandidateListVisibleSpy: wordCandidateListVisibleSpy
     property alias shiftStateSpy: shiftStateSpy
@@ -176,6 +177,12 @@ InputPanel {
         id: wordCandidateListChangedSpy
         target: wordCandidateView.model
         signalName: "dataChanged"
+    }
+
+    SignalSpy {
+        id: wordCandidateListItemSelectedSpy
+        target: wordCandidateView.model
+        signalName: "itemSelected"
     }
 
     SignalSpy {
