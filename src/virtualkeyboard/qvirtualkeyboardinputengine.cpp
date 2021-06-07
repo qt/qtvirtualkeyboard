@@ -716,9 +716,11 @@ void QVirtualKeyboardInputEngine::timerEvent(QTimerEvent *timerEvent)
 {
     Q_D(QVirtualKeyboardInputEngine);
     if (timerEvent->timerId() == d->repeatTimer) {
-        d->repeatTimer = 0;
         d->virtualKeyClick(d->activeKey, d->activeKeyText, d->activeKeyModifiers, true);
-        d->repeatTimer = startTimer(50);
+        if (!d->repeatCount) {
+            killTimer(d->repeatTimer);
+            d->repeatTimer = startTimer(50);
+        }
         d->repeatCount++;
     }
 }
