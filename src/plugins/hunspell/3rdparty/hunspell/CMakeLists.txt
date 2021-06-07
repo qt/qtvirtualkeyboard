@@ -46,7 +46,7 @@ configure_file(config.h.cmake.in config.h)
 ## Scopes:
 #####################################################################
 
-qt_extend_target(BundledHunspell CONDITION CMAKE_BUILD_TYPE STREQUAL Debug
+qt_internal_extend_target(BundledHunspell CONDITION CMAKE_BUILD_TYPE STREQUAL Debug
     DEFINES
         HUNSPELL_WARNING_ON
 )

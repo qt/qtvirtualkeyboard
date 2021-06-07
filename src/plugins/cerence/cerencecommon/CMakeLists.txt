@@ -20,12 +20,12 @@ qt_internal_add_3rdparty_library(BundledCerencecommon
 ## Scopes:
 #####################################################################
 
-qt_extend_target(BundledCerencecommon CONDITION FEATURE_vkb_bundle_cerence OR FEATURE_vkb_bundle_cerence_xt9
+qt_internal_extend_target(BundledCerencecommon CONDITION FEATURE_vkb_bundle_cerence OR FEATURE_vkb_bundle_cerence_xt9
     PUBLIC_DEFINES
         HAVE_XT9_RESOURCE
 )
 
-qt_extend_target(BundledCerencecommon CONDITION FEATURE_vkb_cerence_xt9_debug
+qt_internal_extend_target(BundledCerencecommon CONDITION FEATURE_vkb_cerence_xt9_debug
     PUBLIC_DEFINES
         XT9_DEBUG
 )

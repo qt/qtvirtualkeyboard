@@ -35,7 +35,7 @@ qt_internal_extend_target(HunspellInputMethodPrivate CONDITION QT_FEATURE_system
 )
 
 # special case begin
-extend_target(HunspellInputMethodPrivate CONDITION NOT QT_FEATURE_system_hunspell AND QT_FEATURE_3rdparty_hunspell
+qt_internal_extend_target(HunspellInputMethodPrivate CONDITION NOT QT_FEATURE_system_hunspell AND QT_FEATURE_3rdparty_hunspell
     LIBRARIES
         BundledHunspell
 )
