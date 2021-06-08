@@ -324,6 +324,7 @@ Rectangle {
         function test_hardKeyBackspaceClearsInput_data() {
             return [
                 { initLocale: "en_GB", initText: "12345", initCursorPosition: 1, inputSequence: "hello", outputText: "12345", expectedCursorPosition: 1 },
+                { initLocale: "ja_JP", initText: "12345", initCursorPosition: 1, inputSequence: "watashi", outputText: "12345", expectedCursorPosition: 1 },
             ]
         }
 

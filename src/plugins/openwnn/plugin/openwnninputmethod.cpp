@@ -814,7 +814,7 @@ void OpenWnnInputMethod::selectionListItemSelected(QVirtualKeyboardSelectionList
 void OpenWnnInputMethod::reset()
 {
     Q_D(OpenWnnInputMethod);
-    d->commitAll();
+    d->composingText.clear();
     d->initializeScreen();
     d->fitInputType();
 }
@@ -822,8 +822,10 @@ void OpenWnnInputMethod::reset()
 void OpenWnnInputMethod::update()
 {
     Q_D(OpenWnnInputMethod);
-    if (!d->disableUpdate)
+    if (!d->disableUpdate) {
+        d->commitAll();
         reset();
+    }
 }
 
 } // namespace QtVirtualKeyboard
