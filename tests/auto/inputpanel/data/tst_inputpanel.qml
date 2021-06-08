@@ -321,6 +321,30 @@ Rectangle {
             compare(textInput.text, "A")
         }
 
+        function test_hardKeyBackspaceClearsInput_data() {
+            return [
+                { initLocale: "en_GB", initText: "12345", initCursorPosition: 1, inputSequence: "hello", outputText: "12345", expectedCursorPosition: 1 },
+            ]
+        }
+
+        function test_hardKeyBackspaceClearsInput(data) {
+            prepareTest(data)
+
+            if (!inputPanel.wordCandidateListVisibleHint)
+                skip("Prediction/spell correction not enabled")
+
+            compare(Qt.inputMethod.locale.name, Qt.locale(data.initLocale).name)
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
+            }
+
+            keyClick(Qt.Key_Backspace)
+            waitForRendering(textInput)
+
+            compare(textInput.text, data.outputText)
+            compare(textInput.cursorPosition, data.expectedCursorPosition)
+        }
+
         function test_hardKeyInput() {
             prepareTest()
 
