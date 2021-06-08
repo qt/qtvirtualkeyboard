@@ -726,7 +726,7 @@ Item {
                                                  (keyboard.active || shadowInputControl.visible)
         readonly property real visibleYOffset: VirtualKeyboardSettings.wordCandidateList.alwaysVisible ? 0 : -height
         readonly property real currentYOffset: visibleCondition || wordCandidateViewTransition.running ? visibleYOffset : 0
-        height: Math.round(style.selectionListHeight)
+        height: style ? style.selectionListHeight : 0
         anchors.left: parent.left
         anchors.right: parent.right
         spacing: 0
@@ -861,7 +861,7 @@ Item {
             id: keyboardInnerContainer
             z: 1
             width: Math.round(keyboardBackground.width)
-            height: Math.round(style.keyboardDesignHeight * width / style.keyboardDesignWidth)
+            height: style ? Math.round(style.keyboardDesignHeight * width / style.keyboardDesignWidth) : 0
             anchors.horizontalCenter: parent.horizontalCenter
             LayoutMirroring.enabled: false
             LayoutMirroring.childrenInherit: true

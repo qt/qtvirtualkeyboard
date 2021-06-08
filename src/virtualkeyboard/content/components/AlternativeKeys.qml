@@ -58,9 +58,9 @@ Item {
         highlightResizeDuration: 0
         keyNavigationWraps: true
         orientation: ListView.Horizontal
-        height: keyboard.style.alternateKeysListItemHeight
+        height: keyboard.style ? keyboard.style.alternateKeysListItemHeight : 0
         x: origin.x
-        y: origin.y - height - keyboard.style.alternateKeysListBottomMargin
+        y: keyboard.style ? origin.y - height - keyboard.style.alternateKeysListBottomMargin : 0
         Component {
             id: defaultHighlight
             Item {}
