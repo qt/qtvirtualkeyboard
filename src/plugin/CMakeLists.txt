@@ -40,6 +40,11 @@ qt_internal_extend_target(QVirtualKeyboardPlugin CONDITION disable-layouts
         QT_VIRTUALKEYBOARD_DISABLE_LAYOUTS
 )
 
+qt_internal_extend_target(QVirtualKeyboardPlugin CONDITION WIN32
+    LIBRARIES
+        Imm32.lib
+)
+
 #### Keys ignored in scope 4:.:.:plugin.pro:WIN32:
 # QMAKE_TARGET_DESCRIPTION = "Virtual Keyboard for Qt."
 # QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard (Qt $$QT_VERSION)"
