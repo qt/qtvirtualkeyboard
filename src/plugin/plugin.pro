@@ -28,6 +28,7 @@ disable-layouts {
 win32 {
     QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard (Qt $$QT_VERSION)"
     QMAKE_TARGET_DESCRIPTION = "Virtual Keyboard for Qt."
+    LIBS += -limm32
 }
 
 PLUGIN_TYPE = platforminputcontexts
