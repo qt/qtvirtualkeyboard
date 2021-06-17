@@ -1241,6 +1241,19 @@ Rectangle {
             compare(textInput.cursorPosition, data.expectedCursorPosition)
         }
 
+        function test_japaneseSelectCurrentItemResetsIndex() {
+            prepareTest({ initLocale: "ja_JP" }, true)
+
+            verify(inputPanel.virtualKeyClick("a"))
+            verify(inputPanel.virtualKeyClick("a"))
+            verify(inputPanel.virtualKeyClick("a"))
+
+            compare(inputPanel.wordCandidateView.currentIndex, -1)
+            inputPanel.wordCandidateView.currentIndex = 0
+            inputPanel.selectionListSelectCurrentItem()
+            compare(inputPanel.wordCandidateView.currentIndex, -1, "QTBUG-94560")
+        }
+
         function test_baseKeyNoModifier() {
             // The Japanese keyboard uses the BaseKey.noModifier flag for the arrow keys.
             // Without this flag the arrow key + shift would extend the text selection.
