@@ -284,6 +284,10 @@ public:
         worker->start();
 
         Q_Q(T9WriteInputMethod);
+        resultListChangedConnection = QObjectPrivate::connect(
+                    q, &T9WriteInputMethod::resultListChanged,
+                    this, &T9WriteInputMethodPrivate::processResultCheckTimer,
+                    Qt::QueuedConnection);
         availableDictionariesChangedConnection = QObjectPrivate::connect(QVirtualKeyboardDictionaryManager::instance(),
                    &QVirtualKeyboardDictionaryManager::availableDictionariesChanged,
                    this, &T9WriteInputMethodPrivate::onAvailableDynamicDictionariesChanged);
@@ -315,6 +319,7 @@ public:
         unbindSettings();
 #endif
 
+        QObject::disconnect(resultListChangedConnection);
         QObject::disconnect(availableDictionariesChangedConnection);
         QObject::disconnect(activeDictionariesChangedConnection);
 
@@ -1495,7 +1500,7 @@ public:
         worker->addTask(recognitionTask);
 
         QSharedPointer<T9WriteRecognitionResultsTask> resultsTask(new T9WriteRecognitionResultsTask(recognitionResult));
-        QObjectPrivate::connect(resultsTask.data(), &T9WriteRecognitionResultsTask::resultsAvailable, this, &T9WriteInputMethodPrivate::processResultCheckTimer, Qt::QueuedConnection);
+        QObjectPrivate::connect(resultsTask.data(), &T9WriteRecognitionResultsTask::resultsAvailable, this, &T9WriteInputMethodPrivate::setResultList, Qt::DirectConnection);
         worker->addTask(resultsTask);
 
         resetResultTimer(cjk ? Settings::instance()->hwrTimeoutForCjk() : Settings::instance()->hwrTimeoutForAlphabetic());
@@ -1508,6 +1513,7 @@ public:
 
         qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::waitForRecognitionResults()";
         worker->waitForAllTasks();
+        processResultCheckTimer();
     }
 
     bool finishRecognition(bool emitSelectionListChanged = true)
@@ -1665,24 +1671,36 @@ public:
         q->reset();
     }
 
-    void processResultCheckTimer(const QVariantList &resultList)
+    // Note: Called from T9WriteWorker thread!
+    void setResultList(const QVariantList &resultList)
+    {
+        {
+            const std::lock_guard<QRecursiveMutex> ListGuard(resultListLock);
+            this->resultList = resultList;
+        }
+
+        Q_Q(T9WriteInputMethod);
+        emit q->resultListChanged();
+    }
+
+    void processResultCheckTimer()
     {
         bool resultTimerWasRunning = resultTimer != 0;
 
-        processResult(resultList);
+        processResult();
 
         // Restart the result timer now if it stopped before the results were completed
         if (!resultTimerWasRunning && (!scrResult.isEmpty() || !wordCandidates.isEmpty()))
             resetResultTimer(0);
-
     }
 
-    void processResult(const QVariantList &resultList)
+    void processResult()
     {
         qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::processResult()";
 
 #ifdef SENSITIVE_DEBUG
         if (lcT9Write().isDebugEnabled()) {
+            const std::lock_guard<QRecursiveMutex> resultListGuard(resultListLock);
             for (int i = 0; i < resultList.size(); i++) {
                 QVariantMap result = resultList.at(i).toMap();
                 QString resultPrint = QStringLiteral("%1: ").arg(i + 1);
@@ -1719,11 +1737,13 @@ public:
         QString gesture;
         QVariantList symbolStrokes;
         {
+            const std::lock_guard<QRecursiveMutex> resultListGuard(resultListLock);
             if (resultList.isEmpty())
                 return;
 
             if (resultList.first().toMap()[QLatin1String("resultId")] != resultId) {
                 qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::processResult(): resultId mismatch" << resultList.first().toMap()[QLatin1String("resultId")] << "(" << resultId << ")";
+                resultList.clear();
                 return;
             }
             lastResultId = resultId;
@@ -1786,6 +1806,8 @@ public:
 #endif
                 }
             }
+
+            resultList.clear();
 
             if (!newWordCandidates.isEmpty())
                 newActiveWordIndex = 0;
@@ -2301,6 +2323,9 @@ public:
     QMetaObject::Connection availableDictionariesChangedConnection;
     QMetaObject::Connection activeDictionariesChangedConnection;
     QSharedPointer<T9WriteRecognitionTask> recognitionTask;
+    QRecursiveMutex resultListLock;
+    QVariantList resultList;
+    QMetaObject::Connection resultListChangedConnection;
     int resultId;
     int lastResultId;
     int resultTimer;

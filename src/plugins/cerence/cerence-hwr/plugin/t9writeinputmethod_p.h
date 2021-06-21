@@ -97,6 +97,9 @@ public:
 
     bool reselect(int cursorPosition, const QVirtualKeyboardInputEngine::ReselectFlags &reselectFlags);
 
+signals:
+    void resultListChanged();
+
 protected:
     void timerEvent(QTimerEvent *timerEvent);
 };
