@@ -42,7 +42,7 @@ qt_internal_extend_target(QVirtualKeyboardPlugin CONDITION disable-layouts
 
 qt_internal_extend_target(QVirtualKeyboardPlugin CONDITION WIN32
     LIBRARIES
-        Imm32.lib
+        imm32
 )
 
 #### Keys ignored in scope 4:.:.:plugin.pro:WIN32:
