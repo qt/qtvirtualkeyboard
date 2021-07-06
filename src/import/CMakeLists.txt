@@ -20,7 +20,7 @@ qt_internal_add_qml_module(qtquickvirtualkeyboardplugin
         QtQuick.VirtualKeyboard.Styles/2.2
     SOURCES
         qtquickvirtualkeyboardplugin.cpp qtquickvirtualkeyboardplugin.h
-    PUBLIC_LIBRARIES
+    LIBRARIES
         Qt::Core
         Qt::Gui
         Qt::Qml

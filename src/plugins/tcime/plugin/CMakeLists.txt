@@ -15,13 +15,12 @@ qt_internal_add_plugin(QtVirtualKeyboardTCImePlugin
         QT_NO_CAST_FROM_ASCII
         QT_NO_CAST_FROM_BYTEARRAY
         QT_NO_CAST_TO_ASCII
-    PUBLIC_LIBRARIES
+    LIBRARIES
         Qt::Core
         Qt::Gui
         Qt::Qml
         Qt::VirtualKeyboardPrivate
-    LIBRARIES # special case
-        BundledTcime # special case
+        BundledTcime
 )
 
 # Resources:

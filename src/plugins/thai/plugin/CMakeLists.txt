@@ -15,7 +15,7 @@ qt_internal_add_plugin(QtVirtualKeyboardThaiPlugin
         QT_NO_CAST_FROM_ASCII
         QT_NO_CAST_FROM_BYTEARRAY
         QT_NO_CAST_TO_ASCII
-    PUBLIC_LIBRARIES
+    LIBRARIES
         Qt::Core
         Qt::Gui
         Qt::Qml
@@ -49,7 +49,7 @@ qt_internal_add_resource(QtVirtualKeyboardThaiPlugin "qmake_virtualkeyboard_thai
 #####################################################################
 
 qt_internal_extend_target(QtVirtualKeyboardThaiPlugin CONDITION QT_FEATURE_hunspell
-    PUBLIC_LIBRARIES
+    LIBRARIES
         Qt::HunspellInputMethodPrivate
 )
 
