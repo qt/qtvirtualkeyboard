@@ -945,6 +945,8 @@ Rectangle {
                 // Add an apostrophe before joined syllables in cases of ambiguity, disable the user dictionary (Qt.ImhSensitiveData) so it does not affect to the results
                 { initInputMethodHints: Qt.ImhNone | Qt.ImhSensitiveData, initLocale: "zh_CN", inputSequence: "zhangang", expectedCandidates: [ "\u5360", "\u94A2" ], outputText: "\u5360\u94A2" },
                 { initInputMethodHints: Qt.ImhNone | Qt.ImhSensitiveData, initLocale: "zh_CN", inputSequence: "zhang'ang", expectedCandidates: [ "\u7AE0", "\u6602" ], outputText: "\u7AE0\u6602" },
+                // Invalid pinyin sequence
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "fi", expectedCandidates: [ "\u53D1", "i" ], outputText: "\u53D1i" },
             ]
         }
 
