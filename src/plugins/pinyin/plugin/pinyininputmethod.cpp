@@ -73,7 +73,7 @@ public:
         QVirtualKeyboardInputContext *inputContext = q->inputContext();
 
         // Disable the user dictionary when entering sensitive data
-        if (inputContext) {
+        if (inputContext && pinyinDecoderService) {
             bool userDictionaryEnabled = !inputContext->inputMethodHints().testFlag(Qt::ImhSensitiveData);
             if (userDictionaryEnabled != pinyinDecoderService->isUserDictionaryEnabled())
                 pinyinDecoderService->setUserDictionary(userDictionaryEnabled);
