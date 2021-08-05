@@ -6,7 +6,7 @@
 
 qt_internal_add_plugin(QtVirtualKeyboardThaiPlugin
     OUTPUT_NAME qtvirtualkeyboard_thai
-    TYPE virtualkeyboard
+    PLUGIN_TYPE virtualkeyboard
     SOURCES
         thaiinputmethod.cpp thaiinputmethod_p.h
         thaiplugin.cpp thaiplugin.h

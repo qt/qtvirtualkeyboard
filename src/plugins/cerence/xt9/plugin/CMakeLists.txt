@@ -6,7 +6,7 @@
 
 qt_internal_add_plugin(QtVirtualKeyboardXt9Plugin
     OUTPUT_NAME qtvirtualkeyboard_cerence_xt9
-    TYPE virtualkeyboard
+    PLUGIN_TYPE virtualkeyboard
     SOURCES
         xt9awinputmethod.cpp xt9awinputmethod_p.h
         xt9awinputmethodprivate.cpp xt9awinputmethodprivate_p.h

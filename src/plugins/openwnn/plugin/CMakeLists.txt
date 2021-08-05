@@ -6,7 +6,7 @@
 
 qt_internal_add_plugin(QtVirtualKeyboardOpenWnnPlugin
     OUTPUT_NAME qtvirtualkeyboard_openwnn
-    TYPE virtualkeyboard
+    PLUGIN_TYPE virtualkeyboard
     SOURCES
         openwnninputmethod.cpp openwnninputmethod_p.h
         openwnnplugin.cpp openwnnplugin.h

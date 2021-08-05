@@ -6,7 +6,7 @@
 
 qt_internal_add_plugin(QtVirtualKeyboardPinyinPlugin
     OUTPUT_NAME qtvirtualkeyboard_pinyin
-    TYPE virtualkeyboard
+    PLUGIN_TYPE virtualkeyboard
     SOURCES
         pinyindecoderservice.cpp pinyindecoderservice_p.h
         pinyininputmethod.cpp pinyininputmethod_p.h

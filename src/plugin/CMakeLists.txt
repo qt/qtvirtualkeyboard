@@ -6,7 +6,7 @@
 
 qt_internal_add_plugin(QVirtualKeyboardPlugin
     OUTPUT_NAME qtvirtualkeyboardplugin
-    TYPE platforminputcontexts
+    PLUGIN_TYPE platforminputcontexts
     DEFAULT_IF FALSE
     SOURCES
         extensionloader.cpp extensionloader.h

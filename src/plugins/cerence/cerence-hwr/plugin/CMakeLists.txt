@@ -6,7 +6,7 @@
 
 qt_internal_add_plugin(QtVirtualKeyboardCerenceHwrPlugin
     OUTPUT_NAME qtvirtualkeyboard_cerence_hwr
-    TYPE virtualkeyboard
+    PLUGIN_TYPE virtualkeyboard
     SOURCES
         cerence_hwr_p.h
         qtvirtualkeyboardcerencehwrplugin.cpp qtvirtualkeyboardcerencehwrplugin.h

@@ -6,7 +6,7 @@
 
 qt_internal_add_plugin(QtVirtualKeyboardMyScriptPlugin
     OUTPUT_NAME qtvirtualkeyboard_myscript
-    TYPE virtualkeyboard
+    PLUGIN_TYPE virtualkeyboard
     SOURCES
         /voim/api/c/examples/common/PortabilityDefinitions.c
         /voim/api/c/examples/common/Properties.c

@@ -6,7 +6,7 @@
 
 qt_internal_add_plugin(QtVirtualKeyboardTCImePlugin
     OUTPUT_NAME qtvirtualkeyboard_tcime
-    TYPE virtualkeyboard
+    PLUGIN_TYPE virtualkeyboard
     SOURCES
         tcimeplugin.cpp tcimeplugin.h
         tcinputmethod.cpp tcinputmethod_p.h

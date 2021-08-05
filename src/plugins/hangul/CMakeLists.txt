@@ -6,7 +6,7 @@
 
 qt_internal_add_plugin(QtVirtualKeyboardHangulPlugin
     OUTPUT_NAME qtvirtualkeyboard_hangul
-    TYPE virtualkeyboard
+    PLUGIN_TYPE virtualkeyboard
     SOURCES
         hangul.cpp hangul_p.h
         hangulinputmethod.cpp hangulinputmethod_p.h
