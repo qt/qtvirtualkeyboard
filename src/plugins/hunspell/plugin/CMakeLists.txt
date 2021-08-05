@@ -6,7 +6,7 @@
 
 qt_internal_add_plugin(QtVirtualKeyboardHunspellPlugin
     OUTPUT_NAME qtvirtualkeyboard_hunspell
-    TYPE virtualkeyboard
+    PLUGIN_TYPE virtualkeyboard
     SOURCES
         hunspellplugin.cpp hunspellplugin.h
     DEFINES
