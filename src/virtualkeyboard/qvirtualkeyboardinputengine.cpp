@@ -694,8 +694,9 @@ void QVirtualKeyboardInputEngine::updateInputModes()
 {
     Q_D(QVirtualKeyboardInputEngine);
     QList<int> newInputModes;
+    QList<InputMode> tmpList;
     if (d->inputMethod) {
-        QList<InputMode> tmpList(d->inputMethod->inputModes(d->inputContext->locale()));
+        tmpList = d->inputMethod->inputModes(d->inputContext->locale());
         if (!tmpList.isEmpty()) {
             std::transform(tmpList.constBegin(), tmpList.constEnd(),
                            std::back_inserter(newInputModes),
@@ -706,6 +707,7 @@ void QVirtualKeyboardInputEngine::updateInputModes()
     }
     if (d->inputModes != newInputModes) {
         d->inputModes = newInputModes;
+        VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputEngine::inputModesChanged():" << tmpList;
         emit inputModesChanged();
     }
 }
