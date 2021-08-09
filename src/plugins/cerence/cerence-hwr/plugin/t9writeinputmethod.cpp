@@ -295,15 +295,6 @@ public:
                    &QVirtualKeyboardDictionaryManager::activeDictionariesChanged,
                    this, &T9WriteInputMethodPrivate::onActiveDynamicDictionariesChanged);
 
-        onAvailableDynamicDictionariesChanged();
-        onActiveDynamicDictionariesChanged();
-
-        const Qt::InputMethodHints inputMethodHints = q->inputContext()->inputMethodHints();
-        if (!inputMethodHints.testFlag(Qt::ImhHiddenText) && !inputMethodHints.testFlag(Qt::ImhNoPredictiveText) &&
-                !inputMethodHints.testFlag(Qt::ImhSensitiveData)) {
-            dlmActivate();
-        }
-
 #ifdef HAVE_XT9
         bindSettings();
 #endif
@@ -468,13 +459,17 @@ public:
             defaultDictionaryDisabledChangedConnection = QObjectPrivate::connect(
                         Settings::instance(), &Settings::defaultDictionaryDisabledChanged,
                         this, &T9WriteInputMethodPrivate::onDefaultDictionaryDisabledChanged);
-
+        if (!userDataResetConnection)
+            userDataResetConnection = QObjectPrivate::connect(
+                        Settings::instance(), &Settings::userDataReset,
+                        this, &T9WriteInputMethodPrivate::onUserDataReset);
     }
 
     void unbindSettings()
     {
         QObject::disconnect(defaultInputMethodDisabledChangedConnection);
         QObject::disconnect(defaultDictionaryDisabledChangedConnection);
+        QObject::disconnect(userDataResetConnection);
     }
 
     void onXt9AlphabeticCoreDisabledChanged()
@@ -501,6 +496,14 @@ public:
     {
         if (Xt9AwIme *xt9AwIme = dynamic_cast<Xt9AwIme *>(xt9Ime.data()))
             xt9AwIme->setLdbEnabled(!Settings::instance()->isDefaultDictionaryDisabled());
+    }
+
+    void onUserDataReset()
+    {
+        dlmDeactivate();
+#ifdef HAVE_XT9
+        xt9Exit();
+#endif
     }
 
     ET9STATUS request(ET9_Request *const pRequest) override
@@ -758,6 +761,15 @@ public:
             xt9Exit();
 #endif
             return false;
+        }
+
+        onAvailableDynamicDictionariesChanged();
+        onActiveDynamicDictionariesChanged();
+
+        const Qt::InputMethodHints inputMethodHints = q->inputContext()->inputMethodHints();
+        if (!inputMethodHints.testFlag(Qt::ImhHiddenText) && !inputMethodHints.testFlag(Qt::ImhNoPredictiveText) &&
+                !inputMethodHints.testFlag(Qt::ImhSensitiveData)) {
+            dlmActivate();
         }
 
         int isLanguageSupported = 0;
@@ -2351,6 +2363,7 @@ public:
     QMetaObject::Connection defaultInputMethodDisabledChangedConnection;
     QMetaObject::Connection defaultDictionaryDisabledChangedConnection;
 #endif
+    QMetaObject::Connection userDataResetConnection;
 };
 
 const DECUMA_MEM_FUNCTIONS T9WriteInputMethodPrivate::memFuncs = {
