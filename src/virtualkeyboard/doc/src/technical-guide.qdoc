@@ -697,7 +697,7 @@ directory, the virtual keyboard falls back to the default built-in layouts.
 
 To prevent the built-in layouts from being built into the virtual keyboard
 plugin when using custom layouts, add \c disable-layouts to the \c CONFIG qmake variable.
-For more information, see \l {Advanced Configuration Options}.
+For more information, see \l {Advanced Usage}{qmake advanced configuration options}.
 
 \section1 Keyboard Styles
 
