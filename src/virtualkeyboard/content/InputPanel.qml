@@ -92,7 +92,7 @@ Item {
 
         The \a localeList parameter contains a list of locale names to choose
         from. To get more information about a particular language, use the
-        \l {QtQml::Qt::locale()}{Qt.locale()} function. The \a currentIndex
+        \l[QtQml]{Qt::locale()}{Qt.locale()} function. The \a currentIndex
         is the index of current locale in the \a localeList. This item should
         be highlighted as the current item in the UI.
 
