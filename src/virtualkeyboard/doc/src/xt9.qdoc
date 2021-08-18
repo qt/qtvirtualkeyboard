@@ -66,10 +66,12 @@ previous input.
 
 \section2 Application specific dictionaries
 
-With the new \l {QVirtualKeyboardDictionaryManager} {dictionary manager} the application can
-create custom dictionaries and attach them to any context within the application. Together
-with \l {VirtualKeyboardSettings.defaultDictionaryDisabled} API it is also possible to use
-custom dictionaries exclusively without standard built-in dictionaries.
+With the new QVirtualKeyboardDictionaryManager, the application can
+create custom dictionaries and attach them to any context within the
+application. Together with the
+\l[QML]{VirtualKeyboardSettings::}{VirtualKeyboardSettings.defaultDictionaryDisabled}
+property, it is possible to use custom dictionaries exclusively, without the standard
+built-in dictionaries.
 
 \section2 Handwriting Recognition with XT9 Capabilities
 
