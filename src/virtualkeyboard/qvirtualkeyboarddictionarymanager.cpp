@@ -68,6 +68,34 @@ struct QVirtualKeyboardDictionaryManagerSingleton {
 
 Q_GLOBAL_STATIC(QVirtualKeyboardDictionaryManagerSingleton, singleton)
 
+/*!
+    \class QVirtualKeyboardDictionaryManager
+
+    \inmodule QtVirtualKeyboard
+
+    \brief Dictionary management for application-defined dictionaries.
+
+    This class allows you to manage dictionaries for virtual keyboard input
+    methods. Dictionaries are application-defined and can be activated in the
+    desired context.
+
+    \note Dictionaries do not refer to the built-in dictionaries of the input
+    method, but to the application's own dictionaries (for example, a phonebook
+    application).
+
+    The following operations are supported by the dictionary manager:
+    \list
+        \li Create dictionaries using the \c createDictionary() function.
+        \li Add or modify content of the dictionary instance.
+        \li Activate dictionaries by adding them to the list of
+            \l {baseDictionaries}{base dictionaries} or
+            \l {extraDictionaries}{extra dictionaries}.
+    \endlist
+
+    To activate dictionaries from QML, use the \l VirtualKeyboard attached
+    type.
+*/
+
 QVirtualKeyboardDictionaryManager::QVirtualKeyboardDictionaryManager(QObject *parent) :
     QObject(*new QVirtualKeyboardDictionaryManagerPrivate(this), parent)
 {
@@ -77,6 +105,12 @@ QVirtualKeyboardDictionaryManager::QVirtualKeyboardDictionaryManager(QObject *pa
     connect(this, &QVirtualKeyboardDictionaryManager::extraDictionariesChanged,
             [=](){ d->updateActiveDictionaries(); });
 }
+
+/*!
+    Returns the singleton instance of the QVirtualKeyboardDictionaryManager.
+
+    All the functionalities must be called from the main thread.
+ */
 
 QVirtualKeyboardDictionaryManager *QVirtualKeyboardDictionaryManager::instance()
 {
@@ -131,6 +165,15 @@ QStringList QVirtualKeyboardDictionaryManager::activeDictionaries() const
     return d->activeDictionaries.values();
 }
 
+/*!
+    Create a dictionary with the given \a name or return the dictionary if it
+    already exists.
+
+    The dictionary instance is owned by the dictionary manager and must not be
+    destroyed manually. To free memory allocated for the dictionary, the
+    application may reset the contents of the dictionary.
+ */
+
 QVirtualKeyboardDictionary *QVirtualKeyboardDictionaryManager::createDictionary(const QString &name)
 {
     Q_D(QVirtualKeyboardDictionaryManager);
@@ -145,11 +188,46 @@ QVirtualKeyboardDictionary *QVirtualKeyboardDictionaryManager::createDictionary(
     return dictionary;
 }
 
+/*!
+    Returns an existing dictionary if it exists.
+ */
+
 QVirtualKeyboardDictionary *QVirtualKeyboardDictionaryManager::dictionary(const QString &name) const
 {
     Q_D(const QVirtualKeyboardDictionaryManager);
 
     return d->dictionaries.value(name);
 }
+
+/*!
+    \property QVirtualKeyboardDictionary::availableDictionaries
+    \brief the list of all dictionaries.
+
+    This property holds the names of all existing dictionaries.
+*/
+
+/*!
+    \property QVirtualKeyboardDictionary::baseDictionaries
+    \brief the list of currently active base dictionaries.
+
+    This property holds the names of base dictionaries. The application manages
+    this property.
+*/
+
+/*!
+    \property QVirtualKeyboardDictionary::extraDictionaries
+    \brief the list of currently active extra dictionaries.
+
+    This property holds the names of extra dictionaries. The application manages
+    this property.
+*/
+
+/*!
+    \property QVirtualKeyboardDictionary::activeDictionaries
+    \brief the list of currently active dictionaries.
+
+    This property holds the list of active dictionaries, which is a combination
+    of unique names included in baseDictionaries and extraDictionaries.
+*/
 
 QT_END_NAMESPACE
