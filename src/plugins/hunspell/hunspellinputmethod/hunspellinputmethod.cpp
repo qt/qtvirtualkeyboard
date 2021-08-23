@@ -369,7 +369,8 @@ void HunspellInputMethod::update()
         finalWord = d->wordCandidates.wordAt(d->wordCandidates.index());
     }
     d->reset();
-    inputContext()->commit(finalWord);
+    if (!finalWord.isEmpty())
+        inputContext()->commit(finalWord);
     d->autoSpaceAllowed = false;
 }
 
