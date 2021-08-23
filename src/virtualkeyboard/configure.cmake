@@ -23,6 +23,7 @@ qt_add_qmake_lib_dependency(xcb-xfixes xcb)
 qt_find_package(CerenceHwrAlphabetic PROVIDED_TARGETS Cerence::HWR::Alphabetic MODULE_NAME virtualkeyboard QMAKE_LIB t9write-ucr)
 qt_find_package(CerenceHwrCjk PROVIDED_TARGETS Cerence::HWR::CJK MODULE_NAME virtualkeyboard QMAKE_LIB t9write-cjk)
 qt_find_package(CerenceXt9 PROVIDED_TARGETS Cerence::XT9 MODULE_NAME virtualkeyboard QMAKE_LIB xt9-acktn)
+qt_find_package(MyScript PROVIDED_TARGETS MyScript::VOIM MODULE_NAME virtualkeyboard QMAKE_LIB voim)
 
 #### Tests
 
@@ -76,20 +77,20 @@ qt_feature("cerence-hwr" PRIVATE
     LABEL "  Handwriting"
     CONDITION QT_FEATURE_cerence_hwr_alphabetic OR QT_FEATURE_cerence_hwr_cjk
     ENABLE INPUT_vkb_handwriting STREQUAL 'cerence-hwr'
-    DISABLE INPUT_vkb_handwriting STREQUAL 'no'
+    DISABLE NOT INPUT_vkb_handwriting STREQUAL '' AND NOT INPUT_vkb_handwriting STREQUAL 'cerence-hwr'
 )
 qt_feature("cerence-hwr-alphabetic" PRIVATE
     LABEL "    Alphabetic"
     CONDITION QT_FEATURE_cerence_sdk
     ENABLE INPUT_vkb_handwriting STREQUAL 'cerence-hwr'
-    DISABLE INPUT_vkb_handwriting STREQUAL 'no'
+    DISABLE NOT INPUT_vkb_handwriting STREQUAL '' AND NOT INPUT_vkb_handwriting STREQUAL 'cerence-hwr'
     AUTODETECT CERENCE_HWR_ALPHABETIC_FOUND
 )
 qt_feature("cerence-hwr-cjk" PRIVATE
     LABEL "    CJK"
     CONDITION QT_FEATURE_cerence_sdk
     ENABLE INPUT_vkb_handwriting STREQUAL 'cerence-hwr'
-    DISABLE INPUT_vkb_handwriting STREQUAL 'no'
+    DISABLE NOT INPUT_vkb_handwriting STREQUAL '' AND NOT INPUT_vkb_handwriting STREQUAL 'cerence-hwr'
     AUTODETECT CERENCE_HWR_CJK_FOUND
 )
 qt_feature("vkb-bundle-cerence" PUBLIC
@@ -141,9 +142,11 @@ qt_feature("openwnn" PRIVATE
     AUTODETECT ( NOT INPUT_lang_ja_JP STREQUAL 'no' )
     DISABLE QT_FEATURE_cerence_xt9
 )
-qt_feature("vkb-myscript" PRIVATE
+qt_feature("myscript" PRIVATE
     LABEL "MyScript"
-    AUTODETECT OFF
+    CONDITION MyScript_FOUND
+    ENABLE INPUT_vkb_handwriting STREQUAL 'myscript-hwr'
+    DISABLE NOT INPUT_vkb_handwriting STREQUAL '' AND NOT INPUT_vkb_handwriting STREQUAL 'myscript-hwr'
 )
 qt_feature("pinyin" PRIVATE
     LABEL "libpinyin"
@@ -379,7 +382,7 @@ qt_configure_add_summary_entry(ARGS "vkb-bundle-cerence-xt9")
 qt_configure_add_summary_entry(ARGS "hunspell")
 qt_configure_add_summary_entry(ARGS "3rdparty-hunspell")
 qt_configure_add_summary_entry(ARGS "openwnn")
-qt_configure_add_summary_entry(ARGS "vkb-myscript")
+qt_configure_add_summary_entry(ARGS "myscript")
 qt_configure_add_summary_section(NAME "Language support enabled for")
 qt_configure_add_summary_entry(ARGS "vkb-lang-ar_AR")
 qt_configure_add_summary_entry(ARGS "vkb-lang-bg_BG")
@@ -430,6 +433,11 @@ qt_configure_add_summary_entry(ARGS "zhuyin")
 qt_configure_add_summary_entry(ARGS "cangjie")
 qt_configure_end_summary_section() # end of "Traditional chinese input methods" section
 qt_configure_end_summary_section() # end of "Qt Virtualkeyboard" section
+qt_configure_add_report_entry(
+    TYPE ERROR
+    MESSAGE "MyScript SDK could not be found. For more information, see the documentation in 'Building Qt Virtual Keyboard'."
+    CONDITION INPUT_vkb_handwriting STREQUAL 'myscript-hwr' AND NOT QT_FEATURE_myscript
+)
 qt_configure_add_report_entry(
     TYPE ERROR
     MESSAGE "Cerence HWR SDK could not be found. For more information, see the documentation in 'Building Qt Virtual Keyboard'."
