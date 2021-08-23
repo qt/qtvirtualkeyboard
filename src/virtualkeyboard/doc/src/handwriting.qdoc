@@ -65,7 +65,7 @@ Cerence Handwriting works with all languages supported by the virtual keyboard.
 \l {https://www.myscript.com}{MyScript}
 SDK is a commercial handwriting recognition engine.
 
-MyScript SDK supports 71 handwriting recognition languages:
+MyScript SDK supports 72 handwriting recognition languages:
 
 \table
 \row
@@ -87,12 +87,13 @@ MyScript SDK supports 71 handwriting recognition languages:
   \li Croatian
   \li Czech
   \li Danish
+  \li Dutch, Flemish
 \endlist
 \li \list
-  \li Dutch, Flemish
   \li Dutch
   \li English - Canada
   \li English - Philippines
+  \li English - South Africa
   \li English - United Kingdom
   \li English - United States
   \li Estonian

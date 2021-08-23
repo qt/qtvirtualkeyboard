@@ -112,13 +112,12 @@ keyboard features.
         if no other languages are specified.
 \row
     \li \e -vkb-handwriting
-    \li [yes|no|cerence-hwr]
+    \li \e [no|myscript-hwr|cerence-hwr]
     \li Enables or disabled handwriting input
-    \li This flag enables handwriting input. By default, the first engine
-        available at build time is used. The engines are chosen in the
-        following order: \c cerence-hwr. To force handwriting
-        input using to use a specific engine, specify the engine to be used;
-        for example, \c {-vkb-handwriting cerence-hwr}.
+    \li This flag enables handwriting input. By default, the engine is
+        automatically activated if it is located in the proper plugins folder
+        even without using of this option. But, in case MyScript and Cerence SDK
+        co-exist, one of [no|myscript-hwr|cerence-hwr] must be configured.
 \row
     \li \e [-no]-vkb-arrow-keynavigation
     \li
@@ -246,6 +245,22 @@ qmake $SRCDIR -- [options]
     \li \e n/a
     \li Enables bundling of XT9 resources
     \li This option bundles the XT9 resources in the plugin binary.
+\row
+    \li \e -vkb-myscript-sdk
+    \li \e path/to/myscript/sdk
+    \li Configures the MyScript Text SDK location and enables the MyScript Handwriting integration.
+    \li The MyScript Text SDK (zip) which is unpacked to \e src/plugins/myscript/sdk, can be
+        picked up automatically by the build scripts. However, the SDK can be placed in different
+        location. In that case, the location must be passed to the build script using the \c -vkb-myscript-sdk
+        command line parameter.
+\row
+    \li \e -vkb-myscript-arch
+    \li \e [x86|x64|armv7hf|armv7|arm64]
+    \li Configures the target CPU architecture
+    \li The MyScript Text SDK offers shared (dynamic) libraries for different CPU architectures
+        - \e [x86|x64|armv7hf|armv7|arm64] for Linux and \e [x86|x64] for Windows. It can automatically configured.
+        However, a user also can specify the target CPU architecture using the \c -vkb-myscript-arch
+        command line parameter.
 \endtable
 
 \section2 Building Documentation
@@ -462,20 +477,27 @@ is no need for an explicit gesture.
 
 \section3 Language coverage of MyScript Text SDK
 
-MyScript Superimposed supports 70 languages.
+MyScript Superimposed supports 72 languages.
 
 \section3 MyScript Text SDK Packages Installation
 
 The MyScript delivery team can provide you the packages with various \c .zip archives.
 To access all the code, tools, and resources needed for building your own
 handwriting application, \b {extract all the packages in the same destination folder} as
-\c src/plugins/myscript/3rdparty/myscript.
+\c src/plugins/myscript/sdk, where the CMake can pick it up automatically.
+
+Alternatively, you can extract the packages to any other directory.
+In this case, the location of the SDK must be passed to the \e configure script.
+
+\badcode
+configure ... -vkb-myscript-sdk /path/to/myscript/sdk
+\endcode
 
 The file hierarchy should look like below:
 
 \badcode
-3rdparty
-└── myscript
+myscript
+└── sdk
     ├─── conf
     ├─── doc
     ├─── edk
@@ -484,6 +506,8 @@ The file hierarchy should look like below:
     │       ├─── lin-arm64
     │       │   └─── *.so
     │       ├─── lin-armv7
+    │       │   └─── *.so
+    │       ├─── lin-armv7hf
     │       │   └─── *.so
     │       ├─── lin-x64
     │       │   └─── *.so
@@ -514,6 +538,8 @@ The file hierarchy should look like below:
         │   ├─── lin-arm64
         │   │   └─── *.so
         │   ├─── lin-armv7
+        │   │   └─── *.so
+        │   ├─── lin-armv7hf
         │   │   └─── *.so
         │   ├─── lin-x64
         │   │   └─── *.so
@@ -566,15 +592,16 @@ security measure that uniquely identifies you as a legitimate customer of MyScri
 technologies. The certificate helps MyScript trace customers' identify and the products
 that have been purchased.
 
-The certificate is delivered in the /c [your_login].vo.zip package. When you unzip
+The certificate is delivered in the \c {[your_login].vo.zip package}. When you unzip
 this package, the certificate is automatically put in the appropriate location.
 This ensure that the certificate is instantly working within the services and code
 samples that you have been provided with.
 
 \section3 How to build Qt Virtual Keyboard with MyScript Text SDK
 
-The MyScript Text SDK is included in the build of Qt Virtual Keyboard by either
-adding \c CONFIG+=handwriting or \c CONFIG+=myscript to the qmake command line.
+The MyScript integration code is automatically activated when the MyScript Text SDK is detected.
+
+Language resources for MyScript Text SDK are installed in the \e [qtbase]/qtvirtualkeyboard/myscript directory.
 
 \section2 Static builds
 
