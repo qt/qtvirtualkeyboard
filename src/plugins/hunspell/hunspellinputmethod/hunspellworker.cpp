@@ -390,7 +390,7 @@ void HunspellLoadDictionaryTask::run()
             }
         }
     } else {
-        qCWarning(lcHunspell) << "Hunspell dictionary is missing for" << locale << ". Search paths" << searchPaths;
+        qCWarning(lcHunspell).nospace() << "Hunspell dictionary is missing for " << locale << ". Search paths " << searchPaths;
     }
 
     emit completed(*hunspellPtr != nullptr);
