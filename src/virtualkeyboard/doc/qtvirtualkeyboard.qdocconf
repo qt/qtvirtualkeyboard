@@ -35,10 +35,6 @@ qhp.QtVirtualKeyboard.virtualFolder = qtvirtualkeyboard
 qhp.QtVirtualKeyboard.indexTitle    = Qt Virtual Keyboard
 qhp.QtVirtualKeyboard.indexRoot     =
 
-qhp.QtVirtualKeyboard.filterAttributes                  = qtvirtualkeyboard $QT_VERSION qtrefdoc
-qhp.QtVirtualKeyboard.customFilters.Qt.name             = QtVirtualKeyboard $QT_VERSION
-qhp.QtVirtualKeyboard.customFilters.Qt.filterAttributes = qtvirtualkeyboard $QT_VERSION
-
 qhp.QtVirtualKeyboard.subprojects = classes qmltypes examples
 
 qhp.QtVirtualKeyboard.subprojects.classes.title = C++ Classes
