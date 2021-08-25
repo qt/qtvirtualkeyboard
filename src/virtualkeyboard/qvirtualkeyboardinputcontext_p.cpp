@@ -283,8 +283,10 @@ void QVirtualKeyboardInputContextPrivate::onInputItemChanged()
                     For integrated keyboards, make sure it's a sibling to the overlay. The
                     high z-order will make sure it gets events also during a modal session.
                 */
-                if (isDesktopPanel.isValid() && !isDesktopPanel.toBool())
-                    vkbPanel->setParentItem(quickItem->window()->contentItem());
+                if (isDesktopPanel.isValid() && !isDesktopPanel.toBool()) {
+                    if (QQuickWindow *quickWindow = quickItem->window())
+                        vkbPanel->setParentItem(quickWindow->contentItem());
+                }
             }
         }
     } else {
