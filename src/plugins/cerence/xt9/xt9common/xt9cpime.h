@@ -50,7 +50,7 @@ public:
     QString exactWord(int *wordCompLen = nullptr) override;
     void replaceSpecialSymbol(QString &exactWord) const;
     QString spell();
-    QStringList buildSelectionList(int *defaultListIndex, ET9U16 *gestureValue) override;
+    QStringList buildSelectionList(int *defaultListIndex, ET9U16 *gestureValue, ET9STATUS &eStatus) override;
     ET9STATUS selectWord(int index);
 
     void cursorMoved() override;

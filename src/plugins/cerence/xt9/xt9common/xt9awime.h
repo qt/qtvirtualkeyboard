@@ -46,7 +46,7 @@ public:
     qint64 dlmPreferredSize() const override;
     bool dlmInit(void *data, qint64 size) override;
 
-    QStringList buildSelectionList(int *defaultListIndex, ET9U16 *gestureValue) override;
+    QStringList buildSelectionList(int *defaultListIndex, ET9U16 *gestureValue, ET9STATUS &eStatus) override;
     void selectWord(int index, bool isUserExplicitChoice);
 
     void noteWordDone(const QString &word);

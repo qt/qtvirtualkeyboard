@@ -84,7 +84,8 @@ public:
 
     virtual QString exactWord(int *wordCompLen = nullptr);
     bool hasActiveInput() const;
-    virtual QStringList buildSelectionList(int *defaultListIndex, ET9U16 *gestureValue) = 0;
+    virtual QStringList buildSelectionList(int *defaultListIndex, ET9U16 *gestureValue);
+    virtual QStringList buildSelectionList(int *defaultListIndex, ET9U16 *gestureValue, ET9STATUS &eStatus) = 0;
     virtual void cursorMoved();
     void clearInput();
     void setCapsLock();

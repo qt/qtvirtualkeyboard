@@ -66,6 +66,7 @@ public:
     bool updateLayout();
     virtual void updatePreeditText();
     void buildSelectionList();
+    void buildSelectionList(ET9STATUS &eStatus);
     void selectionListUpdate();
     virtual void selectionListSelectItem(int index) = 0;
     void updatePunctuationBreaking();
