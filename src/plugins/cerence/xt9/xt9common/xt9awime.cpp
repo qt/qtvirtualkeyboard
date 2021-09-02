@@ -86,9 +86,8 @@ bool Xt9AwIme::dlmInit(void *data, qint64 size)
     return !eStatus;
 }
 
-QStringList Xt9AwIme::buildSelectionList(int *defaultListIndex, ET9U16 *gestureValue)
+QStringList Xt9AwIme::buildSelectionList(int *defaultListIndex, ET9U16 *gestureValue, ET9STATUS &eStatus)
 {
-    ET9STATUS eStatus;
     ET9U8 totalWords;
     ET9U8 listIndex;
 

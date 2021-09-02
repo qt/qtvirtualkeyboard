@@ -279,8 +279,16 @@ void Xt9InputMethodPrivate::updatePreeditText()
 
 void Xt9InputMethodPrivate::buildSelectionList()
 {
+    ET9STATUS eStatus = ET9STATUS_NONE;
+    buildSelectionList(eStatus);
+}
+
+void Xt9InputMethodPrivate::buildSelectionList(ET9STATUS &eStatus)
+{
     ET9U16 gestureValue;
     Xt9DeferredSelectionListUpdate deferredSelectionListUpdate(this);
+
+    eStatus = ET9STATUS_NONE;
 
     if (xt9Ime()->exactWord().isEmpty()) {
         // Check if next word prediction is not allowed
@@ -296,7 +304,7 @@ void Xt9InputMethodPrivate::buildSelectionList()
         xt9Ime()->cursorMoved();
     }
 
-    selectionList = xt9Ime()->buildSelectionList(&defaultListIndex, &gestureValue);
+    selectionList = xt9Ime()->buildSelectionList(&defaultListIndex, &gestureValue, eStatus);
 }
 
 void Xt9InputMethodPrivate::selectionListUpdate()
@@ -357,7 +365,7 @@ bool Xt9InputMethodPrivate::processKeyBySymbol(const QChar &symbol)
     const ET9U8 currIndexInList = defaultListIndex < 0 ?
                 ET9_NO_ACTIVE_INDEX : static_cast<ET9U8>(defaultListIndex);
     const ET9BOOL bInitialSymCheck = 1;
-    const ET9U32 dwTimeMS = static_cast<ET9U32>(QDateTime::currentMSecsSinceEpoch());
+    ET9U32 dwTimeMS = static_cast<ET9U32>(QDateTime::currentMSecsSinceEpoch());
 
     eStatus = XT9_API(ET9KDB_ProcessKeyBySymbol,
                 &xt9Ime()->sKdbInfo,
@@ -367,14 +375,56 @@ bool Xt9InputMethodPrivate::processKeyBySymbol(const QChar &symbol)
                 &functionKey,
                 bInitialSymCheck);
 
-    if (eStatus == ET9STATUS_NO_KEY) {
+    const bool noKey = eStatus == ET9STATUS_NO_KEY;
+    if (noKey) {
         const ET9INPUTSHIFTSTATE eShiftState = ET9SHIFT_STATE(&xt9Ime()->sWordSymbInfo);
         eStatus = XT9_API(ET9AddExplicitSymb, &xt9Ime()->sWordSymbInfo, symbol.unicode(), dwTimeMS, eShiftState, 0);
+    } else if (eStatus == ET9STATUS_FULL) {
+        /*
+            Reject input when buffer is full. If we would return false,
+            the input would be added as an explicit symbol to text editor,
+            which is not what is wanted.
+        */
+        return true;
     } else if (eStatus) {
         return false;
     }
 
-    buildSelectionList();
+    Xt9DeferredSelectionListUpdate deferredSelectionListUpdate(this);
+    buildSelectionList(eStatus);
+    if (eStatus == ET9STATUS_INVALID_INPUT) {
+        /*
+            The symbol rejected as an invalid input:
+            1. Remove the symbol and rebuild selection list
+            2. Select the default candidate from selection list and finalize input (update)
+            3. Start new input with the symbol
+        */
+
+        XT9_API(ET9ClearOneSymb, &xt9Ime()->sWordSymbInfo);
+        buildSelectionList(eStatus);
+
+        Q_Q(Xt9InputMethod);
+        q->update();
+
+        dwTimeMS = static_cast<ET9U32>(QDateTime::currentMSecsSinceEpoch());
+        if (noKey) {
+            const ET9INPUTSHIFTSTATE eShiftState = ET9SHIFT_STATE(&xt9Ime()->sWordSymbInfo);
+            XT9_API(ET9AddExplicitSymb,
+                    &xt9Ime()->sWordSymbInfo,
+                    symbol.unicode(),
+                    dwTimeMS,
+                    eShiftState, 0);
+        } else {
+            XT9_API(ET9KDB_ProcessKeyBySymbol,
+                    &xt9Ime()->sKdbInfo,
+                    symbol.unicode(),
+                    dwTimeMS,
+                    ET9_NO_ACTIVE_INDEX,
+                    &functionKey,
+                    bInitialSymCheck);
+        }
+        buildSelectionList();
+    }
     updatePreeditText();
 
     return true;

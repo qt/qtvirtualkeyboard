@@ -109,6 +109,12 @@ bool Xt9Ime::hasActiveInput() const
     return ET9HasActiveInput(&sWordSymbInfo);
 }
 
+QStringList Xt9Ime::buildSelectionList(int *defaultListIndex, unsigned short *gestureValue)
+{
+    ET9STATUS eStatus = ET9STATUS_NONE;
+    return buildSelectionList(defaultListIndex, gestureValue, eStatus);
+}
+
 void Xt9Ime::cursorMoved()
 {
     XT9_API(ET9CursorMoved, &sWordSymbInfo, 1);

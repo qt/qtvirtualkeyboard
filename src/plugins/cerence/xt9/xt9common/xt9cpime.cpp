@@ -147,7 +147,7 @@ QString Xt9CpIme::exactWord(int *wordCompLen)
     ET9CPPhrase phrase;
     ET9CPSpell spell;
     ET9U8 selSymbCount = 0;
-    if (!ET9CPGetSelection(&sLingInfo, &phrase, &spell, &selSymbCount) && selSymbCount)
+    if (!XT9_API(ET9CPGetSelection, &sLingInfo, &phrase, &spell, &selSymbCount) && selSymbCount)
         exactWord.remove(0, static_cast<int>(selSymbCount));
 
     replaceSpecialSymbol(exactWord);
@@ -202,9 +202,8 @@ QString Xt9CpIme::spell()
     return result;
 }
 
-QStringList Xt9CpIme::buildSelectionList(int *defaultListIndex, ET9U16 *gestureValue)
+QStringList Xt9CpIme::buildSelectionList(int *defaultListIndex, ET9U16 *gestureValue, ET9STATUS &eStatus)
 {
-    ET9STATUS eStatus;
     ET9U16 totalWords;
 
     eStatus = XT9_API(ET9CPBuildSelectionList, &sLingInfo, gestureValue);
