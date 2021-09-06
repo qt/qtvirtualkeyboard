@@ -172,6 +172,8 @@ QStringList QVirtualKeyboardDictionaryManager::activeDictionaries() const
     The dictionary instance is owned by the dictionary manager and must not be
     destroyed manually. To free memory allocated for the dictionary, the
     application may reset the contents of the dictionary.
+
+    \sa dictionary()
  */
 
 QVirtualKeyboardDictionary *QVirtualKeyboardDictionaryManager::createDictionary(const QString &name)
@@ -189,7 +191,10 @@ QVirtualKeyboardDictionary *QVirtualKeyboardDictionaryManager::createDictionary(
 }
 
 /*!
-    Returns an existing dictionary if it exists.
+    Returns an existing dictionary with the given \a name if it exists, otherwise returns
+    \nullptr.
+
+    \sa createDictionary()
  */
 
 QVirtualKeyboardDictionary *QVirtualKeyboardDictionaryManager::dictionary(const QString &name) const
@@ -200,14 +205,14 @@ QVirtualKeyboardDictionary *QVirtualKeyboardDictionaryManager::dictionary(const 
 }
 
 /*!
-    \property QVirtualKeyboardDictionary::availableDictionaries
+    \property QVirtualKeyboardDictionaryManager::availableDictionaries
     \brief the list of all dictionaries.
 
     This property holds the names of all existing dictionaries.
 */
 
 /*!
-    \property QVirtualKeyboardDictionary::baseDictionaries
+    \property QVirtualKeyboardDictionaryManager::baseDictionaries
     \brief the list of currently active base dictionaries.
 
     This property holds the names of base dictionaries. The application manages
@@ -215,7 +220,7 @@ QVirtualKeyboardDictionary *QVirtualKeyboardDictionaryManager::dictionary(const 
 */
 
 /*!
-    \property QVirtualKeyboardDictionary::extraDictionaries
+    \property QVirtualKeyboardDictionaryManager::extraDictionaries
     \brief the list of currently active extra dictionaries.
 
     This property holds the names of extra dictionaries. The application manages
@@ -223,7 +228,7 @@ QVirtualKeyboardDictionary *QVirtualKeyboardDictionaryManager::dictionary(const 
 */
 
 /*!
-    \property QVirtualKeyboardDictionary::activeDictionaries
+    \property QVirtualKeyboardDictionaryManager::activeDictionaries
     \brief the list of currently active dictionaries.
 
     This property holds the list of active dictionaries, which is a combination
