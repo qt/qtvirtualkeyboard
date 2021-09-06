@@ -40,7 +40,7 @@ class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardDictionary : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString name READ name CONSTANT)
-    Q_PROPERTY(QStringList contents READ contents WRITE setContents NOTIFY contentsChanged)
+    Q_PROPERTY(QStringList contents READ contents WRITE setContents NOTIFY contentsChanged RESET resetContents)
 
     explicit QVirtualKeyboardDictionary(const QString &name, QObject *parent = nullptr);
     friend class QVirtualKeyboardDictionaryManager;
@@ -50,6 +50,7 @@ public:
 
     QStringList contents() const;
     void setContents(const QStringList &contents);
+    void resetContents() { setContents({}); }
 
 Q_SIGNALS:
     void contentsChanged();
