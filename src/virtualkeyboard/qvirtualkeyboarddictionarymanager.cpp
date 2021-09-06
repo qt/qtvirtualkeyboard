@@ -171,7 +171,8 @@ QStringList QVirtualKeyboardDictionaryManager::activeDictionaries() const
 
     The dictionary instance is owned by the dictionary manager and must not be
     destroyed manually. To free memory allocated for the dictionary, the
-    application may reset the contents of the dictionary.
+    application may reset the \l{QVirtualKeyboardDictionary::contents}{contents}
+    of the dictionary to an empty QStringList.
 
     \sa dictionary()
  */
