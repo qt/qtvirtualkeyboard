@@ -536,7 +536,7 @@ QtObject {
 
         The following properties are available to the item:
         \list
-            \li \c keyboardFunction \l {QtVirtualKeyboard.KeyboardFunction}{Keyboard function} of the current item
+            \li \c keyboardFunction - Keyboard function of the current item.
         \endlist
     */
     property Component functionPopupListDelegate: null
