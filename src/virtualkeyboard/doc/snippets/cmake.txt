@@ -1,0 +1,4 @@
+//! [find-and-link]
+find_package(Qt6 COMPONENTS VirtualKeyboard REQUIRED)
+target_link_libraries(mytarget PRIVATE Qt6::VirtualKeyboard)
+//! [find-and-link]

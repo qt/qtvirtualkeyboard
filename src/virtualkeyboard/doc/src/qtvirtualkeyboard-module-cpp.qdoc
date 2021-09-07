@@ -40,7 +40,15 @@
     #include <QtVirtualKeyboard>
     \endcode
 
-    To link against the module, add this line to your qmake .pro file:
+    \include module-use.qdocinc using qt module
+    \snippet cmake.txt find-and-link
+
+    See \l{Getting started with CMake} for more information.
+
+    \section2 Building with qmake
+
+    To link against this module, add the following line to your qmake \c .pro
+    file:
 
     \badcode
     QT += virtualkeyboard
