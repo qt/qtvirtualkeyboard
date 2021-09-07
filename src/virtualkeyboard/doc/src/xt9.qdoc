@@ -69,7 +69,7 @@ previous input.
 With the new QVirtualKeyboardDictionaryManager, the application can
 create custom dictionaries and attach them to any context within the
 application. Together with the
-\l[QML]{VirtualKeyboardSettings::}{VirtualKeyboardSettings.defaultDictionaryDisabled}
+\l{VirtualKeyboardSettings::defaultDictionaryDisabled}{VirtualKeyboardSettings.defaultDictionaryDisabled}
 property, it is possible to use custom dictionaries exclusively, without the standard
 built-in dictionaries.
 
