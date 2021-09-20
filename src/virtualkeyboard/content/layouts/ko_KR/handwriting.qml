@@ -80,7 +80,7 @@ KeyboardLayout {
             highlighted: true
         }
         SpaceKey {
-            weight: 10 * 160 - 4 * 160  - 2 * 240
+            weight: 10 * 160 - 4 * 160 - 2 * 240
         }
         Key {
             key: Qt.Key_Period
