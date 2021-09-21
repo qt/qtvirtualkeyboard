@@ -30,6 +30,7 @@
 #ifndef EXTENSIONLOADER_H
 #define EXTENSIONLOADER_H
 
+#include <QCborMap>
 #include <QMutex>
 #include <QtVirtualKeyboard/QVirtualKeyboardExtensionPlugin>
 
@@ -40,16 +41,16 @@ class ExtensionLoader
 {
     Q_DISABLE_COPY(ExtensionLoader)
 public:
-    static QMultiHash<QString, QJsonObject> plugins(bool reload = false);
-    static QJsonObject loadMeta(const QString &extensionName);
-    static QVirtualKeyboardExtensionPlugin *loadPlugin(QJsonObject metaData);
+    static QMultiHash<QString, QCborMap> plugins(bool reload = false);
+    static QCborMap loadMeta(const QString &extensionName);
+    static QVirtualKeyboardExtensionPlugin *loadPlugin(QCborMap metaData);
 
 private:
     static void loadPluginMetadata();
 
 private:
     static QMutex m_mutex;
-    static QMultiHash<QString, QJsonObject> m_plugins;
+    static QMultiHash<QString, QCborMap> m_plugins;
     static bool m_alreadyDiscovered;
 };
 

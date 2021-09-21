@@ -35,14 +35,14 @@ QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 QMutex ExtensionLoader::m_mutex;
-QMultiHash<QString, QJsonObject> ExtensionLoader::m_plugins;
+QMultiHash<QString, QCborMap> ExtensionLoader::m_plugins;
 bool ExtensionLoader::m_alreadyDiscovered = false;
 
 Q_GLOBAL_STATIC_WITH_ARGS(QFactoryLoader, loader,
         (QVirtualKeyboardExtensionPluginFactoryInterface_iid,
          QLatin1String("/virtualkeyboard")))
 
-QMultiHash<QString, QJsonObject> ExtensionLoader::plugins(bool reload)
+QMultiHash<QString, QCborMap> ExtensionLoader::plugins(bool reload)
 {
     QMutexLocker lock(&m_mutex);
 
@@ -56,43 +56,32 @@ QMultiHash<QString, QJsonObject> ExtensionLoader::plugins(bool reload)
     return m_plugins;
 }
 
-QJsonObject ExtensionLoader::loadMeta(const QString &extensionName)
+QCborMap ExtensionLoader::loadMeta(const QString &extensionName)
 {
-    QJsonObject metaData;
-    metaData = QJsonObject();
-    metaData.insert(QLatin1String("index"), -1);
-
-    QList<QJsonObject> candidates = ExtensionLoader::plugins().values(extensionName);
+    QCborMap metaData;
+    QList<QCborMap> candidates = ExtensionLoader::plugins().values(extensionName);
 
     int versionFound = -1;
-    int idx = -1;
 
     // figure out which version of the plugin we want
     for (int i = 0; i < candidates.size(); ++i) {
-        QJsonObject meta = candidates[i];
-        if (meta.contains(QLatin1String("Version"))
-                && meta.value(QLatin1String("Version")).isDouble()) {
-            int ver = int(meta.value(QLatin1String("Version")).toDouble());
-            if (ver > versionFound) {
-                versionFound = ver;
-                idx = i;
-            }
+        QCborMap meta = candidates[i];
+        if (int ver = meta.value(QLatin1String("Version")).toInteger(); ver > versionFound) {
+            versionFound = ver;
+            metaData = std::move(meta);
         }
     }
 
-    if (idx != -1) {
-        metaData = candidates[idx];
-        return metaData;
-    }
-    return QJsonObject();
+    if (metaData.isEmpty())
+        metaData.insert(QLatin1String("index"), -1); // not found
+    return metaData;
 }
 
-QVirtualKeyboardExtensionPlugin *ExtensionLoader::loadPlugin(QJsonObject metaData)
+QVirtualKeyboardExtensionPlugin *ExtensionLoader::loadPlugin(QCborMap metaData)
 {
-    if (int(metaData.value(QLatin1String("index")).toDouble()) < 0) {
-        return NULL;
-    }
-    int idx = int(metaData.value(QLatin1String("index")).toDouble());
+    int idx = metaData.value(QLatin1String("index")).toInteger();
+    if (idx < 0)
+        return nullptr;
     return qobject_cast<QVirtualKeyboardExtensionPlugin *>(loader()->instance(idx));
 }
 
@@ -101,7 +90,7 @@ void ExtensionLoader::loadPluginMetadata()
     QFactoryLoader *l = loader();
     QList<QPluginParsedMetaData> meta = l->metaData();
     for (int i = 0; i < meta.size(); ++i) {
-        QJsonObject obj = meta.at(i).toJson().value(QLatin1String("MetaData")).toObject();
+        QCborMap obj = meta.at(i).value(QtPluginMetaDataKeys::MetaData).toMap();
         QString name = obj.value(QLatin1String("Name")).toString();
         if (!name.isEmpty()) {
             obj.insert(QLatin1String("index"), i);

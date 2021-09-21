@@ -91,18 +91,18 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     qmlRegisterType<PlainInputMethod>(pluginsUri, 2, 0, "PlainInputMethod");
     qmlRegisterType<PlainInputMethod>(pluginsUri, 2, 3, "PlainInputMethod");
 
-    QMultiHash<QString, QJsonObject> extensions = ExtensionLoader::plugins();
+    QMultiHash<QString, QCborMap> extensions = ExtensionLoader::plugins();
     for (const QString &extensionName : extensions.uniqueKeys()) {
-        QJsonObject metaData = ExtensionLoader::loadMeta(extensionName);
+        QCborMap metaData = ExtensionLoader::loadMeta(extensionName);
         if (metaData.isEmpty()) {
             qCWarning(qlcVirtualKeyboard) << "Error loading extension - metadata not found!";
             continue;
         }
 
-        const QJsonValue &inputMethodValue = metaData.value(QLatin1String("InputMethod"));
+        const QCborValue &inputMethodValue = metaData.value(QLatin1String("InputMethod"));
         QStringList inputMethodValueList;
         if (inputMethodValue.isArray()) {
-            for (const QJsonValue v : inputMethodValue.toArray()) {
+            for (const QCborValue v : inputMethodValue.toArray()) {
                 const QString &inputMethod = v.toString();
                 if (!inputMethod.isEmpty())
                     inputMethodValueList.append(inputMethod);
