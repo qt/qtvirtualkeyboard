@@ -67,8 +67,8 @@ Key {
         "倉頡",  // InputEngine.InputMode.Cangjie
         "注音",  // InputEngine.InputMode.Zhuyin
         "한글",  // InputEngine.InputMode.Hangul
-        "あ",    // InputEngine.InputMode.Hiragana
-        "カ",    // InputEngine.InputMode.Katakana
+        "かな",    // InputEngine.InputMode.Hiragana
+        "カナ",    // InputEngine.InputMode.Katakana
         "全角",  // InputEngine.InputMode.FullwidthLatin
         "ΑΒΓ",  // InputEngine.InputMode.Greek
         "АБВ",  // InputEngine.InputMode.Cyrillic
@@ -79,7 +79,7 @@ Key {
         "한국어", // InputEngine.InputMode.KoreanHandwriting
         "กขค",  // InputEngine.InputMode.Thai
         "笔画",  // InputEngine.InputMode.Stroke
-        "ローマ字",  // InputEngine.InputMode.Romaji
+        "ABC",  // InputEngine.InputMode.Romaji
     ]
 
     /*!
