@@ -800,7 +800,11 @@ public:
 #ifdef DECUMA_USE_MULTI_THREAD
         // Note: This feature requires T9 Write v8.0.0 or later,
         //       and feature enabled in the SDK.
+#if CERENCEHANDWRITINGAPIMAJORVERNUM > 28
+        sessionSettings.bUseThreads = 1;
+#else
         sessionSettings.nMaxThreads = qMax(QThread::idealThreadCount(), 0);
+#endif
 #endif
 
         qCDebug(lcT9Write) << " -> language categories:" << languageCategories;
@@ -1336,9 +1340,7 @@ public:
 
         const int dpi = traceCaptureDeviceInfo.value(QLatin1String("dpi"), 96).toInt();
         static const int INSTANT_GESTURE_WIDTH_THRESHOLD_MM = 25;
-        static const int INSTANT_GESTURE_HEIGHT_THRESHOLD_MM = 25;
-        instantGestureSettings.widthThreshold = static_cast<DECUMA_UINT32>(INSTANT_GESTURE_WIDTH_THRESHOLD_MM / 25.4 * dpi);
-        instantGestureSettings.heightThreshold = static_cast<DECUMA_UINT32>(INSTANT_GESTURE_HEIGHT_THRESHOLD_MM / 25.4 * dpi);
+        gestureWidthThreshold = static_cast<DECUMA_UINT32>(INSTANT_GESTURE_WIDTH_THRESHOLD_MM / 25.4 * dpi);
 
         gestureRecognizer.setDpi(dpi);
 
@@ -1954,7 +1956,7 @@ public:
             static const int SWIPE_ANGLE_THRESHOLD = 15;    // degrees +-
 
             qreal swipeLength = gesture[QLatin1String("length")].toReal();
-            if (swipeLength >= instantGestureSettings.widthThreshold) {
+            if (swipeLength >= gestureWidthThreshold) {
 
                 Q_Q(T9WriteInputMethod);
                 QVirtualKeyboardInputContext *ic = q->inputContext();
@@ -2314,7 +2316,7 @@ public:
     T9WriteInputMethod::EngineMode engineMode;
     QByteArray currentContext;
     DECUMA_SESSION_SETTINGS sessionSettings;
-    DECUMA_INSTANT_GESTURE_SETTINGS instantGestureSettings;
+    DECUMA_UINT32 gestureWidthThreshold;
     QStringList defaultHwrDbPaths;
     QFile hwrDbFile;
     QList<DECUMA_UINT32> languageCategories;
