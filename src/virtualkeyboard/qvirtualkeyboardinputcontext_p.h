@@ -45,6 +45,7 @@
 #include <QRectF>
 #include <QSet>
 #include <QInputMethodEvent>
+#include <QQuickItem>
 #include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #include <QtVirtualKeyboard/private/shadowinputcontext_p.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardobserver.h>
@@ -117,6 +118,7 @@ public:
     Q_INVOKABLE bool fileExists(const QUrl &fileUrl);
     Q_INVOKABLE bool hasEnterKeyAction(QObject *item) const;
     Q_INVOKABLE void registerInputPanel(QObject *inputPanel);
+    Q_INVOKABLE bool contains(const QPointF &point) const;
 
 Q_SIGNALS:
     void focusChanged();
@@ -158,8 +160,7 @@ private:
     QVirtualKeyboardInputEngine *inputEngine;
     QtVirtualKeyboard::ShiftHandler *_shiftHandler;
     QPointer<QObject> inputPanel;
-    QPointer<QObject> inputPanelParentItem;
-    qreal inputPanelZ = .0;
+    QPointer<QQuickItem> dimmer;
     QRectF keyboardRect;
     QRectF previewRect;
     bool _previewVisible;

@@ -270,6 +270,29 @@ void QVirtualKeyboardInputContextPrivate::forceCursorPosition(int anchorPosition
     }
 }
 
+/*! \internal
+    The context private becomes a containment mask for a dimmer opened by a
+    modal QQuickPopup. The dimmer eats events, and the virtual keyboard must
+    continue to work during modal sessions as well. This implementation lets
+    all pointer events within the area of the input panel through.
+*/
+bool QVirtualKeyboardInputContextPrivate::contains(const QPointF &point) const
+{
+    bool hit = false;
+    if (dimmer) {
+        const auto scenePoint = dimmer->mapToScene(point);
+        if (keyboardRectangle().contains(scenePoint)) {
+            hit = true;
+        } else if (QQuickItem *vkbPanel = qobject_cast<QQuickItem*>(inputPanel)) {
+            const auto vkbPanelPoint = vkbPanel->mapFromScene(scenePoint);
+            if (vkbPanel->contains(vkbPanelPoint))
+                hit = true;
+        }
+    }
+    // dimmer doesn't contain points that hit the input panel
+    return !hit;
+}
+
 void QVirtualKeyboardInputContextPrivate::onInputItemChanged()
 {
     QObject *item = inputItem();
@@ -277,25 +300,22 @@ void QVirtualKeyboardInputContextPrivate::onInputItemChanged()
         if (QQuickItem *vkbPanel = qobject_cast<QQuickItem*>(inputPanel)) {
             if (QQuickItem *quickItem = qobject_cast<QQuickItem*>(item)) {
                 const QVariant isDesktopPanel = vkbPanel->property("desktopPanel");
-                /*
-                    For integrated keyboards, make sure it's a sibling to the overlay. The
-                    high z-order will make sure it gets events also during a modal session.
-                */
                 if (isDesktopPanel.isValid() && !isDesktopPanel.toBool()) {
+                    // Integrated keyboards used in a Qt Quick Controls UI must continue to
+                    // work during a modal session, which is implemented using an overlay
+                    // and dimmer item. So, make use of some QQC2 internals to find out if
+                    // there is a dimmer, and if so, make ourselves the containment mask
+                    // that can let pointer events through to the keyboard.
                     if (QQuickWindow *quickWindow = quickItem->window()) {
-                        QQuickItem *overlay = quickWindow->property("_q_QQuickOverlay").value<QQuickItem*>();
-                        if (overlay && overlay->isVisible()) {
-                            if (vkbPanel->parentItem() != overlay->parentItem()) {
-                                inputPanelParentItem = vkbPanel->parentItem();
-                                inputPanelZ = vkbPanel->z();
-                                vkbPanel->setParentItem(overlay->parentItem());
-                                vkbPanel->setZ(overlay->z() + 1);
+                        if (QQuickItem *overlay = quickWindow->property("_q_QQuickOverlay").value<QQuickItem*>()) {
+                            if (dimmer && dimmer->containmentMask() == this) {
+                                dimmer->setContainmentMask(nullptr);
+                                dimmer = nullptr;
                             }
-                        } else {
-                            if (QQuickItem *oldParentItem = qobject_cast<QQuickItem *>(inputPanelParentItem.data())) {
-                                vkbPanel->setParentItem(oldParentItem);
-                                vkbPanel->setZ(inputPanelZ);
-                                inputPanelParentItem = nullptr;
+                            if (overlay && overlay->isVisible()) {
+                                dimmer = overlay->property("_q_dimmerItem").value<QQuickItem*>();
+                                if (dimmer)
+                                    dimmer->setContainmentMask(this);
                             }
                         }
                     }
