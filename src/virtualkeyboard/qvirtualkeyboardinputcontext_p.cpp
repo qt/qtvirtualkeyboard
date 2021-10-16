@@ -224,8 +224,6 @@ void QVirtualKeyboardInputContextPrivate::registerInputPanel(QObject *inputPanel
     VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContextPrivate::registerInputPanel():" << inputPanel;
     Q_ASSERT(!this->inputPanel);
     this->inputPanel = inputPanel;
-    if (QQuickItem *item = qobject_cast<QQuickItem *>(inputPanel))
-        item->setZ(10000);
 }
 
 void QVirtualKeyboardInputContextPrivate::hideInputPanel()
@@ -284,8 +282,23 @@ void QVirtualKeyboardInputContextPrivate::onInputItemChanged()
                     high z-order will make sure it gets events also during a modal session.
                 */
                 if (isDesktopPanel.isValid() && !isDesktopPanel.toBool()) {
-                    if (QQuickWindow *quickWindow = quickItem->window())
-                        vkbPanel->setParentItem(quickWindow->contentItem());
+                    if (QQuickWindow *quickWindow = quickItem->window()) {
+                        QQuickItem *overlay = quickWindow->property("_q_QQuickOverlay").value<QQuickItem*>();
+                        if (overlay && overlay->isVisible()) {
+                            if (vkbPanel->parentItem() != overlay->parentItem()) {
+                                inputPanelParentItem = vkbPanel->parentItem();
+                                inputPanelZ = vkbPanel->z();
+                                vkbPanel->setParentItem(overlay->parentItem());
+                                vkbPanel->setZ(overlay->z() + 1);
+                            }
+                        } else {
+                            if (QQuickItem *oldParentItem = qobject_cast<QQuickItem *>(inputPanelParentItem.data())) {
+                                vkbPanel->setParentItem(oldParentItem);
+                                vkbPanel->setZ(inputPanelZ);
+                                inputPanelParentItem = nullptr;
+                            }
+                        }
+                    }
                 }
             }
         }

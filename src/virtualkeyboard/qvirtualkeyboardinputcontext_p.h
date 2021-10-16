@@ -158,6 +158,8 @@ private:
     QVirtualKeyboardInputEngine *inputEngine;
     QtVirtualKeyboard::ShiftHandler *_shiftHandler;
     QPointer<QObject> inputPanel;
+    QPointer<QObject> inputPanelParentItem;
+    qreal inputPanelZ = .0;
     QRectF keyboardRect;
     QRectF previewRect;
     bool _previewVisible;
