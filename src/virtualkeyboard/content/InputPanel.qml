@@ -43,9 +43,6 @@ import QtQuick.VirtualKeyboard
     width; that is, the keyboard maintains the aspect ratio specified by the current
     style. Therefore the application should only set the \l {Item::}{width} and \l {Item::}{y}
     coordinates of the InputPanel, and not the \l {Item::}{height}.
-    The default \l {Item::z}-value of the InputPanel is 10000, which puts it on
-    top of a typical user interface, while leaving space for UI elements that
-    should not be obscured by the input panel.
 
     As with \l {Qt Virtual Keyboard QML Types}{all other QML types} provided by
     the module, the \c QT_IM_MODULE environment variable must be set to
@@ -53,6 +50,15 @@ import QtQuick.VirtualKeyboard
     \l {Loading the Plugin}.
 
     \note You can have only one InputPanel instance in your application.
+
+    \section2 InputPanel and modal dialogs
+
+    Qt prevents modal popups from blocking the keyboard UI, as this would make it
+    impossible to use the keyboard to write into a text field within a modal popup.
+    When an input field receives focus during a modal session, the InputPanel item is
+    made a sibling of the Overlay, and given a z-value one above the Overlay's so that
+    it stays on top of the user interface. When the modal session ends, the item is
+    reparented back to the original parent, and the z-value is restored.
 */
 
 Item {
