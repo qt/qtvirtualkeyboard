@@ -99,9 +99,9 @@ QVirtualKeyboardExtensionPlugin *ExtensionLoader::loadPlugin(QJsonObject metaDat
 void ExtensionLoader::loadPluginMetadata()
 {
     QFactoryLoader *l = loader();
-    QList<QJsonObject> meta = l->metaData();
+    QList<QPluginParsedMetaData> meta = l->metaData();
     for (int i = 0; i < meta.size(); ++i) {
-        QJsonObject obj = meta.at(i).value(QLatin1String("MetaData")).toObject();
+        QJsonObject obj = meta.at(i).toJson().value(QLatin1String("MetaData")).toObject();
         QString name = obj.value(QLatin1String("Name")).toString();
         if (!name.isEmpty()) {
             obj.insert(QLatin1String("index"), i);
