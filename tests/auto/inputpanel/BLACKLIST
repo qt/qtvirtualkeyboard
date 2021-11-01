@@ -1,0 +1,9 @@
+# See qtbase/src/testlib/qtestblacklist.cpp for format
+
+# QTBUG-97830
+[tst_plugin::test_fullScreenModeSelectionHandles:row 0]
+*
+
+# QTBUG-97830
+[tst_plugin::test_selection:row 0]
+*
