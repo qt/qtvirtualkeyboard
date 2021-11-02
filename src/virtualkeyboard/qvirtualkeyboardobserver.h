@@ -38,7 +38,7 @@ QT_BEGIN_NAMESPACE
 
 class QVirtualKeyboardObserverPrivate;
 
-class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardObserver : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardObserver : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(QVirtualKeyboardObserver)

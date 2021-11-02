@@ -47,7 +47,7 @@
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-class QHUNSPELLINPUTMETHOD_EXPORT HunspellInputMethodPrivate
+class Q_HUNSPELLINPUTMETHOD_EXPORT HunspellInputMethodPrivate
 {
     Q_DECLARE_PUBLIC(HunspellInputMethod)
 

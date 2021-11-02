@@ -37,7 +37,7 @@ QT_BEGIN_NAMESPACE
 
 #define QVirtualKeyboardExtensionPluginFactoryInterface_iid "org.qt-project.qt.virtualkeyboard.plugin/5.12"
 
-class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardExtensionPlugin : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardExtensionPlugin : public QObject
 {
     Q_OBJECT
 public:

@@ -39,7 +39,7 @@ class QVirtualKeyboardAbstractInputMethod;
 class QVirtualKeyboardInputEngine;
 class QVirtualKeyboardSelectionListModelPrivate;
 
-class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardSelectionListModel : public QAbstractListModel
+class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardSelectionListModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(QVirtualKeyboardSelectionListModel)

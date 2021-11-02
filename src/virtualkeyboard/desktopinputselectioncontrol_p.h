@@ -55,7 +55,7 @@ namespace QtVirtualKeyboard {
 
 class InputSelectionHandle;
 
-class QVIRTUALKEYBOARD_EXPORT DesktopInputSelectionControl : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT DesktopInputSelectionControl : public QObject
 {
     Q_OBJECT
 

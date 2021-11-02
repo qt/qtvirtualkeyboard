@@ -70,6 +70,8 @@ qt_internal_add_module(VirtualKeyboard
     PRIVATE_MODULE_INTERFACE
         Qt::CorePrivate
         Qt::GuiPrivate
+    GENERATE_CPP_EXPORTS
+    GENERATE_PRIVATE_CPP_EXPORTS
 )
 
 # Resources:

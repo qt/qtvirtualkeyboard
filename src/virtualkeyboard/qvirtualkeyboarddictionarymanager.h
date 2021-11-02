@@ -39,7 +39,7 @@ QT_BEGIN_NAMESPACE
 class QVirtualKeyboardDictionary;
 class QVirtualKeyboardDictionaryManagerPrivate;
 
-class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardDictionaryManager : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardDictionaryManager : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(QVirtualKeyboardDictionaryManager)

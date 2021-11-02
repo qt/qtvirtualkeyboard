@@ -48,7 +48,7 @@
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-class QVIRTUALKEYBOARD_EXPORT UnipenTrace : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT UnipenTrace : public QObject
 {
     Q_OBJECT
 public:

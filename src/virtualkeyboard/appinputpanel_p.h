@@ -53,7 +53,7 @@ class AppInputPanelPrivate;
     \internal
 */
 
-class QVIRTUALKEYBOARD_EXPORT AppInputPanel : public AbstractInputPanel
+class Q_VIRTUALKEYBOARD_EXPORT AppInputPanel : public AbstractInputPanel
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(AppInputPanel)

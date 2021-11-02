@@ -21,6 +21,8 @@ qt_internal_add_module(HunspellInputMethodPrivate
         Qt::Core
         Qt::Gui
         Qt::VirtualKeyboardPrivate
+    GENERATE_CPP_EXPORTS
+    GENERATE_PRIVATE_CPP_EXPORTS
 )
 
 #### Keys ignored in scope 1:.:.:hunspellinputmethod.pro:<TRUE>:

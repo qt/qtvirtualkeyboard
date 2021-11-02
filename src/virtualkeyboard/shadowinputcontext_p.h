@@ -56,7 +56,7 @@ namespace QtVirtualKeyboard {
 
 class ShadowInputContextPrivate;
 
-class QVIRTUALKEYBOARD_EXPORT ShadowInputContext : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT ShadowInputContext : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(ShadowInputContext)

@@ -48,7 +48,7 @@
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-class QVIRTUALKEYBOARD_EXPORT VirtualKeyboardAttachedType : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT VirtualKeyboardAttachedType : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QStringList extraDictionaries READ extraDictionaries WRITE setExtraDictionaries NOTIFY extraDictionariesChanged)

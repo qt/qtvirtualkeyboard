@@ -49,7 +49,7 @@ namespace QtVirtualKeyboard {
 
 class EnterKeyActionAttachedType;
 
-class QVIRTUALKEYBOARD_EXPORT EnterKeyAction : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT EnterKeyAction : public QObject
 {
     Q_OBJECT
 

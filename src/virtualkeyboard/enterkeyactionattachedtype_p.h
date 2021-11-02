@@ -48,7 +48,7 @@
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-class QVIRTUALKEYBOARD_EXPORT EnterKeyActionAttachedType : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT EnterKeyActionAttachedType : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int actionId READ actionId WRITE setActionId NOTIFY actionIdChanged)

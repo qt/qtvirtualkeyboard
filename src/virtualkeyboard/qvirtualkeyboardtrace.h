@@ -39,7 +39,7 @@ QT_BEGIN_NAMESPACE
 
 class QVirtualKeyboardTracePrivate;
 
-class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardTrace : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardTrace : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(QVirtualKeyboardTrace)

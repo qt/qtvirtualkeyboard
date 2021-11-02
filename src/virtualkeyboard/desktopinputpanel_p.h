@@ -51,7 +51,7 @@ namespace QtVirtualKeyboard {
 
 class DesktopInputPanelPrivate;
 
-class QVIRTUALKEYBOARD_EXPORT DesktopInputPanel : public AppInputPanel
+class Q_VIRTUALKEYBOARD_EXPORT DesktopInputPanel : public AppInputPanel
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(DesktopInputPanel)

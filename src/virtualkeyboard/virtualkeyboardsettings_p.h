@@ -50,7 +50,7 @@ namespace QtVirtualKeyboard {
 class WordCandidateListSettings;
 class VirtualKeyboardSettingsPrivate;
 
-class QVIRTUALKEYBOARD_EXPORT VirtualKeyboardSettings : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT VirtualKeyboardSettings : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(VirtualKeyboardSettings)
@@ -139,7 +139,7 @@ private:
     void resetLayoutPath();
 };
 
-class QVIRTUALKEYBOARD_EXPORT WordCandidateListSettings : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT WordCandidateListSettings : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int autoHideDelay READ autoHideDelay WRITE setAutoHideDelay NOTIFY autoHideDelayChanged)

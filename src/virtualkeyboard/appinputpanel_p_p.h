@@ -52,7 +52,7 @@ namespace QtVirtualKeyboard {
     \internal
 */
 
-class QVIRTUALKEYBOARD_EXPORT AppInputPanelPrivate : public QObjectPrivate
+class Q_VIRTUALKEYBOARD_EXPORT AppInputPanelPrivate : public QObjectPrivate
 {
 public:
     AppInputPanelPrivate() :

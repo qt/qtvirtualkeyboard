@@ -65,7 +65,7 @@ class ShiftHandler;
 class QVirtualKeyboardInputEngine;
 class QVirtualKeyboardInputContextPrivate;
 
-class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContextPrivate : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContextPrivate : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PUBLIC(QVirtualKeyboardInputContext)

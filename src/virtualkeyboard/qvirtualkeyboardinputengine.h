@@ -42,7 +42,7 @@ class QVirtualKeyboardAbstractInputMethod;
 class QVirtualKeyboardInputEnginePrivate;
 class QVirtualKeyboardTrace;
 
-class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputEngine : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputEngine : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(QVirtualKeyboardInputEngine)

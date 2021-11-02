@@ -36,7 +36,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardDictionary : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardDictionary : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString name READ name CONSTANT)

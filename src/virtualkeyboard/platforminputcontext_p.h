@@ -57,7 +57,7 @@ namespace QtVirtualKeyboard {
 
 class AbstractInputPanel;
 
-class QVIRTUALKEYBOARD_EXPORT PlatformInputContext : public QPlatformInputContext
+class Q_VIRTUALKEYBOARD_EXPORT PlatformInputContext : public QPlatformInputContext
 {
     Q_OBJECT
 public:

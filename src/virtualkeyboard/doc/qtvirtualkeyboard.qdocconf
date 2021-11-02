@@ -16,7 +16,7 @@ exampledirs += ../../../examples/virtualkeyboard \
 examplesinstallpath = virtualkeyboard
 
 Cpp.ignoretokens     += \
-    QVIRTUALKEYBOARD_EXPORT
+    Q_VIRTUALKEYBOARD_EXPORT
 Cpp.ignoredirectives += \
     Q_DECLARE_LOGGING_CATEGORY \
     VIRTUALKEYBOARD_DEBUG

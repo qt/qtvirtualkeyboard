@@ -49,7 +49,7 @@ namespace QtVirtualKeyboard {
 
 class VirtualKeyboardAttachedType;
 
-class QVIRTUALKEYBOARD_EXPORT VirtualKeyboard : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT VirtualKeyboard : public QObject
 {
     Q_OBJECT
 

@@ -46,7 +46,7 @@ class QVirtualKeyboardInputEngine;
 class QVirtualKeyboardInputContextPrivate;
 class QVirtualKeyboardObserver;
 
-class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContext : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContext : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(QVirtualKeyboardInputContext)

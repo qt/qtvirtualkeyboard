@@ -47,7 +47,7 @@
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-class QVIRTUALKEYBOARD_EXPORT InputView : public QQuickView
+class Q_VIRTUALKEYBOARD_EXPORT InputView : public QQuickView
 {
     Q_OBJECT
 public:

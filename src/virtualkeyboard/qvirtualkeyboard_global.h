@@ -32,19 +32,6 @@
 
 #include <QtCore/qglobal.h>
 #include <QtVirtualKeyboard/qtvirtualkeyboard-config.h>
-
-QT_BEGIN_NAMESPACE
-
-#ifndef QT_STATIC
-# if defined(QVIRTUALKEYBOARD_LIBRARY)
-#   define QVIRTUALKEYBOARD_EXPORT Q_DECL_EXPORT
-# else
-#   define QVIRTUALKEYBOARD_EXPORT Q_DECL_IMPORT
-# endif
-#else
-# define QVIRTUALKEYBOARD_EXPORT
-#endif
-
-QT_END_NAMESPACE
+#include <QtVirtualKeyboard/qtvirtualkeyboardexports.h>
 
 #endif

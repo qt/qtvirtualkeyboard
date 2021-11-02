@@ -53,7 +53,7 @@ namespace QtVirtualKeyboard {
 
 class ShiftHandlerPrivate;
 
-class QVIRTUALKEYBOARD_EXPORT ShiftHandler : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT ShiftHandler : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(ShiftHandler)

@@ -59,7 +59,7 @@ namespace QtVirtualKeyboard {
 
 Q_DECLARE_LOGGING_CATEGORY(lcHunspell)
 
-class QHUNSPELLINPUTMETHOD_EXPORT HunspellWordList
+class Q_HUNSPELLINPUTMETHOD_EXPORT HunspellWordList
 {
 public:
     enum Flag

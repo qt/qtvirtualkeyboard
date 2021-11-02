@@ -31,19 +31,6 @@
 #define QHUNSPELLINPUTMETHOD_GLOBAL_H
 
 #include <QtCore/qglobal.h>
-
-QT_BEGIN_NAMESPACE
-
-#ifndef QT_STATIC
-# if defined(QHUNSPELLINPUTMETHOD_LIBRARY)
-#   define QHUNSPELLINPUTMETHOD_EXPORT Q_DECL_EXPORT
-# else
-#   define QHUNSPELLINPUTMETHOD_EXPORT Q_DECL_IMPORT
-# endif
-#else
-# define QHUNSPELLINPUTMETHOD_EXPORT
-#endif
-
-QT_END_NAMESPACE
+#include <QtHunspellInputMethod/qthunspellinputmethodexports.h>
 
 #endif

@@ -46,7 +46,7 @@
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-class QVIRTUALKEYBOARD_EXPORT HandwritingGestureRecognizer : public GestureRecognizer
+class Q_VIRTUALKEYBOARD_EXPORT HandwritingGestureRecognizer : public GestureRecognizer
 {
     Q_OBJECT
 public:

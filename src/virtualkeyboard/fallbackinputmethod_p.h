@@ -46,7 +46,7 @@
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-class QVIRTUALKEYBOARD_EXPORT FallbackInputMethod : public QVirtualKeyboardAbstractInputMethod
+class Q_VIRTUALKEYBOARD_EXPORT FallbackInputMethod : public QVirtualKeyboardAbstractInputMethod
 {
     Q_OBJECT
 

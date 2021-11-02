@@ -50,7 +50,7 @@ namespace QtVirtualKeyboard {
 
 class SettingsPrivate;
 
-class QVIRTUALKEYBOARD_EXPORT Settings : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT Settings : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(Settings)

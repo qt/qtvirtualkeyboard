@@ -47,7 +47,7 @@
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-class QVIRTUALKEYBOARD_EXPORT AbstractInputPanel : public QObject
+class Q_VIRTUALKEYBOARD_EXPORT AbstractInputPanel : public QObject
 {
     Q_OBJECT
 protected:

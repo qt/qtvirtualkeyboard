@@ -48,7 +48,7 @@ QT_BEGIN_NAMESPACE
 
 class QVirtualKeyboardInputEngine;
 
-class QVIRTUALKEYBOARD_EXPORT QVirtualKeyboardAbstractInputMethodPrivate : public QObjectPrivate
+class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardAbstractInputMethodPrivate : public QObjectPrivate
 {
 public:
     QVirtualKeyboardAbstractInputMethodPrivate();
