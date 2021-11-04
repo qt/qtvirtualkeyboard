@@ -24,7 +24,7 @@ qt_internal_add_3rdparty_library(BundledXt9Common
     PUBLIC_INCLUDE_DIRECTORIES
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     LIBRARIES
-        BundledCerencecommon
+        Qt::BundledCerencecommon
     PUBLIC_LIBRARIES
         Qt::Core
         Qt::VirtualKeyboard

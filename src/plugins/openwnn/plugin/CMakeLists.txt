@@ -20,7 +20,7 @@ qt_internal_add_plugin(QtVirtualKeyboardOpenWnnPlugin
         Qt::Gui
         Qt::Qml
         Qt::VirtualKeyboard
-        BundledOpenwnn
+        Qt::BundledOpenwnn
 )
 
 # Resources:

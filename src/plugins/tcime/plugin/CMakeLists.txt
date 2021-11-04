@@ -20,7 +20,7 @@ qt_internal_add_plugin(QtVirtualKeyboardTCImePlugin
         Qt::Gui
         Qt::Qml
         Qt::VirtualKeyboardPrivate
-        BundledTcime
+        Qt::BundledTcime
 )
 
 # Resources:

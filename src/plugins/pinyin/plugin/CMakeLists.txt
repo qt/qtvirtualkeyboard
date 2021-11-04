@@ -21,7 +21,7 @@ qt_internal_add_plugin(QtVirtualKeyboardPinyinPlugin
         Qt::Gui
         Qt::Qml
         Qt::VirtualKeyboard
-        BundledPinyin
+        Qt::BundledPinyin
 )
 
 # Resources:
