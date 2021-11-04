@@ -27,8 +27,8 @@ qt_internal_add_plugin(QtVirtualKeyboardXt9Plugin
         QT_NO_CAST_FROM_BYTEARRAY
         QT_NO_CAST_TO_ASCII
     LIBRARIES
-        BundledCerencecommon
-        BundledXt9Common
+        Qt::BundledCerencecommon
+        Qt::BundledXt9Common
     PUBLIC_LIBRARIES
         Qt::Core
         Qt::Gui

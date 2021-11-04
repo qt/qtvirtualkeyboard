@@ -22,7 +22,7 @@ qt_internal_add_plugin(QtVirtualKeyboardCerenceHwrPlugin
         QT_NO_CAST_FROM_BYTEARRAY
         QT_NO_CAST_TO_ASCII
     LIBRARIES
-        BundledCerencecommon
+        Qt::BundledCerencecommon
     PUBLIC_LIBRARIES
         Qt::Core
         Qt::Gui
@@ -319,7 +319,7 @@ qt_internal_extend_target(QtVirtualKeyboardCerenceHwrPlugin CONDITION QT_FEATURE
     DEFINES
         HAVE_XT9
     LIBRARIES
-        BundledXt9Common
+        Qt::BundledXt9Common
 )
 
 qt_internal_extend_target(QtVirtualKeyboardCerenceHwrPlugin CONDITION QT_FEATURE_cerence_hwr_alphabetic
