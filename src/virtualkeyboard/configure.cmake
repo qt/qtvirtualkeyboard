@@ -151,6 +151,7 @@ qt_feature("myscript" PRIVATE
 qt_feature("pinyin" PRIVATE
     LABEL "libpinyin"
     AUTODETECT ( NOT INPUT_lang_ch_CN STREQUAL 'no' )
+    CONDITION QT_FEATURE_thread
     DISABLE QT_FEATURE_cerence_xt9
 )
 qt_feature("vkb-no-bundle-pinyin" PRIVATE
