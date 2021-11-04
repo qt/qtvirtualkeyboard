@@ -7,3 +7,7 @@
 # QTBUG-97830
 [tst_plugin::test_selection:row 0]
 *
+
+# QTBUG-97989
+[tst_plugin::test_fullScreenModeWordReselection]
+b2qt
