@@ -11,3 +11,12 @@
 # QTBUG-97989
 [tst_plugin::test_fullScreenModeWordReselection]
 b2qt
+
+[tst_plugin::test_hangulInputMethod:row 25]
+b2qt
+
+[tst_plugin::test_hardKeyBackspaceClearsInput]
+b2qt
+
+[tst_plugin::test_spellCorrectionAutomaticSpaceInsertion:row 11]
+b2qt
