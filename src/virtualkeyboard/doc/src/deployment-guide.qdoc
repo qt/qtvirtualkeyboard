@@ -34,7 +34,7 @@
 \section1 Overview
 
 This document describes how to deploy and use the Qt Virtual Keyboard plugin
-with Qt 5 applications.
+with Qt applications.
 
 \section1 Deployment
 
@@ -48,21 +48,32 @@ locations:
     \li Boot2Qt install path
 \row
     \li qtvirtualkeyboardplugin
-    \li \c $$[QT_INSTALL_PLUGINS]/platforminputcontexts
+    \li \c <QT_INSTALL_PLUGINS>/platforminputcontexts
     \li \c /system/plugins/platforminputcontexts
 \row
     \li qtvirtualkeyboardextensionplugin
-    \li \c $$[QT_INSTALL_PLUGINS]/virtualkeyboard
+    \li \c <QT_INSTALL_PLUGINS>/virtualkeyboard
     \li \c /system/plugins/virtualkeyboard
 \row
     \li qtvirtualkeyboardplugin QML files
-    \li \c $$[QT_INSTALL_QML]/QtQuick/VirtualKeyboard
+    \li \c <QT_INSTALL_QML>/QtQuick/VirtualKeyboard
     \li \c /system/qml/QtQuick/VirtualKeyboard
 \row
     \li qtvirtualkeyboardstylesplugin
-    \li \c $$[QT_INSTALL_QML]/QtQuick/VirtualKeyboard/Styles
+    \li \c <QT_INSTALL_QML>/QtQuick/VirtualKeyboard/Styles
     \li \c /system/qml/QtQuick/VirtualKeyboard/Styles
 \endtable
+
+\section2 Dependencies
+
+The Qt Virtual Keyboard plugin \e (qtvirtualkeyboardplugin) has a dependency
+to the \e {libQt\QtMajorVersion}\e{\VirtualKeyboard} library. In addition, the
+plugin depends on Qt Quick. Therefore, a stand-alone application based on
+\l [QtWidgets] {Qt Widgets} must deploy also the
+\e {libQt\QtMajorVersion}\e{Quick} library and its dependencies in order to
+use the virtual keyboard.
+
+Read more at \l {Deploying Qt's Libraries}.
 
 \section1 Integration Method
 
@@ -70,9 +81,8 @@ Qt Virtual Keyboard currently supports two alternative integration methods
 for using the plugin:
 
 \list
-    \li \c Desktop: requires no changes to existing applications.
-        The virtual keyboard is available to all of the Qt 5 applications
-        in the system.
+    \li \c Desktop: requires no changes to existing applications. The virtual
+        keyboard is available to all Qt applications in the system.
 
         In this integration method, the keyboard is shown in a dedicated
         top-level window.
