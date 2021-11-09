@@ -176,7 +176,7 @@ KeyboardLayoutLoader {
                 SymbolModeKey {
                     weight: functionKeyWidth
                     Layout.fillWidth: false
-                    displayText: "\uC54C\uD30C\uBCB3"
+                    displayText: "\uD55C\uAE00"
                 }
                 Key {
                     key: Qt.Key_Comma
@@ -341,7 +341,7 @@ KeyboardLayoutLoader {
                 SymbolModeKey {
                     weight: functionKeyWidth
                     Layout.fillWidth: false
-                    displayText: "\uC54C\uD30C\uBCB3"
+                    displayText: "\uD55C\uAE00"
                 }
                 Key {
                     key: Qt.Key_Comma
