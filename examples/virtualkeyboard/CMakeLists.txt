@@ -1,5 +1,5 @@
 # Generated from virtualkeyboard.pro.
 
 if(TARGET Qt::QuickControls2)
-    add_subdirectory(basic)
+    qt_internal_add_example(basic)
 endif()
