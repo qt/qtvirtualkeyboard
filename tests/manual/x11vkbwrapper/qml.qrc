@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>main.qml</file>
-        <file>graphics/Qt_logo.png</file>
-        <file>Keyboard.qml</file>
-    </qresource>
-</RCC>
