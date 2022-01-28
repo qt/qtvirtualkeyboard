@@ -30,7 +30,6 @@
 #include <QLoggingCategory>
 #include <QTime>
 #include <QGuiApplication>
-#include <QMutableVectorIterator>
 
 #include "handleatspievents.h"
 #include "vkbhidetimer.h"
