@@ -29,7 +29,6 @@
 
 #include <QFile>
 #include <QTextStream>
-#include <QListIterator>
 #include <QTextStream>
 #include "testreporter.h"
 #include "testbase.h"
