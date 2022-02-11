@@ -446,6 +446,6 @@ qt_configure_add_report_entry(
 )
 qt_configure_add_report_entry(
     TYPE NOTE
-    MESSAGE "Hunspell disabled. Spelling correction will not be available."
+    MESSAGE "Hunspell in Qt Virtual Keyboard is not enabled. Spelling correction will not be available."
     CONDITION NOT QT_FEATURE_hunspell
 )
