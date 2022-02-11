@@ -44,6 +44,7 @@
 #if defined(QT_STATICPLUGIN)
 #include <QtPlugin>
 #include <QPluginLoader>
+#include <private/qglobal_p.h>
 
 QT_BEGIN_NAMESPACE
 

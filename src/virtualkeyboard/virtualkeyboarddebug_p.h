@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2018 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -43,6 +43,7 @@
 
 #include <QDebug>
 #include <QLoggingCategory>
+#include <private/qglobal_p.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
