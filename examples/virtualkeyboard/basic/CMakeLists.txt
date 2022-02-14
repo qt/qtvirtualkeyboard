@@ -1,39 +1,31 @@
-# Generated from basic.pro.
-
 cmake_minimum_required(VERSION 3.16)
 project(basic LANGUAGES CXX)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
 
 if(NOT DEFINED INSTALL_EXAMPLESDIR)
-  set(INSTALL_EXAMPLESDIR "examples")
+    set(INSTALL_EXAMPLESDIR "examples")
 endif()
 
 set(INSTALL_EXAMPLEDIR "${INSTALL_EXAMPLESDIR}/virtualkeyboard/basic")
 
-find_package(Qt6 COMPONENTS Core)
-find_package(Qt6 COMPONENTS Gui)
-find_package(Qt6 COMPONENTS Qml)
-find_package(Qt6 COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick)
 
 qt_add_executable(basic
     main.cpp
 )
+
 set_target_properties(basic PROPERTIES
     WIN32_EXECUTABLE TRUE
     MACOSX_BUNDLE TRUE
 )
+
 target_link_libraries(basic PUBLIC
     Qt::Core
     Qt::Gui
     Qt::Qml
     Qt::Quick
 )
-
 
 # Resources:
 set(demo_resource_files
@@ -55,8 +47,8 @@ qt6_add_resources(basic "demo"
         ${demo_resource_files}
 )
 
-if(QT_FEATURE_static) # special case
-    find_package(Qt6 COMPONENTS Svg) # special case
+if(QT_FEATURE_static)
+    find_package(Qt6 REQUIRED COMPONENTS Svg)
     target_link_libraries(basic PUBLIC
         Qt::Svg
     )
@@ -64,13 +56,13 @@ endif()
 
 if(NOT QT_FEATURE_vkb_desktop)
     target_compile_definitions(basic PUBLIC
-        MAIN_QML="basic-b2qt.qml" # special case
+        MAIN_QML="basic-b2qt.qml"
     )
 endif()
 
 if(QT_FEATURE_vkb_desktop)
     target_compile_definitions(basic PUBLIC
-        MAIN_QML="Basic.qml" # special case
+        MAIN_QML="Basic.qml"
     )
 endif()
 
