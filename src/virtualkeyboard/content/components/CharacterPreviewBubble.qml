@@ -32,7 +32,7 @@ import QtQuick.VirtualKeyboard
 
 Item {
     property bool active
-    property var activeKey: keyboard.activeKey
+    property Item activeKey: keyboard.activeKey
 
     visible: active && activeKey !== undefined && activeKey !== null && activeKey.showPreview
     z: 1

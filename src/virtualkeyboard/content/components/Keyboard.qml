@@ -45,7 +45,7 @@ Item {
     property alias style: styleLoader.item
     property alias wordCandidateView: wordCandidateView
     property alias shadowInputControl: shadowInputControl
-    property var activeKey: null
+    property Item activeKey: null
     property TouchPoint activeTouchPoint
     property int localeIndex: -1
     property var availableLocaleIndices: []
@@ -912,7 +912,7 @@ Item {
                     id: keyboardInputArea
                     objectName: "keyboardInputArea"
 
-                    property var initialKey: null
+                    property Item initialKey: null
                     property bool dragSymbolMode
                     property real releaseMargin: initialKey !== null ? Math.min(initialKey.width / 3, initialKey.height / 3) : 0
                     property point navigationCursor: Qt.point(-1, -1)
