@@ -35,6 +35,8 @@
 #include <QtVirtualKeyboard/qvirtualkeyboardtrace.h>
 #include <QtVirtualKeyboard/private/virtualkeyboarddebug_p.h>
 
+#include <QQmlContext>
+#include <QQmlEngine>
 #include <QTimerEvent>
 #include <QtCore/private/qobject_p.h>
 
@@ -539,8 +541,14 @@ QVirtualKeyboardTrace *QVirtualKeyboardInputEngine::traceBegin(
     if (!d->inputMethod->patternRecognitionModes().contains(patternRecognitionMode))
         return nullptr;
     QVirtualKeyboardTrace *trace = d->inputMethod->traceBegin(traceId, patternRecognitionMode, traceCaptureDeviceInfo, traceScreenInfo);
-    if (trace)
+    if (trace) {
+        if (QQmlContext *context = QQmlEngine::contextForObject(this)) {
+            if (QQmlEngine *engine = context->engine()) {
+                engine->setObjectOwnership(trace, QQmlEngine::CppOwnership);
+            }
+        }
         trace->setTraceId(traceId);
+    }
     return trace;
 }
 
