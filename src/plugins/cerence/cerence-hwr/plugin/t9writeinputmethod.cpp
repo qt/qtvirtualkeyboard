@@ -126,8 +126,9 @@ class T9WriteInputMethodPrivate : public QVirtualKeyboardAbstractInputMethodPriv
         , public Xt9RequestCallback
 #endif
 {
-    Q_DECLARE_PUBLIC(T9WriteInputMethod)
 public:
+    Q_DECLARE_PUBLIC(T9WriteInputMethod)
+
     T9WriteInputMethodPrivate(T9WriteInputMethod *q_ptr) :
         QVirtualKeyboardAbstractInputMethodPrivate(),
         q_ptr(q_ptr),
