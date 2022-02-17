@@ -31,6 +31,7 @@
 #define QVIRTUALKEYBOARDSELECTIONLISTMODEL_H
 
 #include <QAbstractListModel>
+#include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
@@ -44,6 +45,10 @@ class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardSelectionListModel : public QAbst
     Q_OBJECT
     Q_DECLARE_PRIVATE(QVirtualKeyboardSelectionListModel)
     Q_PROPERTY(int count READ count NOTIFY countChanged)
+    QML_NAMED_ELEMENT(SelectionListModel)
+    QML_UNCREATABLE("SelectionListModel is only available via InputEngine.wordCandidateListModel")
+    QML_ADDED_IN_VERSION(1, 0)
+    QML_EXTRA_VERSION(2, 0)
 
     explicit QVirtualKeyboardSelectionListModel(QObject *parent = nullptr);
 

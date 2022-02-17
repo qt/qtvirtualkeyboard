@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2016 The Qt Company Ltd.
+** Copyright (C) 2022 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the documentation of the Qt Toolkit.
@@ -208,7 +208,7 @@ The plugin can add keyboard layouts for the virtual keyboard by including
 the layout files in the Qt resources of the plugin binary.
 
 The virtual keyboard searches for the keyboard layouts (per language) from a specific
-path \e /QtQuick/VirtualKeyboard/content/layouts/<language_COUNTRY>, so it is essential
+path \e /qt-project.org/imports/QtQuick/VirtualKeyboard/content/layouts/<language_COUNTRY>, so it is essential
 to use this exact path also in the plugin. Qt resource paths can be overlapped, however,
 the plugin cannot override the existing layouts in the virtual keyboard plugin.
 

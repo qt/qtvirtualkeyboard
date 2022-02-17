@@ -52,6 +52,8 @@ class Q_VIRTUALKEYBOARD_EXPORT VirtualKeyboardAttachedType : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QStringList extraDictionaries READ extraDictionaries WRITE setExtraDictionaries NOTIFY extraDictionariesChanged)
+    QML_ANONYMOUS
+    QML_ADDED_IN_VERSION(6, 1)
 
 public:
     explicit VirtualKeyboardAttachedType(QObject *parent);

@@ -31,8 +31,6 @@
 #define PLUGIN_H
 
 #include <qpa/qplatforminputcontextplugin_p.h>
-#include <QtVirtualKeyboard/private/platforminputcontext_p.h>
-#include <QStringList>
 
 QT_BEGIN_NAMESPACE
 

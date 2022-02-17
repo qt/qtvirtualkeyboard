@@ -175,5 +175,17 @@ void Xt9CpInputMethod::update()
     d->reset();
 }
 
+CangjieInputMethod::CangjieInputMethod(QObject *parent) :
+    Xt9CpInputMethod(parent)
+{
+
+}
+
+StrokeInputMethod::StrokeInputMethod(QObject *parent) :
+    Xt9CpInputMethod(parent)
+{
+
+}
+
 } // namespace QtVirtualKeyboard
 QT_END_NAMESPACE

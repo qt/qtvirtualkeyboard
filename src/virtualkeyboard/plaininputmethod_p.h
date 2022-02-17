@@ -50,6 +50,7 @@ namespace QtVirtualKeyboard {
 class Q_VIRTUALKEYBOARD_EXPORT PlainInputMethod : public QVirtualKeyboardAbstractInputMethod
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(PlainInputMethod)
 
 public:
     explicit PlainInputMethod(QObject *parent = nullptr);

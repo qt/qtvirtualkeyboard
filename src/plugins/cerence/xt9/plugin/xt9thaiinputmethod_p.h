@@ -41,6 +41,7 @@ class Xt9ThaiInputMethod : public Xt9AwInputMethod
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(Xt9ThaiInputMethod)
+    QML_NAMED_ELEMENT(ThaiInputMethod)
 public:
     explicit Xt9ThaiInputMethod(QObject *parent = nullptr);
 

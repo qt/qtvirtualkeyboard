@@ -78,8 +78,10 @@ class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContextPrivate : public QObj
     Q_PROPERTY(QObject *inputItem READ inputItem NOTIFY inputItemChanged)
     Q_PROPERTY(QtVirtualKeyboard::ShiftHandler *shiftHandler READ shiftHandler CONSTANT)
     Q_PROPERTY(QtVirtualKeyboard::ShadowInputContext *shadow READ shadow CONSTANT)
-    Q_PROPERTY(QStringList inputMethods READ inputMethods CONSTANT)
     Q_MOC_INCLUDE("shifthandler_p.h")
+    QML_NAMED_ELEMENT(InputContextPrivate)
+    QML_UNCREATABLE("InputContextPrivate is only available via InputContext.priv")
+    QML_ADDED_IN_VERSION(2, 0)
 
     explicit QVirtualKeyboardInputContextPrivate(QVirtualKeyboardInputContext *q_ptr);
     void init();
@@ -111,7 +113,6 @@ public:
     QObject *inputItem() const;
     QtVirtualKeyboard::ShiftHandler *shiftHandler() const;
     QtVirtualKeyboard::ShadowInputContext *shadow() const;
-    QStringList inputMethods() const;
     Q_INVOKABLE void setKeyboardObserver(QVirtualKeyboardObserver *keyboardObserver);
 
     // Helper functions

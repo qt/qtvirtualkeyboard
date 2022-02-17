@@ -29,6 +29,7 @@
 
 import QtQuick
 import QtQuick.VirtualKeyboard
+import QtQuick.VirtualKeyboard.Components
 
 KeyboardLayout {
     objectName: "en_GB"

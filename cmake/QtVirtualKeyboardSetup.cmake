@@ -1,3 +1,6 @@
+get_filename_component(VKB_LAYOUTS_BASE "${CMAKE_CURRENT_LIST_DIR}/../src/layouts" REALPATH CACHE)
+set(VKB_LAYOUTS_PREFIX "/qt-project.org/imports/QtQuick/VirtualKeyboard/Layouts" CACHE STRING "" FORCE)
+
 set(valid_languages
     ar_AR
     bg_BG

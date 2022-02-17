@@ -30,14 +30,16 @@
 #include "qtquickvirtualkeyboardstylesplugin.h"
 #include "svgimageprovider.h"
 
-#include <qqml.h>
+#include <QtQml/qqml.h>
 #include <QtCore/QLibraryInfo>
-#include <QtVirtualKeyboard/private/qvirtualkeyboard_staticplugin_p.h>
 
 QT_BEGIN_NAMESPACE
 
+extern void qml_register_types_QtQuick_VirtualKeyboard_Styles();
+Q_GHS_KEEP_REFERENCE(qml_register_types_QtQuick_VirtualKeyboard_Styles);
+
 /*!
-    \qmlmodule QtQuick.VirtualKeyboard.Styles 2.\QtMinorVersion
+    \qmlmodule QtQuick.VirtualKeyboard.Styles
     \title Qt Quick Virtual Keyboard Styles QML Types
     \ingroup qmlmodules
 
@@ -47,36 +49,20 @@ QT_BEGIN_NAMESPACE
     import statements in your .qml file:
 
     \qml \QtMinorVersion
-    import QtQuick.VirtualKeyboard.Styles 2.\1
+    import QtQuick.VirtualKeyboard.Styles
     \endqml
 */
 
+QtQuickVirtualKeyboardStylesPlugin::QtQuickVirtualKeyboardStylesPlugin(QObject *parent) :
+    QQmlExtensionPlugin(parent)
+{
+    volatile auto registration = &qml_register_types_QtQuick_VirtualKeyboard_Styles;
+    Q_UNUSED(registration);
+}
+
 void QtQuickVirtualKeyboardStylesPlugin::registerTypes(const char *uri)
 {
-#if defined(QT_STATICPLUGIN)
-    Q_VKB_IMPORT_PLUGIN(QtQuick2Plugin)
-#endif
-
-    const QString path(QStringLiteral("qrc:///QtQuick/VirtualKeyboard/Styles/content/"));
-    qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 1, 0, "KeyboardStyle");
-    qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 1, 1, "KeyboardStyle");
-    qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 1, 2, "KeyboardStyle");
-    qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 1, 3, "KeyboardStyle");
-    qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 2, 0, "KeyboardStyle");
-    qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 2, 1, "KeyboardStyle");
-    qmlRegisterType(QUrl(path + QLatin1String("KeyboardStyle.qml")), uri, 2, 2, "KeyboardStyle");
-    qmlRegisterType(QUrl(path + QLatin1String("KeyIcon.qml")), uri, 1, 0, "KeyIcon");
-    qmlRegisterType(QUrl(path + QLatin1String("KeyIcon.qml")), uri, 2, 0, "KeyIcon");
-    qmlRegisterType(QUrl(path + QLatin1String("KeyPanel.qml")), uri, 1, 0, "KeyPanel");
-    qmlRegisterType(QUrl(path + QLatin1String("KeyPanel.qml")), uri, 2, 0, "KeyPanel");
-    qmlRegisterType(QUrl(path + QLatin1String("SelectionListItem.qml")), uri, 1, 0, "SelectionListItem");
-    qmlRegisterType(QUrl(path + QLatin1String("SelectionListItem.qml")), uri, 2, 0, "SelectionListItem");
-    qmlRegisterType(QUrl(path + QLatin1String("TraceInputKeyPanel.qml")), uri, 2, 0, "TraceInputKeyPanel");
-    qmlRegisterType(QUrl(path + QLatin1String("TraceCanvas.qml")), uri, 2, 0, "TraceCanvas");
-
-    // The minor version used to be the current Qt 5 minor. For compatibility it is the last
-    // Qt 5 release.
-    qmlRegisterModule(uri, 2, 15);
+    Q_UNUSED(uri);
 }
 
 void QtQuickVirtualKeyboardStylesPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

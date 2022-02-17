@@ -54,6 +54,9 @@ class Q_VIRTUALKEYBOARD_EXPORT EnterKeyActionAttachedType : public QObject
     Q_PROPERTY(int actionId READ actionId WRITE setActionId NOTIFY actionIdChanged)
     Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY labelChanged)
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
+    QML_ANONYMOUS
+    QML_ADDED_IN_VERSION(1, 0)
+    QML_EXTRA_VERSION(2, 0)
 
 public:
     explicit EnterKeyActionAttachedType(QObject *parent);

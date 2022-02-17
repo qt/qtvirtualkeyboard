@@ -42,6 +42,7 @@
 //
 
 #include <QObject>
+#include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 #include <QtCore/private/qglobal_p.h>
 
@@ -65,6 +66,10 @@ class Q_VIRTUALKEYBOARD_EXPORT ShiftHandler : public QObject
     Q_PROPERTY(bool shiftActive READ isShiftActive WRITE setShiftActive NOTIFY shiftActiveChanged)
     Q_PROPERTY(bool capsLockActive READ isCapsLockActive WRITE setCapsLockActive NOTIFY capsLockActiveChanged)
     Q_PROPERTY(bool uppercase READ isUppercase NOTIFY uppercaseChanged)
+    QML_NAMED_ELEMENT(ShiftHandler)
+    QML_UNCREATABLE("ShiftHandler is only available via InputContextPrivate.shiftHandler")
+    QML_ADDED_IN_VERSION(1, 0)
+    QML_EXTRA_VERSION(2, 0)
 
     explicit ShiftHandler(QVirtualKeyboardInputContext *parent = nullptr);
     void init();

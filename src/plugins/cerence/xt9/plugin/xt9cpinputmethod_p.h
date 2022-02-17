@@ -41,6 +41,7 @@ class Xt9CpInputMethod : public Xt9InputMethod
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(Xt9CpInputMethod)
+    QML_NAMED_ELEMENT(PinyinInputMethod)
 public:
     explicit Xt9CpInputMethod(QObject *parent = nullptr);
 
@@ -57,6 +58,22 @@ public:
 
     void reset();
     void update();
+};
+
+class CangjieInputMethod : public Xt9CpInputMethod
+{
+    Q_OBJECT
+    QML_NAMED_ELEMENT(CangjieInputMethod)
+public:
+    explicit CangjieInputMethod(QObject *parent = nullptr);
+};
+
+class StrokeInputMethod : public Xt9CpInputMethod
+{
+    Q_OBJECT
+    QML_NAMED_ELEMENT(StrokeInputMethod)
+public:
+    explicit StrokeInputMethod(QObject *parent = nullptr);
 };
 
 } // namespace QtVirtualKeyboard

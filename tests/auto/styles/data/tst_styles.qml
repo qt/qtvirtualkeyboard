@@ -30,6 +30,7 @@
 import QtTest
 import QtQuick
 import QtQuick.VirtualKeyboard.Settings
+import QtQuick.VirtualKeyboard.Styles
 
 Item {
 

@@ -30,6 +30,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.VirtualKeyboard
+import QtQuick.VirtualKeyboard.Components
 
 KeyboardLayout {
     function createInputMethod() {

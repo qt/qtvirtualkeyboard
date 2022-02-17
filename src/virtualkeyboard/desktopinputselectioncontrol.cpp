@@ -160,7 +160,7 @@ void DesktopInputSelectionControl::updateVisibility()
 void DesktopInputSelectionControl::reloadGraphics()
 {
     Settings *settings = Settings::instance();
-    const QString stylePath = QString::fromLatin1(":/QtQuick/VirtualKeyboard/content/styles/%1/images/selectionhandle-bottom.svg")
+    const QString stylePath = QString::fromLatin1(":/qt-project.org/imports/QtQuick/VirtualKeyboard/Styles/Builtin/%1/images/selectionhandle-bottom.svg")
                                 .arg(settings->styleName());
     QImageReader imageReader(stylePath);
     QSize sz = imageReader.size(); // SVG handler will return default size

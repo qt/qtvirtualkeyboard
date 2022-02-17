@@ -1,20 +1,22 @@
 #####################################################################
-## qtquickvirtualkeyboardsettingsplugin Plugin:
+## qtvkbsettingsplugin Plugin:
 #####################################################################
 
-qt_internal_add_qml_module(qtquickvirtualkeyboardsettingsplugin
+qt_internal_add_qml_module(qtvkbsettingsplugin
     URI "QtQuick.VirtualKeyboard.Settings"
-    VERSION "2.${PROJECT_VERSION_MINOR}"
-    CLASS_NAME QtQuickVirtualKeyboardSettingsPlugin
-    PLUGIN_TARGET qtquickvirtualkeyboardsettingsplugin
-    NO_GENERATE_PLUGIN_SOURCE
+    VERSION "${PROJECT_VERSION}"
+    PAST_MAJOR_VERSIONS 2 1
+    PLUGIN_TARGET qtvkbsettingsplugin
     NO_PLUGIN_OPTIONAL
-    NO_GENERATE_QMLTYPES
-    INSTALL_SOURCE_QMLTYPES "plugins.qmltypes"
-    DEPENDENCIES
-        QtQuick/2.0
     SOURCES
-        qtquickvirtualkeyboardsettingsplugin.cpp qtquickvirtualkeyboardsettingsplugin.h
+        qquickvirtualkeyboardsettings.cpp
+        qquickvirtualkeyboardsettings_p.h
+    DEFINES
+        QT_ASCII_CAST_WARNINGS
+        QT_NO_CAST_FROM_ASCII
+        QT_NO_CAST_FROM_BYTEARRAY
+        QT_NO_CAST_TO_ASCII
+        QT_VIRTUALKEYBOARD_DEFAULT_LAYOUTS_DIR=\\\"qrc:${VKB_LAYOUTS_PREFIX}\\\"
     LIBRARIES
         Qt::Core
         Qt::Gui
@@ -23,9 +25,18 @@ qt_internal_add_qml_module(qtquickvirtualkeyboardsettingsplugin
         Qt::VirtualKeyboardPrivate
 )
 
-## Scopes:
-#####################################################################
+qt_internal_extend_target(qtvkbsettingsplugin CONDITION QT_FEATURE_vkb_no_builtin_style
+    DEFINES
+        QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"\\\"
+)
 
-#### Keys ignored in scope 2:.:.:settings.pro:WIN32:
-# QMAKE_TARGET_DESCRIPTION = "Virtual Keyboard for Qt."
-# QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard (Qt $$QT_VERSION)"
+qt_internal_extend_target(qtvkbsettingsplugin CONDITION QT_FEATURE_vkb_retro_style AND NOT QT_FEATURE_vkb_no_builtin_style
+    DEFINES
+        QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"retro\\\"
+)
+
+qt_internal_extend_target(qtvkbsettingsplugin CONDITION NOT QT_FEATURE_vkb_no_builtin_style AND NOT QT_FEATURE_vkb_retro_style
+    DEFINES
+        QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"default\\\"
+)
+

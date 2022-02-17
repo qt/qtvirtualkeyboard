@@ -32,6 +32,7 @@
 
 #include <QObject>
 #include <QPointer>
+#include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
@@ -56,6 +57,10 @@ class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputEngine : public QObject
     Q_PROPERTY(QVirtualKeyboardSelectionListModel *wordCandidateListModel READ wordCandidateListModel NOTIFY wordCandidateListModelChanged)
     Q_PROPERTY(bool wordCandidateListVisibleHint READ wordCandidateListVisibleHint NOTIFY wordCandidateListVisibleHintChanged)
     Q_MOC_INCLUDE("qvirtualkeyboardabstractinputmethod.h")
+    QML_NAMED_ELEMENT(InputEngine)
+    QML_UNCREATABLE("InputEngine is only available via InputContext.inputEngine")
+    QML_ADDED_IN_VERSION(1, 0)
+    QML_EXTRA_VERSION(2, 0)
 
     explicit QVirtualKeyboardInputEngine(QVirtualKeyboardInputContext *parent = nullptr);
     void init();

@@ -33,6 +33,7 @@
 #include <QObject>
 #include <QVariant>
 #include <QPointF>
+#include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
@@ -49,6 +50,10 @@ class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardTrace : public QObject
     Q_PROPERTY(bool final READ isFinal WRITE setFinal NOTIFY finalChanged)
     Q_PROPERTY(bool canceled READ isCanceled WRITE setCanceled NOTIFY canceledChanged)
     Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity NOTIFY opacityChanged)
+    QML_NAMED_ELEMENT(Trace)
+    QML_UNCREATABLE("Trace object is created by InputContext.inputEngine.traceBegin() function")
+    QML_ADDED_IN_VERSION(2, 0)
+
 public:
     explicit QVirtualKeyboardTrace(QObject *parent = nullptr);
     ~QVirtualKeyboardTrace();

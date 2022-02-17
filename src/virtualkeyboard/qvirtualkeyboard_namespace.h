@@ -31,6 +31,7 @@
 #define QVIRTUALKEYBOARD_NAMESPACE_H
 
 #include <QMetaEnum>
+#include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
@@ -38,6 +39,7 @@ QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
 Q_VIRTUALKEYBOARD_EXPORT Q_NAMESPACE
+QML_NAMED_ELEMENT(QtVirtualKeyboard)
 
 enum class KeyType {
     BaseKey,

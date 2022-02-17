@@ -1,5 +1,3 @@
-# Generated from cerencecommon.pro.
-
 #####################################################################
 ## BundledCerencecommon Generic Library:
 #####################################################################
@@ -16,9 +14,6 @@ qt_internal_add_3rdparty_library(BundledCerencecommon
         Qt::Core
         Qt::VirtualKeyboardPrivate
 )
-
-## Scopes:
-#####################################################################
 
 qt_internal_extend_target(BundledCerencecommon CONDITION FEATURE_vkb_bundle_cerence OR FEATURE_vkb_bundle_cerence_xt9
     PUBLIC_DEFINES
@@ -77,7 +72,7 @@ if(FEATURE_vkb_bundle_cerence OR FEATURE_vkb_bundle_cerence_xt9)
 
     qt_internal_add_resource(BundledCerencecommon "qmake_cerencecommondata_db"
         PREFIX
-            "/QtQuick/VirtualKeyboard/Cerence/Xt9"
+            "/qt-project.org/imports/QtQuick/VirtualKeyboard/Cerence/Xt9"
         BASE
             "${CERENCE_XT9_DATAPATH}"
         FILES
@@ -93,108 +88,3 @@ else()
         PATTERN "*.ldb"
     )
 endif()
-
-#### Keys ignored in scope 2:.:.:cerencecommon.pro:FEATURE_vkb_bundle_cerence OR FEATURE_vkb_bundle_cerence_xt9:
-# QMAKE_RESOURCE_FLAGS = "-no-compress"
-
-#### Keys ignored in scope 3:.:.:cerencecommon.pro:COMMON_RESOURCE_FILES_ISEMPTY:
-# COMMON_RESOURCE_FILES = "dummy.txt"
-
-#### Keys ignored in scope 5:.:..:../cerence.pri:CERENCE_SDK_ROOT_ISEMPTY:
-# EXT_CERENCE_SDK_ROOT = "$$(CERENCE_SDK_ROOT)"
-
-#### Keys ignored in scope 6:.:..:../cerence.pri:NOT EXT_CERENCE_SDK_ROOT_ISEMPTY:
-# CERENCE_SDK_ROOT = "$$EXT_CERENCE_SDK_ROOT"
-
-#### Keys ignored in scope 8:.:..:../cerence.pri:CERENCE_SDK_ROOT_ISEMPTY:
-# CERENCE_SDK_ROOT = "$$PWD/sdk"
-
-#### Keys ignored in scope 11:.:..:../cerence.pri:QT_ARCH___equals___arm:
-# CERENCE_SHARED_LIB_PATH = "lib/linux/arm/shared"
-# CERENCE_STATIC_LIB_PATH = "lib/linux/arm/static"
-
-#### Keys ignored in scope 13:.:..:../cerence.pri:QT_ARCH___equals___arm64:
-# CERENCE_SHARED_LIB_PATH = "lib/linux/arm64/shared"
-# CERENCE_STATIC_LIB_PATH = "lib/linux/arm64/static"
-
-#### Keys ignored in scope 15:.:..:../cerence.pri:QT_ARCH___equals___x86_64:
-# CERENCE_SHARED_LIB_PATH = "lib/linux/x86_64/shared"
-# CERENCE_STATIC_LIB_PATH = "lib/linux/x86_64/static"
-
-#### Keys ignored in scope 17:.:..:../cerence.pri:QT_ARCH___equals___x86 OR QT_ARCH___equals___i386:
-# CERENCE_SHARED_LIB_PATH = "lib/linux/x86/shared"
-# CERENCE_STATIC_LIB_PATH = "lib/linux/x86/static"
-
-#### Keys ignored in scope 20:.:..:../cerence.pri:QT_ARCH___equals___x86_64:
-# CERENCE_SHARED_LIB_PATH = "lib/win32/x86_64/shared"
-# CERENCE_STATIC_LIB_PATH = "lib/win32/x86_64/static"
-
-#### Keys ignored in scope 21:.:..:../cerence.pri:else:
-# CERENCE_SHARED_LIB_PATH = "lib/win32/x86/shared"
-# CERENCE_STATIC_LIB_PATH = "lib/win32/x86/static"
-
-#### Keys ignored in scope 23:.:..:../cerence.pri:WIN32:
-# result = "$$1/*.obj"
-
-#### Keys ignored in scope 24:.:..:../cerence.pri:result_ISEMPTY:
-# result = "$$1/*.lib"
-
-#### Keys ignored in scope 25:.:..:../cerence.pri:else:
-# result = "$$1/*.o"
-
-#### Keys ignored in scope 26:.:..:../cerence.pri:result_ISEMPTY:
-# result = "$$1/*.a"
-
-#### Keys ignored in scope 28:.:..:../cerence.pri:WIN32:
-# result = "$$1/*.lib"
-
-#### Keys ignored in scope 29:.:..:../cerence.pri:else:
-# result = "$$1/*.so"
-
-#### Keys ignored in scope 31:.:..:../cerence.pri:WIN32:
-# result = "$$1/*.dll"
-
-#### Keys ignored in scope 32:.:..:../cerence.pri:else:
-# result = "$$1/*.so"
-
-#### Keys ignored in scope 33:.:..:../cerence.pri:EXISTS _ss_CERENCE_HWR_INCLUDEPATH/decuma_hwr.h:
-# CERENCE_HWR_ALPHABETIC_FOUND = "1"
-
-#### Keys ignored in scope 34:.:..:../cerence.pri:EXISTS _ss_CERENCE_HWR_INCLUDEPATH/decuma_hwr_cjk.h:
-# CERENCE_HWR_CJK_FOUND = "1"
-
-#### Keys ignored in scope 37:.:..:../cerence.pri:NOT cerence-hwr-static:
-# CERENCE_HWR_ALPHABETIC_LIBS = "$$findSharedLibrary($$CERENCE_SDK_ROOT/t9write/$$CERENCE_SHARED_LIB_PATH/alphabetic)"
-
-#### Keys ignored in scope 38:.:..:../cerence.pri:NOT CERENCE_HWR_ALPHABETIC_LIBS_ISEMPTY:
-# CERENCE_HWR_ALPHABETIC_BINS = "$$findSharedBinary($$CERENCE_SDK_ROOT/t9write/$$CERENCE_SHARED_LIB_PATH/alphabetic)"
-
-#### Keys ignored in scope 39:.:..:../cerence.pri:else:
-# CERENCE_HWR_ALPHABETIC_LIBS = "$$findStaticLibrary($$CERENCE_SDK_ROOT/t9write/$$CERENCE_STATIC_LIB_PATH/alphabetic)"
-
-#### Keys ignored in scope 41:.:..:../cerence.pri:NOT cerence-hwr-static:
-# CERENCE_HWR_CJK_LIBS = "$$findSharedLibrary($$CERENCE_SDK_ROOT/t9write/$$CERENCE_SHARED_LIB_PATH/cjk)"
-
-#### Keys ignored in scope 42:.:..:../cerence.pri:NOT CERENCE_HWR_CJK_LIBS_ISEMPTY:
-# CERENCE_HWR_CJK_BINS = "$$findSharedBinary($$CERENCE_SDK_ROOT/t9write/$$CERENCE_SHARED_LIB_PATH/cjk)"
-
-#### Keys ignored in scope 43:.:..:../cerence.pri:else:
-# CERENCE_HWR_CJK_LIBS = "$$findStaticLibrary($$CERENCE_SDK_ROOT/t9write/$$CERENCE_STATIC_LIB_PATH/cjk)"
-
-#### Keys ignored in scope 44:.:..:../cerence.pri:(CERENCE_HWR_ALPHABETIC_FOUND EQUAL 1) AND NOT CERENCE_HWR_ALPHABETIC_LIBS_ISEMPTY:
-# CERENCE_HWR_FOUND = "1"
-
-#### Keys ignored in scope 45:.:..:../cerence.pri:(CERENCE_HWR_CJK_FOUND EQUAL 1) AND NOT CERENCE_HWR_CJK_LIBS_ISEMPTY:
-# CERENCE_HWR_FOUND = "1"
-
-#### Keys ignored in scope 46:.:..:../cerence.pri:EXISTS _ss_XT9_INCLUDEPATH/et9api.h:
-# XT9_FOUND = "1"
-
-#### Keys ignored in scope 48:.:..:../cerence.pri:NOT QT_FEATURE_xt9_static:
-# XT9_LIBS = "$$findSharedLibrary($$CERENCE_SDK_ROOT/xt9/$$CERENCE_SHARED_LIB_PATH)"
-
-#### Keys ignored in scope 49:.:..:../cerence.pri:NOT XT9_LIBS_ISEMPTY:
-# XT9_BINS = "$$findSharedBinary($$CERENCE_SDK_ROOT/xt9/$$CERENCE_SHARED_LIB_PATH)"
-
-#### Keys ignored in scope 50:.:..:../cerence.pri:else:
-# XT9_LIBS = "$$findStaticLibrary($$CERENCE_SDK_ROOT/xt9/$$CERENCE_STATIC_LIB_PATH)"

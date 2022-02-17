@@ -42,6 +42,7 @@ class Xt9JInputMethod : public Xt9AwInputMethod
     Q_OBJECT
     Q_DECLARE_PRIVATE(Xt9JInputMethod)
     Q_PROPERTY(bool modifyKeyEnabled READ isModifyKeyEnabled NOTIFY modifyKeyEnabledChanged)
+    QML_NAMED_ELEMENT(JapaneseInputMethod)
 public:
     explicit Xt9JInputMethod(QObject *parent = nullptr);
 

@@ -53,7 +53,7 @@ Xt9LdbManager::Xt9LdbManager() :
     QStringList userPaths(xt9LdbPath.split(pathListSep, Qt::SkipEmptyParts));
     const QStringList defaultPaths = userPaths
             << QDir(QStringLiteral("%1/qtvirtualkeyboard/cerence/xt9/").arg(QLibraryInfo::path(QLibraryInfo::DataPath))).absolutePath()
-            << QLatin1String(":/QtQuick/VirtualKeyboard/Cerence/Xt9")
+            << QLatin1String(":/qt-project.org/imports/QtQuick/VirtualKeyboard/Cerence/Xt9")
                ;
     for (const QString &defaultPath : defaultPaths) {
         addSearchPath(defaultPath);

@@ -52,6 +52,9 @@ Xt9InputMethodPrivate::Xt9InputMethodPrivate(Xt9InputMethod *q_ptr, Xt9Ime *xt9I
     initDone(false),
     dlmFileName(aDlmFileName)
 {
+#ifdef HAVE_XT9_RESOURCE
+    Q_INIT_RESOURCE(qmake_cerencecommondata_db);
+#endif
 }
 
 void Xt9InputMethodPrivate::sysInit()

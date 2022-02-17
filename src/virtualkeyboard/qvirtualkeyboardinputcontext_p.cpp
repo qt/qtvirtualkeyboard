@@ -190,11 +190,6 @@ ShadowInputContext *QVirtualKeyboardInputContextPrivate::shadow() const
     return const_cast<ShadowInputContext *>(&_shadow);
 }
 
-QStringList QVirtualKeyboardInputContextPrivate::inputMethods() const
-{
-    return platformInputContext ? platformInputContext->inputMethods() : QStringList();
-}
-
 void QVirtualKeyboardInputContextPrivate::setKeyboardObserver(QVirtualKeyboardObserver *keyboardObserver)
 {
     if (!this->keyboardObserver.isNull())

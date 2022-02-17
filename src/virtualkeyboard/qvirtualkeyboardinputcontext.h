@@ -35,6 +35,7 @@
 #include <QLocale>
 #include <QInputMethodEvent>
 #include <QInputMethod>
+#include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
@@ -75,6 +76,10 @@ class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContext : public QObject
     Q_PROPERTY(QVirtualKeyboardObserver *keyboardObserver READ keyboardObserver CONSTANT REVISION(6, 1))
     Q_MOC_INCLUDE("qvirtualkeyboardinputengine.h")
     Q_MOC_INCLUDE("qvirtualkeyboardinputcontext_p.h")
+    QML_NAMED_ELEMENT(InputContext)
+    QML_SINGLETON
+    QML_ADDED_IN_VERSION(1, 0)
+    QML_EXTRA_VERSION(2, 0)
 
 public:
     explicit QVirtualKeyboardInputContext(QObject *parent = nullptr);

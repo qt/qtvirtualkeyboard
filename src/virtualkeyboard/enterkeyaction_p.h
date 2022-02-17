@@ -41,7 +41,7 @@
 // We mean it.
 //
 
-#include <qqml.h>
+#include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 #include <QtCore/private/qglobal_p.h>
 
@@ -53,6 +53,11 @@ class EnterKeyActionAttachedType;
 class Q_VIRTUALKEYBOARD_EXPORT EnterKeyAction : public QObject
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(EnterKeyAction)
+    QML_UNCREATABLE("EnterKeyAction is an abstract type that is only available as an attached property.")
+    QML_ATTACHED(EnterKeyActionAttachedType)
+    QML_ADDED_IN_VERSION(1, 0)
+    QML_EXTRA_VERSION(2, 0)
 
 public:
     enum Id {

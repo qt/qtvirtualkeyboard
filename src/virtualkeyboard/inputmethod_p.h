@@ -41,6 +41,7 @@
 // We mean it.
 //
 
+#include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
 #include <QtCore/private/qglobal_p.h>
 
@@ -53,6 +54,9 @@ class Q_VIRTUALKEYBOARD_EXPORT InputMethod : public QVirtualKeyboardAbstractInpu
     Q_PROPERTY(QVirtualKeyboardInputContext *inputContext READ inputContext CONSTANT)
     Q_PROPERTY(QVirtualKeyboardInputEngine *inputEngine READ inputEngine CONSTANT)
     Q_MOC_INCLUDE("qvirtualkeyboardinputcontext.h")
+    QML_NAMED_ELEMENT(InputMethod)
+    QML_ADDED_IN_VERSION(1, 0)
+    QML_EXTRA_VERSION(2, 0)
 
 public:
     explicit InputMethod(QObject *parent = nullptr);

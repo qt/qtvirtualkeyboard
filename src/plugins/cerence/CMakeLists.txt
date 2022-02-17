@@ -1,9 +1,19 @@
-# Generated from cerence.pro.
+set(cerence_imports)
 
 add_subdirectory(cerencecommon)
 if(QT_FEATURE_cerence_hwr)
-    add_subdirectory(cerence-hwr)
+    add_subdirectory(hwr)
+    list(APPEND cerence_imports QtQuick.VirtualKeyboard.Plugins.Cerence.HWR/auto)
 endif()
 if(QT_FEATURE_cerence_xt9)
     add_subdirectory(xt9)
+    list(APPEND cerence_imports QtQuick.VirtualKeyboard.Plugins.Cerence.XT9/auto)
 endif()
+
+qt_internal_add_qml_module(qtvkbcerenceplugin
+    URI "QtQuick.VirtualKeyboard.Plugins.Cerence"
+    VERSION "${PROJECT_VERSION}"
+    PLUGIN_TARGET qtvkbcerenceplugin
+    IMPORTS
+        ${cerence_imports}
+)

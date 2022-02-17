@@ -40,7 +40,7 @@ class QtQuickVirtualKeyboardStylesPlugin : public QQmlExtensionPlugin
     Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
 
 public:
-    QtQuickVirtualKeyboardStylesPlugin(QObject *parent = nullptr) : QQmlExtensionPlugin(parent) { }
+    QtQuickVirtualKeyboardStylesPlugin(QObject *parent = nullptr);
     void registerTypes(const char *uri) override;
     void initializeEngine(QQmlEngine *engine, const char *uri) override;
 };

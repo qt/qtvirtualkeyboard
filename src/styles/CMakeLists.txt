@@ -1,21 +1,38 @@
+set(styles_imports)
+if(NOT QT_FEATURE_vkb_no_builtin_style)
+    add_subdirectory(builtin)
+    list(APPEND styles_imports QtQuick.VirtualKeyboard.Styles.Builtin/auto)
+endif()
+
 #####################################################################
-## qtquickvirtualkeyboardstylesplugin Plugin:
+## QtQuick.VirtualKeyboard.Styles
 #####################################################################
 
-qt_internal_add_qml_module(qtquickvirtualkeyboardstylesplugin
+qt_internal_add_qml_module(qtvkbstylesplugin
     URI "QtQuick.VirtualKeyboard.Styles"
-    VERSION "2.${PROJECT_VERSION_MINOR}"
-    CLASS_NAME QtQuickVirtualKeyboardStylesPlugin
-    PLUGIN_TARGET qtquickvirtualkeyboardstylesplugin
+    VERSION "${PROJECT_VERSION}"
+    PAST_MAJOR_VERSIONS 2 1
+    PLUGIN_TARGET qtvkbstylesplugin
+    # Note: The plugin source is defined manually because it uses an
+    #       image provider. Once the image provider doesn't need an
+    #       engine anymore, we can auto-generate the plugin.
     NO_GENERATE_PLUGIN_SOURCE
     NO_PLUGIN_OPTIONAL
-    NO_GENERATE_QMLTYPES
-    INSTALL_SOURCE_QMLTYPES "plugins.qmltypes"
     DEPENDENCIES
-        QtQuick/2.0
+        QtQuick/auto
+    IMPORTS
+        ${styles_imports}
     SOURCES
         qtquickvirtualkeyboardstylesplugin.cpp qtquickvirtualkeyboardstylesplugin.h
         svgimageprovider.cpp svgimageprovider.h
+    QML_FILES
+        KeyboardStyle.qml
+        KeyIcon.qml
+        KeyPanel.qml
+        SelectionListItem.qml
+        TraceInputKeyPanel.qml
+        TraceCanvas.qml
+        TraceUtils.js
     DEFINES
         QT_ASCII_CAST_WARNINGS
         QT_NO_CAST_FROM_ASCII
@@ -27,30 +44,4 @@ qt_internal_add_qml_module(qtquickvirtualkeyboardstylesplugin
         Qt::Qml
         Qt::Quick
         Qt::Svg
-        Qt::VirtualKeyboardPrivate
 )
-
-# Resources:
-set(styles_resource_files
-    "KeyIcon.qml"
-    "KeyPanel.qml"
-    "KeyboardStyle.qml"
-    "SelectionListItem.qml"
-    "TraceCanvas.qml"
-    "TraceInputKeyPanel.qml"
-    "TraceUtils.js"
-)
-
-qt_internal_add_resource(qtquickvirtualkeyboardstylesplugin "styles"
-    PREFIX
-        "/QtQuick/VirtualKeyboard/Styles/content"
-    FILES
-        ${styles_resource_files}
-)
-
-## Scopes:
-#####################################################################
-
-#### Keys ignored in scope 2:.:.:styles.pro:WIN32:
-# QMAKE_TARGET_DESCRIPTION = "Virtual Keyboard for Qt."
-# QMAKE_TARGET_PRODUCT = "Qt Virtual Keyboard (Qt $$QT_VERSION)"

@@ -45,6 +45,7 @@
 #include <QPointer>
 #include <QMetaType>
 #include <QRectF>
+#include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 #include <QtCore/private/qglobal_p.h>
 
@@ -68,6 +69,8 @@ class Q_VIRTUALKEYBOARD_EXPORT ShadowInputContext : public QObject
     Q_PROPERTY(bool anchorRectIntersectsClipRect READ anchorRectIntersectsClipRect NOTIFY anchorRectIntersectsClipRectChanged)
     Q_PROPERTY(bool cursorRectIntersectsClipRect READ cursorRectIntersectsClipRect NOTIFY cursorRectIntersectsClipRectChanged)
     Q_PROPERTY(bool selectionControlVisible READ selectionControlVisible NOTIFY selectionControlVisibleChanged)
+    QML_NAMED_ELEMENT(ShadowInputContext)
+    QML_UNCREATABLE("ShadowInputContext is only available via InputContext.priv.shadow")
 
     explicit ShadowInputContext(QObject *parent = nullptr);
 

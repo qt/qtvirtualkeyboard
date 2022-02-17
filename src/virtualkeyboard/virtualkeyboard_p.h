@@ -41,7 +41,7 @@
 // We mean it.
 //
 
-#include <qqml.h>
+#include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 #include <QtCore/private/qglobal_p.h>
 
@@ -53,6 +53,8 @@ class VirtualKeyboardAttachedType;
 class Q_VIRTUALKEYBOARD_EXPORT VirtualKeyboard : public QObject
 {
     Q_OBJECT
+    QML_ATTACHED(VirtualKeyboardAttachedType)
+    QML_ADDED_IN_VERSION(6, 1)
 
 public:
     static VirtualKeyboardAttachedType *qmlAttachedProperties(QObject *object);

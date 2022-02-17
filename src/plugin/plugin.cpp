@@ -28,12 +28,8 @@
 ****************************************************************************/
 
 #include "plugin.h"
-#include "extensionloader.h"
 #include <QtVirtualKeyboard/private/platforminputcontext_p.h>
-#include <QtVirtualKeyboard/private/plaininputmethod_p.h>
-#include <QtVirtualKeyboard/private/qvirtualkeyboard_staticplugin_p.h>
 #include <QLoggingCategory>
-#include <QtQml>
 #if defined(Q_OS_WIN)
 #include <qt_windows.h>
 #endif
@@ -44,7 +40,6 @@ using namespace QtVirtualKeyboard;
 
 Q_LOGGING_CATEGORY(qlcVirtualKeyboard, "qt.virtualkeyboard")
 
-static const char pluginsUri[] = "QtQuick.VirtualKeyboard.Plugins";
 static const char pluginName[] = "qtvirtualkeyboard";
 static const char inputMethodEnvVarName[] = "QT_IM_MODULE";
 
@@ -56,20 +51,6 @@ QStringList QVirtualKeyboardPlugin::keys() const
 QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, const QStringList &paramList)
 {
     Q_UNUSED(paramList);
-
-#if defined(QT_STATICPLUGIN)
-#if !defined(QT_VIRTUALKEYBOARD_DISABLE_LAYOUTS)
-    Q_INIT_RESOURCE(qmake_virtualkeyboard_layouts);
-#endif
-    Q_INIT_RESOURCE(virtualkeyboard_content);
-#if !defined(QT_VIRTUALKEYBOARD_NO_BUILTIN_STYLES)
-    Q_INIT_RESOURCE(virtualkeyboard_default_style);
-    Q_INIT_RESOURCE(virtualkeyboard_retro_style);
-#endif
-    Q_VKB_IMPORT_PLUGIN(QtQuickVirtualKeyboardPlugin)
-    Q_VKB_IMPORT_PLUGIN(QtQuickVirtualKeyboardSettingsPlugin)
-    Q_VKB_IMPORT_PLUGIN(QtQuickVirtualKeyboardStylesPlugin)
-#endif
 
     if (!qEnvironmentVariableIsSet(inputMethodEnvVarName) || qgetenv(inputMethodEnvVarName) != pluginName)
         return Q_NULLPTR;
@@ -83,62 +64,6 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
 #endif
 
     PlatformInputContext *platformInputContext = new PlatformInputContext();
-
-    QStringList inputMethodList;
-    inputMethodList.append(QLatin1String("PlainInputMethod"));
-    qRegisterMetaType<PlainInputMethod *>("PlainInputMethod*");
-    qmlRegisterType<PlainInputMethod>(pluginsUri, 1, 0, "PlainInputMethod");
-    qmlRegisterType<PlainInputMethod>(pluginsUri, 2, 0, "PlainInputMethod");
-    qmlRegisterType<PlainInputMethod>(pluginsUri, 2, 3, "PlainInputMethod");
-
-    QMultiHash<QString, QCborMap> extensions = ExtensionLoader::plugins();
-    for (const QString &extensionName : extensions.uniqueKeys()) {
-        QCborMap metaData = ExtensionLoader::loadMeta(extensionName);
-        if (metaData.isEmpty()) {
-            qCWarning(qlcVirtualKeyboard) << "Error loading extension - metadata not found!";
-            continue;
-        }
-
-        const QCborValue &inputMethodValue = metaData.value(QLatin1String("InputMethod"));
-        QStringList inputMethodValueList;
-        if (inputMethodValue.isArray()) {
-            for (const QCborValue v : inputMethodValue.toArray()) {
-                const QString &inputMethod = v.toString();
-                if (!inputMethod.isEmpty())
-                    inputMethodValueList.append(inputMethod);
-            }
-        } else {
-            const QString &inputMethod = inputMethodValue.toString();
-            if (!inputMethod.isEmpty())
-                inputMethodValueList.append(inputMethod);
-        }
-
-        bool ignoreExtension = false;
-        for (const QString &inputMethod : inputMethodValueList) {
-            if (inputMethodList.contains(inputMethod)) {
-                ignoreExtension = true;
-                qCWarning(qlcVirtualKeyboard) << "Ignored extension" << extensionName <<
-                                                 "by" << metaData.value(QLatin1String("Provider")).toString() <<
-                                                 "-" << inputMethod << "is already registered!";
-                break;
-            }
-        }
-
-        if (ignoreExtension)
-            continue;
-
-        qCDebug(qlcVirtualKeyboard) << "Loading extension" << extensionName;
-        QVirtualKeyboardExtensionPlugin *extensionPlugin = ExtensionLoader::loadPlugin(metaData);
-        if (extensionPlugin && !inputMethodValueList.isEmpty()) {
-            extensionPlugin->registerTypes(pluginsUri);
-            inputMethodList.append(inputMethodValueList);
-        }
-    }
-
-    // Auto-increment the import to stay in sync with ALL future QtQuick minor versions
-    qmlRegisterModule(pluginsUri, 2, QT_VERSION_MINOR);
-
-    platformInputContext->setInputMethods(inputMethodList);
 
     return platformInputContext;
 }

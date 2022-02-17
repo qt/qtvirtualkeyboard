@@ -32,6 +32,7 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 
 QT_BEGIN_NAMESPACE
@@ -44,6 +45,8 @@ class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardObserver : public QObject
     Q_DECLARE_PRIVATE(QVirtualKeyboardObserver)
     Q_DISABLE_COPY(QVirtualKeyboardObserver)
     Q_PROPERTY(QVariant layout READ layout NOTIFY layoutChanged)
+    QML_NAMED_ELEMENT(KeyboardObserver)
+    QML_ADDED_IN_VERSION(6, 1)
 
 public:
     explicit QVirtualKeyboardObserver(QObject *parent = nullptr);

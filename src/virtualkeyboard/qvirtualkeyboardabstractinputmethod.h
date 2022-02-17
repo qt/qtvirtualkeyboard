@@ -30,6 +30,7 @@
 #ifndef QVIRTUALKEYBOARDABSTRACTINPUTMETHOD_H
 #define QVIRTUALKEYBOARDABSTRACTINPUTMETHOD_H
 
+#include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardselectionlistmodel.h>
 
@@ -41,6 +42,9 @@ class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardAbstractInputMethod : public QObj
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(QVirtualKeyboardAbstractInputMethod)
+    QML_ANONYMOUS
+    QML_ADDED_IN_VERSION(1, 0)
+    QML_EXTRA_VERSION(2, 0)
 
 protected:
     QVirtualKeyboardAbstractInputMethod(QVirtualKeyboardAbstractInputMethodPrivate &dd, QObject *parent = nullptr);
