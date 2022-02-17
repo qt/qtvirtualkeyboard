@@ -42,6 +42,7 @@ namespace QtVirtualKeyboard {
 
 class Xt9AwInputMethodPrivate : public Xt9InputMethodPrivate
 {
+public:
     Q_DECLARE_PUBLIC(Xt9AwInputMethod)
 
 protected:

@@ -45,8 +45,9 @@ class Xt9InputMethod;
 
 class Xt9InputMethodPrivate : public QVirtualKeyboardAbstractInputMethodPrivate, public Xt9RequestCallback
 {
-    Q_DECLARE_PUBLIC(Xt9InputMethod)
 public:
+    Q_DECLARE_PUBLIC(Xt9InputMethod)
+
     Xt9InputMethodPrivate(Xt9InputMethod *q_ptr, Xt9Ime *xt9Ime, const QString &aDlmFileName);
 
     inline Xt9Ime *xt9Ime() const;
