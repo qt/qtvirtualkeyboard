@@ -33,7 +33,7 @@ import QtQuick.VirtualKeyboard
 
 KeyboardLayoutLoader {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; TCInputMethod {}', parent, "tcInputMethod")
+        return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; TCInputMethod {}', parent, "main.qml")
     }
     sharedLayouts: ['symbols']
     sourceComponent: InputContext.inputEngine.inputMode === InputEngine.InputMode.Cangjie ? pageCangjie : pageZhuyin
