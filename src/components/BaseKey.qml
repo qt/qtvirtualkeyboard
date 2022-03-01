@@ -33,8 +33,9 @@ import QtQuick.VirtualKeyboard
 
 /*!
     \qmltype BaseKey
-    \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
+    \inqmlmodule QtQuick.VirtualKeyboard.Components
+    \ingroup qmlclass
+    \ingroup qtvirtualkeyboard-components-qml
     \inherits Item
 
     \brief Common parent for all key types.
@@ -50,25 +51,10 @@ Item {
 
     /*! \since QtQuick.VirtualKeyboard 6.1
 
-        Type of the key.
+        \l Key type for the specialized key. Possible values are defined by the
+        {QtVirtualKeyboard::KeyType}{key type enumeration}.
 
-        \list
-            \li \c QtVirtualKeyboard.BaseKey
-            \li \c QtVirtualKeyboard.BackspaceKey
-            \li \c QtVirtualKeyboard.ChangeLanguageKey
-            \li \c QtVirtualKeyboard.EnterKey
-            \li \c QtVirtualKeyboard.FillerKey
-            \li \c QtVirtualKeyboard.HandwritingModeKey
-            \li \c QtVirtualKeyboard.HideKeyboardKey
-            \li \c QtVirtualKeyboard.InputModeKey
-            \li \c QtVirtualKeyboard.Key
-            \li \c QtVirtualKeyboard.ModeKey
-            \li \c QtVirtualKeyboard.NumberKey
-            \li \c QtVirtualKeyboard.ShiftKey
-            \li \c QtVirtualKeyboard.SpaceKey
-            \li \c QtVirtualKeyboard.SymbolModeKey
-            \li \c QtVirtualKeyboard.FlickKey
-        \endlist
+        For example, \l SpaceKey sets this value to \e QtVirtualKeyboard.SpaceKey.
     */
     property int keyType: QtVirtualKeyboard.BaseKey
 

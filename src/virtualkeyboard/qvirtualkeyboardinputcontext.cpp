@@ -44,7 +44,7 @@ using namespace QtVirtualKeyboard;
     \qmltype InputContext
     \instantiates QVirtualKeyboardInputContext
     \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
+    \ingroup qtvirtualkeyboard-internal-qml
     \brief Provides access to an input context.
 
     The InputContext can be accessed as singleton instance.
@@ -53,6 +53,7 @@ using namespace QtVirtualKeyboard;
 /*!
     \class QVirtualKeyboardInputContext
     \inmodule QtVirtualKeyboard
+    \ingroup qtvirtualkeyboard-cpp-for-devs
     \brief Provides access to an input context.
 */
 

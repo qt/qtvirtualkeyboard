@@ -46,13 +46,14 @@ public:
     \qmltype KeyboardObserver
     \instantiates QVirtualKeyboardObserver
     \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
+    \ingroup qtvirtualkeyboard-internal-qml
     \brief Acts as a hub for keyboard event notifications.
 */
 
 /*!
     \class QVirtualKeyboardObserver
     \inmodule QtVirtualKeyboard
+    \ingroup qtvirtualkeyboard-cpp-for-devs
     \brief Acts as a hub for keyboard event notifications.
 */
 

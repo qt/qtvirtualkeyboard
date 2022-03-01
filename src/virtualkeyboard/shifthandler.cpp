@@ -85,7 +85,7 @@ public:
 /*!
     \qmltype ShiftHandler
     \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
+    \ingroup qtvirtualkeyboard-internal-qml
     \instantiates QtVirtualKeyboard::ShiftHandler
     \brief Manages the shift state.
 */

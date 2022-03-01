@@ -32,8 +32,10 @@ import QtQuick.VirtualKeyboard
 
 /*!
     \qmltype SymbolModeKey
-    \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
+    \inqmlmodule QtQuick.VirtualKeyboard.Components
+    \ingroup qmlclass
+    \ingroup qtvirtualkeyboard-components-qml
+    \ingroup qtvirtualkeyboard-key-types
     \inherits Key
 
     \brief Symbol mode key for keyboard layouts.

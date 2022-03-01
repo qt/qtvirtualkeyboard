@@ -32,8 +32,10 @@ import QtQuick.VirtualKeyboard
 
 /*!
     \qmltype ShiftKey
-    \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
+    \inqmlmodule QtQuick.VirtualKeyboard.Components
+    \ingroup qmlclass
+    \ingroup qtvirtualkeyboard-components-qml
+    \ingroup qtvirtualkeyboard-key-types
     \inherits BaseKey
 
     \brief Shift key for keyboard layouts.

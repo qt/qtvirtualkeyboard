@@ -33,6 +33,7 @@
     \class QVirtualKeyboardDictionary
 
     \inmodule QtVirtualKeyboard
+    \ingroup qtvirtualkeyboard-cpp-for-apps
 
     \brief An application-defined dictionary for virtual keyboard input methods.
 

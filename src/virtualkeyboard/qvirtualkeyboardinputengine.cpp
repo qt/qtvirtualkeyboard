@@ -126,7 +126,7 @@ private:
 /*!
     \qmltype InputEngine
     \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
+    \ingroup qtvirtualkeyboard-internal-qml
     \instantiates QVirtualKeyboardInputEngine
     \brief Maps the user input to the input methods.
 
@@ -141,6 +141,7 @@ private:
 /*!
     \class QVirtualKeyboardInputEngine
     \inmodule QtVirtualKeyboard
+    \ingroup qtvirtualkeyboard-cpp-for-devs
     \brief The InputEngine class provides an input engine
     that supports C++ and QML integration.
 

@@ -48,7 +48,7 @@ Q_GHS_KEEP_REFERENCE(qml_register_types_QtQuick_VirtualKeyboard_Styles);
     The QML types can be imported into your application using the following
     import statements in your .qml file:
 
-    \qml \QtMinorVersion
+    \qml
     import QtQuick.VirtualKeyboard.Styles
     \endqml
 */

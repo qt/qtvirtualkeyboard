@@ -32,8 +32,10 @@ import QtQuick.Layouts
 
 /*!
     \qmltype TraceInputKey
-    \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
+    \inqmlmodule QtQuick.VirtualKeyboard.Components
+    \ingroup qmlclass
+    \ingroup qtvirtualkeyboard-components-qml
+    \ingroup qtvirtualkeyboard-key-types
     \inherits Item
     \since QtQuick.VirtualKeyboard 2.0
 

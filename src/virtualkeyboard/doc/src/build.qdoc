@@ -38,52 +38,37 @@ This document describes how to build the Qt Virtual Keyboard plugin.
 The project is split into the following subprojects:
 \table
 \row
-    \li \e examples/virtualkeyboard/basic/basic.pro
+    \li \e examples/virtualkeyboard/basic
     \li Qt Virtual Keyboard Demo application
 \row
-    \li \e src/virtualkeyboard/import/
-    \li Qt Virtual Keyboard QML plugin (QtQuick.VirtualKeyboard)
+    \li \e src/components/
+    \li Qt Virtual Keyboard Components QML plugin (QtQuick.VirtualKeyboard.Components)
 \row
-    \li \e src/virtualkeyboard/plugin/
+    \li \e src/plugin/
     \li Qt Virtual Keyboard platform input context plugin. This plugin
-        provides the QPlatformInputContext interface for the Qt and is
-        also responsible for loading the Virtual Keyboard Plugins
-        (QtQuick.VirtualKeyboard.Plugins).
+        provides the QPlatformInputContext interface and works as a
+        layer between QML input context and platform.
 \row
-    \li \e src/virtualkeyboard/plugins/
-    \li A directory containing Qt Virtual Keyboard plugins, such as the Hunspell plugin
+    \li \e src/plugins/
+    \li A directory containing Qt Virtual Keyboard plugins (QtQuick.VirtualKeyboard.Plugins),
+        which implement complex input methods, such as the \e HunspellInputMethod.
+        Build time configuration specifies which plugins are built and loaded at runtime.
 \row
-    \li \e src/virtualkeyboard/settings/
-    \li Qt Virtual Keyboard Settings QML plugin (QtQuick.VirtualKeyboard.Settings)
+    \li \e src/settings/
+    \li Qt Virtual Keyboard Settings QML plugin (QtQuick.VirtualKeyboard.Settings).
+        This plugin provides application-configurable settings for the virtual keyboard.
 \row
-    \li \e src/virtualkeyboard/styles/styles.pro
-    \li Qt Virtual Keyboard Styles QML plugin (QtQuick.VirtualKeyboard.Styles)
+    \li \e src/styles/
+    \li Qt Virtual Keyboard Styles QML plugin (QtQuick.VirtualKeyboard.Styles).
 \row
-    \li \e src/virtualkeyboard/virtualkeyboard.pro
-    \li Qt Virtual Keyboard module, QML components and layouts
+    \li \e src/virtualkeyboard/
+    \li Qt Virtual Keyboard module and QML plugin.
 \endtable
-
-The input methods are implemented either in C++ or QML.
-Qt Virtual Keyboard provides implementations of \e PlainInputMethod,
-\e MultitapInputMethod and \e HunspellInputMethod.
-The \e MultitapInputMethod is implemented in QML while the others are implemented
-in C++.
-
-\section1 Build Instructions
-
-The Qt Virtual Keyboard can be built for Linux Desktop/X11, Windows Desktop
-or Boot2Qt targets.
-The target is automatically detected by QMAKE and requires no special
-configuration parameters.
-
-Qt Creator is the preferred build environment for Qt Virtual Keyboard as you
-can then leverage the shadow build functionality and rapidly switch between
-build targets.
 
 \section2 Configuration Options
 
 The table below contains the top-level options for configuring the virtual
-keyboard features.
+keyboard features. These options are passed to the \e configure tool.
 
 \table
 \header
@@ -166,25 +151,16 @@ keyboard features.
         \note In this scenario, the \c QT_VIRTUALKEYBOARD_LAYOUT_PATH environment
         variable should be set to the file system directory containing the custom
         keyboard layouts before running the application.
-\endtable
-
-These options can be passed to configure when doing a full build of Qt.
-Alternatively, when building only the Qt Virtual Keyboard, you can configure
-the keyboard using the following command (where SRCDIR points to the source
-directory of QtVirtualKeyboard):
-
-\badcode
-qmake $SRCDIR -- [options]
-\endcode
-
-\table
 \row
-    \li \e disable-hunspell
-    \li \e n/a
-    \li Disables Hunspell integration
-    \li Hunspell integration is enabled if the Hunspell library is available on the
-        system, or if it is built using the local project file. Integration can be
-        disabled using this option.
+    \li \e -vkb-hunspell
+    \li \e [no|3rdparty|system]
+    \li Choose Hunspell integration
+    \li Forces the Hunspell integration method to the specified option. The \e 3rdparty option
+        selects the local build of the Hunspell source code using project files in the
+        virtual keyboard repo. This option requires that the Hunspell git repository has
+        been cloned into \e src/plugins/hunspell/3rdparty/hunspell directory. The \e system
+        option selects the system package via \e pkg-config. The \e no option disables the
+        Hunspell plugin.
 \row
     \li \e -vkb-no-bundle-pinyin
     \li \e n/a
@@ -198,34 +174,11 @@ qmake $SRCDIR -- [options]
     \li This option excludes tcime resources from the plugin binary. This option may be
         used to reduce the plugin binary size.
 \row
-    \li \e pinyin
-    \li \e lang-zh_CN
-    \li Enables the Pinyin input method for Simplified Chinese.
-    \li This option activates the Pinyin input method for the Simplified Chinese
-        language.
-
-        \include build.qdocinc input-method-language-option-note
-\row
-    \li \e tcime
-    \li \e lang-zh_TW
-    \li Enables the both Cangjie and Zhuyin input methods for Traditional Chinese.
-    \li This option activates the both Cangjie and Zhuyin input methods for the
-        Traditional Chinese language.
-
-        \include build.qdocinc input-method-language-option-note
-\row
-    \li \e openwnn
-    \li \e lang-ja_JP
-    \li Enables the OpenWnn input method for Japanese.
-    \li This option activates the OpenWnn input method for the Japanese language.
-
-    \include build.qdocinc input-method-language-option-note
-\row
     \li \e -vkb-cerence-sdk
     \li \e path/to/cerence/sdk
     \li Configures the Cerence SDK location and enables the Cerence Handwriting and XT9 integrations.
-    \li The Cerence SDK (zip) must be unpacked using the \e src/virtualkeyboard/plugins/cerence/unpack.py
-        script. By default, the SDK is unpacked to \e src/virtualkeyboard/plugins/cerence/sdk, where
+    \li The Cerence SDK zip file must be unpacked using the \e src/plugins/cerence/unpack.py
+        script. By default, the SDK is unpacked to \e src/plugins/cerence/sdk, where
         the build scripts can pick it up automatically. However, by using the second parameter to the unpack.py
         script, it is possible to use different location for the SDK. In that case, the location must be
         passed to the build script using the -vkb-cerence-sdk command line parameter.
@@ -263,26 +216,18 @@ qmake $SRCDIR -- [options]
         command line parameter.
 \endtable
 
-\section2 Building Documentation
-
-\table
-\row
-    \li \e {make docs}
-    \li Generates documentation
-\endtable
-
 \section2 Hunspell Integration
 
 By default, \e HunspellInputMethod will not be available unless the Hunspell
 library and development headers are found. For Linux/X11 targets, the Hunspell
 library can be provided by installing the libhunspell-dev package.
-Alternatively, the Hunspell sources can be extracted into the
+Alternatively, the Hunspell git repository can be cloned into the
 \e src/plugins/hunspell/3rdparty/hunspell directory. The sources are automatically
 detected by the qmake and the project will be configured to use the local Hunspell.
 If Hunspell sources are used, then the dictionary files must also be
 copied into the \e src/plugins/hunspell/3rdparty/hunspell/data directory.
 
-An example of how the directory structure should look after copying in the
+An example of how the directory structure should look after setting up the
 Hunspell sources and dictionary files is listed below:
 
 \badcode
@@ -291,12 +236,8 @@ Hunspell sources and dictionary files is listed below:
     ├── data
     │   ├── en_GB.aff
     │   └── en_GB.dic
-    ├── hunspell.pro
-    └── src
-        └── hunspell
-            ├── affentry.cxx
-            ├── affentry.hxx
-            (etc.)
+    ├── hunspell <-- Hunspell git repository
+    └── CMakeLists.txt
 \endcode
 
 \section2 Cerence Handwriting Integration
@@ -608,42 +549,5 @@ Language resources for MyScript Text SDK are installed in the \e [qtbase]/qtvirt
 The virtual keyboard can be built and linked statically against the application.
 This implies that Qt is also built statically (using the -static option in the
 configure command line).
-
-Static builds of the virtual keyboard are enabled by adding \c CONFIG+=static to
-the qmake command line and then rebuilding.
-
-Some third party modules used by the virtual keyboard are always built as shared
-libraries (e.g. Hunspell).
-
-\section3 Using the static plugin
-
-The following section should be added to the application project file that uses the
-statically built virtual keyboard.
-
-\code
-static {
-    QTPLUGIN += qtvirtualkeyboardplugin
-    QT += svg
-}
-\endcode
-
-\c QTPLUGIN causes qmake to pull linker dependencies for the virtual keyboard
-plugin. The SVG module is required as an extra dependency for Qt, since the SVG format is
-required by the default styles.
-
-From here on, using a statically built virtual keyboard is no different from the normal
-case.
-
-\section1 Deployment
-
-\section2 Desktop Targets
-
-Add a Deploy Step that executes the \e {make install} command, then deploy using
-the \e {Deploy All} command.
-
-\section2 Boot2Qt Targets
-
-The installation is done by copying the necessary files to the memory card, or
-by using the adb push command.
 
 */

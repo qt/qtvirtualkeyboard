@@ -117,7 +117,7 @@ public:
     The QML types can be imported into your application using the following
     import statements in your .qml file:
 
-    \qml \QtMinorVersion
+    \qml
     import QtQuick.VirtualKeyboard.Settings
     \endqml
 */

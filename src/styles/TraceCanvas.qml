@@ -35,6 +35,7 @@ import QtQuick.VirtualKeyboard
     \qmltype TraceCanvas
     \inqmlmodule QtQuick.VirtualKeyboard.Styles
     \brief A specialized Canvas type for rendering Trace objects.
+    \ingroup qmlclass
     \ingroup qtvirtualkeyboard-styles-qml
     \inherits Canvas
     \since QtQuick.VirtualKeyboard 2.0

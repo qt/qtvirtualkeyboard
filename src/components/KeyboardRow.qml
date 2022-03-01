@@ -32,8 +32,9 @@ import QtQuick.Layouts
 
 /*!
     \qmltype KeyboardRow
-    \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
+    \inqmlmodule QtQuick.VirtualKeyboard.Components
+    \ingroup qmlclass
+    \ingroup qtvirtualkeyboard-components-qml
     \inherits RowLayout
 
     \brief Keyboard row for keyboard layouts.

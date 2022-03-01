@@ -40,6 +40,7 @@ import QtQuick.VirtualKeyboard.Components
     \since QtQuick.VirtualKeyboard 2.0
 
     \brief Provides a handwriting panel add-on for the virtual keyboard UI.
+    \ingroup qmlclass
     \ingroup qtvirtualkeyboard-qml
 
     The HandwritingInputPanel is an add-on component for the InputPanel, which

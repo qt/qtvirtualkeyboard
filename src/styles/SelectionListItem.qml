@@ -33,6 +33,7 @@ import QtQuick
     \qmltype SelectionListItem
     \inqmlmodule QtQuick.VirtualKeyboard.Styles
     \brief A base type for selection list item delegates.
+    \ingroup qmlclass
     \ingroup qtvirtualkeyboard-styles-qml
 
     The SelectionListItem enables mouse handling for the selection list item

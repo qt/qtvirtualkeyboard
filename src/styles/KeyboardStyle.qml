@@ -33,6 +33,7 @@ import QtQuick
     \qmltype KeyboardStyle
     \inqmlmodule QtQuick.VirtualKeyboard.Styles
     \brief Provides a styling interface for the Virtual Keyboard.
+    \ingroup qmlclass
     \ingroup qtvirtualkeyboard-styles-qml
 
     The style type provides the style definitions that are used by

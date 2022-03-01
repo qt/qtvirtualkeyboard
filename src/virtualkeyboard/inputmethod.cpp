@@ -38,7 +38,7 @@ namespace QtVirtualKeyboard {
     \qmltype InputMethod
     \instantiates QtVirtualKeyboard::InputMethod
     \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
+    \ingroup qtvirtualkeyboard-internal-qml
     \brief Base type for creating input method in QML.
 
     The InputMethod type lets you create a custom input method

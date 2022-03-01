@@ -33,8 +33,9 @@ import QtQuick.VirtualKeyboard
 
 /*!
     \qmltype KeyboardLayout
-    \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
+    \inqmlmodule QtQuick.VirtualKeyboard.Components
+    \ingroup qmlclass
+    \ingroup qtvirtualkeyboard-components-qml
     \inherits ColumnLayout
 
     \brief Keyboard layout.

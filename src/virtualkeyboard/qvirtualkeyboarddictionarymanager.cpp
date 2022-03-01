@@ -72,6 +72,7 @@ Q_GLOBAL_STATIC(QVirtualKeyboardDictionaryManagerSingleton, singleton)
     \class QVirtualKeyboardDictionaryManager
 
     \inmodule QtVirtualKeyboard
+    \ingroup qtvirtualkeyboard-cpp-for-apps
 
     \brief Dictionary management for application-defined dictionaries.
 

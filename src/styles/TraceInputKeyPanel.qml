@@ -33,6 +33,7 @@ import QtQuick
     \qmltype TraceInputKeyPanel
     \inqmlmodule QtQuick.VirtualKeyboard.Styles
     \brief A base type of the trace input key.
+    \ingroup qmlclass
     \ingroup qtvirtualkeyboard-styles-qml
     \since QtQuick.VirtualKeyboard 2.0
 

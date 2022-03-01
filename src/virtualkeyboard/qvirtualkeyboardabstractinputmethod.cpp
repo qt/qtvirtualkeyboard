@@ -36,6 +36,7 @@ QT_BEGIN_NAMESPACE
     \class QVirtualKeyboardAbstractInputMethod
 
     \inmodule QtVirtualKeyboard
+    \ingroup qtvirtualkeyboard-cpp-for-devs
 
     \brief The base class for input methods.
 

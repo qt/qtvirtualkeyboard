@@ -33,6 +33,7 @@ import QtQuick
     \qmltype KeyPanel
     \inqmlmodule QtQuick.VirtualKeyboard.Styles
     \brief A base type of the styled keys.
+    \ingroup qmlclass
     \ingroup qtvirtualkeyboard-styles-qml
 
     All the key delegates provided by the style should be based on this type.

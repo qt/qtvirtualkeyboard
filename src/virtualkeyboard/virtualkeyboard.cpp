@@ -36,6 +36,7 @@ namespace QtVirtualKeyboard {
 /*!
     \qmltype VirtualKeyboard
     \inqmlmodule QtQuick.VirtualKeyboard
+    \ingroup qmlclass
     \ingroup qtvirtualkeyboard-qml
     \brief Provides attached properties for customizing the virtual keyboard.
     \since QtQuick.VirtualKeyboard 6.1

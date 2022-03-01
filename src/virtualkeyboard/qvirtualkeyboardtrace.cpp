@@ -56,6 +56,7 @@ public:
 /*!
     \class QVirtualKeyboardTrace
     \inmodule QtVirtualKeyboard
+    \ingroup qtvirtualkeyboard-cpp-for-devs
     \since QtQuick.VirtualKeyboard 2.0
     \brief Trace is a data model for touch input data.
 
@@ -117,7 +118,7 @@ public:
     \qmltype Trace
     \instantiates QVirtualKeyboardTrace
     \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
+    \ingroup qtvirtualkeyboard-internal-qml
     \since QtQuick.VirtualKeyboard 2.0
     \brief Trace is a data model for touch input data.
 

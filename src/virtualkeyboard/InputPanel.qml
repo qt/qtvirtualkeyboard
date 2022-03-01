@@ -38,6 +38,7 @@ import QtQuick.VirtualKeyboard.Components
     \inqmlmodule QtQuick.VirtualKeyboard
 
     \brief Provides the virtual keyboard UI.
+    \ingroup qmlclass
     \ingroup qtvirtualkeyboard-qml
 
     The keyboard size is automatically calculated from the available

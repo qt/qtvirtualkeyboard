@@ -36,6 +36,7 @@ namespace QtVirtualKeyboard {
 /*!
     \qmltype EnterKeyAction
     \inqmlmodule QtQuick.VirtualKeyboard
+    \ingroup qmlclass
     \ingroup qtvirtualkeyboard-qml
     \brief Provides attached properties for customizing the enter key.
 

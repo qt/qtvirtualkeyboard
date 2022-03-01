@@ -33,8 +33,9 @@ import QtQuick.VirtualKeyboard
 
 /*!
     \qmltype TraceInputArea
-    \inqmlmodule QtQuick.VirtualKeyboard
-    \ingroup qtvirtualkeyboard-qml
+    \inqmlmodule QtQuick.VirtualKeyboard.Components
+    \ingroup qmlclass
+    \ingroup qtvirtualkeyboard-components-qml
     \inherits MultiPointTouchArea
     \since QtQuick.VirtualKeyboard 2.0
 
