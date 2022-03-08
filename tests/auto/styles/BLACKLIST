@@ -1,0 +1,4 @@
+# See qtbase/src/testlib/qtestblacklist.cpp for format
+#QTBUG-101536
+[tst_styles::compile]
+qnx
