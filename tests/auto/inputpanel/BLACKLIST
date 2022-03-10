@@ -17,6 +17,8 @@
 b2qt
 
 [tst_plugin::test_hangulInputMethod:row 25]
+# QTBUG-101622
+ubuntu-20
 b2qt
 
 [tst_plugin::test_hardKeyBackspaceClearsInput]
