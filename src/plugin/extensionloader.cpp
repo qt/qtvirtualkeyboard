@@ -31,6 +31,8 @@
 #include <QtVirtualKeyboard/QVirtualKeyboardExtensionPlugin>
 #include <QtCore/private/qfactoryloader_p.h>
 
+#include <QtCore/QMultiHash>
+
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
