@@ -85,7 +85,7 @@ Item {
             target: backgroundLoader.item
             property: "view"
             value: listView
-            when: backgroundLoader.item && backgroundLoader.item.hasOwnProperty("view")
+            when: backgroundLoader.item !== null && backgroundLoader.item.hasOwnProperty("view")
         }
     }
 
