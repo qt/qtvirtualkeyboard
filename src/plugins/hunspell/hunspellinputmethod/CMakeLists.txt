@@ -10,6 +10,7 @@ qt_internal_add_module(HunspellInputMethodPrivate
         hunspellinputmethod.cpp hunspellinputmethod_p.cpp hunspellinputmethod_p.h
         hunspellinputmethod_p_p.h
         hunspellworker.cpp hunspellworker_p.h
+        hunspellwordlist.cpp hunspellwordlist_p.h
         qhunspellinputmethod_global.h
     DEFINES
         QHUNSPELLINPUTMETHOD_LIBRARY

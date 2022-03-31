@@ -43,11 +43,11 @@
 
 #include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
 #include <QtHunspellInputMethod/qhunspellinputmethod_global.h>
+#include <QtHunspellInputMethod/private/hunspellinputmethod_p_p.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
-class HunspellInputMethodPrivate;
 class HunspellWordList;
 
 class Q_HUNSPELLINPUTMETHOD_EXPORT HunspellInputMethod : public QVirtualKeyboardAbstractInputMethod
@@ -55,7 +55,7 @@ class Q_HUNSPELLINPUTMETHOD_EXPORT HunspellInputMethod : public QVirtualKeyboard
     Q_OBJECT
     Q_DECLARE_PRIVATE(HunspellInputMethod)
 protected:
-    HunspellInputMethod(HunspellInputMethodPrivate *d_ptr, QObject *parent);
+    HunspellInputMethod(HunspellInputMethodPrivate &dd, QObject *parent);
 public:
     explicit HunspellInputMethod(QObject *parent = nullptr);
     ~HunspellInputMethod();
@@ -77,13 +77,6 @@ public:
 
     void reset() override;
     void update() override;
-
-protected Q_SLOTS:
-    void updateSuggestions(const QSharedPointer<HunspellWordList> &wordList, int tag);
-    void dictionaryLoadCompleted(bool success);
-
-protected:
-    QScopedPointer<HunspellInputMethodPrivate> d_ptr;
 };
 
 } // namespace QtVirtualKeyboard

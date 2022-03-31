@@ -27,9 +27,10 @@
 **
 ****************************************************************************/
 
-#include <QtHunspellInputMethod/private/hunspellinputmethod_p_p.h>
+#include "hunspellinputmethod_p_p.h"
+#include "hunspellinputmethod_p.h"
+#include "hunspellworker_p.h"
 #include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
-#include <hunspell/hunspell.h>
 #include <QStringList>
 #include <QDir>
 #include <QtCore/QLibraryInfo>
@@ -94,7 +95,7 @@ bool HunspellInputMethodPrivate::createHunspell(const QString &locale)
                 searchPaths.append(defaultPath);
         }
         QSharedPointer<HunspellLoadDictionaryTask> loadDictionaryTask(new HunspellLoadDictionaryTask(locale, searchPaths));
-        QObject::connect(loadDictionaryTask.data(), &HunspellLoadDictionaryTask::completed, q, &HunspellInputMethod::dictionaryLoadCompleted);
+        QObjectPrivate::connect(loadDictionaryTask.data(), &HunspellLoadDictionaryTask::completed, this, &HunspellInputMethodPrivate::dictionaryLoadCompleted);
         dictionaryState = HunspellInputMethodPrivate::DictionaryLoading;
         emit q->selectionListsChanged();
         hunspellWorker->addTask(loadDictionaryTask);
@@ -154,8 +155,7 @@ bool HunspellInputMethodPrivate::updateSuggestions()
                 QSharedPointer<HunspellUpdateSuggestionsTask> updateSuggestionsTask(new HunspellUpdateSuggestionsTask());
                 updateSuggestionsTask->wordList = wordList;
                 updateSuggestionsTask->tag = ++wordCandidatesUpdateTag;
-                Q_Q(HunspellInputMethod);
-                QObject::connect(updateSuggestionsTask.data(), &HunspellUpdateSuggestionsTask::updateSuggestions, q, &HunspellInputMethod::updateSuggestions);
+                QObjectPrivate::connect(updateSuggestionsTask.data(), &HunspellUpdateSuggestionsTask::updateSuggestions, this, &HunspellInputMethodPrivate::updateSuggestionsCompleted);
                 hunspellWorker->addTask(updateSuggestionsTask);
             }
         }
@@ -331,6 +331,42 @@ void HunspellInputMethodPrivate::addToDictionary()
             saveCustomDictionary(userDictionaryWords, QLatin1String("userdictionary"));
         }
     }
+}
+
+void HunspellInputMethodPrivate::updateSuggestionsCompleted(const QSharedPointer<HunspellWordList> &wordList, int tag)
+{
+    if (dictionaryState == HunspellInputMethodPrivate::DictionaryNotLoaded) {
+        qCDebug(lcHunspell) << "updateSuggestions: skip (dictionary not loaded)";
+        Q_Q(HunspellInputMethod);
+        q->update();
+        return;
+    }
+    if (wordCandidatesUpdateTag != tag) {
+        qCDebug(lcHunspell) << "updateSuggestions: skip tag" << tag << "current" << wordCandidatesUpdateTag;
+        return;
+    }
+    QString word(wordCandidates.wordAt(0));
+    wordCandidates = *wordList;
+    if (wordCandidates.wordAt(0).compare(word) != 0)
+        wordCandidates.updateWord(0, word);
+    Q_Q(HunspellInputMethod);
+    emit q->selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
+    emit q->selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, wordCandidates.index());
+}
+
+void HunspellInputMethodPrivate::dictionaryLoadCompleted(bool success)
+{
+    Q_Q(HunspellInputMethod);
+    QVirtualKeyboardInputContext *ic = q->inputContext();
+    if (!ic)
+        return;
+
+    QList<QVirtualKeyboardSelectionListModel::Type> oldSelectionLists = q->selectionLists();
+    dictionaryState = success ? HunspellInputMethodPrivate::DictionaryReady :
+                                HunspellInputMethodPrivate::DictionaryNotLoaded;
+    QList<QVirtualKeyboardSelectionListModel::Type> newSelectionLists = q->selectionLists();
+    if (oldSelectionLists != newSelectionLists)
+        emit q->selectionListsChanged();
 }
 
 } // namespace QtVirtualKeyboard

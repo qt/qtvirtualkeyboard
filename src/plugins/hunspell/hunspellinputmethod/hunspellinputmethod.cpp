@@ -27,7 +27,7 @@
 **
 ****************************************************************************/
 
-#include <QtHunspellInputMethod/private/hunspellinputmethod_p_p.h>
+#include "hunspellinputmethod_p.h"
 #include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #include <QLoggingCategory>
 
@@ -41,15 +41,13 @@ Q_LOGGING_CATEGORY(lcHunspell, "qt.virtualkeyboard.hunspell")
     \internal
 */
 
-HunspellInputMethod::HunspellInputMethod(HunspellInputMethodPrivate *d_ptr, QObject *parent) :
-    QVirtualKeyboardAbstractInputMethod(parent),
-    d_ptr(d_ptr)
+HunspellInputMethod::HunspellInputMethod(HunspellInputMethodPrivate &dd, QObject *parent) :
+    QVirtualKeyboardAbstractInputMethod(dd, parent)
 {
 }
 
 HunspellInputMethod::HunspellInputMethod(QObject *parent) :
-    QVirtualKeyboardAbstractInputMethod(parent),
-    d_ptr(new HunspellInputMethodPrivate(this))
+    QVirtualKeyboardAbstractInputMethod(*new HunspellInputMethodPrivate(this), parent)
 {
 }
 
@@ -372,41 +370,6 @@ void HunspellInputMethod::update()
     if (!finalWord.isEmpty())
         inputContext()->commit(finalWord);
     d->autoSpaceAllowed = false;
-}
-
-void HunspellInputMethod::updateSuggestions(const QSharedPointer<HunspellWordList> &wordList, int tag)
-{
-    Q_D(HunspellInputMethod);
-    if (d->dictionaryState == HunspellInputMethodPrivate::DictionaryNotLoaded) {
-        qCDebug(lcHunspell) << "updateSuggestions: skip (dictionary not loaded)";
-        update();
-        return;
-    }
-    if (d->wordCandidatesUpdateTag != tag) {
-        qCDebug(lcHunspell) << "updateSuggestions: skip tag" << tag << "current" << d->wordCandidatesUpdateTag;
-        return;
-    }
-    QString word(d->wordCandidates.wordAt(0));
-    d->wordCandidates = *wordList;
-    if (d->wordCandidates.wordAt(0).compare(word) != 0)
-        d->wordCandidates.updateWord(0, word);
-    emit selectionListChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList);
-    emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->wordCandidates.index());
-}
-
-void HunspellInputMethod::dictionaryLoadCompleted(bool success)
-{
-    Q_D(HunspellInputMethod);
-    QVirtualKeyboardInputContext *ic = inputContext();
-    if (!ic)
-        return;
-
-    QList<QVirtualKeyboardSelectionListModel::Type> oldSelectionLists = selectionLists();
-    d->dictionaryState = success ? HunspellInputMethodPrivate::DictionaryReady :
-                                   HunspellInputMethodPrivate::DictionaryNotLoaded;
-    QList<QVirtualKeyboardSelectionListModel::Type> newSelectionLists = selectionLists();
-    if (oldSelectionLists != newSelectionLists)
-        emit selectionListsChanged();
 }
 
 } // namespace QtVirtualKeyboard

@@ -51,70 +51,13 @@
 #include <QStringDecoder>
 #include <QStringEncoder>
 #include <hunspell/hunspell.h>
-#include <QtHunspellInputMethod/qhunspellinputmethod_global.h>
+#include "hunspellwordlist_p.h"
 
 QT_BEGIN_NAMESPACE
 
 namespace QtVirtualKeyboard {
 
 Q_DECLARE_LOGGING_CATEGORY(lcHunspell)
-
-class Q_HUNSPELLINPUTMETHOD_EXPORT HunspellWordList
-{
-public:
-    enum Flag
-    {
-        SpellCheckOk = 0x1,
-        CompoundWord = 0x2
-    };
-    Q_DECLARE_FLAGS(Flags, Flag)
-
-    HunspellWordList(int limit = 0);
-    HunspellWordList(HunspellWordList &other);
-
-    HunspellWordList &operator=(HunspellWordList &other);
-
-    int index() const;
-    void setIndex(int index);
-    bool clear();
-    bool clearSuggestions();
-    bool hasSuggestions() const;
-    int size() const;
-    int isEmpty() const;
-    bool contains(const QString &word);
-    QString findWordCompletion(const QString &word);
-    int indexOfWord(const QString &word);
-    QString wordAt(int index);
-    void wordAt(int index, QString &word, Flags &flags);
-    const Flags &wordFlagsAt(int index);
-    void appendWord(const QString &word, const Flags &flags = Flags());
-    void insertWord(int index, const QString &word, const Flags &flags = Flags());
-    void updateWord(int index, const QString &word, const Flags &flags = Flags());
-    void moveWord(int from, int to);
-    int removeWord(const QString &word);
-    void removeWordAt(int index);
-    void rebuildSearchIndex();
-
-private:
-    class SearchContext {
-    public:
-        SearchContext(const QString &word,
-                      const QStringList &list) :
-            word(word),
-            list(list)
-        {}
-        const QString &word;
-        const QStringList &list;
-    };
-
-private:
-    QMutex _lock;
-    QStringList _list;
-    QList<Flags> _flags;
-    QList<int> _searchIndex;
-    int _index;
-    int _limit;
-};
 
 class HunspellTask : public QObject
 {
@@ -292,7 +235,5 @@ private:
 
 } // namespace QtVirtualKeyboard
 QT_END_NAMESPACE
-
-Q_DECLARE_METATYPE(QSharedPointer<QT_PREPEND_NAMESPACE(QtVirtualKeyboard)::HunspellWordList>);
 
 #endif // HUNSPELLWORKER_P_H
