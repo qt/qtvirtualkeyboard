@@ -15,6 +15,3 @@
 # QTBUG-97901
 [tst_plugin::test_hangulInputMethod:row 24]
 *
-#QTBUG-101512
-[tst_inputpanel::compile]
-qnx
