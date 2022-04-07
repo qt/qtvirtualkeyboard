@@ -37,7 +37,7 @@ Rectangle {
     height: 720
     color: "#F6F6F6"
 
-    // Only set with CONFIG+=disable-desktop.
+    // If enabled, prevents interaction with the text fields
     property bool handwritingInputPanelActive: false
 
     Flickable {
