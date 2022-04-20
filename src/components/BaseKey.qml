@@ -255,13 +255,6 @@ Item {
 
     onSoundEffectChanged: keyboard.soundEffect.register(soundEffect)
 
-    // QTBUG-54953, QTBUG-55773
-    // Avoid a row that was hidden taking up the entire height of the
-    // keyboard when it is made visible after the application has started.
-    // This value is low because keys can scale vertically, and setting e.g. 40
-    // pixels might be too high for a keyboard that doesn't have a lot of space.
-    implicitHeight: 1
-
     Layout.minimumWidth: keyPanel.implicitWidth
     Layout.minimumHeight: keyPanel.implicitHeight
     Layout.preferredWidth: weight
