@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2018 The Qt Company Ltd.
+** Copyright (C) 2022 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt Virtual Keyboard module of the Qt Toolkit.
@@ -167,6 +167,8 @@ QString QVirtualKeyboardInputContextPrivate::locale() const
 void QVirtualKeyboardInputContextPrivate::setLocale(const QString &locale)
 {
     VIRTUALKEYBOARD_DEBUG() << "QVirtualKeyboardInputContextPrivate::setLocale():" << locale;
+    if (!platformInputContext)
+        return;
     QLocale newLocale(locale);
     if (newLocale != platformInputContext->locale()) {
         platformInputContext->setLocale(newLocale);
