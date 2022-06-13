@@ -13,13 +13,6 @@ set(INPUT_vkb_cerence_sdk "" CACHE PATH "")
 #### Libraries
 
 qt_find_package(Hunspell PROVIDED_TARGETS Hunspell::Hunspell MODULE_NAME virtualkeyboard QMAKE_LIB hunspell)
-if((LINUX) OR QT_FIND_ALL_PACKAGES_ALWAYS AND NOT TARGET XCB::XCB) # special case
-    qt_find_package(XCB 1.11 PROVIDED_TARGETS XCB::XCB MODULE_NAME virtualkeyboard QMAKE_LIB xcb)
-endif()
-if((LINUX) OR QT_FIND_ALL_PACKAGES_ALWAYS AND NOT TARGET XCB::XFIXES) # special case
-    qt_find_package(XCB COMPONENTS XFIXES PROVIDED_TARGETS XCB::XFIXES MODULE_NAME virtualkeyboard QMAKE_LIB xcb-xfixes)
-endif()
-qt_add_qmake_lib_dependency(xcb-xfixes xcb)
 qt_find_package(CerenceHwrAlphabetic PROVIDED_TARGETS Cerence::HWR::Alphabetic MODULE_NAME virtualkeyboard QMAKE_LIB t9write-ucr)
 qt_find_package(CerenceHwrCjk PROVIDED_TARGETS Cerence::HWR::CJK MODULE_NAME virtualkeyboard QMAKE_LIB t9write-cjk)
 qt_find_package(CerenceXt9 PROVIDED_TARGETS Cerence::XT9 MODULE_NAME virtualkeyboard QMAKE_LIB xt9-acktn)
@@ -41,10 +34,6 @@ qt_feature("vkb-arrow-keynavigation" PUBLIC
 qt_feature("vkb-desktop" PUBLIC
     LABEL "Desktop integration"
     CONDITION NOT cross_compile
-)
-qt_feature("vkb-xcb" PUBLIC
-    LABEL "XCB integration"
-    CONDITION TARGET XCB::XCB AND TARGET XCB::XFIXES
 )
 qt_feature("vkb-layouts" PUBLIC
     LABEL "Built-in layouts"
