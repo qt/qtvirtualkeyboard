@@ -4,12 +4,6 @@
 set(VKB_LAYOUTS_BASE "${CMAKE_CURRENT_SOURCE_DIR}" CACHE STRING "" FORCE)
 set(VKB_LAYOUTS_PREFIX "/QtQuick/VirtualKeyboard" CACHE STRING "" FORCE)
 set(VKB_INSTALL_DATA "${QT_INSTALL_DIR}/qtvirtualkeyboard" CACHE STRING "" FORCE)
-
-if(NOT TARGET XCB::XFIXES)
-    qt_find_package(XCB COMPONENTS XFIXES PROVIDED_TARGETS XCB::XFIXES
-        MODULE_NAME virtualkeyboard QMAKE_LIB xcb-xfixes
-    )
-endif()
 # special case end
 
 #####################################################################
@@ -682,11 +676,6 @@ qt_internal_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_desktop
         inputview.cpp inputview_p.h
     DEFINES
         QT_VIRTUALKEYBOARD_DESKTOP
-)
-
-qt_internal_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_desktop AND QT_FEATURE_vkb_xcb
-    PUBLIC_LIBRARIES
-        XCB::XFIXES
 )
 
 qt_internal_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_record_trace_input
