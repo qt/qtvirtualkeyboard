@@ -38,10 +38,6 @@
 #include <QQmlEngine>
 #include <QScreen>
 #include <QtVirtualKeyboard/private/virtualkeyboarddebug_p.h>
-#if QT_CONFIG(vkb_xcb)
-#include <xcb/xcb.h>
-#include <xcb/xfixes.h>
-#endif
 #include <qpa/qplatformnativeinterface.h>
 #include <QtCore/private/qobject_p.h>
 #include <QtCore/QLibraryInfo>
@@ -226,18 +222,6 @@ void DesktopInputPanel::previewVisibleChanged()
         updateInputRegion();
 }
 
-#if QT_CONFIG(vkb_xcb)
-static inline xcb_rectangle_t qRectToXCBRectangle(const QRect &r)
-{
-    xcb_rectangle_t result;
-    result.x = qMax(SHRT_MIN, r.x());
-    result.y = qMax(SHRT_MIN, r.y());
-    result.width = qMin((int)USHRT_MAX, r.width());
-    result.height = qMin((int)USHRT_MAX, r.height());
-    return result;
-}
-#endif
-
 void DesktopInputPanel::updateInputRegion()
 {
     Q_D(DesktopInputPanel);
@@ -249,36 +233,11 @@ void DesktopInputPanel::updateInputRegion()
     if (!d->view->handle())
         d->view->create();
 
-    switch (d->windowingSystem) {
-    case DesktopInputPanelPrivate::Xcb:
-#if QT_CONFIG(vkb_xcb)
-        {
-            QList<xcb_rectangle_t> rects;
-            rects.push_back(qRectToXCBRectangle(d->keyboardRect.toRect()));
-            if (d->previewVisible && !d->previewRect.isEmpty())
-                rects.push_back(qRectToXCBRectangle(d->previewRect.toRect()));
+    QRegion inputRegion(d->keyboardRect.toRect());
+    if (d->previewVisible && !d->previewRect.isEmpty())
+        inputRegion += d->previewRect.toRect();
 
-            QWindow *window = d->view.data();
-            QPlatformNativeInterface *platformNativeInterface = QGuiApplication::platformNativeInterface();
-            xcb_connection_t *xbcConnection = static_cast<xcb_connection_t *>(platformNativeInterface->nativeResourceForWindow("connection", window));
-            xcb_xfixes_region_t xbcRegion = xcb_generate_id(xbcConnection);
-            xcb_xfixes_create_region(xbcConnection, xbcRegion, rects.size(), rects.constData());
-            xcb_xfixes_set_window_shape_region(xbcConnection, window->winId(), XCB_SHAPE_SK_INPUT, 0, 0, xbcRegion);
-            xcb_xfixes_destroy_region(xbcConnection, xbcRegion);
-        }
-#endif
-        break;
-
-    default:
-        {
-            QRegion inputRegion(d->keyboardRect.toRect());
-            if (d->previewVisible && !d->previewRect.isEmpty())
-                inputRegion += d->previewRect.toRect();
-
-            d->view->setMask(inputRegion);
-            break;
-        }
-    }
+    d->view->setMask(inputRegion);
 }
 
 } // namespace QtVirtualKeyboard
