@@ -4,6 +4,12 @@
 ## x11vkbtest Binary:
 #####################################################################
 
+find_package(Qt6 ${PROJECT_VERSION} QUIET CONFIG OPTIONAL_COMPONENTS Charts)
+if(NOT TARGET Qt::Charts)
+    message("Manual test x11vkbtest won't be built, because Qt::Charts was not found.")
+    return()
+endif()
+
 qt_internal_add_manual_test(x11vkbtest
     GUI
     SOURCES
@@ -25,7 +31,7 @@ qt_internal_add_manual_test(x11vkbtest
     PUBLIC_LIBRARIES
         Qt::Charts
         Qt::Gui
-        X11
+        X11::X11
         Xtst
         xdo
 )

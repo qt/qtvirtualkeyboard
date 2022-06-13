@@ -4,6 +4,18 @@
 ## x11vkbwrapper Binary:
 #####################################################################
 
+find_package(Qt6 ${PROJECT_VERSION} QUIET CONFIG OPTIONAL_COMPONENTS Widgets)
+if(NOT TARGET Qt::Widgets)
+    message("Manual test x11vkbwrapper won't be built, because Qt::Widgets was not found.")
+    return()
+endif()
+
+find_package(ATSPI2)
+if(NOT TARGET PkgConfig::ATSPI2)
+    message("Manual test x11vkbwrapper won't be built, because ATSPI2 was not found.")
+    return()
+endif()
+
 qt_internal_add_manual_test(x11vkbwrapper
     GUI
     SOURCES
@@ -18,13 +30,6 @@ qt_internal_add_manual_test(x11vkbwrapper
         xcbkeyboard.h
     DEFINES
         QT_DEPRECATED_WARNINGS
-    INCLUDE_DIRECTORIES
-        /usr/include/X11
-        /usr/include/at-spi-2.0
-        /usr/include/dbus-1.0
-        /usr/include/glib-2.0
-        /usr/lib/x86_64-linux-gnu/dbus-1.0/include
-        /usr/lib/x86_64-linux-gnu/glib-2.0/include
     PUBLIC_LIBRARIES
         PkgConfig::ATSPI2
         Qt::DBus
@@ -34,7 +39,7 @@ qt_internal_add_manual_test(x11vkbwrapper
         Qt::Svg
         Qt::VirtualKeyboard
         Qt::Widgets
-        X11
+        X11::X11
         Xtst
         xdo
 )
