@@ -30,7 +30,6 @@
 #include <QApplication>
 #include <QDebug>
 #include <QCommandLineParser>
-#include <QStateMachine>
 #include <QtGui/QGuiApplication>
 #include <QtCharts/QChartView>
 #include <QtWidgets/QMainWindow>

@@ -33,6 +33,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <fstream>
+#include <utility>
 
 #include "filehelper.h"
 
@@ -86,7 +87,7 @@ bool FileHelper::getJsonFromFile(const QString &fileName, std::map<QString, QVar
                 result = false;
             } else {
                 auto jsonIter = jsonObj.constBegin();
-                jsonMap.insert({jsonIter.key(), jsonIter.value()});
+                jsonMap.insert(std::make_pair(jsonIter.key(), jsonIter.value()));
             }
         }
     }

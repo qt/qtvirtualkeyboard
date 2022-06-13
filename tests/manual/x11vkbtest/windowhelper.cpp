@@ -28,7 +28,8 @@
 ****************************************************************************/
 
 #include <QTextStream>
-#include <cstdlib>
+
+#include "windowhelper.h"
 
 extern "C" {
 #include <xdo.h>
@@ -38,7 +39,6 @@ extern "C" {
 #include <cstdio>
 #include <cstdlib>
 
-#include "windowhelper.h"
 
 WindowHelper::WindowHelper(QObject *parent) :
     QObject(parent),
