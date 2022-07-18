@@ -6,6 +6,7 @@
     \inmodule QtVirtualKeyboard
     \ingroup qtvirtualkeyboard-cpp-for-devs
     \keyword Qt Virtual Keyboard Namespace
+    \brief Contains enums used by the virtual keyboard classes.
 */
 
 /*!
