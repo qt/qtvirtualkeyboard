@@ -818,7 +818,7 @@ public:
         switch (locale.language()) {
         case QLocale::Chinese: {
             if (locale.script() == QLocale::TraditionalChineseScript)
-                return locale.country() == QLocale::HongKong ? T9WriteInputMethod::EngineMode::HongKongChinese : T9WriteInputMethod::EngineMode::TraditionalChinese;
+                return locale.territory() == QLocale::HongKong ? T9WriteInputMethod::EngineMode::HongKongChinese : T9WriteInputMethod::EngineMode::TraditionalChinese;
             return T9WriteInputMethod::EngineMode::SimplifiedChinese;
         }
         case QLocale::Japanese:
@@ -1277,7 +1277,7 @@ public:
     {
         QCryptographicHash hash(QCryptographicHash::Md5);
 
-        hash.addData(reinterpret_cast<const char *>(&patternRecognitionMode), sizeof(patternRecognitionMode));
+        hash.addData(QByteArrayView(reinterpret_cast<const char *>(&patternRecognitionMode), sizeof(patternRecognitionMode)));
 
         QByteArray mapData;
         QDataStream ds(&mapData, QIODevice::WriteOnly);
