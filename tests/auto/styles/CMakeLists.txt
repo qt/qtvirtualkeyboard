@@ -19,7 +19,7 @@ qt_internal_add_test(tst_styles
         tst_styles.cpp
     DEFINES
         TESTDATA_DIR=\\\"${CMAKE_CURRENT_SOURCE_DIR}/data\\\"
-    PUBLIC_LIBRARIES
+    LIBRARIES
         Qt::Gui
     TESTDATA ${test_data}
 )
@@ -33,7 +33,7 @@ qt_internal_add_test(tst_styles
 #####################################################################
 
 qt_internal_extend_target(tst_styles CONDITION NOT QT_BUILD_SHARED_LIBS
-    PUBLIC_LIBRARIES
+    LIBRARIES
         Qt::Svg
 )
 

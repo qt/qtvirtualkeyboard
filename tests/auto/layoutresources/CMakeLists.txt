@@ -15,7 +15,7 @@ qt_internal_add_test(tst_layoutresources
         SRC_DIR=\\\"${CMAKE_CURRENT_SOURCE_DIR}\\\"
     INCLUDE_DIRECTORIES
         ../shared
-    PUBLIC_LIBRARIES
+    LIBRARIES
         Qt::Gui
         Qt::Qml
         Qt::Quick
@@ -40,7 +40,7 @@ qt_internal_add_resource(tst_layoutresources "resourceslayout"
 #####################################################################
 
 qt_internal_extend_target(tst_layoutresources CONDITION NOT QT_BUILD_SHARED_LIBS
-    PUBLIC_LIBRARIES
+    LIBRARIES
         Qt::Svg
 )
 

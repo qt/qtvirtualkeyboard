@@ -10,7 +10,7 @@
 qt_internal_add_test(tst_dictionarymanager
     SOURCES
         tst_dictionarymanager.cpp
-    PUBLIC_LIBRARIES
+    LIBRARIES
         Qt::Gui
         Qt::Qml
         Qt::Quick
@@ -21,7 +21,7 @@ qt_internal_add_test(tst_dictionarymanager
 #####################################################################
 
 qt_internal_extend_target(tst_dictionarymanager CONDITION NOT QT_BUILD_SHARED_LIBS
-    PUBLIC_LIBRARIES
+    LIBRARIES
         Qt::Svg
 )
 

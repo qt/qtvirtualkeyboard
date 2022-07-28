@@ -14,7 +14,7 @@ qt_internal_add_manual_test(x11vkbnativehost
         sendertodbus.cpp sendertodbus.h
     DEFINES
         QT_DEPRECATED_WARNINGS
-    PUBLIC_LIBRARIES
+    LIBRARIES
         Qt::DBus
 )
 

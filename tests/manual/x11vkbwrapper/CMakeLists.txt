@@ -33,7 +33,7 @@ qt_internal_add_manual_test(x11vkbwrapper
         xcbkeyboard.h
     DEFINES
         QT_DEPRECATED_WARNINGS
-    PUBLIC_LIBRARIES
+    LIBRARIES
         PkgConfig::ATSPI2
         Qt::DBus
         Qt::Gui
@@ -69,7 +69,7 @@ qt_internal_add_resource(x11vkbwrapper "qml"
 #####################################################################
 
 qt_internal_extend_target(x11vkbwrapper CONDITION NOT QT_BUILD_SHARED_LIBS
-    PUBLIC_LIBRARIES
+    LIBRARIES
         Qt::Svg
 )
 

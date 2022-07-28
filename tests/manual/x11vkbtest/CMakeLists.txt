@@ -31,7 +31,7 @@ qt_internal_add_manual_test(x11vkbtest
         windowhelper.cpp windowhelper.h
     DEFINES
         QT_DEPRECATED_WARNINGS
-    PUBLIC_LIBRARIES
+    LIBRARIES
         Qt::Charts
         Qt::Gui
         X11::X11
