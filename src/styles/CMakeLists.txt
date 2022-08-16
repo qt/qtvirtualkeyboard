@@ -16,6 +16,7 @@ qt_internal_add_qml_module(qtvkbstylesplugin
     VERSION "${PROJECT_VERSION}"
     PAST_MAJOR_VERSIONS 2 1
     PLUGIN_TARGET qtvkbstylesplugin
+    CLASS_NAME "QtQuickVirtualKeyboardStylesPlugin"
     # Note: The plugin source is defined manually because it uses an
     #       image provider. Once the image provider doesn't need an
     #       engine anymore, we can auto-generate the plugin.
