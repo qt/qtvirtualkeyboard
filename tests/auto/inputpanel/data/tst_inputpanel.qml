@@ -321,6 +321,31 @@ Rectangle {
             compare(textInput.text, "A")
         }
 
+        function test_hardKeyBackspaceClearsInput_data() {
+            return [
+                { initLocale: "en_GB", initText: "12345", initCursorPosition: 1, inputSequence: "hello", outputText: "12345", expectedCursorPosition: 1 },
+                { initLocale: "ja_JP", initText: "12345", initCursorPosition: 1, inputSequence: "watashi", outputText: "12345", expectedCursorPosition: 1 },
+            ]
+        }
+
+        function test_hardKeyBackspaceClearsInput(data) {
+            prepareTest(data)
+
+            if (!inputPanel.wordCandidateListVisibleHint)
+                skip("Prediction/spell correction not enabled")
+
+            compare(Qt.inputMethod.locale.name, Qt.locale(data.initLocale).name)
+            for (var inputIndex in data.inputSequence) {
+                verify(inputPanel.virtualKeyClick(data.inputSequence[inputIndex]))
+            }
+
+            keyClick(Qt.Key_Backspace)
+            waitForRendering(textInput)
+
+            compare(textInput.text, data.outputText)
+            compare(textInput.cursorPosition, data.expectedCursorPosition)
+        }
+
         function test_hardKeyInput() {
             prepareTest()
 
@@ -920,6 +945,8 @@ Rectangle {
                 // Add an apostrophe before joined syllables in cases of ambiguity, disable the user dictionary (Qt.ImhSensitiveData) so it does not affect to the results
                 { initInputMethodHints: Qt.ImhNone | Qt.ImhSensitiveData, initLocale: "zh_CN", inputSequence: "zhangang", expectedCandidates: [ "\u5360", "\u94A2" ], outputText: "\u5360\u94A2" },
                 { initInputMethodHints: Qt.ImhNone | Qt.ImhSensitiveData, initLocale: "zh_CN", inputSequence: "zhang'ang", expectedCandidates: [ "\u7AE0", "\u6602" ], outputText: "\u7AE0\u6602" },
+                // Invalid pinyin sequence
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "fi", expectedCandidates: [ "\u53D1", "i" ], outputText: "\u53D1i" },
             ]
         }
 
@@ -1233,6 +1260,19 @@ Rectangle {
             }
 
             compare(textInput.cursorPosition, data.expectedCursorPosition)
+        }
+
+        function test_japaneseSelectCurrentItemResetsIndex() {
+            prepareTest({ initLocale: "ja_JP" }, true)
+
+            verify(inputPanel.virtualKeyClick("a"))
+            verify(inputPanel.virtualKeyClick("a"))
+            verify(inputPanel.virtualKeyClick("a"))
+
+            compare(inputPanel.wordCandidateView.currentIndex, -1)
+            inputPanel.wordCandidateView.currentIndex = 0
+            inputPanel.selectionListSelectCurrentItem()
+            compare(inputPanel.wordCandidateView.currentIndex, -1, "QTBUG-94560")
         }
 
         function test_baseKeyNoModifier() {

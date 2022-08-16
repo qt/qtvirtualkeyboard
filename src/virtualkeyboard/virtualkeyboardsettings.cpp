@@ -352,6 +352,7 @@ void VirtualKeyboardSettings::resetStyle()
 /*!
     \qmlproperty list<string> VirtualKeyboardSettings::availableLocales
     \since QtQuick.VirtualKeyboard.Settings 2.0
+    \readonly
 
     This property contains a list of languages supported by the virtual keyboard.
 

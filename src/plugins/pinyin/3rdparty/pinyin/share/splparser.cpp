@@ -133,9 +133,9 @@ uint16 SpellingParser::splstr_to_idxs(const char *splstr, uint16 str_len,
     idx_num++;
     if (NULL != start_pos)
       start_pos[idx_num] = str_pos;
-  }
 
-  last_is_pre = !last_is_splitter;
+    last_is_pre = !last_is_splitter;
+  }
 
   return idx_num;
 }
@@ -262,9 +262,9 @@ uint16 SpellingParser::splstr16_to_idxs(const char16 *splstr, uint16 str_len,
     idx_num++;
     if (NULL != start_pos)
       start_pos[idx_num] = str_pos;
-  }
 
-  last_is_pre = !last_is_splitter;
+    last_is_pre = !last_is_splitter;
+  }
 
   return idx_num;
 }
