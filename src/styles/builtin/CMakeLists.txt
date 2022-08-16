@@ -2,6 +2,7 @@ qt_internal_add_qml_module(qtvkbbuiltinstylesplugin
     URI "QtQuick.VirtualKeyboard.Styles.Builtin"
     VERSION "${PROJECT_VERSION}"
     PLUGIN_TARGET qtvkbbuiltinstylesplugin
+    CLASS_NAME "QtQuickVirtualKeyboardStylesBuiltinPlugin"
     NO_PLUGIN_OPTIONAL
     NO_GENERATE_PLUGIN_SOURCE
     SOURCES
