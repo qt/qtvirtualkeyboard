@@ -14,12 +14,6 @@ exampledirs += ../../../examples/virtualkeyboard \
     snippets
 examplesinstallpath = virtualkeyboard
 
-Cpp.ignoretokens     += \
-    Q_VIRTUALKEYBOARD_EXPORT
-Cpp.ignoredirectives += \
-    Q_DECLARE_LOGGING_CATEGORY \
-    VIRTUALKEYBOARD_DEBUG
-
 manifestmeta.highlighted.names = "QtVirtualKeyboard/Qt Quick Virtual Keyboard - Basic Example"
 
 imagedirs += images
