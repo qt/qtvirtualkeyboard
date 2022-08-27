@@ -27,10 +27,10 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
     Q_UNUSED(paramList);
 
     if (!qEnvironmentVariableIsSet(inputMethodEnvVarName) || qgetenv(inputMethodEnvVarName) != pluginName)
-        return Q_NULLPTR;
+        return nullptr;
 
     if (system.compare(system, QLatin1String(pluginName), Qt::CaseInsensitive) != 0)
-        return Q_NULLPTR;
+        return nullptr;
 
 #if defined(Q_OS_WIN)
     // QTBUG-93042
