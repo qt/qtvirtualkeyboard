@@ -94,7 +94,8 @@ Item {
                     onCursorPositionChanged: {
                         cursorSyncTimer.restart()
                         blinkStatus = true
-                        cursorTimer.restart()
+                        if (cursorTimer.running)
+                            cursorTimer.restart()
                     }
                     onSelectionStartChanged: cursorSyncTimer.restart()
                     onSelectionEndChanged: cursorSyncTimer.restart()
@@ -123,7 +124,7 @@ Item {
                         id: cursorTimer
                         interval: Qt.styleHints.cursorFlashTime / 2
                         repeat: true
-                        running: true
+                        running: control.visible
                         onTriggered: shadowInput.blinkStatus = !shadowInput.blinkStatus
                     }
                 }
