@@ -4,11 +4,11 @@
 #ifndef QVIRTUALKEYBOARDINPUTCONTEXT_H
 #define QVIRTUALKEYBOARDINPUTCONTEXT_H
 
-#include <QObject>
-#include <QRectF>
-#include <QLocale>
-#include <QInputMethodEvent>
-#include <QInputMethod>
+#include <QtCore/QObject>
+#include <QtCore/QRectF>
+#include <QtCore/QLocale>
+#include <QtGui/QInputMethodEvent>
+#include <QtGui/QInputMethod>
 #include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 

@@ -4,8 +4,8 @@
 #ifndef QVIRTUALKEYBOARDINPUTENGINE_H
 #define QVIRTUALKEYBOARDINPUTENGINE_H
 
-#include <QObject>
-#include <QPointer>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 

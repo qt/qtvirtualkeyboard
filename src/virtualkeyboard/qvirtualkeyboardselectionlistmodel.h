@@ -4,7 +4,7 @@
 #ifndef QVIRTUALKEYBOARDSELECTIONLISTMODEL_H
 #define QVIRTUALKEYBOARDSELECTIONLISTMODEL_H
 
-#include <QAbstractListModel>
+#include <QtCore/QAbstractListModel>
 #include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 

@@ -4,8 +4,8 @@
 #ifndef QVIRTUALKEYBOARDOBSERVER_H
 #define QVIRTUALKEYBOARDOBSERVER_H
 
-#include <QObject>
-#include <QVariant>
+#include <QtCore/QObject>
+#include <QtCore/QVariant>
 #include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 

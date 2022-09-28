@@ -4,6 +4,9 @@
 #ifndef QVIRTUALKEYBOARD_NAMESPACE_H
 #define QVIRTUALKEYBOARD_NAMESPACE_H
 
+#if 0
+#  pragma qt_sync_skip_header_check
+#endif
 // TODO: Remove in Qt 7
 #include <QtVirtualKeyboard/qvirtualkeyboardnamespace.h>
 

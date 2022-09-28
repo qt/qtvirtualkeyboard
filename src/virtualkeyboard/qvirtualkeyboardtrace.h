@@ -4,9 +4,9 @@
 #ifndef QVIRTUALKEYBOARDTRACE_H
 #define QVIRTUALKEYBOARDTRACE_H
 
-#include <QObject>
-#include <QVariant>
-#include <QPointF>
+#include <QtCore/QObject>
+#include <QtCore/QVariant>
+#include <QtCore/QPointF>
 #include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
 

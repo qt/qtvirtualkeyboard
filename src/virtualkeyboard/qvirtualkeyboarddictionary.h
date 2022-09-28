@@ -5,8 +5,8 @@
 #define QVIRTUALKEYBOARDDICTIONARY_H
 
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
-#include <QStringList>
-#include <QObject>
+#include <QtCore/QStringList>
+#include <QtCore/QObject>
 
 QT_BEGIN_NAMESPACE
 
