@@ -10,6 +10,9 @@ endif()
 set(INSTALL_EXAMPLEDIR "${INSTALL_EXAMPLESDIR}/virtualkeyboard/basic")
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick)
+if(QT_FEATURE_static)
+    find_package(Qt6 REQUIRED COMPONENTS Svg)
+endif()
 
 qt_add_executable(basic
     main.cpp
@@ -48,9 +51,11 @@ qt6_add_resources(basic "demo"
 )
 
 if(QT_FEATURE_static)
-    find_package(Qt6 REQUIRED COMPONENTS Svg)
-    target_link_libraries(basic PUBLIC
+    target_link_libraries(basic PRIVATE
         Qt::Svg
+    )
+    qt_import_plugins(basic
+        INCLUDE Qt::QVirtualKeyboardPlugin
     )
 endif()
 
