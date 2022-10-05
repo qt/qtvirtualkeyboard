@@ -203,7 +203,7 @@ public:
 
                 } else if (layer == ComposingText::LAYER2) {
 
-                    highlightEnd = composingText.toString(layer, 0, 0).length();
+                    highlightEnd = composingText.toString(layer, 0, 0).size();
 
                     /* highlights the first segment */
                     QTextCharFormat textFormat;
@@ -212,20 +212,20 @@ public:
                     attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, 0, highlightEnd, textFormat));
                 }
 
-                if (highlightEnd != 0 && highlightEnd < displayText.length()) {
+                if (highlightEnd != 0 && highlightEnd < displayText.size()) {
                     /* highlights remaining text */
                     QTextCharFormat textFormat;
                     textFormat.setBackground(QBrush(QColor(0xF0, 0xFF, 0xFF)));
                     textFormat.setForeground(QBrush(Qt::black));
-                    attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, highlightEnd, displayText.length() - highlightEnd, textFormat));
+                    attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, highlightEnd, displayText.size() - highlightEnd, textFormat));
                 }
             }
 
             QTextCharFormat textFormat;
             textFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
-            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, 0, displayText.length(), textFormat));
+            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, 0, displayText.size(), textFormat));
 
-            int displayCursor = composingText.toString(layer, 0, cursor - 1).length();
+            int displayCursor = composingText.toString(layer, 0, cursor - 1).size();
             attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Cursor, displayCursor, 1, QVariant()));
 
             Q_Q(OpenWnnInputMethod);
@@ -251,7 +251,7 @@ public:
                 displayCandidates();
             } else {
                 composingText.setCursor(ComposingText::LAYER1,
-                                         composingText.toString(ComposingText::LAYER1).length());
+                                         composingText.toString(ComposingText::LAYER1).size());
                 clearCandidates();
             }
             break;
@@ -479,7 +479,7 @@ public:
     {
         if (str.isEmpty())
             return false;
-        ushort ch = str.at(str.length() - 1).unicode();
+        ushort ch = str.at(str.size() - 1).unicode();
         return (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z');
     }
 
@@ -661,7 +661,7 @@ bool OpenWnnInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
         if (d->composingText.size(ComposingText::LAYER1) > 0) {
             if (d->activeConvertType == OpenWnnInputMethodPrivate::CONVERT_TYPE_RENBUN) {
                 d->composingText.setCursor(ComposingText::LAYER1,
-                                           d->composingText.toString(ComposingText::LAYER1).length());
+                                           d->composingText.toString(ComposingText::LAYER1).size());
                 d->exactMatchMode = false;
                 d->clearFocusCandidate();
             } else {

@@ -27,7 +27,7 @@ QPixmap SvgImageProvider::requestPixmap(const QString &id, QSize *size, const QS
         QVariantMap params;
         for (const QString &param : paramList) {
             QStringList keyValue = param.split(QLatin1Char('='), Qt::SkipEmptyParts);
-            if (keyValue.length() == 2)
+            if (keyValue.size() == 2)
                 params[keyValue[0]] = keyValue[1];
         }
         const auto widthIt = params.constFind(QLatin1String("width"));

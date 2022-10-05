@@ -152,7 +152,7 @@ int Xt9AwInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel:
 {
     Q_UNUSED(type)
     Q_D(Xt9AwInputMethod);
-    return d->selectionList.count();
+    return d->selectionList.size();
 }
 
 QVariant Xt9AwInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)

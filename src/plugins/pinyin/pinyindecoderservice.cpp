@@ -103,7 +103,7 @@ void PinyinDecoderService::setLimits(int maxSpsLen, int maxHzsLen)
 int PinyinDecoderService::search(const QString &spelling)
 {
     QByteArray spellingBuf = spelling.toLatin1();
-    return int(im_search(spellingBuf.constData(), spellingBuf.length()));
+    return int(im_search(spellingBuf.constData(), spellingBuf.size()));
 }
 
 int PinyinDecoderService::deleteSearch(int pos, bool isPosInSpellingId, bool clearFixedInThisStep)
@@ -157,7 +157,7 @@ QString PinyinDecoderService::candidateAt(int index)
     Q_ASSERT(index >= 0);
     QList<QChar> candidateBuf;
     candidateBuf.resize(kMaxSearchSteps + 1);
-    if (!im_get_candidate(size_t(index), (char16 *)candidateBuf.data(), candidateBuf.length() - 1))
+    if (!im_get_candidate(size_t(index), (char16 *)candidateBuf.data(), candidateBuf.size() - 1))
         return QString();
     candidateBuf.last() = u'\0';
     return QString(candidateBuf.data());

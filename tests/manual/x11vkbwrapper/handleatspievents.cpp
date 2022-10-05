@@ -113,7 +113,7 @@ void HandleATSPIEvents::setKeyboardVisible(const bool visible)
 void HandleATSPIEvents::storeFocusElement(const qint8 role)
 {
     m_focuses.append(role);
-    qCDebug(lcHandleAtspiEvents) << "*****INSERTED FOCUS ELEMENT*****" << role << "TOTAL:"  << m_focuses.length();
+    qCDebug(lcHandleAtspiEvents) << "*****INSERTED FOCUS ELEMENT*****" << role << "TOTAL:"  << m_focuses.size();
 }
 
 /**

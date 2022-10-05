@@ -91,8 +91,8 @@ public:
         if (surface.isEmpty())
             return false;
         QList<int> splStart = pinyinDecoderService->spellingStartPositions();
-        isPosInSpl = (surface.length() <= splStart[fixedLen + 1]);
-        posDelSpl = isPosInSpl ? fixedLen - 1 : surface.length() - 1;
+        isPosInSpl = (surface.size() <= splStart[fixedLen + 1]);
+        posDelSpl = isPosInSpl ? fixedLen - 1 : surface.size() - 1;
         return true;
     }
 
@@ -105,8 +105,8 @@ public:
         else
             chooseDecodingCandidate(candId);
 
-        if (composingStr.length() > 0) {
-            if ((candId >= 0 || finishSelection) && composingStr.length() == fixedLen) {
+        if (composingStr.size() > 0) {
+            if ((candId >= 0 || finishSelection) && composingStr.size() == fixedLen) {
                 QString resultStr = getComposingStrActivePart();
                 q->inputContext()->commit(resultStr);
                 tryPredict();
@@ -144,7 +144,7 @@ public:
             candidatesList.append(pinyinDecoderService->fetchCandidates(candidatesList.size(), fetchMore, fixedLen));
             if (index == 0 && totalChoicesNum == 1) {
                 int surfaceDecodedLen = pinyinDecoderService->pinyinStringLength(true);
-                if (surfaceDecodedLen < surface.length())
+                if (surfaceDecodedLen < surface.size())
                     candidatesList[0] = candidatesList[0] + surface.mid(surfaceDecodedLen).toLower();
             }
         }
@@ -158,7 +158,7 @@ public:
 
         int result = 0;
         if (candId < 0) {
-            if (surface.length() > 0) {
+            if (surface.size() > 0) {
                 if (posDelSpl < 0) {
                     result = pinyinDecoderService->search(surface);
                 } else {
@@ -172,7 +172,7 @@ public:
             } else {
                 QString resultStr;
                 if (totalChoicesNum == 1) {
-                    QString undecodedStr = candId < candidatesList.length() ? candidatesList.at(candId) : QString();
+                    QString undecodedStr = candId < candidatesList.size() ? candidatesList.at(candId) : QString();
                     resultStr = pinyinDecoderService->candidateAt(0).mid(0, fixedLen) + undecodedStr;
                 }
                 resetToIdleState();
@@ -190,7 +190,7 @@ public:
         QString fullSent = pinyinDecoderService->candidateAt(0);
         fixedLen = pinyinDecoderService->fixedLength();
         composingStr = fullSent.mid(0, fixedLen) + surface.mid(splStart[fixedLen + 1]);
-        activeCmpsLen = composingStr.length();
+        activeCmpsLen = composingStr.size();
 
         // Prepare the display string.
         QString composingStrDisplay;
@@ -200,14 +200,14 @@ public:
             if (!totalChoicesNum)
                 totalChoicesNum = 1;
         } else {
-            activeCmpsLen = activeCmpsLen - (surface.length() - surfaceDecodedLen);
+            activeCmpsLen = activeCmpsLen - (surface.size() - surfaceDecodedLen);
             composingStrDisplay = fullSent.mid(0, fixedLen);
             for (int pos = fixedLen + 1; pos < splStart.size() - 1; pos++) {
                 composingStrDisplay += surface.mid(splStart[pos], splStart[pos + 1] - splStart[pos]);
                 if (splStart[pos + 1] < surfaceDecodedLen)
                     composingStrDisplay += QLatin1String(" ");
             }
-            if (surfaceDecodedLen < surface.length())
+            if (surfaceDecodedLen < surface.size())
                 composingStrDisplay += surface.mid(surfaceDecodedLen);
         }
         q->inputContext()->setPreeditText(composingStrDisplay);
@@ -232,7 +232,7 @@ public:
         totalChoicesNum = 1;
 
         surface.clear();
-        fixedLen = tmp.length();
+        fixedLen = tmp.size();
         composingStr = tmp;
         activeCmpsLen = fixedLen;
 
@@ -265,7 +265,7 @@ public:
         Q_Q(PinyinInputMethod);
         QVirtualKeyboardInputContext *inputContext = q->inputContext();
         return inputMode == QVirtualKeyboardInputEngine::InputMode::Pinyin &&
-                composingStr.length() == fixedLen &&
+                composingStr.size() == fixedLen &&
                 inputContext &&
                 !inputContext->inputMethodHints().testFlag(Qt::ImhNoPredictiveText);
     }

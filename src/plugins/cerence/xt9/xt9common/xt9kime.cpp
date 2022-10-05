@@ -12,16 +12,16 @@ public:
     {
         QVector<ushort> jamoBuf(codes.size());
         memcpy(jamoBuf.data(), codes.utf16(), static_cast<size_t>(jamoBuf.size()) * sizeof(ushort));
-        XT9_VAPI(ET9KCompatibilityJamoToJamo, jamoBuf.data(), static_cast<ET9U32>(jamoBuf.length()));
-        return QString::fromUtf16(reinterpret_cast<const char16_t *>(jamoBuf.constData()), jamoBuf.length());
+        XT9_VAPI(ET9KCompatibilityJamoToJamo, jamoBuf.data(), static_cast<ET9U32>(jamoBuf.size()));
+        return QString::fromUtf16(reinterpret_cast<const char16_t *>(jamoBuf.constData()), jamoBuf.size());
     }
 
     QString convertFrom(const QString &codes) const override
     {
         QVector<ushort> jamoBuf(codes.size());
         memcpy(jamoBuf.data(), codes.utf16(), static_cast<size_t>(jamoBuf.size()) * sizeof(ushort));
-        XT9_VAPI(ET9KJamoToCompatibilityJamo, jamoBuf.data(), static_cast<ET9U32>(jamoBuf.length()));
-        return QString::fromUtf16(reinterpret_cast<const char16_t *>(jamoBuf.constData()), jamoBuf.length());
+        XT9_VAPI(ET9KJamoToCompatibilityJamo, jamoBuf.data(), static_cast<ET9U32>(jamoBuf.size()));
+        return QString::fromUtf16(reinterpret_cast<const char16_t *>(jamoBuf.constData()), jamoBuf.size());
     }
 };
 

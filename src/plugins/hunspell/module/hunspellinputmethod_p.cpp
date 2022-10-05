@@ -99,7 +99,7 @@ bool HunspellInputMethodPrivate::updateSuggestions()
     QString word = wordCandidates.wordAt(0);
     if (!word.isEmpty() && dictionaryState != HunspellInputMethodPrivate::DictionaryNotLoaded) {
         wordCandidateListChanged = true;
-        if (word.length() >= wordCompletionPoint) {
+        if (word.size() >= wordCompletionPoint) {
             if (hunspellWorker) {
                 QSharedPointer<HunspellWordList> wordList(new HunspellWordList(wordCandidates));
 
@@ -282,7 +282,7 @@ void HunspellInputMethodPrivate::addToDictionary()
     if (activeWordIndex == 0) {
         if (blacklistedWords->removeWord(word) > 0) {
             saveCustomDictionary(blacklistedWords, QLatin1String("blacklist"));
-        } else if (word.length() > 1 && !wordFlags.testFlag(HunspellWordList::SpellCheckOk) && !userDictionaryWords->contains(word)) {
+        } else if (word.size() > 1 && !wordFlags.testFlag(HunspellWordList::SpellCheckOk) && !userDictionaryWords->contains(word)) {
             userDictionaryWords->appendWord(word);
             saveCustomDictionary(userDictionaryWords, QLatin1String("userdictionary"));
         } else {

@@ -53,7 +53,7 @@ void Xt9AwInputMethodPrivate::selectionListSelectItem(int index)
     Q_Q(Xt9AwInputMethod);
     Xt9DeferredSelectionListUpdate deferredSelectionListUpdate(this);
 
-    if (index >= 0 && index < selectionList.count()) {
+    if (index >= 0 && index < selectionList.size()) {
         QVirtualKeyboardInputContext *ic = q->inputContext();
         const QString &selectedWord = selectionList.at(index);
 

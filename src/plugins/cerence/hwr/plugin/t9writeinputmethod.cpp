@@ -71,9 +71,9 @@ public:
             textCaseList.clear();
             return;
         }
-        while (length < textCaseList.length())
+        while (length < textCaseList.size())
             textCaseList.removeLast();
-        while (length > textCaseList.length())
+        while (length > textCaseList.size())
             textCaseList.append(textCase);
     }
 
@@ -82,7 +82,7 @@ public:
         QString result;
         QVirtualKeyboardInputEngine::TextCase textCase = QVirtualKeyboardInputEngine::TextCase::Lower;
         for (int i = 0; i < str.length(); ++i) {
-            if (i < textCaseList.length())
+            if (i < textCaseList.size())
                 textCase = textCaseList.at(i);
             result.append(textCase == QVirtualKeyboardInputEngine::TextCase::Upper ? str.at(i).toUpper() : (preferLowercase ? str.at(i).toLower() : str.at(i)));
         }
@@ -1359,9 +1359,9 @@ public:
         }
 
         // Check for hard limit on the size the trace list
-        if (traceList.count() >= traceListHardLimit) {
+        if (traceList.size() >= traceListHardLimit) {
             worker->waitForAllTasksOfType<T9WriteAddArcTask>();
-            while (traceListHardLimit < traceList.count())
+            while (traceListHardLimit < traceList.size())
                 delete traceList.takeFirst();
         }
 
@@ -1839,8 +1839,8 @@ public:
             }
 
             // Enforce hard limit for number of traces
-            if (traceList.count() >= traceListHardLimit) {
-                qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::processResult(): Clearing traces (hard limit):" << traceList.count();
+            if (traceList.size() >= traceListHardLimit) {
+                qCDebug(lcT9Write) << "T9WriteInputMethodPrivate::processResult(): Clearing traces (hard limit):" << traceList.size();
                 clearTraces();
             }
         }
@@ -1924,7 +1924,7 @@ public:
         if (countActiveTraces() > 0)
             return false;
 
-        QVariantMap gesture(gestureRecognizer.recognize(traceList.mid(traceList.length() - 1, 1)));
+        QVariantMap gesture(gestureRecognizer.recognize(traceList.mid(traceList.size() - 1, 1)));
         if (gesture.isEmpty())
             return false;
 
@@ -1984,9 +1984,9 @@ public:
                                 inputModes.removeAt(inputMode != QVirtualKeyboardInputEngine::InputMode::Dialable ?
                                             indexOfDialableInputMode :
                                             indexOfNumericInputMode);
-                            if (inputModes.count() > 1) {
+                            if (inputModes.size() > 1) {
                                 int inputModeIndex = inputModes.indexOf(static_cast<const int>(inputMode)) + 1;
-                                if (inputModeIndex >= inputModes.count())
+                                if (inputModeIndex >= inputModes.size())
                                     inputModeIndex = 0;
                                 ic->inputEngine()->setInputMode(static_cast<QVirtualKeyboardInputEngine::InputMode>(inputModes.at(inputModeIndex)));
                             }
@@ -2580,7 +2580,7 @@ int T9WriteInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListMode
 {
     Q_UNUSED(type);
     Q_D(T9WriteInputMethod);
-    return d->wordCandidates.count();
+    return d->wordCandidates.size();
 }
 
 QVariant T9WriteInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)

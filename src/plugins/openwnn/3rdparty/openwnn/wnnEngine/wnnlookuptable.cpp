@@ -54,7 +54,7 @@ void WnnLookupTable::create(const QMap<QString, QString> &map, const QString &ta
         std::sort(keys.begin(), keys.end(), [] (const QString &lhs, const QString &rhs) {
             return strcmp(lhs.toUtf8().constData(), rhs.toUtf8().constData()) < 0;
         });
-        file.write(QString("static const int %1Length = %2;\n").arg(tablePrefix).arg(keys.count()).toUtf8().constData());
+        file.write(QString("static const int %1Length = %2;\n").arg(tablePrefix).arg(keys.size()).toUtf8().constData());
         file.write(QString("static const char *%1Key[%1Length];\n").arg(tablePrefix).toUtf8().constData());
         file.write(QString("static const char *%1Value[%1Length];\n").arg(tablePrefix).toUtf8().constData());
         file.write(QString("const char *%1Key[] = {\n").arg(tablePrefix).toUtf8().constData());

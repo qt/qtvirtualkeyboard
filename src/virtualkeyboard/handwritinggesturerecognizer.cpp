@@ -27,7 +27,7 @@ int HandwritingGestureRecognizer::dpi() const
 
 QVariantMap HandwritingGestureRecognizer::recognize(const QList<QVirtualKeyboardTrace *> traceList)
 {
-    if (traceList.count() > 0 && traceList.count() < 3) {
+    if (traceList.size() > 0 && traceList.size() < 3) {
 
         // Swipe gesture detection
         // =======================
@@ -64,7 +64,7 @@ QVariantMap HandwritingGestureRecognizer::recognize(const QList<QVirtualKeyboard
             const QVirtualKeyboardTrace *trace = traceList.at(traceIndex);
             const QVariantList &points = trace->points();
             QVector2D swipeVector;
-            const int pointCount = points.count();
+            const int pointCount = points.size();
             int pointIndex = 0;
             if (pointCount >= 2) {
 

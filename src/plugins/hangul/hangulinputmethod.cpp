@@ -51,8 +51,8 @@ bool HangulInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardM
         if (key == Qt::Key_Backspace) {
             int contextLength = cursorPosition > 1 ? 2 : 1;
             QString hangul = Hangul::decompose(ic->surroundingText().mid(cursorPosition - contextLength, contextLength));
-            int length = hangul.length();
-            if (hangul.length() > 1) {
+            int length = hangul.size();
+            if (hangul.size() > 1) {
                 ic->commit(Hangul::compose(hangul.left(length - 1)), -contextLength, contextLength);
                 accept = true;
             }

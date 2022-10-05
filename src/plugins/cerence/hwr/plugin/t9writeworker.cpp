@@ -414,7 +414,7 @@ int T9WriteWorker::removeAllTasks()
 {
     idleSema.acquire();
     QMutexLocker guard(&taskLock);
-    int count = taskList.count();
+    int count = taskList.size();
     for (QSharedPointer<T9WriteTask> task : taskList) {
         task->runSema.release();
     }
@@ -439,7 +439,7 @@ void T9WriteWorker::waitForAllTasks()
 int T9WriteWorker::numberOfPendingTasks()
 {
     QMutexLocker guard(&taskLock);
-    return taskList.count();
+    return taskList.size();
 }
 
 void T9WriteWorker::run()

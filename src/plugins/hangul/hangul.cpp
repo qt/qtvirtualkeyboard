@@ -37,7 +37,7 @@ const int Hangul::SCount = Hangul::LCount * Hangul::NCount; // 11172
 QString Hangul::decompose(const QString &source)
 {
     QString result;
-    const int len = source.length();
+    const int len = source.size();
     for (int i = 0; i < len; i++) {
         QChar ch = source.at(i);
         int SIndex = (int)ch.unicode() - SBase;
@@ -80,7 +80,7 @@ QString Hangul::decompose(const QString &source)
 
 QString Hangul::compose(const QString &source)
 {
-    const int len = source.length();
+    const int len = source.size();
     if (len == 0)
         return QString();
 
@@ -112,7 +112,7 @@ QString Hangul::compose(const QString &source)
                     TIndex = finals.indexOf(unicode);
                     if (TIndex != -1) {
                         last = QChar((int)lastUnicode + TIndex);
-                        result.replace(result.length() - 1, 1, last);
+                        result.replace(result.size() - 1, 1, last);
                         continue;
                     }
 
@@ -137,7 +137,7 @@ QString Hangul::compose(const QString &source)
                                 HangulMedialIndex VIndexD = it.value();
                                 int VDiff = (int)VIndexD - (int)VIndexA;
                                 last = QChar((int)lastUnicode + VDiff * TCount);
-                                result.replace(result.length() - 1, 1, last);
+                                result.replace(result.size() - 1, 1, last);
                                 continue;
                             }
                         }
@@ -162,7 +162,7 @@ QString Hangul::compose(const QString &source)
                             // Remove the previous final jamo from the syllable,
                             // making the current syllable of form LV
                             last = QChar((int)lastUnicode - TIndex);
-                            result.replace(result.length() - 1, 1, last);
+                            result.replace(result.size() - 1, 1, last);
 
                             // Make new syllable of form LV
                             last = QChar(SBase + (LIndex * VCount + VIndex) * TCount);
@@ -183,7 +183,7 @@ QString Hangul::compose(const QString &source)
                             HangulFinalIndex TIndexA, TIndexB;
                             unpackDoubleFinal(key, TIndexA, TIndexB);
                             last = QChar((int)lastUnicode - TIndex + (int)TIndexA);
-                            result.replace(result.length() - 1, 1, last);
+                            result.replace(result.size() - 1, 1, last);
 
                             // Add new syllable by combining the initial jamo
                             // and the current vowel
@@ -212,7 +212,7 @@ QString Hangul::compose(const QString &source)
                                 HangulFinalIndex TIndexD = it.value();
                                 int TDiff = (int)TIndexD - (int)TIndexA;
                                 last = QChar((int)lastUnicode + TDiff);
-                                result.replace(result.length() - 1, 1, last);
+                                result.replace(result.size() - 1, 1, last);
                                 continue;
                             }
                         }
@@ -231,7 +231,7 @@ QString Hangul::compose(const QString &source)
                     int VIndex = (int)unicode - VBase;
                     if (VIndex >= 0 && VIndex < VCount) {
                         last = QChar(SBase + (LIndex * VCount + VIndex) * TCount);
-                        result.replace(result.length() - 1, 1, last);
+                        result.replace(result.size() - 1, 1, last);
                         continue;
                     }
                 }

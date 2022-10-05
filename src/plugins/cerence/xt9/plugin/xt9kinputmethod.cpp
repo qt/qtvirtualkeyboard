@@ -29,7 +29,7 @@ void Xt9KInputMethod::update()
     Q_D(Xt9KInputMethod);
 
     if (d->xt9Ime()->hasActiveInput()) {
-        if (d->selectionList.length() > 0) {
+        if (d->selectionList.size() > 0) {
             d->learnWord(d->selectionList.at(0));
             d->setAutoSpaceAllowed(false);
             d->selectionListSelectItem(0);

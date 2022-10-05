@@ -87,7 +87,7 @@ void Xt9LdbManager::closeAll()
 QString Xt9LdbManager::findDictionary(const QLocale &locale) const
 {
     QStringList languageCountry = locale.name().split(QLatin1String("_"));
-    if (languageCountry.length() != 2)
+    if (languageCountry.size() != 2)
         return QString();
     const QString language_ISO_639_1 = languageCountry[0].toUpper();
     const QString country = languageCountry[1].toUpper();

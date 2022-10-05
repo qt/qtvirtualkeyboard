@@ -53,7 +53,7 @@ public:
         for (int i = 0; i < codes.size(); ++i) {
             cangjieBuf[i] = GetCangjieSymb(codes.at(i).unicode());
         }
-        return QString::fromUtf16(reinterpret_cast<const char16_t *>(cangjieBuf.constData()), cangjieBuf.length());
+        return QString::fromUtf16(reinterpret_cast<const char16_t *>(cangjieBuf.constData()), cangjieBuf.size());
     }
 
     QString convertFrom(const QString &codes) const override
@@ -62,7 +62,7 @@ public:
         for (int i = 0; i < codes.size(); ++i) {
             cangjieBuf[i] = GetCangjieMappingSymb(codes.at(i).unicode());
         }
-        return QString::fromUtf16(reinterpret_cast<const char16_t *>(cangjieBuf.constData()), cangjieBuf.length());
+        return QString::fromUtf16(reinterpret_cast<const char16_t *>(cangjieBuf.constData()), cangjieBuf.size());
     }
 };
 

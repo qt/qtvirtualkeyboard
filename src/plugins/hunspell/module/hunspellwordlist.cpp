@@ -154,8 +154,8 @@ QString HunspellWordList::findWordCompletion(const QString &word)
     QString bestMatch;
     for (int i = 0, count = _list.size(); i < count; ++i) {
         const QString &wordB(_list[i]);
-        if (wordB.length() > bestMatch.length() &&
-                word.length() < wordB.length() &&
+        if (wordB.size() > bestMatch.size() &&
+                word.size() < wordB.size() &&
                 wordB.startsWith(word, Qt::CaseInsensitive))
             bestMatch = wordB;
     }

@@ -50,7 +50,7 @@ public:
     static bool createCandidateString(const QString &input, const WnnLookupTable &map, QString &outBuf)
     {
         outBuf.clear();
-        for (int index = 0, length = input.length(); index < length; index++) {
+        for (int index = 0, length = input.size(); index < length; index++) {
             QString out = map.value(input.mid(index, 1));
             if (out.isEmpty())
                 return false;
@@ -167,7 +167,7 @@ QList<WnnWord> KanaConverter::createPseudoCandidateList(const QString &inputHira
     Q_D(KanaConverter);
     QList<WnnWord> list;
 
-    if (inputHiragana.length() == 0) {
+    if (inputHiragana.size() == 0) {
         return list;
     }
 

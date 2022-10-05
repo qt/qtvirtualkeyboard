@@ -296,7 +296,7 @@ void QVirtualKeyboardSelectionListModel::selectionListChanged(QVirtualKeyboardSe
         if (static_cast<QVirtualKeyboardSelectionListModel::Type>(type) == QVirtualKeyboardSelectionListModel::Type::WordCandidateList)
             d->wclAutoCommitWord = ((oldCount > 1 || (oldCount == 1 && d->wclAutoCommitWord)) && newCount == 1 &&
                                  Settings::instance()->wclAutoCommitWord() &&
-                                 dataAt(0).toString().length() > 1);
+                                 dataAt(0).toString().size() > 1);
         if (d->rowCount != oldCount)
             emit countChanged();
     }

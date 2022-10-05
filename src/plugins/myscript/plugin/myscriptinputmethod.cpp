@@ -243,7 +243,7 @@ public:
 
         m_itemIndex = -1;
 
-        for (int i = 0; i < m_items.count(); i++) {
+        for (int i = 0; i < m_items.size(); i++) {
             CandidateItem *candidateItem = m_items.at(i).second;
             delete candidateItem;
         }
@@ -1035,7 +1035,7 @@ int MyScriptInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListMod
     if (type != QVirtualKeyboardSelectionListModel::Type::WordCandidateList)
         return 0;
 
-    return d->wordCandidates.count();
+    return d->wordCandidates.size();
 }
 
 QVariant MyScriptInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)
