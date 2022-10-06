@@ -453,7 +453,7 @@ QList<int> QVirtualKeyboardInputEngine::patternRecognitionModes() const
     if (patterRecognitionModeList.isEmpty())
         return resultList;
     resultList.reserve(patterRecognitionModeList.size());
-    for (const PatternRecognitionMode &patternRecognitionMode : qAsConst(patterRecognitionModeList))
+    for (const PatternRecognitionMode &patternRecognitionMode : std::as_const(patterRecognitionModeList))
         resultList.append(static_cast<int>(patternRecognitionMode));
     return resultList;
 }
@@ -660,7 +660,7 @@ void QVirtualKeyboardInputEngine::updateSelectionListModels()
     }
 
     // Deallocate inactive selection lists
-    for (const QVirtualKeyboardSelectionListModel::Type &selectionListType : qAsConst(inactiveSelectionLists)) {
+    for (const QVirtualKeyboardSelectionListModel::Type &selectionListType : std::as_const(inactiveSelectionLists)) {
         const auto it = d->selectionListModels.constFind(selectionListType);
         if (it != d->selectionListModels.cend()) {
             it.value()->setDataSource(nullptr, selectionListType);

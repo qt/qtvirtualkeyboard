@@ -179,7 +179,7 @@ public:
     int countActiveTraces() const
     {
         int count = 0;
-        for (QVirtualKeyboardTrace *trace : qAsConst(traceList)) {
+        for (QVirtualKeyboardTrace *trace : std::as_const(traceList)) {
             if (!trace->isFinal())
                 count++;
         }

@@ -67,7 +67,7 @@ public:
             stylePathList += stylesPath;
         }
 
-        for (const QString &stylePath : qAsConst(stylePathList)) {
+        for (const QString &stylePath : std::as_const(stylePathList)) {
             QString filePath = buildStyleFilePath(stylePath, name);
             bool pathExist = false;
             pathExist = QFileInfo::exists(filePath);

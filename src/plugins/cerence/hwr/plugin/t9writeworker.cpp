@@ -305,7 +305,7 @@ void T9WriteDlmWordTask::run()
                                        static_cast<DECUMA_UINT16>(word.length()),
                                        &recSettings, matchResults.data());
         if (!status) {
-            for (const auto &matchResult : qAsConst(matchResults)) {
+            for (const auto &matchResult : std::as_const(matchResults)) {
                 qCDebug(lcT9Write) << "T9WriteDlmWordTask::run(): MatchWord string type" << matchResult.stringType;
                 if (matchResult.stringType != notFromDictionary) {
                     wordFound = true;
