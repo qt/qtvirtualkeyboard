@@ -23,7 +23,7 @@ Item {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.right: parent.right
-            anchors.bottom: parent.bottom
+            anchors.bottom: inputPanel.top
             handwritingInputPanelActive: handwritingInputPanel.available && handwritingInputPanel.active
         }
 
