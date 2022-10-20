@@ -61,46 +61,68 @@ from the application. This information includes, but is not limited to:
 
 \section2 Locale
 
-The list of supported locales is specified by the existence of a locale specific
-layout directory in "layouts/*". Each layout directory may contain one
-or more layouts, for example fi_FI/main.qml or symbols.qml. If the locale specific
-layout is not different from the fallback locale, then a place holder file \c
-<layout type>.fallback can be added for the layout. This will specify the virtual
-keyboard that a fallback layout can be used instead.
+The Virtual Keyboard Engine generates the list of supported locales from
+locale-specific layout directories in \c {layouts/}. Each layout directory
+must contain a definition or fallback for the following layout types:
+\e dialpad, \e digits, \e handwriting, \e main, \e numbers, and \e symbols.
+Definitions are implemented in \c {.qml}-files, fallbacks are defined by a
+placeholder file with the \c {.fallback} file extension. The \c {layouts/}
+directory must contain a \c {fallback/} sub-directory that contains definitions
+for each layout type.
 
-At minimum the layout directory must contain the files:
+Each layout directory may contain the definition of one or more layout types.
+If the locale-specific layout is the same as that of the fallback locale, you
+can add a placeholder file for the layout called \c {<layout type>.fallback}.
+This instructs the virtual keyboard to use the fallback layout instead.
 
-\list
-    \li \c dialpad.fallback
-    \li \c digits.fallback
-    \li \c main.fallback
-    \li \c numbers.fallback
-    \li \c symbols.fallback
-\endlist
+For example: you may add a locale-specific layout for Finnish, that defines the
+main layout type in \c {main.qml}. For the other layout types, you opt for the
+fallback mechanism. Your \c {layouts/} tree will look like this:
+
+\badcode
+.
+├── fallback
+│   ├── dialpad.qml
+│   ├── digits.qml
+│   ├── handwriting.qml
+│   ├── main.qml
+│   ├── numbers.qml
+│   └── symbols.qml
+└── fi_FI
+    ├── dialpad.fallback
+    ├── digits.fallback
+    ├── handwriting.fallback
+    ├── main.qml
+    ├── numbers.fallback
+    └── symbols.fallback
+\endcode
+
+It's imperative that the \c {layouts/fallback} directory always contain a set
+of full implementation files.
 
 The application can specify the initial layout by changing the default locale.
-However, this needs to be done before the application is initialized and the
-input method plugin is loaded. If no changes are made to the default locale, the
-current system locale is used.
+However, this must be done before the application initializes and loads the
+input method plugin. If there are no changes to the default locale, the current
+system locale is used.
 
-The keyboard locale matching is performed in the following sequence:
+Matching the keyboard locale follows this sequence:
 
 \list
-    \li layouts/<language>_<country>
-    \li layouts/<language>_*
-    \li layouts/en_GB
+    \li \c {layouts/<language>_<country>}
+    \li \c {layouts/<language>_*}
+    \li \c {layouts/fallback} -- the default layout here is \e en_GB.
 \endlist
 
-The locale is first matched against the full locale name. If a full match is
-not found, then only the locale language is matched. If a partial match is
-not found, then the "en_GB" locale is used as a fallback.
+First, the locale is matched against the full locale name. If a there isn't a
+full match, then only the locale language is matched. Finally, the contents of
+\c {layouts/fallback} is used as a fallback when there's also no partial match.
 
 After the locale selection is done, the keyboard updates the input locale and
 input direction to match the current layout. The application can receive this
 information through the QInputMethod interface.
 
-Internally, the current input locale is also updated to the QVirtualKeyboardInputEngine
-and the current input method instances.
+Internally, the current input locale is also updated to
+QVirtualKeyboardInputEngine and the current input method instances.
 
 \section1 Input Engine
 
