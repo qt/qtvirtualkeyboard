@@ -36,7 +36,7 @@ qt_feature("vkb-arrow-keynavigation" PUBLIC
 )
 qt_feature("vkb-desktop" PUBLIC
     LABEL "Desktop integration"
-    CONDITION NOT cross_compile
+    CONDITION NOT QT_FEATURE_cross_compile
 )
 qt_feature("vkb-layouts" PUBLIC
     LABEL "Built-in layouts"
