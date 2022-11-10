@@ -48,6 +48,17 @@ import QtQuick.VirtualKeyboard 2.1
     the module, the \c QT_IM_MODULE environment variable must be set to
     \c qtvirtualkeyboard before using InputPanel. For more information, see
     \l {Loading the Plugin}.
+
+    \note You can have only one InputPanel instance in your application.
+
+    \section2 InputPanel and modal dialogs
+
+    Qt prevents modal popups from blocking the keyboard UI, as this would make it
+    impossible to use the keyboard to write into a text field within a modal popup.
+    When an input field receives focus during a modal session, the InputPanel item is
+    made a sibling of the Overlay, and given a z-value one above the Overlay's so that
+    it stays on top of the user interface. When the modal session ends, the item is
+    reparented back to the original parent, and the z-value is restored.
 */
 
 Item {
