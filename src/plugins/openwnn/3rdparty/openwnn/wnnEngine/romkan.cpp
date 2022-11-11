@@ -126,20 +126,20 @@ bool Romkan::convertImpl(ComposingText &text, const WnnLookupTable &table) const
         for (int i = start; i < RomkanPrivate::MAX_LENGTH; i++) {
             key.append(str[i].string);
         }
-        bool upper = key.at(key.length() - 1).isUpper();
+        bool upper = key.at(key.size() - 1).isUpper();
         QString match = table[key.toLower()];
         if (!match.isEmpty()) {
             if (upper) {
                 match = match.toUpper();
             }
             QList<StrSegment> out;
-            if (match.length() == 1) {
+            if (match.size() == 1) {
                 out.append(StrSegment(match, str[start].from, str[RomkanPrivate::MAX_LENGTH - 1].to));
                 text.replaceStrSegment(ComposingText::LAYER1, out, RomkanPrivate::MAX_LENGTH - start);
             } else {
-                out.append(StrSegment(match.left(match.length() - 1),
+                out.append(StrSegment(match.left(match.size() - 1),
                                       str[start].from, str[RomkanPrivate::MAX_LENGTH - 1].to - 1));
-                out.append(StrSegment(match.mid(match.length() - 1),
+                out.append(StrSegment(match.mid(match.size() - 1),
                                       str[RomkanPrivate::MAX_LENGTH - 1].to, str[RomkanPrivate::MAX_LENGTH - 1].to));
                 text.replaceStrSegment(ComposingText::LAYER1, out, RomkanPrivate::MAX_LENGTH - start);
             }

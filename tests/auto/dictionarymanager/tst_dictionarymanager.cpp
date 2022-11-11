@@ -29,7 +29,7 @@ void tst_dictionarymanager::testCreateDictionary()
     QVERIFY(dictionarySpy.isValid());
     QStringList wordList = QStringList() << "myword";
     dictionary->setContents(wordList);
-    QCOMPARE(dictionarySpy.count(), 1);
+    QCOMPARE(dictionarySpy.size(), 1);
 
     QVERIFY(dictionaryManager->availableDictionaries().contains("custom"));
 }

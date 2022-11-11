@@ -66,11 +66,11 @@ int ZhuyinTable::getInitials(QChar initials) noexcept
 
 int ZhuyinTable::getFinals(QStringView finals) noexcept
 {
-    if (finals.length() == 0)
+    if (finals.size() == 0)
         // Syllables ending with no finals can still be valid.
         return 0;
 
-    if (finals.length() > 2)
+    if (finals.size() > 2)
         return -1;
 
     // Compute the index instead of direct lookup the whole array to save
@@ -96,7 +96,7 @@ int ZhuyinTable::getFinals(QStringView finals) noexcept
         return -1;
     }
 
-    if (finals.length() == 1)
+    if (finals.size() == 1)
         return index;
 
     for (int i = 0; i < endingFinals.size(); ++i) {

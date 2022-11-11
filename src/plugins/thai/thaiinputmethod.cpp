@@ -45,7 +45,7 @@ bool ThaiInputMethod::keyEvent(Qt::Key key,
                                const QString &text,
                                Qt::KeyboardModifiers modifiers)
 {
-    const bool isMark = text.length() == 2 && text.at(0) == QLatin1Char(' ');
+    const bool isMark = text.size() == 2 && text.at(0) == QLatin1Char(' ');
 #ifdef QT_HUNSPELLINPUTMETHOD_LIB
     if (isMark) {
         const QString mark(text.right(1));

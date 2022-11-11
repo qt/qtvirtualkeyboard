@@ -340,7 +340,7 @@ public:
             return NJ_SET_ERR_VAL(NJ_FUNC_SEARCH_WORD, NJ_ERR_INVALID_PARAM);
         }
 
-        if (keyString.length() > NJ_MAX_LEN) {
+        if (keyString.size() > NJ_MAX_LEN) {
             /* If too long key string was specified, return "No result is found" */
             work.flag &= ~NJ_JNI_FLAG_ENABLE_CURSOR;
             work.flag &= ~NJ_JNI_FLAG_ENABLE_RESULT;
@@ -468,8 +468,8 @@ public:
 
     int setApproxPattern(const QString &src, const QString &dst)
     {
-        if (src.isEmpty() || src.length() > 1 ||
-            dst.isEmpty() || dst.length() > 3) {
+        if (src.isEmpty() || src.size() > 1 ||
+            dst.isEmpty() || dst.size() > 3) {
             /* If a invalid parameter was specified, return an error code */
             return NJ_SET_ERR_VAL(NJ_FUNC_SET_APPROX_PATTERN, NJ_ERR_INVALID_PARAM);
         }
@@ -543,7 +543,7 @@ public:
 
     QStringList getApproxPattern(const QString &src)
     {
-        if (src.isEmpty() || src.length() > 1)
+        if (src.isEmpty() || src.size() > 1)
             return QStringList();
 
         NJ_CHAR from[NJ_MAX_CHARSET_FROM_LEN + NJ_TERM_LEN];
@@ -614,7 +614,7 @@ public:
             return NJ_SET_ERR_VAL(NJ_FUNC_SET_STROKE, NJ_ERR_INVALID_PARAM);
         }
 
-        if (stroke.length() > NJ_MAX_LEN) {
+        if (stroke.size() > NJ_MAX_LEN) {
             /* If a invalid parameter was specified, return an error code */
             return NJ_SET_ERR_VAL(NJ_FUNC_SET_STROKE, NJ_ERR_YOMI_TOO_LONG);
         }
@@ -632,7 +632,7 @@ public:
             return NJ_SET_ERR_VAL(NJ_FUNC_SET_CANDIDATE, NJ_ERR_INVALID_PARAM);
         }
 
-        if (candidate.length() > NJ_MAX_RESULT_LEN) {
+        if (candidate.size() > NJ_MAX_RESULT_LEN) {
             /* If a invalid parameter was specified, return an error code */
             return NJ_SET_ERR_VAL(NJ_FUNC_SET_CANDIDATE, NJ_ERR_CANDIDATE_TOO_LONG);
         }

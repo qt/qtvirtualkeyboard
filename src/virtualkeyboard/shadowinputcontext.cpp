@@ -185,7 +185,7 @@ void ShadowInputContext::update(Qt::InputMethodQueries queries)
                                                        newCursorPosition - newAnchorPosition, QVariant()));
         QInputMethodEvent inputEvent(QString(), attributes);
         if (updateSurroundingText)
-            inputEvent.setCommitString(newSurroundingText, -cursorPosition, surroundingText.length());
+            inputEvent.setCommitString(newSurroundingText, -cursorPosition, surroundingText.size());
         QGuiApplication::sendEvent(d->inputItem, &inputEvent);
     }
 

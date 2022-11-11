@@ -281,7 +281,7 @@ void ShiftHandler::autoCapitalize()
         } else { // space after sentence-ending character triggers auto-capitalization
             QString text = d->inputContext->surroundingText();
             text.truncate(cursorPosition);
-            if (text.trimmed().length() == 0)
+            if (text.trimmed().size() == 0)
                 setShiftActive(!preferLowerCase);
             else if (text.endsWith(QLatin1Char(' ')))
                 setShiftActive(d->sentenceEndingCharacters.contains(QStringView{text}.right(2)[0])

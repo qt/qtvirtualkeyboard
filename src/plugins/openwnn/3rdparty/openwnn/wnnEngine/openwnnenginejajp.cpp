@@ -143,7 +143,7 @@ public:
     bool addCandidate(QSharedPointer<WnnWord> word)
     {
         if (word.isNull() || word->candidate.isEmpty() || mCandTable.contains(word->candidate)
-                || word->candidate.length() > OpenWnnEngineJAJP::MAX_OUTPUT_LENGTH) {
+                || word->candidate.size() > OpenWnnEngineJAJP::MAX_OUTPUT_LENGTH) {
             return false;
         }
         /*
@@ -170,14 +170,14 @@ public:
     int setSearchKey(const ComposingText &text, int maxLen)
     {
         QString input = text.toString(ComposingText::LAYER1);
-        if (0 <= maxLen && maxLen <= input.length()) {
+        if (0 <= maxLen && maxLen <= input.size()) {
             input = input.mid(0, maxLen);
             mExactMatchMode = true;
         } else {
             mExactMatchMode = false;
         }
 
-        if (input.length() == 0) {
+        if (input.size() == 0) {
             mInputHiragana.clear();
             mInputRomaji.clear();
             return 0;
@@ -186,7 +186,7 @@ public:
         mInputHiragana = input;
         mInputRomaji = text.toString(ComposingText::LAYER0);
 
-        return input.length();
+        return input.size();
     }
 
     void clearPreviousWord()
@@ -292,7 +292,7 @@ int OpenWnnEngineJAJP::convert(ComposingText &text)
     }
 
     QSharedPointer<WnnSentence> sentence;
-    if (input.length() != 0) {
+    if (input.size() != 0) {
         sentence = d->mClauseConverter.consecutiveClauseConvert(input);
     }
     if (!head.isNull()) {
@@ -307,7 +307,7 @@ int OpenWnnEngineJAJP::convert(ComposingText &text)
     for (QList<WnnClause>::ConstIterator it = sentence->elements.constBegin();
          it != sentence->elements.constEnd(); it++) {
         const WnnClause &clause = *it;
-        int len = clause.stroke.length();
+        int len = clause.stroke.size();
         ss.append(StrSegment(clause, pos, pos + len - 1));
         pos += len;
     }

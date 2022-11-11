@@ -83,7 +83,7 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
     {
         QString word = d->wordCandidates.wordAt(0);
         if (!word.isEmpty()) {
-            word.remove(word.length() - 1, 1);
+            word.remove(word.size() - 1, 1);
             ic->setPreeditText(word);
             if (!word.isEmpty()) {
                 d->wordCandidates.updateWord(0, word);
@@ -105,7 +105,7 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
             update();
             break;
         }
-        if (text.length() > 0) {
+        if (text.size() > 0) {
             QChar c = text.at(0);
             QString word = d->wordCandidates.wordAt(0);
             bool addToWord = d->isValidInputChar(c) && (!word.isEmpty() || !d->isJoiner(c));
@@ -121,7 +121,7 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
                         - No space before the cursor
                         - No spefic characters before the cursor; minus and apostrophe
                     */
-                    if (!surroundingText.isEmpty() && cursorPosition == surroundingText.length()) {
+                    if (!surroundingText.isEmpty() && cursorPosition == surroundingText.size()) {
                         QChar lastChar = surroundingText.at(cursorPosition - 1);
                         if (!lastChar.isSpace() &&
                             lastChar != QLatin1Char(Qt::Key_Minus) &&
@@ -148,7 +148,7 @@ bool HunspellInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboar
                     emit selectionListActiveItemChanged(QVirtualKeyboardSelectionListModel::Type::WordCandidateList, d->wordCandidates.index());
                 }
                 accept = true;
-            } else if (text.length() > 1) {
+            } else if (text.size() > 1) {
                 bool addSpace = !word.isEmpty() || d->autoSpaceAllowed;
                 update();
                 d->autoSpaceAllowed = true;
@@ -200,7 +200,7 @@ QVariant HunspellInputMethod::selectionListData(QVirtualKeyboardSelectionListMod
     {
         const QString wordCandidate(d->wordCandidates.wordAt(index));
         const QString word(d->wordCandidates.wordAt(0));
-        int wordCompletionLength = wordCandidate.length() - word.length();
+        int wordCompletionLength = wordCandidate.size() - word.size();
         result.setValue((wordCompletionLength > 0 && wordCandidate.startsWith(word)) ? wordCompletionLength : 0);
         break;
     }
@@ -284,15 +284,15 @@ bool HunspellInputMethod::reselect(int cursorPosition, const QVirtualKeyboardInp
         return false;
 
     if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::ReselectFlag::WordAfterCursor)) {
-        for (int i = cursorPosition; i < surroundingText.length(); ++i) {
+        for (int i = cursorPosition; i < surroundingText.size(); ++i) {
             QChar c = surroundingText.at(i);
             if (!d->isValidInputChar(c))
                 break;
             word.append(c);
         }
 
-        while (replaceFrom > -word.length()) {
-            int lastPos = word.length() - 1;
+        while (replaceFrom > -word.size()) {
+            int lastPos = word.size() - 1;
             if (!d->isJoiner(word.at(lastPos)))
                 break;
             word.remove(lastPos, 1);
@@ -302,17 +302,17 @@ bool HunspellInputMethod::reselect(int cursorPosition, const QVirtualKeyboardInp
     if (word.isEmpty())
         return false;
 
-    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::ReselectFlag::WordAtCursor) && replaceFrom == -word.length())
+    if (reselectFlags.testFlag(QVirtualKeyboardInputEngine::ReselectFlag::WordAtCursor) && replaceFrom == -word.size())
         return false;
 
     if (d->isJoiner(word.at(0)))
         return false;
 
-    if (d->isJoiner(word.at(word.length() - 1)))
+    if (d->isJoiner(word.at(word.size() - 1)))
         return false;
 
     d->wordCandidates.updateWord(0, word);
-    ic->setPreeditText(word, QList<QInputMethodEvent::Attribute>(), replaceFrom, word.length());
+    ic->setPreeditText(word, QList<QInputMethodEvent::Attribute>(), replaceFrom, word.size());
 
     d->autoSpaceAllowed = false;
     if (d->updateSuggestions()) {

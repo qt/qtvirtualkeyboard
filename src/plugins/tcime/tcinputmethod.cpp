@@ -59,7 +59,7 @@ public:
 
     QString pickHighlighted() const
     {
-        return (highlightIndex >= 0 && highlightIndex < candidates.count()) ? candidates[highlightIndex] : QString();
+        return (highlightIndex >= 0 && highlightIndex < candidates.size()) ? candidates[highlightIndex] : QString();
     }
 
     void reset()
@@ -101,7 +101,7 @@ public:
     {
         bool accept = false;
         if (!input.contains(QChar(0x91CD)) && CangjieTable::isLetter(c)) {
-            if (input.length() < (cangjieDictionary.simplified() ? CangjieTable::MAX_SIMPLIFIED_CODE_LENGTH : CangjieTable::MAX_CODE_LENGTH)) {
+            if (input.size() < (cangjieDictionary.simplified() ? CangjieTable::MAX_SIMPLIFIED_CODE_LENGTH : CangjieTable::MAX_CODE_LENGTH)) {
                 input.append(c);
                 ic->setPreeditText(input);
                 if (setCandidates(wordDictionary->getWords(input), true)) {
@@ -119,7 +119,7 @@ public:
             }
             accept = true;
         } else if (c.unicode() == 0x96E3) {
-            if (input.length() == 1) {
+            if (input.size() == 1) {
                 Q_ASSERT(input.at(0).unicode() == 0x91CD);
                 input.append(c);
                 ic->setPreeditText(input);
@@ -132,7 +132,7 @@ public:
 
     bool checkSpecialCharInput()
     {
-        if (input.length() == 1 && input.at(0).unicode() == 0x91CD) {
+        if (input.size() == 1 && input.at(0).unicode() == 0x91CD) {
             static const QStringList specialChars1 = QStringList()
                     << QChar(0xFF01) << QChar(0x2018) << QChar(0x3000) << QChar(0xFF0C)
                     << QChar(0x3001) << QChar(0x3002) << QChar(0xFF0E) << QChar(0xFF1B)
@@ -151,7 +151,7 @@ public:
             }
             q->inputContext()->setPreeditText(candidates[highlightIndex]);
             return true;
-        } else if (input.length() == 2 && input.at(0).unicode() == 0x91CD && input.at(1).unicode() == 0x96E3) {
+        } else if (input.size() == 2 && input.at(0).unicode() == 0x91CD && input.at(1).unicode() == 0x96E3) {
             static const QStringList specialChars2 = QStringList()
                     << QChar(0x3008) << QChar(0x3009) << QChar(0xFE31) << QChar(0x2013)
                     << QChar(0xFF5C) << QChar(0x300C) << QChar(0x300D) << QChar(0xFE40)
@@ -192,12 +192,12 @@ public:
             QChar tone = strippedTones.pair[1].at(0);
             if (c == ZhuyinTable::DEFAULT_TONE) {
                 if (tone != ZhuyinTable::DEFAULT_TONE)
-                    input.remove(input.length() - 1, 1);
+                    input.remove(input.size() - 1, 1);
             } else {
                 if (tone == ZhuyinTable::DEFAULT_TONE)
                     input.append(c);
                 else
-                    input.replace(input.length() - 1, 1, c);
+                    input.replace(input.size() - 1, 1, c);
             }
         } else if (ZhuyinTable::getInitials(c) > 0) {
             // Insert the initial or replace the original initial.
@@ -255,7 +255,7 @@ public:
             if (!syllables.isEmpty()) {
                 if (ZhuyinTable::isYiWuYuFinals(syllables.at(0))) {
                     results[1] = syllables.at(0);
-                    if (syllables.length() > 1)
+                    if (syllables.size() > 1)
                         results[2] = syllables.at(1);
                 } else {
                     results[2] = syllables.at(0);
@@ -435,7 +435,7 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
 
     case Qt::Key_Backspace:
         if (!d->input.isEmpty()) {
-            d->input.remove(d->input.length() - 1, 1);
+            d->input.remove(d->input.size() - 1, 1);
             ic->setPreeditText(d->input);
 #if QT_CONFIG(cangjie)
             if (!d->checkSpecialCharInput()) {
@@ -455,7 +455,7 @@ bool TCInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModif
         break;
 
     default:
-        if (text.length() == 1)
+        if (text.size() == 1)
             accept = d->compose(text.at(0));
         if (!accept)
             update();
@@ -473,7 +473,7 @@ int TCInputMethod::selectionListItemCount(QVirtualKeyboardSelectionListModel::Ty
 {
     Q_UNUSED(type);
     Q_D(TCInputMethod);
-    return d->candidates.count();
+    return d->candidates.size();
 }
 
 QVariant TCInputMethod::selectionListData(QVirtualKeyboardSelectionListModel::Type type, int index, QVirtualKeyboardSelectionListModel::Role role)

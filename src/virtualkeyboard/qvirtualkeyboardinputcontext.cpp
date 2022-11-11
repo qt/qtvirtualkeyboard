@@ -107,7 +107,7 @@ void QVirtualKeyboardInputContext::setPreeditText(const QString &text, QList<QIn
         if (!d->testAttribute(attributes, QInputMethodEvent::TextFormat)) {
             QTextCharFormat textFormat;
             textFormat.setUnderlineStyle(QTextCharFormat::SingleUnderline);
-            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, 0, text.length(), textFormat));
+            attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, 0, text.size(), textFormat));
         }
     } else if (d->_forceCursorPosition != -1) {
         d->addSelectionAttribute(attributes);

@@ -30,7 +30,7 @@ PhraseDictionary::PhraseDictionary() :
 
 QStringList PhraseDictionary::getWords(const QString &input) const
 {
-    if (input.length() != 1)
+    if (input.size() != 1)
         return QStringList();
 
     // Phrases are stored in an array consisting of three character arrays.
@@ -42,7 +42,7 @@ QStringList PhraseDictionary::getWords(const QString &input) const
     // char[1][] { 0, 2, 4 }
     // char[2][] { a, a', b, b', c}
     const Dictionary &dict = dictionary();
-    if (dict.length() != 3)
+    if (dict.size() != 3)
         return QStringList();
 
     const DictionaryEntry &words = dict[0];
@@ -55,8 +55,8 @@ QStringList PhraseDictionary::getWords(const QString &input) const
     const DictionaryEntry &offsets = dict[1];
     const DictionaryEntry &phrases = dict[2];
     int offset = (int)offsets[index].unicode();
-    int count = (index < offsets.length() - 1) ?
-        ((int)offsets[index + 1].unicode() - offset) : (phrases.length() - offset);
+    int count = (index < offsets.size() - 1) ?
+        ((int)offsets[index + 1].unicode() - offset) : (phrases.size() - offset);
 
     QStringList result;
     for (int i = 0; i < count; ++i)

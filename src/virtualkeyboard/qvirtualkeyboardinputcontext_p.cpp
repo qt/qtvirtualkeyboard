@@ -225,7 +225,7 @@ void QVirtualKeyboardInputContextPrivate::forceCursorPosition(int anchorPosition
         forceAnchorPosition = -1;
         _forceCursorPosition = cursorPosition;
         if (cursorPosition > this->cursorPosition)
-            _forceCursorPosition += preeditText.length();
+            _forceCursorPosition += preeditText.size();
         commit();
     } else {
         forceAnchorPosition = anchorPosition;
@@ -502,13 +502,13 @@ void QVirtualKeyboardInputContextPrivate::invokeAction(QInputMethod::Action acti
             if (inputEngine->clickPreeditText(cursorPosition))
                 break;
 
-            bool reselect = !inputMethodHints.testFlag(Qt::ImhNoPredictiveText) && selectedText.isEmpty() && cursorPosition < preeditText.length();
+            bool reselect = !inputMethodHints.testFlag(Qt::ImhNoPredictiveText) && selectedText.isEmpty() && cursorPosition < preeditText.size();
             if (reselect) {
                 QVirtualKeyboardScopedState reselectState(this, State::Reselect);
                 _forceCursorPosition = this->cursorPosition + cursorPosition;
                 commit();
                 inputEngine->reselect(this->cursorPosition, QVirtualKeyboardInputEngine::ReselectFlag::WordBeforeCursor);
-            } else if (!preeditText.isEmpty() && cursorPosition == preeditText.length()) {
+            } else if (!preeditText.isEmpty() && cursorPosition == preeditText.size()) {
                 commit();
             }
         }
@@ -611,7 +611,7 @@ bool QVirtualKeyboardInputContextPrivate::testAttribute(const QList<QInputMethod
 
 int QVirtualKeyboardInputContextPrivate::findAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const
 {
-    const int count = attributes.count();
+    const int count = attributes.size();
     for (int i = 0; i < count; ++i) {
         if (attributes.at(i).type == attributeType)
             return i;

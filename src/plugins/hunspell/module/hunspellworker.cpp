@@ -125,7 +125,7 @@ void HunspellBuildSuggestionsTask::run()
                     suggestCapitalization = true;
                 }
             /*  Prioritize word completions, missing punctuation or missing accents */
-            } else if ((normalizedWordCandidate.length() > word.length() &&
+            } else if ((normalizedWordCandidate.size() > word.size() &&
                         normalizedWordCandidate.startsWith(word)) ||
                        wordCandidate.contains(QLatin1Char('\''))) {
                 wordList->insertWord(lastWordCompletionIndex++, wordCandidate);
@@ -184,30 +184,30 @@ int HunspellBuildSuggestionsTask::levenshteinDistance(const QString &s, const QS
 {
     if (s == t)
         return 0;
-    if (s.length() == 0)
-        return t.length();
-    if (t.length() == 0)
-        return s.length();
-    QList<int> v0(t.length() + 1);
-    QList<int> v1(t.length() + 1);
+    if (s.size() == 0)
+        return t.size();
+    if (t.size() == 0)
+        return s.size();
+    QList<int> v0(t.size() + 1);
+    QList<int> v1(t.size() + 1);
     for (int i = 0; i < v0.size(); i++)
         v0[i] = i;
     for (int i = 0; i < s.size(); i++) {
         v1[0] = i + 1;
-        for (int j = 0; j < t.length(); j++) {
+        for (int j = 0; j < t.size(); j++) {
             int cost = (s[i].toLower() == t[j].toLower()) ? 0 : 1;
             v1[j + 1] = qMin(qMin(v1[j] + 1, v0[j + 1] + 1), v0[j] + cost);
         }
         for (int j = 0; j < v0.size(); j++)
             v0[j] = v1[j];
     }
-    return v1[t.length()];
+    return v1[t.size()];
 }
 
 QString HunspellBuildSuggestionsTask::removeAccentsAndDiacritics(const QString& s)
 {
     QString normalized = s.normalized(QString::NormalizationForm_D);
-    for (int i = 0; i < normalized.length();) {
+    for (int i = 0; i < normalized.size();) {
         QChar::Category category = normalized[i].category();
         if (category <= QChar::Mark_Enclosing) {
             normalized.remove(i, 1);
@@ -238,7 +238,7 @@ void HunspellAddWordTask::run()
     tmpWord.reserve(64);
     for (int i = 0, count = wordList->size(); i < count; ++i) {
         const QString word(wordList->wordAt(i));
-        if (word.length() < 2)
+        if (word.size() < 2)
             continue;
         Hunspell_add(hunspell, QByteArray { fromUtf16(word) }.constData());
         if (HunspellAddWordTask::alternativeForm(word, tmpWord))
@@ -248,7 +248,7 @@ void HunspellAddWordTask::run()
 
 bool HunspellAddWordTask::alternativeForm(const QString &word, QString &alternativeForm)
 {
-    if (word.length() < 2)
+    if (word.size() < 2)
         return false;
     if (!word.mid(1).isLower())
         return false;
