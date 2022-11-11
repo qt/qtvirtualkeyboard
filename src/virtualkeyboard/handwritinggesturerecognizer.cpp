@@ -110,7 +110,7 @@ QVariantMap HandwritingGestureRecognizer::recognize(const QList<QVirtualKeyboard
                         bool matchesToExisting = true;
                         const qreal minimumSwipeLength = (swipeLength * (100.0 - MAXIMUM_WIDTH_VARIANCE) / 100.0);
                         const qreal maximumSwipeLength = (swipeLength * (100.0 + MAXIMUM_WIDTH_VARIANCE) / 100.0);
-                        for (const QVector2D &otherSwipeVector : qAsConst(swipeVectors)) {
+                        for (const QVector2D &otherSwipeVector : std::as_const(swipeVectors)) {
                             const qreal otherSwipeLength = otherSwipeVector.length();
                             const qreal theta = qAcos(QVector2D::dotProduct(swipeVector, otherSwipeVector) / (swipeLength * otherSwipeLength));
 

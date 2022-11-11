@@ -602,7 +602,7 @@ void QVirtualKeyboardInputContextPrivate::addSelectionAttribute(QList<QInputMeth
 
 bool QVirtualKeyboardInputContextPrivate::testAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const
 {
-    for (const QInputMethodEvent::Attribute &attribute : qAsConst(attributes)) {
+    for (const QInputMethodEvent::Attribute &attribute : std::as_const(attributes)) {
         if (attribute.type == attributeType)
             return true;
     }
