@@ -277,7 +277,8 @@ There are several environment variables defined by the module that are listed be
         \li Specifies the location of the style to use with the virtual keyboard.
 
             This can also be specified in QML by setting \l {VirtualKeyboardSettings::styleName},
-            or at build time by using the \l {Advanced Usage}{Configuration Options}.
+            or at build time by using the
+            \l [DOC] {Advanced Usage} {Configuration Options}.
     \row
         \li QT_VIRTUALKEYBOARD_LAYOUT_PATH
         \li Specifies the location of the layouts to be used with the virtual keyboard.
