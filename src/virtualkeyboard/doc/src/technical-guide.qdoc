@@ -617,7 +617,7 @@ directory, the virtual keyboard falls back to the default built-in layouts.
 
 To prevent the built-in layouts from being built into the virtual keyboard
 plugin when using custom layouts, add \c -no-vkb-layouts option to the \c configure script.
-For more information, see \l {Advanced Usage}{Configuration Options}.
+For more information, see \l [DOC] {Advanced Usage} {Configuration Options}.
 
 \section1 Keyboard Styles
 
