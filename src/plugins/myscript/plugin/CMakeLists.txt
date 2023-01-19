@@ -33,11 +33,11 @@ qt_internal_add_qml_module(qtvkbmyscriptplugin
         myscriptinputmethod_p_p.h
         myscriptplugin.cpp myscriptplugin.h
     DEFINES
-        MYSCRIPT_CERTIFICATE=\\\"${MyScript_ROOT_DIR}/edk/c/examples/certificates/MyCertificate.c\\\"
-        MYSCRIPT_VOIM_PROPERTY_PATH=\\\"${MYSCRIPT_INSTALL_DATA}/${MYSCRIPT_VOIM_PROPERTY_NAME}\\\"
-        MYSCRIPT_LANGUAGE_CONF_PATH=\\\"${MYSCRIPT_INSTALL_DATA}/${MYSCRIPT_LANGUAGE_CONF_NAME}\\\"
-        MYSCRIPT_VOIM_NAME=\\\"${MYSCRIPT_VOIM_NAME}\\\"
-        MYSCRIPT_ENGINE_NAME=\\\"${MYSCRIPT_ENGINE_NAME}\\\"
+        MYSCRIPT_CERTIFICATE="${MyScript_ROOT_DIR}/edk/c/examples/certificates/MyCertificate.c"
+        MYSCRIPT_VOIM_PROPERTY_PATH="${MYSCRIPT_INSTALL_DATA}/${MYSCRIPT_VOIM_PROPERTY_NAME}"
+        MYSCRIPT_LANGUAGE_CONF_PATH="${MYSCRIPT_INSTALL_DATA}/${MYSCRIPT_LANGUAGE_CONF_NAME}"
+        MYSCRIPT_VOIM_NAME="${MYSCRIPT_VOIM_NAME}"
+        MYSCRIPT_ENGINE_NAME="${MYSCRIPT_ENGINE_NAME}"
         # POSIX source must be required to use "strdup" for "Properties.c"
         _POSIX_C_SOURCE=200809L
     INCLUDE_DIRECTORIES

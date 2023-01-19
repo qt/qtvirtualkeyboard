@@ -18,7 +18,7 @@ qt_internal_add_test(tst_styles
     SOURCES
         tst_styles.cpp
     DEFINES
-        TESTDATA_DIR=\\\"${CMAKE_CURRENT_SOURCE_DIR}/data\\\"
+        TESTDATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data"
     LIBRARIES
         Qt::Gui
     TESTDATA ${test_data}

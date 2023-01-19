@@ -19,7 +19,7 @@ qt_internal_add_qml_module(qtvkbsettingsplugin
         QT_NO_CAST_FROM_ASCII
         QT_NO_CAST_FROM_BYTEARRAY
         QT_NO_CAST_TO_ASCII
-        QT_VIRTUALKEYBOARD_DEFAULT_LAYOUTS_DIR=\\\"qrc:${VKB_LAYOUTS_PREFIX}\\\"
+        QT_VIRTUALKEYBOARD_DEFAULT_LAYOUTS_DIR="qrc:${VKB_LAYOUTS_PREFIX}"
     LIBRARIES
         Qt::Core
         Qt::Gui
@@ -30,16 +30,16 @@ qt_internal_add_qml_module(qtvkbsettingsplugin
 
 qt_internal_extend_target(qtvkbsettingsplugin CONDITION QT_FEATURE_vkb_no_builtin_style
     DEFINES
-        QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"\\\"
+        QT_VIRTUALKEYBOARD_DEFAULT_STYLE=""
 )
 
 qt_internal_extend_target(qtvkbsettingsplugin CONDITION QT_FEATURE_vkb_retro_style AND NOT QT_FEATURE_vkb_no_builtin_style
     DEFINES
-        QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"retro\\\"
+        QT_VIRTUALKEYBOARD_DEFAULT_STYLE="retro"
 )
 
 qt_internal_extend_target(qtvkbsettingsplugin CONDITION NOT QT_FEATURE_vkb_no_builtin_style AND NOT QT_FEATURE_vkb_retro_style
     DEFINES
-        QT_VIRTUALKEYBOARD_DEFAULT_STYLE=\\\"default\\\"
+        QT_VIRTUALKEYBOARD_DEFAULT_STYLE="default"
 )
 
