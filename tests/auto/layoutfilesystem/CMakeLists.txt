@@ -12,7 +12,7 @@ qt_internal_add_test(tst_layoutfilesystem
         ../shared/layouttesthelper.cpp ../shared/layouttesthelper.h
         tst_layoutfilesystem.cpp
     DEFINES
-        SRC_DIR=\\\"${CMAKE_CURRENT_SOURCE_DIR}\\\"
+        SRC_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
     INCLUDE_DIRECTORIES
         ../shared
     LIBRARIES
