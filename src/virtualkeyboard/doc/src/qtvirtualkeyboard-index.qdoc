@@ -13,54 +13,34 @@
     integrate 3rd party input engines. The input methods can be implemented
     in C++ or QML.
 
-    \section1 Features
+    \section1 Using the Module
 
-    Key features of the Qt Virtual Keyboard include:
+    \include {module-use.qdocinc} {using the c++ api}
 
-    \list
-        \li Customizable keyboard layouts and styles with dynamic switching.
-        \li Predictive text input with word selection.
-        \li Character preview and alternative character view.
-        \li Automatic capitalization and space insertion.
-        \li Scalability to different resolutions.
-        \li Support for different character sets (Latin, Simplified/Traditional Chinese,
-            Hindi, Japanese, Arabic, Hebrew, Korean, and others).
-        \li Support for most common input \l {Supported Languages}{languages},
-            with possibility to easily extend the language support.
-        \li Left-to-right and right-to-left input.
-        \li Hardware key support for 2-way and 5-way navigation.
-        \li \l {Handwriting Recognition}{Handwriting support}, with gestures for fullscreen input.
-        \li Audio feedback.
-        \li Cross-platform functionality.
-        \li Supports both \l {Integration Method}{Qt Quick and Qt Widgets applications}.
-    \endlist
+    \section2 Building with CMake
 
-    \section1 Supported Languages
+    \include {module-use.qdocinc} {building with cmake} {VirtualKeyboard}
 
-    \include layouts.qdocinc layout-list
+    \section2 Building with qmake
 
-    \section1 Third-party Plugins
+    \include {module-use.qdocinc} {building_with_qmake} {virtualkeyboard}
 
-    The Qt Virtual Keyboard supports third-party plugins from the following vendors:
-    \list
-        \li \l {Cerence XT9 Advanced Input}{Cerence XT9} advanced input.
-        \li \l {Handwriting Recognition#Cerence Handwriting}{Cerence Handwriting} text input.
-        \li \l {Handwriting Recognition#MyScript}{MyScript} Text handwriting recognition
-    \endlist
-
-    \l {Building Qt Virtual Keyboard} describes how to integrate these plugins
-    into the Qt Virtual Keyboard.
-
-    \section1 Guides
+    \section1 Articles and Guides
 
     \list
     \li \l {Building Qt Virtual Keyboard}
     \li \l {Deployment Guide}
-    \li \l {Technical Guide}
+    \li \l {Qt Virtual Keyboard Overview}
     \li \l {User Guide}
     \endlist
 
-    \section1 API Reference
+    \section1 Examples
+
+    \list
+      \li \l{Qt Virtual Keyboard Examples}
+    \endlist
+
+    \section1 Reference
 
     \list
         \li \l{Qt Virtual Keyboard API for Applications}
@@ -69,20 +49,16 @@
         \li \l{Qt Virtual Keyboard C++ Classes}
     \endlist
 
-    \section1 Examples
-
-     \list
-      \li \l{Qt Virtual Keyboard Examples}
-     \endlist
 
     \section1 Licenses and Attributions
 
-    Qt Virtual Keyboard is available under commercial licenses from \l{The Qt Company}.
-    In addition, it is available under the \l{GNU General Public License, version 3}.
+    Qt Virtual Keyboard is available under commercial licenses from
+    \l{The Qt Company}. In addition, it is available under the
+    \l{GNU General Public License, version 3}.
     See \l{Qt Licensing} for further details.
 
-    Furthermore Qt Virtual Keyboard potentially contains third party
-    modules under following permissive licenses:
+    Furthermore, Qt Virtual Keyboard potentially contains third party
+    modules under the following permissive licenses:
 
     \generatelist{groupsbymodule attributions-qtvirtualkeyboard}
 */
