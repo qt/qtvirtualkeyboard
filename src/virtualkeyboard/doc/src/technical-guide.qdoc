@@ -3,17 +3,53 @@
 
 /*!
 
-\page technical-guide.html
-
-\title Technical Guide
-
-\section1 Overview
+\page qtvirtualkeyboard-overview.html
+\title Qt Virtual Keyboard Overview
+\brief Describes the technical details of the Qt Virtual Keyboard module.
 
 This document provides a technical overview of the Qt Virtual Keyboard plugin.
 
+\section1 Features
+
+Key features of the Qt Virtual Keyboard include:
+
+\list
+    \li Customizable keyboard layouts and styles with dynamic switching.
+    \li Predictive text input with word selection.
+    \li Character preview and alternative character view.
+    \li Automatic capitalization and space insertion.
+    \li Scalability to different resolutions.
+    \li Support for different character sets (Latin, Simplified/Traditional Chinese,
+        Hindi, Japanese, Arabic, Hebrew, Korean, and others).
+    \li Support for most common input \l {Supported Languages}{languages},
+        with possibility to easily extend the language support.
+    \li Left-to-right and right-to-left input.
+    \li Hardware key support for 2-way and 5-way navigation.
+    \li \l {Handwriting Recognition}{Handwriting support}, with gestures for fullscreen input.
+    \li Audio feedback.
+    \li Cross-platform functionality.
+    \li Supports both \l {Integration Method}{Qt Quick and Qt Widgets applications}.
+\endlist
+
+\section1 Supported Languages
+
+\include layouts.qdocinc layout-list
+
+\section1 Third-party Plugins
+
+The Qt Virtual Keyboard supports third-party plugins from the following vendors:
+\list
+    \li \l {Cerence XT9 Advanced Input}{Cerence XT9} advanced input.
+    \li \l {Handwriting Recognition#Cerence Handwriting}{Cerence Handwriting} text input.
+    \li \l {Handwriting Recognition#MyScript}{MyScript} Text handwriting recognition
+\endlist
+
+\l {Building Qt Virtual Keyboard} describes how to integrate these plugins
+into the Qt Virtual Keyboard.
+
 \section1 Basic Concepts
 
-The Qt Virtual Keyboard project is a Qt input context plugin which implements
+The Qt Virtual Keyboard project is a Qt input context plugin that implements
 QPlatformInputContextPlugin and QPlatformInputContext interfaces.
 These interfaces allow the plugin to be used as a platform input
 context plugin in Qt applications.
