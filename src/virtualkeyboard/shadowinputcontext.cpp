@@ -176,22 +176,28 @@ void ShadowInputContext::update(Qt::InputMethodQueries queries)
     const int newCursorPosition = d->inputContext->cursorPosition();
     const int newAnchorPosition = d->inputContext->anchorPosition();
 
+    const QString newPreeditText = d->inputContext->preeditText();
+    const QList<QInputMethodEvent::Attribute> newPreeditAttributes = d->inputContext->preeditTextAttributes();
+
     bool updateSurroundingText = newSurroundingText != surroundingText;
     bool updateSelection = newCursorPosition != cursorPosition || newAnchorPosition != anchorPosition;
+    if (updateSurroundingText) {
+        QInputMethodEvent inputEvent;
+        inputEvent.setCommitString(newSurroundingText, -cursorPosition, surroundingText.size());
+        QGuiApplication::sendEvent(d->inputItem, &inputEvent);
+    }
+
     if (updateSurroundingText || updateSelection) {
         QList<QInputMethodEvent::Attribute> attributes;
         attributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Selection,
                                                        newAnchorPosition,
                                                        newCursorPosition - newAnchorPosition, QVariant()));
         QInputMethodEvent inputEvent(QString(), attributes);
-        if (updateSurroundingText)
-            inputEvent.setCommitString(newSurroundingText, -cursorPosition, surroundingText.size());
         QGuiApplication::sendEvent(d->inputItem, &inputEvent);
     }
 
-    const QString newPreeditText = d->inputContext->preeditText();
-    const QList<QInputMethodEvent::Attribute> newPreeditAttributes = d->inputContext->preeditTextAttributes();
-    if (d->preeditText != newPreeditText || d->preeditTextAttributes != newPreeditAttributes) {
+    const bool forcePreeditText = !newPreeditText.isEmpty() && (updateSurroundingText || updateSelection);
+    if (forcePreeditText || d->preeditText != newPreeditText || d->preeditTextAttributes != newPreeditAttributes) {
         d->preeditText = newPreeditText;
         d->preeditTextAttributes = newPreeditAttributes;
         QInputMethodEvent inputEvent(d->preeditText, d->preeditTextAttributes);
