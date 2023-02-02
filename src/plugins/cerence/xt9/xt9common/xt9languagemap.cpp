@@ -173,11 +173,11 @@ const struct Xt9LanguageMap::LanguageMapEntry Xt9LanguageMap::LANGUAGE_MAP[] = {
 ET9U32 Xt9LanguageMap::languageId(const QLocale &locale)
 {
     const QLocale::Language localeLanguage = locale.language();
-    const QLocale::Country localeCountry = locale.country();
+    const QLocale::Territory localeTerritory = locale.territory();
 
     for (int i = 0; LANGUAGE_MAP[i].languageId != 0; ++i) {
         const QLocale &item = LANGUAGE_MAP[i].locale;
-        if (item.language() == localeLanguage && item.country() == localeCountry)
+        if (item.language() == localeLanguage && item.territory() == localeTerritory)
             return LANGUAGE_MAP[i].languageId;
     }
 

@@ -139,9 +139,9 @@ QString Xt9LdbManager::findDictionary(const QLocale &locale) const
                          (script == QLocale::TraditionalHanScript && charsetClassifier == QLatin1String("tb"))))
                     ++score;
 
-                if (locale.country() == QLocale::Taiwan && xt9CountryOrDetail == QLatin1String("ps_Big5_bpmf_pinyin_CJ"))
+                if (locale.territory() == QLocale::Taiwan && xt9CountryOrDetail == QLatin1String("ps_Big5_bpmf_pinyin_CJ"))
                     ++score;
-                else if (locale.country() == QLocale::HongKong && xt9CountryOrDetail == QLatin1String("ps_Big5HKSCS_bpmf_pinyin_CJ"))
+                else if (locale.territory() == QLocale::HongKong && xt9CountryOrDetail == QLatin1String("ps_Big5HKSCS_bpmf_pinyin_CJ"))
                     ++score;
 
                 if (!almClassifier.isEmpty())
