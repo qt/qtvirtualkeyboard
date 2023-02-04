@@ -2331,8 +2331,8 @@ Rectangle {
                 var anchorHandlePointsTo = Qt.point(inputPanel.fullScreenModeAnchorHandle.x + inputPanel.fullScreenModeAnchorHandle.width/2, inputPanel.fullScreenModeAnchorHandle.y)
                 var anchorRect = inputPanel.shadowInput.positionToRectangle(data.selectionStart)
                 var cursorRect = inputPanel.shadowInput.positionToRectangle(data.selectionEnd)
-                anchorRect = container.mapFromItem(inputPanel.shadowInput, anchorRect.x, anchorRect.y, anchorRect.width, anchorRect.height)
-                cursorRect = container.mapFromItem(inputPanel.shadowInput, cursorRect.x, cursorRect.y, cursorRect.width, cursorRect.height)
+                anchorRect = inputPanel.shadowInputControl.mapFromItem(inputPanel.shadowInput, anchorRect.x, anchorRect.y, anchorRect.width, anchorRect.height)
+                cursorRect = inputPanel.shadowInputControl.mapFromItem(inputPanel.shadowInput, cursorRect.x, cursorRect.y, cursorRect.width, cursorRect.height)
                 // Could this be a bug in TextInput; padding not accounted in positionToRectangle()?
                 anchorRect.x += inputPanel.shadowInput.leftPadding
                 cursorRect.x += inputPanel.shadowInput.leftPadding

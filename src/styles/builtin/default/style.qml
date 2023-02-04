@@ -1147,25 +1147,32 @@ KeyboardStyle {
         source: resourcePrefix + "images/selectionhandle-bottom.svg"
     }
 
-    fullScreenInputContainerBackground: Rectangle {
-        color: "#FFF"
+    fullScreenInputContainerBackground: Item {
+        clip: true
+        Rectangle {
+            y: border.width
+            color: selectionListBackgroundColor
+            width: parent.width
+            height: parent.height
+        }
     }
 
-    fullScreenInputBackground: Rectangle {
-        color: "#FFF"
+    fullScreenInputBackground: Item {
     }
 
-    fullScreenInputMargins: Math.round(15 * scaleHint)
+    fullScreenInputMargins: Math.round(30 * scaleHint)
 
-    fullScreenInputPadding: Math.round(30 * scaleHint)
+    fullScreenInputPadding: 0
 
     fullScreenInputCursor: Rectangle {
         width: 1
-        color: "#000"
+        color: selectionListTextColor
         visible: parent.blinkStatus
     }
 
-    fullScreenInputFont.pixelSize: 58 * scaleHint
+    fullScreenInputColor: selectionListTextColor
+
+    fullScreenInputFont.pixelSize: 44 * scaleHint
 
     functionPopupListDelegate: Item {
         id: functionPopupListItem

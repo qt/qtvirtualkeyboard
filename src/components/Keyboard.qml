@@ -653,11 +653,9 @@ Item {
         objectName: "shadowInputControl"
         z: -3
         anchors.left: parent.left
-        anchors.right: parent.right
         anchors.bottom: wordCandidateView.top
-        height: keyboard.screenHeight -
-                keyboard.height +
-                wordCandidateView.y
+        width: Math.min(shadowInputControl.contentWidth, parent.width)
+        height: shadowInputControl.contentHeight
         visible: fullScreenMode && (shadowInputControlVisibleTimer.running || InputContext.animating)
 
         Connections {
