@@ -128,6 +128,7 @@ private:
     inline void clearState(const State &state) { stateFlags &= ~StateFlags(state); }
     inline bool testState(const State &state) const { return stateFlags.testFlag(state); }
     inline bool isEmptyState() const { return !stateFlags; }
+    void updateSelectionControlVisible(bool inputPanelVisible);
 
 private:
     QVirtualKeyboardInputContext *q_ptr;

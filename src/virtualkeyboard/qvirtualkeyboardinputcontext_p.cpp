@@ -619,4 +619,14 @@ int QVirtualKeyboardInputContextPrivate::findAttribute(const QList<QInputMethodE
     return -1;
 }
 
+void QVirtualKeyboardInputContextPrivate::updateSelectionControlVisible(bool inputPanelVisible)
+{
+    Q_Q(QVirtualKeyboardInputContext);
+    bool newSelectionControlVisible = inputPanelVisible && (cursorPosition != anchorPosition) && !inputMethodHints.testFlag(Qt::ImhNoTextHandles);
+    if (selectionControlVisible != newSelectionControlVisible) {
+        selectionControlVisible = newSelectionControlVisible;
+        emit q->selectionControlVisibleChanged();
+    }
+}
+
 QT_END_NAMESPACE
