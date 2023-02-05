@@ -274,8 +274,10 @@ void PlatformInputContext::updateInputPanelVisible()
             m_inputPanel->show();
         else
             m_inputPanel->hide();
-        if (m_selectionControl)
+        if (m_selectionControl) {
             m_selectionControl->setEnabled(visible);
+            m_inputContext->priv()->updateSelectionControlVisible(visible);
+        }
         emitInputPanelVisibleChanged();
     }
 }

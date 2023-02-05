@@ -180,6 +180,8 @@ void DesktopInputSelectionControl::setEnabled(bool enable)
         connect(m_inputContext, &QVirtualKeyboardInputContext::cursorRectangleChanged, this, &DesktopInputSelectionControl::updateCursorHandlePosition);
         connect(m_inputContext, &QVirtualKeyboardInputContext::anchorRectIntersectsClipRectChanged, this, &DesktopInputSelectionControl::updateVisibility);
         connect(m_inputContext, &QVirtualKeyboardInputContext::cursorRectIntersectsClipRectChanged, this, &DesktopInputSelectionControl::updateVisibility);
+        updateAnchorHandlePosition();
+        updateCursorHandlePosition();
         if (focusWindow)
             focusWindow->installEventFilter(this);
     } else {
@@ -230,8 +232,8 @@ bool DesktopInputSelectionControl::eventFilter(QObject *object, QEvent *event)
 
         for (int i = 0; i <= CursorHandle; ++i) {
             SelectionHandleInfo &h = handles[i];
-            QPoint curHandleCenter = focusWindow->mapToGlobal(h.rect.center());  // ### map to desktoppanel
-            const QPoint delta = mousePos - curHandleCenter;
+            QPoint curHandleTopCenter = focusWindow->mapToGlobal(QPoint(h.rect.x() + qRound((qreal)h.rect.width() / 2), h.rect.top()));  // ### map to desktoppanel
+            const QPoint delta = mousePos - curHandleTopCenter;
             h.delta = delta;
             h.squaredDistance = QPoint::dotProduct(delta, delta);
         }
@@ -243,7 +245,7 @@ bool DesktopInputSelectionControl::eventFilter(QObject *object, QEvent *event)
         const QPoint windowPos = focusWindow->mapFromGlobal(mousePos);
         if (m_anchorHandleVisible && handles[closestHandle].rect.contains(windowPos)) {
             m_currentDragHandle = closestHandle;
-            m_distanceBetweenMouseAndCursor = handles[closestHandle].delta -  QPoint(0, m_handleWindowSize.height()/2 + 4);
+            m_distanceBetweenMouseAndCursor = handles[closestHandle].delta;
             m_handleState = HandleIsHeld;
             m_handleDragStartedPosition = mousePos;
             const QRect otherRect = handles[1 - closestHandle].rect;
