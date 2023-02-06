@@ -10,6 +10,7 @@
 
 #include <QTextFormat>
 #include <QGuiApplication>
+#include <QtGui/private/qhighdpiscaling_p.h>
 
 QT_BEGIN_NAMESPACE
 using namespace QtVirtualKeyboard;
@@ -312,7 +313,11 @@ void QVirtualKeyboardInputContext::clear()
 */
 void QVirtualKeyboardInputContext::setSelectionOnFocusObject(const QPointF &anchorPos, const QPointF &cursorPos)
 {
-    QPlatformInputContext::setSelectionOnFocusObject(anchorPos, cursorPos);
+    QWindow *window = qApp->focusWindow();
+    const QPointF &nativeAnchorPos = QHighDpi::toNativePixels(anchorPos, window);
+    const QPointF &nativeCursorPos = QHighDpi::toNativePixels(cursorPos, window);
+
+    QPlatformInputContext::setSelectionOnFocusObject(nativeAnchorPos, nativeCursorPos);
 }
 
 /*!
