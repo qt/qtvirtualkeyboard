@@ -878,16 +878,22 @@ Item {
                     target: keyboardLayoutLoader
                     property: "source"
                     value: keyboard.layout
-                    when: keyboard.layout.length > 0
-                    restoreMode: Binding.RestoreBinding
+                    when: keyboard.width > 0 && keyboard.layout.length > 0
+                    restoreMode: Binding.RestoreNone
                 }
 
                 onItemChanged: {
+                    if (!item)
+                        return
+
                     // Reset input mode if the new layout wants to override it
-                    if (item && item.inputMode !== -1)
+                    if (item.inputMode !== -1)
                         inputModeNeedsReset = true
-                    if (item)
-                        notifyLayoutChanged()
+
+                    if (!InputContext.inputEngine.inputMethod)
+                        updateInputMethod()
+
+                    notifyLayoutChanged()
                 }
 
                 MultiPointTouchArea {

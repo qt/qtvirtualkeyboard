@@ -16,7 +16,8 @@ LayoutTestHelper::LayoutTestHelper()
        Window { \
            property var settings: VirtualKeyboardSettings; \
            InputPanel { \
-               id: inputPanel \
+               id: inputPanel; \
+               width: parent.width; \
            } \
        }", QUrl());
     window.reset(qobject_cast<QQuickWindow*>(component->create()));
