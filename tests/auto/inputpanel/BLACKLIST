@@ -7,11 +7,3 @@
 *
 [tst_plugin::test_fullScreenModeSelectionHandles:row 3]
 *
-
-# QTBUG-97830
-[tst_plugin::test_selection:row 0]
-*
-
-# QTBUG-97901
-[tst_plugin::test_hangulInputMethod:row 24]
-*
