@@ -106,6 +106,8 @@ void ShadowInputContext::setSelectionOnFocusObject(const QPointF &anchorPos, con
     if (success) {
         int cursor = queryFocusObject(Qt::ImCursorPosition, quickItem ? quickItem->mapFromScene(cursorPos) : cursorPos).toInt(&success);
         if (success) {
+            if (anchor == cursor && anchorPos != cursorPos)
+                return;
             QList<QInputMethodEvent::Attribute> imAttributes;
             imAttributes.append(QInputMethodEvent::Attribute(QInputMethodEvent::Selection, anchor, cursor - anchor, QVariant()));
             QInputMethodEvent event(QString(), imAttributes);
