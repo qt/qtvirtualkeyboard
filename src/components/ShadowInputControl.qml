@@ -106,11 +106,11 @@ Item {
         }
     }
 
-    Binding {
-        target: InputContext.priv.shadow
-        property: "inputItem"
-        value: shadowInput
-        when: VirtualKeyboardSettings.fullScreenMode
-        restoreMode: Binding.RestoreBinding
+    Connections {
+        target: VirtualKeyboardSettings
+        function onFullScreenModeChanged() {
+            InputContext.priv.shadow.inputItem = VirtualKeyboardSettings.fullScreenMode ? shadowInput : null
+            cursorSyncTimer.stop()
+        }
     }
 }
