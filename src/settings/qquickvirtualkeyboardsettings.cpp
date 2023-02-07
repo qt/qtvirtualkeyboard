@@ -132,9 +132,8 @@ QQuickVirtualKeyboardSettings::QQuickVirtualKeyboardSettings(QQmlEngine *engine,
     Settings *settings = Settings::instance();
     if (settings->styleName().isEmpty())
         resetStyle();
-    if (settings->layoutPath().isEmpty())
-        resetLayoutPath();
     connect(settings, SIGNAL(styleChanged()), SIGNAL(styleChanged()));
+    connect(settings, SIGNAL(requestResetStyle()), SLOT(resetStyle()));
     connect(settings, SIGNAL(styleNameChanged()), SIGNAL(styleNameChanged()));
     connect(settings, SIGNAL(localeChanged()), SIGNAL(localeChanged()));
     connect(settings, SIGNAL(availableLocalesChanged()), SIGNAL(availableLocalesChanged()));
@@ -221,27 +220,7 @@ void QQuickVirtualKeyboardSettings::setLayoutPath(const QUrl &layoutPath)
 
 void QQuickVirtualKeyboardSettings::resetLayoutPath()
 {
-    Settings *settings = Settings::instance();
-    QUrl layoutPath(QLatin1String(QT_VIRTUALKEYBOARD_DEFAULT_LAYOUTS_DIR));
-    const QString customLayoutPath(QDir::fromNativeSeparators(qEnvironmentVariable("QT_VIRTUALKEYBOARD_LAYOUT_PATH")));
-    if (!customLayoutPath.isEmpty()) {
-        bool found = false;
-        QDir customLayoutDirectory(customLayoutPath);
-        if (customLayoutDirectory.exists()) {
-            found = true;
-            layoutPath = QUrl::fromLocalFile(customLayoutPath);
-        } else {
-            customLayoutDirectory = QDir(QUrl(customLayoutPath).toLocalFile());
-            if (customLayoutDirectory.exists()) {
-                found = true;
-                layoutPath = QUrl(customLayoutPath);
-            }
-        }
-        if (!found) {
-            qWarning() << "WARNING: Cannot assign custom layout path" << customLayoutPath << "- fallback:" << layoutPath;
-        }
-    }
-    settings->setLayoutPath(layoutPath);
+    Settings::instance()->resetLayoutPath();
 }
 
 QString QQuickVirtualKeyboardSettings::locale() const
@@ -252,6 +231,11 @@ QString QQuickVirtualKeyboardSettings::locale() const
 void QQuickVirtualKeyboardSettings::setLocale(const QString &locale)
 {
     Settings::instance()->setLocale(locale);
+}
+
+void QQuickVirtualKeyboardSettings::resetLocale()
+{
+    Settings::instance()->resetLocale();
 }
 
 QStringList QQuickVirtualKeyboardSettings::availableLocales() const
@@ -267,6 +251,11 @@ void QQuickVirtualKeyboardSettings::setActiveLocales(const QStringList &activeLo
 QStringList QQuickVirtualKeyboardSettings::activeLocales() const
 {
     return Settings::instance()->activeLocales();
+}
+
+void QQuickVirtualKeyboardSettings::resetActiveLocales()
+{
+    return Settings::instance()->resetActiveLocales();
 }
 
 QQuickWordCandidateListSettings *QQuickVirtualKeyboardSettings::wordCandidateList() const
@@ -285,6 +274,11 @@ void QQuickVirtualKeyboardSettings::setFullScreenMode(bool fullScreenMode)
     return Settings::instance()->setFullScreenMode(fullScreenMode);
 }
 
+void QQuickVirtualKeyboardSettings::resetFullScreenMode()
+{
+    return Settings::instance()->resetFullScreenMode();
+}
+
 QString QQuickVirtualKeyboardSettings::userDataPath() const
 {
     return Settings::instance()->userDataPath();
@@ -293,6 +287,11 @@ QString QQuickVirtualKeyboardSettings::userDataPath() const
 void QQuickVirtualKeyboardSettings::setUserDataPath(const QString &userDataPath)
 {
     return Settings::instance()->setUserDataPath(userDataPath);
+}
+
+void QQuickVirtualKeyboardSettings::resetUserDataPath()
+{
+    return Settings::instance()->resetUserDataPath();
 }
 
 int QQuickVirtualKeyboardSettings::hwrTimeoutForAlphabetic() const
@@ -305,6 +304,11 @@ void QQuickVirtualKeyboardSettings::setHwrTimeoutForAlphabetic(int hwrTimeoutFor
     return Settings::instance()->setHwrTimeoutForAlphabetic(hwrTimeoutForAlphabetic);
 }
 
+void QQuickVirtualKeyboardSettings::resetHwrTimeoutForAlphabetic()
+{
+    return Settings::instance()->resetHwrTimeoutForAlphabetic();
+}
+
 int QQuickVirtualKeyboardSettings::hwrTimeoutForCjk() const
 {
     return Settings::instance()->hwrTimeoutForCjk();
@@ -313,6 +317,11 @@ int QQuickVirtualKeyboardSettings::hwrTimeoutForCjk() const
 void QQuickVirtualKeyboardSettings::setHwrTimeoutForCjk(int hwrTimeoutForCjk)
 {
     return Settings::instance()->setHwrTimeoutForCjk(hwrTimeoutForCjk);
+}
+
+void QQuickVirtualKeyboardSettings::resetHwrTimeoutForCjk()
+{
+    return Settings::instance()->resetHwrTimeoutForCjk();
 }
 
 Qt::InputMethodHints QQuickVirtualKeyboardSettings::inputMethodHints() const
@@ -325,6 +334,11 @@ void QQuickVirtualKeyboardSettings::setInputMethodHints(const Qt::InputMethodHin
     Settings::instance()->setInputMethodHints(inputMethodHints);
 }
 
+void QQuickVirtualKeyboardSettings::resetInputMethodHints()
+{
+    Settings::instance()->resetInputMethodHints();
+}
+
 bool QQuickVirtualKeyboardSettings::isHandwritingModeDisabled() const
 {
     return Settings::instance()->isHandwritingModeDisabled();
@@ -333,6 +347,11 @@ bool QQuickVirtualKeyboardSettings::isHandwritingModeDisabled() const
 void QQuickVirtualKeyboardSettings::setHandwritingModeDisabled(bool handwritingModeDisabled)
 {
     Settings::instance()->setHandwritingModeDisabled(handwritingModeDisabled);
+}
+
+void QQuickVirtualKeyboardSettings::resetHandwritingModeDisabled()
+{
+    Settings::instance()->resetHandwritingModeDisabled();
 }
 
 bool QQuickVirtualKeyboardSettings::isDefaultInputMethodDisabled() const
@@ -345,6 +364,11 @@ void QQuickVirtualKeyboardSettings::setDefaultInputMethodDisabled(bool defaultIn
     return Settings::instance()->setDefaultInputMethodDisabled(defaultInputMethodDisabled);
 }
 
+void QQuickVirtualKeyboardSettings::resetDefaultInputMethodDisabled()
+{
+    return Settings::instance()->resetDefaultInputMethodDisabled();
+}
+
 bool QQuickVirtualKeyboardSettings::isDefaultDictionaryDisabled() const
 {
     return Settings::instance()->isDefaultDictionaryDisabled();
@@ -353,6 +377,11 @@ bool QQuickVirtualKeyboardSettings::isDefaultDictionaryDisabled() const
 void QQuickVirtualKeyboardSettings::setDefaultDictionaryDisabled(bool defaultDictionaryDisabled)
 {
     return Settings::instance()->setDefaultDictionaryDisabled(defaultDictionaryDisabled);
+}
+
+void QQuickVirtualKeyboardSettings::resetDefaultDictionaryDisabled()
+{
+    return Settings::instance()->resetDefaultDictionaryDisabled();
 }
 
 QtVirtualKeyboard::KeyboardFunctionKeys QQuickVirtualKeyboardSettings::visibleFunctionKeys() const
@@ -365,6 +394,11 @@ void QQuickVirtualKeyboardSettings::setVisibleFunctionKeys(QtVirtualKeyboard::Ke
     Settings::instance()->setVisibleFunctionKeys(newVisibleFunctionKeys);
 }
 
+void QQuickVirtualKeyboardSettings::resetVisibleFunctionKeys()
+{
+    return Settings::instance()->resetVisibleFunctionKeys();
+}
+
 bool QQuickVirtualKeyboardSettings::closeOnReturn() const
 {
     return Settings::instance()->closeOnReturn();
@@ -373,6 +407,11 @@ bool QQuickVirtualKeyboardSettings::closeOnReturn() const
 void QQuickVirtualKeyboardSettings::setCloseOnReturn(bool closeOnReturn)
 {
     Settings::instance()->setCloseOnReturn(closeOnReturn);
+}
+
+void QQuickVirtualKeyboardSettings::resetCloseOnReturn()
+{
+    Settings::instance()->resetCloseOnReturn();
 }
 
 qreal QQuickVirtualKeyboardSettings::keySoundVolume() const
@@ -385,6 +424,11 @@ void QQuickVirtualKeyboardSettings::setKeySoundVolume(qreal volume)
     Settings::instance()->setKeySoundVolume(volume);
 }
 
+void QQuickVirtualKeyboardSettings::resetKeySoundVolume()
+{
+    Settings::instance()->resetKeySoundVolume();
+}
+
 bool QQuickVirtualKeyboardSettings::arrowKeyNavigationEnabled() const
 {
     return Settings::instance()->arrowKeyNavigationEnabled();
@@ -393,6 +437,11 @@ bool QQuickVirtualKeyboardSettings::arrowKeyNavigationEnabled() const
 void QQuickVirtualKeyboardSettings::setArrowKeyNavigationEnabled(bool arrowKeyNavigationEnabled)
 {
     Settings::instance()->setArrowKeyNavigationEnabled(arrowKeyNavigationEnabled);
+}
+
+void QQuickVirtualKeyboardSettings::resetArrowKeyNavigationEnabled()
+{
+    Settings::instance()->resetArrowKeyNavigationEnabled();
 }
 
 /*!
@@ -685,6 +734,11 @@ void QQuickWordCandidateListSettings::setAutoHideDelay(int autoHideDelay)
     Settings::instance()->setWclAutoHideDelay(autoHideDelay);
 }
 
+void QQuickWordCandidateListSettings::resetAutoHideDelay()
+{
+    Settings::instance()->resetWclAutoHideDelay();
+}
+
 bool QQuickWordCandidateListSettings::alwaysVisible() const
 {
     return Settings::instance()->wclAlwaysVisible();
@@ -695,6 +749,11 @@ void QQuickWordCandidateListSettings::setAlwaysVisible(bool alwaysVisible)
     Settings::instance()->setWclAlwaysVisible(alwaysVisible);
 }
 
+void QQuickWordCandidateListSettings::resetAlwaysVisible()
+{
+    Settings::instance()->resetWclAlwaysVisible();
+}
+
 bool QQuickWordCandidateListSettings::autoCommitWord() const
 {
     return Settings::instance()->wclAutoCommitWord();
@@ -703,6 +762,11 @@ bool QQuickWordCandidateListSettings::autoCommitWord() const
 void QQuickWordCandidateListSettings::setAutoCommitWord(bool autoCommitWord)
 {
     Settings::instance()->setWclAutoCommitWord(autoCommitWord);
+}
+
+void QQuickWordCandidateListSettings::resetAutoCommitWord()
+{
+    Settings::instance()->resetWclAutoCommitWord();
 }
 
 } // namespace QtVirtualKeyboard

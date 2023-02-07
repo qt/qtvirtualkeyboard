@@ -87,15 +87,18 @@ Rectangle {
                     skip("Handwriting feature not available")
             }
 
-            inputPanel.setArrowKeyNavigationEnabled(data !== undefined && data.hasOwnProperty("arrowKeyNavigationEnabled") && data.arrowKeyNavigationEnabled)
-            inputPanel.setWclAutoHideDelay(data !== undefined && data.hasOwnProperty("wclAutoHideDelay") ? data.wclAutoHideDelay : 5000)
-            inputPanel.setWclAlwaysVisible(data !== undefined && data.hasOwnProperty("wclAlwaysVisible") && data.wclAlwaysVisible)
-            inputPanel.setWclAutoCommitWord(data !== undefined && data.hasOwnProperty("wclAutoCommitWord") && data.wclAutoCommitWord)
-            inputPanel.setFullScreenMode(data !== undefined && data.hasOwnProperty("fullScreenMode") && data.fullScreenMode)
+            // Reset settings
+            inputPanel.setArrowKeyNavigationEnabled(undefined)
+            inputPanel.setWclAutoHideDelay(undefined)
+            inputPanel.setWclAlwaysVisible(undefined)
+            inputPanel.setWclAutoCommitWord(undefined)
+            inputPanel.setFullScreenMode(undefined)
+            inputPanel.setVisibleFunctionKeys(undefined)
+            inputPanel.setCloseOnReturn(undefined)
+
+            // InputPanel settings
             inputPanel.setExternalLanguageSwitchEnabled(data !== undefined && data.hasOwnProperty("externalLanguageSwitchEnabled") && data.externalLanguageSwitchEnabled)
             inputPanel.setLayoutMirroring(data !== undefined && data.hasOwnProperty("layoutMirroring") && data.layoutMirroring)
-            inputPanel.setVisibleFunctionKeys(data !== undefined && data.hasOwnProperty("visibleFunctionKeys") ? data.visibleFunctionKeys : ["All"])
-            inputPanel.setCloseOnReturn(data !== undefined && data.hasOwnProperty("closeOnReturn") && data.closeOnReturn)
             inputPanel.noAnimations = !data || !data.hasOwnProperty("noAnimations") || data.noAnimations
 
             var window = container.Window.window
@@ -149,6 +152,25 @@ Rectangle {
                 }
                 verify(inputPanel.setInputMode(inputMode))
             }
+
+            // Configure settings
+            if (data !== undefined) {
+                if (data.hasOwnProperty("arrowKeyNavigationEnabled"))
+                    inputPanel.setArrowKeyNavigationEnabled(data.arrowKeyNavigationEnabled)
+                if (data.hasOwnProperty("wclAutoHideDelay"))
+                    inputPanel.setWclAutoHideDelay(data.wclAutoHideDelay)
+                if (data.hasOwnProperty("wclAlwaysVisible"))
+                    inputPanel.setWclAlwaysVisible(data.wclAlwaysVisible)
+                if (data.hasOwnProperty("wclAutoCommitWord"))
+                    inputPanel.setWclAutoCommitWord(data.wclAutoCommitWord)
+                if (data.hasOwnProperty("fullScreenMode"))
+                    inputPanel.setFullScreenMode(data.fullScreenMode)
+                if (data.hasOwnProperty("visibleFunctionKeys"))
+                    inputPanel.setVisibleFunctionKeys(data.visibleFunctionKeys)
+                if (data.hasOwnProperty("closeOnReturn"))
+                    inputPanel.setCloseOnReturn(data.closeOnReturn)
+            }
+
             waitForRendering(inputPanel)
             verify(inputPanel.visible === true)
             verify(textInput.activeFocus === true)

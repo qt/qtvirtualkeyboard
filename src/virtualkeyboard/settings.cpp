@@ -11,6 +11,8 @@
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
+using namespace Qt::StringLiterals;
+
 class SettingsPrivate : public QObjectPrivate
 {
 public:
@@ -22,15 +24,13 @@ public:
         availableLocales(),
         activeLocales(),
         layoutPath(),
-        wclAutoHideDelay(5000),
+        wclAutoHideDelay(defaultWclAutoHideDelay),
         wclAlwaysVisible(false),
         wclAutoCommitWord(false),
         fullScreenMode(false),
-        userDataPath(QStringLiteral("%1/qtvirtualkeyboard")
-                     .arg(QStandardPaths::writableLocation(
-                              QStandardPaths::GenericConfigLocation))),
-        hwrTimeoutForAlphabetic(500),
-        hwrTimeoutForCjk(500),
+        userDataPath(defaultUserDataPath),
+        hwrTimeoutForAlphabetic(defaultHwrTimeoutForAlphabetic),
+        hwrTimeoutForCjk(defaultHwrTimeoutForCjk),
         handwritingModeDisabled(false),
         defaultInputMethodDisabled(false),
         defaultDictionaryDisabled(false),
@@ -76,7 +76,15 @@ public:
     bool closeOnReturn;
     qreal keySoundVolume;
     bool arrowKeyNavigationEnabled;
+
+    static const int defaultWclAutoHideDelay = 5000;
+    static const QString defaultUserDataPath;
+    static const int defaultHwrTimeoutForAlphabetic = 500;
+    static const int defaultHwrTimeoutForCjk = 500;
 };
+
+const QString SettingsPrivate::defaultUserDataPath = u"%1/qtvirtualkeyboard"_s
+        .arg(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation));
 
 static QScopedPointer<Settings> s_settingsInstance;
 
@@ -88,6 +96,7 @@ static QScopedPointer<Settings> s_settingsInstance;
 Settings::Settings(QObject *parent) :
     QObject(*new SettingsPrivate(), parent)
 {
+    resetLayoutPath();
 }
 
 Settings *Settings::instance()
@@ -127,6 +136,11 @@ void Settings::setStyleName(const QString &styleName)
     }
 }
 
+void Settings::resetStyleName()
+{
+    emit requestResetStyle();
+}
+
 QString Settings::locale() const
 {
     Q_D(const Settings);
@@ -140,6 +154,11 @@ void Settings::setLocale(const QString &locale)
         d->locale = locale;
         emit localeChanged();
     }
+}
+
+void Settings::resetLocale()
+{
+    setLocale(QString());
 }
 
 QStringList Settings::availableLocales() const
@@ -172,6 +191,11 @@ void Settings::setActiveLocales(const QStringList &activeLocales)
     }
 }
 
+void Settings::resetActiveLocales()
+{
+    setActiveLocales(QStringList());
+}
+
 QUrl Settings::layoutPath() const
 {
     Q_D(const Settings);
@@ -185,6 +209,30 @@ void Settings::setLayoutPath(const QUrl &layoutPath)
         d->layoutPath = layoutPath;
         emit layoutPathChanged();
     }
+}
+
+void Settings::resetLayoutPath()
+{
+    QUrl newLayoutPath(QLatin1String(QT_VIRTUALKEYBOARD_DEFAULT_LAYOUTS_DIR));
+    const QString customLayoutPath(QDir::fromNativeSeparators(qEnvironmentVariable("QT_VIRTUALKEYBOARD_LAYOUT_PATH")));
+    if (!customLayoutPath.isEmpty()) {
+        bool found = false;
+        QDir customLayoutDirectory(customLayoutPath);
+        if (customLayoutDirectory.exists()) {
+            found = true;
+            newLayoutPath = QUrl::fromLocalFile(customLayoutPath);
+        } else {
+            customLayoutDirectory = QDir(QUrl(customLayoutPath).toLocalFile());
+            if (customLayoutDirectory.exists()) {
+                found = true;
+                newLayoutPath = QUrl(customLayoutPath);
+            }
+        }
+        if (!found) {
+            qWarning() << "WARNING: Cannot assign custom layout path" << customLayoutPath << "- fallback:" << newLayoutPath;
+        }
+    }
+    setLayoutPath(newLayoutPath);
 }
 
 int Settings::wclAutoHideDelay() const
@@ -202,6 +250,11 @@ void Settings::setWclAutoHideDelay(int wclAutoHideDelay)
     }
 }
 
+void Settings::resetWclAutoHideDelay()
+{
+    setWclAutoHideDelay(SettingsPrivate::defaultWclAutoHideDelay);
+}
+
 bool Settings::wclAlwaysVisible() const
 {
     Q_D(const Settings);
@@ -215,6 +268,11 @@ void Settings::setWclAlwaysVisible(bool wclAlwaysVisible)
         d->wclAlwaysVisible = wclAlwaysVisible;
         emit wclAlwaysVisibleChanged();
     }
+}
+
+void Settings::resetWclAlwaysVisible()
+{
+    setWclAlwaysVisible(false);
 }
 
 bool Settings::wclAutoCommitWord() const
@@ -232,6 +290,11 @@ void Settings::setWclAutoCommitWord(bool wclAutoCommitWord)
     }
 }
 
+void Settings::resetWclAutoCommitWord()
+{
+    setWclAutoCommitWord(false);
+}
+
 bool Settings::fullScreenMode() const
 {
     Q_D(const Settings);
@@ -245,6 +308,11 @@ void Settings::setFullScreenMode(bool fullScreenMode)
         d->fullScreenMode = fullScreenMode;
         emit fullScreenModeChanged();
     }
+}
+
+void Settings::resetFullScreenMode()
+{
+    setFullScreenMode(false);
 }
 
 QString Settings::userDataPath() const
@@ -263,6 +331,11 @@ void Settings::setUserDataPath(const QString &userDataPath)
     }
 }
 
+void Settings::resetUserDataPath()
+{
+    setUserDataPath(SettingsPrivate::defaultUserDataPath);
+}
+
 int Settings::hwrTimeoutForAlphabetic() const
 {
     Q_D(const Settings);
@@ -276,6 +349,11 @@ void Settings::setHwrTimeoutForAlphabetic(int hwrTimeoutForAlphabetic)
         d->hwrTimeoutForAlphabetic = hwrTimeoutForAlphabetic;
         emit hwrTimeoutForAlphabeticChanged();
     }
+}
+
+void Settings::resetHwrTimeoutForAlphabetic()
+{
+    setHwrTimeoutForAlphabetic(SettingsPrivate::defaultHwrTimeoutForAlphabetic);
 }
 
 int Settings::hwrTimeoutForCjk() const
@@ -293,6 +371,11 @@ void Settings::setHwrTimeoutForCjk(int hwrTimeoutForCjk)
     }
 }
 
+void Settings::resetHwrTimeoutForCjk()
+{
+    setHwrTimeoutForCjk(SettingsPrivate::defaultHwrTimeoutForCjk);
+}
+
 Qt::InputMethodHints Settings::inputMethodHints() const
 {
     Q_D(const Settings);
@@ -306,6 +389,11 @@ void Settings::setInputMethodHints(const Qt::InputMethodHints &inputMethodHints)
         d->inputMethodHints = inputMethodHints;
         emit inputMethodHintsChanged();
     }
+}
+
+void Settings::resetInputMethodHints()
+{
+    setInputMethodHints(Qt::InputMethodHints());
 }
 
 bool Settings::isHandwritingModeDisabled() const
@@ -323,6 +411,11 @@ void Settings::setHandwritingModeDisabled(bool handwritingModeDisabled)
     }
 }
 
+void Settings::resetHandwritingModeDisabled()
+{
+    setHandwritingModeDisabled(false);
+}
+
 bool Settings::isDefaultInputMethodDisabled() const
 {
     Q_D(const Settings);
@@ -336,6 +429,11 @@ void Settings::setDefaultInputMethodDisabled(bool defaultInputMethodDisabled)
         d->defaultInputMethodDisabled = defaultInputMethodDisabled;
         emit defaultInputMethodDisabledChanged();
     }
+}
+
+void Settings::resetDefaultInputMethodDisabled()
+{
+    setDefaultInputMethodDisabled(false);
 }
 
 bool QtVirtualKeyboard::Settings::isDefaultDictionaryDisabled() const
@@ -353,6 +451,11 @@ void QtVirtualKeyboard::Settings::setDefaultDictionaryDisabled(bool defaultDicti
     }
 }
 
+void Settings::resetDefaultDictionaryDisabled()
+{
+    setDefaultDictionaryDisabled(false);
+}
+
 QtVirtualKeyboard::KeyboardFunctionKeys Settings::visibleFunctionKeys() const
 {
     Q_D(const Settings);
@@ -368,6 +471,11 @@ void Settings::setVisibleFunctionKeys(QtVirtualKeyboard::KeyboardFunctionKeys ne
     }
 }
 
+void Settings::resetVisibleFunctionKeys()
+{
+    setVisibleFunctionKeys(QtVirtualKeyboard::KeyboardFunctionKey::All);
+}
+
 bool Settings::closeOnReturn() const
 {
     Q_D(const Settings);
@@ -381,6 +489,11 @@ void Settings::setCloseOnReturn(bool enabled)
         d->closeOnReturn = enabled;
         emit closeOnReturnChanged();
     }
+}
+
+void Settings::resetCloseOnReturn()
+{
+    setCloseOnReturn(false);
 }
 
 qreal Settings::keySoundVolume() const
@@ -399,6 +512,11 @@ void Settings::setKeySoundVolume(qreal volume)
     }
 }
 
+void Settings::resetKeySoundVolume()
+{
+    setKeySoundVolume(1.0);
+}
+
 bool Settings::arrowKeyNavigationEnabled() const
 {
     Q_D(const Settings);
@@ -412,6 +530,15 @@ void Settings::setArrowKeyNavigationEnabled(bool arrowKeyNavigationEnabled)
         d->arrowKeyNavigationEnabled = arrowKeyNavigationEnabled;
         emit arrowKeyNavigationEnabledChanged();
     }
+}
+
+void Settings::resetArrowKeyNavigationEnabled()
+{
+#ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
+    setArrowKeyNavigationEnabled(true);
+#else
+    setArrowKeyNavigationEnabled(false);
+#endif
 }
 
 } // namespace QtVirtualKeyboard

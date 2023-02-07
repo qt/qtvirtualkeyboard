@@ -264,6 +264,11 @@ InputPanel {
     }
 
     function setVisibleFunctionKeys(functionKeyNames) {
+        if (functionKeyNames === undefined) {
+            VirtualKeyboardSettings.visibleFunctionKeys = undefined
+            return
+        }
+
         let functionKeys = QtVirtualKeyboard.KeyboardFunctionKeys.None
         for (const functionKeyName of functionKeyNames) {
             functionKeys |= mapKeyboardFunctionKey(functionKeyName)
