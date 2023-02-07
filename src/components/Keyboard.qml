@@ -57,6 +57,7 @@ Item {
     readonly property bool languagePopupListActive: languagePopupList.enabled
     property alias soundEffect: soundEffect
     property alias keyboardLayoutLoader: keyboardLayoutLoader
+    property real screenHeight: parent.parent ? parent.parent.height : Screen.height
 
     function initDefaultInputMethod() {
         try {
@@ -68,7 +69,7 @@ Item {
     Component.onCompleted: InputContext.priv.registerInputPanel(parent)
 
     width: keyboardBackground.width
-    height: keyboardBackground.height + (VirtualKeyboardSettings.wordCandidateList.alwaysVisible ? wordCandidateView.height : 0)
+    height: keyboardBackground.height
     onActiveChanged: {
         hideLanguagePopup()
         if (active && symbolMode && !preferNumbers)
@@ -90,10 +91,6 @@ Item {
             updateDefaultLocale()
             if (!isValidLocale(localeIndex) || VirtualKeyboardSettings.locale)
                 localeIndex = defaultLocaleIndex
-        }
-        function onFullScreenModeChanged() {
-            wordCandidateView.disableAnimation = VirtualKeyboardSettings.fullScreenMode
-            keyboard.fullScreenMode = VirtualKeyboardSettings.fullScreenMode
         }
         function onDefaultInputMethodDisabledChanged() {
             updateInputMethod()
@@ -653,8 +650,9 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: wordCandidateView.top
-        height: (keyboard.parent.parent ? keyboard.parent.parent.height : Screen.height) -
-                keyboard.height - (wordCandidateView.visibleCondition && !VirtualKeyboardSettings.wordCandidateList.alwaysVisible ? wordCandidateView.height : 0)
+        height: keyboard.screenHeight -
+                keyboard.height -
+                wordCandidateView.height
         visible: fullScreenMode && (shadowInputControlVisibleTimer.running || InputContext.animating)
 
         Connections {
@@ -693,13 +691,12 @@ Item {
         objectName: "wordCandidateView"
         clip: true
         z: -2
-        property bool disableAnimation: VirtualKeyboardSettings.fullScreenMode
         property bool empty: true
-        readonly property bool visibleCondition: (((!wordCandidateView.empty || wordCandidateViewAutoHideTimer.running || shadowInputControl.visible) &&
+        readonly property bool visibleCondition: (((!wordCandidateView.empty || wordCandidateViewAutoHideTimer.running) &&
                                                    InputContext.inputEngine.wordCandidateListVisibleHint) || VirtualKeyboardSettings.wordCandidateList.alwaysVisible) &&
-                                                 (keyboard.active || shadowInputControl.visible)
-        readonly property real visibleYOffset: VirtualKeyboardSettings.wordCandidateList.alwaysVisible ? 0 : -height
-        readonly property real currentYOffset: visibleCondition || wordCandidateViewTransition.running ? visibleYOffset : 0
+                                                 keyboard.active
+        readonly property real visibleYOffset: -height
+        readonly property real currentYOffset: visibleCondition ? visibleYOffset : 0
         height: style ? style.selectionListHeight : 0
         anchors.left: parent.left
         anchors.right: parent.right
@@ -750,18 +747,29 @@ Item {
             id: defaultHighlight
             Item {}
         }
-        states: State {
-            name: "visible"
-            when: wordCandidateView.visibleCondition
-            PropertyChanges {
-                target: wordCandidateView
-                y: wordCandidateView.visibleYOffset
+        states: [
+            State {
+                name: "visible"
+                when: wordCandidateView.visibleCondition
+                PropertyChanges {
+                    target: wordCandidateView
+                    y: wordCandidateView.visibleYOffset
+                }
+            },
+            State {
+                name: "alwaysVisible"
+                when: keyboard.fullScreenMode || VirtualKeyboardSettings.wordCandidateList.alwaysVisible
+                PropertyChanges {
+                    target: wordCandidateView
+                    y: wordCandidateView.visibleYOffset
+                }
             }
-        }
+        ]
         transitions: Transition {
             id: wordCandidateViewTransition
+            from: ""
             to: "visible"
-            enabled: !InputContext.animating && !VirtualKeyboardSettings.wordCandidateList.alwaysVisible && !wordCandidateView.disableAnimation
+            enabled: !InputContext.animating
             reversible: true
             ParallelAnimation {
                 NumberAnimation {
@@ -1294,7 +1302,7 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        height: keyboard.parent.parent ? keyboard.parent.parent.height : Screen.height
+        height: keyboard.screenHeight
         onPressed: keyboard.hideWordCandidateContextMenu()
         enabled: wordCandidateContextMenuList.enabled
     }

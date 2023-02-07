@@ -96,6 +96,9 @@ Item {
     /*! \internal */
     property bool desktopPanel: false
 
+    /*! \internal */
+    property point screenPos: desktopPanel ? Qt.point(keyboard.x, keyboard.y) : Qt.point(x, y)
+
     SelectionControl {
         objectName: "selectionControl"
         x: -parent.x
@@ -103,10 +106,9 @@ Item {
         enabled: active && !keyboard.fullScreenMode && !desktopPanel
     }
 
-    implicitHeight: keyboard.height
+    implicitHeight: keyboard.height - keyboard.wordCandidateView.currentYOffset
     Keyboard {
         id: keyboard
-        readonly property real yOffset: keyboard.wordCandidateView.currentYOffset - (keyboard.shadowInputControl.visible ? keyboard.shadowInputControl.height : 0)
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
@@ -127,15 +129,13 @@ Item {
 
     /*! \internal */
     function keyboardRectangle() {
-        var rect = Qt.rect(0, keyboard.yOffset, keyboard.width, keyboard.height - keyboard.yOffset)
+        var rect = Qt.rect(0, 0, keyboard.width, keyboard.height)
+        const screenPosX = screenPos.x
+        const screenPosY = screenPos.y
         if (desktopPanel) {
-            rect.x += keyboard.x
-            rect.y += keyboard.y
+            rect.x += screenPosX
+            rect.y += screenPosY
         }
-        // Read the inputPanel position.
-        // This ensures that the Binding works.
-        var unusedX = inputPanel.x
-        var unusedY = inputPanel.y
         return mapToItem(null, rect)
     }
 }
