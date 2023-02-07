@@ -86,8 +86,6 @@ Item {
             x: 0
             width: parent.width
 
-            keyboard.shadowInputControl.height: parent.height - keyboard.height
-
             property real yPositionWhenHidden: parent.height
 
             states: State {
