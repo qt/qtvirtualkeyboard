@@ -96,8 +96,7 @@ or by adding \c -no-vkb-desktop to the \c configure command line.
 
 This section explains how to use Qt Virtual Keyboard to interact with the
 \l {Line Edits Example}{Qt Widgets Line Edits example} using the
-\l {Qt Wayland Compositor Examples - Pure QML}{Pure QML example}
-as a compositor.
+\l {Pure QML}{Pure QML example} as a compositor.
 
 We will be using Ubuntu 18.04 to run the example, using the X11 as the
 windowing system. The example compositor (\c pure-qml) will open
