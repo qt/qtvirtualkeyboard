@@ -48,9 +48,10 @@ class QQuickVirtualKeyboardSettings : public QObject
     QML_ADDED_IN_VERSION(1, 0)
     QML_EXTRA_VERSION(2, 0)
 
-public:
-    explicit QQuickVirtualKeyboardSettings(QObject *parent = nullptr);
+    explicit QQuickVirtualKeyboardSettings(QQmlEngine *engine, QObject *parent = nullptr);
 
+public:
+    static QQuickVirtualKeyboardSettings *create(QQmlEngine *qmlEngine, QJSEngine *jsEngine);
     QString style() const;
 
     QUrl layoutPath() const;

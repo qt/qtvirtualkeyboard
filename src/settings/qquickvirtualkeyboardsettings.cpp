@@ -18,9 +18,10 @@ class QQuickVirtualKeyboardSettingsPrivate : public QObjectPrivate
 {
     Q_DECLARE_PUBLIC(QQuickVirtualKeyboardSettings)
 public:
-    QQuickVirtualKeyboardSettingsPrivate(QQuickVirtualKeyboardSettings *q_ptr) :
+    QQuickVirtualKeyboardSettingsPrivate(QQuickVirtualKeyboardSettings *q_ptr, QQmlEngine *engine) :
         QObjectPrivate(),
-        q_ptr(q_ptr)
+        q_ptr(q_ptr),
+        engine(engine)
     {}
 
     QString buildStylePath(const QString &path, const QString &name) const
@@ -43,13 +44,7 @@ public:
 
     QStringList qmlImportPathList() const
     {
-        Q_Q(const QQuickVirtualKeyboardSettings);
-        if (QQmlContext *context = QQmlEngine::contextForObject(q)) {
-            if (QQmlEngine *engine = context->engine()) {
-                return engine->importPathList();
-            }
-        }
-        return QStringList();
+        return engine ? engine->importPathList() : QStringList();
     }
 
     QString stylePath(const QString &name) const
@@ -78,6 +73,7 @@ public:
     }
 
     QQuickVirtualKeyboardSettings *q_ptr;
+    QQmlEngine *engine;
     QQuickWordCandidateListSettings wordCandidateListSettings;
 };
 
@@ -125,8 +121,8 @@ public:
 /*!
     \internal
 */
-QQuickVirtualKeyboardSettings::QQuickVirtualKeyboardSettings(QObject *parent) :
-    QObject(*new QQuickVirtualKeyboardSettingsPrivate(this), parent)
+QQuickVirtualKeyboardSettings::QQuickVirtualKeyboardSettings(QQmlEngine *engine, QObject *parent) :
+    QObject(*new QQuickVirtualKeyboardSettingsPrivate(this, engine), parent)
 {
     Q_D(QQuickVirtualKeyboardSettings);
     Settings *settings = Settings::instance();
@@ -152,6 +148,14 @@ QQuickVirtualKeyboardSettings::QQuickVirtualKeyboardSettings(QObject *parent) :
     connect(settings, SIGNAL(handwritingModeDisabledChanged()), SIGNAL(handwritingModeDisabledChanged()));
     connect(settings, SIGNAL(defaultInputMethodDisabledChanged()), SIGNAL(defaultInputMethodDisabledChanged()));
     connect(settings, SIGNAL(defaultDictionaryDisabledChanged()), SIGNAL(defaultDictionaryDisabledChanged()));
+}
+
+/*!
+    \internal
+ */
+QQuickVirtualKeyboardSettings *QQuickVirtualKeyboardSettings::create(QQmlEngine *qmlEngine, QJSEngine *)
+{
+    return new QQuickVirtualKeyboardSettings(qmlEngine);
 }
 
 /*!
