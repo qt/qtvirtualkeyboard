@@ -8,11 +8,12 @@
 */
 
 /*!
-    \title Qt Quick Virtual Keyboard - Basic Example
+    \title Virtual Keyboard in Qt Quick
     \example basic
-    \brief This is a basic QML example that uses the virtual keyboard.
+    \brief This example shows how to use the virtual keyboard in a Qt Quick application.
     \ingroup qtvirtualkeyboard-examples
     \image basic-example.png
+    \meta tags {quick}
 
     The example has two implementations: one for desktop
     platforms and another for embedded platforms. The former version
