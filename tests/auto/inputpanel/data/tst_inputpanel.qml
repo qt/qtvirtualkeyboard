@@ -251,7 +251,13 @@ Rectangle {
             Qt.inputMethod.hide()
             verify(inputPanel.visible === false)
 
+            // Should not become visible because the active focus is set to container
             Qt.inputMethod.show()
+            waitForRendering(inputPanel)
+            verify(inputPanel.visible === false)
+
+            // Should become visible because of previously called show() and focus set to input control
+            textInput.forceActiveFocus()
             waitForRendering(inputPanel)
             verify(inputPanel.visible === true)
 

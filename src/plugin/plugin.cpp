@@ -34,6 +34,9 @@
 #include <QtVirtualKeyboard/private/qvirtualkeyboard_staticplugin_p.h>
 #include <QLoggingCategory>
 #include <QtQml>
+#if defined(Q_OS_WIN)
+#include <qt_windows.h>
+#endif
 
 QT_BEGIN_NAMESPACE
 
@@ -73,6 +76,12 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
 
     if (system.compare(system, QLatin1String(pluginName), Qt::CaseInsensitive) != 0)
         return Q_NULLPTR;
+
+#if defined(Q_OS_WIN)
+    // QTBUG-93042
+    ImmDisableIME(0);
+#endif
+
     PlatformInputContext *platformInputContext = new PlatformInputContext();
 
     QStringList inputMethodList;
