@@ -64,6 +64,7 @@ public:
     bool handwritingModeDisabled;
     bool defaultInputMethodDisabled;
     bool defaultDictionaryDisabled;
+    QtVirtualKeyboard::KeyboardFunctionKey visibleFunctionKeys = QtVirtualKeyboard::KeyboardFunctionKeyFlag::AllFunctionKeys;
 };
 
 static QScopedPointer<Settings> s_settingsInstance;
@@ -338,6 +339,21 @@ void QtVirtualKeyboard::Settings::setDefaultDictionaryDisabled(bool defaultDicti
     if (d->defaultDictionaryDisabled != defaultDictionaryDisabled) {
         d->defaultDictionaryDisabled = defaultDictionaryDisabled;
         emit defaultDictionaryDisabledChanged();
+    }
+}
+
+QtVirtualKeyboard::KeyboardFunctionKey Settings::visibleFunctionKeys() const
+{
+    Q_D(const Settings);
+    return d->visibleFunctionKeys;
+}
+
+void Settings::setVisibleFunctionKeys(const QtVirtualKeyboard::KeyboardFunctionKey &newVisibleFunctionKeys)
+{
+    Q_D(Settings);
+    if (d->visibleFunctionKeys != newVisibleFunctionKeys) {
+        d->visibleFunctionKeys = newVisibleFunctionKeys;
+        emit visibleFunctionKeysChanged();
     }
 }
 

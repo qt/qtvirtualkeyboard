@@ -149,13 +149,17 @@ KeyboardLayoutLoader {
                     Layout.fillWidth: false
                     displayText: InputContext.inputEngine.inputMode === InputEngine.InputMode.Hebrew ? "\u05D0\u05D1\u05D2" : "ABC"
                 }
+                ChangeLanguageKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                }
                 Key {
                     key: Qt.Key_Comma
                     weight: normalKeyWidth
                     Layout.fillWidth: false
                     text: ","
                     smallText: "\u2699"
-                    smallTextVisible: true
+                    smallTextVisible: keyboard.isFunctionPopupListAvailable()
                     highlighted: true
                 }
                 SpaceKey {
@@ -167,6 +171,10 @@ KeyboardLayoutLoader {
                     text: "."
                     highlighted: true
                }
+                HideKeyboardKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                }
                 EnterKey {
                     weight: functionKeyWidth
                     Layout.fillWidth: false
@@ -314,13 +322,17 @@ KeyboardLayoutLoader {
                     Layout.fillWidth: false
                     displayText: InputContext.inputEngine.inputMode === InputEngine.InputMode.Hebrew ? "\u05D0\u05D1\u05D2" : "ABC"
                 }
+                ChangeLanguageKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                }
                 Key {
                     key: Qt.Key_Comma
                     weight: normalKeyWidth
                     Layout.fillWidth: false
                     text: ","
                     smallText: "\u2699"
-                    smallTextVisible: true
+                    smallTextVisible: keyboard.isFunctionPopupListAvailable()
                     highlighted: true
                 }
                 SpaceKey {
@@ -331,6 +343,10 @@ KeyboardLayoutLoader {
                     Layout.fillWidth: false
                     text: "\u2026"
                     highlighted: true
+                }
+                HideKeyboardKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                 }
                 EnterKey {
                     weight: functionKeyWidth

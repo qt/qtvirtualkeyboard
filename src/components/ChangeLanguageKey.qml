@@ -3,6 +3,7 @@
 
 import QtQuick
 import QtQuick.VirtualKeyboard
+import QtQuick.VirtualKeyboard.Settings
 
 /*!
     \qmltype ChangeLanguageKey
@@ -48,4 +49,5 @@ BaseKey {
     keyPanelDelegate: keyboard.style ? keyboard.style.languageKeyPanel : undefined
     onClicked: keyboard.doKeyboardFunction(QtVirtualKeyboard.ChangeLanguage, customLayoutsOnly)
     enabled: keyboard.isKeyboardFunctionAvailable(QtVirtualKeyboard.ChangeLanguage, customLayoutsOnly)
+    visible: VirtualKeyboardSettings.visibleFunctionKeys & QtVirtualKeyboard.LanguageFunctionKey
 }

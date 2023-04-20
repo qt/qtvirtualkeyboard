@@ -23,6 +23,7 @@
 #include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #include <QtVirtualKeyboard/private/shadowinputcontext_p.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardobserver.h>
+#include <QtVirtualKeyboard/qvirtualkeyboardnamespace.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -94,6 +95,7 @@ public:
     Q_INVOKABLE bool hasEnterKeyAction(QObject *item) const;
     Q_INVOKABLE void registerInputPanel(QObject *inputPanel);
     Q_INVOKABLE bool contains(const QPointF &point) const;
+    Q_INVOKABLE QtVirtualKeyboard::KeyboardFunctionKeyFlag keyboardFunctionKey(QtVirtualKeyboard::KeyboardFunction keyboardFunction) const;
 
 Q_SIGNALS:
     void focusChanged();

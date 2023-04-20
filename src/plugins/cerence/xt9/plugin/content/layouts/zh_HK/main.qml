@@ -130,13 +130,17 @@ KeyboardLayout {
             weight: functionKeyWidth
             Layout.fillWidth: false
         }
+        ChangeLanguageKey {
+            weight: normalKeyWidth
+            Layout.fillWidth: false
+        }
         Key {
             key: Qt.Key_Comma
             weight: normalKeyWidth
             Layout.fillWidth: false
             text: "\uFF0C"
             smallText: "\u2699"
-            smallTextVisible: true
+            smallTextVisible: keyboard.isFunctionPopupListAvailable()
             highlighted: true
         }
         InputModeKey {

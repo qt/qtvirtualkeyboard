@@ -124,13 +124,17 @@ KeyboardLayoutLoader {
                     weight: functionKeyWidth
                     Layout.fillWidth: false
                 }
+                ChangeLanguageKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                }
                 Key {
                     key: Qt.Key_Comma
                     weight: normalKeyWidth
                     Layout.fillWidth: false
                     text: ","
                     smallText: "\u2699"
-                    smallTextVisible: true
+                    smallTextVisible: keyboard.isFunctionPopupListAvailable()
                     highlighted: true
                 }
                 InputModeKey {
@@ -149,6 +153,10 @@ KeyboardLayoutLoader {
                     smallText: "!?"
                     smallTextVisible: true
                     highlighted: true
+                }
+                HideKeyboardKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                 }
                 EnterKey {
                     weight: functionKeyWidth
@@ -318,13 +326,17 @@ KeyboardLayoutLoader {
                     weight: functionKeyWidth
                     Layout.fillWidth: false
                 }
+                ChangeLanguageKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                }
                 Key {
                     key: Qt.Key_Comma
                     weight: normalKeyWidth
                     Layout.fillWidth: false
                     text: ","
                     smallText: "\u2699"
-                    smallTextVisible: true
+                    smallTextVisible: keyboard.isFunctionPopupListAvailable()
                     highlighted: true
                 }
                 InputModeKey {
@@ -344,6 +356,10 @@ KeyboardLayoutLoader {
                     smallText: "!?"
                     smallTextVisible: true
                     highlighted: true
+                }
+                HideKeyboardKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                 }
                 EnterKey {
                     weight: functionKeyWidth

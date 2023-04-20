@@ -60,6 +60,7 @@ Rectangle {
             inputPanel.setFullScreenMode(data !== undefined && data.hasOwnProperty("fullScreenMode") && data.fullScreenMode)
             inputPanel.setExternalLanguageSwitchEnabled(data !== undefined && data.hasOwnProperty("externalLanguageSwitchEnabled") && data.externalLanguageSwitchEnabled)
             inputPanel.setLayoutMirroring(data !== undefined && data.hasOwnProperty("layoutMirroring") && data.layoutMirroring)
+            inputPanel.setVisibleFunctionKeys(data !== undefined && data.hasOwnProperty("visibleFunctionKeys") ? data.visibleFunctionKeys : ["AllFunctionKeys"])
 
             var window = container.Window.window
             verify(window)
@@ -2246,6 +2247,51 @@ Rectangle {
             }
 
             Qt.inputMethod.reset()
+        }
+
+        function test_visibleFunctionKey_data() {
+            return [
+                { initLocale: "en_GB", functionKeysAlwaysVisible: false },
+                // Number and digits layouts must always have the function keys, because otherwise the layout design looks bad
+                { initLocale: "en_GB", functionKeysAlwaysVisible: true, initInputMethodHints: Qt.ImhFormattedNumbersOnly },
+                { initLocale: "en_GB", functionKeysAlwaysVisible: true, initInputMethodHints: Qt.ImhDigitsOnly },
+                // Symbol layout follow the main layout
+                { initLocale: "en_GB", functionKeysAlwaysVisible: false, initInputMethodHints: Qt.ImhPreferNumbers },
+            ]
+        }
+
+        function test_visibleFunctionKey(data) {
+            prepareTest(data, true)
+
+            const changeLanguageKey = inputPanel.findKeyByKeyType("ChangeLanguageKey")
+            verify(!!changeLanguageKey)
+            const hideKeyboardKey = inputPanel.findKeyByKeyType("HideKeyboardKey")
+            verify(!!hideKeyboardKey)
+
+            for (const functionKeyName of [
+                     "NoFunctionKey",
+                     "HideFunctionKey",
+                     "LanguageFunctionKey",
+                     "AllFunctionKeys"
+                 ]) {
+                inputPanel.setVisibleFunctionKeys([functionKeyName])
+                if (data.functionKeysAlwaysVisible) {
+                    compare(changeLanguageKey.visible, true)
+                    compare(hideKeyboardKey.visible, true)
+                } else if (functionKeyName === "NoFunctionKey") {
+                    compare(changeLanguageKey.visible, false)
+                    compare(hideKeyboardKey.visible, false)
+                } else if (functionKeyName === "HideFunctionKey") {
+                    compare(changeLanguageKey.visible, false)
+                    compare(hideKeyboardKey.visible, true)
+                } else if (functionKeyName === "LanguageFunctionKey") {
+                    compare(changeLanguageKey.visible, true)
+                    compare(hideKeyboardKey.visible, false)
+                } else if (functionKeyName === "AllFunctionKeys") {
+                    compare(changeLanguageKey.visible, true)
+                    compare(hideKeyboardKey.visible, true)
+                }
+            }
         }
     }
 }

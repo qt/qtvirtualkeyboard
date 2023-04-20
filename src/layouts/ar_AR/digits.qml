@@ -75,11 +75,14 @@ KeyboardLayout {
                 text: "\u0663"
                 alternativeKeys: "\u06633"
             }
-            HideKeyboardKey {}
+            HideKeyboardKey {
+                visible: true
+            }
         }
         KeyboardRow {
             ChangeLanguageKey {
                 customLayoutsOnly: true
+                visible: true
             }
             Key {
                 key: 0x0660

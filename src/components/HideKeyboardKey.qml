@@ -3,6 +3,7 @@
 
 import QtQuick
 import QtQuick.VirtualKeyboard
+import QtQuick.VirtualKeyboard.Settings
 
 /*!
     \qmltype HideKeyboardKey
@@ -23,4 +24,5 @@ BaseKey {
     highlighted: true
     onClicked: keyboard.doKeyboardFunction(QtVirtualKeyboard.HideInputPanel)
     keyPanelDelegate: keyboard.style ? keyboard.style.hideKeyPanel : undefined
+    visible: VirtualKeyboardSettings.visibleFunctionKeys & QtVirtualKeyboard.HideFunctionKey
 }

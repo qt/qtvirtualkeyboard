@@ -170,13 +170,17 @@ KeyboardLayout {
             weight: functionKeyWidth
             Layout.fillWidth: false
         }
+        ChangeLanguageKey {
+            weight: normalKeyWidth
+            Layout.fillWidth: false
+        }
         Key {
             key: Qt.Key_Comma
             weight: normalKeyWidth
             Layout.fillWidth: false
             text: "\u060C"
             smallText: "\u2699"
-            smallTextVisible: true
+            smallTextVisible: keyboard.isFunctionPopupListAvailable()
             highlighted: true
         }
         SpaceKey {
@@ -188,6 +192,10 @@ KeyboardLayout {
             text: "."
             alternativeKeys: "!,\u060C\u061B.\u061F"
             highlighted: true
+        }
+        HideKeyboardKey {
+            weight: normalKeyWidth
+            Layout.fillWidth: false
         }
         EnterKey {
             weight: functionKeyWidth

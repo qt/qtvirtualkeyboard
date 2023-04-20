@@ -66,7 +66,9 @@ KeyboardLayout {
                 key: Qt.Key_9
                 text: "9"
             }
-            HideKeyboardKey {}
+            HideKeyboardKey {
+                visible: true
+            }
         }
         KeyboardRow {
             Key {

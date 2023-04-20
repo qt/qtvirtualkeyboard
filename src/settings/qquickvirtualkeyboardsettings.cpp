@@ -148,6 +148,7 @@ QQuickVirtualKeyboardSettings::QQuickVirtualKeyboardSettings(QQmlEngine *engine,
     connect(settings, SIGNAL(handwritingModeDisabledChanged()), SIGNAL(handwritingModeDisabledChanged()));
     connect(settings, SIGNAL(defaultInputMethodDisabledChanged()), SIGNAL(defaultInputMethodDisabledChanged()));
     connect(settings, SIGNAL(defaultDictionaryDisabledChanged()), SIGNAL(defaultDictionaryDisabledChanged()));
+    connect(settings, SIGNAL(visibleFunctionKeysChanged()), SIGNAL(visibleFunctionKeysChanged()));
 }
 
 /*!
@@ -348,6 +349,16 @@ void QQuickVirtualKeyboardSettings::setDefaultDictionaryDisabled(bool defaultDic
     return Settings::instance()->setDefaultDictionaryDisabled(defaultDictionaryDisabled);
 }
 
+QtVirtualKeyboard::KeyboardFunctionKey QQuickVirtualKeyboardSettings::visibleFunctionKeys() const
+{
+    return Settings::instance()->visibleFunctionKeys();
+}
+
+void QQuickVirtualKeyboardSettings::setVisibleFunctionKeys(const QtVirtualKeyboard::KeyboardFunctionKey &newVisibleFunctionKeys)
+{
+    Settings::instance()->setVisibleFunctionKeys(newVisibleFunctionKeys);
+}
+
 void QQuickVirtualKeyboardSettings::resetStyle()
 {
     Q_D(QQuickVirtualKeyboardSettings);
@@ -525,6 +536,26 @@ void QQuickVirtualKeyboardSettings::resetStyle()
 
     This property disables the default dictionary. The purpose of this setting is to be able to
     use a custom dictionary only instead of the standard dictionary.
+*/
+
+/*!
+    \qmlproperty enumeration VirtualKeyboardSettings::visibleFunctionKeys
+    \since QtQuick.VirtualKeyboard.Settings 6.6
+
+    This setting adjusts the visibility of specific function keys in the keyboard layout, allowing
+    them to be either displayed or hidden. When a function key is not visible, its functionality
+    remains accessible through the gear menu.
+
+    The value can be combination of the following flags:
+
+    \list
+        \li \c QtVirtualKeyboard.NoFunctionKey All function keys are hidden
+        \li \c QtVirtualKeyboard.HideFunctionKey Hide function key is visible
+        \li \c QtVirtualKeyboard.LanguageFunctionKey Language function key is visible
+        \li \c QtVirtualKeyboard.AllFunctionKeys All function keys are visible
+    \endlist
+
+    The default is \c QtVirtualKeyboard.AllFunctionKeys.
 */
 
 /*!

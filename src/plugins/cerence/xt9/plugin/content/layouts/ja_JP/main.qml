@@ -217,15 +217,6 @@ KeyboardLayoutLoader {
                     weight: functionKeyWidth
                     Layout.fillWidth: false
                 }
-                Key {
-                    key: Qt.Key_Comma
-                    weight: normalKeyWidth
-                    Layout.fillWidth: false
-                    text: "\u3001"
-                    smallText: "\u2699"
-                    smallTextVisible: true
-                    highlighted: true
-                }
                 InputModeKey {
                     weight: normalKeyWidth
                     Layout.fillWidth: false
@@ -243,6 +234,19 @@ KeyboardLayoutLoader {
                         "全角",  // InputEngine.InputMode.FullwidthLatin
                     ]
                 }
+                ChangeLanguageKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                }
+                Key {
+                    key: Qt.Key_Comma
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: "\u3001"
+                    smallText: "\u2699"
+                    smallTextVisible: keyboard.isFunctionPopupListAvailable()
+                    highlighted: true
+                }
                 SpaceKey {
                 }
                 Key {
@@ -254,6 +258,10 @@ KeyboardLayoutLoader {
                     smallText: "!?"
                     smallTextVisible: true
                     highlighted: true
+                }
+                HideKeyboardKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                 }
                 BackspaceKey {
                     weight: normalKeyWidth
@@ -461,15 +469,6 @@ KeyboardLayoutLoader {
                     weight: functionKeyWidth
                     Layout.fillWidth: false
                 }
-                Key {
-                    key: Qt.Key_Comma
-                    weight: normalKeyWidth
-                    Layout.fillWidth: false
-                    text: "\u3001"
-                    smallText: "\u2699"
-                    smallTextVisible: true
-                    highlighted: true
-                }
                 InputModeKey {
                     weight: normalKeyWidth
                     Layout.fillWidth: false
@@ -487,6 +486,19 @@ KeyboardLayoutLoader {
                         "全角",  // InputEngine.InputMode.FullwidthLatin
                     ]
                 }
+                ChangeLanguageKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                }
+                Key {
+                    key: Qt.Key_Comma
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: "\u3001"
+                    smallText: "\u2699"
+                    smallTextVisible: keyboard.isFunctionPopupListAvailable()
+                    highlighted: true
+                }
                 SpaceKey {
                 }
                 Key {
@@ -498,6 +510,10 @@ KeyboardLayoutLoader {
                     smallText: "!?"
                     smallTextVisible: true
                     highlighted: true
+                }
+                HideKeyboardKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                 }
                 BackspaceKey {
                     weight: normalKeyWidth
@@ -656,15 +672,6 @@ KeyboardLayoutLoader {
                     Layout.preferredWidth: functionKeyWidth
                     Layout.fillWidth: false
                 }
-                Key {
-                    key: Qt.Key_Comma
-                    Layout.preferredWidth: normalKeyWidth
-                    Layout.fillWidth: false
-                    text: "\u3001"
-                    smallText: "\u2699"
-                    smallTextVisible: true
-                    highlighted: true
-                }
                 InputModeKey {
                     enabled: !(InputContext.inputMethodHints & Qt.ImhLatinOnly) && inputModeCount > 1
                     Layout.preferredWidth: normalKeyWidth
@@ -682,6 +689,19 @@ KeyboardLayoutLoader {
                         "全角",  // InputEngine.InputMode.FullwidthLatin
                     ]
                 }
+                ChangeLanguageKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                }
+                Key {
+                    key: Qt.Key_Comma
+                    Layout.preferredWidth: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: "\u3001"
+                    smallText: "\u2699"
+                    smallTextVisible: keyboard.isFunctionPopupListAvailable()
+                    highlighted: true
+                }
                 SpaceKey {
                 }
                 Key {
@@ -693,6 +713,10 @@ KeyboardLayoutLoader {
                     smallText: "!?"
                     smallTextVisible: true
                     highlighted: true
+                }
+                HideKeyboardKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                 }
                 EnterKey {
                     Layout.preferredWidth: functionKeyWidth
@@ -847,15 +871,6 @@ KeyboardLayoutLoader {
                     weight: functionKeyWidth
                     Layout.fillWidth: false
                 }
-                Key {
-                    key: Qt.Key_Comma
-                    weight: normalKeyWidth
-                    Layout.fillWidth: false
-                    text: "\u3001"
-                    smallText: "\u2699"
-                    smallTextVisible: true
-                    highlighted: true
-                }
                 InputModeKey {
                     enabled: !(InputContext.inputMethodHints & Qt.ImhLatinOnly) && inputModeCount > 1
                     weight: normalKeyWidth
@@ -873,6 +888,19 @@ KeyboardLayoutLoader {
                         "全角",  // InputEngine.InputMode.FullwidthLatin
                     ]
                 }
+                ChangeLanguageKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                }
+                Key {
+                    key: Qt.Key_Comma
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                    text: "\u3001"
+                    smallText: "\u2699"
+                    smallTextVisible: keyboard.isFunctionPopupListAvailable()
+                    highlighted: true
+                }
                 SpaceKey {
                 }
                 Key {
@@ -884,6 +912,10 @@ KeyboardLayoutLoader {
                     smallText: "!?"
                     smallTextVisible: true
                     highlighted: true
+                }
+                HideKeyboardKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
                 }
                 EnterKey {
                     weight: functionKeyWidth

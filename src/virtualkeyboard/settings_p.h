@@ -15,6 +15,7 @@
 // We mean it.
 //
 
+#include "qvirtualkeyboardnamespace.h"
 #include <QObject>
 #include <QUrl>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
@@ -87,6 +88,9 @@ public:
     bool isDefaultDictionaryDisabled() const;
     void setDefaultDictionaryDisabled(bool defaultDictionaryDisabled);
 
+    QtVirtualKeyboard::KeyboardFunctionKey visibleFunctionKeys() const;
+    void setVisibleFunctionKeys(const QtVirtualKeyboard::KeyboardFunctionKey &newVisibleFunctionKeys);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -106,6 +110,7 @@ signals:
     void handwritingModeDisabledChanged();
     void defaultInputMethodDisabledChanged();
     void defaultDictionaryDisabledChanged();
+    void visibleFunctionKeysChanged();
 };
 
 } // namespace QtVirtualKeyboard

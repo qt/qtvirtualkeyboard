@@ -121,7 +121,7 @@ KeyboardLayout {
                     key: Qt.Key_Comma
                     text: "\u3001"
                     smallText: "\u2699"
-                    smallTextVisible: true
+                    smallTextVisible: keyboard.isFunctionPopupListAvailable()
                 }
                 Key {
                     key: Qt.Key_0
@@ -156,7 +156,9 @@ KeyboardLayout {
                 key: Qt.Key_Space
                 highlighted: true
             }
-            HideKeyboardKey {}
+            HideKeyboardKey {
+                visible: true
+            }
             EnterKey {}
         }
     }

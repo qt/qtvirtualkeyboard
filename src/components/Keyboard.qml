@@ -1813,4 +1813,9 @@ Item {
             return false
         }
     }
+
+    function isFunctionPopupListAvailable() {
+        return VirtualKeyboardSettings.visibleFunctionKeys !== QtVirtualKeyboard.AllFunctionKeys ||
+                isHandwritingAvailable()
+    }
 }

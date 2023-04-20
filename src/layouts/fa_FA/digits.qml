@@ -66,7 +66,9 @@ KeyboardLayout {
                 text: "\u06F3"
                 alternativeKeys: "\u06F33"
             }
-            HideKeyboardKey {}
+            HideKeyboardKey {
+                visible: true
+            }
         }
         KeyboardRow {
             ChangeLanguageKey {

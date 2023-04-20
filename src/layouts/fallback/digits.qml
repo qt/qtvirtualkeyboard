@@ -66,11 +66,14 @@ KeyboardLayout {
                 key: Qt.Key_3
                 text: "3"
             }
-            HideKeyboardKey {}
+            HideKeyboardKey {
+                visible: true
+            }
         }
         KeyboardRow {
             ChangeLanguageKey {
                 customLayoutsOnly: true
+                visible: true
             }
             Key {
                 key: Qt.Key_0

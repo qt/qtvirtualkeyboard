@@ -3,6 +3,7 @@
 
 import QtQuick
 import QtQuick.VirtualKeyboard
+import QtQuick.VirtualKeyboard.Settings
 
 Item {
     property bool active
@@ -77,7 +78,9 @@ Item {
                  QtVirtualKeyboard.ChangeLanguage,
                  QtVirtualKeyboard.ToggleHandwritingMode,
              ]) {
-            if (keyboard.isKeyboardFunctionAvailable(keyboardFunction)) {
+            const functionKey = InputContext.priv.keyboardFunctionKey(keyboardFunction)
+            if (keyboard.isKeyboardFunctionAvailable(keyboardFunction) &&
+                    !(VirtualKeyboardSettings.visibleFunctionKeys & functionKey)) {
                 const listElement = {
                     keyboardFunction: keyboardFunction
                 }

@@ -114,7 +114,7 @@ KeyboardLayoutLoader {
                             key: Qt.Key_Comma
                             text: "\u3001"
                             smallText: "\u2699"
-                            smallTextVisible: true
+                            smallTextVisible: keyboard.isFunctionPopupListAvailable()
                         }
                         FlickKey {
                             text: "わ"
@@ -147,7 +147,9 @@ KeyboardLayoutLoader {
                         key: Qt.Key_Space
                         highlighted: true
                     }
-                    HideKeyboardKey {}
+                    HideKeyboardKey {
+                        visible: true
+                    }
                     EnterKey {}
                 }
             }
@@ -245,7 +247,7 @@ KeyboardLayoutLoader {
                             key: Qt.Key_Comma
                             text: "\u3001"
                             smallText: "\u2699"
-                            smallTextVisible: true
+                            smallTextVisible: keyboard.isFunctionPopupListAvailable()
                         }
                         FlickKey {
                             text: "ワ"
@@ -278,7 +280,9 @@ KeyboardLayoutLoader {
                         key: Qt.Key_Space
                         highlighted: true
                     }
-                    HideKeyboardKey {}
+                    HideKeyboardKey {
+                        visible: true
+                    }
                     EnterKey {}
                 }
             }
@@ -436,7 +440,7 @@ KeyboardLayoutLoader {
                     Layout.fillWidth: false
                     text: "\u3001"
                     smallText: "\u2699"
-                    smallTextVisible: true
+                    smallTextVisible: keyboard.isFunctionPopupListAvailable()
                     highlighted: true
                 }
                 InputModeKey {
@@ -627,7 +631,7 @@ KeyboardLayoutLoader {
                     Layout.fillWidth: false
                     text: "\u3001"
                     smallText: "\u2699"
-                    smallTextVisible: true
+                    smallTextVisible: keyboard.isFunctionPopupListAvailable()
                     highlighted: true
                 }
                 InputModeKey {

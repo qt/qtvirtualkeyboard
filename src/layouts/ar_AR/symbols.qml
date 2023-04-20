@@ -162,13 +162,17 @@ KeyboardLayoutLoader {
                     Layout.fillWidth: false
                     displayText: "\u0623\u200C\u0628\u200C\u062C"
                 }
+                ChangeLanguageKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                }
                 Key {
                     key: Qt.Key_Comma
                     weight: normalKeyWidth
                     Layout.fillWidth: false
                     text: "\u060C"
                     smallText: "\u2699"
-                    smallTextVisible: true
+                    smallTextVisible: keyboard.isFunctionPopupListAvailable()
                     highlighted: true
                 }
                 SpaceKey {
@@ -329,13 +333,17 @@ KeyboardLayoutLoader {
                     Layout.fillWidth: false
                     displayText: "\u0623\u200C\u0628\u200C\u062C"
                 }
+                ChangeLanguageKey {
+                    weight: normalKeyWidth
+                    Layout.fillWidth: false
+                }
                 Key {
                     key: Qt.Key_Comma
                     weight: normalKeyWidth
                     Layout.fillWidth: false
                     text: "\u060C"
                     smallText: "\u2699"
-                    smallTextVisible: true
+                    smallTextVisible: keyboard.isFunctionPopupListAvailable()
                     highlighted: true
                 }
                 SpaceKey {

@@ -120,7 +120,7 @@ KeyboardStyle {
             }
             states: [
                 State {
-                    when: control.smallText === "\u2699"
+                    when: control.smallText === "\u2699" && control.smallTextVisible
                     PropertyChanges {
                         target: keySmallText
                         visible: false

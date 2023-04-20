@@ -249,6 +249,26 @@ InputPanel {
         keyboard.doKeyboardFunction(keyboardFunction)
     }
 
+    function mapKeyboardFunctionKey(functionKeyName) {
+        if (functionKeyName === "NoFunctionKey")
+            return QtVirtualKeyboard.NoFunctionKey
+        if (functionKeyName === "HideFunctionKey")
+            return QtVirtualKeyboard.HideFunctionKey
+        if (functionKeyName === "LanguageFunctionKey")
+            return QtVirtualKeyboard.LanguageFunctionKey
+        if (functionKeyName === "AllFunctionKeys")
+            return QtVirtualKeyboard.AllFunctionKeys
+        testcase.fail("Invalid function key '%1'".arg(functionKeyName))
+    }
+
+    function setVisibleFunctionKeys(functionKeyNames) {
+        let functionKeys = QtVirtualKeyboard.NoFunctionKey
+        for (const functionKeyName of functionKeyNames) {
+            functionKeys |= mapKeyboardFunctionKey(functionKeyName)
+        }
+        VirtualKeyboardSettings.visibleFunctionKeys = functionKeys
+    }
+
     function setWclAutoHideDelay(wclAutoHideDelay) {
         VirtualKeyboardSettings.wordCandidateList.autoHideDelay = wclAutoHideDelay
     }
@@ -428,6 +448,19 @@ InputPanel {
 
     function findObjectByName(objectName) {
         return Utils.findChildByProperty(keyboard, "objectName", objectName, null)
+    }
+
+    function mapKeyboardKeyType(keyTypeName) {
+        if (keyTypeName === "ChangeLanguageKey")
+            return QtVirtualKeyboard.ChangeLanguageKey
+        if (keyTypeName === "HideKeyboardKey")
+            return QtVirtualKeyboard.HideKeyboardKey
+        testcase.fail("Invalid key type '%1'".arg(keyTypeName))
+    }
+
+    function findKeyByKeyType(keyTypeName) {
+        const keyType = mapKeyboardKeyType(keyTypeName)
+        return Utils.findChildByProperty(keyboard, "keyType", keyType, null)
     }
 
     function virtualKeyPressOnCurrentLayout(key) {
