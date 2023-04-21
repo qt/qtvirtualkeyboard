@@ -1264,7 +1264,10 @@ Item {
                 }
                 languagePopupList.positionViewAtIndex(languagePopupList.currentIndex, ListView.Center)
                 if (parentItem) {
-                    languagePopupList.anchors.leftMargin = Qt.binding(function() {return Math.round(keyboard.mapFromItem(parentItem, (parentItem.width - languagePopupList.width) / 2, 0).x)})
+                    languagePopupList.anchors.leftMargin = Qt.binding(function() {
+                        const newLeftMargin = Math.round(keyboard.mapFromItem(parentItem, (parentItem.width - languagePopupList.width) / 2, 0).x)
+                        return Math.min(Math.max(0, newLeftMargin), keyboard.width - languagePopupList.width)
+                    })
                     languagePopupList.anchors.topMargin = Qt.binding(function() {return Math.round(keyboard.mapFromItem(parentItem, 0, -languagePopupList.height).y)})
                 } else {
                     languagePopupList.anchors.leftMargin = Qt.binding(function() {return Math.round((keyboard.width - languagePopupList.width) / 2)})
