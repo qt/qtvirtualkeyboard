@@ -15,61 +15,60 @@ KeyboardLayout {
     readonly property bool alphabeticInputMode: [InputEngine.InputMode.Latin, InputEngine.InputMode.Dialable].indexOf(InputContext.inputEngine.inputMode) !== -1
 
     KeyboardRow {
-        Layout.preferredHeight: 3
-        TraceInputKey {
-            objectName: "hwrInputArea"
-            patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
-            horizontalRulers:
-                alphabeticInputMode ? [] :
-                    [Math.round(boundingBox.height / 4), Math.round(boundingBox.height / 4) * 2, Math.round(boundingBox.height / 4) * 3]
+        KeyboardColumn {
+            Layout.preferredWidth: 1
+            InputModeKey {
+                inputModeNameList: [
+                    "ABC",  // InputEngine.InputMode.Latin
+                    "\u0660\u0661\u0662",  // InputEngine.InputMode.Numeric
+                    "123",  // InputEngine.InputMode.Dialable
+                    "",  // InputEngine.InputMode.Pinyin
+                    "",  // InputEngine.InputMode.Cangjie
+                    "",  // InputEngine.InputMode.Zhuyin
+                    "",  // InputEngine.InputMode.Hangul
+                    "",  // InputEngine.InputMode.Hiragana
+                    "",  // InputEngine.InputMode.Katakana
+                    "",  // InputEngine.InputMode.FullwidthLatin
+                    "",  // InputEngine.InputMode.Greek
+                    "",  // InputEngine.InputMode.Cyrillic
+                    "\u0623\u200C\u0628\u200C\u062C",  // InputEngine.InputMode.Arabic
+                ]
+            }
+            ChangeLanguageKey {
+                visible: true
+            }
+            ShiftKey {
+            }
+            HandwritingModeKey {
+            }
         }
-    }
-    KeyboardRow {
-        id: bottomRow
-        Layout.preferredHeight: 1
-        keyWeight: 160
-        ShiftKey {
-            weight: 240
+        KeyboardColumn {
+            Layout.preferredWidth: 8
+            TraceInputKey {
+                objectName: "hwrInputArea"
+                patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
+                horizontalRulers:
+                    alphabeticInputMode ? [] :
+                        [Math.round(boundingBox.height / 4), Math.round(boundingBox.height / 4) * 2, Math.round(boundingBox.height / 4) * 3]
+            }
         }
-        InputModeKey {
-            inputModeNameList: [
-                "ABC",  // InputEngine.InputMode.Latin
-                "\u0660\u0661\u0662",  // InputEngine.InputMode.Numeric
-                "123",  // InputEngine.InputMode.Dialable
-                "",  // InputEngine.InputMode.Pinyin
-                "",  // InputEngine.InputMode.Cangjie
-                "",  // InputEngine.InputMode.Zhuyin
-                "",  // InputEngine.InputMode.Hangul
-                "",  // InputEngine.InputMode.Hiragana
-                "",  // InputEngine.InputMode.Katakana
-                "",  // InputEngine.InputMode.FullwidthLatin
-                "",  // InputEngine.InputMode.Greek
-                "",  // InputEngine.InputMode.Cyrillic
-                "\u0623\u200C\u0628\u200C\u062C",  // InputEngine.InputMode.Arabic
-            ]
-        }
-        Key {
-            key: Qt.Key_Comma
-            text: alphabeticInputMode ? "," : "\u060C"
-            smallText: "\u2699"
-            smallTextVisible: true
-            highlighted: true
-        }
-        SpaceKey {
-            weight: 10 * 160 - 4 * 160 - 2 * 240
-        }
-        Key {
-            key: Qt.Key_Period
-            text: "."
-            alternativeKeys: alphabeticInputMode ? "#%&*/\\\"'=+-_:;,.?!<>()" : "#%&*/\\\"'=+-_:\u061B.\u061F!<>()"
-            smallText: "!?"
-            smallTextVisible: true
-            highlighted: true
-        }
-        BackspaceKey {
-        }
-        EnterKey {
-            weight: 240
+        KeyboardColumn {
+            Layout.preferredWidth: 1
+            Key {
+                key: Qt.Key_Period
+                text: "."
+                alternativeKeys: alphabeticInputMode ? "#%&*/\\\"'=+-_:;,.?!<>() " : "#%&*/\\\"'=+-_:\u061B\u060C.\u061F!<>() "
+                smallText: alphabeticInputMode ? "!?" : "\u061F!"
+                smallTextVisible: true
+                highlighted: true
+            }
+            HideKeyboardKey {
+                visible: true
+            }
+            BackspaceKey {
+            }
+            EnterKey {
+            }
         }
     }
 }

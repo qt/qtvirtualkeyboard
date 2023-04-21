@@ -11,46 +11,44 @@ KeyboardLayout {
         return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; HandwritingInputMethod {}', parent)
     }
     sharedLayouts: ['symbols']
-    inputMode: InputEngine.InputMode.Latin
 
     KeyboardRow {
-        Layout.preferredHeight: 3
-        TraceInputKey {
-            objectName: "hwrInputArea"
-            patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
+        KeyboardColumn {
+            Layout.preferredWidth: 1
+            InputModeKey {
+            }
+            ChangeLanguageKey {
+                visible: true
+            }
+            ShiftKey {
+            }
+            HandwritingModeKey {
+            }
         }
-    }
-    KeyboardRow {
-        id: bottomRow
-        Layout.preferredHeight: 1
-        keyWeight: 160
-        ShiftKey {
-            weight: 240
+        KeyboardColumn {
+            Layout.preferredWidth: 8
+            TraceInputKey {
+                objectName: "hwrInputArea"
+                patternRecognitionMode: InputEngine.PatternRecognitionMode.Handwriting
+            }
         }
-        InputModeKey {
-        }
-        Key {
-            key: Qt.Key_Comma
-            text: ","
-            smallText: "\u2699"
-            smallTextVisible: true
-            highlighted: true
-        }
-        SpaceKey {
-            weight: 10 * 160 - 4 * 160 - 2 * 240
-        }
-        Key {
-            key: Qt.Key_Period
-            text: "."
-            alternativeKeys: "<>()/\\\"'=+-_:;.¿?¡!"
-            smallText: "!?"
-            smallTextVisible: true
-            highlighted: true
-        }
-        BackspaceKey {
-        }
-        EnterKey {
-            weight: 240
+        KeyboardColumn {
+            Layout.preferredWidth: 1
+            Key {
+                key: Qt.Key_Period
+                text: "."
+                alternativeKeys: "<>()/\\\"'=+-_:;,.¿?¡! "
+                smallText: "!?"
+                smallTextVisible: true
+                highlighted: true
+            }
+            HideKeyboardKey {
+                visible: true
+            }
+            BackspaceKey {
+            }
+            EnterKey {
+            }
         }
     }
 }

@@ -52,7 +52,7 @@ endif()
 
 if (QT_FEATURE_vkb_lang_cs_CZ)
     list(APPEND qt_virtualkeyboard_example_hwr_layouts_resource_files
-        "${VKB_LAYOUTS_BASE}/cs_CZ/handwriting.qml"
+        "${VKB_LAYOUTS_BASE}/cs_CZ/handwriting.fallback"
     )
 endif()
 
@@ -124,13 +124,13 @@ endif()
 
 if (QT_FEATURE_vkb_lang_hr_HR)
     list(APPEND qt_virtualkeyboard_example_hwr_layouts_resource_files
-        "${VKB_LAYOUTS_BASE}/hr_HR/handwriting.qml"
+        "${VKB_LAYOUTS_BASE}/hr_HR/handwriting.fallback"
     )
 endif()
 
 if (QT_FEATURE_vkb_lang_hu_HU)
     list(APPEND qt_virtualkeyboard_example_hwr_layouts_resource_files
-        "${VKB_LAYOUTS_BASE}/hu_HU/handwriting.qml"
+        "${VKB_LAYOUTS_BASE}/hu_HU/handwriting.fallback"
     )
 endif()
 
@@ -184,7 +184,7 @@ endif()
 
 if (QT_FEATURE_vkb_lang_ro_RO)
     list(APPEND qt_virtualkeyboard_example_hwr_layouts_resource_files
-        "${VKB_LAYOUTS_BASE}/ro_RO/handwriting.qml"
+        "${VKB_LAYOUTS_BASE}/ro_RO/handwriting.fallback"
     )
 endif()
 
