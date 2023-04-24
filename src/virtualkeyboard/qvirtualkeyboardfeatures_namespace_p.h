@@ -29,7 +29,7 @@ QML_NAMED_ELEMENT(VirtualKeyboardFeatures)
 
 enum Feature {
     Handwriting =
-#if QT_CONFIG(cerence_hwr) || QT_CONFIG(myscript)
+#if QT_CONFIG(cerence_hwr) || QT_CONFIG(myscript) || QT_CONFIG(example_hwr)
          1
 #else
          0

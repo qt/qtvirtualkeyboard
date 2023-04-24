@@ -73,12 +73,14 @@ keyboard features. These options are passed to the \e configure tool.
         if no other languages are specified.
 \row
     \li \e -vkb-handwriting
-    \li \e [no|myscript-hwr|cerence-hwr]
+    \li \e [no|example-hwr|myscript-hwr|cerence-hwr]
     \li Enables or disabled handwriting input
     \li This flag enables handwriting input. By default, the engine is
         automatically activated if it is located in the proper plugins folder
         even without using of this option. But, in case MyScript and Cerence SDK
-        co-exist, one of [no|myscript-hwr|cerence-hwr] must be configured.
+        co-exist, one of [no|myscript-hwr|cerence-hwr] must be configured. The
+        \l {Example Handwriting}{example-hwr} option needs to be explicitly
+        activated. This can be done for development and testing purposes.
 \row
     \li \e [-no]-vkb-arrow-keynavigation
     \li

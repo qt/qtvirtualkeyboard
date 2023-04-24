@@ -21,6 +21,12 @@ For instructions on how to activate and use the handwriting input mode, see the
 For information about building Qt Virtual Keyboard with a particular
 handwriting engine, see \l {Configuration Options}.
 
+\section1 Example Handwriting
+
+The Example Handwriting Plugin offers a simulated handwriting recognition experience
+producing random characters regardless of what is written. It serves as a tool for
+examining handwriting layouts and as a foundation for developing new plugins.
+
 \section1 Cerence Handwriting
 
 \l {https://cerence.com}{Cerence Handwriting}
