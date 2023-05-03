@@ -9,6 +9,7 @@ import QtQuick.VirtualKeyboard.Settings
 
 Item {
     id: control
+    property alias textEdit: shadowInput
 
     enabled: keyboard.active && VirtualKeyboardSettings.fullScreenMode
 
@@ -106,11 +107,23 @@ Item {
         }
     }
 
+    Component.onCompleted: {
+        if (VirtualKeyboardSettings.fullScreenMode) {
+            InputContext.priv.shadow.inputItem = shadowInput
+        }
+    }
     Connections {
         target: VirtualKeyboardSettings
         function onFullScreenModeChanged() {
             InputContext.priv.shadow.inputItem = VirtualKeyboardSettings.fullScreenMode ? shadowInput : null
+        }
+    }
+    Connections {
+        target: InputContext.priv.shadow
+        function onInputItemChanged() {
             cursorSyncTimer.stop()
+            if (!InputContext.priv.shadow.inputItem)
+                shadowInput.clear()
         }
     }
 }
