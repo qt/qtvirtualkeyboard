@@ -95,7 +95,7 @@ public:
     Q_INVOKABLE bool hasEnterKeyAction(QObject *item) const;
     Q_INVOKABLE void registerInputPanel(QObject *inputPanel);
     Q_INVOKABLE bool contains(const QPointF &point) const;
-    Q_INVOKABLE QtVirtualKeyboard::KeyboardFunctionKeyFlag keyboardFunctionKey(QtVirtualKeyboard::KeyboardFunction keyboardFunction) const;
+    Q_INVOKABLE QtVirtualKeyboard::KeyboardFunctionKey keyboardFunctionKey(QtVirtualKeyboard::KeyboardFunction keyboardFunction) const;
 
 Q_SIGNALS:
     void focusChanged();

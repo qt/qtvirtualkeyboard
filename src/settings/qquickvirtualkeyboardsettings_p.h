@@ -15,9 +15,9 @@
 // We mean it.
 //
 
+#include <QtVirtualKeyboard/qvirtualkeyboardnamespace.h>
 #include <QtQml/qqml.h>
 #include <QtCore/private/qglobal_p.h>
-#include <QtVirtualKeyboard/qvirtualkeyboardnamespace.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
@@ -44,7 +44,7 @@ class QQuickVirtualKeyboardSettings : public QObject
     Q_PROPERTY(bool handwritingModeDisabled READ isHandwritingModeDisabled WRITE setHandwritingModeDisabled NOTIFY handwritingModeDisabledChanged REVISION(6, 1))
     Q_PROPERTY(bool defaultInputMethodDisabled READ isDefaultInputMethodDisabled WRITE setDefaultInputMethodDisabled NOTIFY defaultInputMethodDisabledChanged REVISION(6, 1))
     Q_PROPERTY(bool defaultDictionaryDisabled READ isDefaultDictionaryDisabled WRITE setDefaultDictionaryDisabled NOTIFY defaultDictionaryDisabledChanged REVISION(6, 1))
-    Q_PROPERTY(QtVirtualKeyboard::KeyboardFunctionKey visibleFunctionKeys READ visibleFunctionKeys WRITE setVisibleFunctionKeys NOTIFY visibleFunctionKeysChanged REVISION(6, 6))
+    Q_PROPERTY(QtVirtualKeyboard::KeyboardFunctionKeys visibleFunctionKeys READ visibleFunctionKeys WRITE setVisibleFunctionKeys NOTIFY visibleFunctionKeysChanged REVISION(6, 6))
     QML_NAMED_ELEMENT(VirtualKeyboardSettings)
     QML_SINGLETON
     QML_ADDED_IN_VERSION(1, 0)
@@ -96,8 +96,8 @@ public:
     bool isDefaultDictionaryDisabled() const;
     void setDefaultDictionaryDisabled(bool defaultDictionaryDisabled);
 
-    QtVirtualKeyboard::KeyboardFunctionKey visibleFunctionKeys() const;
-    void setVisibleFunctionKeys(const QtVirtualKeyboard::KeyboardFunctionKey &newVisibleFunctionKeys);
+    QtVirtualKeyboard::KeyboardFunctionKeys visibleFunctionKeys() const;
+    void setVisibleFunctionKeys(QtVirtualKeyboard::KeyboardFunctionKeys newVisibleFunctionKeys);
 
 signals:
     void styleChanged();

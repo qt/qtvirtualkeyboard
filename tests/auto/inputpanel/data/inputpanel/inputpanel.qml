@@ -250,8 +250,8 @@ InputPanel {
     }
 
     function mapKeyboardFunctionKey(functionKeyName) {
-        if (functionKeyName === "NoFunctionKey")
-            return QtVirtualKeyboard.NoFunctionKey
+        if (functionKeyName === "NoFunctionKeys")
+            return QtVirtualKeyboard.NoFunctionKeys
         if (functionKeyName === "HideFunctionKey")
             return QtVirtualKeyboard.HideFunctionKey
         if (functionKeyName === "LanguageFunctionKey")
@@ -262,7 +262,7 @@ InputPanel {
     }
 
     function setVisibleFunctionKeys(functionKeyNames) {
-        let functionKeys = QtVirtualKeyboard.NoFunctionKey
+        let functionKeys = QtVirtualKeyboard.NoFunctionKeys
         for (const functionKeyName of functionKeyNames) {
             functionKeys |= mapKeyboardFunctionKey(functionKeyName)
         }
