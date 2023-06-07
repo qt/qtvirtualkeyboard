@@ -87,10 +87,10 @@ Item {
                 listModel.append(listElement)
             }
         }
+        listView.currentIndex = (listModel.count > 0) ? 0 : -1
         origin = Qt.binding(function() {
             return Qt.point(Math.min(Math.max(0, originX), width - listView.width), originY)
         })
-        listView.currentIndex = (listModel.count > 0) ? 0 : -1
         active = listView.currentIndex !== -1
         return active
     }
