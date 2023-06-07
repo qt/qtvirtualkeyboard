@@ -88,8 +88,8 @@ public:
     bool isDefaultDictionaryDisabled() const;
     void setDefaultDictionaryDisabled(bool defaultDictionaryDisabled);
 
-    QtVirtualKeyboard::KeyboardFunctionKey visibleFunctionKeys() const;
-    void setVisibleFunctionKeys(const QtVirtualKeyboard::KeyboardFunctionKey &newVisibleFunctionKeys);
+    QtVirtualKeyboard::KeyboardFunctionKeys visibleFunctionKeys() const;
+    void setVisibleFunctionKeys(QtVirtualKeyboard::KeyboardFunctionKeys newVisibleFunctionKeys);
 
 signals:
     void styleChanged();

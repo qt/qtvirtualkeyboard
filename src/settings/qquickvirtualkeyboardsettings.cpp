@@ -349,12 +349,12 @@ void QQuickVirtualKeyboardSettings::setDefaultDictionaryDisabled(bool defaultDic
     return Settings::instance()->setDefaultDictionaryDisabled(defaultDictionaryDisabled);
 }
 
-QtVirtualKeyboard::KeyboardFunctionKey QQuickVirtualKeyboardSettings::visibleFunctionKeys() const
+QtVirtualKeyboard::KeyboardFunctionKeys QQuickVirtualKeyboardSettings::visibleFunctionKeys() const
 {
     return Settings::instance()->visibleFunctionKeys();
 }
 
-void QQuickVirtualKeyboardSettings::setVisibleFunctionKeys(const QtVirtualKeyboard::KeyboardFunctionKey &newVisibleFunctionKeys)
+void QQuickVirtualKeyboardSettings::setVisibleFunctionKeys(QtVirtualKeyboard::KeyboardFunctionKeys newVisibleFunctionKeys)
 {
     Settings::instance()->setVisibleFunctionKeys(newVisibleFunctionKeys);
 }
@@ -549,7 +549,7 @@ void QQuickVirtualKeyboardSettings::resetStyle()
     The value can be combination of the following flags:
 
     \list
-        \li \c QtVirtualKeyboard.NoFunctionKey All function keys are hidden
+        \li \c QtVirtualKeyboard.NoFunctionKeys All function keys are hidden
         \li \c QtVirtualKeyboard.HideFunctionKey Hide function key is visible
         \li \c QtVirtualKeyboard.LanguageFunctionKey Language function key is visible
         \li \c QtVirtualKeyboard.AllFunctionKeys All function keys are visible

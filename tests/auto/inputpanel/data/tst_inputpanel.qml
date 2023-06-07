@@ -2269,7 +2269,7 @@ Rectangle {
             verify(!!hideKeyboardKey)
 
             for (const functionKeyName of [
-                     "NoFunctionKey",
+                     "NoFunctionKeys",
                      "HideFunctionKey",
                      "LanguageFunctionKey",
                      "AllFunctionKeys"
@@ -2278,7 +2278,7 @@ Rectangle {
                 if (data.functionKeysAlwaysVisible) {
                     compare(changeLanguageKey.visible, true)
                     compare(hideKeyboardKey.visible, true)
-                } else if (functionKeyName === "NoFunctionKey") {
+                } else if (functionKeyName === "NoFunctionKeys") {
                     compare(changeLanguageKey.visible, false)
                     compare(hideKeyboardKey.visible, false)
                 } else if (functionKeyName === "HideFunctionKey") {

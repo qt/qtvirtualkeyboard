@@ -264,17 +264,17 @@ bool QVirtualKeyboardInputContextPrivate::contains(const QPointF &point) const
     return !hit;
 }
 
-KeyboardFunctionKeyFlag QVirtualKeyboardInputContextPrivate::keyboardFunctionKey(QtVirtualKeyboard::KeyboardFunction keyboardFunction) const
+KeyboardFunctionKey QVirtualKeyboardInputContextPrivate::keyboardFunctionKey(QtVirtualKeyboard::KeyboardFunction keyboardFunction) const
 {
     switch (keyboardFunction) {
     case KeyboardFunction::HideInputPanel:
-        return KeyboardFunctionKeyFlag::HideFunctionKey;
+        return KeyboardFunctionKey::HideFunctionKey;
     case KeyboardFunction::ChangeLanguage:
-        return KeyboardFunctionKeyFlag::LanguageFunctionKey;
+        return KeyboardFunctionKey::LanguageFunctionKey;
     case KeyboardFunction::ToggleHandwritingMode:
-        return KeyboardFunctionKeyFlag::NoFunctionKey;
+        return KeyboardFunctionKey::NoFunctionKeys;
     }
-    return KeyboardFunctionKeyFlag::NoFunctionKey;
+    return KeyboardFunctionKey::NoFunctionKeys;
 }
 
 void QVirtualKeyboardInputContextPrivate::onInputItemChanged()
