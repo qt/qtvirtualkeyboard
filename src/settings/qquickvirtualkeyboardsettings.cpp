@@ -529,9 +529,8 @@ void QQuickVirtualKeyboardSettings::resetStyle()
 
 /*!
     \since QtQuick.VirtualKeyboard.Settings 2.2
-    \qmlpropertygroup QtQuick.VirtualKeyboard::VirtualKeyboardSettings::wordCandidateList
-    \qmlproperty int QtQuick.VirtualKeyboard::VirtualKeyboardSettings::wordCandidateList.autoHideDelay
-    \qmlproperty bool QtQuick.VirtualKeyboard::VirtualKeyboardSettings::wordCandidateList.alwaysVisible
+    \qmlproperty int VirtualKeyboardSettings::wordCandidateList.autoHideDelay
+    \qmlproperty bool VirtualKeyboardSettings::wordCandidateList.alwaysVisible
 
     \table
     \header
