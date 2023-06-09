@@ -405,10 +405,6 @@ OTHER_FILES += \
     SOURCES += desktopinputpanel.cpp inputview.cpp
     HEADERS += desktopinputpanel_p.h inputview_p.h
     DEFINES += QT_VIRTUALKEYBOARD_DESKTOP
-    !no-pkg-config:packagesExist(xcb) {
-        PKGCONFIG += xcb xcb-xfixes
-        DEFINES += QT_VIRTUALKEYBOARD_HAVE_XCB
-    }
 }
 
 record-trace-input {
