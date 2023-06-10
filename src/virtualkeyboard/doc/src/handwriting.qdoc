@@ -35,7 +35,7 @@ is a commercial handwriting recognition engine.
 Cerence Handwriting works with all languages supported by the virtual keyboard.
 
   \list
-    \li \l {Qt Virtual Keyboard#Supported Languages}{Supported Languages}
+    \li \l {Qt Virtual Keyboard Overview#Supported Languages}{Supported Languages}
   \endlist
 
 \b {See also}: \l {Cerence Handwriting Integration}
@@ -136,7 +136,7 @@ MyScript SDK supports 72 handwriting recognition languages:
 MyScript is integrated into Qt Virtual Keyboard with identical coverage of supported languages.
 
   \list
-    \li \l {Qt Virtual Keyboard#Supported Languages}{Supported Languages}
+    \li \l {Qt Virtual Keyboard Overview#Supported Languages}{Supported Languages}
   \endlist
 
 However, with minor modifications to the Qt Virtual Keyboard source code, it is easy to add handwriting panels for other languages supported by \MyScript.
