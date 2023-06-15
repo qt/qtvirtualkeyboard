@@ -24,5 +24,5 @@ BaseKey {
     highlighted: true
     onClicked: keyboard.doKeyboardFunction(QtVirtualKeyboard.HideInputPanel)
     keyPanelDelegate: keyboard.style ? keyboard.style.hideKeyPanel : undefined
-    visible: VirtualKeyboardSettings.visibleFunctionKeys & QtVirtualKeyboard.HideFunctionKey
+    visible: VirtualKeyboardSettings.visibleFunctionKeys & QtVirtualKeyboard.KeyboardFunctionKeys.HideFunctionKey
 }

@@ -251,18 +251,18 @@ InputPanel {
 
     function mapKeyboardFunctionKey(functionKeyName) {
         if (functionKeyName === "NoFunctionKeys")
-            return QtVirtualKeyboard.NoFunctionKeys
+            return QtVirtualKeyboard.KeyboardFunctionKeys.NoFunctionKeys
         if (functionKeyName === "HideFunctionKey")
-            return QtVirtualKeyboard.HideFunctionKey
+            return QtVirtualKeyboard.KeyboardFunctionKeys.HideFunctionKey
         if (functionKeyName === "LanguageFunctionKey")
-            return QtVirtualKeyboard.LanguageFunctionKey
+            return QtVirtualKeyboard.KeyboardFunctionKeys.LanguageFunctionKey
         if (functionKeyName === "AllFunctionKeys")
-            return QtVirtualKeyboard.AllFunctionKeys
+            return QtVirtualKeyboard.KeyboardFunctionKeys.AllFunctionKeys
         testcase.fail("Invalid function key '%1'".arg(functionKeyName))
     }
 
     function setVisibleFunctionKeys(functionKeyNames) {
-        let functionKeys = QtVirtualKeyboard.NoFunctionKeys
+        let functionKeys = QtVirtualKeyboard.KeyboardFunctionKeys.NoFunctionKeys
         for (const functionKeyName of functionKeyNames) {
             functionKeys |= mapKeyboardFunctionKey(functionKeyName)
         }

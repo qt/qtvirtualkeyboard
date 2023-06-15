@@ -1818,7 +1818,9 @@ Item {
     }
 
     function isFunctionPopupListAvailable() {
-        return VirtualKeyboardSettings.visibleFunctionKeys !== QtVirtualKeyboard.AllFunctionKeys ||
+        const allFunctionKeys = QtVirtualKeyboard.KeyboardFunctionKeys.HideFunctionKey |
+                              QtVirtualKeyboard.KeyboardFunctionKeys.LanguageFunctionKey
+        return (VirtualKeyboardSettings.visibleFunctionKeys & QtVirtualKeyboard.KeyboardFunctionKeys.AllFunctionKeys) !== allFunctionKeys ||
                 isHandwritingAvailable()
     }
 }

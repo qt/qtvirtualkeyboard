@@ -549,13 +549,13 @@ void QQuickVirtualKeyboardSettings::resetStyle()
     The value can be combination of the following flags:
 
     \list
-        \li \c QtVirtualKeyboard.NoFunctionKeys All function keys are hidden
-        \li \c QtVirtualKeyboard.HideFunctionKey Hide function key is visible
-        \li \c QtVirtualKeyboard.LanguageFunctionKey Language function key is visible
-        \li \c QtVirtualKeyboard.AllFunctionKeys All function keys are visible
+        \li \c QtVirtualKeyboard.KeyboardFunctionKeys.NoFunctionKeys All function keys are hidden
+        \li \c QtVirtualKeyboard.KeyboardFunctionKeys.HideFunctionKey Hide function key is visible
+        \li \c QtVirtualKeyboard.KeyboardFunctionKeys.LanguageFunctionKey Language function key is visible
+        \li \c QtVirtualKeyboard.KeyboardFunctionKeys.AllFunctionKeys All function keys are visible
     \endlist
 
-    The default is \c QtVirtualKeyboard.AllFunctionKeys.
+    The default is \c QtVirtualKeyboard.KeyboardFunctionKeys.AllFunctionKeys.
 */
 
 /*!
