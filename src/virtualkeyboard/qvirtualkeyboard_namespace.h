@@ -8,6 +8,6 @@
 #  pragma qt_sync_skip_header_check
 #endif
 // TODO: Remove in Qt 7
-#include <QtVirtualKeyboard/qvirtualkeyboardnamespace.h>
+#include <QtVirtualKeyboard/private/qvirtualkeyboardnamespace_p.h>
 
 #endif // QVIRTUALKEYBOARD_NAMESPACE_H

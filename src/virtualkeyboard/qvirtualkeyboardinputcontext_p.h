@@ -23,7 +23,7 @@
 #include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #include <QtVirtualKeyboard/private/shadowinputcontext_p.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardobserver.h>
-#include <QtVirtualKeyboard/qvirtualkeyboardnamespace.h>
+#include <QtVirtualKeyboard/private/qvirtualkeyboardnamespace_p.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -1,8 +1,19 @@
-// Copyright (C) 2022 The Qt Company Ltd.
+// Copyright (C) 2023 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
-#ifndef QVIRTUALKEYBOARDNAMESPACE_H
-#define QVIRTUALKEYBOARDNAMESPACE_H
+#ifndef QVIRTUALKEYBOARDNAMESPACE_P_H
+#define QVIRTUALKEYBOARDNAMESPACE_P_H
+
+//
+//  W A R N I N G
+//  -------------
+//
+// This file is not part of the Qt API.  It exists purely as an
+// implementation detail.  This header file may change from version to
+// version without notice, or even be removed.
+//
+// We mean it.
+//
 
 #include <QtCore/qmetaobject.h>
 #include <QtQml/qqml.h>
@@ -55,4 +66,4 @@ Q_FLAG_NS(KeyboardFunctionKeys)
 
 QT_END_NAMESPACE
 
-#endif // QVIRTUALKEYBOARDNAMESPACE_H
+#endif // QVIRTUALKEYBOARDNAMESPACE_P_H
