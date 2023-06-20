@@ -15,7 +15,7 @@
 // We mean it.
 //
 
-#include <QtVirtualKeyboard/qvirtualkeyboardnamespace.h>
+#include <QtVirtualKeyboard/private/qvirtualkeyboardnamespace_p.h>
 #include <QtQml/qqml.h>
 #include <QtCore/private/qglobal_p.h>
 
