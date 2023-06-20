@@ -235,11 +235,11 @@ InputPanel {
 
     function mapKeyboardFunction(keyboardFunctionName) {
         if (keyboardFunctionName === "HideInputPanel")
-            return QtVirtualKeyboard.HideInputPanel
+            return QtVirtualKeyboard.KeyboardFunction.HideInputPanel
         if (keyboardFunctionName === "ChangeLanguage")
-            return QtVirtualKeyboard.ChangeLanguage
+            return QtVirtualKeyboard.KeyboardFunction.ChangeLanguage
         if (keyboardFunctionName === "ToggleHandwritingMode")
-            return QtVirtualKeyboard.ToggleHandwritingMode
+            return QtVirtualKeyboard.KeyboardFunction.ToggleHandwritingMode
         return -1
     }
 
@@ -379,42 +379,6 @@ InputPanel {
         testcase.verify(SelectionListModel.Role.Dictionary !== undefined)
         testcase.verify(SelectionListModel.DictionaryType.Default !== undefined)
         testcase.verify(SelectionListModel.DictionaryType.User !== undefined)
-        // Unscoped
-        testcase.verify(InputEngine.Lower !== undefined)
-        testcase.verify(InputEngine.Upper !== undefined)
-        testcase.verify(InputEngine.Latin !== undefined)
-        testcase.verify(InputEngine.Numeric !== undefined)
-        testcase.verify(InputEngine.Dialable !== undefined)
-        testcase.verify(InputEngine.Pinyin !== undefined)
-        testcase.verify(InputEngine.Cangjie !== undefined)
-        testcase.verify(InputEngine.Zhuyin !== undefined)
-        testcase.verify(InputEngine.Hangul !== undefined)
-        testcase.verify(InputEngine.Hiragana !== undefined)
-        testcase.verify(InputEngine.Katakana !== undefined)
-        testcase.verify(InputEngine.FullwidthLatin !== undefined)
-        testcase.verify(InputEngine.Greek !== undefined)
-        testcase.verify(InputEngine.Cyrillic !== undefined)
-        testcase.verify(InputEngine.Arabic !== undefined)
-        testcase.verify(InputEngine.Hebrew !== undefined)
-        testcase.verify(InputEngine.ChineseHandwriting !== undefined)
-        testcase.verify(InputEngine.JapaneseHandwriting !== undefined)
-        testcase.verify(InputEngine.KoreanHandwriting !== undefined)
-        testcase.verify(InputEngine.Thai !== undefined)
-        testcase.verify(InputEngine.Stroke !== undefined)
-        testcase.verify(InputEngine.Romaji !== undefined)
-        testcase.verify(InputEngine.None !== undefined)
-        testcase.verify(InputEngine.PatternRecognitionDisabled !== undefined)
-        testcase.verify(InputEngine.Handwriting !== undefined)
-        testcase.verify(InputEngine.HandwritingRecoginition !== undefined)
-        testcase.verify(InputEngine.WordBeforeCursor !== undefined)
-        testcase.verify(InputEngine.WordAfterCursor !== undefined)
-        testcase.verify(InputEngine.WordAtCursor !== undefined)
-        testcase.verify(SelectionListModel.WordCandidateList !== undefined)
-        testcase.verify(SelectionListModel.DisplayRole !== undefined)
-        testcase.verify(SelectionListModel.WordCompletionLengthRole !== undefined)
-        testcase.verify(SelectionListModel.DictionaryType !== undefined)
-        testcase.verify(SelectionListModel.Default !== undefined)
-        testcase.verify(SelectionListModel.User !== undefined)
     }
 
     function setExternalLanguageSwitchEnabled(enabled) {
@@ -452,9 +416,9 @@ InputPanel {
 
     function mapKeyboardKeyType(keyTypeName) {
         if (keyTypeName === "ChangeLanguageKey")
-            return QtVirtualKeyboard.ChangeLanguageKey
+            return QtVirtualKeyboard.KeyType.ChangeLanguageKey
         if (keyTypeName === "HideKeyboardKey")
-            return QtVirtualKeyboard.HideKeyboardKey
+            return QtVirtualKeyboard.KeyType.HideKeyboardKey
         testcase.fail("Invalid key type '%1'".arg(keyTypeName))
     }
 

@@ -1168,11 +1168,11 @@ KeyboardStyle {
             smooth: false
             source: {
                 switch (keyboardFunction) {
-                case QtVirtualKeyboard.HideInputPanel:
+                case QtVirtualKeyboard.KeyboardFunction.HideInputPanel:
                     return resourcePrefix + "images/hidekeyboard-c5a96f.svg"
-                case QtVirtualKeyboard.ChangeLanguage:
+                case QtVirtualKeyboard.KeyboardFunction.ChangeLanguage:
                     return resourcePrefix + "images/globe-c5a96f.svg"
-                case QtVirtualKeyboard.ToggleHandwritingMode:
+                case QtVirtualKeyboard.KeyboardFunction.ToggleHandwritingMode:
                     return resourcePrefix + (keyboard.handwritingMode ? "images/textmode-c5a96f.svg" : "images/handwriting-c5a96f.svg")
                 }
             }
@@ -1182,11 +1182,11 @@ KeyboardStyle {
                     target: functionIcon
                     source: {
                         switch (keyboardFunction) {
-                        case QtVirtualKeyboard.HideInputPanel:
+                        case QtVirtualKeyboard.KeyboardFunction.HideInputPanel:
                             return resourcePrefix + "images/hidekeyboard-fff.svg"
-                        case QtVirtualKeyboard.ChangeLanguage:
+                        case QtVirtualKeyboard.KeyboardFunction.ChangeLanguage:
                             return resourcePrefix + "images/globe-fff.svg"
-                        case QtVirtualKeyboard.ToggleHandwritingMode:
+                        case QtVirtualKeyboard.KeyboardFunction.ToggleHandwritingMode:
                             return resourcePrefix + (keyboard.handwritingMode ? "images/textmode-fff.svg" : "images/handwriting-fff.svg")
                         }
                     }

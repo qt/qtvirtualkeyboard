@@ -19,7 +19,7 @@ import QtQuick.VirtualKeyboard
 
 BaseKey {
     id: shiftKey
-    keyType: QtVirtualKeyboard.ShiftKey
+    keyType: QtVirtualKeyboard.KeyType.ShiftKey
     key: Qt.Key_Shift
     enabled: InputContext.priv.shiftHandler.toggleShiftEnabled
     highlighted: true

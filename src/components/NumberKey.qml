@@ -21,5 +21,5 @@ import QtQuick.VirtualKeyboard
 
 Key {
     showPreview: false
-    keyType: QtVirtualKeyboard.NumberKey
+    keyType: QtVirtualKeyboard.KeyType.NumberKey
 }

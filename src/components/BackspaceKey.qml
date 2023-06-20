@@ -20,7 +20,7 @@ import QtQuick.VirtualKeyboard
 
 BaseKey {
     key: Qt.Key_Backspace
-    keyType: QtVirtualKeyboard.BackspaceKey
+    keyType: QtVirtualKeyboard.KeyType.BackspaceKey
     repeat: true
     functionKey: true
     highlighted: true

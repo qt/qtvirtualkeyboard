@@ -19,7 +19,7 @@ import QtQuick.VirtualKeyboard
 
 BaseKey {
     id: keyItem
-    keyType: QtVirtualKeyboard.Key
+    keyType: QtVirtualKeyboard.KeyType.Key
     key: !functionKey && text.length > 0 ? text.toUpperCase().charCodeAt(0) : Qt.Key_unknown
     keyPanelDelegate: keyboard.style ? keyboard.style.keyPanel : undefined
 }

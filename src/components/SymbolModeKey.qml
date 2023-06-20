@@ -18,7 +18,7 @@ import QtQuick.VirtualKeyboard
 */
 
 Key {
-    keyType: QtVirtualKeyboard.SymbolModeKey
+    keyType: QtVirtualKeyboard.KeyType.SymbolModeKey
     key: Qt.Key_Context1
     displayText: "&123"
     functionKey: true

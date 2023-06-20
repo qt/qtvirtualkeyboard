@@ -18,7 +18,7 @@ import QtQuick.VirtualKeyboard
 */
 
 Key {
-    keyType: QtVirtualKeyboard.SpaceKey
+    keyType: QtVirtualKeyboard.KeyType.SpaceKey
     text: " "
     displayText: ""
     repeat: true

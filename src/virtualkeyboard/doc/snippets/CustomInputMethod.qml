@@ -8,7 +8,7 @@ import QtQuick.VirtualKeyboard
 
 InputMethod {
     function inputModes(locale) {
-        return [InputEngine.Latin];
+        return [InputEngine.InputMode.Latin];
     }
 
     function setInputMode(locale, inputMode) {
