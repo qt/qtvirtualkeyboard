@@ -33,7 +33,7 @@ Key {
         The default is false.
     */
     property bool mode
-    keyType: QtVirtualKeyboard.ModeKey
+    keyType: QtVirtualKeyboard.KeyType.ModeKey
     noKeyEvent: true
     functionKey: true
     highlighted: true

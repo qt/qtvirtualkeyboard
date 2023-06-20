@@ -951,7 +951,7 @@ Item {
                         if (keyboard.activeKey === activeKey)
                             return
                         if (keyboard.activeKey) {
-                            if (keyboard.activeKey.keyType === QtVirtualKeyboard.FlickKey)
+                            if (keyboard.activeKey.keyType === QtVirtualKeyboard.KeyType.FlickKey)
                                 keyboard.activeKey.onKeyChanged.disconnect(onFlickKeyKeyChanged)
                             keyboard.activeKey.active = false
                         }
@@ -1121,7 +1121,7 @@ Item {
                             if (!initialKey)
                                 continue
                             activeTouchPoint = touchPoints[i]
-                            if (initialKey.keyType === QtVirtualKeyboard.FlickKey) {
+                            if (initialKey.keyType === QtVirtualKeyboard.KeyType.FlickKey) {
                                 initialKey.press(activeTouchPoint.x, activeTouchPoint.y)
                                 initialKey.onKeyChanged.connect(onFlickKeyKeyChanged)
                             } else {
@@ -1140,7 +1140,7 @@ Item {
                             alternativeKeys.move(mapToItem(alternativeKeys, activeTouchPoint.x, 0).x)
                         } else if (functionPopupList.active) {
                             functionPopupList.move(mapToItem(functionPopupList, activeTouchPoint.x, activeTouchPoint.y))
-                        } else if (activeKey && activeKey.keyType === QtVirtualKeyboard.FlickKey) {
+                        } else if (activeKey && activeKey.keyType === QtVirtualKeyboard.KeyType.FlickKey) {
                             activeKey.update(activeTouchPoint.x, activeTouchPoint.y)
                         } else {
                             var key = null
@@ -1779,10 +1779,10 @@ Item {
         if (!isKeyboardFunctionAvailable(keyboardFunction))
             return
         switch (keyboardFunction) {
-        case QtVirtualKeyboard.HideInputPanel:
+        case QtVirtualKeyboard.KeyboardFunction.HideInputPanel:
             InputContext.priv.hideInputPanel()
             break
-        case QtVirtualKeyboard.ChangeLanguage:
+        case QtVirtualKeyboard.KeyboardFunction.ChangeLanguage:
             if (style.languagePopupListEnabled) {
                 if (!languagePopupListActive) {
                     showLanguagePopup(activeKey, false)
@@ -1794,7 +1794,7 @@ Item {
                 changeInputLanguage(customLayoutsOnly)
             }
             break
-        case QtVirtualKeyboard.ToggleHandwritingMode:
+        case QtVirtualKeyboard.KeyboardFunction.ToggleHandwritingMode:
             setHandwritingMode(!handwritingMode)
             break
         default:
@@ -1805,12 +1805,12 @@ Item {
 
     function isKeyboardFunctionAvailable(keyboardFunction) {
         switch (keyboardFunction) {
-        case QtVirtualKeyboard.HideInputPanel:
+        case QtVirtualKeyboard.KeyboardFunction.HideInputPanel:
             return true
-        case QtVirtualKeyboard.ChangeLanguage:
+        case QtVirtualKeyboard.KeyboardFunction.ChangeLanguage:
             const customLayoutsOnly = arguments.length == 2 && arguments[1]
             return canChangeInputLanguage(customLayoutsOnly)
-        case QtVirtualKeyboard.ToggleHandwritingMode:
+        case QtVirtualKeyboard.KeyboardFunction.ToggleHandwritingMode:
             return isHandwritingAvailable()
         default:
             return false

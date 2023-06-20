@@ -19,10 +19,10 @@ import QtQuick.VirtualKeyboard.Settings
 */
 
 BaseKey {
-    keyType: QtVirtualKeyboard.HideKeyboardKey
+    keyType: QtVirtualKeyboard.KeyType.HideKeyboardKey
     functionKey: true
     highlighted: true
-    onClicked: keyboard.doKeyboardFunction(QtVirtualKeyboard.HideInputPanel)
+    onClicked: keyboard.doKeyboardFunction(QtVirtualKeyboard.KeyboardFunction.HideInputPanel)
     keyPanelDelegate: keyboard.style ? keyboard.style.hideKeyPanel : undefined
     visible: VirtualKeyboardSettings.visibleFunctionKeys & QtVirtualKeyboard.KeyboardFunctionKeys.HideFunctionKey
 }

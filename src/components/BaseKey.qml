@@ -28,9 +28,9 @@ Item {
         \l Key type for the specialized key. Possible values are defined by the
         {QtVirtualKeyboard::KeyType}{key type enumeration}.
 
-        For example, \l SpaceKey sets this value to \e QtVirtualKeyboard.SpaceKey.
+        For example, \l SpaceKey sets this value to \e QtVirtualKeyboard.KeyType.SpaceKey.
     */
-    property int keyType: QtVirtualKeyboard.BaseKey
+    property int keyType: QtVirtualKeyboard.KeyType.BaseKey
 
     /*! Sets the key weight value which determines the relative size of the key.
 

@@ -74,9 +74,9 @@ Item {
     function open(key, originX, originY) {
         listModel.clear()
         for (const keyboardFunction of [
-                 QtVirtualKeyboard.HideInputPanel,
-                 QtVirtualKeyboard.ChangeLanguage,
-                 QtVirtualKeyboard.ToggleHandwritingMode,
+                 QtVirtualKeyboard.KeyboardFunction.HideInputPanel,
+                 QtVirtualKeyboard.KeyboardFunction.ChangeLanguage,
+                 QtVirtualKeyboard.KeyboardFunction.ToggleHandwritingMode,
              ]) {
             const functionKey = InputContext.priv.keyboardFunctionKey(keyboardFunction)
             if (keyboard.isKeyboardFunctionAvailable(keyboardFunction) &&

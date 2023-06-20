@@ -18,6 +18,6 @@ import QtQuick.VirtualKeyboard
 */
 
 BaseKey {
-    keyType: QtVirtualKeyboard.FillerKey
+    keyType: QtVirtualKeyboard.KeyType.FillerKey
     showPreview: false
 }

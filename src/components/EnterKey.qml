@@ -23,7 +23,7 @@ BaseKey {
     */
     readonly property int actionId: InputContext.priv.hasEnterKeyAction(InputContext.priv.inputItem) ? InputContext.priv.inputItem.EnterKeyAction.actionId : EnterKeyAction.None
 
-    keyType: QtVirtualKeyboard.EnterKey
+    keyType: QtVirtualKeyboard.KeyType.EnterKey
     text: "\n"
     displayText: InputContext.priv.hasEnterKeyAction(InputContext.priv.inputItem) ? InputContext.priv.inputItem.EnterKeyAction.label : ""
     key: Qt.Key_Return

@@ -27,10 +27,10 @@ Item {
             characterPreview.item.text = Qt.binding(function() {
                 if (!activeKey)
                     return ""
-                var displayText = (activeKey.keyType === QtVirtualKeyboard.FlickKey) ? activeKey.text : activeKey.displayText
+                var displayText = (activeKey.keyType === QtVirtualKeyboard.KeyType.FlickKey) ? activeKey.text : activeKey.displayText
                 return InputContext.uppercase ? displayText.toUpperCase() : displayText
             })
-            if (activeKey.keyType === QtVirtualKeyboard.FlickKey) {
+            if (activeKey.keyType === QtVirtualKeyboard.KeyType.FlickKey) {
                 if (characterPreview.item.hasOwnProperty("flickLeft")) {
                     characterPreview.item.flickLeft = activeKey.flickLeft
                     characterPreview.item.flickRight = activeKey.flickRight

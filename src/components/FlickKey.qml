@@ -39,7 +39,7 @@ Key {
     property string flickBottom: flickKeys.length > 3 ? flickKeys[3] : (flickKeys.length > 2 ? flickKeys[2] : "")
     property string flickRight: flickKeys.length > 3 ? flickKeys[2] : (flickKeys.length === 2 ? flickKeys[1] : "")
 
-    keyType: QtVirtualKeyboard.FlickKey
+    keyType: QtVirtualKeyboard.KeyType.FlickKey
 
     Component.onCompleted: {
         __key = key
