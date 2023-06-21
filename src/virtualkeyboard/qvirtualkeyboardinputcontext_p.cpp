@@ -268,13 +268,13 @@ KeyboardFunctionKey QVirtualKeyboardInputContextPrivate::keyboardFunctionKey(QtV
 {
     switch (keyboardFunction) {
     case KeyboardFunction::HideInputPanel:
-        return KeyboardFunctionKey::HideFunctionKey;
+        return KeyboardFunctionKey::Hide;
     case KeyboardFunction::ChangeLanguage:
-        return KeyboardFunctionKey::LanguageFunctionKey;
+        return KeyboardFunctionKey::Language;
     case KeyboardFunction::ToggleHandwritingMode:
-        return KeyboardFunctionKey::NoFunctionKeys;
+        return KeyboardFunctionKey::None;
     }
-    return KeyboardFunctionKey::NoFunctionKeys;
+    return KeyboardFunctionKey::None;
 }
 
 void QVirtualKeyboardInputContextPrivate::onInputItemChanged()

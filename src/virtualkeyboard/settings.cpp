@@ -64,7 +64,7 @@ public:
     bool handwritingModeDisabled;
     bool defaultInputMethodDisabled;
     bool defaultDictionaryDisabled;
-    QtVirtualKeyboard::KeyboardFunctionKeys visibleFunctionKeys = QtVirtualKeyboard::KeyboardFunctionKey::AllFunctionKeys;
+    QtVirtualKeyboard::KeyboardFunctionKeys visibleFunctionKeys = QtVirtualKeyboard::KeyboardFunctionKey::All;
 };
 
 static QScopedPointer<Settings> s_settingsInstance;

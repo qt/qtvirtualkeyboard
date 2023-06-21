@@ -49,5 +49,5 @@ BaseKey {
     keyPanelDelegate: keyboard.style ? keyboard.style.languageKeyPanel : undefined
     onClicked: keyboard.doKeyboardFunction(QtVirtualKeyboard.KeyboardFunction.ChangeLanguage, customLayoutsOnly)
     enabled: keyboard.isKeyboardFunctionAvailable(QtVirtualKeyboard.KeyboardFunction.ChangeLanguage, customLayoutsOnly)
-    visible: VirtualKeyboardSettings.visibleFunctionKeys & QtVirtualKeyboard.KeyboardFunctionKeys.LanguageFunctionKey
+    visible: VirtualKeyboardSettings.visibleFunctionKeys & QtVirtualKeyboard.KeyboardFunctionKeys.Language
 }
