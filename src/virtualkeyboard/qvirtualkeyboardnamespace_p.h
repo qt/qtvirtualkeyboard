@@ -53,10 +53,10 @@ enum class KeyboardFunction {
 Q_ENUM_NS(KeyboardFunction)
 
 enum class KeyboardFunctionKey : quint32 {
-    NoFunctionKeys = 0,
-    HideFunctionKey = 0x1,
-    LanguageFunctionKey = 0x2,
-    AllFunctionKeys = 0xffffffff,
+    None = 0,
+    Hide = 0x1,
+    Language = 0x2,
+    All = 0xffffffff,
 };
 Q_DECLARE_FLAGS(KeyboardFunctionKeys, KeyboardFunctionKey)
 Q_DECLARE_OPERATORS_FOR_FLAGS(KeyboardFunctionKeys)

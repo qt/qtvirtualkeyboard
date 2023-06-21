@@ -60,7 +60,7 @@ Rectangle {
             inputPanel.setFullScreenMode(data !== undefined && data.hasOwnProperty("fullScreenMode") && data.fullScreenMode)
             inputPanel.setExternalLanguageSwitchEnabled(data !== undefined && data.hasOwnProperty("externalLanguageSwitchEnabled") && data.externalLanguageSwitchEnabled)
             inputPanel.setLayoutMirroring(data !== undefined && data.hasOwnProperty("layoutMirroring") && data.layoutMirroring)
-            inputPanel.setVisibleFunctionKeys(data !== undefined && data.hasOwnProperty("visibleFunctionKeys") ? data.visibleFunctionKeys : ["AllFunctionKeys"])
+            inputPanel.setVisibleFunctionKeys(data !== undefined && data.hasOwnProperty("visibleFunctionKeys") ? data.visibleFunctionKeys : ["All"])
 
             var window = container.Window.window
             verify(window)
@@ -2269,25 +2269,25 @@ Rectangle {
             verify(!!hideKeyboardKey)
 
             for (const functionKeyName of [
-                     "NoFunctionKeys",
-                     "HideFunctionKey",
-                     "LanguageFunctionKey",
-                     "AllFunctionKeys"
+                     "None",
+                     "Hide",
+                     "Language",
+                     "All"
                  ]) {
                 inputPanel.setVisibleFunctionKeys([functionKeyName])
                 if (data.functionKeysAlwaysVisible) {
                     compare(changeLanguageKey.visible, true)
                     compare(hideKeyboardKey.visible, true)
-                } else if (functionKeyName === "NoFunctionKeys") {
+                } else if (functionKeyName === "None") {
                     compare(changeLanguageKey.visible, false)
                     compare(hideKeyboardKey.visible, false)
-                } else if (functionKeyName === "HideFunctionKey") {
+                } else if (functionKeyName === "Hide") {
                     compare(changeLanguageKey.visible, false)
                     compare(hideKeyboardKey.visible, true)
-                } else if (functionKeyName === "LanguageFunctionKey") {
+                } else if (functionKeyName === "Language") {
                     compare(changeLanguageKey.visible, true)
                     compare(hideKeyboardKey.visible, false)
-                } else if (functionKeyName === "AllFunctionKeys") {
+                } else if (functionKeyName === "All") {
                     compare(changeLanguageKey.visible, true)
                     compare(hideKeyboardKey.visible, true)
                 }

@@ -1818,8 +1818,8 @@ Item {
     }
 
     function isFunctionPopupListAvailable() {
-        const allFunctionKeys = QtVirtualKeyboard.KeyboardFunctionKeys.HideFunctionKey |
-                              QtVirtualKeyboard.KeyboardFunctionKeys.LanguageFunctionKey
+        const allFunctionKeys = QtVirtualKeyboard.KeyboardFunctionKeys.Hide |
+                              QtVirtualKeyboard.KeyboardFunctionKeys.Language
         return (VirtualKeyboardSettings.visibleFunctionKeys & allFunctionKeys) !== allFunctionKeys ||
                 isHandwritingAvailable()
     }
