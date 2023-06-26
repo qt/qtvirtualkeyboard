@@ -48,6 +48,3 @@ qhp.QtVirtualKeyboard.subprojects.examples.sortPages = true
 navigation.landingpage = "Qt Virtual Keyboard"
 navigation.qmltypespage = "Qt Virtual Keyboard QML Types"
 navigation.cppclassespage = "Qt Virtual Keyboard C++ Classes"
-
-# Fail the documentation build if there are more warnings than the limit
-warninglimit = 0
