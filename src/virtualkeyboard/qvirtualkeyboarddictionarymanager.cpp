@@ -75,10 +75,10 @@ QVirtualKeyboardDictionaryManager::QVirtualKeyboardDictionaryManager(QObject *pa
     QObject(*new QVirtualKeyboardDictionaryManagerPrivate(this), parent)
 {
     Q_D(QVirtualKeyboardDictionaryManager);
-    connect(this, &QVirtualKeyboardDictionaryManager::baseDictionariesChanged,
-            [=](){ d->updateActiveDictionaries(); });
-    connect(this, &QVirtualKeyboardDictionaryManager::extraDictionariesChanged,
-            [=](){ d->updateActiveDictionaries(); });
+    connect(this, &QVirtualKeyboardDictionaryManager::baseDictionariesChanged, this,
+            [d]() { d->updateActiveDictionaries(); });
+    connect(this, &QVirtualKeyboardDictionaryManager::extraDictionariesChanged, this,
+            [d]() { d->updateActiveDictionaries(); });
 }
 
 /*!
