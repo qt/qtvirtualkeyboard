@@ -6,7 +6,7 @@
 \page qtvirtualkeyboard-overview.html
 \title Qt Virtual Keyboard Overview
 \brief Describes the technical details of the Qt Virtual Keyboard module.
-
+\ingroup explanantion
 This document provides a technical overview of the Qt Virtual Keyboard plugin.
 
 \section1 Features
