@@ -160,6 +160,12 @@ if (QT_FEATURE_vkb_lang_it_IT)
     )
 endif()
 
+if (QT_FEATURE_vkb_lang_lv_LV)
+    list(APPEND qmake_virtualkeyboard_cerence_hwr_layouts_resource_files
+        "${VKB_LAYOUTS_BASE}/lv_LV/handwriting.fallback"
+    )
+endif()
+
 if (QT_FEATURE_vkb_lang_ms_MY)
     list(APPEND qmake_virtualkeyboard_cerence_hwr_layouts_resource_files
         "${VKB_LAYOUTS_BASE}/ms_MY/handwriting.fallback"

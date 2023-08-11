@@ -26,6 +26,7 @@ set(valid_languages
     hu_HU
     id_ID
     it_IT
+    lv_LV
     ja_JP
     ko_KR
     ms_MY

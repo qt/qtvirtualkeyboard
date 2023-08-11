@@ -207,6 +207,12 @@ if (QT_FEATURE_vkb_lang_it_IT)
     )
 endif()
 
+if (QT_FEATURE_vkb_lang_lv_LV)
+    list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
+        "${VKB_LAYOUTS_BASE}/lv_LV/handwriting.fallback"
+    )
+endif()
+
 if (QT_FEATURE_vkb_lang_ja_JP)
     list(APPEND qmake_virtualkeyboard_myscript_layouts_resource_files
         "${VKB_LAYOUTS_BASE}/ja_JP/handwriting.qml"

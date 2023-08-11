@@ -272,6 +272,10 @@ qt_feature("vkb-lang-it_IT" PRIVATE
     LABEL "Italian"
     AUTODETECT ( NOT INPUT_lang_it_IT STREQUAL 'no' )
 )
+qt_feature("vkb-lang-lv_LV" PRIVATE
+    LABEL "Latvian"
+    AUTODETECT ( NOT INPUT_lang_lv_LV STREQUAL 'no' )
+)
 qt_feature("vkb-lang-ja_JP" PRIVATE
     LABEL "Japanese"
     CONDITION QT_FEATURE_openwnn OR QT_FEATURE_cerence_xt9
@@ -407,6 +411,7 @@ qt_configure_add_summary_entry(ARGS "vkb-lang-hr_HR")
 qt_configure_add_summary_entry(ARGS "vkb-lang-hu_HU")
 qt_configure_add_summary_entry(ARGS "vkb-lang-id_ID")
 qt_configure_add_summary_entry(ARGS "vkb-lang-it_IT")
+qt_configure_add_summary_entry(ARGS "vkb-lang-lv_LV")
 qt_configure_add_summary_entry(ARGS "vkb-lang-ja_JP")
 qt_configure_add_summary_entry(ARGS "vkb-lang-ko_KR")
 qt_configure_add_summary_entry(ARGS "vkb-lang-ms_MY")

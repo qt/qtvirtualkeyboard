@@ -395,6 +395,7 @@ Rectangle {
                 { initLocale: "fr_FR", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "bonjour", outputText: "Bonjour" },
                 { initLocale: "id_ID", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "halo", outputText: "Halo" },
                 { initLocale: "it_IT", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "ciao", outputText: "Ciao" },
+                { initLocale: "lv_LV", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "sveiki", outputText: "Sveiki" },
                 { initLocale: "ja_JP", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "watashi", outputText: "\u308F\u305F\u3057" },
                 { initLocale: "ms_MY", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hello", outputText: "Hello" },
                 { initLocale: "nb_NO", initInputMethodHints: Qt.ImhNoPredictiveText, inputSequence: "hallo", outputText: "Hallo" },

@@ -206,6 +206,15 @@ if(FEATURE_vkb_lang_it_IT)
         it_IT/symbols.fallback
     )
 endif()
+if(FEATURE_vkb_lang_lv_LV)
+    list(APPEND LAYOUT_FILES
+        lv_LV/dialpad.fallback
+        lv_LV/digits.fallback
+        lv_LV/main.qml
+        lv_LV/numbers.fallback
+        lv_LV/symbols.fallback
+    )
+endif()
 if(FEATURE_vkb_lang_nb_NO)
     list(APPEND LAYOUT_FILES
         nb_NO/dialpad.fallback
