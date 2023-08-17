@@ -16,7 +16,9 @@ Item {
             return [
                 { tag: "default", result: "default"},
                 { tag: "retro", result: "retro"}, // in-source alternate style
-                { tag: "test", result: "test"} // out-of-source alternate style
+                { tag: "test", result: "test"}, // out-of-source alternate style
+                { tag: "test_res", result: "test_res"}, // default resource path
+                { tag: "test_res_compat", result: "test_res_compat"}, // compatibility resource path
             ];
         }
 

@@ -62,6 +62,9 @@ public:
             stylePathList += stylesPath;
         }
 
+        // Path for backwards compatibility
+        stylePathList << QLatin1String("qrc:/QtQuick/VirtualKeyboard/content/styles/");
+
         for (const QString &stylePath : std::as_const(stylePathList)) {
             QString filePath = buildStyleFilePath(stylePath, name);
             bool pathExist = false;
