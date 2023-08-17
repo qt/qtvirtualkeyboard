@@ -24,6 +24,24 @@ qt_internal_add_test(tst_styles
     TESTDATA ${test_data}
 )
 
+qt_internal_add_resource(tst_styles "test_res"
+    PREFIX
+        "/qt/qml/QtQuick/VirtualKeyboard/Styles/test_res"
+    BASE
+        "data/QtQuick/VirtualKeyboard/Styles/test"
+    FILES
+        "data/QtQuick/VirtualKeyboard/Styles/test/style.qml"
+)
+
+qt_internal_add_resource(tst_styles "test_res_compat"
+    PREFIX
+        "/QtQuick/VirtualKeyboard/content/styles/test_res_compat"
+    BASE
+        "data/QtQuick/VirtualKeyboard/Styles/test"
+    FILES
+        "data/QtQuick/VirtualKeyboard/Styles/test/style.qml"
+)
+
 #### Keys ignored in scope 1:.:.:styles.pro:<TRUE>:
 # DISTFILES = "data/tst_styles.qml" "data/QtQuick/VirtualKeyboard/Styles/test/style.qml"
 # OTHER_FILES = "$$PWD/data/tst_styles.qml"
