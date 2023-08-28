@@ -50,7 +50,9 @@ class Q_VIRTUALKEYBOARD_EXPORT QVirtualKeyboardInputContext : public QObject
     Q_PROPERTY(QVirtualKeyboardObserver *keyboardObserver READ keyboardObserver CONSTANT REVISION(6, 1))
     Q_MOC_INCLUDE("qvirtualkeyboardinputengine.h")
     Q_MOC_INCLUDE("qvirtualkeyboardinputcontext_p.h")
-    QML_NAMED_ELEMENT(InputContext)
+
+    // The QML macros are unused for now, until we can move the QML_NAMED_ELEMENT back here.
+    // QML_SINGLETON generates some code that might or might not emit symbols on some platforms.
     QML_SINGLETON
     QML_ADDED_IN_VERSION(1, 0)
     QML_EXTRA_VERSION(2, 0)
