@@ -18,6 +18,7 @@
 #include <QtQuick/qquickwindow.h>
 #include <QtGui/qpa/qplatformintegration.h>
 #include <QtGui/private/qguiapplication_p.h>
+#include <QQmlEngine>
 
 QT_BEGIN_NAMESPACE
 
@@ -627,6 +628,18 @@ void QVirtualKeyboardInputContextPrivate::updateSelectionControlVisible(bool inp
         selectionControlVisible = newSelectionControlVisible;
         emit q->selectionControlVisibleChanged();
     }
+}
+
+QVirtualKeyboardInputContext *QVirtualKeyboardInputContextForeign::create(
+        QQmlEngine *qmlEngine, QJSEngine *)
+{
+    static QMutex mutex;
+    static QHash<QQmlEngine *, QVirtualKeyboardInputContext *> instances;
+    QMutexLocker locker(&mutex);
+    QVirtualKeyboardInputContext *&instance = instances[qmlEngine];
+    if (instance == nullptr)
+        instance = new QVirtualKeyboardInputContext(qmlEngine);
+    return instance;
 }
 
 QT_END_NAMESPACE
