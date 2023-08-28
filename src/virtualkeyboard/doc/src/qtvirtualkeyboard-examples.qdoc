@@ -10,6 +10,7 @@
 /*!
     \title Virtual Keyboard in Qt Quick
     \example basic
+    \examplecategory {Embedded}
     \brief This example shows how to use the virtual keyboard in a Qt Quick application.
     \ingroup qtvirtualkeyboard-examples
     \image basic-example.png
