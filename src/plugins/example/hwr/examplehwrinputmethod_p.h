@@ -27,6 +27,7 @@ class ExampleHwrInputMethod : public QVirtualKeyboardAbstractInputMethod
     Q_OBJECT
     Q_DECLARE_PRIVATE(ExampleHwrInputMethod)
     QML_NAMED_ELEMENT(HandwritingInputMethod)
+    QML_ADDED_IN_VERSION(2, 0)
 
 public:
     explicit ExampleHwrInputMethod(QObject *parent = nullptr);

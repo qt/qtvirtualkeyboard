@@ -25,6 +25,7 @@ class Q_VIRTUALKEYBOARD_EXPORT PlainInputMethod : public QVirtualKeyboardAbstrac
 {
     Q_OBJECT
     QML_NAMED_ELEMENT(PlainInputMethod)
+    QML_ADDED_IN_VERSION(2, 0)
 
 public:
     explicit PlainInputMethod(QObject *parent = nullptr);

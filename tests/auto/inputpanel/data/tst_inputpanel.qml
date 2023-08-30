@@ -126,65 +126,65 @@ Rectangle {
         function test_versionCheck_data() {
             return [
                 // Note: Add new import versions here
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard 1.0; \
                         Item {}" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard 1.1; \
                         Item {}" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard 1.2; \
                         Item {}" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard 1.3; \
                         Item {}" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard 2.0; \
                         Item {}" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard 2.1; \
                         Item {}" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard.Styles; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Styles 1.0; \
                         KeyboardStyle {}" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard.Styles; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Styles 1.1; \
                         KeyboardStyle {}" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard.Styles; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Styles 1.2; \
                         KeyboardStyle {}" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard.Styles; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Styles 1.3; \
                         KeyboardStyle {}" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard.Styles; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Styles 2.0; \
                         KeyboardStyle {}" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard.Styles; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Styles 2.1; \
                         KeyboardStyle {}" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard.Settings; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Settings 1.0; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName }" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard.Settings; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Settings 1.1; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName }" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard.Settings; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Settings 1.2; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName }" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard.Settings; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Settings 2.0; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName; \
                                property var locale: VirtualKeyboardSettings.locale; \
                                property var availableLocales: VirtualKeyboardSettings.availableLocales; \
                                property var activeLocales: VirtualKeyboardSettings.activeLocales }" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard.Settings; \
+                { qml: "import QtQuick 2.0; \
+                        import QtQuick.VirtualKeyboard.Settings 2.1; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName; \
                                property var locale: VirtualKeyboardSettings.locale; \
                                property var availableLocales: VirtualKeyboardSettings.availableLocales; \
                                property var activeLocales: VirtualKeyboardSettings.activeLocales }" },
-                { qml: "import QtQuick; \
-                        import QtQuick.VirtualKeyboard.Settings; \
+                { qml: "import QtQuick 2.7; \
+                        import QtQuick.VirtualKeyboard.Settings 2.2; \
                         Item { property var styleName: VirtualKeyboardSettings.styleName; \
                                property var locale: VirtualKeyboardSettings.locale; \
                                property var availableLocales: VirtualKeyboardSettings.availableLocales; \
@@ -193,6 +193,20 @@ Rectangle {
                                property var wclAlwaysVisible: VirtualKeyboardSettings.wordCandidateList.alwaysVisible; \
                                property var wclAutoCommitWord: VirtualKeyboardSettings.wordCandidateList.autoCommitWord; \
                                property var fullScreenMode: VirtualKeyboardSettings.fullScreenMode; }" },
+                // without versions
+                { qml: "import QtQuick; \
+                        import QtQuick.VirtualKeyboard; \
+                        import QtQuick.VirtualKeyboard.Styles; \
+                        import QtQuick.VirtualKeyboard.Settings; \
+                        import QtQuick.VirtualKeyboard.Plugins; \
+                        Item {}" },
+                // virtual keyboard 5.15
+                { qml: "import QtQuick 2.7; \
+                        import QtQuick.VirtualKeyboard 2.3; \
+                        import QtQuick.VirtualKeyboard.Styles 2.1; \
+                        import QtQuick.VirtualKeyboard.Settings 2.2; \
+                        import QtQuick.VirtualKeyboard.Plugins 2.3; \
+                        Item {}" },
             ]
         }
 

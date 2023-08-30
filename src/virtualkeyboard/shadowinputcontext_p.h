@@ -45,6 +45,7 @@ class Q_VIRTUALKEYBOARD_EXPORT ShadowInputContext : public QObject
     Q_PROPERTY(bool selectionControlVisible READ selectionControlVisible NOTIFY selectionControlVisibleChanged)
     QML_NAMED_ELEMENT(ShadowInputContext)
     QML_UNCREATABLE("ShadowInputContext is only available via InputContext.priv.shadow")
+    QML_ADDED_IN_VERSION(2, 0)
 
     explicit ShadowInputContext(QObject *parent = nullptr);
 

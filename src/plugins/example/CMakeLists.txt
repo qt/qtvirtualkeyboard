@@ -7,6 +7,7 @@ list(APPEND example_imports QtQuick.VirtualKeyboard.Plugins.Example.HWR/auto)
 qt_internal_add_qml_module(qtvkbexampleplugin
     URI "QtQuick.VirtualKeyboard.Plugins.Example"
     VERSION "${PROJECT_VERSION}"
+    PAST_MAJOR_VERSIONS 2
     PLUGIN_TARGET qtvkbexampleplugin
     IMPORTS
         ${example_imports}

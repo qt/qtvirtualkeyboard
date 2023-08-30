@@ -29,6 +29,7 @@ class TCInputMethod : public QVirtualKeyboardAbstractInputMethod
     Q_DECLARE_PRIVATE(TCInputMethod)
     Q_PROPERTY(bool simplified READ simplified WRITE setSimplified NOTIFY simplifiedChanged)
     QML_ELEMENT
+    QML_ADDED_IN_VERSION(2, 0)
 
 public:
     explicit TCInputMethod(QObject *parent = nullptr);

@@ -25,6 +25,7 @@ namespace QtVirtualKeyboard {
 
 Q_VIRTUALKEYBOARD_EXPORT Q_NAMESPACE
 QML_NAMED_ELEMENT(QtVirtualKeyboard)
+QML_ADDED_IN_VERSION(6, 4)
 
 enum class KeyType {
     BaseKey,

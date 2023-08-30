@@ -29,6 +29,8 @@ class Q_HUNSPELLINPUTMETHOD_EXPORT HunspellInputMethod : public QVirtualKeyboard
     Q_OBJECT
     Q_DECLARE_PRIVATE(HunspellInputMethod)
     QML_NAMED_ELEMENT(DefaultInputMethod)
+    QML_ADDED_IN_VERSION(2, 0)
+
 protected:
     HunspellInputMethod(HunspellInputMethodPrivate &dd, QObject *parent);
 public:

@@ -28,6 +28,7 @@ class T9WriteInputMethod : public QVirtualKeyboardAbstractInputMethod
     Q_OBJECT
     Q_DECLARE_PRIVATE(T9WriteInputMethod)
     QML_NAMED_ELEMENT(HandwritingInputMethod)
+    QML_ADDED_IN_VERSION(2, 0)
 
 public:
     enum class EngineMode {
