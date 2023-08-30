@@ -42,6 +42,7 @@ endif()
 qt_internal_add_qml_module(qtvkbpluginsplugin
     URI "QtQuick.VirtualKeyboard.Plugins"
     VERSION "${PROJECT_VERSION}"
+    PAST_MAJOR_VERSIONS 2
     PLUGIN_TARGET qtvkbpluginsplugin
     IMPORTS
         ${plugins_imports}

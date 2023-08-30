@@ -16,6 +16,8 @@ class Xt9KInputMethod : public Xt9AwInputMethod
     Q_OBJECT
     Q_DECLARE_PRIVATE(Xt9KInputMethod)
     QML_NAMED_ELEMENT(HangulInputMethod)
+    QML_ADDED_IN_VERSION(2, 0)
+
 public:
     explicit Xt9KInputMethod(QObject *parent = nullptr);
 

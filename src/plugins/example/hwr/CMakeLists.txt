@@ -4,6 +4,7 @@
 qt_internal_add_qml_module(qtvkbexamplehwrplugin
     URI "QtQuick.VirtualKeyboard.Plugins.Example.HWR"
     VERSION "${PROJECT_VERSION}"
+    PAST_MAJOR_VERSIONS 2
     PLUGIN_TARGET qtvkbexamplehwrplugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES

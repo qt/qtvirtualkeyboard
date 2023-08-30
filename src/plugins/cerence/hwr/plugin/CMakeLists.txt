@@ -8,6 +8,7 @@
 qt_internal_add_qml_module(qtvkbcerencehwrplugin
     URI "QtQuick.VirtualKeyboard.Plugins.Cerence.HWR"
     VERSION "${PROJECT_VERSION}"
+    PAST_MAJOR_VERSIONS 2
     PLUGIN_TARGET qtvkbcerencehwrplugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES

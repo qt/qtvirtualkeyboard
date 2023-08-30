@@ -30,6 +30,8 @@ class MyScriptInputMethod : public QVirtualKeyboardAbstractInputMethod
     Q_DECLARE_PRIVATE(MyScriptInputMethod)
     Q_PROPERTY(bool superimposed READ superimposed CONSTANT)
     QML_NAMED_ELEMENT(HandwritingInputMethod)
+    QML_ADDED_IN_VERSION(2, 0)
+
 public:
     explicit MyScriptInputMethod(QObject *parent = nullptr);
     ~MyScriptInputMethod();

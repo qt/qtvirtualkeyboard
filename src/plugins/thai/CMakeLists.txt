@@ -8,6 +8,7 @@
 qt_internal_add_qml_module(qtvkbthaiplugin
     URI "QtQuick.VirtualKeyboard.Plugins.Thai"
     VERSION "${PROJECT_VERSION}"
+    PAST_MAJOR_VERSIONS 2
     PLUGIN_TARGET qtvkbthaiplugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES

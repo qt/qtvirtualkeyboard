@@ -22,6 +22,8 @@ class ThaiInputMethod : public ThaiInputMethodBase
     Q_OBJECT
     Q_DECLARE_PRIVATE(ThaiInputMethod)
     QML_ELEMENT
+    QML_ADDED_IN_VERSION(2, 0)
+
 public:
     explicit ThaiInputMethod(QObject *parent = nullptr);
 

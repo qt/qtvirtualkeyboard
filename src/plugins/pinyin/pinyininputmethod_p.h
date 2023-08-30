@@ -27,6 +27,7 @@ class PinyinInputMethod : public QVirtualKeyboardAbstractInputMethod
     Q_OBJECT
     Q_DECLARE_PRIVATE(PinyinInputMethod)
     QML_ELEMENT
+    QML_ADDED_IN_VERSION(2, 0)
 
 public:
     explicit PinyinInputMethod(QObject *parent = nullptr);

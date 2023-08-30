@@ -10,6 +10,7 @@ add_subdirectory(3rdparty/tcime)
 qt_internal_add_qml_module(qtvkbtcimeplugin
     URI "QtQuick.VirtualKeyboard.Plugins.TCIme"
     VERSION "${PROJECT_VERSION}"
+    PAST_MAJOR_VERSIONS 2
     PLUGIN_TARGET qtvkbtcimeplugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES
