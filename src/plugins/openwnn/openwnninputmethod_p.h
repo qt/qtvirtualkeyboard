@@ -27,6 +27,7 @@ class OpenWnnInputMethod : public QVirtualKeyboardAbstractInputMethod
     Q_OBJECT
     Q_DECLARE_PRIVATE(OpenWnnInputMethod)
     QML_NAMED_ELEMENT(JapaneseInputMethod)
+    QML_ADDED_IN_VERSION(2, 0)
 
 public:
     explicit OpenWnnInputMethod(QObject *parent = nullptr);

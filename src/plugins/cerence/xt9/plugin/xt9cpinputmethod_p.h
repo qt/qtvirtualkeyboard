@@ -16,6 +16,8 @@ class Xt9CpInputMethod : public Xt9InputMethod
     Q_OBJECT
     Q_DECLARE_PRIVATE(Xt9CpInputMethod)
     QML_NAMED_ELEMENT(PinyinInputMethod)
+    QML_ADDED_IN_VERSION(2, 0)
+
 public:
     explicit Xt9CpInputMethod(QObject *parent = nullptr);
 

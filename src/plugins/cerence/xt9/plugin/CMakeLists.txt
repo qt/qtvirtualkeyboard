@@ -8,6 +8,7 @@
 qt_internal_add_qml_module(qtvkbcerencext9plugin
     URI "QtQuick.VirtualKeyboard.Plugins.Cerence.XT9"
     VERSION "${PROJECT_VERSION}"
+    PAST_MAJOR_VERSIONS 2
     PLUGIN_TARGET qtvkbcerencext9plugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES

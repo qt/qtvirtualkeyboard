@@ -10,6 +10,7 @@ add_subdirectory(3rdparty/pinyin)
 qt_internal_add_qml_module(qtvkbpinyinplugin
     URI "QtQuick.VirtualKeyboard.Plugins.Pinyin"
     VERSION "${PROJECT_VERSION}"
+    PAST_MAJOR_VERSIONS 2
     PLUGIN_TARGET qtvkbpinyinplugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES
