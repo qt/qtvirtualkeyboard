@@ -96,16 +96,17 @@ or by adding \c -no-vkb-desktop to the \c configure command line.
 
 This section explains how to use Qt Virtual Keyboard to interact with the
 \l {Line Edits Example}{Qt Widgets Line Edits example} using the
-\l {Pure QML}{Pure QML example} as a compositor.
+\l {Fancy Compositor}{Fancy Compositor example} as a compositor.
 
 We will be using Ubuntu 18.04 to run the example, using the X11 as the
-windowing system. The example compositor (\c pure-qml) will open
+windowing system. The example compositor (\c fancy-compositor) will open
 as a window within an X11 session.
 
 \list 1
     \li Start the compositor:
         \badcode
-QT_XCB_GL_INTEGRATION=xcb_egl QT_WAYLAND_CLIENT_BUFFER_INTEGRATION=xcomposite-egl QT_IM_MODULE=qtvirtualkeyboard ./pure-qml -platform xcb
+QT_XCB_GL_INTEGRATION=xcb_egl QT_WAYLAND_CLIENT_BUFFER_INTEGRATION=xcomposite-egl \
+QT_IM_MODULE=qtvirtualkeyboard ./fancy-compositor -platform xcb
         \endcode
     \li Before running the client application, ensure that QT_IM_MODULE is unset:
         \badcode

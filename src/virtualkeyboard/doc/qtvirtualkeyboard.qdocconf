@@ -48,3 +48,6 @@ qhp.QtVirtualKeyboard.subprojects.examples.sortPages = true
 navigation.landingpage = "Qt Virtual Keyboard"
 navigation.qmltypespage = "Qt Virtual Keyboard QML Types"
 navigation.cppclassespage = "Qt Virtual Keyboard C++ Classes"
+
+# Enforce zero documentation warnings
+warninglimit = 0
