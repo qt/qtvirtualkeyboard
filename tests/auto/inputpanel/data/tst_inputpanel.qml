@@ -635,9 +635,9 @@ Rectangle {
 
         function test_navigationKeyInputSequence_data() {
             return [
-                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputSequence: "\u00E1\u017C", outputText: "\u00E1\u017C" },
-                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputSequence: "~123qwe", outputText: "~123qwe" },
-                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputSequence: [ Qt.Key_Shift, Qt.Key_V, Qt.Key_K, Qt.Key_B, Qt.Key_Return ], outputText: "VKB\n" },
+                { initialKey: Qt.Key_Space, initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputSequence: "\u00E1\u017C", outputText: "\u00E1\u017C" },
+                { initialKey: Qt.Key_Space, initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputSequence: "~123qwe", outputText: "~123qwe" },
+                { initialKey: Qt.Key_Space, initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputSequence: [ Qt.Key_Shift, Qt.Key_Shift, Qt.Key_V, Qt.Key_K, Qt.Key_B, Qt.Key_Return ], outputText: "VKB\n" },
             ]
         }
 
@@ -648,6 +648,7 @@ Rectangle {
                 skip("Arrow key navigation not enabled")
 
             verify(inputPanel.naviationHighlight.visible)
+            verify(inputPanel.navigateToKey(data.initialKey))
 
             for (var inputIndex in data.inputSequence) {
                 verify(inputPanel.navigationKeyClick(data.inputSequence[inputIndex]))
@@ -660,8 +661,8 @@ Rectangle {
 
         function test_navigationCursorWrap_data() {
             return [
-                { initialKey: Qt.Key_Q, navigationKey: Qt.Key_Up, navigationKeyRepeat: 4 },
-                { initialKey: Qt.Key_Q, navigationKey: Qt.Key_Down, navigationKeyRepeat: 4 },
+                { initialKey: Qt.Key_W, navigationKey: Qt.Key_Up, navigationKeyRepeat: 4 },
+                { initialKey: Qt.Key_W, navigationKey: Qt.Key_Down, navigationKeyRepeat: 4 },
                 { initialKey: Qt.Key_T, navigationKey: Qt.Key_Up, navigationKeyRepeat: 4 },
                 { initialKey: Qt.Key_T, navigationKey: Qt.Key_Down, navigationKeyRepeat: 4 },
                 { initialKey: Qt.Key_Backspace, navigationKey: Qt.Key_Up, navigationKeyRepeat: 4 },
@@ -694,7 +695,7 @@ Rectangle {
                 }
             }
 
-            verify(inputPanel.keyboardInputArea.initialKey === initialKeyObj)
+            compare(inputPanel.keyboardInputArea.initialKey, initialKeyObj)
         }
 
         function test_navigationCursorAndWordCandidateView() {
@@ -810,7 +811,7 @@ Rectangle {
 
             var keysTraversed = []
             do {
-                verify(keysTraversed.indexOf(inputPanel.keyboardInputArea.initialKey) === -1)
+                compare(keysTraversed.indexOf(inputPanel.keyboardInputArea.initialKey), -1)
                 var currentKey = inputPanel.keyboardInputArea.initialKey
                 keysTraversed.push(currentKey)
                 inputPanel.emulateNavigationKeyClick(Qt.Key_Right)
