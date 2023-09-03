@@ -20,8 +20,8 @@ ListView {
     highlight: keyboard.style.popupListHighlight ? keyboard.style.popupListHighlight : defaultHighlight
     highlightMoveDuration: 0
     highlightResizeDuration: 0
-    add: keyboard.style.popupListAdd
-    remove: keyboard.style.popupListRemove
+    add: !keyboard.noAnimations ? keyboard.style.popupListAdd : null
+    remove: !keyboard.noAnimations ? keyboard.style.popupListRemove : null
     keyNavigationWraps: true
 
     onCurrentItemChanged: if (currentItem) keyboard.soundEffect.register(currentItem.soundEffect)

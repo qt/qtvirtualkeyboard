@@ -19,6 +19,12 @@ Item {
     property alias style: styleLoader.item
     property alias wordCandidateView: wordCandidateView
     property alias shadowInputControl: shadowInputControl
+    property alias alternativeKeys: alternativeKeys
+    property alias characterPreview: characterPreview
+    property alias wordCandidateContextMenu: wordCandidateContextMenu
+    property alias fullScreenModeSelectionControl: fullScreenModeSelectionControl
+    property alias naviationHighlight: naviationHighlight
+    property alias keyboardInputArea: keyboardInputArea
     property Item activeKey: null
     property TouchPoint activeTouchPoint
     property int localeIndex: -1
@@ -58,6 +64,8 @@ Item {
     property alias soundEffect: soundEffect
     property alias keyboardLayoutLoader: keyboardLayoutLoader
     property real screenHeight: parent.parent ? parent.parent.height : Screen.height
+    property bool noAnimations
+    property int pressAndHoldDelay: 500
 
     function initDefaultInputMethod() {
         try {
@@ -504,7 +512,7 @@ Item {
     }
     Timer {
         id: pressAndHoldTimer
-        interval: 500
+        interval: keyboard.pressAndHoldDelay
         onTriggered: {
             if (keyboard.activeKey && keyboard.activeKey === keyboardInputArea.initialKey) {
                 var origin = keyboard.mapFromItem(activeKey, activeKey.width / 2, 0)
@@ -616,12 +624,8 @@ Item {
         }
         // Note: without "highlightItem.x - highlightItem.x" the binding does not work for alternativeKeys
         property var highlightItemOffset: highlightItem ? keyboard.mapFromItem(highlightItem, highlightItem.x - highlightItem.x, highlightItem.y - highlightItem.y) : ({x:0, y:0})
-        property int moveDuration: 200
-        property int resizeDuration: 200
-        property alias xAnimation: xAnimation
-        property alias yAnimation: yAnimation
-        property alias widthAnimation: widthAnimation
-        property alias heightAnimation: heightAnimation
+        property int moveDuration: !keyboard.noAnimations ? 200 : 0
+        property int resizeDuration: !keyboard.noAnimations ? 200 : 0
         z: 2
         x: highlightItemOffset.x
         y: highlightItemOffset.y
@@ -679,6 +683,7 @@ Item {
     }
 
     SelectionControl {
+        id: fullScreenModeSelectionControl
         objectName: "fullScreenModeSelectionControl"
         inputContext: InputContext.priv.shadow
         anchors.top: shadowInputControl.top
@@ -707,8 +712,8 @@ Item {
         highlight: style.selectionListHighlight ? style.selectionListHighlight : defaultHighlight
         highlightMoveDuration: 0
         highlightResizeDuration: 0
-        add: style.selectionListAdd
-        remove: style.selectionListRemove
+        add: !keyboard.noAnimations ? style.selectionListAdd : null
+        remove: !keyboard.noAnimations ? style.selectionListRemove : null
         keyNavigationWraps: true
         model: InputContext.inputEngine.wordCandidateListModel
         onCurrentItemChanged: if (currentItem) soundEffect.register(currentItem.soundEffect)
@@ -769,7 +774,7 @@ Item {
             id: wordCandidateViewTransition
             from: ""
             to: "visible"
-            enabled: !InputContext.animating
+            enabled: !InputContext.animating && !keyboard.noAnimations
             reversible: true
             ParallelAnimation {
                 NumberAnimation {
@@ -1214,8 +1219,8 @@ Item {
             model: languageListModel
             delegate: keyboard.style ? keyboard.style.languageListDelegate : null
             highlight: keyboard.style ? keyboard.style.languageListHighlight : defaultHighlight
-            add: keyboard.style ? keyboard.style.languageListAdd : null
-            remove: keyboard.style ? keyboard.style.languageListRemove : null
+            add: keyboard.style && !keyboard.noAnimations ? keyboard.style.languageListAdd : null
+            remove: keyboard.style && !keyboard.noAnimations ? keyboard.style.languageListRemove : null
             property rect previewRect: Qt.rect(keyboard.x + languagePopupList.x,
                                                keyboard.y + languagePopupList.y,
                                                languagePopupList.width,
