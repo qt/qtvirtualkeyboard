@@ -211,22 +211,19 @@ Item {
                     }
                 }
                 initialKey = keyboardInputArea.initialKey
-                if (!keyboardInputArea.navigateToNextKey(-1, 0, false)) {
+                if (!keyboardInputArea.navigateToNextKey(-1 * direction, 0, false)) {
                     keyboardInputArea.initialKey = initialKey
                     if (!keyboardInputArea.navigateToNextKey(0, -1 * direction, false)) {
                         if (wordCandidateView.count) {
-                            if (wordCandidateView.count) {
-                                wordCandidateView.currentIndex =
-                                        wordCandidateView.effectiveLayoutDirection == Qt.LeftToRight ?
-                                            (wordCandidateView.count - 1) : 0
-                                break
-                            }
+                            wordCandidateView.currentIndex =
+                                    wordCandidateView.effectiveLayoutDirection == Qt.LeftToRight ?
+                                        (wordCandidateView.count - 1) : 0
                             break
                         }
                         keyboardInputArea.initialKey = initialKey
                         keyboardInputArea.navigateToNextKey(0, -1 * direction, true)
                     }
-                    keyboardInputArea.navigateToNextKey(-1, 0, true)
+                    keyboardInputArea.navigateToNextKey(-1 * direction, 0, true)
                 }
                 break
             case Qt.Key_Up:
@@ -323,7 +320,7 @@ Item {
                     }
                 }
                 initialKey = keyboardInputArea.initialKey
-                if (!keyboardInputArea.navigateToNextKey(1, 0, false)) {
+                if (!keyboardInputArea.navigateToNextKey(1 * direction, 0, false)) {
                     keyboardInputArea.initialKey = initialKey
                     if (!keyboardInputArea.navigateToNextKey(0, 1 * direction, false)) {
                         if (wordCandidateView.count) {
@@ -335,7 +332,7 @@ Item {
                         keyboardInputArea.initialKey = initialKey
                         keyboardInputArea.navigateToNextKey(0, 1 * direction, true)
                     }
-                    keyboardInputArea.navigateToNextKey(1, 0, true)
+                    keyboardInputArea.navigateToNextKey(1 * direction, 0, true)
                 }
                 break
             case Qt.Key_Down:
