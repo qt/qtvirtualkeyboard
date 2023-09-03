@@ -8,8 +8,7 @@ function findChildByProperty(parent, propertyName, propertyValue, compareCb) {
     if (parent === null)
         return null
     var children = parent.children
-    for (var i = 0; i < children.length; i++) {
-        obj = children[i]
+    for (obj of children) {
         if (obj.hasOwnProperty(propertyName)) {
             if (compareCb !== null) {
                 if (compareCb(obj[propertyName], propertyValue))
@@ -30,8 +29,7 @@ function findChild(parent, param, matchCb) {
     if (parent === null)
         return null
     var children = parent.children
-    for (var i = 0; i < children.length; i++) {
-        obj = children[i]
+    for (obj of children) {
         if (matchCb(obj, param))
             break
         obj = findChild(obj, param, matchCb)
