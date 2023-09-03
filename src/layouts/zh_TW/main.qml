@@ -11,7 +11,16 @@ KeyboardLayoutLoader {
         return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; TCInputMethod {}', parent, "main.qml")
     }
     sharedLayouts: ['symbols']
-    sourceComponent: InputContext.inputEngine.inputMode === InputEngine.InputMode.Cangjie ? pageCangjie : pageZhuyin
+    sourceComponent: {
+        switch (InputContext.inputEngine.inputMode) {
+        case InputEngine.InputMode.Cangjie:
+            return pageCangjie
+        case InputEngine.InputMode.Zhuyin:
+            return pageZhuyin
+        default:
+            return null
+        }
+    }
     Component {
         id: pageCangjie
         KeyboardLayout {
