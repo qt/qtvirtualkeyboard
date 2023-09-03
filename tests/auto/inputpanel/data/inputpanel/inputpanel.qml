@@ -29,25 +29,20 @@ InputPanel {
     readonly property var activeLocales: VirtualKeyboardSettings.activeLocales
     readonly property int inputMode: InputContext.inputEngine.inputMode
     readonly property var inputMethod: InputContext.inputEngine.inputMethod
-    readonly property var keyboard: Utils.findChildByProperty(inputPanel, "objectName", "keyboard", null)
     readonly property bool handwritingMode: keyboard.handwritingMode
-    readonly property var keyboardLayoutLoader: Utils.findChildByProperty(keyboard, "objectName", "keyboardLayoutLoader", null)
-    readonly property var keyboardInputArea: Utils.findChildByProperty(keyboard, "objectName", "keyboardInputArea", null)
-    readonly property var characterPreviewBubble: Utils.findChildByProperty(keyboard, "objectName", "characterPreviewBubble", null)
-    readonly property var alternativeKeys: Utils.findChildByProperty(keyboard, "objectName", "alternativeKeys", null)
-    readonly property var naviationHighlight: Utils.findChildByProperty(keyboard, "objectName", "naviationHighlight", null)
-    readonly property bool naviationHighlightAnimating: naviationHighlight.xAnimation.running ||
-                                                        naviationHighlight.yAnimation.running ||
-                                                        naviationHighlight.widthAnimation.running ||
-                                                        naviationHighlight.heightAnimation.running
-    readonly property var wordCandidateView: Utils.findChildByProperty(keyboard, "objectName", "wordCandidateView", null)
-    readonly property var wordCandidateContextMenu: Utils.findChildByProperty(keyboard, "objectName", "wordCandidateContextMenu", null)
-    readonly property var shadowInputControl: Utils.findChildByProperty(keyboard, "objectName", "shadowInputControl", null)
-    readonly property var shadowInput: Utils.findChildByProperty(keyboard, "objectName", "shadowInput", null)
-    readonly property var selectionControl: Utils.findChildByProperty(inputPanel, "objectName", "selectionControl", null)
+    readonly property Loader keyboardLayoutLoader: keyboard.keyboardLayoutLoader
+    readonly property MultiPointTouchArea keyboardInputArea: keyboard.keyboardInputArea
+    readonly property CharacterPreviewBubble characterPreviewBubble: keyboard.characterPreview
+    readonly property AlternativeKeys alternativeKeys: keyboard.alternativeKeys
+    readonly property Loader naviationHighlight: keyboard.naviationHighlight
+    readonly property ListView wordCandidateView: keyboard.wordCandidateView
+    readonly property Item wordCandidateContextMenu: keyboard.wordCandidateContextMenu
+    readonly property ShadowInputControl shadowInputControl: keyboard.shadowInputControl
+    readonly property TextInput shadowInput: keyboard.shadowInputControl.textEdit
+    readonly property SelectionControl selectionControl: Utils.findChildByProperty(inputPanel, "objectName", "selectionControl", null)
     readonly property var anchorHandle: selectionControl.children[0]
     readonly property var cursorHandle: selectionControl.children[1]
-    readonly property var fullScreenModeSelectionControl: Utils.findChildByProperty(inputPanel, "objectName", "fullScreenModeSelectionControl", null)
+    readonly property SelectionControl fullScreenModeSelectionControl: keyboard.fullScreenModeSelectionControl
     readonly property var fullScreenModeAnchorHandle: fullScreenModeSelectionControl.children[0]
     readonly property var fullScreenModeCursorHandle: fullScreenModeSelectionControl.children[1]
     readonly property bool wordCandidateListVisibleHint: InputContext.inputEngine.wordCandidateListVisibleHint
@@ -66,6 +61,7 @@ InputPanel {
     property alias wordCandidateListItemSelectedSpy: wordCandidateListItemSelectedSpy
     property alias inputMethodSelectionListChangedSpy: inputMethodSelectionListChangedSpy
     property alias wordCandidateListVisibleSpy: wordCandidateListVisibleSpy
+    property alias wordCandidateListCurrentIndexSpy: wordCandidateListCurrentIndexSpy
     property alias shiftStateSpy: shiftStateSpy
     property alias shadowInputControlVisibleSpy: shadowInputControlVisibleSpy
     property alias externalLanguageSwitchSpy: externalLanguageSwitchSpy
@@ -172,6 +168,12 @@ InputPanel {
     }
 
     SignalSpy {
+        id: wordCandidateListCurrentIndexSpy
+        target: wordCandidateView
+        signalName: "onCurrentIndexChanged"
+    }
+
+    SignalSpy {
         id: wordCandidateContextMenuActiveSpy
         target: wordCandidateContextMenu
         signalName: "onActiveChanged"
@@ -195,26 +197,18 @@ InputPanel {
         signalName: "onExternalLanguageSwitch"
     }
 
-    function findChildByProperty(parent, propertyName, propertyValue, compareCb) {
-        var obj = null
-        if (parent === null)
-            return null
-        var children = parent.children
-        for (var i = 0; i < children.length; i++) {
-            obj = children[i]
-            if (obj.hasOwnProperty(propertyName)) {
-                if (compareCb !== null) {
-                    if (compareCb(obj[propertyName], propertyValue))
-                        break
-                } else if (obj[propertyName] === propertyValue) {
-                    break
-                }
-            }
-            obj = findChildByProperty(obj, propertyName, propertyValue, compareCb)
-            if (obj)
-                break
-        }
-        return obj
+    // Disable all animations during tests
+    Binding {
+        target: keyboard
+        property: "noAnimations"
+        value: true
+    }
+
+    // Reduce press and hold delay to avoid unnecessary wait during tests
+    Binding {
+        target: keyboard
+        property: "pressAndHoldDelay"
+        value: 50
     }
 
     function isLocaleSupported(inputLocale) {
@@ -442,14 +436,14 @@ InputPanel {
         if (keyObj) {
             virtualKeyPressPoint = inputPanel.mapFromItem(keyObj, keyObj.width / 2, keyObj.height / 2)
             testcase.mousePress(inputPanel, virtualKeyPressPoint.x, virtualKeyPressPoint.y)
-            testcase.wait(20)
+            testcase.wait(1)
             if (alternativeKey) {
                 alternativeKeysSpy.wait()
                 var keyIndex = keyObj.effectiveAlternativeKeys.indexOf(key.toLowerCase())
                 var itemX = keyIndex * keyboard.style.alternateKeysListItemWidth + keyboard.style.alternateKeysListItemWidth / 2
                 virtualKeyPressPoint.x = inputPanel.mapFromItem(alternativeKeys.listView, itemX, 0).x
                 testcase.mouseMove(inputPanel, virtualKeyPressPoint.x, virtualKeyPressPoint.y)
-                testcase.waitForRendering(inputPanel)
+                testcase.wait(1)
             }
             return true
         }
@@ -536,7 +530,6 @@ InputPanel {
     function virtualKeyClick(key) {
         if (virtualKeyPress(key)) {
             virtualKeyRelease()
-            testcase.waitForRendering(inputPanel)
             return true
         }
         return false
@@ -544,13 +537,7 @@ InputPanel {
 
     function emulateNavigationKeyClick(navigationKey) {
         testcase.keyClick(navigationKey)
-        while (inputPanel.naviationHighlightAnimating)
-            testcase.wait(inputPanel.naviationHighlight.moveDuration / 2)
-    }
-
-    function navigationHighlightContains(point) {
-        var navigationPoint = inputPanel.mapToItem(inputPanel.naviationHighlight, point.x, point.y)
-        return inputPanel.naviationHighlight.contains(Qt.point(navigationPoint.x, navigationPoint.y))
+        testcase.wait(50)
     }
 
     function navigateToKeyOnPoint(point) {
@@ -558,7 +545,7 @@ InputPanel {
         if (inputPanel.naviationHighlight.visible) {
             while (true) {
                 var navigationPoint = inputPanel.mapToItem(inputPanel.naviationHighlight, point.x, point.y)
-                if (navigationHighlightContains(point))
+                if (inputPanel.naviationHighlight.contains(Qt.point(navigationPoint.x, navigationPoint.y)))
                     return true
                 if (inputPanel.naviationHighlight.y > point.y)
                     emulateNavigationKeyClick(Qt.Key_Up)
@@ -618,12 +605,9 @@ InputPanel {
 
     function activateNavigationKeyMode() {
         if (!inputPanel.naviationHighlight.visible) {
-            inputPanel.naviationHighlight.moveDuration = 0
-            inputPanel.naviationHighlight.resizeDuration = 0
             emulateNavigationKeyClick(Qt.Key_Right)
             if (inputPanel.naviationHighlight.visible) {
-                while (inputPanel.naviationHighlightAnimating)
-                    testcase.wait(inputPanel.naviationHighlight.moveDuration / 2)
+                testcase.wait(1)
             }
         }
         return inputPanel.naviationHighlight.visible
@@ -680,7 +664,6 @@ InputPanel {
                     inputPanel.wordCandidateView.decrementCurrentIndex()
                 }
             }
-            testcase.waitForRendering(inputPanel)
         }
         return suggestionFound
     }
@@ -688,7 +671,6 @@ InputPanel {
     function selectionListSelectCurrentItem() {
         if (!inputPanel.wordCandidateView.currentItem)
             return false
-        testcase.wait(200)
         testcase.verify(inputPanel.wordCandidateView.currentItem,
             "Expected wordCandidateView to have a currentItem, but it's null."
             + " Its property values at the time of failure are:"
@@ -704,7 +686,6 @@ InputPanel {
                                              inputPanel.wordCandidateView.currentItem.width / 2,
                                              inputPanel.wordCandidateView.currentItem.height / 2)
         testcase.mouseClick(inputPanel, itemPos.x, itemPos.y, Qt.LeftButton, 0, 20)
-        testcase.waitForRendering(inputPanel)
         return true
     }
 
@@ -738,7 +719,6 @@ InputPanel {
         var wordCandidateContextMenuList = Utils.findChildByProperty(keyboard, "objectName", "wordCandidateContextMenuList", null)
         if (wordCandidateContextMenuList.currentIndex !== index) {
             wordCandidateContextMenuList.currentIndex = index
-            testcase.waitForRendering(inputPanel)
         }
         if (!wordCandidateContextMenuList.currentItem)
             return false
@@ -746,8 +726,11 @@ InputPanel {
                                              wordCandidateContextMenuList.currentItem.width / 2,
                                              wordCandidateContextMenuList.currentItem.height / 2)
         testcase.mouseClick(inputPanel, itemPos.x, itemPos.y, Qt.LeftButton, 0, 20)
-        testcase.waitForRendering(inputPanel)
         return true
+    }
+
+    function isHandwritingFeatureAvailable() {
+        return VirtualKeyboardFeatures.Handwriting
     }
 
     function setHandwritingMode(enabled) {
