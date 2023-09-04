@@ -400,7 +400,7 @@ KeyboardLayoutLoader {
                         }
                         Key {
                             text: "\u3125"
-                            alternativeKeys: "；\u3125："
+                            alternativeKeys: "；：\u3125\u3126"
                         }
                     }
                 }

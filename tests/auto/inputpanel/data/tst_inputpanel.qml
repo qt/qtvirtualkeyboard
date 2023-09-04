@@ -1079,8 +1079,6 @@ Rectangle {
         }
 
         function test_zhuyinInputMethod(data) {
-            skip("The test is broken, see QTBUG-80663. Skipping rather than blacklisting to avoid crashes.")
-
             prepareTest(data, true)
 
             for (var inputIndex in data.inputSequence) {
