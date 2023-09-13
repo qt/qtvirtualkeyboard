@@ -31,7 +31,6 @@ qt_internal_add_qml_module(qtvkbmyscriptplugin
         ${MyScript_ROOT_DIR}/voim/api/c/examples/common/Properties.c
         myscriptinputmethod.cpp myscriptinputmethod_p.h
         myscriptinputmethod_p_p.h
-        myscriptplugin.cpp myscriptplugin.h
     DEFINES
         MYSCRIPT_CERTIFICATE="${MyScript_ROOT_DIR}/edk/c/examples/certificates/MyCertificate.c"
         MYSCRIPT_VOIM_PROPERTY_PATH="${MYSCRIPT_INSTALL_DATA}/${MYSCRIPT_VOIM_PROPERTY_NAME}"
