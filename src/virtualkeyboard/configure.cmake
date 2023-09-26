@@ -115,7 +115,7 @@ qt_feature("vkb-cerence-static" PUBLIC
     LABEL "  Static Linking"
     AUTODETECT OFF
 )
-qt_feature("system-hunspell" PRIVATE
+qt_feature("system-hunspell" PRIVATE SYSTEM_LIBRARY
     LABEL "System Hunspell"
     CONDITION Hunspell_FOUND
 )
