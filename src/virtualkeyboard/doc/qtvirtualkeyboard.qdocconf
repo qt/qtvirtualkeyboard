@@ -14,7 +14,7 @@ exampledirs += ../../../examples/virtualkeyboard \
     snippets
 examplesinstallpath = virtualkeyboard
 
-manifestmeta.highlighted.names = "QtVirtualKeyboard/Qt Quick Virtual Keyboard - Basic Example"
+manifestmeta.highlighted.names = "QtVirtualKeyboard/Virtual Keyboard in Qt Quick"
 
 imagedirs += images
 
