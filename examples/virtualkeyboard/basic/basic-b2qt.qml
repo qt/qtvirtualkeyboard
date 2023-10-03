@@ -41,15 +41,15 @@ Item {
 
     Item {
         id: appContainer
-        width: Screen.orientation === Qt.LandscapeOrientation ? parent.width : parent.height
-        height: Screen.orientation === Qt.LandscapeOrientation ? parent.height : parent.width
+        width: inLandscapeOrientation ? parent.width : parent.height
+        height: inLandscapeOrientation ? parent.height : parent.width
         anchors.centerIn: parent
         Basic {
             id: virtualKeyboard
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.right: parent.right
-            anchors.bottom: parent.bottom
+            anchors.bottom: inputPanel.top
             handwritingInputPanelActive: handwritingInputPanel.available && handwritingInputPanel.active
         }
 
@@ -109,12 +109,12 @@ Item {
             id: inputPanel
             z: 89
             y: yPositionWhenHidden
-            x: Screen.orientation === Qt.LandscapeOrientation ? 0 : (parent.width-parent.height) / 2
-            width: Screen.orientation === Qt.LandscapeOrientation ? parent.width : parent.height
+            x: 0
+            width: parent.width
 
-            keyboard.shadowInputControl.height: (Screen.orientation === Qt.LandscapeOrientation ? parent.height : parent.width) - keyboard.height
+            keyboard.shadowInputControl.height: parent.height - keyboard.height
 
-            property real yPositionWhenHidden: Screen.orientation === Qt.LandscapeOrientation ? parent.height : parent.width + (parent.height-parent.width) / 2
+            property real yPositionWhenHidden: parent.height
 
             states: State {
                 name: "visible"
@@ -162,7 +162,8 @@ Item {
 
     }
 
-    property bool inLandscapeOrientation: Screen.orientation === Qt.LandscapeOrientation
+    property bool inLandscapeOrientation: Screen.primaryOrientation === Qt.LandscapeOrientation ||
+                                          Screen.primaryOrientation === Qt.InvertedLandscapeOrientation
 
     Binding {
         target: appContainer.Window.window !== null ? appContainer.Window.window.contentItem : null
