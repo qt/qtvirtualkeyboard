@@ -22,7 +22,9 @@
 #include "openwnnclauseconverterjajp.h"
 #include "openwnndictionary.h"
 #include "wnnword.h"
+
 #include <QtCore/private/qobject_p.h>
+#include <QtCore/qpointer.h>
 
 class OpenWnnClauseConverterJAJPPrivate : public QObjectPrivate
 {

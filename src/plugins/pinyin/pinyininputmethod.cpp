@@ -4,7 +4,9 @@
 #include "pinyininputmethod_p.h"
 #include "pinyindecoderservice_p.h"
 #include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
+
 #include <QLoggingCategory>
+#include <QtCore/qpointer.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
