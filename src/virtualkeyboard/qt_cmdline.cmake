@@ -1,5 +1,5 @@
 # Copyright (C) 2022 The Qt Company Ltd.
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-License-Identifier: LicenseRef-Qt-Commercial
 
 qt_commandline_option(vkb-sensitive-debug TYPE boolean)
 qt_commandline_option(vkb-arrow-keynavigation TYPE boolean)

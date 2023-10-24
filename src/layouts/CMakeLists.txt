@@ -1,5 +1,5 @@
 # Copyright (C) 2022 The Qt Company Ltd.
-# SPDX-License-Identifier: BSD-3-Clause
+# SPDX-License-Identifier: LicenseRef-Qt-Commercial
 
 qt_internal_add_qml_module(qtvkblayoutsplugin
     URI "QtQuick.VirtualKeyboard.Layouts"
