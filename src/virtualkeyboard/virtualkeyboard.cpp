@@ -24,7 +24,7 @@ namespace QtVirtualKeyboard {
     For example:
     \code
     TextInput {
-        VirtualKeyboard.dictionaries: ["myDictionary"]
+        VirtualKeyboard.extraDictionaries: ["myDictionary"]
     }
     \endcode
 */
@@ -43,7 +43,7 @@ VirtualKeyboardAttachedType *VirtualKeyboard::qmlAttachedProperties(QObject *obj
 }
 
 /*!
-    \qmlattachedproperty list VirtualKeyboard::dictionaries
+    \qmlattachedproperty list VirtualKeyboard::extraDictionaries
 
     Sets active user dictionaries in this context.
 */

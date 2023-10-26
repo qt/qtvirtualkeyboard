@@ -27,6 +27,8 @@ class VirtualKeyboardAttachedType;
 class Q_VIRTUALKEYBOARD_EXPORT VirtualKeyboard : public QObject
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(VirtualKeyboard)
+    QML_UNCREATABLE("VirtualKeyboard is an abstract type that is only available as an attached property.")
     QML_ATTACHED(VirtualKeyboardAttachedType)
     QML_ADDED_IN_VERSION(6, 1)
 
