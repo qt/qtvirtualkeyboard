@@ -117,4 +117,9 @@ Rectangle {
         anchors.fill: parent
         visible: handwritingInputPanelActive
     }
+
+    Shortcut {
+        sequence: "Ctrl+Q"
+        onActivated: Qt.quit()
+    }
 }
