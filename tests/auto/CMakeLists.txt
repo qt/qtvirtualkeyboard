@@ -13,3 +13,4 @@ add_subdirectory(layoutresources)
 # add_subdirectory(cmake) # special case
 add_subdirectory(dictionarymanager)
 add_subdirectory(shadowinput)
+add_subdirectory(virtualkeyboardattached)
