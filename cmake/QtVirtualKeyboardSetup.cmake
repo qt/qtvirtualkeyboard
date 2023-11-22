@@ -1,5 +1,5 @@
 # Copyright (C) 2022 The Qt Company Ltd.
-# SPDX-License-Identifier: LicenseRef-Qt-Commercial
+# SPDX-License-Identifier: BSD-3-Clause
 
 get_filename_component(VKB_LAYOUTS_BASE "${CMAKE_CURRENT_LIST_DIR}/../src/layouts" REALPATH CACHE)
 set(VKB_LAYOUTS_PREFIX "/qt-project.org/imports/QtQuick/VirtualKeyboard/Layouts" CACHE STRING "" FORCE)
