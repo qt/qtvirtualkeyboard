@@ -17,14 +17,14 @@
 
 #include <QMetaEnum>
 #include <QtQml/qqml.h>
-#include <QtVirtualKeyboard/private/qtvirtualkeyboardexports_p.h>
+#include <QtVirtualKeyboard/qtvirtualkeyboardexports.h>
 #include <QtVirtualKeyboard/private/qtvirtualkeyboard-config_p.h>
 
 QT_BEGIN_NAMESPACE
 
 namespace QVirtualKeyboardFeatures {
 
-Q_VIRTUALKEYBOARD_PRIVATE_EXPORT Q_NAMESPACE
+Q_VIRTUALKEYBOARD_EXPORT Q_NAMESPACE
 QML_NAMED_ELEMENT(VirtualKeyboardFeatures)
 QML_ADDED_IN_VERSION(6, 4)
 
