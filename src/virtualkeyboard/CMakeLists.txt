@@ -82,7 +82,6 @@ qt_internal_add_qml_module(VirtualKeyboard
         Qt::CorePrivate
         Qt::GuiPrivate
     GENERATE_CPP_EXPORTS
-    GENERATE_PRIVATE_CPP_EXPORTS
 )
 
 qt_internal_extend_target(VirtualKeyboard CONDITION QT_FEATURE_vkb_desktop
