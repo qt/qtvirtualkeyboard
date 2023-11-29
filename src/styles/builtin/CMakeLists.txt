@@ -11,6 +11,7 @@ qt_internal_add_qml_module(qtvkbbuiltinstylesplugin
     NO_GENERATE_PLUGIN_SOURCE
     SOURCES
         qtquickvirtualkeyboardbstylesbuiltinplugin.cpp qtquickvirtualkeyboardbstylesbuiltinplugin.h
+    NO_GENERATE_CPP_EXPORTS
 )
 
 # Resources:

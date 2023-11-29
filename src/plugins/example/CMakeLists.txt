@@ -11,4 +11,5 @@ qt_internal_add_qml_module(qtvkbexampleplugin
     PLUGIN_TARGET qtvkbexampleplugin
     IMPORTS
         ${example_imports}
+    NO_GENERATE_CPP_EXPORTS
 )

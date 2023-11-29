@@ -25,6 +25,7 @@ qt_internal_add_qml_module(qtvkbthaiplugin
         Qt::Gui
         Qt::Qml
         Qt::VirtualKeyboard
+    NO_GENERATE_CPP_EXPORTS
 )
 
 # Resources:

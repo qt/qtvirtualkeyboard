@@ -7,6 +7,7 @@ qt_internal_add_qml_module(qtvkblayoutsplugin
     PAST_MAJOR_VERSIONS 2 1
     PLUGIN_TARGET qtvkblayoutsplugin
     NO_PLUGIN_OPTIONAL
+    NO_GENERATE_CPP_EXPORTS
 )
 
 set(LAYOUT_FILES

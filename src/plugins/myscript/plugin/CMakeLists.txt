@@ -48,6 +48,7 @@ qt_internal_add_qml_module(qtvkbmyscriptplugin
         Qt::Qml
         Qt::VirtualKeyboard
         MyScript::VOIM
+    NO_GENERATE_CPP_EXPORTS
 )
 
 # MyScript Engine Binaries

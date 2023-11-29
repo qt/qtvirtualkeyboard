@@ -28,6 +28,7 @@ qt_internal_add_qml_module(qtvkbopenwnnplugin
         Qt::Qml
         Qt::VirtualKeyboard
         Qt::BundledOpenwnn
+    NO_GENERATE_CPP_EXPORTS
 )
 
 # Resources:

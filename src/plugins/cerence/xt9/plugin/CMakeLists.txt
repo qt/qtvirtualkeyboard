@@ -38,6 +38,7 @@ qt_internal_add_qml_module(qtvkbcerencext9plugin
         Qt::Gui
         Qt::Qml
         Qt::VirtualKeyboardPrivate
+    NO_GENERATE_CPP_EXPORTS
 )
 
 set(qmake_virtualkeyboard_xt9_layouts_resource_files)

@@ -20,4 +20,5 @@ qt_internal_add_qml_module(qtvkbcerenceplugin
     PLUGIN_TARGET qtvkbcerenceplugin
     IMPORTS
         ${cerence_imports}
+    NO_GENERATE_CPP_EXPORTS
 )

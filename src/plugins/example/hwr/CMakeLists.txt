@@ -21,6 +21,7 @@ qt_internal_add_qml_module(qtvkbexamplehwrplugin
         Qt::Gui
         Qt::Qml
         Qt::VirtualKeyboardPrivate
+    NO_GENERATE_CPP_EXPORTS
 )
 
 set(qt_virtualkeyboard_example_hwr_layouts_resource_files

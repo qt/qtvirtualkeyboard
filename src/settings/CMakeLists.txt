@@ -26,6 +26,7 @@ qt_internal_add_qml_module(VirtualKeyboardSettings
         Qt::Qml
         Qt::Quick
         Qt::VirtualKeyboardPrivate
+    NO_GENERATE_CPP_EXPORTS
 )
 
 qt_internal_extend_target(VirtualKeyboardSettings CONDITION QT_FEATURE_vkb_no_builtin_style

@@ -46,4 +46,5 @@ qt_internal_add_qml_module(qtvkbpluginsplugin
     PLUGIN_TARGET qtvkbpluginsplugin
     IMPORTS
         ${plugins_imports}
+    NO_GENERATE_CPP_EXPORTS
 )

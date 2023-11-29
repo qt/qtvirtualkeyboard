@@ -32,6 +32,7 @@ qt_internal_add_qml_module(qtvkbcerencehwrplugin
         Qt::Gui
         Qt::Qml
         Qt::VirtualKeyboardPrivate
+    NO_GENERATE_CPP_EXPORTS
 )
 
 # Resources:

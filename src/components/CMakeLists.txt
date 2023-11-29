@@ -57,4 +57,5 @@ qt_internal_add_qml_module(qtvkbcomponentsplugin
         Qt::Quick
         Qt::VirtualKeyboard
         Qt::VirtualKeyboardSettings
+    NO_GENERATE_CPP_EXPORTS
 )

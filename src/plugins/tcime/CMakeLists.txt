@@ -28,6 +28,7 @@ qt_internal_add_qml_module(qtvkbtcimeplugin
         Qt::Qml
         Qt::VirtualKeyboardPrivate
         Qt::BundledTcime
+    NO_GENERATE_CPP_EXPORTS
 )
 
 set(qmake_virtualkeyboard_tcime_layouts_resource_files

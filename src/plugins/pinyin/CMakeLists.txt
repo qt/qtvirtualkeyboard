@@ -29,6 +29,7 @@ qt_internal_add_qml_module(qtvkbpinyinplugin
         Qt::Qml
         Qt::VirtualKeyboard
         Qt::BundledPinyin
+    NO_GENERATE_CPP_EXPORTS
 )
 
 # Resources:
