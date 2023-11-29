@@ -30,7 +30,6 @@ qt_internal_add_qml_module(HunspellInputMethod
         Qt::Gui
     PUBLIC_LIBRARIES
         Qt::VirtualKeyboardPrivate
-    GENERATE_CPP_EXPORTS
 )
 
 qt_internal_extend_target(HunspellInputMethod CONDITION QT_FEATURE_system_hunspell
