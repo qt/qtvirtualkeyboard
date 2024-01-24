@@ -9,6 +9,7 @@
 #include <QtVirtualKeyboard/private/enterkeyaction_p.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardobserver.h>
+#include <QtVirtualKeyboard/private/enterkeyactionattachedtype_p.h>
 #include <QtVirtualKeyboard/private/virtualkeyboardattachedtype_p.h>
 #include <QtVirtualKeyboard/qvirtualkeyboarddictionarymanager.h>
 
@@ -534,6 +535,46 @@ void QVirtualKeyboardInputContextPrivate::invokeAction(QInputMethod::Action acti
     }
 }
 
+void QVirtualKeyboardInputContextPrivate::maybeCloseOnReturn()
+{
+    if (!Settings::instance()->closeOnReturn())
+        return;
+
+    const int imHints = QInputMethod::queryFocusObject(Qt::ImHints, QVariant()).toInt();
+    if (imHints & Qt::ImhMultiLine)
+        return;
+
+    const Qt::EnterKeyType keyType = static_cast<Qt::EnterKeyType>(QInputMethod::queryFocusObject(Qt::ImEnterKeyType, QVariant()).toInt());
+    switch (keyType) {
+    case Qt::EnterKeyDefault:
+    case Qt::EnterKeyDone:
+    case Qt::EnterKeyGo:
+    case Qt::EnterKeySend:
+    case Qt::EnterKeySearch:
+        break;
+    case Qt::EnterKeyReturn:
+    case Qt::EnterKeyNext:
+    case Qt::EnterKeyPrevious:
+        return;
+    }
+
+    if (EnterKeyActionAttachedType *enterKeyActionAttachedType = static_cast<EnterKeyActionAttachedType *>(qmlAttachedPropertiesObject<EnterKeyAction>(inputItem(), false))) {
+        const EnterKeyAction::Id enterKeyActionId = static_cast<EnterKeyAction::Id>(enterKeyActionAttachedType->actionId());
+        switch (enterKeyActionId) {
+        case EnterKeyAction::None:
+        case EnterKeyAction::Done:
+        case EnterKeyAction::Go:
+        case EnterKeyAction::Search:
+        case EnterKeyAction::Send:
+            break;
+        case EnterKeyAction::Next:
+            return;
+        }
+    }
+
+    hideInputPanel();
+}
+
 bool QVirtualKeyboardInputContextPrivate::filterEvent(const QEvent *event)
 {
     QEvent::Type type = event->type();
@@ -565,6 +606,10 @@ bool QVirtualKeyboardInputContextPrivate::filterEvent(const QEvent *event)
             }
         }
 #endif
+
+        if (type == QEvent::KeyRelease && (key == Qt::Key_Return || key == Qt::Key_Enter)) {
+            maybeCloseOnReturn();
+        }
 
         // Break composing text since the virtual keyboard does not support hard keyboard events
         if (!preeditText.isEmpty()) {

@@ -208,6 +208,10 @@ void QVirtualKeyboardInputContext::sendKeyClick(int key, const QString &text, in
         d->setState(QVirtualKeyboardInputContextPrivate::State::KeyEvent);
         d->platformInputContext->sendKeyEvent(&pressEvent);
         d->platformInputContext->sendKeyEvent(&releaseEvent);
+
+        if (key == Qt::Key_Return || key == Qt::Key_Enter)
+            d->maybeCloseOnReturn();
+
         if (d->activeKeys.isEmpty())
             d->clearState(QVirtualKeyboardInputContextPrivate::State::KeyEvent);
     } else {

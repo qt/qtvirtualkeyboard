@@ -761,4 +761,12 @@ InputPanel {
             return false
         return inputMethod != null && inputMethod.hasOwnProperty("superimposed") && inputMethod.superimposed
     }
+
+    function closeOnReturn() {
+        return VirtualKeyboardSettings.closeOnReturn
+    }
+
+    function setCloseOnReturn(enabled) {
+        VirtualKeyboardSettings.closeOnReturn = enabled
+    }
 }

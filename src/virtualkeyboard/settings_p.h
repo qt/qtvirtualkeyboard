@@ -91,6 +91,9 @@ public:
     QtVirtualKeyboard::KeyboardFunctionKeys visibleFunctionKeys() const;
     void setVisibleFunctionKeys(QtVirtualKeyboard::KeyboardFunctionKeys newVisibleFunctionKeys);
 
+    bool closeOnReturn() const;
+    void setCloseOnReturn(bool enable);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -111,6 +114,7 @@ signals:
     void defaultInputMethodDisabledChanged();
     void defaultDictionaryDisabledChanged();
     void visibleFunctionKeysChanged();
+    void closeOnReturnChanged();
 };
 
 } // namespace QtVirtualKeyboard

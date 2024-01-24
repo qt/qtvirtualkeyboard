@@ -124,6 +124,7 @@ private:
     void commit();
     void update(Qt::InputMethodQueries queries);
     void invokeAction(QInputMethod::Action action, int cursorPosition);
+    void maybeCloseOnReturn();
     bool filterEvent(const QEvent *event);
     void addSelectionAttribute(QList<QInputMethodEvent::Attribute> &attributes);
     bool testAttribute(const QList<QInputMethodEvent::Attribute> &attributes, QInputMethodEvent::AttributeType attributeType) const;

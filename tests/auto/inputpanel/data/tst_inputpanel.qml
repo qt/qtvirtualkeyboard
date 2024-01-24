@@ -4,6 +4,7 @@
 import QtTest
 import QtQuick
 import QtQuick.Window
+import QtQuick.Controls
 import "inputpanel/utils.js" as Utils
 
 Rectangle {
@@ -19,6 +20,14 @@ Rectangle {
             visible: true
             focus: true
             color: "white"
+        }
+    }
+
+    Component {
+        id: textFieldComp
+        TextField {
+            property int enterKeyType: Qt.EnterKeyDefault
+            EnterKey.type: enterKeyType
         }
     }
 
@@ -67,6 +76,8 @@ Rectangle {
             inputPanel.setExternalLanguageSwitchEnabled(data !== undefined && data.hasOwnProperty("externalLanguageSwitchEnabled") && data.externalLanguageSwitchEnabled)
             inputPanel.setLayoutMirroring(data !== undefined && data.hasOwnProperty("layoutMirroring") && data.layoutMirroring)
             inputPanel.setVisibleFunctionKeys(data !== undefined && data.hasOwnProperty("visibleFunctionKeys") ? data.visibleFunctionKeys : ["All"])
+            inputPanel.setCloseOnReturn(data !== undefined && data.hasOwnProperty("closeOnReturn") && data.closeOnReturn)
+
 
             var window = container.Window.window
             verify(window)
@@ -2279,6 +2290,55 @@ Rectangle {
                     compare(hideKeyboardKey.visible, true)
                 }
             }
+        }
+
+        function test_closeOnReturnSingleLine_data() {
+            return [
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeyDefault, expectedVisibleAfterReturn: false },
+                { closeOnReturn: false, enterKeyType: Qt.EnterKeyDefault, expectedVisibleAfterReturn: true },
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeyReturn, expectedVisibleAfterReturn: true },
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeyDone, expectedVisibleAfterReturn: false },
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeyGo, expectedVisibleAfterReturn: false },
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeySend, expectedVisibleAfterReturn: false },
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeySearch, expectedVisibleAfterReturn: false },
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeyNext, expectedVisibleAfterReturn: true },
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeyPrevious, expectedVisibleAfterReturn: true },
+            ]
+        }
+
+        function test_closeOnReturnSingleLine(data) {
+            prepareTest(data)
+            let testObj = textFieldComp.createObject(container, {enterKeyType: data.enterKeyType})
+            testObj.forceActiveFocus()
+            compare(inputPanel.closeOnReturn(), data.closeOnReturn)
+            verify(inputPanel.visible === true)
+            keyClick(Qt.Key_Return)
+            waitForRendering(inputPanel)
+            verify(inputPanel.visible === data.expectedVisibleAfterReturn)
+            testObj.destroy()
+        }
+
+        function test_closeOnReturnMultiline_data() {
+            return [
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeyDefault, expectedVisibleAfterReturn: true },
+                { closeOnReturn: false, enterKeyType: Qt.EnterKeyDefault, expectedVisibleAfterReturn: true },
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeyReturn, expectedVisibleAfterReturn: true },
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeyDone, expectedVisibleAfterReturn: true },
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeyGo, expectedVisibleAfterReturn: true },
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeySend, expectedVisibleAfterReturn: true },
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeySearch, expectedVisibleAfterReturn: true },
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeyNext, expectedVisibleAfterReturn: true },
+                { closeOnReturn: true, enterKeyType: Qt.EnterKeyPrevious, expectedVisibleAfterReturn: true },
+            ]
+        }
+
+        function test_closeOnReturnMultiline(data) {
+            prepareTest(data)
+            compare(inputPanel.closeOnReturn(), data.closeOnReturn)
+            verify(inputPanel.visible === true)
+            keyClick(Qt.Key_Return)
+            waitForRendering(inputPanel)
+            verify(inputPanel.visible === data.expectedVisibleAfterReturn)
         }
     }
 }

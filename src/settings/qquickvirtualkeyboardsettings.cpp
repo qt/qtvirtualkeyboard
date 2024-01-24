@@ -371,6 +371,16 @@ void QQuickVirtualKeyboardSettings::setVisibleFunctionKeys(QtVirtualKeyboard::Ke
     Settings::instance()->setVisibleFunctionKeys(newVisibleFunctionKeys);
 }
 
+bool QQuickVirtualKeyboardSettings::closeOnReturn() const
+{
+    return Settings::instance()->closeOnReturn();
+}
+
+void QQuickVirtualKeyboardSettings::setCloseOnReturn(bool closeOnReturn)
+{
+    Settings::instance()->setCloseOnReturn(closeOnReturn);
+}
+
 void QQuickVirtualKeyboardSettings::resetStyle()
 {
     Q_D(QQuickVirtualKeyboardSettings);
@@ -568,6 +578,16 @@ void QQuickVirtualKeyboardSettings::resetStyle()
     \endlist
 
     The default is \c QtVirtualKeyboard.KeyboardFunctionKeys.All.
+*/
+
+/*!
+    \qmlproperty bool VirtualKeyboardSettings::closeOnReturn
+    \since QtQuick.VirtualKeyboard.Settings 6.8
+
+    This property enables hiding of virtual keyboard.
+
+    When this property is set to \c true, the virtual keyboard is hidden when \l Qt::Key_Enter
+    or \l Qt::Key_Return key released. The default is \c false.
 */
 
 /*!

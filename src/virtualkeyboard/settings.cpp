@@ -33,7 +33,9 @@ public:
         hwrTimeoutForCjk(500),
         handwritingModeDisabled(false),
         defaultInputMethodDisabled(false),
-        defaultDictionaryDisabled(false)
+        defaultDictionaryDisabled(false),
+        visibleFunctionKeys(QtVirtualKeyboard::KeyboardFunctionKey::All),
+        closeOnReturn(false)
     {
         ensureUserDataPathExists();
     }
@@ -64,7 +66,8 @@ public:
     bool handwritingModeDisabled;
     bool defaultInputMethodDisabled;
     bool defaultDictionaryDisabled;
-    QtVirtualKeyboard::KeyboardFunctionKeys visibleFunctionKeys = QtVirtualKeyboard::KeyboardFunctionKey::All;
+    QtVirtualKeyboard::KeyboardFunctionKeys visibleFunctionKeys;
+    bool closeOnReturn;
 };
 
 static QScopedPointer<Settings> s_settingsInstance;
@@ -354,6 +357,21 @@ void Settings::setVisibleFunctionKeys(QtVirtualKeyboard::KeyboardFunctionKeys ne
     if (d->visibleFunctionKeys != newVisibleFunctionKeys) {
         d->visibleFunctionKeys = newVisibleFunctionKeys;
         emit visibleFunctionKeysChanged();
+    }
+}
+
+bool Settings::closeOnReturn() const
+{
+    Q_D(const Settings);
+    return d->closeOnReturn;
+}
+
+void Settings::setCloseOnReturn(bool enabled)
+{
+    Q_D(Settings);
+    if (d->closeOnReturn != enabled) {
+        d->closeOnReturn = enabled;
+        emit closeOnReturnChanged();
     }
 }
 
