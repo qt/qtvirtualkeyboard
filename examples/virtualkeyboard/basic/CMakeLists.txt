@@ -12,7 +12,7 @@ endif()
 
 set(INSTALL_EXAMPLEDIR "${INSTALL_EXAMPLESDIR}/virtualkeyboard/basic")
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick OPTIONAL_COMPONENTS Multimedia)
 if(QT_FEATURE_static)
     find_package(Qt6 REQUIRED COMPONENTS Svg)
 endif()
@@ -32,6 +32,11 @@ target_link_libraries(basic PUBLIC
     Qt::Qml
     Qt::Quick
 )
+
+if(TARGET Qt::Multimedia)
+    # See QTBUG-122607
+    target_link_libraries(basic PRIVATE Qt::Multimedia)
+endif()
 
 # Resources:
 set(demo_resource_files
@@ -59,6 +64,12 @@ if(QT_FEATURE_static)
     )
     qt_import_plugins(basic
         INCLUDE Qt::QVirtualKeyboardPlugin
+    )
+endif()
+
+if(ANDROID AND TARGET Qt::Multimedia)
+    qt_import_plugins(basic
+        INCLUDE Qt::QAndroidMediaPlugin
     )
 endif()
 
