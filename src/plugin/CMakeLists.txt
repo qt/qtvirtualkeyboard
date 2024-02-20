@@ -8,7 +8,7 @@
 qt_internal_add_plugin(QVirtualKeyboardPlugin
     OUTPUT_NAME qtvirtualkeyboardplugin
     PLUGIN_TYPE platforminputcontexts
-    DEFAULT_IF FALSE
+    DEFAULT_IF ANDROID
     SOURCES
         plugin.cpp plugin.h
     DEFINES
