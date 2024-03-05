@@ -7,6 +7,7 @@
 #if defined(Q_OS_WIN)
 #include <qt_windows.h>
 #endif
+#include <qpa/qplatforminputcontextfactory_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -15,7 +16,6 @@ using namespace QtVirtualKeyboard;
 Q_LOGGING_CATEGORY(qlcVirtualKeyboard, "qt.virtualkeyboard")
 
 static const char pluginName[] = "qtvirtualkeyboard";
-static const char inputMethodEnvVarName[] = "QT_IM_MODULE";
 
 QStringList QVirtualKeyboardPlugin::keys() const
 {
@@ -26,7 +26,7 @@ QPlatformInputContext *QVirtualKeyboardPlugin::create(const QString &system, con
 {
     Q_UNUSED(paramList);
 
-    if (!qEnvironmentVariableIsSet(inputMethodEnvVarName) || qgetenv(inputMethodEnvVarName) != pluginName)
+    if (!QPlatformInputContextFactory::requested().contains(QLatin1StringView(pluginName)))
         return nullptr;
 
     if (system.compare(system, QLatin1String(pluginName), Qt::CaseInsensitive) != 0)
