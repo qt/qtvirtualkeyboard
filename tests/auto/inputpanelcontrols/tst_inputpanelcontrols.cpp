@@ -7,18 +7,25 @@
 #include <QFileInfo>
 #include <QDir>
 
-static bool s_configEnv = qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
-static bool initStandardPaths() {
-    QStandardPaths::setTestModeEnabled(true);
-    auto configLocations = QStringList()
-            << QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/qtvirtualkeyboard"
-            << QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/qtvirtualkeyboard";
-    for (const QString &configLocation : configLocations) {
-        if (configLocation != "/qtvirtualkeyboard")
-            QDir(configLocation).removeRecursively();
-    }
-    return true;
-}
-static bool s_initStandardPaths = initStandardPaths();
+namespace
+{
 
-QUICK_TEST_MAIN(inputpanelcontrols)
+struct VirtualKeyboardSetup : QObject
+{
+    VirtualKeyboardSetup()
+    {
+        qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+        QStandardPaths::setTestModeEnabled(true);
+        auto configLocations = QStringList()
+                << QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/qtvirtualkeyboard"
+                << QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + "/qtvirtualkeyboard";
+        for (const QString &configLocation : configLocations) {
+            if (configLocation != "/qtvirtualkeyboard")
+                QDir(configLocation).removeRecursively();
+        }
+    }
+};
+
+}
+
+QUICK_TEST_MAIN_WITH_SETUP(inputpanelcontrols, VirtualKeyboardSetup)
