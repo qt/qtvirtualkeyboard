@@ -7,6 +7,17 @@
 #include <QFileInfo>
 #include <QDir>
 
-static bool s_configEnv = qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+namespace
+{
 
-QUICK_TEST_MAIN(shadowinput)
+struct VirtualKeyboardSetup : QObject
+{
+    VirtualKeyboardSetup()
+    {
+        qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+    }
+};
+
+}
+
+QUICK_TEST_MAIN_WITH_SETUP(shadowinput, VirtualKeyboardSetup)
