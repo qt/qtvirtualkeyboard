@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Copyright (C) 2017 The Qt Company Ltd.
-# SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+# SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 
 import os
 import sys
@@ -15,7 +15,7 @@ unipen_file_pattern = re.compile(r'(^[0-9]{2,9}).*\.txt')
 def print_header():
     print """
 // Copyright (C) %s The Qt Company Ltd.
-// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 """ % datetime.datetime.now().year
 
 def scan_unipen_files(path):
