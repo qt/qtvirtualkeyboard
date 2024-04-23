@@ -79,7 +79,7 @@
                 "file type" : "examples and snippets",
                 "spdx" : ["LicenseRef-Qt-Commercial OR BSD-3-Clause"]
             },
-            "config.tests/" : {
+            "config\\.tests/" : {
                 "comment" : "Default",
                 "file type" : "build system",
                 "spdx" : ["BSD-3-Clause"]
