@@ -3,6 +3,8 @@
 
 # Generated from src.pro.
 
+set(QT_SBOM_DEFAULT_QT_LICENSE_ID_LIBRARIES "QT_COMMERCIAL_OR_GPL3")
+
 add_subdirectory(virtualkeyboard)
 add_subdirectory(settings)
 add_subdirectory(components)
