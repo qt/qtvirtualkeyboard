@@ -1,0 +1,27 @@
+// Copyright (C) 2024 The Qt Company Ltd.
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GFDL-1.3-no-invariants-only
+
+/*!
+    \page qtvirtualkeyboard-toc.html
+    \title Qt Virtual Keyboard module topics
+
+    The following list has links to all the individual topics (HTML files)
+    in the Qt Virtual Keyboard module.
+
+    \list
+    \li \l {Qt Virtual Keyboard Overview}{Overview}
+    \li \l {Handwriting Recognition}
+    \li \l {Qt Virtual Keyboard Layouts}{Keyboard Layouts}
+    \li \l {Cerence XT9 Advanced Input}
+    \li \l {Building Qt Virtual Keyboard}
+    \li \l {Deployment Guide}
+    \li \l {User Guide}
+    \li \l {Qt Quick Virtual Keyboard Components QML Types}
+    \li \l {Qt Quick Virtual Keyboard Styles QML Types}
+    \li \l {Qt Quick Virtual Keyboard Settings QML Types}
+    \li \l {Qt Virtual Keyboard API for Applications}
+    \li \l {Qt Virtual Keyboard API for Advanced Use Cases}
+    \li \l {Qt Virtual Keyboard Module QML Types}
+    \endlist
+
+*/

@@ -28,7 +28,7 @@ qhp.QtVirtualKeyboard.virtualFolder = qtvirtualkeyboard
 qhp.QtVirtualKeyboard.indexTitle    = Qt Virtual Keyboard
 qhp.QtVirtualKeyboard.indexRoot     =
 
-qhp.QtVirtualKeyboard.subprojects = classes qmltypes examples
+qhp.QtVirtualKeyboard.subprojects = manual examples classes qmltypes
 
 qhp.QtVirtualKeyboard.subprojects.classes.title = C++ Classes
 qhp.QtVirtualKeyboard.subprojects.classes.indexTitle = Qt Virtual Keyboard C++ Classes
@@ -42,12 +42,19 @@ qhp.QtVirtualKeyboard.subprojects.qmltypes.sortPages = true
 
 qhp.QtVirtualKeyboard.subprojects.examples.title = Examples
 qhp.QtVirtualKeyboard.subprojects.examples.indexTitle = Qt Virtual Keyboard Examples
-qhp.QtVirtualKeyboard.subprojects.examples.selectors = doc:example
+qhp.QtVirtualKeyboard.subprojects.examples.selectors = example
 qhp.QtVirtualKeyboard.subprojects.examples.sortPages = true
+
+qhp.QtVirtualKeyboard.subprojects.manual.title = Qt Virtual Keyboard
+qhp.QtVirtualKeyboard.subprojects.manual.indexTitle = Qt Virtual Keyboard module topics
+qhp.QtVirtualKeyboard.subprojects.manual.type = manual
 
 navigation.landingpage = "Qt Virtual Keyboard"
 navigation.qmltypespage = "Qt Virtual Keyboard QML Types"
 navigation.cppclassespage = "Qt Virtual Keyboard C++ Classes"
+# Auto-generate navigation linking based on "Qt Virtual Keyboard module topics":
+navigation.toctitles = "Qt Virtual Keyboard module topics"
+navigation.toctitles.inclusive = false
 
 # Enforce zero documentation warnings
 warninglimit = 0
