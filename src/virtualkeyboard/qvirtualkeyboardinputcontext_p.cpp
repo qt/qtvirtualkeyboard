@@ -25,7 +25,12 @@ QT_BEGIN_NAMESPACE
 
 using namespace QtVirtualKeyboard;
 
-const bool QtVirtualKeyboard::QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS = qEnvironmentVariableIsSet("QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS");
+
+bool QtVirtualKeyboard::forceEventsWithoutFocus()
+{
+    static bool env = qEnvironmentVariableIsSet("QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS");
+    return env;
+}
 
 QVirtualKeyboardInputContextPrivate::QVirtualKeyboardInputContextPrivate(QVirtualKeyboardInputContext *q_ptr) :
     QObject(nullptr),
