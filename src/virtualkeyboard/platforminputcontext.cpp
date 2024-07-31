@@ -210,7 +210,7 @@ void PlatformInputContext::sendKeyEvent(QKeyEvent *event)
     const QGuiApplication *app = qApp;
     QWindow *focusWindow = nullptr;
     if (app) {
-        if (QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS) {
+        if (QtVirtualKeyboard::forceEventsWithoutFocus()) {
             if (!app->allWindows().isEmpty()) {
                 focusWindow = app->allWindows().first();
             }
@@ -255,7 +255,7 @@ bool PlatformInputContext::evaluateInputPanelVisible() const
     // or input events without focus are enabled.
     return m_visible &&
             ((m_focusObject && inputMethodAccepted()) ||
-             QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS);
+             QtVirtualKeyboard::forceEventsWithoutFocus());
 }
 
 void PlatformInputContext::keyboardRectangleChanged()

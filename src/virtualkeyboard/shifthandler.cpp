@@ -237,7 +237,7 @@ void ShiftHandler::clearToggleShiftTimer()
 void ShiftHandler::reset()
 {
     Q_D(ShiftHandler);
-    if (d->inputContext->priv()->inputItem() || QT_VIRTUALKEYBOARD_FORCE_EVENTS_WITHOUT_FOCUS) {
+    if (d->inputContext->priv()->inputItem() || QtVirtualKeyboard::forceEventsWithoutFocus()) {
         Qt::InputMethodHints inputMethodHints = d->inputContext->inputMethodHints();
         QVirtualKeyboardInputEngine::InputMode inputMode = d->inputContext->inputEngine()->inputMode();
         bool preferUpperCase = (inputMethodHints & (Qt::ImhPreferUppercase | Qt::ImhUppercaseOnly));
