@@ -220,7 +220,11 @@ public:
             }
         }
 
-        dst[o] = NJ_CHAR_NUL;
+        if (o < maxChars) {
+            dst[o] = NJ_CHAR_NUL;
+        } else if (maxChars > 0) {
+            dst[maxChars - 1] = NJ_CHAR_NUL;
+        }
     }
 
     static QString convertNjCharToString(const NJ_CHAR *src, int maxChars)
