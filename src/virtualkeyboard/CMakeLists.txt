@@ -69,6 +69,11 @@ qt_internal_add_qml_module(VirtualKeyboard
         QT_NO_CAST_FROM_BYTEARRAY
         QT_NO_CAST_TO_ASCII
         QVIRTUALKEYBOARD_LIBRARY
+    NO_UNITY_BUILD_SOURCES
+        # "using namespace" causes "reference to 'QtPrivateLogging' is ambiguous"
+        platforminputcontext.cpp
+        qvirtualkeyboardinputcontext_p.cpp
+
     LIBRARIES
         Qt::CorePrivate
         Qt::GuiPrivate
