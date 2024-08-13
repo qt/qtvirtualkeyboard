@@ -15,6 +15,8 @@
 #include <qpa/qplatformnativeinterface.h>
 #include <QtCore/private/qobject_p.h>
 #include <QtCore/QLibraryInfo>
+#include <QtCore/qpointer.h>
+#include <QtGui/qscreen.h>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
@@ -45,6 +47,7 @@ public:
     }
 
     QScopedPointer<InputView> view;
+    QPointer<QScreen> m_screen;
     QRectF keyboardRect;
     QRectF previewRect;
     bool previewVisible;
@@ -63,8 +66,6 @@ DesktopInputPanel::DesktopInputPanel(QObject *parent) :
     /*  Activate the alpha buffer for this application.
     */
     QQuickWindow::setDefaultAlphaBuffer(true);
-    QScreen *screen = QGuiApplication::primaryScreen();
-    connect(screen, SIGNAL(virtualGeometryChanged(QRect)), SLOT(repositionView(QRect)));
 }
 
 DesktopInputPanel::~DesktopInputPanel()
@@ -76,7 +77,8 @@ void DesktopInputPanel::show()
     AppInputPanel::show();
     Q_D(DesktopInputPanel);
     if (d->view) {
-        repositionView(QGuiApplication::primaryScreen()->availableGeometry());
+        if (auto *screen = d->m_screen.isNull() ? QGuiApplication::primaryScreen() : d->m_screen.data())
+            repositionView(screen->availableGeometry());
         d->view->show();
     }
 }
@@ -165,8 +167,34 @@ void DesktopInputPanel::repositionView(const QRect &rect)
 void DesktopInputPanel::focusWindowChanged(QWindow *focusWindow)
 {
     disconnect(this, SLOT(focusWindowVisibleChanged(bool)));
-    if (focusWindow)
+    disconnect(this, SLOT(screenChanged(QScreen*)));
+    if (focusWindow) {
         connect(focusWindow, &QWindow::visibleChanged, this, &DesktopInputPanel::focusWindowVisibleChanged);
+        connect(focusWindow, &QWindow::screenChanged, this, &DesktopInputPanel::screenChanged,
+                Qt::UniqueConnection);
+        screenChanged(focusWindow->screen());
+    }
+}
+
+void DesktopInputPanel::screenChanged(QScreen *screen)
+{
+    Q_D(DesktopInputPanel);
+
+    if (d->m_screen.data() == screen)
+        return;
+
+    if (!d->m_screen.isNull()) {
+        disconnect(d->m_screen.data(), &QScreen::availableGeometryChanged,
+                   this, &DesktopInputPanel::repositionView);
+    }
+
+    d->m_screen = screen;
+
+    if (!d->m_screen.isNull()) {
+        connect(screen, &QScreen::availableGeometryChanged,
+                this, &DesktopInputPanel::repositionView, Qt::UniqueConnection);
+        repositionView(d->m_screen->availableGeometry());
+    }
 }
 
 void DesktopInputPanel::focusWindowVisibleChanged(bool visible)
