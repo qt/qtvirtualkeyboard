@@ -20,6 +20,7 @@
 QT_BEGIN_NAMESPACE
 
 class QWindow;
+class QScreen;
 
 namespace QtVirtualKeyboard {
 
@@ -49,6 +50,7 @@ protected slots:
     void focusWindowVisibleChanged(bool visible);
     void previewRectangleChanged();
     void previewVisibleChanged();
+    void screenChanged(QScreen *);
 
 protected:
     void updateInputRegion();
