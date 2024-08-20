@@ -101,7 +101,7 @@ private:
     \qmltype InputEngine
     \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-internal-qml
-    \instantiates QVirtualKeyboardInputEngine
+    \nativetype QVirtualKeyboardInputEngine
     \brief Maps the user input to the input methods.
 
     The input engine is responsible for routing input events to input

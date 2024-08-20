@@ -90,7 +90,7 @@ public:
 
 /*!
     \qmltype Trace
-    \instantiates QVirtualKeyboardTrace
+    \nativetype QVirtualKeyboardTrace
     \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-internal-qml
     \since QtQuick.VirtualKeyboard 2.0

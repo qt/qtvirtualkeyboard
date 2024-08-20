@@ -17,7 +17,7 @@ using namespace QtVirtualKeyboard;
 
 /*!
     \qmltype InputContext
-    \instantiates QVirtualKeyboardInputContext
+    \nativetype QVirtualKeyboardInputContext
     \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-internal-qml
     \brief Provides access to an input context.

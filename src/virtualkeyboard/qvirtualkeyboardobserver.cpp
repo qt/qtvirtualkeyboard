@@ -18,7 +18,7 @@ public:
 
 /*!
     \qmltype KeyboardObserver
-    \instantiates QVirtualKeyboardObserver
+    \nativetype QVirtualKeyboardObserver
     \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-internal-qml
     \brief Acts as a hub for keyboard event notifications.
