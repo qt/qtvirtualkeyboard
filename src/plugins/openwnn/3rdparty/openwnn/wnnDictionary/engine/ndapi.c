@@ -680,11 +680,10 @@ NJ_EXTERN NJ_INT16 njx_search_word(NJ_CLASS *iwnn, NJ_CURSOR *cursor) {
     NJ_UINT16           kw_len;
     NJ_UINT16           cacheOverKeyPtr;
 
-    NJ_UINT8 exit_flag;                         
+    NJ_UINT8 exit_flag;
     NJ_UINT8 cnt;
     NJ_DIC_HANDLE dhdl;
-    NJ_PREVIOUS_SELECTION_INFO *prev_info = &(iwnn->previous_selection);
-
+    NJ_PREVIOUS_SELECTION_INFO *prev_info;
 
     if (iwnn == NULL) {
         return NJ_SET_ERR_VAL(NJ_FUNC_NJ_SEARCH_WORD, NJ_ERR_PARAM_ENV_NULL);
@@ -693,7 +692,8 @@ NJ_EXTERN NJ_INT16 njx_search_word(NJ_CLASS *iwnn, NJ_CURSOR *cursor) {
         return NJ_SET_ERR_VAL(NJ_FUNC_NJ_SEARCH_WORD, NJ_ERR_PARAM_CURSOR_NULL);
     }
 
-    
+    prev_info = &(iwnn->previous_selection);
+
     cursor->cond.hinsi.fore = NULL;
     cursor->cond.hinsi.foreSize = 0;
     cursor->cond.hinsi.foreFlag = 0;
@@ -701,19 +701,16 @@ NJ_EXTERN NJ_INT16 njx_search_word(NJ_CLASS *iwnn, NJ_CURSOR *cursor) {
     cursor->cond.hinsi.rearSize = 0;
     cursor->cond.hinsi.rearFlag = 0;
 
-    
     if (cursor->cond.yomi == NULL) {
         return NJ_SET_ERR_VAL(NJ_FUNC_CHECK_SEARCH_CURSOR, NJ_ERR_PARAM_YOMI_NULL);
     }
     cursor->cond.ylen = nj_strlen(cursor->cond.yomi);
     cursor->cond.yclen = nj_charlen(cursor->cond.yomi);
 
-    
     if (cursor->cond.ds == NULL) {
         return NJ_SET_ERR_VAL(NJ_FUNC_CHECK_SEARCH_CURSOR, NJ_ERR_PARAM_DIC_NULL);
     }
 
-    
     cursor->cond.ds->mode = NJ_CACHE_MODE_VALID;
 
     p_yomi = cursor->cond.yomi;
