@@ -13,8 +13,6 @@ Item {
     Loader {
         id: anchorHandle
         sourceComponent: keyboard.style.selectionHandle
-        x: visible ? inputContext.anchorRectangle.x - width/2 : 0
-        y: visible ? inputContext.anchorRectangle.y + inputContext.anchorRectangle.height : 0
 
         Behavior on opacity {
             NumberAnimation { duration: 200 }
@@ -45,8 +43,6 @@ Item {
     Loader {
         id: cursorHandle
         sourceComponent: keyboard.style.selectionHandle
-        x: visible ? inputContext.cursorRectangle.x - width/2 : 0
-        y: visible ? inputContext.cursorRectangle.y + inputContext.cursorRectangle.height : 0
 
         Behavior on opacity {
             NumberAnimation { duration: 200 }
@@ -69,6 +65,20 @@ Item {
             onReleased: {
                 root.handleIsMoving = false
             }
+        }
+    }
+
+    Connections {
+        target: inputContext
+        function onCursorRectangleChanged() {
+            var cursorItemPos = root.mapFromItem(null, inputContext.cursorRectangle.x, inputContext.cursorRectangle.y)
+            cursorHandle.x = cursorItemPos.x - cursorHandle.width/2
+            cursorHandle.y = cursorItemPos.y + inputContext.cursorRectangle.height
+        }
+        function onAnchorRectangleChanged() {
+            var anchorItemPos = root.mapFromItem(null, inputContext.anchorRectangle.x, inputContext.anchorRectangle.y)
+            anchorHandle.x = anchorItemPos.x - anchorHandle.width/2
+            anchorHandle.y = anchorItemPos.y + inputContext.anchorRectangle.height
         }
     }
 }
