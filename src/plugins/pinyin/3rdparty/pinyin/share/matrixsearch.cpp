@@ -314,9 +314,8 @@ bool MatrixSearch::reset_search(size_t ch_pos, bool clear_fixed_this_step,
 
     // Modify fixed_hzs_
     if (fixed_hzs_ > 0 &&
-        ((kLemmaIdComposing != lma_id_[0]) ||
-         (kLemmaIdComposing == lma_id_[0] &&
-          spl_start_[c_phrase_.length] <= ch_pos))) {
+        (kLemmaIdComposing != lma_id_[0] ||
+         spl_start_[c_phrase_.length] <= ch_pos)) {
       size_t fixed_ch_pos = ch_pos;
       if (clear_fixed_this_step)
         fixed_ch_pos = fixed_ch_pos > 0 ? fixed_ch_pos - 1 : 0;
