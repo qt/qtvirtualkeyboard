@@ -14,7 +14,7 @@ qt_internal_add_qml_module(qtvkbtcimeplugin
     PLUGIN_TARGET qtvkbtcimeplugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES
-        QtQuick.VirtualKeyboard/auto
+        QtQuick.VirtualKeyboard.Core/auto
     SOURCES
         tcinputmethod.cpp tcinputmethod_p.h
     DEFINES

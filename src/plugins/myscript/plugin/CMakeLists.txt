@@ -27,7 +27,7 @@ qt_internal_add_qml_module(qtvkbmyscriptplugin
     PLUGIN_TARGET qtvkbmyscriptplugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES
-        QtQuick.VirtualKeyboard/auto
+        QtQuick.VirtualKeyboard.Core/auto
     SOURCES
         ${MyScript_ROOT_DIR}/voim/api/c/examples/common/Properties.c
         myscriptinputmethod.cpp myscriptinputmethod_p.h

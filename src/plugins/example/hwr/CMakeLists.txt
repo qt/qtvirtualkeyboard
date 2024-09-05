@@ -8,7 +8,7 @@ qt_internal_add_qml_module(qtvkbexamplehwrplugin
     PLUGIN_TARGET qtvkbexamplehwrplugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES
-        QtQuick.VirtualKeyboard/auto
+        QtQuick.VirtualKeyboard.Core/auto
     SOURCES
         examplehwrinputmethod.cpp examplehwrinputmethod_p.h
     DEFINES

@@ -12,7 +12,7 @@ qt_internal_add_qml_module(qtvkbcerencehwrplugin
     PLUGIN_TARGET qtvkbcerencehwrplugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES
-        QtQuick.VirtualKeyboard/auto
+        QtQuick.VirtualKeyboard.Core/auto
     SOURCES
         cerence_hwr_p.h
         t9writeabstractdictionary_p.h

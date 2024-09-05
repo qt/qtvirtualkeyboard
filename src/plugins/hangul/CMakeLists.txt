@@ -12,7 +12,7 @@ qt_internal_add_qml_module(qtvkbhangulplugin
     PLUGIN_TARGET qtvkbhangulplugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES
-        QtQuick.VirtualKeyboard/auto
+        QtQuick.VirtualKeyboard.Core/auto
     SOURCES
         hangul.cpp hangul_p.h
         hangulinputmethod.cpp hangulinputmethod_p.h

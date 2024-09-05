@@ -14,7 +14,7 @@ qt_internal_add_qml_module(qtvkbopenwnnplugin
     PLUGIN_TARGET qtvkbopenwnnplugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES
-        QtQuick.VirtualKeyboard/auto
+        QtQuick.VirtualKeyboard.Core/auto
     SOURCES
         openwnninputmethod.cpp openwnninputmethod_p.h
     DEFINES

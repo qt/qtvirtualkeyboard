@@ -12,7 +12,7 @@ qt_internal_add_qml_module(HunspellInputMethod
     PLUGIN_TARGET qtvkbhunspellplugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES
-        QtQuick.VirtualKeyboard/auto
+        QtQuick.VirtualKeyboard.Core/auto
     SOURCES
         hunspellinputmethod.cpp hunspellinputmethod_p.cpp hunspellinputmethod_p.h
         hunspellinputmethod_p_p.h

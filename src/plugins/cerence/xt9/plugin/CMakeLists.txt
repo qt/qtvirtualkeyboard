@@ -12,7 +12,7 @@ qt_internal_add_qml_module(qtvkbcerencext9plugin
     PLUGIN_TARGET qtvkbcerencext9plugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES
-        QtQuick.VirtualKeyboard/auto
+        QtQuick.VirtualKeyboard.Core/auto
     SOURCES
         xt9awinputmethod.cpp xt9awinputmethod_p.h
         xt9awinputmethodprivate.cpp xt9awinputmethodprivate_p.h
