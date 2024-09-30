@@ -1,0 +1,8 @@
+version = 1
+
+[[annotations]]
+path = ["**"]
+precedence = "closest"
+comment = "double check where the qt_attribution info applies"
+SPDX-FileCopyrightText = "Copyright (C) 2009 The Android Open Source Project"
+SPDX-License-Identifier = "Apache-2.0"

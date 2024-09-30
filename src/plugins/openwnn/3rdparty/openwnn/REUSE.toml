@@ -1,0 +1,8 @@
+version = 1
+
+[[annotations]]
+path = ["**"]
+precedence = "closest"
+comment = "double check where the qt_attribution info applies"
+SPDX-FileCopyrightText = "Copyright (C) 2008-2012  OMRON SOFTWARE Co., Ltd."
+SPDX-License-Identifier = "Apache-2.0"

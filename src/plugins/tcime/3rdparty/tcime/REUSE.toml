@@ -1,0 +1,12 @@
+version = 1
+
+[[annotations]]
+path = ["**"]
+precedence = "closest"
+comment = "double check where the qt_attribution info applies"
+SPDX-FileCopyrightText = ["Copyright 2010 Google Inc.",
+                          "Copyrighy (c) 1999 TaBE Project.",
+                          "Copyright (c) 1999 Pai-Hsiang Hsiao.",
+                          "Copyright (c) 1999 Computer Systems and Communication Lab, Institute of Information Science, Academia Sinica.",
+                          "Copyright 1996 Chih-Hao Tsai @ Beckman Institute, University of Illinois"]
+SPDX-License-Identifier = "Apache-2.0 AND BSD-3-Clause"
