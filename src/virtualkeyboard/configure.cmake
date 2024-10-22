@@ -173,6 +173,7 @@ qt_feature("cangjie" PRIVATE
 qt_feature("hangul" PRIVATE
     LABEL "Hangul"
     AUTODETECT ( NOT INPUT_lang_ko_KR STREQUAL 'no' )
+    CONDITION QT_FEATURE_vkb_lang_ko_KR
     DISABLE QT_FEATURE_cerence_xt9
 )
 qt_feature("thai" PRIVATE
