@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause
 
 import QtQuick
-import QtQuick.Controls as Controls
+import QtQuick.Controls.Basic as Controls
 import QtQuick.VirtualKeyboard
 
 Controls.TextField {
