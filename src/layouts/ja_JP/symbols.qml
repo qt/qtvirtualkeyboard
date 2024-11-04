@@ -8,7 +8,7 @@ import QtQuick.VirtualKeyboard.Components
 
 KeyboardLayoutLoader {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; JapaneseInputMethod {}', parent, "symbols.qml")
+        return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; JapaneseInputMethod {}', parent, "inputMethodSymbols.qml")
     }
     sharedLayouts: ['main']
     property int page

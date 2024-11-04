@@ -8,7 +8,7 @@ import QtQuick.VirtualKeyboard.Components
 
 KeyboardLayout {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; PinyinInputMethod {}', parent, "main.qml")
+        return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; PinyinInputMethod {}', parent, "inputMethod.qml")
     }
     sharedLayouts: ['symbols']
     keyWeight: 160
