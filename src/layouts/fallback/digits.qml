@@ -82,8 +82,8 @@ KeyboardLayout {
             Key {
                 // The decimal key, if it is not "," then we fallback to
                 // "." in case it is an unhandled different result
-                key: Qt.locale().decimalPoint === "," ? Qt.Key_Comma : Qt.Key_Period
-                text: Qt.locale().decimalPoint === "," ? "," : "."
+                key: text === "," ? Qt.Key_Comma : Qt.Key_Period
+                text: Qt.locale(keyboard.inputLocale).decimalPoint
             }
             EnterKey {}
         }

@@ -427,11 +427,11 @@ Rectangle {
         }
 
         function test_inputMethodHints_data() {
-            var decmialPoint = Qt.locale().decimalPoint
+            var decmialPoint = Qt.locale(inputPanel.locale).decimalPoint
             return [
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhUppercaseOnly, inputSequence: "uppercase text? yes.", outputText: "UPPERCASE TEXT? YES." },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhLowercaseOnly, inputSequence: "uppercase text? no.", outputText: "uppercase text? no." },
-                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly, inputSequence: "1234567890" + decmialPoint, outputText: "1234567890" + decmialPoint },
+                { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly, inputSequence: "1234567890", decmialPoint , outputText: "1234567890", decmialPoint },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhFormattedNumbersOnly, inputSequence: "1234567890+-,.()", outputText: "1234567890+-,.()" },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDialableCharactersOnly, inputSequence: "1234567890+*#", outputText: "1234567890+*#" },
                 { initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhEmailCharactersOnly, inputSequence: "a@b.c", outputText: "a@b.c" },
@@ -452,6 +452,20 @@ Rectangle {
 
             Qt.inputMethod.commit()
             compare(textInput.text, data.outputText)
+        }
+
+        function test_digitsOnlyDecimalSeparator_data() {
+            return [
+                { initLocale: "en_GB", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly, expectedDecimalSeparator: "." },
+                { initLocale: "fi_FI", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly, expectedDecimalSeparator: "," },
+            ]
+        }
+
+        function test_digitsOnlyDecimalSeparator(data) {
+            prepareTest(data)
+
+            inputPanel.virtualKeyClick(data.expectedDecimalSeparator)
+            compare(textInput.text, data.expectedDecimalSeparator)
         }
 
         function test_toggleShift_data() {
