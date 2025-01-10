@@ -16,6 +16,8 @@ class Xt9AwInputMethod : public Xt9InputMethod
     Q_OBJECT
     Q_DECLARE_PRIVATE(Xt9AwInputMethod)
     QML_NAMED_ELEMENT(DefaultInputMethod)
+    QML_ADDED_IN_VERSION(2, 0)
+
 protected:
     Xt9AwInputMethod(Xt9AwInputMethodPrivate &dd, QObject *parent = nullptr);
 

@@ -27,6 +27,8 @@ class HangulInputMethod : public QVirtualKeyboardAbstractInputMethod
     Q_OBJECT
     Q_DECLARE_PRIVATE(HangulInputMethod)
     QML_ELEMENT
+    QML_ADDED_IN_VERSION(2, 0)
+
 public:
     explicit HangulInputMethod(QObject *parent = nullptr);
     ~HangulInputMethod();

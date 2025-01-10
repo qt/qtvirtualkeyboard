@@ -23,6 +23,7 @@ set(MYSCRIPT_LANGUAGE_RESOURCES_NAME "resources")
 qt_internal_add_qml_module(qtvkbmyscriptplugin
     URI "QtQuick.VirtualKeyboard.Plugins.MyScript"
     VERSION "${PROJECT_VERSION}"
+    PAST_MAJOR_VERSIONS 2
     PLUGIN_TARGET qtvkbmyscriptplugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES

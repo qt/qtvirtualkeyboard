@@ -8,6 +8,7 @@
 qt_internal_add_qml_module(qtvkbhangulplugin
     URI "QtQuick.VirtualKeyboard.Plugins.Hangul"
     VERSION "${PROJECT_VERSION}"
+    PAST_MAJOR_VERSIONS 2
     PLUGIN_TARGET qtvkbhangulplugin
     NO_PLUGIN_OPTIONAL
     DEPENDENCIES

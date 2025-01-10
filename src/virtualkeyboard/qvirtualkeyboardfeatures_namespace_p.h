@@ -26,6 +26,7 @@ namespace QVirtualKeyboardFeatures {
 
 Q_VIRTUALKEYBOARD_PRIVATE_EXPORT Q_NAMESPACE
 QML_NAMED_ELEMENT(VirtualKeyboardFeatures)
+QML_ADDED_IN_VERSION(6, 4)
 
 enum Feature {
     Handwriting =

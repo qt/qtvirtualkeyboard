@@ -16,6 +16,7 @@ endif()
 qt_internal_add_qml_module(qtvkbcerenceplugin
     URI "QtQuick.VirtualKeyboard.Plugins.Cerence"
     VERSION "${PROJECT_VERSION}"
+    PAST_MAJOR_VERSIONS 2
     PLUGIN_TARGET qtvkbcerenceplugin
     IMPORTS
         ${cerence_imports}
