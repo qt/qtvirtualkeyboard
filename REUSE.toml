@@ -1,7 +1,8 @@
 version = 1
 
 [[annotations]]
-path = ["src/styles/builtin/**/images/*"]
+path = ["src/styles/builtin/**/images/*",
+        "src/plugin/qtvirtualkeyboard.json"]
 precedence = "closest"
 comment = "module and plugin"
 SPDX-FileCopyrightText = "Copyright (C) 2024 The Qt Company Ltd."
@@ -9,6 +10,7 @@ SPDX-License-Identifier = "LicenseRef-Qt-Commercial OR GPL-3.0-only"
 
 [[annotations]]
 path = ["tests/**.txt",
+        "tests/**.json",
         "tests/manual/x11vkbwrapper/chromeextension/icons/Qt_logo.png",
         "tests/manual/x11vkbwrapper/graphics/Qt_logo.png"]
 precedence = "closest"
@@ -17,7 +19,7 @@ SPDX-FileCopyrightText = "Copyright (C) 2024 The Qt Company Ltd."
 SPDX-License-Identifier = "LicenseRef-Qt-Commercial OR GPL-3.0-only"
 
 [[annotations]]
-path = ["**CMakeLists.txt", ".cmake.conf", "**.yaml", "**.json",
+path = ["**CMakeLists.txt", ".cmake.conf", "**.yaml", "**ci_config_linux.json",
         "**BLACKLIST", "**config.h.cmake.in", "qt_cmdline.cmake"]
 precedence = "closest"
 comment = "build system"
@@ -32,14 +34,14 @@ SPDX-FileCopyrightText = "Copyright (C) 2024 The Qt Company Ltd."
 SPDX-License-Identifier = "BSD-3-Clause"
 
 [[annotations]]
-path = ["**/doc/images/**", "examples/**", "**/doc/snippets/**"]
+path = ["examples/**", "**/doc/snippets/**"]
 comment = "this must be after the build system table because example and snippets take precedence over build system"
 precedence = "closest"
 SPDX-FileCopyrightText = "Copyright (C) 2024 The Qt Company Ltd."
 SPDX-License-Identifier = "LicenseRef-Qt-Commercial OR BSD-3-Clause"
 
 [[annotations]]
-path = ["**/README*", "**.qdocconf", "**.qdocinc"]
+path = ["**/doc/images/**", "**/README*", "**.qdocconf", "**.qdocinc"]
 comment = "documentation"
 precedence = "closest"
 SPDX-FileCopyrightText = "Copyright (C) 2024 The Qt Company Ltd."
