@@ -20,13 +20,26 @@
     platforms and another for embedded platforms. The former version
     enables text input into several text fields using the virtual keyboard,
     whereas the latter version uses the same UI but with a custom virtual
-    keyboard InputPanel. The following snippet from
-    \c basic.pro shows how the qmake project is set up to choose the
-    appropriate implementation based on the CONFIG options:
+    keyboard InputPanel. The following snippets show how to set up the project
+    to choose the appropriate implementation based on the CONFIG options:
 
-    \quotefromfile basic/basic.pro
-    \skipto vkb-desktop
-    \printuntil /^\}$/
+    \list
+    \li In qmake (\c basic.pro):
+
+        \quotefromfile basic/basic.pro
+        \skipto vkb-desktop
+        \printuntil /^\}$/
+
+    \li In CMake (\c CMakeLists.txt):
+
+        \quotefromfile basic/CMakeLists.txt
+        \skipto QT_FEATURE_vkb_desktop
+        \printuntil endif()
+        \dots
+        \skipto QT_FEATURE_vkb_desktop
+        \printuntil endif()
+
+    \endlist
 
     The example enables the virtual keyboard by setting the \c QT_IM_MODULE
     environment variable before loading the \c .qml file:
