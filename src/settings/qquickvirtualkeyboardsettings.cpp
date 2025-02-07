@@ -10,7 +10,6 @@
 #include <QDir>
 #include <QRegularExpression>
 #include <QtCore/private/qobject_p.h>
-#include <QtCore/qmutex.h>
 #ifdef QT_VIRTUALKEYBOARD_SOUNDS_ENABLED
 #include <QtMultimedia/qaudio.h>
 #endif
@@ -161,18 +160,10 @@ QQuickVirtualKeyboardSettings::QQuickVirtualKeyboardSettings(QQmlEngine *engine,
 
 /*!
     \internal
-    TODO: Remove this method when QML stops creating separate singleton instances for each version.
  */
-QQuickVirtualKeyboardSettings *QQuickVirtualKeyboardSettings::create(
-        QQmlEngine *qmlEngine, QJSEngine *)
+QQuickVirtualKeyboardSettings *QQuickVirtualKeyboardSettings::create(QQmlEngine *qmlEngine, QJSEngine *)
 {
-    static QMutex mutex;
-    static QHash<QQmlEngine *, QQuickVirtualKeyboardSettings *> instances;
-    QMutexLocker locker(&mutex);
-    QQuickVirtualKeyboardSettings *&instance = instances[qmlEngine];
-    if (instance == nullptr)
-        instance = new QQuickVirtualKeyboardSettings(qmlEngine);
-    return instance;
+    return new QQuickVirtualKeyboardSettings(qmlEngine);
 }
 
 /*!
