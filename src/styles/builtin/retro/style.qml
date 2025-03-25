@@ -763,7 +763,7 @@ KeyboardStyle {
             border.right: 79
             border.bottom: 79
             horizontalTileMode: BorderImage.Stretch
-            scale: parent.height / sourceSize.height
+            scale: parent.height > 0 && sourceSize.height > 0 ? parent.height / sourceSize.height : 1
         }
         Image {
             visible: currentItemOffset !== undefined
