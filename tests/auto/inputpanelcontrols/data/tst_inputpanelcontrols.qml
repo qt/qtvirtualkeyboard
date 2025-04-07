@@ -94,5 +94,31 @@ Rectangle {
             mouseRelease(inputPanel, 10, 10, Qt.LeftButton, Qt.NoModifier, 20)
             compare(modalDialog.textEdit.text, "Q")
         }
+
+        Component {
+            id: buttonComp
+
+            Button {
+                id: button
+                text: "overlapping VKB blocks hover"
+                height: parent.height
+
+                background: Rectangle {
+                    color: button.hovered ? "tomato" : "wheat"
+                    radius: 2
+                }
+            }
+        }
+
+        function test_blockHover() {
+            prepareTest()
+            var button = buttonComp.createObject(container)
+
+            mouseMove(button, 10, 10)
+            verify(button.hovered)
+
+            mouseMove(inputPanel, 10, inputPanel.height / 2)
+            compare(button.hovered, false)
+        }
     }
 }

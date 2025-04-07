@@ -117,6 +117,7 @@ Item {
         z: -1
         anchors.fill: keyboard
         enabled: active
+        hoverEnabled: active
     }
 
     Binding {
