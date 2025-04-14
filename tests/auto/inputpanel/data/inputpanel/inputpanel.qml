@@ -34,7 +34,7 @@ InputPanel {
     readonly property MultiPointTouchArea keyboardInputArea: keyboard.keyboardInputArea
     readonly property CharacterPreviewBubble characterPreviewBubble: keyboard.characterPreview
     readonly property AlternativeKeys alternativeKeys: keyboard.alternativeKeys
-    readonly property Loader naviationHighlight: keyboard.naviationHighlight
+    readonly property Loader navigationHighlight: keyboard.navigationHighlight
     readonly property ListView wordCandidateView: keyboard.wordCandidateView
     readonly property Item wordCandidateContextMenu: keyboard.wordCandidateContextMenu
     readonly property ShadowInputControl shadowInputControl: keyboard.shadowInputControl
@@ -549,18 +549,18 @@ InputPanel {
 
     function navigateToKeyOnPoint(point) {
         activateNavigationKeyMode()
-        if (inputPanel.naviationHighlight.visible) {
+        if (inputPanel.navigationHighlight.visible) {
             while (true) {
-                var navigationPoint = inputPanel.mapToItem(inputPanel.naviationHighlight, point.x, point.y)
-                if (inputPanel.naviationHighlight.contains(Qt.point(navigationPoint.x, navigationPoint.y)))
+                var navigationPoint = inputPanel.mapToItem(inputPanel.navigationHighlight, point.x, point.y)
+                if (inputPanel.navigationHighlight.contains(Qt.point(navigationPoint.x, navigationPoint.y)))
                     return true
-                if (inputPanel.naviationHighlight.y > point.y)
+                if (inputPanel.navigationHighlight.y > point.y)
                     emulateNavigationKeyClick(Qt.Key_Up)
-                else if (inputPanel.naviationHighlight.y + inputPanel.naviationHighlight.height < point.y)
+                else if (inputPanel.navigationHighlight.y + inputPanel.navigationHighlight.height < point.y)
                     emulateNavigationKeyClick(Qt.Key_Down)
-                else if (inputPanel.naviationHighlight.x > point.x)
+                else if (inputPanel.navigationHighlight.x > point.x)
                     emulateNavigationKeyClick(Qt.Key_Left)
-                else if (inputPanel.naviationHighlight.x + inputPanel.naviationHighlight.width < point.x)
+                else if (inputPanel.navigationHighlight.x + inputPanel.navigationHighlight.width < point.x)
                     emulateNavigationKeyClick(Qt.Key_Right)
             }
         }
@@ -611,13 +611,13 @@ InputPanel {
     }
 
     function activateNavigationKeyMode() {
-        if (!inputPanel.naviationHighlight.visible) {
+        if (!inputPanel.navigationHighlight.visible) {
             emulateNavigationKeyClick(Qt.Key_Right)
-            if (inputPanel.naviationHighlight.visible) {
+            if (inputPanel.navigationHighlight.visible) {
                 testcase.wait(1)
             }
         }
-        return inputPanel.naviationHighlight.visible
+        return inputPanel.navigationHighlight.visible
     }
 
     function toggleShift() {

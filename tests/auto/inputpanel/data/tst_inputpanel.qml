@@ -692,7 +692,7 @@ Rectangle {
             if (!inputPanel.activateNavigationKeyMode())
                 skip("Arrow key navigation not enabled")
 
-            verify(inputPanel.naviationHighlight.visible)
+            verify(inputPanel.navigationHighlight.visible)
             verify(inputPanel.navigateToKey(data.initialKey))
 
             for (var inputIndex in data.inputSequence) {
@@ -724,7 +724,7 @@ Rectangle {
 
             if (!inputPanel.activateNavigationKeyMode())
                 skip("Arrow key navigation not enabled")
-            verify(inputPanel.naviationHighlight.visible)
+            verify(inputPanel.navigationHighlight.visible)
 
             verify(inputPanel.navigateToKey(data.initialKey))
             var initialKeyObj = inputPanel.keyboardInputArea.initialKey
@@ -747,7 +747,7 @@ Rectangle {
 
             if (!inputPanel.activateNavigationKeyMode())
                 skip("Arrow key navigation not enabled")
-            verify(inputPanel.naviationHighlight.visible)
+            verify(inputPanel.navigationHighlight.visible)
 
             verify(inputPanel.navigationKeyClick("q"))
             verify(inputPanel.navigationKeyClick("q"))
@@ -854,7 +854,7 @@ Rectangle {
 
             if (!inputPanel.activateNavigationKeyMode())
                 skip("Arrow key navigation not enabled")
-            verify(inputPanel.naviationHighlight.visible)
+            verify(inputPanel.navigationHighlight.visible)
 
             verify(inputPanel.navigateToKey("q"))
             var initialKey = inputPanel.keyboardInputArea.initialKey

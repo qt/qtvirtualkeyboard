@@ -23,7 +23,7 @@ Item {
     property alias characterPreview: characterPreview
     property alias wordCandidateContextMenu: wordCandidateContextMenu
     property alias fullScreenModeSelectionControl: fullScreenModeSelectionControl
-    property alias naviationHighlight: naviationHighlight
+    property alias navigationHighlight: navigationHighlight
     property alias keyboardInputArea: keyboardInputArea
     property Item activeKey: null
     property TouchPoint activeTouchPoint
@@ -599,8 +599,8 @@ Item {
         }
     }
     Loader {
-        id: naviationHighlight
-        objectName: "naviationHighlight"
+        id: navigationHighlight
+        objectName: "navigationHighlight"
         property var highlightItem: {
             if (keyboard.navigationModeActive) {
                 if (languagePopupListActive) {
@@ -631,16 +631,16 @@ Item {
         visible: keyboard.navigationModeActive && highlightItem !== null && highlightItem !== keyboard
         sourceComponent: keyboard.style.navigationHighlight
         Behavior on x {
-            NumberAnimation { id: xAnimation; duration: naviationHighlight.moveDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { id: xAnimation; duration: navigationHighlight.moveDuration; easing.type: Easing.OutCubic }
         }
         Behavior on y {
-            NumberAnimation { id: yAnimation; duration: naviationHighlight.moveDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { id: yAnimation; duration: navigationHighlight.moveDuration; easing.type: Easing.OutCubic }
         }
         Behavior on width {
-            NumberAnimation { id: widthAnimation; duration: naviationHighlight.resizeDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { id: widthAnimation; duration: navigationHighlight.resizeDuration; easing.type: Easing.OutCubic }
         }
         Behavior on height {
-            NumberAnimation { id: heightAnimation; duration: naviationHighlight.resizeDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { id: heightAnimation; duration: navigationHighlight.resizeDuration; easing.type: Easing.OutCubic }
         }
     }
 
