@@ -214,7 +214,7 @@ void ShiftHandler::toggleShift()
         QStyleHints *style = QGuiApplication::styleHints();
 
         if (!d->timer.isValid() || d->timer.elapsed() > style->mouseDoubleClickInterval()) {
-            d->timer.restart();
+            d->timer.start();
         } else if (d->timer.elapsed() < style->mouseDoubleClickInterval() && !d->capsLock) {
             setCapsLockActive(!d->capsLock && d->shift && !d->shiftChanged);
         }
