@@ -409,6 +409,12 @@ bool PinyinInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::KeyboardM
                 d->chooseAndUpdate(-1);
                 return true;
             }
+        } else if (key >= Qt::Key_0 && key <= Qt::Key_9) {
+            if (d->state != PinyinInputMethodPrivate::Predict && d->candidatesCount() > 0) {
+                QString surface = d->surface;
+                d->resetToIdleState();
+                inputContext()->commit(surface);
+            }
         } else if (!text.isEmpty()) {
             d->chooseAndFinish();
         }
