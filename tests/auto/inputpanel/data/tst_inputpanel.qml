@@ -975,6 +975,7 @@ Rectangle {
                 { initInputMethodHints: Qt.ImhNone | Qt.ImhSensitiveData, initLocale: "zh_CN", inputSequence: "zhang'ang", expectedCandidates: [ "\u7AE0", "\u6602" ], outputText: "\u7AE0\u6602" },
                 // Invalid pinyin sequence
                 { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "fi", expectedCandidates: [ "\u53D1", "i" ], outputText: "\u53D1i" },
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "dfrt7", expectedCandidates: [], outputText: "dfrt7" },
             ]
         }
 
