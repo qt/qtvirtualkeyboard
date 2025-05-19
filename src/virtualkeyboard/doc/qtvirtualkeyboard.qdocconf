@@ -14,6 +14,9 @@ exampledirs += ../../../examples/virtualkeyboard \
     snippets
 examplesinstallpath = virtualkeyboard
 
+# Path to the root of qtvirtualkeyboard (for automatic linking to source code)
+url.sources.rootdir     = ../../..
+
 manifestmeta.highlighted.names = "QtVirtualKeyboard/Virtual Keyboard in Qt Quick"
 
 imagedirs += images
