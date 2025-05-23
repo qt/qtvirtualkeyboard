@@ -1,7 +1,7 @@
 // Copyright (C) MyScript. Contact: https://www.myscript.com/about/contact-us/sales-inquiry/
 // Copyright (C) 2017 Klaralvdalens Datakonsult AB (KDAB). Contact: https://www.qt.io/licensing/
 // Copyright (C) 2017 The Qt Company Ltd.
-// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
+// SPDX-License-Identifier: LicenseRef-Qt-Commercial
 
 #ifndef MYSCRIPTINPUTMETHOD_P_P_H
 #define MYSCRIPTINPUTMETHOD_P_P_H
