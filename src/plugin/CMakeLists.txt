@@ -22,6 +22,13 @@ qt_internal_add_plugin(QVirtualKeyboardPlugin
         Qt::VirtualKeyboardPrivate
 )
 
+# Desktop keyboard loads QML module implicitly, which should be considered
+# by build system.
+qt_internal_extend_target(QVirtualKeyboardPlugin CONDITION QT_FEATURE_vkb_desktop
+    LIBRARIES
+        Qt6::VirtualKeyboardQml
+)
+
 qt_internal_extend_target(QVirtualKeyboardPlugin CONDITION WIN32
     LIBRARIES
         imm32
