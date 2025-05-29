@@ -6,7 +6,7 @@ dependencies:
     ref: 1e6adc3d5f1f4cbbb77b41911395782dff43cccd
     required: true
   ../qtmultimedia:
-    ref: eb68fb41b719ab79f9f5b87d46f285fc820dca9c
+    ref: 26624e5522b7dfff2f9082705fa8278868fa2983
     required: false
   ../qtsvg:
     ref: eac4588150968e3cdfcee06a4ccfa5aec4c4b938
