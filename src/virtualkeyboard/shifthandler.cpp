@@ -33,6 +33,7 @@ public:
         toggleShiftEnabled(false),
         shift(false),
         shiftChanged(false),
+        shiftBeforeCapsLock(false),
         capsLock(false),
         resetWhenVisible(false),
         manualShiftLanguageFilter(QSet<QLocale::Language>() << QLocale::Arabic << QLocale::Persian << QLocale::Hindi << QLocale::Korean << QLocale::Thai),
@@ -48,6 +49,7 @@ public:
     bool toggleShiftEnabled;
     bool shift;
     bool shiftChanged;
+    bool shiftBeforeCapsLock;
     bool capsLock;
     bool resetWhenVisible;
     QLocale locale;
@@ -206,17 +208,18 @@ void ShiftHandler::toggleShift()
         bool capsLock = d->capsLock;
         setCapsLockActive(!capsLock);
         setShiftActive(!capsLock);
+    } else if (d->capsLock) {
+        setCapsLockActive(!d->capsLock && d->shift && !d->shiftChanged);
+        setShiftActive(d->shiftBeforeCapsLock);
+        d->shiftChanged = false;
     } else {
-        if (d->capsLock) {
-            setCapsLockActive(!d->capsLock && d->shift && !d->shiftChanged);
-        }
-
         QStyleHints *style = QGuiApplication::styleHints();
 
         if (!d->timer.isValid() || d->timer.elapsed() > style->mouseDoubleClickInterval()) {
             d->timer.start();
+            d->shiftBeforeCapsLock = d->shift;
         } else if (d->timer.elapsed() < style->mouseDoubleClickInterval() && !d->capsLock) {
-            setCapsLockActive(!d->capsLock && d->shift && !d->shiftChanged);
+            setCapsLockActive(!d->capsLock);
         }
 
         setShiftActive(d->capsLock || !d->shift);
@@ -292,6 +295,10 @@ void ShiftHandler::autoCapitalize()
                 setShiftActive(false);
         }
     }
+
+    // This will prevent unwanted capsLock-enable
+    if (d->timer.isValid())
+        d->timer.invalidate();
 }
 
 void ShiftHandler::restart()
