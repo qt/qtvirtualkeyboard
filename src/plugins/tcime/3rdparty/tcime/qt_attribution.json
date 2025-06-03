@@ -4,6 +4,7 @@
     "QDocModule": "qtvirtualkeyboard",
     "Description": "Traditional Chinese IME (tcime) is an input method engine for traditional Chinese.",
     "QtUsage": "Optionally used in Qt Virtual Keyboard.",
+    "Comment": "no relevant PURL or CPE set, because the dependency is huge, and would show a lot of false positives, at this point it should be considered as part of Qt",
 
     "License": "Apache License 2.0 and BSD 3-clause \"New\" or \"Revised\" License",
     "LicenseId": "Apache-2.0 AND BSD-3-Clause",
