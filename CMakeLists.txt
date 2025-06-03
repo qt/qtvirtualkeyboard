@@ -17,7 +17,16 @@ project(QtVirtualKeyboard
 set(QT_USE_FIXED_QT_ADD_RESOURCE_BASE TRUE)
 
 find_package(Qt6 ${PROJECT_VERSION} CONFIG REQUIRED COMPONENTS BuildInternals Core) # special case
-find_package(Qt6 ${PROJECT_VERSION} QUIET CONFIG OPTIONAL_COMPONENTS Qml QmlTools Quick Svg QuickTest QuickControls2) # special case
+find_package(Qt6 ${PROJECT_VERSION} QUIET CONFIG
+    OPTIONAL_COMPONENTS
+        Qml
+        QmlTools
+        Quick
+        Svg
+        QuickTest
+        QuickControls2
+        Multimedia
+)
 qt_internal_project_setup()
 
 if(NOT TARGET Qt::Quick)

@@ -6,7 +6,7 @@ qt_internal_add_3rdparty_library(BundledHunspell
     QMAKE_LIB_NAME hunspell
     STATIC
     SOURCES
-        hunspell/config.h
+        ${CMAKE_CURRENT_BINARY_DIR}/hunspell/config.h
         hunspell/src/hunspell/affentry.cxx hunspell/src/hunspell/affentry.hxx
         hunspell/src/hunspell/affixmgr.cxx hunspell/src/hunspell/affixmgr.hxx
         hunspell/src/hunspell/atypes.hxx
