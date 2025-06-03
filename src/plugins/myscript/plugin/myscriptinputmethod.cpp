@@ -950,8 +950,10 @@ MyScriptInputMethod::MyScriptInputMethod(QObject *parent) :
     QVirtualKeyboardAbstractInputMethod(parent),
     d_ptr(new MyScriptInputMethodPrivate(this))
 {
-    connect(this, SIGNAL(preeditTextChanged(QString, bool, int, int, int)), this, SLOT(setPreeditText(QString, bool, int, int, int)));
-    connect(this, SIGNAL(gestureDetected(int, int)), this, SLOT(doGestureAction(int, int)));
+    connect(this, SIGNAL(preeditTextChanged(QString,bool,int,int,int)),
+            this, SLOT(setPreeditText(QString,bool,int,int,int)));
+    connect(this, SIGNAL(gestureDetected(int,int)),
+            this, SLOT(doGestureAction(int,int)));
 }
 
 MyScriptInputMethod::~MyScriptInputMethod()
