@@ -4,6 +4,7 @@
     "QDocModule": "qtvirtualkeyboard",
     "Description": "OpenWnn is a Japanese keyboard/IME from the Android Open Source Project.",
     "QtUsage": "Optionally used in Qt Virtual Keyboard.",
+    "Comment": "no relevant PURL or CPE set, because the dependency is huge, and would show a lot of false positives, at this point it should be considered as part of Qt",
 
     "License": "Apache License 2.0",
     "LicenseId": "Apache-2.0",
