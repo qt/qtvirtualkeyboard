@@ -144,7 +144,7 @@ void QVirtualKeyboardSelectionListModel::setDataSource(QVirtualKeyboardAbstractI
     Q_D(QVirtualKeyboardSelectionListModel);
     if (d->dataSource) {
         disconnect(this, SLOT(selectionListChanged(Type)));
-        disconnect(this, SLOT(selectionListActiveItemChanged(Type, int)));
+        disconnect(this, SLOT(selectionListActiveItemChanged(Type,int)));
         disconnect(this, SLOT(dataSourceDestroyed()));
     }
     d->type = type;
