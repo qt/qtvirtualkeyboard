@@ -77,7 +77,7 @@ Rectangle {
             inputPanel.setLayoutMirroring(data !== undefined && data.hasOwnProperty("layoutMirroring") && data.layoutMirroring)
             inputPanel.setVisibleFunctionKeys(data !== undefined && data.hasOwnProperty("visibleFunctionKeys") ? data.visibleFunctionKeys : ["All"])
             inputPanel.setCloseOnReturn(data !== undefined && data.hasOwnProperty("closeOnReturn") && data.closeOnReturn)
-
+            inputPanel.noAnimations = !data || !data.hasOwnProperty("noAnimations") || data.noAnimations
 
             var window = container.Window.window
             verify(window)
@@ -1957,6 +1957,48 @@ Rectangle {
                 var currentIndex = data.activeLocales.indexOf(languagePopupList.model.get(i).localeName)
                 verify(currentIndex > previousIndex)
                 previousIndex = currentIndex
+            }
+        }
+
+
+        function test_languagePopupListToggleCheckItemsVisible_data() {
+            return [
+                { initLocale: "fi_FI", noAnimations: false },
+            ]
+        }
+
+        function test_languagePopupListToggleCheckItemsVisible(data) {
+            prepareTest(data)
+
+            if (!inputPanel.keyboard.style.languagePopupListEnabled)
+                skip("The language popup is disabled (!style.languagePopupListEnabled)")
+
+            var languagePopupList = inputPanel.findObjectByName("languagePopupList")
+
+            // show
+            inputPanel.doKeyboardFunction("ChangeLanguage")
+            waitForPolish(languagePopupList)
+
+            // hide
+            inputPanel.doKeyboardFunction("ChangeLanguage")
+
+            // show
+            inputPanel.doKeyboardFunction("ChangeLanguage")
+            waitForPolish(languagePopupList)
+
+            function checkItemVisibility(index) {
+                if (index >= 0 && index < languagePopupList.count) {
+                    let itemDelegate = languagePopupList.itemAtIndex(index)
+                    verify(itemDelegate.visible)
+                    compare(itemDelegate.opacity, 1)
+                }
+            }
+
+            if (languagePopupList.preferredVisibleItems > 2) {
+                let numberOfSurroundingItems = Math.floor((languagePopupList.preferredVisibleItems - 1) / 2)
+                for (let offset = -numberOfSurroundingItems; offset < numberOfSurroundingItems; ++offset) {
+                    checkItemVisibility(languagePopupList.currentIndex + offset)
+                }
             }
         }
 
