@@ -1259,14 +1259,14 @@ Item {
         }
 
         function show(locales, parentItem, customLayoutsOnly) {
+            let currentIndex = -1
             if (!languagePopupList.enabled) {
                 languageListModel.clear()
                 for (var i = 0; i < locales.length; i++) {
                     languageListModel.append({localeName: locales[i].name, displayName: locales[i].locale.nativeLanguageName, localeIndex: locales[i].index})
                     if (locales[i].index === keyboard.localeIndex)
-                        languagePopupList.currentIndex = i
+                        currentIndex = i
                 }
-                languagePopupList.positionViewAtIndex(languagePopupList.currentIndex, ListView.Center)
                 if (parentItem) {
                     languagePopupList.anchors.leftMargin = Qt.binding(function() {
                         const newLeftMargin = Math.round(keyboard.mapFromItem(parentItem, (parentItem.width - languagePopupList.width) / 2, 0).x)
@@ -1279,6 +1279,11 @@ Item {
                 }
             }
             languagePopupList.enabled = true
+            if (currentIndex !== -1) {
+                languagePopupList.currentIndex = currentIndex
+                languagePopupList.forceLayout()
+                languagePopupList.positionViewAtIndex(currentIndex, ListView.Center)
+            }
         }
 
         function hide() {

@@ -18,6 +18,7 @@ InputPanel {
 
     property var testcase
     property var virtualKeyPressPoint: null
+    property bool noAnimations: true
     readonly property int cursorPosition: InputContext.cursorPosition
     readonly property string preeditText: InputContext.preeditText
     readonly property string surroundingText: InputContext.surroundingText
@@ -207,7 +208,7 @@ InputPanel {
     Binding {
         target: keyboard
         property: "noAnimations"
-        value: true
+        value: inputPanel.noAnimations
     }
 
     // Reduce press and hold delay to avoid unnecessary wait during tests
