@@ -47,6 +47,7 @@ class QQuickVirtualKeyboardSettings : public QObject
     Q_PROPERTY(QtVirtualKeyboard::KeyboardFunctionKeys visibleFunctionKeys READ visibleFunctionKeys WRITE setVisibleFunctionKeys NOTIFY visibleFunctionKeysChanged REVISION(6, 6))
     Q_PROPERTY(bool closeOnReturn READ closeOnReturn WRITE setCloseOnReturn NOTIFY closeOnReturnChanged REVISION(6, 8))
     Q_PROPERTY(qreal keySoundVolume READ keySoundVolume WRITE setKeySoundVolume NOTIFY keySoundVolumeChanged REVISION(6, 9))
+    Q_PROPERTY(bool arrowKeyNavigationEnabled READ arrowKeyNavigationEnabled WRITE setArrowKeyNavigationEnabled NOTIFY arrowKeyNavigationEnabledChanged REVISION(6, 11))
     QML_NAMED_ELEMENT(VirtualKeyboardSettings)
     QML_SINGLETON
     QML_ADDED_IN_VERSION(1, 0)
@@ -107,6 +108,9 @@ public:
     qreal keySoundVolume() const;
     void setKeySoundVolume(qreal volume);
 
+    bool arrowKeyNavigationEnabled() const;
+    void setArrowKeyNavigationEnabled(bool arrowKeyNavigationEnabled);
+
     Q_REVISION(6, 9)
     Q_INVOKABLE qreal convertVolume(qreal volume) const;
 
@@ -129,6 +133,7 @@ signals:
     Q_REVISION(6, 6) void visibleFunctionKeysChanged();
     Q_REVISION(6, 8) void closeOnReturnChanged();
     Q_REVISION(6, 9) void keySoundVolumeChanged();
+    Q_REVISION(6, 11) void arrowKeyNavigationEnabledChanged();
 
 private:
     void resetStyle();

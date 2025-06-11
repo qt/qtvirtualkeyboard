@@ -75,6 +75,7 @@ Rectangle {
                     skip("Handwriting feature not available")
             }
 
+            inputPanel.setArrowKeyNavigationEnabled(data !== undefined && data.hasOwnProperty("arrowKeyNavigationEnabled") && data.arrowKeyNavigationEnabled)
             inputPanel.setWclAutoHideDelay(data !== undefined && data.hasOwnProperty("wclAutoHideDelay") ? data.wclAutoHideDelay : 5000)
             inputPanel.setWclAlwaysVisible(data !== undefined && data.hasOwnProperty("wclAlwaysVisible") && data.wclAlwaysVisible)
             inputPanel.setWclAutoCommitWord(data !== undefined && data.hasOwnProperty("wclAutoCommitWord") && data.wclAutoCommitWord)
@@ -737,17 +738,16 @@ Rectangle {
 
         function test_navigationKeyInputSequence_data() {
             return [
-                { initialKey: Qt.Key_Space, initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputSequence: "\u00E1\u017C", outputText: "\u00E1\u017C" },
-                { initialKey: Qt.Key_Space, initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputSequence: "~123qwe", outputText: "~123qwe" },
-                { initialKey: Qt.Key_Space, initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputSequence: [ Qt.Key_Shift, Qt.Key_Shift, Qt.Key_V, Qt.Key_K, Qt.Key_B, Qt.Key_Return ], outputText: "VKB\n" },
+                { arrowKeyNavigationEnabled: true, initialKey: Qt.Key_Space, initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputSequence: "\u00E1\u017C", outputText: "\u00E1\u017C" },
+                { arrowKeyNavigationEnabled: true, initialKey: Qt.Key_Space, initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputSequence: "~123qwe", outputText: "~123qwe" },
+                { arrowKeyNavigationEnabled: true, initialKey: Qt.Key_Space, initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputSequence: [ Qt.Key_Shift, Qt.Key_Shift, Qt.Key_V, Qt.Key_K, Qt.Key_B, Qt.Key_Return ], outputText: "VKB\n" },
             ]
         }
 
         function test_navigationKeyInputSequence(data) {
             prepareTest(data)
 
-            if (!inputPanel.activateNavigationKeyMode())
-                skip("Arrow key navigation not enabled")
+            inputPanel.activateNavigationKeyMode()
 
             verify(inputPanel.navigationHighlight.visible)
             verify(inputPanel.navigateToKey(data.initialKey))
@@ -762,25 +762,24 @@ Rectangle {
 
         function test_navigationCursorWrap_data() {
             return [
-                { initialKey: Qt.Key_W, navigationKey: Qt.Key_Up, navigationKeyRepeat: 4 },
-                { initialKey: Qt.Key_W, navigationKey: Qt.Key_Down, navigationKeyRepeat: 4 },
-                { initialKey: Qt.Key_T, navigationKey: Qt.Key_Up, navigationKeyRepeat: 4 },
-                { initialKey: Qt.Key_T, navigationKey: Qt.Key_Down, navigationKeyRepeat: 4 },
-                { initialKey: Qt.Key_Backspace, navigationKey: Qt.Key_Up, navigationKeyRepeat: 4 },
-                { initialKey: Qt.Key_Backspace, navigationKey: Qt.Key_Down, navigationKeyRepeat: 4 },
-                { initialKey: Qt.Key_Backspace, navigationKeySequence: [ Qt.Key_Right, Qt.Key_Left ] },
-                { initialKey: Qt.Key_Return, navigationKeySequence: [ Qt.Key_Right, Qt.Key_Left ] },
-                { initialKey: Qt.Key_Shift, navigationKeySequence: [ Qt.Key_Left, Qt.Key_Right ] },
-                { initialKey: Qt.Key_Context1, navigationKeySequence: [ Qt.Key_Left, Qt.Key_Right ] },
-                { initialKey: Qt.Key_Q, navigationKeySequence: [ Qt.Key_Left, Qt.Key_Right ] },
+                { arrowKeyNavigationEnabled: true, initialKey: Qt.Key_W, navigationKey: Qt.Key_Up, navigationKeyRepeat: 4 },
+                { arrowKeyNavigationEnabled: true, initialKey: Qt.Key_W, navigationKey: Qt.Key_Down, navigationKeyRepeat: 4 },
+                { arrowKeyNavigationEnabled: true, initialKey: Qt.Key_T, navigationKey: Qt.Key_Up, navigationKeyRepeat: 4 },
+                { arrowKeyNavigationEnabled: true, initialKey: Qt.Key_T, navigationKey: Qt.Key_Down, navigationKeyRepeat: 4 },
+                { arrowKeyNavigationEnabled: true, initialKey: Qt.Key_Backspace, navigationKey: Qt.Key_Up, navigationKeyRepeat: 4 },
+                { arrowKeyNavigationEnabled: true, initialKey: Qt.Key_Backspace, navigationKey: Qt.Key_Down, navigationKeyRepeat: 4 },
+                { arrowKeyNavigationEnabled: true, initialKey: Qt.Key_Backspace, navigationKeySequence: [ Qt.Key_Right, Qt.Key_Left ] },
+                { arrowKeyNavigationEnabled: true, initialKey: Qt.Key_Return, navigationKeySequence: [ Qt.Key_Right, Qt.Key_Left ] },
+                { arrowKeyNavigationEnabled: true, initialKey: Qt.Key_Shift, navigationKeySequence: [ Qt.Key_Left, Qt.Key_Right ] },
+                { arrowKeyNavigationEnabled: true, initialKey: Qt.Key_Context1, navigationKeySequence: [ Qt.Key_Left, Qt.Key_Right ] },
+                { arrowKeyNavigationEnabled: true, initialKey: Qt.Key_Q, navigationKeySequence: [ Qt.Key_Left, Qt.Key_Right ] },
             ]
         }
 
         function test_navigationCursorWrap(data) {
             prepareTest(data)
 
-            if (!inputPanel.activateNavigationKeyMode())
-                skip("Arrow key navigation not enabled")
+            inputPanel.activateNavigationKeyMode()
             verify(inputPanel.navigationHighlight.visible)
 
             verify(inputPanel.navigateToKey(data.initialKey))
@@ -799,11 +798,16 @@ Rectangle {
             compare(inputPanel.keyboardInputArea.initialKey, initialKeyObj)
         }
 
-        function test_navigationCursorAndWordCandidateView() {
-            prepareTest()
+        function test_navigationCursorAndWordCandidateView_data() {
+            return [
+                { arrowKeyNavigationEnabled: true }
+            ]
+        }
 
-            if (!inputPanel.activateNavigationKeyMode())
-                skip("Arrow key navigation not enabled")
+        function test_navigationCursorAndWordCandidateView(data) {
+            prepareTest(data)
+
+            inputPanel.activateNavigationKeyMode()
             verify(inputPanel.navigationHighlight.visible)
 
             verify(inputPanel.navigationKeyClick("q"))
@@ -901,16 +905,15 @@ Rectangle {
 
         function test_navigationKeyLayoutMirroring_data() {
             return [
-                { layoutMirroring: false },
-                { layoutMirroring: true },
+                { arrowKeyNavigationEnabled: true, layoutMirroring: false },
+                { arrowKeyNavigationEnabled: true, layoutMirroring: true },
             ]
         }
 
         function test_navigationKeyLayoutMirroring(data) {
             prepareTest(data)
 
-            if (!inputPanel.activateNavigationKeyMode())
-                skip("Arrow key navigation not enabled")
+            inputPanel.activateNavigationKeyMode()
             verify(inputPanel.navigationHighlight.visible)
 
             verify(inputPanel.navigateToKey("q"))

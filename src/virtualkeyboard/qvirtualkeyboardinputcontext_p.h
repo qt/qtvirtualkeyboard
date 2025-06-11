@@ -163,9 +163,7 @@ private:
     bool selectionControlVisible;
     bool anchorRectIntersectsClipRect;
     bool cursorRectIntersectsClipRect;
-#ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
     QSet<int> activeNavigationKeys;
-#endif
     QSet<quint32> activeKeys;
     QtVirtualKeyboard::ShadowInputContext _shadow;
     QPointer<QVirtualKeyboardObserver> keyboardObserver;

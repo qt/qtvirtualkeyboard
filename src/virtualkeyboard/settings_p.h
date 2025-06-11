@@ -97,6 +97,9 @@ public:
     qreal keySoundVolume() const;
     void setKeySoundVolume(qreal volume);
 
+    bool arrowKeyNavigationEnabled() const;
+    void setArrowKeyNavigationEnabled(bool arrowKeyNavigationEnabled);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -119,6 +122,7 @@ signals:
     void visibleFunctionKeysChanged();
     void closeOnReturnChanged();
     void keySoundVolumeChanged();
+    void arrowKeyNavigationEnabledChanged();
 };
 
 } // namespace QtVirtualKeyboard

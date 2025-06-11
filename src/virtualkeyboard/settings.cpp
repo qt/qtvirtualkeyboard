@@ -39,7 +39,12 @@ public:
         defaultDictionaryDisabled(false),
         visibleFunctionKeys(QtVirtualKeyboard::KeyboardFunctionKey::All),
         closeOnReturn(false),
-        keySoundVolume(1.0)
+        keySoundVolume(1.0),
+#ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
+        arrowKeyNavigationEnabled(true)
+#else
+        arrowKeyNavigationEnabled(false)
+#endif
     {
         ensureUserDataPathExists();
     }
@@ -73,6 +78,7 @@ public:
     QtVirtualKeyboard::KeyboardFunctionKeys visibleFunctionKeys;
     bool closeOnReturn;
     qreal keySoundVolume;
+    bool arrowKeyNavigationEnabled;
 };
 
 static QScopedPointer<Settings> s_settingsInstance;
@@ -393,6 +399,21 @@ void Settings::setKeySoundVolume(qreal volume)
     if (d->keySoundVolume != volumeBounded) {
         d->keySoundVolume = volumeBounded;
         emit keySoundVolumeChanged();
+    }
+}
+
+bool Settings::arrowKeyNavigationEnabled() const
+{
+    Q_D(const Settings);
+    return d->arrowKeyNavigationEnabled;
+}
+
+void Settings::setArrowKeyNavigationEnabled(bool arrowKeyNavigationEnabled)
+{
+    Q_D(Settings);
+    if (d->arrowKeyNavigationEnabled != arrowKeyNavigationEnabled) {
+        d->arrowKeyNavigationEnabled = arrowKeyNavigationEnabled;
+        emit arrowKeyNavigationEnabledChanged();
     }
 }
 

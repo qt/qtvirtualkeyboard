@@ -55,10 +55,8 @@ QVirtualKeyboardInputContextPrivate::QVirtualKeyboardInputContextPrivate(QVirtua
     cursorRectangle(),
     selectionControlVisible(false),
     anchorRectIntersectsClipRect(false),
-    cursorRectIntersectsClipRect(false)
-#ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
-    , activeNavigationKeys()
-#endif
+    cursorRectIntersectsClipRect(false),
+    activeNavigationKeys()
 {
 }
 
@@ -604,19 +602,19 @@ bool QVirtualKeyboardInputContextPrivate::filterEvent(const QEvent *event)
         else
             setState(State::KeyEvent);
 
-#ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
-        if ((key >= Qt::Key_Left && key <= Qt::Key_Down) || key == Qt::Key_Return) {
-            if (type == QEvent::KeyPress && platformInputContext->isInputPanelVisible()) {
-                activeNavigationKeys += key;
-                emit navigationKeyPressed(key, keyEvent->isAutoRepeat());
-                return true;
-            } else if (type == QEvent::KeyRelease && activeNavigationKeys.contains(key)) {
-                activeNavigationKeys -= key;
-                emit navigationKeyReleased(key, keyEvent->isAutoRepeat());
-                return true;
+        if (Settings::instance()->arrowKeyNavigationEnabled()) {
+            if ((key >= Qt::Key_Left && key <= Qt::Key_Down) || key == Qt::Key_Return) {
+                if (type == QEvent::KeyPress && platformInputContext->isInputPanelVisible()) {
+                    activeNavigationKeys += key;
+                    emit navigationKeyPressed(key, keyEvent->isAutoRepeat());
+                    return true;
+                } else if (type == QEvent::KeyRelease && activeNavigationKeys.contains(key)) {
+                    activeNavigationKeys -= key;
+                    emit navigationKeyReleased(key, keyEvent->isAutoRepeat());
+                    return true;
+                }
             }
         }
-#endif
 
         if (type == QEvent::KeyRelease && (key == Qt::Key_Return || key == Qt::Key_Enter)) {
             maybeCloseOnReturn();
@@ -633,15 +631,14 @@ bool QVirtualKeyboardInputContextPrivate::filterEvent(const QEvent *event)
                 commit();
             }
         }
+    } else if (type == QEvent::ShortcutOverride) {
+        if (Settings::instance()->arrowKeyNavigationEnabled()) {
+            const QKeyEvent *keyEvent = static_cast<const QKeyEvent *>(event);
+            int key = keyEvent->key();
+            if ((key >= Qt::Key_Left && key <= Qt::Key_Down) || key == Qt::Key_Return)
+                return true;
+        }
     }
-#ifdef QT_VIRTUALKEYBOARD_ARROW_KEY_NAVIGATION
-    else if (type == QEvent::ShortcutOverride) {
-        const QKeyEvent *keyEvent = static_cast<const QKeyEvent *>(event);
-        int key = keyEvent->key();
-        if ((key >= Qt::Key_Left && key <= Qt::Key_Down) || key == Qt::Key_Return)
-            return true;
-    }
-#endif
 
     return false;
 }

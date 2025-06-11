@@ -103,6 +103,10 @@ Item {
         function onDefaultInputMethodDisabledChanged() {
             updateInputMethod()
         }
+        function onArrowKeyNavigationEnabledChanged() {
+            if (!VirtualKeyboardSettings.arrowKeyNavigationEnabled)
+                keyboard.navigationModeActive = false
+        }
     }
     onAvailableLocaleIndicesChanged: hideLanguagePopup()
     onAvailableCustomLocaleIndicesChanged: hideLanguagePopup()

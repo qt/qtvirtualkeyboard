@@ -156,6 +156,7 @@ QQuickVirtualKeyboardSettings::QQuickVirtualKeyboardSettings(QQmlEngine *engine,
     connect(settings, SIGNAL(defaultDictionaryDisabledChanged()), SIGNAL(defaultDictionaryDisabledChanged()));
     connect(settings, SIGNAL(visibleFunctionKeysChanged()), SIGNAL(visibleFunctionKeysChanged()));
     connect(settings, &Settings::keySoundVolumeChanged, this, &QQuickVirtualKeyboardSettings::keySoundVolumeChanged);
+    connect(settings, &Settings::arrowKeyNavigationEnabledChanged, this, &QQuickVirtualKeyboardSettings::arrowKeyNavigationEnabledChanged);
 }
 
 /*!
@@ -384,6 +385,16 @@ qreal QQuickVirtualKeyboardSettings::keySoundVolume() const
 void QQuickVirtualKeyboardSettings::setKeySoundVolume(qreal volume)
 {
     Settings::instance()->setKeySoundVolume(volume);
+}
+
+bool QQuickVirtualKeyboardSettings::arrowKeyNavigationEnabled() const
+{
+    return Settings::instance()->arrowKeyNavigationEnabled();
+}
+
+void QQuickVirtualKeyboardSettings::setArrowKeyNavigationEnabled(bool arrowKeyNavigationEnabled)
+{
+    Settings::instance()->setArrowKeyNavigationEnabled(arrowKeyNavigationEnabled);
 }
 
 /*!
@@ -616,6 +627,13 @@ void QQuickVirtualKeyboardSettings::resetStyle()
     \since QtQuick.VirtualKeyboard.Settings 6.9
 
     This property holds the keysound's volume level. The level is in the range [0,1]
+*/
+
+/*!
+    \qmlproperty bool VirtualKeyboardSettings::arrowKeyNavigationEnabled
+    \since QtQuick.VirtualKeyboard.Settings 6.11
+
+    Use this property to enable or disable arrow key navigation.
 */
 
 /*!

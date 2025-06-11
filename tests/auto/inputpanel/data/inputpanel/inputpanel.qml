@@ -28,6 +28,7 @@ InputPanel {
     readonly property string defaultLocale: VirtualKeyboardSettings.locale
     readonly property var availableLocales: VirtualKeyboardSettings.availableLocales
     readonly property var activeLocales: VirtualKeyboardSettings.activeLocales
+    readonly property bool arrowKeyNavigationEnabled: VirtualKeyboardSettings.arrowKeyNavigationEnabled
     readonly property int inputMode: InputContext.inputEngine.inputMode
     readonly property var inputMethod: InputContext.inputEngine.inputMethod
     readonly property bool handwritingMode: keyboard.handwritingMode
@@ -609,6 +610,10 @@ InputPanel {
 
     function navigationKeyClick(key) {
         return multiLayoutKeyActionHelper(key, navigationKeyClickOnCurrentLayout)
+    }
+
+    function setArrowKeyNavigationEnabled(arrowKeyNavigationEnabled) {
+        VirtualKeyboardSettings.arrowKeyNavigationEnabled = arrowKeyNavigationEnabled
     }
 
     function activateNavigationKeyMode() {
