@@ -181,6 +181,34 @@ as it would then overlap with the contents of the application. Also, the
 input panel height will be automatically updated according to the available
 width; the aspect ratio of the input panel is constant.
 
+\section1 Plugin Parameters
+
+Some parameters may be specified by appending them to the value of the
+ \c QT_IM_MODULE (following a colon), for example
+\c QT_IM_MODULE=qtvirtualkeyboard:wordCandidateListVisible .
+Some parameters are key value pairs separated by \c "=".
+
+\table
+ \header
+     \li Parameter
+     \li Purpose
+ \row
+     \li wordCandidateListVisible
+     \li Shows the word candidate list.
+ \row
+     \li wordCandidateListAutoCommitWord
+     \li Enables AutoCommit for the word candidate list.
+ \row
+     \li fullScreen
+     \li Use full screen mode
+ \row
+     \li style=<name>
+     \li Set the style
+ \row
+     \li locale=<name>
+     \li Set the locale
+\endtable
+
 \section1 Environment Variables
 
 There are several environment variables defined by the module that are listed below:
