@@ -130,9 +130,9 @@ Item {
 
     /*! \internal */
     function keyboardRectangle() {
-        var rect = Qt.rect(0, 0, keyboard.width, keyboard.height)
+        var rect = Qt.rect(0, 0, keyboard.width, keyboard.height - keyboard.wordCandidateView.currentYOffset)
         const screenPosX = screenPos.x
-        const screenPosY = screenPos.y
+        const screenPosY = screenPos.y + keyboard.wordCandidateView.currentYOffset
         if (desktopPanel) {
             rect.x += screenPosX
             rect.y += screenPosY
