@@ -271,6 +271,19 @@ Rectangle {
             verify(inputPanel.visible === false)
         }
 
+        function test_keyboardRectWithWordCandidateView_data() {
+            return [
+                { wclAlwaysVisible: false },
+                { wclAlwaysVisible: true },
+            ]
+        }
+
+        function test_keyboardRectWithWordCandidateView(data) {
+            prepareTest()
+
+            compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, container.height - inputPanel.height, inputPanel.width, inputPanel.height))
+        }
+
         function test_keyPress_data() {
             return [
                 // normal key press
