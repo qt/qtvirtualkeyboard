@@ -28,6 +28,9 @@ QtObject {
     /*! The design height of the keyboard. */
     property real keyboardDesignHeight
 
+    /*! The maximum design height of the keyboard. */
+    property real keyboardDesignMaximumHeight
+
     /*! The keyboard style scale hint. This value is determined by dividing
         \l keyboardHeight by \l keyboardDesignHeight. All pixel
         dimensions must be proportional to this value.

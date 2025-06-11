@@ -849,9 +849,22 @@ Item {
 
         Item {
             id: keyboardInnerContainer
+            readonly property int calculatedWidth: Math.round(keyboardBackground.width)
+            readonly property int calculatedHeight: Math.round(style.keyboardDesignHeight * calculatedWidth / style.keyboardDesignWidth)
             z: 1
-            width: Math.round(keyboardBackground.width)
-            height: style ? Math.round(style.keyboardDesignHeight * width / style.keyboardDesignWidth) : 0
+            width: {
+                if (style && style.keyboardDesignMaximumHeight > 0 && calculatedHeight > style.keyboardDesignMaximumHeight)
+                    return Math.round(style.keyboardDesignMaximumHeight * style.keyboardDesignWidth / style.keyboardDesignHeight)
+                return calculatedWidth
+            }
+            height: {
+                if (style) {
+                    if (style.keyboardDesignMaximumHeight > 0 && calculatedHeight > style.keyboardDesignMaximumHeight)
+                        return style.keyboardDesignMaximumHeight
+                    return calculatedHeight
+                }
+                return 0
+            }
             anchors.horizontalCenter: parent.horizontalCenter
             LayoutMirroring.enabled: false
             LayoutMirroring.childrenInherit: true
