@@ -13,6 +13,12 @@ Rectangle {
     height: 640
     color: "blue"
 
+    SignalSpy {
+        id: keyboardRectangleChangedSpy
+        target: Qt.inputMethod
+        signalName: "keyboardRectangleChanged"
+    }
+
     Component {
         id: textInputComp
         TextEdit {
@@ -98,6 +104,7 @@ Rectangle {
             textInput.inputMethodHints = data !== undefined && data.hasOwnProperty("initInputMethodHints") ? data.initInputMethodHints : Qt.ImhNone
             textInput.selectByMouse = false
             handwritingInputPanel.available = false
+            handwritingInputPanel.active = false
             inputPanel.setHandwritingMode(false)
             textInput.forceActiveFocus()
             var activeLocales = data !== undefined && data.hasOwnProperty("activeLocales") ? data.activeLocales : []
@@ -282,6 +289,42 @@ Rectangle {
             prepareTest()
 
             compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, container.height - inputPanel.height, inputPanel.width, inputPanel.height))
+        }
+
+        function test_keyboardRect() {
+            prepareTest()
+
+            // Initially visible
+            compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, container.height - inputPanel.height, inputPanel.width, inputPanel.height))
+
+            // Hidden
+            keyboardRectangleChangedSpy.clear()
+            container.forceActiveFocus()
+            verify(inputPanel.visible === false)
+            compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, 0, 0, 0))
+            compare(keyboardRectangleChangedSpy.count, 1)
+
+            // Visible
+            keyboardRectangleChangedSpy.clear()
+            textInput.forceActiveFocus()
+            compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, container.height - inputPanel.height, inputPanel.width, inputPanel.height))
+            compare(keyboardRectangleChangedSpy.count, 1)
+        }
+
+        function test_keyboardRectFullScreenHwr() {
+            prepareTest({ initHwrMode: true }, true)
+
+            // Full screen hwr available -> keyboard hidden
+            keyboardRectangleChangedSpy.clear()
+            handwritingInputPanel.available = true
+            compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, 0, 0, 0))
+            compare(keyboardRectangleChangedSpy.count, 1)
+
+            // Full screen hwr active -> full screen input
+            keyboardRectangleChangedSpy.clear()
+            handwritingInputPanel.active = true
+            compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, 0, container.width, container.height))
+            compare(keyboardRectangleChangedSpy.count, 1)
         }
 
         function test_keyPress_data() {

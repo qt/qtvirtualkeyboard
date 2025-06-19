@@ -95,7 +95,6 @@ Item {
         property: "keyboardRectangle"
         value: Qt.rect(hwrInputArea.x, hwrInputArea.y, hwrInputArea.width, hwrInputArea.height)
         when: handwritingInputPanel.enabled && handwritingInputPanel.available && handwritingInputPanel.active
-        restoreMode: Binding.RestoreBinding
     }
 
     Binding {
