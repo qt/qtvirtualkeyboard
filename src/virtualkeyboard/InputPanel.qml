@@ -123,8 +123,7 @@ Item {
         target: InputContext.priv
         property: "keyboardRectangle"
         value: keyboardRectangle()
-        when: !InputContext.animating
-        restoreMode: Binding.RestoreBinding
+        when: !InputContext.animating && inputPanel.active
     }
 
     /*! \internal */
