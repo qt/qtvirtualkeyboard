@@ -100,10 +100,10 @@ Item {
             target: handwritingModeButton.floating ? handwritingModeButton : undefined
             axis: Drag.XAxis | Drag.YAxis
             minimumX: 0
-            maximumX: handwritingModeButton.parent.width - handwritingModeButton.width
+            maximumX: Math.max(mouseArea.drag.minimumX, handwritingModeButton.parent.width - handwritingModeButton.width)
             onMaximumXChanged: !mouseArea.drag.active && handwritingModeButton.snapHorizontal()
             minimumY: 0
-            maximumY: handwritingModeButton.parent.height - handwritingModeButton.height
+            maximumY: Math.max(mouseArea.drag.minimumY, handwritingModeButton.parent.height - handwritingModeButton.height)
             onMaximumYChanged: !mouseArea.drag.active && handwritingModeButton.snapVertical()
         }
         onPressed: {
