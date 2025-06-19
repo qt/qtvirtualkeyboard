@@ -62,6 +62,8 @@ Item {
             anchors { left: parent.left; top: parent.top; right: parent.right; bottom: inputPanel.top; }
             HandwritingModeButton {
                 id: handwritingModeButton
+                anchors.top: parent.top
+                anchors.right: parent.right
                 anchors.margins: 10
                 floating: true
                 flipable: true
@@ -70,10 +72,6 @@ Item {
                 state: handwritingInputPanel.state
                 onClicked: handwritingInputPanel.active = !handwritingInputPanel.active
                 onDoubleClicked: handwritingInputPanel.available = !handwritingInputPanel.available
-                Component.onCompleted: {
-                    anchors.top = parent.top;
-                    anchors.right = parent.right
-                }
             }
         }
 
