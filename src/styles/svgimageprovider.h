@@ -6,6 +6,8 @@
 
 #include <QQuickImageProvider>
 
+QT_BEGIN_NAMESPACE
+
 class SvgImageProvider : public QQuickImageProvider
 {
 public:
@@ -14,6 +16,8 @@ public:
 
     QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize) override;
 };
+
+QT_END_NAMESPACE
 
 #endif // SVGIMAGEPROVIDER_H
 

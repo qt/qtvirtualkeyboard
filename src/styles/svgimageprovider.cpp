@@ -7,6 +7,8 @@
 #include <QSvgRenderer>
 #include <QPainter>
 
+QT_BEGIN_NAMESPACE
+
 SvgImageProvider::SvgImageProvider() :
     QQuickImageProvider(QQuickImageProvider::Pixmap)
 {
@@ -80,3 +82,5 @@ QPixmap SvgImageProvider::requestPixmap(const QString &id, QSize *size, const QS
 
     return result;
 }
+
+QT_END_NAMESPACE
