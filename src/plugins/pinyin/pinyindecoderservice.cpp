@@ -175,7 +175,7 @@ QList<QString> PinyinDecoderService::fetchCandidates(int index, int count, int s
     return candidatesList;
 }
 
-int PinyinDecoderService::chooceCandidate(int index)
+int PinyinDecoderService::chooseCandidate(int index)
 {
     return int(im_choose(index));
 }

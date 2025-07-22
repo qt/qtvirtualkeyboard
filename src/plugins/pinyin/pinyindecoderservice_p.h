@@ -43,7 +43,7 @@ public:
     QList<int> spellingStartPositions();
     QString candidateAt(int index);
     QList<QString> fetchCandidates(int index, int count, int sentFixedLen);
-    int chooceCandidate(int index);
+    int chooseCandidate(int index);
     int cancelLastChoice();
     int fixedLength();
     void flushCache();

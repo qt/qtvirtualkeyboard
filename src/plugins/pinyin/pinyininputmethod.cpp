@@ -170,7 +170,7 @@ public:
             }
         } else {
             if (totalChoicesNum > 1) {
-                result = pinyinDecoderService->chooceCandidate(candId);
+                result = pinyinDecoderService->chooseCandidate(candId);
             } else {
                 QString resultStr;
                 if (totalChoicesNum == 1) {
