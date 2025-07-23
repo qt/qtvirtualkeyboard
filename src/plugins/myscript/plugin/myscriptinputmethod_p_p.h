@@ -73,7 +73,7 @@ public:
 public slots:
     void handleRecognitionEnded();
     void handleRecognitionCommitted();
-    void handelGestureDetected(const int gestureType, const int gestureCount);
+    void handleGestureDetected(const int gestureType, const int gestureCount);
     void handlePreeditChanged(const QString &preedit, const bool isCommitted);
     void handleClearItem();
     void handleNewItem(const int itemIndex, const int candidateIndex, const QStringList &candidates);
