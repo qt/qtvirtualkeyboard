@@ -109,7 +109,8 @@ void QVirtualKeyboardInputContextPrivate::setKeyboardRectangle(QRectF rectangle)
     if (keyboardRect != rectangle) {
         keyboardRect = rectangle;
         emit keyboardRectangleChanged();
-        platformInputContext->emitKeyboardRectChanged();
+        if (platformInputContext)
+            platformInputContext->emitKeyboardRectChanged();
     }
 }
 
@@ -205,7 +206,8 @@ void QVirtualKeyboardInputContextPrivate::registerInputPanel(QObject *inputPanel
 
 void QVirtualKeyboardInputContextPrivate::hideInputPanel()
 {
-    platformInputContext->hideInputPanel();
+    if (platformInputContext)
+        platformInputContext->hideInputPanel();
 }
 
 void QVirtualKeyboardInputContextPrivate::updateAvailableLocales(const QStringList &availableLocales)
@@ -380,6 +382,8 @@ void QVirtualKeyboardInputContextPrivate::sendPreedit(const QString &text, const
 
 void QVirtualKeyboardInputContextPrivate::sendInputMethodEvent(QInputMethodEvent *event)
 {
+    if (!platformInputContext)
+        return;
     QVirtualKeyboardScopedState inputMethodEventState(this, State::InputMethodEvent);
     platformInputContext->sendEvent(event);
 }
@@ -400,6 +404,9 @@ void QVirtualKeyboardInputContextPrivate::update(Qt::InputMethodQueries queries)
 
     // No need to fetch input clip rectangle during animation
     if (!(queries & ~Qt::ImInputItemClipRectangle) && animating)
+        return;
+
+    if (!platformInputContext)
         return;
 
     // fetch
