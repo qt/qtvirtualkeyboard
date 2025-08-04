@@ -60,7 +60,7 @@
     Furthermore, Qt Virtual Keyboard potentially contains third party
     modules under the following permissive licenses:
 
-    \generatelist{groupsbymodule attributions-qtvirtualkeyboard}
+    \annotatedlist attributions-qtvirtualkeyboard
 */
 
 /*!
