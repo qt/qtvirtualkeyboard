@@ -21,6 +21,8 @@
 
 #include "letterconverter.h"
 
+QT_BEGIN_NAMESPACE
+
 LetterConverter::LetterConverter(QObject *parent) :
     QObject(parent)
 {
@@ -29,3 +31,5 @@ LetterConverter::LetterConverter(QObject *parent) :
 LetterConverter::~LetterConverter()
 {
 }
+
+QT_END_NAMESPACE

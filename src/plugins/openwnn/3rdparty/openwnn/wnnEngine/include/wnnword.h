@@ -25,6 +25,8 @@
 #include <QString>
 #include <QList>
 
+QT_BEGIN_NAMESPACE
+
 class WnnPOS
 {
 public:
@@ -236,5 +238,7 @@ public:
 
     QList<WnnClause> elements;
 };
+
+QT_END_NAMESPACE
 
 #endif // WNNWORD_H

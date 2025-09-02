@@ -26,6 +26,8 @@
 #include <QBitArray>
 #include "wnnword.h"
 
+QT_BEGIN_NAMESPACE
+
 class OpenWnnDictionaryPrivate;
 
 class OpenWnnDictionary : public QObject
@@ -92,5 +94,7 @@ public:
 
     int learnWord(const WnnWord &word, const WnnWord *previousWord = 0);
 };
+
+QT_END_NAMESPACE
 
 #endif // OPENWNNDICTIONARY_H

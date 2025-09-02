@@ -25,6 +25,8 @@
 #include <QObject>
 #include "composingtext.h"
 
+QT_BEGIN_NAMESPACE
+
 class OpenWnnEngineJAJPPrivate;
 
 class OpenWnnEngineJAJP : public QObject
@@ -85,5 +87,7 @@ public:
     void breakSequence();
     int makeCandidateListOf(int clausePosition);
 };
+
+QT_END_NAMESPACE
 
 #endif // OPENWNNENGINEJAJP_H

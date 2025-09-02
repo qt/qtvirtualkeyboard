@@ -26,6 +26,8 @@
 #include "wnnword.h"
 #include <QList>
 
+QT_BEGIN_NAMESPACE
+
 class OpenWnnClauseConverterJAJPPrivate;
 
 class OpenWnnClauseConverterJAJP : public QObject
@@ -42,5 +44,7 @@ public:
     QSharedPointer<WnnSentence> consecutiveClauseConvert(const QString &input);
 
 };
+
+QT_END_NAMESPACE
 
 #endif // OPENWNNCLAUSECONVERTERJAJP_H

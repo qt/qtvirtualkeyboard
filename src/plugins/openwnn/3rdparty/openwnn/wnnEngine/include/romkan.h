@@ -25,6 +25,8 @@
 #include "letterconverter.h"
 #include <QMap>
 
+QT_BEGIN_NAMESPACE
+
 class WnnLookupTable;
 
 class Romkan : public LetterConverter
@@ -40,5 +42,7 @@ public:
 protected:
     bool convertImpl(ComposingText &text, const WnnLookupTable &table) const;
 };
+
+QT_END_NAMESPACE
 
 #endif // ROMKAN_H

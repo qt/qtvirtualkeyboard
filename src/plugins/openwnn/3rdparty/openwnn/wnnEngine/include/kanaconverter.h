@@ -26,6 +26,8 @@
 #include "openwnndictionary.h"
 #include "wnnword.h"
 
+QT_BEGIN_NAMESPACE
+
 class KanaConverterPrivate;
 
 class KanaConverter : QObject
@@ -40,5 +42,7 @@ public:
     void setDictionary(OpenWnnDictionary *dict);
     QList<WnnWord> createPseudoCandidateList(const QString &inputHiragana, const QString &inputRomaji);
 };
+
+QT_END_NAMESPACE
 
 #endif // KANACONVERTER_H

@@ -25,6 +25,8 @@
 #include <QObject>
 #include "composingtext.h"
 
+QT_BEGIN_NAMESPACE
+
 class LetterConverter : public QObject
 {
     Q_OBJECT
@@ -34,5 +36,7 @@ public:
 
     virtual bool convert(ComposingText &text) const = 0;
 };
+
+QT_END_NAMESPACE
 
 #endif // LETTERCONVERTER_H

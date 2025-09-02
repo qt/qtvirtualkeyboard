@@ -23,6 +23,8 @@
 #include "strsegment.h"
 #include "wnnlookuptable.h"
 
+QT_BEGIN_NAMESPACE
+
 class RomkanHalfKatakanaPrivate
 {
 public:
@@ -94,3 +96,5 @@ bool RomkanHalfKatakana::convert(ComposingText &text) const
 {
     return convertImpl(text, RomkanHalfKatakanaPrivate::romkanTable);
 }
+
+QT_END_NAMESPACE

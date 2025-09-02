@@ -98,6 +98,8 @@ extern "C" {
     extern NJ_UINT8 *con_data[];
 }
 
+QT_BEGIN_NAMESPACE
+
 class OpenWnnDictionaryPrivate : public QObjectPrivate
 {
 public:
@@ -915,3 +917,5 @@ int OpenWnnDictionary::learnWord(const WnnWord &word, const WnnWord *previousWor
     // Not implemented
     return -1;
 }
+
+QT_END_NAMESPACE

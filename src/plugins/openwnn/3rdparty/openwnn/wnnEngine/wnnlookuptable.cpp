@@ -26,6 +26,8 @@
 #include <QFile>
 #endif
 
+QT_BEGIN_NAMESPACE
+
 WnnLookupTable::WnnLookupTable(const char **keys, const char **values, const int length) :
     keys(keys),
     values(values),
@@ -88,3 +90,5 @@ void WnnLookupTable::create(const QMap<QString, QString> &map, const QString &ta
     }
 }
 #endif
+
+QT_END_NAMESPACE

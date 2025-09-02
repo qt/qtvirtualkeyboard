@@ -24,6 +24,8 @@
 #include <QtCore/private/qobject_p.h>
 #include <QLoggingCategory>
 
+QT_BEGIN_NAMESPACE
+
 Q_LOGGING_CATEGORY(lcOpenWnn, "qt.virtualkeyboard.openwnn")
 
 class ComposingTextPrivate : public QObjectPrivate
@@ -496,3 +498,5 @@ void ComposingText::clear()
         d->mCursor[i] = 0;
     }
 }
+
+QT_END_NAMESPACE
