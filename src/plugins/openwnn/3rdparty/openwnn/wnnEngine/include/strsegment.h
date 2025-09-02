@@ -26,6 +26,8 @@
 #include <QSharedPointer>
 #include "wnnword.h"
 
+QT_BEGIN_NAMESPACE
+
 class StrSegment
 {
 public:
@@ -47,5 +49,7 @@ public:
     int to;
     QSharedPointer<WnnClause> clause;
 };
+
+QT_END_NAMESPACE
 
 #endif // STRSEGMENT_H

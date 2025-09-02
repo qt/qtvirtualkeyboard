@@ -25,6 +25,8 @@
 #include <QObject>
 #include "strsegment.h"
 
+QT_BEGIN_NAMESPACE
+
 class ComposingTextPrivate;
 
 class ComposingText : public QObject
@@ -80,5 +82,7 @@ public:
     int size(TextLayer layer) const;
     void clear();
 };
+
+QT_END_NAMESPACE
 
 #endif // COMPOSINGTEXT_H

@@ -24,6 +24,8 @@
 
 #include "romkan.h"
 
+QT_BEGIN_NAMESPACE
+
 class RomkanFullKatakana : public Romkan
 {
     Q_OBJECT
@@ -34,5 +36,7 @@ public:
 
     bool convert(ComposingText &text) const override;
 };
+
+QT_END_NAMESPACE
 
 #endif // ROMKANFULLKATAKANA_H

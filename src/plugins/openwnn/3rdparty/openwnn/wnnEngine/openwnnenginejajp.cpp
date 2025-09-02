@@ -26,6 +26,8 @@
 #include "kanaconverter.h"
 #include <QtCore/private/qobject_p.h>
 
+QT_BEGIN_NAMESPACE
+
 class OpenWnnEngineJAJPPrivate : public QObjectPrivate
 {
 public:
@@ -386,3 +388,5 @@ int OpenWnnEngineJAJP::makeCandidateListOf(int clausePosition)
 
     return 1;
 }
+
+QT_END_NAMESPACE

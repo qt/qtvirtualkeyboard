@@ -23,6 +23,8 @@
 #include "strsegment.h"
 #include "wnnlookuptable.h"
 
+QT_BEGIN_NAMESPACE
+
 class RomkanPrivate
 {
 public:
@@ -150,3 +152,5 @@ bool Romkan::convertImpl(ComposingText &text, const WnnLookupTable &table) const
 
     return false;
 }
+
+QT_END_NAMESPACE

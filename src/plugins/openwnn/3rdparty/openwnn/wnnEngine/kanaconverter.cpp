@@ -24,6 +24,8 @@
 
 #include <QtCore/private/qobject_p.h>
 
+QT_BEGIN_NAMESPACE
+
 class KanaConverterPrivate : public QObjectPrivate
 {
 public:
@@ -186,3 +188,5 @@ QList<WnnWord> KanaConverter::createPseudoCandidateList(const QString &inputHira
     d->createPseudoCandidateListForQwerty(list, inputHiragana, inputRomaji);
     return list;
 }
+
+QT_END_NAMESPACE

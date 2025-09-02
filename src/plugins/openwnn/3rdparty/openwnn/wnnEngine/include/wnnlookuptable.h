@@ -26,6 +26,8 @@
 #include <QMap>
 #endif
 
+QT_BEGIN_NAMESPACE
+
 class WnnLookupTable
 {
 public:
@@ -43,5 +45,7 @@ private:
     const char **values;
     const int length;
 };
+
+QT_END_NAMESPACE
 
 #endif // WNNLOOKUPTABLE_H

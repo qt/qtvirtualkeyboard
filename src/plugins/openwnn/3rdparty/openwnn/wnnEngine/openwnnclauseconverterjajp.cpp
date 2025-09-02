@@ -26,6 +26,8 @@
 #include <QtCore/private/qobject_p.h>
 #include <QtCore/qpointer.h>
 
+QT_BEGIN_NAMESPACE
+
 class OpenWnnClauseConverterJAJPPrivate : public QObjectPrivate
 {
 public:
@@ -431,3 +433,5 @@ QSharedPointer<WnnSentence> OpenWnnClauseConverterJAJP::consecutiveClauseConvert
     }
     return QSharedPointer<WnnSentence>();
 }
+
+QT_END_NAMESPACE
