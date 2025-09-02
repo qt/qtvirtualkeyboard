@@ -96,7 +96,7 @@ void MemoryMonitor::init()
     m_elapsedTimeReading->setText("-- s");
     m_elapsedTimeReading->setPos((this->size().width() / 2) + KReadingMargin, this->size().height() - KYPosition * 3);
 
-    QObject::connect(this, &QChart::geometryChanged, [this]() {
+    QObject::connect(this, &QChart::geometryChanged, this, [this]() {
         m_minMemReading->setPos(KReadingMargin, KYPosition);
         m_curMemReading->setPos((this->size().width() / 2) - KReadingMargin, KYPosition);
         m_peakMemReading->setPos(this->size().width() - (KReadingMargin * 2), KYPosition);
@@ -111,7 +111,7 @@ void MemoryMonitor::setProcID(const qint64 procID)
 
 void MemoryMonitor::start()
 {
-    QObject::connect(m_drawInterval, &QTimer::timeout, [&]() {
+    QObject::connect(m_drawInterval, &QTimer::timeout, m_drawInterval, [&]() {
         ulong memUsed = currentMemUsage();
         this->drawMemUsage(memUsed);
         this->storeMemValues(memUsed);
