@@ -68,6 +68,8 @@ QStringList CangjieDictionary::getWords(const QString &input) const
     return searchWords(secondaryIndex, data);
 }
 
+namespace {
+
 class DictionaryComparator
 {
 public:
@@ -83,6 +85,8 @@ public:
 private:
     const std::vector<QCollatorSortKey> &sortKeys;
 };
+
+} // namespace
 
 QStringList CangjieDictionary::sortWords(const DictionaryEntry &data) const
 {
