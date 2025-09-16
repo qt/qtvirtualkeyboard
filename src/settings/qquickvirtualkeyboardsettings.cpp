@@ -102,6 +102,7 @@ public:
     \qmltype VirtualKeyboardSettings
     \inqmlmodule QtQuick.VirtualKeyboard.Settings
     \ingroup qtvirtualkeyboard-settings-qml
+    \ingroup qmlclass
     \since QtQuick.VirtualKeyboard 1.2
     \brief Provides settings for virtual keyboard.
 
