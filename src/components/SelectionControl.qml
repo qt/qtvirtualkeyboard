@@ -23,7 +23,7 @@ Item {
             width: parent.width * 2
             height: width * 1.12
             anchors.centerIn: parent
-            onPositionChanged: {
+            onPositionChanged: function(mouse) {
                 // we don't move the handles, the handles will move as the selection changes.
                 // The middle of a handle is mapped to the middle of the line above it
                 root.handleIsMoving = true
@@ -53,7 +53,7 @@ Item {
             width: parent.width * 2
             height: width * 1.12
             anchors.centerIn: parent
-            onPositionChanged: {
+            onPositionChanged: function(mouse) {
                 // we don't move the handles, the handles will move as the selection changes.
                 root.handleIsMoving = true
                 var xx = anchorHandle.x + anchorHandle.width/2
