@@ -29,19 +29,6 @@ qt_internal_add_qml_module(VirtualKeyboardSettings
     NO_GENERATE_CPP_EXPORTS
 )
 
-if (Qt6Multimedia_FOUND)
-    target_compile_definitions(VirtualKeyboardSettings
-        PRIVATE
-            QT_VIRTUALKEYBOARD_SOUNDS_ENABLED
-    )
-    target_link_libraries(VirtualKeyboardSettings
-        PRIVATE
-            Qt::Multimedia
-    )
-else ()
-    message("No Qt multimmedia, no sounds.")
-endif ()
-
 qt_internal_extend_target(VirtualKeyboardSettings CONDITION QT_FEATURE_vkb_no_builtin_style
     DEFINES
         QT_VIRTUALKEYBOARD_DEFAULT_STYLE=""
