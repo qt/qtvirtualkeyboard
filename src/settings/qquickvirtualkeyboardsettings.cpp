@@ -10,9 +10,6 @@
 #include <QDir>
 #include <QRegularExpression>
 #include <QtCore/private/qobject_p.h>
-#ifdef QT_VIRTUALKEYBOARD_SOUNDS_ENABLED
-#include <QtMultimedia/qaudio.h>
-#endif
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
@@ -392,15 +389,9 @@ void QQuickVirtualKeyboardSettings::setKeySoundVolume(qreal volume)
 */
 qreal QQuickVirtualKeyboardSettings::convertVolume(qreal volume) const
 {
-#ifdef QT_VIRTUALKEYBOARD_SOUNDS_ENABLED
-    qreal linearVolume = QAudio::convertVolume(volume / 100,
-                                               QtAudio::LogarithmicVolumeScale,
-                                               QtAudio::LinearVolumeScale);
-    return linearVolume;
-#else
-    qWarning("No QtMultimedia");
-    return volume;
-#endif
+    // Equivalent to QAudio::convertVolume(volume / 100, QtAudio::LogarithmicVolumeScale, QtAudio::LinearVolumeScale)
+    constexpr qreal LOG100 = 4.60517018599;
+    return 1 - std::exp(-(volume / 100) * LOG100);
 }
 
 void QQuickVirtualKeyboardSettings::resetStyle()
