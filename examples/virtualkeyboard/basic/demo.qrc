@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>content/AutoScroller.qml</file>
         <file>content/TextArea.qml</file>
         <file>content/TextField.qml</file>
         <file>content/HandwritingModeButton.qml</file>

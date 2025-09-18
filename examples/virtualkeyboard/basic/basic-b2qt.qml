@@ -122,13 +122,12 @@ Item {
                 restoreMode: Binding.RestoreBinding
 
             }
-            AutoScroller {}
         }
 
         Binding {
             target: VirtualKeyboardSettings
             property: "fullScreenMode"
-            value: appContainer.height > 0 && (appContainer.width / appContainer.height) > (16.0 / 9.0)
+            value: InputContext.cursorRectangle.bottom > inputPanel.y
             restoreMode: Binding.RestoreBinding
         }
 

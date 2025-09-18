@@ -20,7 +20,6 @@ RESOURCES += \
 OTHER_FILES += \
     Basic.qml \
     basic-b2qt.qml \
-    content/AutoScroller.qml \
     content/HandwritingModeButton.qml \
     content/TextArea.qml \
     content/TextField.qml \

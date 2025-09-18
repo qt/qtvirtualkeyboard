@@ -42,7 +42,6 @@ endif()
 set(demo_resource_files
     "Basic.qml"
     "basic-b2qt.qml"
-    "content/AutoScroller.qml"
     "content/FloatingButton_Active.svg"
     "content/FloatingButton_Available.svg"
     "content/FloatingButton_Unavailable.svg"
