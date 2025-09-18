@@ -1350,6 +1350,13 @@ Item {
                                                wordCandidateContextMenuList.height)
         }
 
+        Loader {
+            sourceComponent: keyboard.style.popupListBackground
+            anchors.fill: wordCandidateContextMenuList
+            z: -1
+            visible: wordCandidateContextMenuList.visible
+        }
+
         ListModel {
             id: wordCandidateContextMenuListModel
 
