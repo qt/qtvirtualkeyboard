@@ -347,20 +347,27 @@ public:
             enableConverter = false;
         }
 
-        if (inputMode != QVirtualKeyboardInputEngine::InputMode::Hiragana ||
-            inputMethodHints.testFlag(Qt::ImhHiddenText) ||
-            inputMethodHints.testFlag(Qt::ImhSensitiveData) ||
-            inputMethodHints.testFlag(Qt::ImhNoPredictiveText)) {
+        const bool hiraganaInputMode =
+                inputMode == QVirtualKeyboardInputEngine::InputMode::Hiragana ||
+                inputMode == QVirtualKeyboardInputEngine::InputMode::HiraganaFlick;
+        if (!hiraganaInputMode) {
             if (enablePrediction) {
                 enablePrediction = false;
                 emit q->selectionListsChanged();
             }
-        } else if (inputMode == QVirtualKeyboardInputEngine::InputMode::Hiragana && !enablePrediction) {
+        } else if (hiraganaInputMode && !enablePrediction) {
             enablePrediction = true;
             emit q->selectionListsChanged();
         }
 
         activeConvertType = CONVERT_TYPE_NONE;
+
+        // Note: Learning is disabled for sensitive text. However, learning
+        // is not implemented in OpenWnnDictionary::learnWord, so this has
+        // no practical effect here.
+        enableLearning =
+                !inputMethodHints.testFlag(Qt::ImhHiddenText) &&
+                !inputMethodHints.testFlag(Qt::ImhSensitiveData);
     }
 
     void learnWord(WnnWord &word)
@@ -614,6 +621,11 @@ bool OpenWnnInputMethod::setInputMode(const QString &locale, QVirtualKeyboardInp
         d->changeEngineMode(OpenWnnInputMethodPrivate::ENGINE_MODE_DEFAULT);
         break;
 
+    case QVirtualKeyboardInputEngine::InputMode::HiraganaFlick:
+        d->changeEngineMode(OpenWnnInputMethodPrivate::ENGINE_MODE_DEFAULT);
+        d->preConverter.reset();
+        break;
+
     case QVirtualKeyboardInputEngine::InputMode::Katakana:
         d->changeEngineMode(OpenWnnInputMethodPrivate::ENGINE_MODE_FULL_KATAKANA);
         break;
@@ -706,19 +718,47 @@ bool OpenWnnInputMethod::keyEvent(Qt::Key key, const QString &text, Qt::Keyboard
 
     default:
         if (key < Qt::Key_Escape && !text.isEmpty() && text.at(0).isPrint()) {
-            if (d->composingText.size(ComposingText::LAYER1) + text.size() > OpenWnnInputMethodPrivate::MAX_COMPOSING_TEXT)
+            const QString normalizedText = text.normalized(QString::NormalizationForm_C);
+            if (d->composingText.size(ComposingText::LAYER1) + normalizedText.size() > OpenWnnInputMethodPrivate::MAX_COMPOSING_TEXT)
                 return true;
-            const int last = text.size() - 1;
+            const int last = normalizedText.size() - 1;
             for (int i = 0; i <= last; ++i) {
+                QChar ch = normalizedText.at(i);
+                // shrink big yo/yu/ya after yoon bases
+                if (ch.unicode() == 0x3088 || ch.unicode() == 0x3086 || ch.unicode() == 0x3084) {
+                    const QString prev = d->composingText.getStrSegment(ComposingText::LAYER1, -1).string;
+                    if (!prev.isEmpty()) {
+                        const QChar p = prev.back();
+                        static const QString yoonBases = QStringLiteral("\u304D\u3057\u3061\u306B\u3072\u307F\u308A\u304E\u3058\u3062\u3073\u3074");
+                        if (yoonBases.contains(p))
+                            ch = QChar::fromUcs2(ch.unicode() - 1);
+                    }
+                } else if (ch.unicode() == 0x3099 || ch.unicode() == 0x309A) {
+                    // if dakuten/handakuten, compose with previous kana
+                    QString prev = d->composingText.getStrSegment(ComposingText::LAYER1, -1).string;
+                    if (!prev.isEmpty()) {
+                        QString composed = QString(prev + ch).normalized(QString::NormalizationForm_C);
+                        if (composed.size() == 1) {
+                            // replace previous char with composed kana
+                            d->composingText.deleteAt(ComposingText::LAYER1, false);
+                            d->composingText.insertStrSegment(ComposingText::LAYER0,
+                                                              ComposingText::LAYER1, composed);
+                            if (i == last)
+                                d->updateViewStatusForPrediction(true, true);
+                            continue; // handled this input char
+                        }
+                    }
+                    // fall through if composing failed
+                }
                 if (d->isEnableL2Converter()) {
                     d->commitConvertingText();
-                    d->composingText.insertStrSegment(ComposingText::LAYER0, ComposingText::LAYER1, text.mid(i, 1));
-                    if (d->preConverter != nullptr)
+                    d->composingText.insertStrSegment(ComposingText::LAYER0, ComposingText::LAYER1, QString(ch));
+                    if (d->preConverter != nullptr && ch.unicode() <= 0x007F)
                         d->preConverter->convert(d->composingText);
                     if (i == last)
                         d->updateViewStatusForPrediction(true, true);
                 } else {
-                    d->composingText.insertStrSegment(ComposingText::LAYER0, ComposingText::LAYER1, text.mid(i, 1));
+                    d->composingText.insertStrSegment(ComposingText::LAYER0, ComposingText::LAYER1, QString(ch));
                     QString layer1 = d->composingText.toString(ComposingText::LAYER1);
                     if (!d->isAlphabetLast(layer1)) {
                         d->commitText(false);
