@@ -29,7 +29,7 @@ Key {
     readonly property real __centerRadius: width * 0.4
     readonly property var flickKeys: {
         var keys = InputContext.uppercase ? alternativeKeys.toUpperCase() : alternativeKeys.toLowerCase()
-        var textIndex = keys.indexOf(InputContext.uppercase ? __text.toUpperCase() : __text.toLowerCase())
+        var textIndex = __text ? keys.indexOf(InputContext.uppercase ? __text.toUpperCase() : __text.toLowerCase()) : -1
         if (textIndex === -1)
             return keys
         return keys.slice(0, textIndex).concat(keys.slice(textIndex + 1))

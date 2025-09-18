@@ -1258,7 +1258,50 @@ Rectangle {
                 //              3. The input sequence should be committed leaving the cursor in the middle.
                 { initLocale: "ja_JP", initInputMode: "Hiragana", inputSequence: ["n","i","h","o","n","g","o",Qt.Key_Left,Qt.Key_Left,Qt.Key_Left,Qt.Key_Mode_switch], outputText: "\u306B\u307B\u3093\u3054", expectedCursorPosition: 2 },
                 // HiraganaFlick
-                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["\u3092","\u306A","\u3099","\u308F","\u3001","\u305F"], outputText: "\u3092\u306A\u3099\u308F\u3001\u305F" },
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["こ","ん","に","ち","は",Qt.Key_Return], outputText: "こんにちは" },
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["さ","よ","う","な","ら",Qt.Key_Return], outputText: "さようなら" },
+                // Top(き,つ), Right(ね)
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["き","つ","ね",Qt.Key_Return], outputText: "きつね" },
+                // Top(ふ), Right(ね)
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["ふ","ね",Qt.Key_Return], outputText: "ふね" },
+                // Bottom(ほ), Left(し)
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["ほ","し",Qt.Key_Return], outputText: "ほし" },
+                // Top(す), Bottom(も), Top(う)
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["す","も","う",Qt.Key_Return], outputText: "すもう" },
+                // Bottom(け), Top(む), Left(り)
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["け","む","り",Qt.Key_Return], outputText: "けむり" },
+                // Left(ひ), Top(る)
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["ひ","る",Qt.Key_Return], outputText: "ひる" },
+                // Top(ぬ), Bottom(の)
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["ぬ","の",Qt.Key_Return], outputText: "ぬの" },
+                // Bottom(そ,と)
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["そ","と",Qt.Key_Return], outputText: "そと" },
+                // Right(く), Top(る), Base(ま)
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["く","る","ま",Qt.Key_Return], outputText: "くるま" },
+                // Right(へ), Left(い)
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["へ","い",Qt.Key_Return], outputText: "へい" },
+                // particle を + ん (also checks wa-key Left/Top)
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["き","を","つ","け","て",Qt.Key_Return], outputText: "きをつけて" },
+                // NFC check (dakuten/handakuten via combining key U+3099/U+309A)
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["か","\u3099","く",Qt.Key_Return], outputText: "がく" },
+                // uses わ-Left for ん
+                { initLocale: "ja_JP", initInputMode: "HiraganaFlick", inputSequence: ["は","\u309A","ん",Qt.Key_Return], outputText: "ぱん" },
+                // kana conversion
+                { initLocale:"ja_JP", initInputMode:"HiraganaFlick", inputSequence:["に","ほ","ん",Qt.Key_Space,Qt.Key_Return], outputText:"日本" },
+                { initLocale:"ja_JP", initInputMode:"HiraganaFlick", inputSequence:["に","ほ","ん","こ","\u3099",Qt.Key_Space,Qt.Key_Return], outputText:"日本語" },
+                { initLocale:"ja_JP", initInputMode:"HiraganaFlick", inputSequence:["て","ん","き",Qt.Key_Space,Qt.Key_Return], outputText:"天気" },
+                 // じ = し + ゙
+                { initLocale:"ja_JP", initInputMode:"HiraganaFlick", inputSequence:["か","ん","し","\u3099",Qt.Key_Space,Qt.Key_Space,Qt.Key_Return], outputText:"漢字" },
+                // が = か + ゙
+                { initLocale:"ja_JP", initInputMode:"HiraganaFlick", inputSequence:["か","\u3099","く","せ","い",Qt.Key_Space,Qt.Key_Return], outputText:"学生" },
+                { initLocale:"ja_JP", initInputMode:"HiraganaFlick", inputSequence:["お","お","さ","か",Qt.Key_Space,Qt.Key_Return], outputText:"大阪" },
+                { initLocale:"ja_JP", initInputMode:"HiraganaFlick", inputSequence:["せ","か","い",Qt.Key_Space,Qt.Key_Return], outputText:"世界" },
+                // で = て + ゙
+                { initLocale:"ja_JP", initInputMode:"HiraganaFlick", inputSequence:["て","\u3099","ん","わ",Qt.Key_Space,Qt.Key_Return], outputText:"電話" },
+                // だ = た + ゙
+                { initLocale:"ja_JP", initInputMode:"HiraganaFlick", inputSequence:["や","ま","た","\u3099",Qt.Key_Space,Qt.Key_Return], outputText:"山田" },
+                // use 大よ
+                { initLocale:"ja_JP", initInputMode:"HiraganaFlick", inputSequence:["と","う","き","よ","う",Qt.Key_Space,Qt.Key_Return], outputText:"東京" }
             ]
         }
 
