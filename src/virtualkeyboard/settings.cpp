@@ -7,9 +7,6 @@
 #include <QFileInfo>
 #include <QDir>
 #include "virtualkeyboarddebug_p.h"
-#ifdef QT_VIRTUALKEYBOARD_SOUNDS_ENABLED
-#include <QtMultimedia/qaudio.h>
-#endif
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
