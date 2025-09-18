@@ -493,13 +493,13 @@ KeyboardLayoutLoader {
             KeyboardRow {
                 FillerKey {}
                 FlickKey {
-                    text: "\u3041" //a
+                    text: "\u3042" //a
                     alternativeKeys: "\u3044\u3046\u3048\u304A"
                 }
                 FlickKey {
                     id: normalKey
                     text: "\u304B" //ka
-                    alternativeKeys: "\u304D\u304F\u3051\u3053"
+                    alternativeKeys: "\u3053\u304D\u304F\u3051"
                 }
                 FlickKey {
                     text: "\u3055" //sa
@@ -518,7 +518,7 @@ KeyboardLayoutLoader {
                 }
                 FlickKey {
                     text: "\u305F" //ta
-                    alternativeKeys: "\u3061\u3063\u3066\u3068"
+                    alternativeKeys: "\u3061\u3064\u3066\u3068"
                 }
                 FlickKey {
                     text: "\u306A" //na
@@ -545,7 +545,7 @@ KeyboardLayoutLoader {
                 }
                 FlickKey {
                     text: "\u3084" //ya
-                    alternativeKeys: "(\u3086)\u3088"
+                    alternativeKeys: "\u3086\u3088"
                 }
                 FlickKey {
                     text: "\u3089" //ra
@@ -592,7 +592,7 @@ KeyboardLayoutLoader {
                 FlickKey {
                     weight: normalKeyWidth
                     text: "\u308F" //wa
-                    alternativeKeys: "\u3092\u3093\u30FC\u301C"
+                    alternativeKeys: "\u3093\u3092\u30FC\u301C"
                 }
                 FlickKey {
                     weight: normalKeyWidth
