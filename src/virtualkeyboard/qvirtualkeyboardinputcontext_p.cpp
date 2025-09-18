@@ -256,7 +256,7 @@ void QVirtualKeyboardInputContextPrivate::forceCursorPosition(int anchorPosition
 bool QVirtualKeyboardInputContextPrivate::contains(const QPointF &point) const
 {
     bool hit = false;
-    if (dimmer) {
+    if (dimmer && platformInputContext->isInputPanelVisible()) {
         const auto scenePoint = dimmer->mapToScene(point);
         if (keyboardRectangle().contains(scenePoint)) {
             hit = true;
