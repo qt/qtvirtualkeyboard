@@ -1401,6 +1401,7 @@ Item {
             })
 
             wordCandidateContextMenuList.enabled = true
+            wordCandidateContextMenuList.currentIndex = 0
         }
 
         function hide() {
