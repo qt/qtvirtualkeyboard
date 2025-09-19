@@ -13,6 +13,18 @@ Rectangle {
     height: 640
     color: "blue"
 
+    // Visualize Qt.inputMethod.keyboardRectangle for testing purposes
+    Rectangle {
+        z: 100
+        x: Qt.inputMethod.keyboardRectangle.x
+        y: Qt.inputMethod.keyboardRectangle.y
+        width: Qt.inputMethod.keyboardRectangle.width
+        height: Qt.inputMethod.keyboardRectangle.height
+        color: "transparent"
+        border.color: "red"
+        border.width: 1
+    }
+
     SignalSpy {
         id: keyboardRectangleChangedSpy
         target: Qt.inputMethod
@@ -292,8 +304,15 @@ Rectangle {
             compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, container.height - inputPanel.height, inputPanel.width, inputPanel.height))
         }
 
-        function test_keyboardRect() {
-            prepareTest()
+        function test_keyboardRect_data() {
+            return [
+                { wclAlwaysVisible: false },
+                { wclAlwaysVisible: true },
+            ]
+        }
+
+        function test_keyboardRect(data) {
+            prepareTest(data)
 
             // Initially visible
             compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, container.height - inputPanel.height, inputPanel.width, inputPanel.height))
@@ -2076,22 +2095,22 @@ Rectangle {
             prepareTest(data)
             inputPanel.wordCandidateListChangedSpy.clear()
             Qt.inputMethod.show()
-            compare(inputPanel.wordCandidateView.visibleCondition, data.wclAlwaysVisible)
+            if (!inputPanel.wordCandidateListVisibleHint)
+                skip("Prediction/spell correction not enabled")
+            compare(inputPanel.wordCandidateView.state, data.wclAlwaysVisible ? "alwaysVisible" : "")
             inputPanel.virtualKeyClick("a")
             inputPanel.virtualKeyClick("u")
             inputPanel.virtualKeyClick("t")
             inputPanel.virtualKeyClick("o")
-            if (!inputPanel.wordCandidateListVisibleHint)
-                skip("Prediction/spell correction not enabled")
             inputPanel.wordCandidateListChangedSpy.wait(1000)
-            compare(inputPanel.wordCandidateView.visibleCondition, true)
+            compare(inputPanel.wordCandidateView.state, "visible")
             inputPanel.wordCandidateListVisibleSpy.clear()
             inputPanel.selectionListSelectCurrentItem()
             if (data.wclAlwaysVisible)
                 wait(data.wclAutoHideDelay + 250)
             else
                 inputPanel.wordCandidateListVisibleSpy.wait(data.wclAutoHideDelay + 500)
-            compare(inputPanel.wordCandidateView.visibleCondition, data.wclAlwaysVisible)
+            compare(inputPanel.wordCandidateView.state, data.wclAlwaysVisible ? "alwaysVisible" : "")
         }
 
         function test_wclAutoCommitWordSetting_data() {

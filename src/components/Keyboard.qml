@@ -656,8 +656,8 @@ Item {
         anchors.right: parent.right
         anchors.bottom: wordCandidateView.top
         height: keyboard.screenHeight -
-                keyboard.height -
-                wordCandidateView.height
+                keyboard.height +
+                wordCandidateView.y
         visible: fullScreenMode && (shadowInputControlVisibleTimer.running || InputContext.animating)
 
         Connections {
@@ -698,11 +698,11 @@ Item {
         clip: true
         z: -2
         property bool empty: true
-        readonly property bool visibleCondition: (((!wordCandidateView.empty || wordCandidateViewAutoHideTimer.running) &&
-                                                   InputContext.inputEngine.wordCandidateListVisibleHint) || VirtualKeyboardSettings.wordCandidateList.alwaysVisible) &&
-                                                 keyboard.active
+        readonly property bool visibleCondition: InputContext.inputEngine.wordCandidateListVisibleHint &&
+                                                 (!wordCandidateView.empty || wordCandidateViewAutoHideTimer.running)
+        readonly property bool alwaysVisibleCondition: InputContext.inputEngine.wordCandidateListVisibleHint &&
+                                                       (keyboard.fullScreenMode || VirtualKeyboardSettings.wordCandidateList.alwaysVisible)
         readonly property real visibleYOffset: -height
-        readonly property real currentYOffset: visibleCondition ? visibleYOffset : 0
         height: style ? style.selectionListHeight : 0
         anchors.left: parent.left
         anchors.right: parent.right
@@ -764,7 +764,7 @@ Item {
             },
             State {
                 name: "alwaysVisible"
-                when: keyboard.fullScreenMode || VirtualKeyboardSettings.wordCandidateList.alwaysVisible
+                when: wordCandidateView.alwaysVisibleCondition
                 PropertyChanges {
                     target: wordCandidateView
                     y: wordCandidateView.visibleYOffset
