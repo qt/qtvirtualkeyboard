@@ -82,8 +82,15 @@ int cmp_lpi_with_hanzi(const void *p1, const void *p2) {
 }
 
 int cmp_lpsi_with_str(const void *p1, const void *p2) {
-  return utf16_strcmp((static_cast<const LmaPsbStrItem*>(p1))->str,
-                      (static_cast<const LmaPsbStrItem*>(p2))->str);
+  const LmaPsbStrItem* a = static_cast<const LmaPsbStrItem*>(p1);
+  const LmaPsbStrItem* b = static_cast<const LmaPsbStrItem*>(p2);
+
+  const int result = utf16_strcmp(a->str, b->str);
+  if (result) return result;
+
+  if (a->lpi.psb < b->lpi.psb) return -1; // smaller psb first
+  if (a->lpi.psb > b->lpi.psb) return  1;
+  return 0;
 }
 
 
