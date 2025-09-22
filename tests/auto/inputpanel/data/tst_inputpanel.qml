@@ -990,6 +990,8 @@ Rectangle {
                 // Invalid pinyin sequence
                 { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "fi", expectedCandidates: [ "\u53D1", "i" ], outputText: "\u53D1i" },
                 { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "dfrt7", expectedCandidates: [], outputText: "dfrt7" },
+                // QTBUG-124178
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "nss", expectedCandidates: ["\u4F60\u662F\u8C01"], outputText: "\u4F60\u662F\u8C01" },
             ]
         }
 
