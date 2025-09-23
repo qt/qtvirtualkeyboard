@@ -25,7 +25,6 @@ set(qml_files
     KeyboardLayoutLoader.qml
     KeyboardRow.qml
     ModeKey.qml
-    MultiSoundEffect.qml
     MultitapInputMethod.qml
     NumberKey.qml
     PopupList.qml
@@ -38,6 +37,10 @@ set(qml_files
     TraceInputKey.qml
     WordCandidatePopupList.qml
 )
+
+if(QT_FEATURE_vkb_sound_effects)
+    list(APPEND qml_files MultiSoundEffect.qml)
+endif()
 
 qt_internal_add_qml_module(qtvkbcomponentsplugin
     URI "QtQuick.VirtualKeyboard.Components"

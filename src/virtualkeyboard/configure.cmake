@@ -61,6 +61,10 @@ qt_feature("vkb-sensitive-debug" PRIVATE
     LABEL "Sensitive Debug"
     AUTODETECT OFF
 )
+qt_feature("vkb-sound-effects" PUBLIC
+    LABEL "Sound effects"
+    AUTODETECT TARGET Qt::Multimedia
+)
 qt_feature("cerence-sdk" PRIVATE
     LABEL "Cerence"
     AUTODETECT CERENCE_HWR_ALPHABETIC_FOUND OR CERENCE_XT9_FOUND
@@ -373,6 +377,7 @@ qt_configure_add_summary_entry(ARGS "vkb-layouts")
 qt_configure_add_summary_entry(ARGS "vkb-arrow-keynavigation")
 qt_configure_add_summary_entry(ARGS "vkb-retro-style")
 qt_configure_add_summary_entry(ARGS "vkb-sensitive-debug")
+qt_configure_add_summary_entry(ARGS "vkb-sound-effects")
 qt_configure_add_summary_entry(ARGS "cerence-sdk")
 qt_configure_add_summary_entry(ARGS "vkb-cerence-static")
 qt_configure_add_summary_entry(ARGS "cerence-hwr")

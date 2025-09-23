@@ -95,6 +95,15 @@ keyboard features. These options are passed to the \e configure tool.
         styles will be included in the package, but this option allows you to
         change the built-in default style.
 \row
+    \li \e [-no]-vkb-sound-effects
+    \li
+    \li Enables or disables sound effects
+    \li This option enables or disables support for sound effects. It depends
+        on the Multimedia module and is implicitly enabled when that module is
+        available. Note that the actual sound effect files are defined in the
+        keyboard style, so enabling this option alone does not make the sound
+        effects audible.
+\row
     \li \e [-no]-vkb-cangjie
     \li
     \li Enables or disables the Cangjie input method for Traditional Chinese.
