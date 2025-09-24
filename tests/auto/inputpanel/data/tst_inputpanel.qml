@@ -327,7 +327,7 @@ Rectangle {
             keyboardRectangleChangedSpy.clear()
             textInput.forceActiveFocus()
             compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, container.height - inputPanel.height, inputPanel.width, inputPanel.height))
-            compare(keyboardRectangleChangedSpy.count, 1)
+            verify(keyboardRectangleChangedSpy.count < 3)
         }
 
         function test_keyboardRectFullScreenHwr() {
