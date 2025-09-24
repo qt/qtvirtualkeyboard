@@ -694,7 +694,7 @@ Item {
         clip: true
         z: -2
         property bool empty: true
-        readonly property bool visibleCondition: InputContext.inputEngine.wordCandidateListVisibleHint &&
+        readonly property bool visibleCondition: keyboard.active && InputContext.inputEngine.wordCandidateListVisibleHint &&
                                                  (!wordCandidateView.empty || wordCandidateViewAutoHideTimer.running)
         readonly property bool alwaysVisibleCondition: InputContext.inputEngine.wordCandidateListVisibleHint &&
                                                        (keyboard.fullScreenMode || VirtualKeyboardSettings.wordCandidateList.alwaysVisible)
