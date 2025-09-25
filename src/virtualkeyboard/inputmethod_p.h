@@ -22,9 +22,12 @@
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
 
+class InputMethodPrivate;
+
 class Q_VIRTUALKEYBOARD_EXPORT InputMethod : public QVirtualKeyboardAbstractInputMethod
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(InputMethod)
     Q_PROPERTY(QVirtualKeyboardInputContext *inputContext READ inputContext CONSTANT)
     Q_PROPERTY(QVirtualKeyboardInputEngine *inputEngine READ inputEngine CONSTANT)
     Q_MOC_INCLUDE("qvirtualkeyboardinputcontext.h")

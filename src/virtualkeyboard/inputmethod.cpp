@@ -3,6 +3,8 @@
 
 #include <QtVirtualKeyboard/private/inputmethod_p.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardtrace.h>
+#include <QtVirtualKeyboard/private/inputmethod_p_p.h>
+#include <QtVirtualKeyboard/private/recursivemethodguard_p.h>
 #include <QVariant>
 
 QT_BEGIN_NAMESPACE
@@ -219,7 +221,7 @@ namespace QtVirtualKeyboard {
 */
 
 InputMethod::InputMethod(QObject *parent) :
-    QVirtualKeyboardAbstractInputMethod(parent)
+    QVirtualKeyboardAbstractInputMethod(*new InputMethodPrivate, parent)
 {
 }
 
@@ -373,17 +375,26 @@ bool InputMethod::clickPreeditText(int cursorPosition)
 
 void InputMethod::reset()
 {
-    QMetaObject::invokeMethod(this, "reset");
+    Q_D(InputMethod);
+    RecursiveMethodGuard guard(d->resetLock);
+    if (!guard.locked())
+        QMetaObject::invokeMethod(this, "reset");
 }
 
 void InputMethod::update()
 {
-    QMetaObject::invokeMethod(this, "update");
+    Q_D(InputMethod);
+    RecursiveMethodGuard guard(d->updateLock);
+    if (!guard.locked())
+        QMetaObject::invokeMethod(this, "update");
 }
 
 void InputMethod::clearInputMode()
 {
-    QMetaObject::invokeMethod(this, "clearInputMode");
+    Q_D(InputMethod);
+    RecursiveMethodGuard guard(d->clearInputModeLock);
+    if (!guard.locked())
+        QMetaObject::invokeMethod(this, "clearInputMode");
 }
 
 } // namespace QtVirtualKeyboard

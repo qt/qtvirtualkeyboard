@@ -8,6 +8,7 @@
 #include <QtVirtualKeyboard/private/fallbackinputmethod_p.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardtrace.h>
 #include <QtVirtualKeyboard/private/virtualkeyboarddebug_p.h>
+#include <QtVirtualKeyboard/private/recursivemethodguard_p.h>
 
 #include <QQmlContext>
 #include <QQmlEngine>
@@ -34,7 +35,7 @@ public:
         previousKey(Qt::Key_unknown),
         repeatTimer(0),
         repeatCount(0),
-        recursiveMethodLock(0)
+        recursiveMethodLock(false)
     {
     }
 
@@ -75,26 +76,7 @@ public:
     Qt::Key previousKey;
     int repeatTimer;
     int repeatCount;
-    int recursiveMethodLock;
-};
-
-class RecursiveMethodGuard
-{
-public:
-    explicit RecursiveMethodGuard(int &ref) : m_ref(ref)
-    {
-        m_ref++;
-    }
-    ~RecursiveMethodGuard()
-    {
-        m_ref--;
-    }
-    bool locked() const
-    {
-        return m_ref > 1;
-    }
-private:
-    int &m_ref;
+    bool recursiveMethodLock;
 };
 
 /*!
