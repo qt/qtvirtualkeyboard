@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause
 
 import QtQuick
-import QtQuick.VirtualKeyboard
+import QtQuick.VirtualKeyboard as VKB
 
 // file: CustomInputMethod.qml
 
-InputMethod {
+VKB.InputMethod {
     function inputModes(locale) {
-        return [InputEngine.InputMode.Latin];
+        return [VKB.InputEngine.InputMode.Latin];
     }
 
     function setInputMode(locale, inputMode) {
