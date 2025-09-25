@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 import QtQuick
-import QtQuick.VirtualKeyboard
+import QtQuick.VirtualKeyboard as VKB
 
-InputMethod {
+VKB.InputMethod {
     property string multitapSequence
     property int multitapIndex: -1
 
-    onMultitapSequenceChanged: selectionListChanged(SelectionListModel.Type.WordCandidateList)
-    onMultitapIndexChanged: selectionListActiveItemChanged(SelectionListModel.Type.WordCandidateList, multitapIndex)
+    onMultitapSequenceChanged: selectionListChanged(VKB.SelectionListModel.Type.WordCandidateList)
+    onMultitapIndexChanged: selectionListActiveItemChanged(VKB.SelectionListModel.Type.WordCandidateList, multitapIndex)
 
     property variant multiTapTimer: Timer {
         interval: 1200
@@ -19,7 +19,7 @@ InputMethod {
     }
 
     function inputModes(locale) {
-        return [InputEngine.InputMode.Latin, InputEngine.InputMode.Numeric, InputEngine.InputMode.Dialable];
+        return [VKB.InputEngine.InputMode.Latin, VKB.InputEngine.InputMode.Numeric, VKB.InputEngine.InputMode.Dialable];
     }
 
     function setInputMode(locale, inputMode) {
@@ -79,7 +79,7 @@ InputMethod {
     }
 
     function selectionLists() {
-        return [SelectionListModel.Type.WordCandidateList];
+        return [VKB.SelectionListModel.Type.WordCandidateList];
     }
 
     function selectionListItemCount(type) {
@@ -89,7 +89,7 @@ InputMethod {
     function selectionListData(type, index, role) {
         var result = null
         switch (role) {
-        case SelectionListModel.Role.Display:
+        case VKB.SelectionListModel.Role.Display:
             result = multitapSequence.charAt(index)
             break
         default:
