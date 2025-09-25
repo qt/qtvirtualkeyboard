@@ -21,7 +21,7 @@ qt_internal_add_qml_module(VirtualKeyboard
         fallbackinputmethod.cpp fallbackinputmethod_p.h
         gesturerecognizer.cpp gesturerecognizer_p.h
         handwritinggesturerecognizer.cpp handwritinggesturerecognizer_p.h
-        inputmethod.cpp inputmethod_p.h
+        inputmethod.cpp inputmethod_p.h inputmethod_p_p.h
         inputselectionhandle.cpp inputselectionhandle_p.h
         virtualkeyboard.cpp virtualkeyboard_p.h
         virtualkeyboardattachedtype.cpp virtualkeyboardattachedtype_p.h
@@ -40,6 +40,7 @@ qt_internal_add_qml_module(VirtualKeyboard
         qvirtualkeyboardobserver.cpp qvirtualkeyboardobserver.h
         qvirtualkeyboardselectionlistmodel.cpp qvirtualkeyboardselectionlistmodel.h
         qvirtualkeyboardtrace.cpp qvirtualkeyboardtrace.h
+        recursivemethodguard_p.h
         settings.cpp settings_p.h
         shadowinputcontext.cpp shadowinputcontext_p.h
         shifthandler.cpp shifthandler_p.h
