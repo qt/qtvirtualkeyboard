@@ -35,7 +35,7 @@ class QQuickVirtualKeyboardSettings : public QObject
     Q_PROPERTY(QString locale READ locale WRITE setLocale NOTIFY localeChanged)
     Q_PROPERTY(QStringList availableLocales READ availableLocales NOTIFY availableLocalesChanged)
     Q_PROPERTY(QStringList activeLocales READ activeLocales WRITE setActiveLocales NOTIFY activeLocalesChanged)
-    Q_PROPERTY(QQuickWordCandidateListSettings *wordCandidateList READ wordCandidateList CONSTANT)
+    Q_PROPERTY(QtVirtualKeyboard::QQuickWordCandidateListSettings *wordCandidateList READ wordCandidateList CONSTANT)
     Q_PROPERTY(bool fullScreenMode READ fullScreenMode WRITE setFullScreenMode NOTIFY fullScreenModeChanged)
     Q_PROPERTY(QString userDataPath READ userDataPath WRITE setUserDataPath NOTIFY userDataPathChanged REVISION(6, 1))
     Q_PROPERTY(int hwrTimeoutForAlphabetic READ hwrTimeoutForAlphabetic WRITE setHwrTimeoutForAlphabetic NOTIFY hwrTimeoutForAlphabeticChanged REVISION(6, 1))
