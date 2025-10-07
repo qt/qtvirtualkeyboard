@@ -17,19 +17,24 @@ Item {
         sourceComponent: keyboard.style.characterPreviewDelegate
     }
 
+    Binding {
+        target: characterPreview.item
+        property: "text"
+        value: {
+            if (!activeKey)
+                return ""
+
+            const displayText = (activeKey.keyType === QtVirtualKeyboard.KeyType.FlickKey) ? activeKey.text : activeKey.displayText
+            return InputContext.uppercase ? displayText.toUpperCase() : displayText
+        }
+        when: activeKey && characterPreview.item
+    }
+
     onActiveKeyChanged: {
         if (characterPreview.item !== null) {
-            if (!activeKey) {
-                characterPreview.item.text = ""
+            if (!activeKey)
                 return
-            }
 
-            characterPreview.item.text = Qt.binding(function() {
-                if (!activeKey)
-                    return ""
-                var displayText = (activeKey.keyType === QtVirtualKeyboard.KeyType.FlickKey) ? activeKey.text : activeKey.displayText
-                return InputContext.uppercase ? displayText.toUpperCase() : displayText
-            })
             if (activeKey.keyType === QtVirtualKeyboard.KeyType.FlickKey) {
                 if (characterPreview.item.hasOwnProperty("flickLeft")) {
                     characterPreview.item.flickLeft = activeKey.flickLeft

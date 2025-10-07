@@ -504,7 +504,6 @@ Item {
                 InputContext.priv.previewRectangle = Qt.binding(function() {return previewRect})
             else
                 openedByNavigationKeyLongPress = false
-            InputContext.priv.previewVisible = visible
         }
     }
     FunctionPopupList {
@@ -589,7 +588,7 @@ Item {
     Binding {
         target: InputContext.priv
         property: "previewVisible"
-        value: characterPreview.visible || languagePopupListActive
+        value: characterPreview.visible || languagePopupListActive || alternativeKeys.visible
         restoreMode: Binding.RestoreBinding
     }
     Loader {
