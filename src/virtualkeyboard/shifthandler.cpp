@@ -13,6 +13,8 @@
 
 QT_BEGIN_NAMESPACE
 
+using namespace Qt::StringLiterals;
+
 size_t qHash(QLocale::Language lang, size_t seed)
 {
     return qHash(ushort(lang), seed);
@@ -26,7 +28,7 @@ public:
     ShiftHandlerPrivate() :
         QObjectPrivate(),
         inputContext(nullptr),
-        sentenceEndingCharacters(QLatin1String(".!?") + QChar(Qt::Key_exclamdown) + QChar(Qt::Key_questiondown)),
+        sentenceEndingCharacters(u".!?¡¿"_s),
         autoCapitalizationEnabled(false),
         toggleShiftEnabled(false),
         shift(false),

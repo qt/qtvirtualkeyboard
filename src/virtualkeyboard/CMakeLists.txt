@@ -23,7 +23,6 @@ qt_internal_add_qml_module(VirtualKeyboard
         QtQuick.Window/auto
         QtQuick.Layouts/auto
         Qt.labs.folderlistmodel/auto
-        QtQuick.VirtualKeyboard.Settings/auto
         QtQuick.VirtualKeyboard.Styles/auto
         QtQuick.VirtualKeyboard.Plugins/auto
     IMPORTS
