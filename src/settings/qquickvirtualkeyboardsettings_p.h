@@ -57,7 +57,7 @@ class QQuickVirtualKeyboardSettings : public QObject
 
 public:
     static QQuickVirtualKeyboardSettings *create(QQmlEngine *qmlEngine, QJSEngine *jsEngine);
-    QString style() const;
+    QUrl style() const;
 
     QUrl layoutPath() const;
     void setLayoutPath(const QUrl &layoutPath);
