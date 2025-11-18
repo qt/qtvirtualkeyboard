@@ -167,9 +167,9 @@ QQuickVirtualKeyboardSettings *QQuickVirtualKeyboardSettings::create(QQmlEngine 
 /*!
     \internal
 */
-QString QQuickVirtualKeyboardSettings::style() const
+QUrl QQuickVirtualKeyboardSettings::style() const
 {
-    return Settings::instance()->style();
+    return QUrl{Settings::instance()->style()};
 }
 
 /*!
