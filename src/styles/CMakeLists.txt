@@ -48,5 +48,6 @@ qt_internal_add_qml_module(qtvkbstylesplugin
         Qt::Qml
         Qt::Quick
         Qt::Svg
+        Qt::VirtualKeyboard
     NO_GENERATE_CPP_EXPORTS
 )
