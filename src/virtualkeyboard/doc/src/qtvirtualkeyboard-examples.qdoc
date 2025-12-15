@@ -13,7 +13,7 @@
     \examplecategory {Embedded}
     \brief This example shows how to use the virtual keyboard in a Qt Quick application.
     \ingroup qtvirtualkeyboard-examples
-    \image basic-example.png
+    \image basic-example.webp
     \meta tags {quick}
 
     The example has two implementations: one for desktop

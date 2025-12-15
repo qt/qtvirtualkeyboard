@@ -14,202 +14,170 @@ The next sections illustrate each layout.
 
 \section2 Albanian Layout
 
-\image layouts/qtvirtualkeyboard-layout-sq_AL.png
+\image layouts/qtvirtualkeyboard-layout-sq_AL.webp
 
 \section2 Arabic Layout
 
-\image layouts/qtvirtualkeyboard-layout-ar_AR.png
+\image layouts/qtvirtualkeyboard-layout-ar_AR.webp
 
 \section2 Bulgarian Layout
 
-\image layouts/qtvirtualkeyboard-layout-bg_BG.png
-
-\section2 Bulgarian Layout (Latin)
-
-\image layouts/qtvirtualkeyboard-layout-bg_BG-latin.png
+\image layouts/qtvirtualkeyboard-layout-bg_BG.webp
 
 \section2 Croatian Layout
 
-\image layouts/qtvirtualkeyboard-layout-hr_HR.png
+\image layouts/qtvirtualkeyboard-layout-hr_HR.webp
 
 \section2 Czech Layout
 
-\image layouts/qtvirtualkeyboard-layout-cs_CZ.png
+\image layouts/qtvirtualkeyboard-layout-cs_CZ.webp
 
 \section2 Danish Layout
 
-\image layouts/qtvirtualkeyboard-layout-da_DK.png
+\image layouts/qtvirtualkeyboard-layout-da_DK.webp
 
 \section2 Dutch Layout
 
-\image layouts/qtvirtualkeyboard-layout-nl_NL.png
+\image layouts/qtvirtualkeyboard-layout-nl_NL.webp
 
 \section2 English (British) Layout
 
-\image layouts/qtvirtualkeyboard-layout-en_GB.png
+\image layouts/qtvirtualkeyboard-layout-en_GB.webp
 
 \section2 English (American) Layout
 
-\image layouts/qtvirtualkeyboard-layout-en_US.png
+\image layouts/qtvirtualkeyboard-layout-en_US.webp
 
 \section2 Estonian Layout
 
-\image layouts/qtvirtualkeyboard-layout-et_EE.png
+\image layouts/qtvirtualkeyboard-layout-et_EE.webp
 
 \section2 Finnish Layout
 
-\image layouts/qtvirtualkeyboard-layout-fi_FI.png
+\image layouts/qtvirtualkeyboard-layout-fi_FI.webp
 
 \section2 French Layout
 
-\image layouts/qtvirtualkeyboard-layout-fr_FR.png
+\image layouts/qtvirtualkeyboard-layout-fr_FR.webp
 
 \section2 French Layout (Canadian)
 
-\image layouts/qtvirtualkeyboard-layout-fr_CA.png
+\image layouts/qtvirtualkeyboard-layout-fr_CA.webp
 
 \section2 German Layout
 
-\image layouts/qtvirtualkeyboard-layout-de_DE.png
+\image layouts/qtvirtualkeyboard-layout-de_DE.webp
 
 \section2 Greek Layout
 
-\image layouts/qtvirtualkeyboard-layout-el_GR.png
-
-\section2 Greek Layout (Latin)
-
-\image layouts/qtvirtualkeyboard-layout-el_GR-latin.png
+\image layouts/qtvirtualkeyboard-layout-el_GR.webp
 
 \section2 Hebrew Layout
 
-\image layouts/qtvirtualkeyboard-layout-he_IL.png
-
-\section2 Hebrew Layout (Latin)
-
-\image layouts/qtvirtualkeyboard-layout-he_IL-latin.png
+\image layouts/qtvirtualkeyboard-layout-he_IL.webp
 
 \section2 Hindi Layout
 
-\image layouts/qtvirtualkeyboard-layout-hi_IN.png
+\image layouts/qtvirtualkeyboard-layout-hi_IN.webp
 
 \section2 Hungarian Layout
 
-\image layouts/qtvirtualkeyboard-layout-hu_HU.png
+\image layouts/qtvirtualkeyboard-layout-hu_HU.webp
 
 \section2 Indonesian Layout
 
-\image layouts/qtvirtualkeyboard-layout-id_ID.png
+\image layouts/qtvirtualkeyboard-layout-id_ID.webp
 
 \section2 Italian Layout
 
-\image layouts/qtvirtualkeyboard-layout-it_IT.png
+\image layouts/qtvirtualkeyboard-layout-it_IT.webp
 
-\section2 Japanese Layout (Hiragana)
+\section2 Japanese Layout
 
-\image layouts/qtvirtualkeyboard-layout-ja_JP-hiragana.png
-
-\section2 Japanese Layout (Katakana)
-
-\image layouts/qtvirtualkeyboard-layout-ja_JP-katakana.png
-
-\section2 Japanese Layout (Full Width Latin)
-
-\image layouts/qtvirtualkeyboard-layout-ja_JP-full-width.png
-
-\section2 Japanese Layout (Latin)
-
-\image layouts/qtvirtualkeyboard-layout-ja_JP-latin.png
+\image layouts/qtvirtualkeyboard-layout-ja_JP.webp
 
 \section2 Korean Layout
 
-\image layouts/qtvirtualkeyboard-layout-ko_KR.png
+\image layouts/qtvirtualkeyboard-layout-ko_KR.webp
 
 \section2 Malay Layout
 
-\image layouts/qtvirtualkeyboard-layout-ms_MY.png
+\image layouts/qtvirtualkeyboard-layout-ms_MY.webp
 
 \section2 Norwegian Layout
 
-\image layouts/qtvirtualkeyboard-layout-nb_NO.png
+\image layouts/qtvirtualkeyboard-layout-nb_NO.webp
 
 \section2 Persian/Farsi Layout
 
-\image layouts/qtvirtualkeyboard-layout-fa_FA.png
+\image layouts/qtvirtualkeyboard-layout-fa_FA.webp
 
 \section2 Polish Layout
 
-\image layouts/qtvirtualkeyboard-layout-pl_PL.png
+\image layouts/qtvirtualkeyboard-layout-pl_PL.webp
 
-\section2 Portugese Layout
+\section2 Portuguese Layout
 
-\image layouts/qtvirtualkeyboard-layout-pt_PT.png
+\image layouts/qtvirtualkeyboard-layout-pt_PT.webp
 
-\section2 Portugese Layout (Brazil)
+\section2 Portuguese Layout (Brazil)
 
-\image layouts/qtvirtualkeyboard-layout-pt_BR.png
+\image layouts/qtvirtualkeyboard-layout-pt_BR.webp
 
 \section2 Romanian Layout
 
-\image layouts/qtvirtualkeyboard-layout-ro_RO.png
+\image layouts/qtvirtualkeyboard-layout-ro_RO.webp
 
 \section2 Russian Layout
 
-\image layouts/qtvirtualkeyboard-layout-ru_RU.png
+\image layouts/qtvirtualkeyboard-layout-ru_RU.webp
 
 \section2 Serbian Layout
 
-\image layouts/qtvirtualkeyboard-layout-sr_SP.png
-
-\section2 Serbian Layout (Latin)
-
-\image layouts/qtvirtualkeyboard-layout-sr_SP-latin.png
+\image layouts/qtvirtualkeyboard-layout-sr_SP.webp
 
 \section2 Simplified Chinese Layout
 
-\image layouts/qtvirtualkeyboard-layout-zh_CN.png
+\image layouts/qtvirtualkeyboard-layout-zh_CN.webp
 
-\section2 Traditional Chinese Layout (Zhuyin)
+\section2 Traditional Chinese Layout
 
-\image layouts/qtvirtualkeyboard-layout-zh_TW-zhuyin.png
-
-\section2 Traditional Chinese Layout (Cangjie)
-
-\image layouts/qtvirtualkeyboard-layout-zh_TW-cangjie.png
+\image layouts/qtvirtualkeyboard-layout-zh_TW.webp
 
 \section2 Slovak Layout
 
-\image layouts/qtvirtualkeyboard-layout-sk_SK.png
+\image layouts/qtvirtualkeyboard-layout-sk_SK.webp
 
 \section2 Slovenian Layout
 
-\image layouts/qtvirtualkeyboard-layout-sl_SI.png
+\image layouts/qtvirtualkeyboard-layout-sl_SI.webp
 
 \section2 Spanish Layout
 
-\image layouts/qtvirtualkeyboard-layout-es_ES.png
+\image layouts/qtvirtualkeyboard-layout-es_ES.webp
 
 \section2 Spanish Layout (Mexican)
 
-\image layouts/qtvirtualkeyboard-layout-es_MX.png
+\image layouts/qtvirtualkeyboard-layout-es_MX.webp
 
 \section2 Swedish Layout
 
-\image layouts/qtvirtualkeyboard-layout-sv_SE.png
+\image layouts/qtvirtualkeyboard-layout-sv_SE.webp
 
 \section2 Thai Layout
 
-\image layouts/qtvirtualkeyboard-layout-th_TH.png
+\image layouts/qtvirtualkeyboard-layout-th_TH.webp
 
 \section2 Turkish Layout
 
-\image layouts/qtvirtualkeyboard-layout-tr_TR.png
+\image layouts/qtvirtualkeyboard-layout-tr_TR.webp
 
 \section2 Ukrainian Layout
 
-\image layouts/qtvirtualkeyboard-layout-uk_UA.png
+\image layouts/qtvirtualkeyboard-layout-uk_UA.webp
 
 \section2 Vietnamese Layout
 
-\image layouts/qtvirtualkeyboard-layout-vi_VN.png
+\image layouts/qtvirtualkeyboard-layout-vi_VN.webp
 
 */
