@@ -89,7 +89,7 @@ find_path(MyScript_VOIM_INCLUDE_DIR
     NO_DEFAULT_PATH
 )
 
-if(NOT MyScript_VOIM_INCLUDE_DIR STREQUAL "MyScript_VOIM_INCLUDE_DIR-NOTFOUND")
+if(MyScript_VOIM_INCLUDE_DIR)
     if(WIN32)
         find_file(MyScript_VOIM_BINARY
             NAMES "voim.dll"
@@ -162,7 +162,7 @@ if(NOT MyScript_VOIM_INCLUDE_DIR STREQUAL "MyScript_VOIM_INCLUDE_DIR-NOTFOUND")
     )
 endif()
 
-if(NOT MyScript_VOIM_BINARY STREQUAL "MyScript_VOIM_BINARY-NOTFOUND" AND NOT TARGET MyScript::VOIM)
+if(MyScript_VOIM_BINARY AND NOT TARGET MyScript::VOIM)
     add_library(MyScript::VOIM SHARED IMPORTED)
 
     if(WIN32)
