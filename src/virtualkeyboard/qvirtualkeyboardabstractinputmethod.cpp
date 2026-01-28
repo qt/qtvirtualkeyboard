@@ -91,7 +91,7 @@ void QVirtualKeyboardAbstractInputMethod::update()
 
     The default implementation does nothing.
 
-    \since QtQuick.VirtualKeyboard 6.1
+    \since 6.1
 */
 void QVirtualKeyboardAbstractInputMethod::clearInputMode()
 {

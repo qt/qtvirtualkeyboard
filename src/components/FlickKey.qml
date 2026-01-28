@@ -11,7 +11,7 @@ import QtQuick.VirtualKeyboard
     \ingroup qtvirtualkeyboard-components-qml
     \ingroup qtvirtualkeyboard-key-types
     \inherits Key
-    \since QtQuick.VirtualKeyboard 6.1
+    \since 6.1
 
     \brief Flick key for keyboard layouts.
 

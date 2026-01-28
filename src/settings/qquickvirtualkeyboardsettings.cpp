@@ -563,7 +563,7 @@ void QQuickVirtualKeyboardSettings::resetStyle()
 
 /*!
     \qmlproperty bool VirtualKeyboardSettings::userDataPath
-    \since QtQuick.VirtualKeyboard.Settings 6.1
+    \since 6.1
 
     This property sets the user data path for the virtual keyboard and its plugins.
 
@@ -580,7 +580,7 @@ void QQuickVirtualKeyboardSettings::resetStyle()
 
 /*!
     \qmlproperty bool VirtualKeyboardSettings::hwrTimeoutForAlphabetic
-    \since QtQuick.VirtualKeyboard.Settings 6.1
+    \since 6.1
 
     This property sets the handwriting recognition timeout for alphabetical languages.
 
@@ -589,7 +589,7 @@ void QQuickVirtualKeyboardSettings::resetStyle()
 
 /*!
     \qmlproperty bool VirtualKeyboardSettings::hwrTimeoutForCjk
-    \since QtQuick.VirtualKeyboard.Settings 6.1
+    \since 6.1
 
     This property sets the handwriting recognition timeout for Chinese / Japanese / Korean languages.
 
@@ -598,7 +598,7 @@ void QQuickVirtualKeyboardSettings::resetStyle()
 
 /*!
     \qmlproperty int VirtualKeyboardSettings::inputMethodHints
-    \since QtQuick.VirtualKeyboard.Settings 6.1
+    \since 6.1
 
     This property allows to set persistent input method hints.
 
@@ -609,7 +609,7 @@ void QQuickVirtualKeyboardSettings::resetStyle()
 
 /*!
     \qmlproperty bool VirtualKeyboardSettings::handwritingModeDisabled
-    \since QtQuick.VirtualKeyboard.Settings 6.1
+    \since 6.1
 
     This property allows to disable handwriting input mode, if it is
     otherwise available in the system.
@@ -621,7 +621,7 @@ void QQuickVirtualKeyboardSettings::resetStyle()
 
 /*!
     \qmlproperty bool VirtualKeyboardSettings::defaultInputMethodDisabled
-    \since QtQuick.VirtualKeyboard.Settings 6.1
+    \since 6.1
 
     This property disables the default input method. The purpose of this setting is to be able to
     override the default input method with the plain input method, disabling its functionality.
@@ -629,7 +629,7 @@ void QQuickVirtualKeyboardSettings::resetStyle()
 
 /*!
     \qmlproperty bool VirtualKeyboardSettings::defaultDictionaryDisabled
-    \since QtQuick.VirtualKeyboard.Settings 6.1
+    \since 6.1
 
     This property disables the default dictionary. The purpose of this setting is to be able to
     use a custom dictionary only instead of the standard dictionary.
@@ -637,7 +637,7 @@ void QQuickVirtualKeyboardSettings::resetStyle()
 
 /*!
     \qmlproperty enumeration VirtualKeyboardSettings::visibleFunctionKeys
-    \since QtQuick.VirtualKeyboard.Settings 6.6
+    \since 6.6
 
     This setting adjusts the visibility of specific function keys in the keyboard layout, allowing
     them to be either displayed or hidden. When a function key is not visible, its functionality
@@ -657,7 +657,7 @@ void QQuickVirtualKeyboardSettings::resetStyle()
 
 /*!
     \qmlproperty bool VirtualKeyboardSettings::closeOnReturn
-    \since QtQuick.VirtualKeyboard.Settings 6.8
+    \since 6.8
 
     This property enables hiding of virtual keyboard.
 
@@ -667,14 +667,14 @@ void QQuickVirtualKeyboardSettings::resetStyle()
 
 /*!
     \qmlproperty real VirtualKeyboardSettings::keySoundVolume
-    \since QtQuick.VirtualKeyboard.Settings 6.9
+    \since 6.9
 
     This property holds the keysound's volume level. The level is in the range [0,1]
 */
 
 /*!
     \qmlproperty bool VirtualKeyboardSettings::arrowKeyNavigationEnabled
-    \since QtQuick.VirtualKeyboard.Settings 6.11
+    \since 6.11
 
     Use this property to enable or disable arrow key navigation.
 */

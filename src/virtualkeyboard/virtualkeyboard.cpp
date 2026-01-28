@@ -13,7 +13,7 @@ namespace QtVirtualKeyboard {
     \ingroup qmlclass
     \ingroup qtvirtualkeyboard-qml
     \brief Provides attached properties for customizing the virtual keyboard.
-    \since QtQuick.VirtualKeyboard 6.1
+    \since 6.1
 
     The VirtualKeyboard type provides attached properties which allow
     customizing the virtual keyboard, such as attaching custom dictionaries.

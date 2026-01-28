@@ -115,7 +115,7 @@ Canvas {
 
     /*! Clears screen and resets the rendering.
 
-        \since QtQuick.VirtualKeyboard.Styles 6.1
+        \since 6.1
     */
     function renderClear() {
         var ctx = getContext("2d")
@@ -129,7 +129,7 @@ Canvas {
 
         The function returns true when recycling is successful.
 
-        \since QtQuick.VirtualKeyboard.Styles 6.1
+        \since 6.1
     */
     function recycle() {
         if (!available) {
@@ -150,7 +150,7 @@ Canvas {
 
     /*! Emitted when the \a traceCanvas is recycled.
 
-        \since QtQuick.VirtualKeyboard.Styles 6.1
+        \since 6.1
     */
     signal onRecycle(var traceCanvas)
 
