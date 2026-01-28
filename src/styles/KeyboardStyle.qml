@@ -30,7 +30,7 @@ QtObject {
 
     /*!
         The maximum design height of the keyboard.
-        \since QtQuick.VirtualKeyboard.Styles 6.11
+        \since 6.11
     */
     property real keyboardDesignMaximumHeight
 
@@ -509,7 +509,7 @@ QtObject {
     */
     property color fullScreenInputSelectedTextColor: fullScreenInputColor
 
-    /*! \since QtQuick.VirtualKeyboard.Styles 6.2
+    /*! \since 6.2
 
         Template for the function list item.
 
@@ -522,7 +522,7 @@ QtObject {
     */
     property Component functionPopupListDelegate: null
 
-    /*! \since QtQuick.VirtualKeyboard.Styles 6.2
+    /*! \since 6.2
 
         Template for the function popup list highlight.
 
@@ -530,7 +530,7 @@ QtObject {
     */
     property Component functionPopupListHighlight: null
 
-    /*! \since QtQuick.VirtualKeyboard.Styles 6.2
+    /*! \since 6.2
 
         Template for the function popup list background.
     */

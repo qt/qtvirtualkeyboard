@@ -371,7 +371,7 @@ void QVirtualKeyboardTrace::setOpacity(qreal opacity)
     destroying the trace object, for example, to indicate that the trace has
     been processed.
 
-    \since QtQuick.VirtualKeyboard.Styles 6.1
+    \since 6.1
 */
 
 /*! Starts a timer to set opacity to zero after \a delayMs. If called again
@@ -381,7 +381,7 @@ void QVirtualKeyboardTrace::setOpacity(qreal opacity)
     destroying the trace object, for example, to indicate that the trace has
     been processed.
 
-    \since QtQuick.VirtualKeyboard.Styles 6.1
+    \since 6.1
 */
 
 void QVirtualKeyboardTrace::startHideTimer(int delayMs)

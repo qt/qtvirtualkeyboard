@@ -392,14 +392,14 @@ QVirtualKeyboardInputContextPrivate *QVirtualKeyboardInputContext::priv() const
 
 /*!
     \property QVirtualKeyboardInputContext::keyboardObserver
-    \since QtQuick.VirtualKeyboard 6.1
+    \since 6.1
     \brief Holds the keyboard observer object, which can be used to receive
     notifications of keyboard change events.
 */
 /*!
     \qmlproperty KeyboardObserver InputContext::keyboardObserver
     \readonly
-    \since QtQuick.VirtualKeyboard 6.1
+    \since 6.1
     \brief Holds the keyboard observer object, which can be used to receive
     notifications of keyboard change events.
 */
