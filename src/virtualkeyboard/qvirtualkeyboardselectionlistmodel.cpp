@@ -210,7 +210,7 @@ QHash<int,QByteArray> QVirtualKeyboardSelectionListModel::roleNames() const
     \property QVirtualKeyboardSelectionListModel::count
     \internal
 */
-/*
+/*!
     \internal
 */
 int QVirtualKeyboardSelectionListModel::count() const
