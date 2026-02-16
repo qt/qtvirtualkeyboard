@@ -78,7 +78,7 @@ namespace QtVirtualKeyboard {
 */
 
 /*!
-    \qmlmethod InputMethod::reset()
+    \qmlmethod void InputMethod::reset()
 
     This method is called by the input engine when this input method needs to be
     reset. The input method must reset its internal state only. The main
@@ -87,7 +87,7 @@ namespace QtVirtualKeyboard {
 */
 
 /*!
-    \qmlmethod InputMethod::update()
+    \qmlmethod void InputMethod::update()
 
     This method is called by the input engine when the input method needs to be
     updated. The input method must close the current pre-edit text and
