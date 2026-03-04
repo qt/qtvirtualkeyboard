@@ -1,5 +1,6 @@
 // Copyright (C) 2020 The Qt Company Ltd.
 // SPDX-License-Identifier: BSD-3-Clause
+// Qt-Security score:insignificant reason:build-system
 
 #include <hunspell/hunspell.h>
 
