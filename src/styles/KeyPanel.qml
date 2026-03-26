@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 import QtQuick
+import QtQuick.VirtualKeyboard
 
 /*!
     \qmltype KeyPanel
@@ -29,7 +30,7 @@ Item {
             \li \c control.uppercased Set to true when the key is uppercased.
         \endlist
     */
-    property Item control
+    property BaseKey control
 
     /*!
         \since QtQuick.VirtualKeyboard.Styles 1.1

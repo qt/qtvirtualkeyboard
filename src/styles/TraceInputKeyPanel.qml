@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
 import QtQuick
+import QtQuick.VirtualKeyboard
 
 /*!
     \qmltype TraceInputKeyPanel
@@ -26,7 +27,7 @@ Item {
             \li \c boundingBox Bounding box for the trace input
         \endlist
     */
-    property Item control
+    property TraceInputKey control
 
     /*! Sets margins of the trace input area.
 
