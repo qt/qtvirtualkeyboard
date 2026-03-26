@@ -983,7 +983,7 @@ KeyboardStyle {
             font {
                 family: fontFamily
                 weight: Font.Normal
-                pixelSize: Qt.inputMethod.cursorRectangle.height * 0.8
+                pixelSize: InputMethod.cursorRectangle.height * 0.8
             }
             function decorateText(text, wordCompletionLength) {
                 if (wordCompletionLength > 0) {
