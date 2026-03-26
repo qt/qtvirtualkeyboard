@@ -14,9 +14,17 @@ import QtQuick
 */
 
 Item {
-    /*! The icon color. */
+    /*!
+     * \qmlproperty color KeyIcon::color
+     *
+     * The icon color.
+     */
     property alias color: overlay.color
-    /*! The source image. */
+    /*!
+     * \qmlproperty url KeyIcon::source
+     *
+     * The source image.
+     */
     property alias source: icon.source
     Image {
         id: icon
