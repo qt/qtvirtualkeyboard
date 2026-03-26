@@ -28,7 +28,8 @@ qt_internal_add_qml_module(HunspellInputMethod
     LIBRARIES
         Qt::Core
         Qt::Gui
-    PUBLIC_LIBRARIES
+        Qt::VirtualKeyboardPrivate
+    PRIVATE_MODULE_INTERFACE
         Qt::VirtualKeyboardPrivate
 )
 
