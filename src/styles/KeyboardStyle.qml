@@ -218,6 +218,12 @@ QtObject {
     /*! Template for the alternative keys list item.
 
         \note The delegate is used in a \l ListView.
+
+        The following properties are available to the item:
+        \list
+            \li text The key's text
+            \li data The key's data
+        \endlist
     */
     property Component alternateKeysListDelegate: null
 
