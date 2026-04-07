@@ -147,7 +147,32 @@ KeyboardLayoutLoader {
                 SymbolModeKey {
                     weight: functionKeyWidth
                     Layout.fillWidth: false
-                    displayText: InputContext.inputEngine.inputMode === InputEngine.InputMode.Cyrillic ? "АБВ" : "ABC"
+                    displayText: InputContext.inputEngine.inputMode < inputModeNameList.length ?
+                                    inputModeNameList[InputContext.inputEngine.inputMode] : "ABC"
+
+                    property var inputModeNameList: [
+                        "ABC",  // InputEngine.InputMode.Latin
+                        "123",  // InputEngine.InputMode.Numeric
+                        "123",  // InputEngine.InputMode.Dialable
+                        "拼音",  // InputEngine.InputMode.Pinyin
+                        "倉頡",  // InputEngine.InputMode.Cangjie
+                        "注音",  // InputEngine.InputMode.Zhuyin
+                        "한글",  // InputEngine.InputMode.Hangul
+                        "かな",    // InputEngine.InputMode.Hiragana
+                        "カナ",    // InputEngine.InputMode.Katakana
+                        "全角",  // InputEngine.InputMode.FullwidthLatin
+                        "ΑΒΓ",  // InputEngine.InputMode.Greek
+                        "АБВ",  // InputEngine.InputMode.Cyrillic
+                        "\u0623\u200C\u0628\u200C\u062C",  // InputEngine.InputMode.Arabic
+                        "\u05D0\u05D1\u05D2",  // InputEngine.InputMode.Hebrew
+                        "中文",  // InputEngine.InputMode.ChineseHandwriting
+                        "日本語", // InputEngine.InputMode.JapaneseHandwriting
+                        "한국어", // InputEngine.InputMode.KoreanHandwriting
+                        "กขค",  // InputEngine.InputMode.Thai
+                        "笔画",  // InputEngine.InputMode.Stroke
+                        "ABC",  // InputEngine.InputMode.Romaji
+                        "FLK",  // InputEngine.InputMode.HiraganaFlick
+                    ]
                 }
                 ChangeLanguageKey {
                     weight: normalKeyWidth
