@@ -622,8 +622,8 @@ Item {
             }
             return keyboard
         }
-        // Note: without "highlightItem.x - highlightItem.x" the binding does not work for alternativeKeys
-        property var highlightItemOffset: highlightItem ? keyboard.mapFromItem(highlightItem, highlightItem.x - highlightItem.x, highlightItem.y - highlightItem.y) : ({x:0, y:0})
+        // Note: the self-subtracting terms create binding dependencies on x, y, width, and height without affecting the result.
+        property var highlightItemOffset: highlightItem ? keyboard.mapFromItem(highlightItem, highlightItem.x - highlightItem.x + highlightItem.width - highlightItem.width, highlightItem.y - highlightItem.y + highlightItem.height - highlightItem.height) : ({x:0, y:0})
         property int moveDuration: !keyboard.noAnimations ? 200 : 0
         property int resizeDuration: !keyboard.noAnimations ? 200 : 0
         z: 2
