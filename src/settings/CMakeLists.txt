@@ -5,12 +5,16 @@
 ## qtvkbsettingsplugin Plugin:
 #####################################################################
 
+qt_policy(SET QTP0005 NEW)
+
 qt_internal_add_qml_module(VirtualKeyboardSettings
     URI "QtQuick.VirtualKeyboard.Settings"
     VERSION "${PROJECT_VERSION}"
     PAST_MAJOR_VERSIONS 2 1
     PLUGIN_TARGET qtvkbsettingsplugin
     NO_PLUGIN_OPTIONAL
+    DEPENDENCIES
+        TARGET Qt::VirtualKeyboard
     SOURCES
         qquickvirtualkeyboardsettings.cpp
         qquickvirtualkeyboardsettings_p.h
