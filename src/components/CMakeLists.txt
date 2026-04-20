@@ -38,8 +38,25 @@ set(qml_files
     WordCandidatePopupList.qml
 )
 
+set(qml_dependencies
+    QtQuick/auto
+    QtQuick.Layouts/auto
+    QtQuick.VirtualKeyboard.Settings/auto
+)
+
+set(module_libraries
+    Qt::Core
+    Qt::Gui
+    Qt::Qml
+    Qt::Quick
+    Qt::VirtualKeyboard
+    Qt::VirtualKeyboardSettings
+)
+
 if(QT_FEATURE_vkb_sound_effects)
     list(APPEND qml_files MultiSoundEffect.qml)
+    list(APPEND qml_dependencies QtMultimedia/auto)
+    list(APPEND module_libraries Qt::Multimedia)
 endif()
 
 qt_internal_add_qml_module(qtvkbcomponentsplugin
@@ -48,17 +65,10 @@ qt_internal_add_qml_module(qtvkbcomponentsplugin
     PAST_MAJOR_VERSIONS 2 1
     PLUGIN_TARGET qtvkbcomponentsplugin
     DEPENDENCIES
-        QtQuick/auto
-        QtQuick.Layouts/auto
-        QtQuick.VirtualKeyboard.Settings/auto
+        ${qml_dependencies}
     QML_FILES
         ${qml_files}
     LIBRARIES
-        Qt::Core
-        Qt::Gui
-        Qt::Qml
-        Qt::Quick
-        Qt::VirtualKeyboard
-        Qt::VirtualKeyboardSettings
+        ${module_libraries}
     NO_GENERATE_CPP_EXPORTS
 )
