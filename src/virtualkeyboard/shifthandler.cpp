@@ -12,16 +12,42 @@
 #include <QElapsedTimer>
 #include <QStyleHints>
 
+#include <QtCore/q20algorithm.h>
+
 QT_BEGIN_NAMESPACE
 
 using namespace Qt::StringLiterals;
 
-size_t qHash(QLocale::Language lang, size_t seed)
-{
-    return qHash(ushort(lang), seed);
-}
-
 namespace QtVirtualKeyboard {
+
+template <typename T, size_t N>
+class SmallEnumSet
+{
+    Q_DISABLE_COPY_MOVE(SmallEnumSet)
+    std::array<T, N> m_data;
+public:
+    // Need a ctor: CTAD doesn't work on aggregates in C++17:
+    constexpr SmallEnumSet(std::array<T, N> data) : m_data{data} {}
+
+    constexpr bool contains(T t) const
+    {
+        return std::find(m_data.begin(), m_data.end(), t) != m_data.end();
+    }
+
+    constexpr bool isSorted() const
+    {
+        return q20::is_sorted(m_data.begin(), m_data.end());
+    }
+};
+
+constexpr SmallEnumSet manualShiftLanguageFilter = std::array{
+    QLocale::Arabic,
+    QLocale::Hindi,
+    QLocale::Korean,
+    QLocale::Persian,
+    QLocale::Thai,
+};
+static_assert(manualShiftLanguageFilter.isSorted(), "just in case");
 
 class ShiftHandlerPrivate : public QObjectPrivate
 {
@@ -37,7 +63,6 @@ public:
         shiftBeforeCapsLock(false),
         capsLock(false),
         resetWhenVisible(false),
-        manualShiftLanguageFilter(QSet<QLocale::Language>() << QLocale::Arabic << QLocale::Persian << QLocale::Hindi << QLocale::Korean << QLocale::Thai),
         manualCapsInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::Cangjie << QVirtualKeyboardInputEngine::InputMode::Zhuyin << QVirtualKeyboardInputEngine::InputMode::Hebrew),
         noAutoUppercaseInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::FullwidthLatin << QVirtualKeyboardInputEngine::InputMode::Pinyin << QVirtualKeyboardInputEngine::InputMode::Cangjie << QVirtualKeyboardInputEngine::InputMode::Zhuyin << QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting << QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting << QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting << QVirtualKeyboardInputEngine::InputMode::Romaji),
         allCapsInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::Hiragana << QVirtualKeyboardInputEngine::InputMode::HiraganaFlick << QVirtualKeyboardInputEngine::InputMode::Katakana)
@@ -55,7 +80,6 @@ public:
     bool resetWhenVisible;
     QLocale locale;
     QElapsedTimer timer;
-    const QSet<QLocale::Language> manualShiftLanguageFilter;
     const QSet<QVirtualKeyboardInputEngine::InputMode> manualCapsInputModeFilter;
     const QSet<QVirtualKeyboardInputEngine::InputMode> noAutoUppercaseInputModeFilter;
     const QSet<QVirtualKeyboardInputEngine::InputMode> allCapsInputModeFilter;
@@ -202,7 +226,7 @@ void ShiftHandler::toggleShift()
     Q_D(ShiftHandler);
     if (!d->toggleShiftEnabled)
         return;
-    if (d->manualShiftLanguageFilter.contains(d->locale.language())) {
+    if (manualShiftLanguageFilter.contains(d->locale.language())) {
         setCapsLockActive(false);
         setShiftActive(!d->shift);
     } else if (d->manualCapsInputModeFilter.contains(d->inputContext->inputEngine()->inputMode())) {
@@ -252,7 +276,7 @@ void ShiftHandler::reset()
         bool toggleShiftEnabled = !(inputMethodHints & (Qt::ImhUppercaseOnly | Qt::ImhLowercaseOnly));
         // For filtered languages reset the initial shift status to lower case
         // and allow manual shift change
-        if (d->manualShiftLanguageFilter.contains(d->locale.language()) ||
+        if (manualShiftLanguageFilter.contains(d->locale.language()) ||
                 d->manualCapsInputModeFilter.contains(inputMode)) {
             preferUpperCase = false;
             autoCapitalizationEnabled = false;
