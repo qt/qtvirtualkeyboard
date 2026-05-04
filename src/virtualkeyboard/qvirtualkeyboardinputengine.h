@@ -148,7 +148,6 @@ private:
     friend class QVirtualKeyboardInputContextPrivate;
 };
 
-Q_DECL_CONST_FUNCTION Q_DECL_CONSTEXPR inline uint qHash(QVirtualKeyboardInputEngine::InputMode key, uint seed = 0) Q_DECL_NOTHROW { return uint(key) ^ seed; }
 Q_DECLARE_OPERATORS_FOR_FLAGS(QVirtualKeyboardInputEngine::ReselectFlags)
 
 QT_END_NAMESPACE
