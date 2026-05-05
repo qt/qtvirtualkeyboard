@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 // Qt-Security score:significant reason:default
 
-#include "tcinputmethod_p.h"
+#include "tcinputmethod.h"
 #include <QtVirtualKeyboard/qvirtualkeyboardinputengine.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 #if QT_CONFIG(cangjie)

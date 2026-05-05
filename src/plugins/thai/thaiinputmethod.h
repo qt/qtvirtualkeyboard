@@ -1,50 +1,42 @@
-// Copyright (C) 2016 The Qt Company Ltd.
+// Copyright (C) 2018 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 // Qt-Security score:significant reason:default
 
-#ifndef HANGULINPUTMETHOD_P_H
-#define HANGULINPUTMETHOD_P_H
+#pragma once
 
-//
-//  W A R N I N G
-//  -------------
-//
-// This file is not part of the Qt API.  It exists purely as an
-// implementation detail.  This header file may change from version to
-// version without notice, or even be removed.
-//
-// We mean it.
-//
-
+#ifdef QT_HUNSPELLINPUTMETHOD_LIB
+#include <QtHunspellInputMethod/private/hunspellinputmethod_p.h>
+#define ThaiInputMethodBase HunspellInputMethod
+#else
 #include <QtVirtualKeyboard/qvirtualkeyboardabstractinputmethod.h>
+#define ThaiInputMethodBase QVirtualKeyboardAbstractInputMethod
+#endif
 
 QT_BEGIN_NAMESPACE
+
 namespace QtVirtualKeyboard {
 
-class HangulInputMethodPrivate;
+class ThaiInputMethodPrivate;
 
-class HangulInputMethod : public QVirtualKeyboardAbstractInputMethod
+class ThaiInputMethod : public ThaiInputMethodBase
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(HangulInputMethod)
+    Q_DECLARE_PRIVATE(ThaiInputMethod)
     QML_ELEMENT
     QML_ADDED_IN_VERSION(2, 0)
 
 public:
-    explicit HangulInputMethod(QObject *parent = nullptr);
-    ~HangulInputMethod();
+    explicit ThaiInputMethod(QObject *parent = nullptr);
 
+#ifndef QT_HUNSPELLINPUTMETHOD_LIB
     QList<QVirtualKeyboardInputEngine::InputMode> inputModes(const QString &locale) override;
     bool setInputMode(const QString &locale, QVirtualKeyboardInputEngine::InputMode inputMode) override;
     bool setTextCase(QVirtualKeyboardInputEngine::TextCase textCase) override;
+#endif
 
     bool keyEvent(Qt::Key key, const QString &text, Qt::KeyboardModifiers modifiers) override;
-
-    void reset() override;
-    void update() override;
 };
 
 } // namespace QtVirtualKeyboard
-QT_END_NAMESPACE
 
-#endif // HANGULINPUTMETHOD_P_H
+QT_END_NAMESPACE

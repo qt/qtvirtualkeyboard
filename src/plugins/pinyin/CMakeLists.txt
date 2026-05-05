@@ -16,8 +16,8 @@ qt_internal_add_qml_module(qtvkbpinyinplugin
     DEPENDENCIES
         QtQuick.VirtualKeyboard.Core/auto
     SOURCES
-        pinyindecoderservice.cpp pinyindecoderservice_p.h
-        pinyininputmethod.cpp pinyininputmethod_p.h
+        pinyindecoderservice.cpp pinyindecoderservice.h
+        pinyininputmethod.cpp pinyininputmethod.h
     DEFINES
         QT_ASCII_CAST_WARNINGS
         QT_NO_CAST_FROM_ASCII

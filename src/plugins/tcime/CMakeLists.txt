@@ -16,7 +16,7 @@ qt_internal_add_qml_module(qtvkbtcimeplugin
     DEPENDENCIES
         QtQuick.VirtualKeyboard.Core/auto
     SOURCES
-        tcinputmethod.cpp tcinputmethod_p.h
+        tcinputmethod.cpp tcinputmethod.h
     DEFINES
         QT_ASCII_CAST_WARNINGS
         QT_NO_CAST_FROM_ASCII

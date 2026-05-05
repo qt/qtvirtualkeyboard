@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 // Qt-Security score:significant reason:default
 
-#include "hangul_p.h"
+#include "hangul.h"
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
