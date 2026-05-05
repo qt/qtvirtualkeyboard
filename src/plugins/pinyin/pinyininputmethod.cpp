@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 // Qt-Security score:significant reason:default
 
-#include "pinyininputmethod_p.h"
-#include "pinyindecoderservice_p.h"
+#include "pinyininputmethod.h"
+#include "pinyindecoderservice.h"
 #include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
 
 #include <QLoggingCategory>

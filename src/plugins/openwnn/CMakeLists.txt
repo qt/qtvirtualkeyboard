@@ -16,7 +16,7 @@ qt_internal_add_qml_module(qtvkbopenwnnplugin
     DEPENDENCIES
         QtQuick.VirtualKeyboard.Core/auto
     SOURCES
-        openwnninputmethod.cpp openwnninputmethod_p.h
+        openwnninputmethod.cpp openwnninputmethod.h
     DEFINES
         QT_ASCII_CAST_WARNINGS
         QT_NO_CAST_FROM_ASCII

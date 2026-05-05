@@ -2,8 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 // Qt-Security score:significant reason:default
 
-#ifndef PLUGIN_H
-#define PLUGIN_H
+#pragma once
 
 #include <qpa/qplatforminputcontextplugin_p.h>
 
@@ -20,5 +19,3 @@ public:
 };
 
 QT_END_NAMESPACE
-
-#endif // PLUGIN_H

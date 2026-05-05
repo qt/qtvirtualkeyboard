@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 // Qt-Security score:significant reason:default
 
-#include "pinyindecoderservice_p.h"
+#include "pinyindecoderservice.h"
 #include "pinyinime.h"
 #include "dictdef.h"
 #include <QStandardPaths>

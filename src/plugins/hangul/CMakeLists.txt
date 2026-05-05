@@ -14,8 +14,8 @@ qt_internal_add_qml_module(qtvkbhangulplugin
     DEPENDENCIES
         QtQuick.VirtualKeyboard.Core/auto
     SOURCES
-        hangul.cpp hangul_p.h
-        hangulinputmethod.cpp hangulinputmethod_p.h
+        hangul.cpp hangul.h
+        hangulinputmethod.cpp hangulinputmethod.h
     DEFINES
         QT_ASCII_CAST_WARNINGS
         QT_NO_CAST_FROM_ASCII
