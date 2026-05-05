@@ -68,6 +68,13 @@ constexpr SmallEnumSet noAutoUppercaseInputModeFilter = std::array{
 };
 static_assert(noAutoUppercaseInputModeFilter.isSorted(), "just in case");
 
+constexpr SmallEnumSet allCapsInputModeFilter = std::array{
+    QVirtualKeyboardInputEngine::InputMode::Hiragana,
+    QVirtualKeyboardInputEngine::InputMode::Katakana,
+    QVirtualKeyboardInputEngine::InputMode::HiraganaFlick,
+};
+static_assert(allCapsInputModeFilter.isSorted(), "just in case");
+
 class ShiftHandlerPrivate : public QObjectPrivate
 {
 public:
@@ -81,8 +88,7 @@ public:
         shiftChanged(false),
         shiftBeforeCapsLock(false),
         capsLock(false),
-        resetWhenVisible(false),
-        allCapsInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::Hiragana << QVirtualKeyboardInputEngine::InputMode::HiraganaFlick << QVirtualKeyboardInputEngine::InputMode::Katakana)
+        resetWhenVisible(false)
     {
     }
 
@@ -97,7 +103,6 @@ public:
     bool resetWhenVisible;
     QLocale locale;
     QElapsedTimer timer;
-    const QSet<QVirtualKeyboardInputEngine::InputMode> allCapsInputModeFilter;
 };
 
 /*!
@@ -296,7 +301,7 @@ void ShiftHandler::reset()
             preferUpperCase = false;
             autoCapitalizationEnabled = false;
             toggleShiftEnabled = true;
-        } else if (d->allCapsInputModeFilter.contains(inputMode)) {
+        } else if (allCapsInputModeFilter.contains(inputMode)) {
             preferUpperCase = true;
             autoCapitalizationEnabled = false;
             toggleShiftEnabled = false;
