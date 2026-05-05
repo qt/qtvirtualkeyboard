@@ -49,6 +49,13 @@ constexpr SmallEnumSet manualShiftLanguageFilter = std::array{
 };
 static_assert(manualShiftLanguageFilter.isSorted(), "just in case");
 
+constexpr SmallEnumSet manualCapsInputModeFilter = std::array{
+    QVirtualKeyboardInputEngine::InputMode::Cangjie,
+    QVirtualKeyboardInputEngine::InputMode::Zhuyin,
+    QVirtualKeyboardInputEngine::InputMode::Hebrew,
+};
+static_assert(manualCapsInputModeFilter.isSorted(), "just in case");
+
 class ShiftHandlerPrivate : public QObjectPrivate
 {
 public:
@@ -63,7 +70,6 @@ public:
         shiftBeforeCapsLock(false),
         capsLock(false),
         resetWhenVisible(false),
-        manualCapsInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::Cangjie << QVirtualKeyboardInputEngine::InputMode::Zhuyin << QVirtualKeyboardInputEngine::InputMode::Hebrew),
         noAutoUppercaseInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::FullwidthLatin << QVirtualKeyboardInputEngine::InputMode::Pinyin << QVirtualKeyboardInputEngine::InputMode::Cangjie << QVirtualKeyboardInputEngine::InputMode::Zhuyin << QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting << QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting << QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting << QVirtualKeyboardInputEngine::InputMode::Romaji),
         allCapsInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::Hiragana << QVirtualKeyboardInputEngine::InputMode::HiraganaFlick << QVirtualKeyboardInputEngine::InputMode::Katakana)
     {
@@ -80,7 +86,6 @@ public:
     bool resetWhenVisible;
     QLocale locale;
     QElapsedTimer timer;
-    const QSet<QVirtualKeyboardInputEngine::InputMode> manualCapsInputModeFilter;
     const QSet<QVirtualKeyboardInputEngine::InputMode> noAutoUppercaseInputModeFilter;
     const QSet<QVirtualKeyboardInputEngine::InputMode> allCapsInputModeFilter;
 };
@@ -229,7 +234,7 @@ void ShiftHandler::toggleShift()
     if (manualShiftLanguageFilter.contains(d->locale.language())) {
         setCapsLockActive(false);
         setShiftActive(!d->shift);
-    } else if (d->manualCapsInputModeFilter.contains(d->inputContext->inputEngine()->inputMode())) {
+    } else if (manualCapsInputModeFilter.contains(d->inputContext->inputEngine()->inputMode())) {
         bool capsLock = d->capsLock;
         setCapsLockActive(!capsLock);
         setShiftActive(!capsLock);
@@ -277,7 +282,7 @@ void ShiftHandler::reset()
         // For filtered languages reset the initial shift status to lower case
         // and allow manual shift change
         if (manualShiftLanguageFilter.contains(d->locale.language()) ||
-                d->manualCapsInputModeFilter.contains(inputMode)) {
+                manualCapsInputModeFilter.contains(inputMode)) {
             preferUpperCase = false;
             autoCapitalizationEnabled = false;
             toggleShiftEnabled = true;
