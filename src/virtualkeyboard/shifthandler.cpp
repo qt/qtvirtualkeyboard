@@ -56,6 +56,18 @@ constexpr SmallEnumSet manualCapsInputModeFilter = std::array{
 };
 static_assert(manualCapsInputModeFilter.isSorted(), "just in case");
 
+constexpr SmallEnumSet noAutoUppercaseInputModeFilter = std::array{
+    QVirtualKeyboardInputEngine::InputMode::Pinyin,
+    QVirtualKeyboardInputEngine::InputMode::Cangjie,
+    QVirtualKeyboardInputEngine::InputMode::Zhuyin,
+    QVirtualKeyboardInputEngine::InputMode::FullwidthLatin,
+    QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting,
+    QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting,
+    QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting,
+    QVirtualKeyboardInputEngine::InputMode::Romaji,
+};
+static_assert(noAutoUppercaseInputModeFilter.isSorted(), "just in case");
+
 class ShiftHandlerPrivate : public QObjectPrivate
 {
 public:
@@ -70,7 +82,6 @@ public:
         shiftBeforeCapsLock(false),
         capsLock(false),
         resetWhenVisible(false),
-        noAutoUppercaseInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::FullwidthLatin << QVirtualKeyboardInputEngine::InputMode::Pinyin << QVirtualKeyboardInputEngine::InputMode::Cangjie << QVirtualKeyboardInputEngine::InputMode::Zhuyin << QVirtualKeyboardInputEngine::InputMode::ChineseHandwriting << QVirtualKeyboardInputEngine::InputMode::JapaneseHandwriting << QVirtualKeyboardInputEngine::InputMode::KoreanHandwriting << QVirtualKeyboardInputEngine::InputMode::Romaji),
         allCapsInputModeFilter(QSet<QVirtualKeyboardInputEngine::InputMode>() << QVirtualKeyboardInputEngine::InputMode::Hiragana << QVirtualKeyboardInputEngine::InputMode::HiraganaFlick << QVirtualKeyboardInputEngine::InputMode::Katakana)
     {
     }
@@ -86,7 +97,6 @@ public:
     bool resetWhenVisible;
     QLocale locale;
     QElapsedTimer timer;
-    const QSet<QVirtualKeyboardInputEngine::InputMode> noAutoUppercaseInputModeFilter;
     const QSet<QVirtualKeyboardInputEngine::InputMode> allCapsInputModeFilter;
 };
 
@@ -277,7 +287,7 @@ void ShiftHandler::reset()
         bool autoCapitalizationEnabled = !(d->inputContext->inputMethodHints() & (Qt::ImhNoAutoUppercase |
               Qt::ImhUppercaseOnly | Qt::ImhLowercaseOnly | Qt::ImhEmailCharactersOnly |
               Qt::ImhUrlCharactersOnly | Qt::ImhDialableCharactersOnly | Qt::ImhFormattedNumbersOnly |
-              Qt::ImhDigitsOnly)) && !d->noAutoUppercaseInputModeFilter.contains(inputMode);
+              Qt::ImhDigitsOnly)) && !noAutoUppercaseInputModeFilter.contains(inputMode);
         bool toggleShiftEnabled = !(inputMethodHints & (Qt::ImhUppercaseOnly | Qt::ImhLowercaseOnly));
         // For filtered languages reset the initial shift status to lower case
         // and allow manual shift change
