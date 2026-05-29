@@ -637,8 +637,13 @@ QVirtualKeyboardInputContext *QVirtualKeyboardInputContextForeign::create(
     static QHash<QQmlEngine *, QVirtualKeyboardInputContext *> instances;
     QMutexLocker locker(&mutex);
     QVirtualKeyboardInputContext *&instance = instances[qmlEngine];
-    if (instance == nullptr)
+    if (instance == nullptr) {
+        QObject::connect(qmlEngine, &QObject::destroyed, qmlEngine, [&]() {
+            QMutexLocker locker(&mutex);
+            instances.remove(qmlEngine);
+        });
         instance = new QVirtualKeyboardInputContext(qmlEngine);
+    }
     return instance;
 }
 

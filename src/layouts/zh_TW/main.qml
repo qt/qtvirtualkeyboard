@@ -8,7 +8,7 @@ import QtQuick.VirtualKeyboard.Components
 
 KeyboardLayoutLoader {
     function createInputMethod() {
-        return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; TCInputMethod {}', parent, "main.qml")
+        return Qt.createQmlObject('import QtQuick; import QtQuick.VirtualKeyboard.Plugins; TCInputMethod {}', parent, "inputMethod.qml")
     }
     sharedLayouts: ['symbols']
     sourceComponent: {

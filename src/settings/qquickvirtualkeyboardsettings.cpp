@@ -165,8 +165,13 @@ QQuickVirtualKeyboardSettings *QQuickVirtualKeyboardSettings::create(
     static QHash<QQmlEngine *, QQuickVirtualKeyboardSettings *> instances;
     QMutexLocker locker(&mutex);
     QQuickVirtualKeyboardSettings *&instance = instances[qmlEngine];
-    if (instance == nullptr)
+    if (instance == nullptr) {
+        QObject::connect(qmlEngine, &QObject::destroyed, qmlEngine, [&]() {
+            QMutexLocker locker(&mutex);
+            instances.remove(qmlEngine);
+        });
         instance = new QQuickVirtualKeyboardSettings(qmlEngine);
+    }
     return instance;
 }
 
