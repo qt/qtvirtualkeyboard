@@ -10,7 +10,8 @@
 Qt Virtual Keyboard supports handwriting recognition through open source and
 commercially-licensed engines.
 
-\image handwriting.gif
+\image handwriting.gif {Compact handwriting panel recognizing the word hello
+       handwritten stroke by stroke in the writing area}
 
 There are two modes in which to write: using the more compact handwriting panel
 (as shown above), or \l {HandwritingInputPanel}{fullscreen}.

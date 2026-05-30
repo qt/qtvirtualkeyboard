@@ -61,3 +61,6 @@ navigation.toctitles.inclusive = false
 
 # Enforce zero documentation warnings
 warninglimit = 0
+
+# Report warnings for images without alt text
+reportmissingalttextforimages = true
