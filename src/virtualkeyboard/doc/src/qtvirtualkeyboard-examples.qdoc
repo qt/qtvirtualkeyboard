@@ -14,6 +14,8 @@
     \brief This example shows how to use the virtual keyboard in a Qt Quick application.
     \ingroup qtvirtualkeyboard-examples
     \image basic-example.webp
+           {Application window with labeled text fields above the virtual
+           keyboard for entering text}
     \meta tags {quick}
 
     The example has two implementations: one for desktop

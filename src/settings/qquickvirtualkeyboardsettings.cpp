@@ -548,7 +548,8 @@ void QQuickVirtualKeyboardSettings::resetStyle()
     focused input field to the fullscreen input field located at the top of the
     keyboard.
 
-    \image shadow-input.png
+    \image shadow-input.png {Keyboard in fullscreen mode with the focused
+           field contents replicated in a bar above the keys}
 
     For example, to activate the fullscreen mode when the screen aspect ratio
     is greater than 16:9:
