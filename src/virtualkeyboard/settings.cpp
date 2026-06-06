@@ -29,7 +29,7 @@ public:
         wclAlwaysVisible(false),
         wclAutoCommitWord(false),
         fullScreenMode(false),
-        userDataPath(defaultUserDataPath),
+        userDataPath(defaultUserDataPath()),
         hwrTimeoutForAlphabetic(defaultHwrTimeoutForAlphabetic),
         hwrTimeoutForCjk(defaultHwrTimeoutForCjk),
         handwritingModeDisabled(false),
@@ -56,6 +56,13 @@ public:
         }
     }
 
+    static QString defaultUserDataPath()
+    {
+        static const QString path = u"%1/qtvirtualkeyboard"_s
+                .arg(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation));
+        return path;
+    }
+
     QString style;
     QString styleName;
     QString locale;
@@ -79,13 +86,9 @@ public:
     bool arrowKeyNavigationEnabled;
 
     static const int defaultWclAutoHideDelay = 5000;
-    static const QString defaultUserDataPath;
     static const int defaultHwrTimeoutForAlphabetic = 500;
     static const int defaultHwrTimeoutForCjk = 500;
 };
-
-const QString SettingsPrivate::defaultUserDataPath = u"%1/qtvirtualkeyboard"_s
-        .arg(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation));
 
 static QScopedPointer<Settings> s_settingsInstance;
 
@@ -334,7 +337,7 @@ void Settings::setUserDataPath(const QString &userDataPath)
 
 void Settings::resetUserDataPath()
 {
-    setUserDataPath(SettingsPrivate::defaultUserDataPath);
+    setUserDataPath(SettingsPrivate::defaultUserDataPath());
 }
 
 int Settings::hwrTimeoutForAlphabetic() const
