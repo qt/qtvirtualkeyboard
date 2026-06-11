@@ -1057,7 +1057,11 @@ Item {
                                         break
                                     y -= height
                                 }
-                                nextKey = keyOnPoint(x, y)
+                                // Pixel-grid snapping in Qt Quick Layouts can leave a
+                                // sub-pixel gap next to fixed-width keys (QTBUG-146018).
+                                // The gap never contains an integer x, so floor the scan
+                                // position to avoid landing in it.
+                                nextKey = keyOnPoint(Math.floor(x), y)
                                 if (nextKey) {
                                     // Check if key is visible. Only the visible keys have keyPanelDelegate set.
                                     if (nextKey != initialKey && nextKey.hasOwnProperty("keyPanelDelegate") && nextKey.keyPanelDelegate)
