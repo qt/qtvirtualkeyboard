@@ -120,6 +120,10 @@ public:
     void setArrowKeyNavigationEnabled(bool arrowKeyNavigationEnabled);
     void resetArrowKeyNavigationEnabled();
 
+    QString screenName() const;
+    void setScreenName(const QString &screenName);
+    void resetScreenName();
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -144,6 +148,7 @@ signals:
     void closeOnReturnChanged();
     void keySoundVolumeChanged();
     void arrowKeyNavigationEnabledChanged();
+    void screenNameChanged();
 };
 
 } // namespace QtVirtualKeyboard

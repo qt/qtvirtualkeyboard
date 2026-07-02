@@ -52,6 +52,7 @@ protected slots:
     void previewRectangleChanged();
     void previewVisibleChanged();
     void screenChanged(QScreen *);
+    void updateEffectiveScreen();
 
 protected:
     void updateInputRegion();

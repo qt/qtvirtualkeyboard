@@ -155,6 +155,7 @@ QQuickVirtualKeyboardSettings::QQuickVirtualKeyboardSettings(QQmlEngine *engine,
     connect(settings, SIGNAL(visibleFunctionKeysChanged()), SIGNAL(visibleFunctionKeysChanged()));
     connect(settings, &Settings::keySoundVolumeChanged, this, &QQuickVirtualKeyboardSettings::keySoundVolumeChanged);
     connect(settings, &Settings::arrowKeyNavigationEnabledChanged, this, &QQuickVirtualKeyboardSettings::arrowKeyNavigationEnabledChanged);
+    connect(settings, &Settings::screenNameChanged, this, &QQuickVirtualKeyboardSettings::screenNameChanged);
 }
 
 /*!
@@ -445,6 +446,21 @@ void QQuickVirtualKeyboardSettings::resetArrowKeyNavigationEnabled()
     Settings::instance()->resetArrowKeyNavigationEnabled();
 }
 
+QString QQuickVirtualKeyboardSettings::screenName() const
+{
+    return Settings::instance()->screenName();
+}
+
+void QQuickVirtualKeyboardSettings::setScreenName(const QString &screenName)
+{
+    Settings::instance()->setScreenName(screenName);
+}
+
+void QQuickVirtualKeyboardSettings::resetScreenName()
+{
+    Settings::instance()->resetScreenName();
+}
+
 /*!
     \internal
 */
@@ -679,6 +695,28 @@ void QQuickVirtualKeyboardSettings::resetStyle()
     \since 6.11
 
     Use this property to enable or disable arrow key navigation.
+*/
+
+/*!
+    \qmlproperty string VirtualKeyboardSettings::screenName
+    \since 6.13
+
+    This property allows overriding the screen on which the desktop virtual
+    keyboard is shown, in setups with multiple screens. The value must match
+    the \l {QScreen::}{name} of one of \l {QGuiApplication::}{screens}.
+
+    The format of the name is platform specific. Use \c Qt.application.screens
+    to discover the names available on the current system. The names are not
+    guaranteed to be unique; if several screens share the same name, the first
+    matching screen is used.
+
+    When empty (the default), the keyboard is shown on the screen of the
+    window that has focus.
+
+    If the given screen name does not match any connected screen, this
+    setting is ignored and the keyboard falls back to the default behavior.
+
+    This property has no effect outside of the desktop input panel.
 */
 
 /*!

@@ -9,6 +9,7 @@
 #include <QtVirtualKeyboard/private/platforminputcontext_p.h>
 #include <QtVirtualKeyboard/private/qvirtualkeyboardinputcontext_p.h>
 #include <QtVirtualKeyboard/qvirtualkeyboardinputcontext.h>
+#include <QtVirtualKeyboard/private/settings_p.h>
 #include <QGuiApplication>
 #include <QQmlEngine>
 #include <QScreen>
@@ -18,6 +19,8 @@
 #include <QtCore/QLibraryInfo>
 #include <QtCore/qpointer.h>
 #include <QtGui/qscreen.h>
+
+#include <algorithm>
 
 QT_BEGIN_NAMESPACE
 namespace QtVirtualKeyboard {
@@ -51,6 +54,7 @@ public:
     QMetaObject::Connection m_focusWindowVisibleConnection;
     QMetaObject::Connection m_focusWindowScreenConnection;
     QPointer<QScreen> m_screen;
+    QPointer<QScreen> m_focusScreen;
     QRectF keyboardRect;
     QRectF previewRect;
     bool previewVisible;
@@ -69,6 +73,18 @@ DesktopInputPanel::DesktopInputPanel(QObject *parent) :
     /*  Activate the alpha buffer for this application.
     */
     QQuickWindow::setDefaultAlphaBuffer(true);
+
+    connect(Settings::instance(), &Settings::screenNameChanged,
+            this, &DesktopInputPanel::updateEffectiveScreen);
+    if (qGuiApp) {
+        /*  Re-evaluate the effective screen when screens come and go, so that
+            a configured screen is picked up if it is connected later, and
+            released when it disappears. */
+        connect(qGuiApp, &QGuiApplication::screenAdded,
+                this, &DesktopInputPanel::updateEffectiveScreen);
+        connect(qGuiApp, &QGuiApplication::screenRemoved,
+                this, &DesktopInputPanel::updateEffectiveScreen);
+    }
 }
 
 DesktopInputPanel::~DesktopInputPanel()
@@ -184,12 +200,42 @@ void DesktopInputPanel::focusWindowChanged(QWindow *focusWindow)
                 connect(focusWindow, &QWindow::screenChanged,
                         this, &DesktopInputPanel::screenChanged);
         screenChanged(focusWindow->screen());
+    } else {
+        /*  Do not clear the tracked focus screen here: the application may
+            simply have lost focus to another application. Re-evaluate so that
+            a configured screen still takes effect. */
+        updateEffectiveScreen();
     }
 }
 
 void DesktopInputPanel::screenChanged(QScreen *screen)
 {
     Q_D(DesktopInputPanel);
+    d->m_focusScreen = screen;
+    updateEffectiveScreen();
+}
+
+void DesktopInputPanel::updateEffectiveScreen()
+{
+    Q_D(DesktopInputPanel);
+
+    QScreen *screen = nullptr;
+    const QString screenName = Settings::instance()->screenName();
+    if (!screenName.isEmpty()) {
+        const auto screens = QGuiApplication::screens();
+        const auto it = std::find_if(screens.cbegin(), screens.cend(),
+                                     [&screenName](QScreen *candidate) {
+                                         return candidate->name() == screenName;
+                                     });
+        if (it != screens.cend())
+            screen = *it;
+        else
+            VIRTUALKEYBOARD_DEBUG() << "DesktopInputPanel: configured screen" << screenName
+                                    << "not found, falling back to the default screen";
+    }
+
+    if (!screen)
+        screen = d->m_focusScreen.data();
 
     if (d->m_screen.data() == screen)
         return;

@@ -84,6 +84,7 @@ public:
     bool closeOnReturn;
     qreal keySoundVolume;
     bool arrowKeyNavigationEnabled;
+    QString screenName;
 
     static const int defaultWclAutoHideDelay = 5000;
     static const int defaultHwrTimeoutForAlphabetic = 500;
@@ -543,6 +544,26 @@ void Settings::resetArrowKeyNavigationEnabled()
 #else
     setArrowKeyNavigationEnabled(false);
 #endif
+}
+
+QString Settings::screenName() const
+{
+    Q_D(const Settings);
+    return d->screenName;
+}
+
+void Settings::setScreenName(const QString &screenName)
+{
+    Q_D(Settings);
+    if (d->screenName != screenName) {
+        d->screenName = screenName;
+        emit screenNameChanged();
+    }
+}
+
+void Settings::resetScreenName()
+{
+    setScreenName(QString());
 }
 
 } // namespace QtVirtualKeyboard

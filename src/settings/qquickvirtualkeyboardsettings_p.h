@@ -49,6 +49,7 @@ class QQuickVirtualKeyboardSettings : public QObject
     Q_PROPERTY(bool closeOnReturn READ closeOnReturn WRITE setCloseOnReturn NOTIFY closeOnReturnChanged RESET resetCloseOnReturn REVISION(6, 8))
     Q_PROPERTY(qreal keySoundVolume READ keySoundVolume WRITE setKeySoundVolume NOTIFY keySoundVolumeChanged RESET resetKeySoundVolume REVISION(6, 9))
     Q_PROPERTY(bool arrowKeyNavigationEnabled READ arrowKeyNavigationEnabled WRITE setArrowKeyNavigationEnabled NOTIFY arrowKeyNavigationEnabledChanged RESET resetArrowKeyNavigationEnabled REVISION(6, 11))
+    Q_PROPERTY(QString screenName READ screenName WRITE setScreenName NOTIFY screenNameChanged RESET resetScreenName REVISION(6, 13))
     QML_NAMED_ELEMENT(VirtualKeyboardSettings)
     QML_SINGLETON
     QML_ADDED_IN_VERSION(1, 0)
@@ -127,6 +128,10 @@ public:
     void setArrowKeyNavigationEnabled(bool arrowKeyNavigationEnabled);
     void resetArrowKeyNavigationEnabled();
 
+    QString screenName() const;
+    void setScreenName(const QString &screenName);
+    void resetScreenName();
+
     Q_REVISION(6, 9)
     Q_INVOKABLE qreal convertVolume(qreal volume) const;
 
@@ -150,6 +155,7 @@ signals:
     Q_REVISION(6, 8) void closeOnReturnChanged();
     Q_REVISION(6, 9) void keySoundVolumeChanged();
     Q_REVISION(6, 11) void arrowKeyNavigationEnabledChanged();
+    Q_REVISION(6, 13) void screenNameChanged();
 
 private Q_SLOTS:
     void resetStyle();
