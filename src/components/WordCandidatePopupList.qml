@@ -42,13 +42,13 @@ PopupList {
     }
     model: enabled ? InputContext.inputEngine.wordCandidateListModel : null
 
-    onContentWidthChanged: viewResizeTimer.restart()
+    onPreferredContentWidthChanged: viewResizeTimer.restart()
 
     Timer {
         id: viewResizeTimer
         interval: 0
         repeat: false
-        onTriggered: wordCandidatePopupList.width = wordCandidatePopupList.contentWidth
+        onTriggered: wordCandidatePopupList.width = wordCandidatePopupList.preferredContentWidth
     }
 
     Connections {

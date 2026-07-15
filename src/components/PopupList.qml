@@ -7,12 +7,12 @@ import QtQuick.VirtualKeyboard
 ListView {
     property int maxVisibleItems: 5
     readonly property int preferredVisibleItems: count < maxVisibleItems ? count : maxVisibleItems
-    readonly property real contentWidth: contentItem.childrenRect.width
+    readonly property real preferredContentWidth: contentItem.childrenRect.width
     property alias defaultHighlight: defaultHighlight
 
     clip: true
     visible: enabled && count > 0
-    width: contentWidth
+    width: preferredContentWidth
     height: currentItem ? currentItem.height * preferredVisibleItems + spacing * (preferredVisibleItems - 1) : 0
     orientation: ListView.Vertical
     snapMode: ListView.SnapToItem
