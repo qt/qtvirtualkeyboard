@@ -628,7 +628,19 @@ QVirtualKeyboardObserver *QVirtualKeyboardInputContext::keyboardObserver() const
     \qmlproperty QtObject InputContext::inputItem
     \deprecated
 
+    Use \l {QtQuick::Window::activeFocusItem}{Window.activeFocusItem}
+    instead. This property was never intended as public API; it was exposed
+    only for the internal use of the virtual keyboard.
+
     This property is changed when the focused input item changes.
+
+    \note If you are tracking the input item in order to react to the
+    keyboard geometry or to the cursor position, prefer the input method
+    properties in \l {Qt::inputMethod}{Qt.inputMethod}, such as
+    \l {QInputMethod::keyboardRectangle}{keyboardRectangle} and
+    \l {QInputMethod::cursorRectangle}{cursorRectangle}. Those work
+    independently of the virtual keyboard and do not require access to the
+    focused item itself.
 */
 
 /*!
@@ -636,7 +648,17 @@ QVirtualKeyboardObserver *QVirtualKeyboardInputContext::keyboardObserver() const
     \brief the focused input item.
     \deprecated
 
+    Use \l QGuiApplication::focusObject() instead. This property was never
+    intended as public API; it was exposed only for the internal use of the
+    virtual keyboard.
+
     This property is changed when the focused input item changes.
+
+    \note If you are tracking the input item in order to react to the
+    keyboard geometry or to the cursor position, prefer \l QInputMethod,
+    which provides \l {QInputMethod::keyboardRectangle}{keyboardRectangle}
+    and \l {QInputMethod::cursorRectangle}{cursorRectangle} without
+    requiring access to the focused item itself.
 */
 
 /*!
