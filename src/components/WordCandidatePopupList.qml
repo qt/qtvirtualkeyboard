@@ -22,7 +22,7 @@ PopupList {
                                          Qt.inputMethod.cursorRectangle.y + (Qt.inputMethod.cursorRectangle.height / 2) > (parent.height / 2) &&
                                          Qt.inputMethod.cursorRectangle.y + Qt.inputMethod.cursorRectangle.height + (currentItem.height * 2) > parent.height
 
-    height: currentItem ? currentItem.height * preferredVisibleItems + (spacing * preferredVisibleItems - 1) : 0
+    height: currentItem ? currentItem.height * preferredVisibleItems + spacing * (preferredVisibleItems - 1) : 0
     Binding {
         target: wordCandidatePopupList
         property: "x"

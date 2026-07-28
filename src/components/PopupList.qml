@@ -13,7 +13,7 @@ ListView {
     clip: true
     visible: enabled && count > 0
     width: contentWidth
-    height: currentItem ? currentItem.height * preferredVisibleItems + (spacing * preferredVisibleItems - 1) : 0
+    height: currentItem ? currentItem.height * preferredVisibleItems + spacing * (preferredVisibleItems - 1) : 0
     orientation: ListView.Vertical
     snapMode: ListView.SnapToItem
     delegate: keyboard.style.popupListDelegate
