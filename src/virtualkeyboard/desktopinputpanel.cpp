@@ -48,6 +48,8 @@ public:
     }
 
     QScopedPointer<InputView> view;
+    QMetaObject::Connection m_focusWindowVisibleConnection;
+    QMetaObject::Connection m_focusWindowScreenConnection;
     QPointer<QScreen> m_screen;
     QRectF keyboardRect;
     QRectF previewRect;
@@ -171,12 +173,16 @@ void DesktopInputPanel::repositionView(const QRect &rect)
 
 void DesktopInputPanel::focusWindowChanged(QWindow *focusWindow)
 {
-    disconnect(this, SLOT(focusWindowVisibleChanged(bool)));
-    disconnect(this, SLOT(screenChanged(QScreen*)));
+    Q_D(DesktopInputPanel);
+    disconnect(d->m_focusWindowVisibleConnection);
+    disconnect(d->m_focusWindowScreenConnection);
     if (focusWindow) {
-        connect(focusWindow, &QWindow::visibleChanged, this, &DesktopInputPanel::focusWindowVisibleChanged);
-        connect(focusWindow, &QWindow::screenChanged, this, &DesktopInputPanel::screenChanged,
-                Qt::UniqueConnection);
+        d->m_focusWindowVisibleConnection =
+                connect(focusWindow, &QWindow::visibleChanged,
+                        this, &DesktopInputPanel::focusWindowVisibleChanged);
+        d->m_focusWindowScreenConnection =
+                connect(focusWindow, &QWindow::screenChanged,
+                        this, &DesktopInputPanel::screenChanged);
         screenChanged(focusWindow->screen());
     }
 }
