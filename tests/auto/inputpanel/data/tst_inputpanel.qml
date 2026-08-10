@@ -376,6 +376,8 @@ Rectangle {
                 { initText: "", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputKey: Qt.Key_AsciiTilde, outputKeyCountMin: 1, outputKey: Qt.Key_AsciiTilde, preview: true, outputKeyText: "~", outputKeyModifiers: Qt.NoModifier, outputKeyRepeat: false, outputText: "~" },
                 // alternative key press, i.e. long key press
                 { initText: "", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputKey: "\u00E4", outputKeyCountMin: 1, outputKey: Qt.Key_A, preview: true, outputKeyText: "\u00E4", outputKeyModifiers: Qt.NoModifier, outputKeyRepeat: false, outputText: "\u00E4" },
+                // no preview when the input item hides the text it displays
+                { initText: "", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase | Qt.ImhHiddenText, inputKey: Qt.Key_A, outputKeyCountMin: 1, outputKey: Qt.Key_A, preview: false, outputKeyText: "a", outputKeyModifiers: Qt.NoModifier, outputKeyRepeat: false, outputText: "a" },
                 // function key press
                 { initText: "x", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputKey: Qt.Key_Shift, outputKeyCountMin: 1, outputKey: Qt.Key_Shift, preview: false, outputKeyText: "", outputKeyModifiers: Qt.NoModifier, outputKeyRepeat: false, outputText: "x" },
                 { initText: "x", initInputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase, inputKey: Qt.Key_Backspace, outputKeyCountMin: 1, outputKey: Qt.Key_Backspace, preview: false, outputKeyText: "", outputKeyModifiers: Qt.NoModifier, outputKeyRepeat: false, outputText: "" },
@@ -408,6 +410,24 @@ Rectangle {
             }
 
             compare(textInput.text, data.outputText)
+        }
+
+        function test_keyPressNoPreviewForPasswordField() {
+            prepareTest()
+
+            // A Qt Quick password field reports Qt.ImhSensitiveData instead of
+            // Qt.ImhHiddenText, so the preview must follow the echo mode of the
+            // input item rather than the input method hints.
+            let passwordField = createTemporaryObject(textFieldComp, container, {echoMode: TextInput.Password})
+            passwordField.forceActiveFocus()
+            waitForRendering(inputPanel)
+            verify(passwordField.activeFocus === true)
+            verify(inputPanel.visible === true)
+
+            inputPanel.characterPreviewBubbleSpy.clear()
+            verify(inputPanel.virtualKeyClick(Qt.Key_A))
+            compare(inputPanel.characterPreviewBubbleSpy.count, 0)
+            compare(passwordField.text, "a")
         }
 
         function test_keyReleaseInaccuracy() {
