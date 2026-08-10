@@ -179,9 +179,13 @@ Item {
 
     /*! Sets the show preview attribute.
 
-        By default, the character preview popup is not shown for function keys.
+        By default, the character preview popup is not shown for function keys,
+        nor when the focused input item hides the text it displays, for example
+        a password field. In the latter case the preview would reveal the
+        characters the input item masks.
     */
-    property bool showPreview: enabled && !functionKey && !keyboard.navigationModeActive
+    property bool showPreview: enabled && !functionKey && !keyboard.navigationModeActive &&
+                               keyboard.inputItemEchoMode === TextInput.Normal
 
     /*! This property holds the pressed status of the key.
 
