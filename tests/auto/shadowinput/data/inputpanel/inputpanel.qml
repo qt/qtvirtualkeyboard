@@ -16,6 +16,7 @@ InputPanel {
     property bool fullScreenMode: true
     property bool shadowInputVisible: keyboard.shadowInputControl.visible
     property string shadowInputText: keyboard.shadowInputControl.textEdit.text
+    property int shadowInputEchoMode: keyboard.shadowInputControl.textEdit.echoMode
     Binding {
         target: VirtualKeyboardSettings
         property: "fullScreenMode"

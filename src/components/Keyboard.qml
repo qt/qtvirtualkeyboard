@@ -38,6 +38,21 @@ Item {
     readonly property bool dialableCharactersOnly: InputContext.inputMethodHints & Qt.ImhDialableCharactersOnly
     readonly property bool formattedNumbersOnly: InputContext.inputMethodHints & Qt.ImhFormattedNumbersOnly
     readonly property bool digitsOnly: InputContext.inputMethodHints & Qt.ImhDigitsOnly
+    /*  Echo mode of the focused input item.
+
+        Qt Quick input items clear Qt.ImhHiddenText for TextInput.Password and
+        TextInput.PasswordEchoOnEdit, and set Qt.ImhSensitiveData instead, so
+        the input method hints alone do not tell whether the input item hides
+        the text it displays. Therefore the echo mode of the input item is used
+        when it provides one, and the input method hints only as a fallback.
+    */
+    readonly property int inputItemEchoMode: {
+        const inputItem = InputContext.priv.inputItem
+        const echoMode = inputItem ? inputItem.echoMode : undefined
+        if (echoMode !== undefined)
+            return echoMode
+        return (InputContext.inputMethodHints & Qt.ImhHiddenText) ? TextInput.Password : TextInput.Normal
+    }
     property string layout
     property string layoutType: {
         if (keyboard.handwritingMode) return "handwriting"
@@ -655,7 +670,11 @@ Item {
         anchors.bottom: wordCandidateView.top
         width: Math.min(shadowInputControl.contentWidth, parent.width)
         height: shadowInputControl.contentHeight
-        visible: fullScreenMode && (shadowInputControlVisibleTimer.running || InputContext.animating)
+        // An input item with TextInput.NoEcho displays nothing, and so does the
+        // shadow input which mirrors it. Leave it out entirely in that case,
+        // instead of reserving space for a control that cannot show anything.
+        visible: fullScreenMode && keyboard.inputItemEchoMode !== TextInput.NoEcho &&
+                 (shadowInputControlVisibleTimer.running || InputContext.animating)
 
         Connections {
             target: keyboard
@@ -686,7 +705,8 @@ Item {
         inputContext: InputContext.priv.shadow
         anchors.top: shadowInputControl.top
         anchors.left: shadowInputControl.left
-        enabled: keyboard.enabled && fullScreenMode
+        // The handles belong to the shadow input, so they follow its visibility.
+        enabled: keyboard.enabled && fullScreenMode && keyboard.inputItemEchoMode !== TextInput.NoEcho
     }
 
     ListView {
