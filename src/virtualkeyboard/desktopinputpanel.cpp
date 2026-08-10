@@ -285,12 +285,23 @@ void DesktopInputPanel::updateInputRegion()
 {
     Q_D(DesktopInputPanel);
 
-    if (d->view.isNull() || d->keyboardRect.isEmpty())
+    if (d->view.isNull())
         return;
 
     // Make sure the native window is created
     if (!d->view->handle())
         d->view->create();
+
+    if (d->keyboardRect.isEmpty()) {
+        /*  The view is a transparent window covering the available geometry of
+            the screen. Leaving it without an input region would make it consume
+            all mouse and touch input on that area, so restrict the input region
+            to a region outside the window instead. An empty QRegion cannot be
+            used for this, because that resets the mask.
+        */
+        d->view->setMask(QRegion(-1, -1, 1, 1));
+        return;
+    }
 
     QRegion inputRegion(d->keyboardRect.toRect());
     if (d->previewVisible && !d->previewRect.isEmpty())
