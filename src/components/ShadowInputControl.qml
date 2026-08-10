@@ -84,7 +84,10 @@ Item {
             color: keyboard.style.fullScreenInputColor
             selectionColor: keyboard.style.fullScreenInputSelectionColor
             selectedTextColor: keyboard.style.fullScreenInputSelectedTextColor
-            echoMode: (InputContext.inputMethodHints & Qt.ImhHiddenText) ? TextInput.Password : TextInput.Normal
+            // Mask PasswordEchoOnEdit like Password: this input never has the
+            // active focus, so it must not echo the text in clear.
+            echoMode: keyboard.inputItemEchoMode === TextInput.PasswordEchoOnEdit ?
+                          TextInput.Password : keyboard.inputItemEchoMode
             selectByMouse: !!InputContext.inputItem && !!InputContext.inputItem.selectByMouse
             onCursorPositionChanged: {
                 cursorSyncTimer.restart()

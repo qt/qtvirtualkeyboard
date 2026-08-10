@@ -69,6 +69,16 @@ Rectangle {
             }
         }
 
+        Component {
+            id: passwordInputComp
+            TextInput {
+                visible: true
+                focus: true
+                echoMode: TextInput.Password
+                color: "white"
+            }
+        }
+
         function test_fullScreenModeBindingWorks() {
             prepareTest()
 
@@ -87,6 +97,23 @@ Rectangle {
             verify(!inputPanel.shadowInputVisible)
             textInput.text = "world"
             compare(inputPanel.shadowInputText, "")
+        }
+
+        function test_shadowInputMasksPasswordInput() {
+            prepareTest()
+
+            inputPanel.fullScreenMode = true
+            waitForRendering(inputPanel)
+
+            let passwordInput = createTemporaryObject(passwordInputComp, container)
+            passwordInput.forceActiveFocus()
+            waitForRendering(inputPanel)
+            verify(passwordInput.activeFocus === true)
+
+            // A Qt Quick password field reports Qt.ImhSensitiveData instead of
+            // Qt.ImhHiddenText, so the shadow input must follow the echo mode
+            // of the input item rather than the input method hints.
+            compare(inputPanel.shadowInputEchoMode, TextInput.Password)
         }
     }
 }
