@@ -16,20 +16,85 @@ import QtQuick
     The design size specifies the aspect ratio of the virtual keyboard.
     Styles are scalable according to \l scaleHint, which is
     calculated from the keyboard's actual height and design height.
+
+    The keyboard is laid out at a fixed design size, defined by
+    \l keyboardDesignWidth and \l keyboardDesignHeight, and then scaled to
+    fit the available width. The rendered height follows from the design
+    aspect ratio: \c {keyboardDesignHeight * width / keyboardDesignWidth}.
+    \l keyboardHeight reflects the actual, scaled height used at run time.
+
+    \l keyboardDesignMaximumHeight can optionally cap that height. While the
+    cap is not in effect, the key area spans the full available width. When the
+    scaled height would exceed the maximum, the design aspect ratio is
+    preserved and the whole keyboard is scaled by
+    \c {keyboardDesignMaximumHeight / keyboardDesignHeight} instead, so the
+    keyboard never grows taller than the maximum. In that clamped case the key
+    area becomes narrower than the available width and is centered, leaving
+    empty margins on both sides; only the keyboard background still spans the
+    full width. \l scaleHint is the ratio of \l keyboardHeight to
+    \l keyboardDesignHeight and should be used to keep all pixel dimensions
+    proportional.
+
+    Note that \l keyboardDesignWidth and \l keyboardDesignHeight are
+    authoring units (the built-in styles use \c {2560x800} and are never
+    rendered at that size), whereas \l keyboardDesignMaximumHeight is in
+    logical pixels, because it is compared directly against the rendered
+    height (which is also in logical pixels).
 */
 
 QtObject {
-    /*! The current height of the keyboard. */
+    /*!
+        The current height of the keyboard, in logical pixels.
+
+        This is the actual, scaled height at which the keyboard is rendered.
+        It is set by the keyboard implementation (bound to the height of the
+        key area container) and reflects the layout that results from applying
+        \l keyboardDesignWidth, \l keyboardDesignHeight and, if set,
+        \l keyboardDesignMaximumHeight to the available width. Use it together
+        with \l keyboardDesignHeight to obtain \l scaleHint.
+    */
     property real keyboardHeight
 
-    /*! The design width of the keyboard. */
+    /*!
+        The design width of the keyboard, in authoring units.
+
+        Together with \l keyboardDesignHeight it defines the design aspect
+        ratio of the keyboard layout. The style is authored at this size and
+        then scaled to the actual width; the rendered height is derived from
+        \c {keyboardDesignHeight * width / keyboardDesignWidth}.
+    */
     property real keyboardDesignWidth
 
-    /*! The design height of the keyboard. */
+    /*!
+        The design height of the keyboard, in authoring units.
+
+        Together with \l keyboardDesignWidth it defines the design aspect
+        ratio of the keyboard layout. The rendered height is
+        \c {keyboardDesignHeight * width / keyboardDesignWidth}, unless that
+        value exceeds \l keyboardDesignMaximumHeight, in which case the design
+        aspect ratio is preserved and the whole keyboard is scaled by
+        \c {keyboardDesignMaximumHeight / keyboardDesignHeight} instead. It is
+        also the reference height used by \l scaleHint.
+    */
     property real keyboardDesignHeight
 
     /*!
-        The maximum design height of the keyboard.
+        The maximum design height of the keyboard, in logical pixels.
+
+        When set to a value greater than \c 0, it caps the rendered height
+        that would otherwise result from scaling \l keyboardDesignHeight to
+        the available width. If the scaled height exceeds this maximum, the
+        keyboard is rendered at \l keyboardDesignMaximumHeight; the design
+        aspect ratio is preserved and the whole keyboard is scaled by
+        \c {keyboardDesignMaximumHeight / keyboardDesignHeight} instead, so
+        the keyboard never grows taller than the maximum. A value of \c 0 or
+        less (the default) means there is no maximum, so the height follows
+        \l keyboardDesignHeight scaled to the width.
+
+        Unlike \l keyboardDesignWidth and \l keyboardDesignHeight, this value
+        is in logical pixels, because it is compared directly against the
+        rendered height.
+
         \since 6.11
     */
     property real keyboardDesignMaximumHeight
