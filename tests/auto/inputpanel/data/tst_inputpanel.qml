@@ -66,6 +66,7 @@ Rectangle {
             inputPanel.setFullScreenMode(data !== undefined && data.hasOwnProperty("fullScreenMode") && data.fullScreenMode)
             inputPanel.setExternalLanguageSwitchEnabled(data !== undefined && data.hasOwnProperty("externalLanguageSwitchEnabled") && data.externalLanguageSwitchEnabled)
             inputPanel.setLayoutMirroring(data !== undefined && data.hasOwnProperty("layoutMirroring") && data.layoutMirroring)
+            inputPanel.noAnimations = !data || !data.hasOwnProperty("noAnimations") || data.noAnimations
 
             var window = container.Window.window
             verify(window)
@@ -257,6 +258,19 @@ Rectangle {
 
             Qt.inputMethod.hide()
             verify(inputPanel.visible === false)
+        }
+
+        function test_keyboardRectWithWordCandidateView_data() {
+            return [
+                { wclAlwaysVisible: false },
+                { wclAlwaysVisible: true },
+            ]
+        }
+
+        function test_keyboardRectWithWordCandidateView(data) {
+            prepareTest()
+
+            compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, container.height - inputPanel.height, inputPanel.width, inputPanel.height))
         }
 
         function test_keyPress_data() {
@@ -1936,6 +1950,48 @@ Rectangle {
                 var currentIndex = data.activeLocales.indexOf(languagePopupList.model.get(i).localeName)
                 verify(currentIndex > previousIndex)
                 previousIndex = currentIndex
+            }
+        }
+
+
+        function test_languagePopupListToggleCheckItemsVisible_data() {
+            return [
+                { initLocale: "fi_FI", noAnimations: false },
+            ]
+        }
+
+        function test_languagePopupListToggleCheckItemsVisible(data) {
+            prepareTest(data)
+
+            if (!inputPanel.keyboard.style.languagePopupListEnabled)
+                skip("The language popup is disabled (!style.languagePopupListEnabled)")
+
+            var languagePopupList = inputPanel.findObjectByName("languagePopupList")
+
+            // show
+            inputPanel.doKeyboardFunction("ChangeLanguage")
+            waitForPolish(languagePopupList)
+
+            // hide
+            inputPanel.doKeyboardFunction("ChangeLanguage")
+
+            // show
+            inputPanel.doKeyboardFunction("ChangeLanguage")
+            waitForPolish(languagePopupList)
+
+            function checkItemVisibility(index) {
+                if (index >= 0 && index < languagePopupList.count) {
+                    let itemDelegate = languagePopupList.itemAtIndex(index)
+                    verify(itemDelegate.visible)
+                    compare(itemDelegate.opacity, 1)
+                }
+            }
+
+            if (languagePopupList.preferredVisibleItems > 2) {
+                let numberOfSurroundingItems = Math.floor((languagePopupList.preferredVisibleItems - 1) / 2)
+                for (let offset = -numberOfSurroundingItems; offset < numberOfSurroundingItems; ++offset) {
+                    checkItemVisibility(languagePopupList.currentIndex + offset)
+                }
             }
         }
 
