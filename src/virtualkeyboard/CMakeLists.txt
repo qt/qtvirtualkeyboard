@@ -94,6 +94,7 @@ qt_internal_add_qml_module(VirtualKeyboardQml
     VERSION "${PROJECT_VERSION}"
     PAST_MAJOR_VERSIONS 2 1
     PLUGIN_TARGET qtvkbplugin
+    NO_CONFIG_HEADER_FILE
     DEPENDENCIES
         QtQuick/auto
         QtQuick.Window/auto
