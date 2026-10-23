@@ -10,6 +10,7 @@ namespace QtVirtualKeyboard {
 
 /*!
     \qmltype EnterKeyAction
+    \nativetype QtVirtualKeyboard::EnterKeyActionAttachedType
     \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qmlclass
     \ingroup qtvirtualkeyboard-qml

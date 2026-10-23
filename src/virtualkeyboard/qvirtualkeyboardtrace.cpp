@@ -425,7 +425,7 @@ void QVirtualKeyboardTrace::timerEvent(QTimerEvent *event)
     is added.
 */
 
-/*! \qmlproperty int QVirtualKeyboardTrace::length
+/*! \qmlproperty int Trace::length
 
     The number of points in the QVirtualKeyboardTrace.
 */

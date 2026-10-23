@@ -10,6 +10,7 @@ namespace QtVirtualKeyboard {
 
 /*!
     \qmltype VirtualKeyboard
+    \nativetype QtVirtualKeyboard::VirtualKeyboardAttachedType
     \inqmlmodule QtQuick.VirtualKeyboard
     \ingroup qmlclass
     \ingroup qtvirtualkeyboard-qml

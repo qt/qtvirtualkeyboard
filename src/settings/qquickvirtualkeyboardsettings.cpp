@@ -98,6 +98,7 @@ public:
 
 /*!
     \qmltype VirtualKeyboardSettings
+    \nativetype QtVirtualKeyboard::QQuickVirtualKeyboardSettings
     \inqmlmodule QtQuick.VirtualKeyboard.Settings
     \ingroup qtvirtualkeyboard-settings-qml
     \ingroup qmlclass
