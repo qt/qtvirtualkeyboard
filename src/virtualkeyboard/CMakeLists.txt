@@ -28,7 +28,6 @@ qt_internal_add_qml_module(VirtualKeyboard
         plaininputmethod.cpp plaininputmethod_p.h
         platforminputcontext.cpp platforminputcontext_p.h
         qvirtualkeyboard_global.h qvirtualkeyboard_global_p.h
-        qvirtualkeyboard_namespace.h
         qvirtualkeyboardabstractinputmethod.cpp qvirtualkeyboardabstractinputmethod.h
         qvirtualkeyboardabstractinputmethod_p.cpp qvirtualkeyboardabstractinputmethod_p.h
         qvirtualkeyboarddictionary.cpp qvirtualkeyboarddictionary.h

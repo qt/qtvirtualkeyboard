@@ -16,6 +16,10 @@
 // We mean it.
 //
 
+#if 0
+#  pragma qt_deprecates(qvirtualkeyboard_namespace.h,7.0)
+#endif
+
 #include <QtCore/qmetaobject.h>
 #include <QtQml/qqml.h>
 #include <QtVirtualKeyboard/qvirtualkeyboard_global.h>
