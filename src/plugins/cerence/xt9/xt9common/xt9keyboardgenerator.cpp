@@ -5,7 +5,7 @@
 #include "xt9keyboardgenerator.h"
 #include "xt9kdblayout.h"
 #include "xt9kdb.h"
-#include <QtVirtualKeyboard/qvirtualkeyboard_namespace.h>
+#include <QtVirtualKeyboard/private/qvirtualkeyboardnamespace_p.h>
 #include <QDebug>
 
 QT_BEGIN_NAMESPACE
