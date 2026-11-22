@@ -12,6 +12,24 @@ Rectangle {
     height: 640
     color: "blue"
 
+    // Visualize Qt.inputMethod.keyboardRectangle for testing purposes
+    Rectangle {
+        z: 100
+        x: Qt.inputMethod.keyboardRectangle.x
+        y: Qt.inputMethod.keyboardRectangle.y
+        width: Qt.inputMethod.keyboardRectangle.width
+        height: Qt.inputMethod.keyboardRectangle.height
+        color: "transparent"
+        border.color: "red"
+        border.width: 1
+    }
+
+    SignalSpy {
+        id: keyboardRectangleChangedSpy
+        target: Qt.inputMethod
+        signalName: "keyboardRectangleChanged"
+    }
+
     Component {
         id: textInputComp
         TextEdit {
@@ -87,6 +105,7 @@ Rectangle {
             textInput.inputMethodHints = data !== undefined && data.hasOwnProperty("initInputMethodHints") ? data.initInputMethodHints : Qt.ImhNone
             textInput.selectByMouse = false
             handwritingInputPanel.available = false
+            handwritingInputPanel.active = false
             inputPanel.setHandwritingMode(false)
             textInput.forceActiveFocus()
             var activeLocales = data !== undefined && data.hasOwnProperty("activeLocales") ? data.activeLocales : []
@@ -271,6 +290,49 @@ Rectangle {
             prepareTest()
 
             compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, container.height - inputPanel.height, inputPanel.width, inputPanel.height))
+        }
+
+        function test_keyboardRect_data() {
+            return [
+                { wclAlwaysVisible: false },
+                { wclAlwaysVisible: true },
+            ]
+        }
+
+        function test_keyboardRect(data) {
+            prepareTest(data)
+
+            // Initially visible
+            compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, container.height - inputPanel.height, inputPanel.width, inputPanel.height))
+
+            // Hidden
+            keyboardRectangleChangedSpy.clear()
+            container.forceActiveFocus()
+            verify(inputPanel.visible === false)
+            compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, 0, 0, 0))
+            compare(keyboardRectangleChangedSpy.count, 1)
+
+            // Visible
+            keyboardRectangleChangedSpy.clear()
+            textInput.forceActiveFocus()
+            compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, container.height - inputPanel.height, inputPanel.width, inputPanel.height))
+            verify(keyboardRectangleChangedSpy.count < 3)
+        }
+
+        function test_keyboardRectFullScreenHwr() {
+            prepareTest({ initHwrMode: true }, true)
+
+            // Full screen hwr available -> keyboard hidden
+            keyboardRectangleChangedSpy.clear()
+            handwritingInputPanel.available = true
+            compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, 0, 0, 0))
+            compare(keyboardRectangleChangedSpy.count, 1)
+
+            // Full screen hwr active -> full screen input
+            keyboardRectangleChangedSpy.clear()
+            handwritingInputPanel.active = true
+            compare(Qt.inputMethod.keyboardRectangle, Qt.rect(0, 0, container.width, container.height))
+            compare(keyboardRectangleChangedSpy.count, 1)
         }
 
         function test_keyPress_data() {
@@ -969,6 +1031,8 @@ Rectangle {
                 { initInputMethodHints: Qt.ImhNone | Qt.ImhSensitiveData, initLocale: "zh_CN", inputSequence: "zhang'ang", expectedCandidates: [ "\u7AE0", "\u6602" ], outputText: "\u7AE0\u6602" },
                 // Invalid pinyin sequence
                 { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "fi", expectedCandidates: [ "\u53D1", "i" ], outputText: "\u53D1i" },
+                // QTBUG-124178
+                { initInputMethodHints: Qt.ImhNone, initLocale: "zh_CN", inputSequence: "nss", expectedCandidates: ["\u4F60\u662F\u8C01"], outputText: "\u4F60\u662F\u8C01" },
             ]
         }
 
@@ -2007,22 +2071,22 @@ Rectangle {
             prepareTest(data)
             inputPanel.wordCandidateListChangedSpy.clear()
             Qt.inputMethod.show()
-            compare(inputPanel.wordCandidateView.visibleCondition, data.wclAlwaysVisible)
+            if (!inputPanel.wordCandidateListVisibleHint)
+                skip("Prediction/spell correction not enabled")
+            compare(inputPanel.wordCandidateView.state, data.wclAlwaysVisible ? "alwaysVisible" : "")
             inputPanel.virtualKeyClick("a")
             inputPanel.virtualKeyClick("u")
             inputPanel.virtualKeyClick("t")
             inputPanel.virtualKeyClick("o")
-            if (!inputPanel.wordCandidateListVisibleHint)
-                skip("Prediction/spell correction not enabled")
             inputPanel.wordCandidateListChangedSpy.wait(1000)
-            compare(inputPanel.wordCandidateView.visibleCondition, true)
+            compare(inputPanel.wordCandidateView.state, "visible")
             inputPanel.wordCandidateListVisibleSpy.clear()
             inputPanel.selectionListSelectCurrentItem()
             if (data.wclAlwaysVisible)
                 wait(data.wclAutoHideDelay + 250)
             else
                 inputPanel.wordCandidateListVisibleSpy.wait(data.wclAutoHideDelay + 500)
-            compare(inputPanel.wordCandidateView.visibleCondition, data.wclAlwaysVisible)
+            compare(inputPanel.wordCandidateView.state, data.wclAlwaysVisible ? "alwaysVisible" : "")
         }
 
         function test_wclAutoCommitWordSetting_data() {
