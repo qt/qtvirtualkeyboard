@@ -4,13 +4,6 @@
 ## BundledPinyin Generic Library:
 #####################################################################
 
-# special case begin
-# TODO: Prepare for removal, once Platform brings in Threads.
-if(NOT TARGET Threads::Threads)
-    find_package(Threads REQUIRED)
-endif()
-# special case end
-
 qt_internal_add_3rdparty_library(BundledPinyin
     QMAKE_LIB_NAME pinyin
     STATIC
@@ -60,7 +53,6 @@ qt_internal_add_3rdparty_library(BundledPinyin
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     PUBLIC_LIBRARIES
         Qt::Core
-        Threads::Threads # special case
 )
 qt_disable_warnings(BundledPinyin)
 
