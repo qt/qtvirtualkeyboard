@@ -15,6 +15,7 @@ struct VirtualKeyboardSetup : QObject
     VirtualKeyboardSetup()
     {
         qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+        qputenv("QT_IM_MODULES", QByteArray("qtvirtualkeyboard"));
         QStandardPaths::setTestModeEnabled(true);
         auto configLocations = QStringList()
                 << QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/qtvirtualkeyboard"
